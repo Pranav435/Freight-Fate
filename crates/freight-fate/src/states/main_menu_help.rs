@@ -267,7 +267,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
         &[
             "Do I have to buy a truck? No. The carrier assigns company drivers a truck and pays its fuel, repairs, and insurance. Buying trucks opens with the owner-operator buy-in from level 18; Business status lists what else it needs.",
             "What are the fleets on Career stats? Each is a set of carrier trucks that dispatch assigns by level: the yard standard, then the regional fleet at level 4, the long-haul fleet at 9, the premium fleet at 13, and first pick of the yard at 17. Moving up costs you nothing.",
-            "Why am I in a different truck on some loads? Until level 9, dispatch matches a spare truck to each load. From level 9 you drive the same truck on every load.",
+            "Why am I in a different truck on some loads? Until level 9, dispatch matches a spare truck to each load. From level 9 you keep one truck for every load until dispatch moves you up to the next fleet.",
             "Why am I not in the truck my level earns? Low dispatch trust, a suspended CDL, debt, or your driving record can hold equipment back. Career stats names the reason and what brings the truck back.",
             "What is the difference between reputation and dispatch trust? Reputation is a score out of 100 from your deliveries, lowered by your driving record. Dispatch trust is what the carrier lets you do right now; your CDL, your record, and what you owe count toward it too.",
             "Why can I not accept a load? It may need a certificate, endorsement, or trailer you do not have. F1 on the load reads its requirements, and Licenses and training offers the courses.",

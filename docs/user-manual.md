@@ -302,7 +302,7 @@ Authority preparation can open at level 21. Own authority can open at level 25, 
 
 Owners can open Truck dealer from the terminal. Upgrades apply across the fleet, but the condition of each truck belongs to that truck.
 
-Company drivers never buy a truck: the carrier assigns one from a fleet that improves with your level. You start in the yard standard truck, then dispatch moves you up to the regional fleet at level 4, the long-haul fleet at level 9, the premium fleet at level 13, and first pick of the yard at level 17, at no cost to you. Before level 9, dispatch assigns a spare suited to each load, and each spare keeps its own fuel, wear, and damage. From level 9, you drive the same truck on every load. Career stats names your current fleet and the next one.
+Company drivers never buy a truck: the carrier assigns one from a fleet that improves with your level. You start in the yard standard truck, then dispatch moves you up to the regional fleet at level 4, the long-haul fleet at level 9, the premium fleet at level 13, and first pick of the yard at level 17, at no cost to you. Before level 9, dispatch assigns a spare suited to each load, and each spare keeps its own fuel, wear, and damage. From level 9, you keep one truck for every load until the next fleet. Career stats names your current fleet and the next one.
 
 ### Dispatch trust
 
@@ -969,7 +969,7 @@ Each fleet is a set of carrier trucks that dispatch assigns by level: the yard s
 
 ### Why am I in a different truck on some loads?
 
-Until level 9, dispatch matches a spare truck to each load: a sleeper for a long run, a heavy-spec truck for a heavy load, a day cab for a short turn. Each spare keeps its own fuel and wear. From level 9 you drive the same truck on every load.
+Until level 9, dispatch matches a spare truck to each load: a sleeper for a long run, a heavy-spec truck for a heavy load, a day cab for a short turn. Each spare keeps its own fuel and wear. From level 9 you keep one truck for every load until dispatch moves you up to the next fleet, at level 13 and again at level 17.
 
 ### Why am I not in the truck my level earns?
 
