@@ -45,6 +45,9 @@ impl DrivingState {
     /// a single synthetic leg would just be the old teleport with extra
     /// steps, so those facilities keep the scripted arrival.
     pub fn surface_chain_route(&self, ctx: &GameContext) -> Option<Route> {
+        if !self.facility_streets_on {
+            return None;
+        }
         if let Some(node) = self.destination_terminal_node(ctx) {
             let exit_chain = ctx
                 .world
@@ -400,7 +403,7 @@ impl DrivingState {
     /// chain qualifies; other facilities keep the scripted departure straight
     /// onto the highway.
     pub fn departure_chain_route(&self, ctx: &GameContext) -> Option<Route> {
-        if self.phase != DRIVE_PHASE_DELIVERY {
+        if self.phase != DRIVE_PHASE_DELIVERY || !self.facility_streets_on {
             return None;
         }
         ctx.world

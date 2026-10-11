@@ -360,6 +360,11 @@ impl SettingsCategoryState {
         self.announce(ctx);
     }
 
+    pub(super) fn toggle_facility_streets(&mut self, ctx: &mut GameContext, _d: i64) {
+        ctx.settings.facility_streets = !ctx.settings.facility_streets;
+        self.announce(ctx);
+    }
+
     pub(super) fn toggle_steering_guide_inverted(&mut self, ctx: &mut GameContext, _d: i64) {
         ctx.settings.steering_guide_inverted = !ctx.settings.steering_guide_inverted;
         save_settings(&ctx.settings);

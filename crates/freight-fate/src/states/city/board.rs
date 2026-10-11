@@ -143,7 +143,11 @@ fn pickup_drive_hours(ctx: &GameContext, job: &Job) -> f64 {
     corridor_h
         + ctx
             .world
-            .facility_approach_route(&job.origin, &job.origin_location)
+            .facility_approach_route_with(
+                &job.origin,
+                &job.origin_location,
+                ctx.settings.facility_streets,
+            )
             .map(|approach| route_drive_hours(Some(&approach), 0.0, Some(ctx.world)))
             .unwrap_or(0.0)
 }
@@ -781,9 +785,11 @@ impl JobBoardState {
             self.accept_relay(ctx, index, job, &here);
             return;
         }
-        let route = ctx
-            .world
-            .facility_approach_route(&job.origin, &job.origin_location);
+        let route = ctx.world.facility_approach_route_with(
+            &job.origin,
+            &job.origin_location,
+            ctx.settings.facility_streets,
+        );
         let Ok(route) = route else {
             // A cached board can outlive its facilities (a data update may
             // retire one, e.g. a template gated out by geography). Drop the
@@ -849,10 +855,11 @@ impl JobBoardState {
             return;
         };
         // A shipper with no baked approach is reached at the city itself.
-        let route = match ctx
-            .world
-            .facility_approach_route(&origin, &job.origin_location)
-        {
+        let route = match ctx.world.facility_approach_route_with(
+            &origin,
+            &job.origin_location,
+            ctx.settings.facility_streets,
+        ) {
             Ok(approach) => corridor.then(&approach),
             Err(_) => corridor.clone(),
         };

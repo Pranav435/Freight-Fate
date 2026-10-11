@@ -4,6 +4,8 @@
 
 ### Added
 
+- **A Facility streets setting turns off the drive through city streets to and from facilities.** Off, the exit ramp ends at the gate, as in 1.8.
+
 - **The right stick now tunes the radio and adjusts its volume.** Hold up or down to keep changing volume.
 
 - **Right bumper combinations now cover the radio.** Use the right stick for power, favorites and categories, stick click for status, Back for what plays.

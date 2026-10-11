@@ -395,6 +395,95 @@ fn test_a_departure_chain_and_a_surface_chain_never_run_together() {
     assert!(!d.begin_departure_chain(&mut app.ctx, false));
 }
 
+/// With Facility streets off, the 1.8 arrival and departure: no street chain
+/// either end of a delivery, even to and from a facility that has one, and a
+/// pickup in town is the single access-road leg.
+#[test]
+fn test_facility_streets_off_skips_both_chains() {
+    let world = get_world();
+    let Some((city, location)) = a_turn_level_facility(world) else {
+        return;
+    };
+    let classic = world
+        .facility_approach_route_with(&city, &location, false)
+        .expect("the facility resolves");
+    assert_eq!(classic.legs.len(), 1);
+    assert!(classic.legs.iter().all(|leg| leg.local_speed_mph == 0.0));
+
+    let mut app = TestApp::new();
+    app.ctx.settings.facility_streets = false;
+    let Some(mut d) = a_drive_to(&mut app, &city, &location) else {
+        return;
+    };
+    assert!(!d.facility_streets_on);
+    d.destination_exit_taken = true;
+    assert!(d.surface_chain_route(&app.ctx).is_none());
+    assert!(!d.destination_street_chain_ahead(&app.ctx));
+    assert!(!d.begin_surface_chain(&mut app.ctx, false));
+    assert!(!d.surface_chain);
+
+    // Out of the same facility, loaded.
+    let mut job = make_reposition_job(world, &city, "Denver", false, None).expect("a job");
+    job.origin_location = location.clone();
+    let route = world
+        .shortest_route(&city, "Denver", None, false)
+        .ok()
+        .flatten()
+        .expect("a corridor to Denver");
+    let mut out = DrivingState::new(
+        &mut app.ctx,
+        job.clone(),
+        route.clone(),
+        Some(0),
+        DRIVE_PHASE_DELIVERY,
+        Some(12.0),
+    );
+    assert!(out.departure_chain_route(&app.ctx).is_none());
+    assert!(!out.begin_departure_chain(&mut app.ctx, false));
+
+    // The streets setting still drives that departure.
+    app.ctx.settings.facility_streets = true;
+    let mut streets = DrivingState::new(
+        &mut app.ctx,
+        job,
+        route,
+        Some(0),
+        DRIVE_PHASE_DELIVERY,
+        Some(12.0),
+    );
+    assert!(streets.begin_departure_chain(&mut app.ctx, false));
+}
+
+/// A drive keeps the Facility streets value it started with, across a save
+/// and a change of the setting before the resume.
+#[test]
+fn test_a_resumed_drive_keeps_its_facility_streets() {
+    let world = get_world();
+    let Some((city, location)) = a_turn_level_facility(world) else {
+        return;
+    };
+    let mut app = TestApp::new();
+    app.ctx.settings.facility_streets = false;
+    let Some(d) = a_drive_to(&mut app, &city, &location) else {
+        return;
+    };
+    let snap = d.snapshot(&app.ctx);
+    assert_eq!(snap["facility_streets"], false);
+    app.ctx.settings.facility_streets = true;
+    let mut resumed =
+        DrivingState::from_snapshot(&mut app.ctx, &snap).expect("the snapshot resumes");
+    assert!(!resumed.facility_streets_on);
+    resumed.destination_exit_taken = true;
+    assert!(!resumed.begin_surface_chain(&mut app.ctx, false));
+
+    // A save from before the setting was made on the streets.
+    let mut old = snap.clone();
+    old.as_object_mut().unwrap().remove("facility_streets");
+    app.ctx.settings.facility_streets = false;
+    let resumed = DrivingState::from_snapshot(&mut app.ctx, &old).expect("the snapshot resumes");
+    assert!(resumed.facility_streets_on);
+}
+
 // -- cases that wait on another driving mixin -----------------------------------------
 
 #[test]

@@ -106,6 +106,20 @@ fn hos_planning_hints_row_explains_and_persists_the_opt_in() {
 }
 
 #[test]
+fn facility_streets_row_toggles_and_persists() {
+    let mut app = TestApp::new();
+    assert!(app.ctx.settings.facility_streets);
+    open_settings_category(&mut app, "World and traffic");
+    move_to::<Cat>(&mut app, "Facility streets");
+    assert_eq!(current_label::<Cat>(&app), "Facility streets: on");
+    key(&mut app, Key::Return);
+    assert_eq!(current_label::<Cat>(&app), "Facility streets: off");
+    assert!(!Settings::load().facility_streets);
+    key(&mut app, Key::Left);
+    assert!(Settings::load().facility_streets);
+}
+
+#[test]
 fn test_settings_menu_cycles_lane_keeping() {
     let mut app = TestApp::new();
     assert_eq!(app.ctx.settings.lane_keeping, "full"); // the all-assists default
@@ -239,6 +253,7 @@ fn gameplay_subcategory_rows(category: &str) -> &'static [&'static str] {
             "Fuel prices",
             "Parking source",
             "Live weather controls calendar",
+            "Facility streets",
             "Back",
         ],
         "controls" => &[

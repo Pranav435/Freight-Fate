@@ -286,6 +286,10 @@ impl DrivingState {
         out.insert("surface_chain".to_string(), json!(self.surface_chain));
         out.insert("departure_chain".to_string(), json!(self.departure_chain));
         out.insert(
+            "facility_streets".to_string(),
+            json!(self.facility_streets_on),
+        );
+        out.insert(
             "planned_stop_key".to_string(),
             json!(self.trip.planned_stop_key),
         );
@@ -319,13 +323,19 @@ impl DrivingState {
         } else {
             DRIVE_PHASE_DELIVERY
         };
+        // The Facility streets setting the drive started under; a save from
+        // before the setting was driven on the streets.
+        let facility_streets = b(data, "facility_streets", true);
         let route = if phase == DRIVE_PHASE_PICKUP {
             let origin = job_payload_data.get("origin").and_then(Value::as_str)?;
             let location = job_payload_data
                 .get("origin_location")
                 .and_then(Value::as_str)
                 .unwrap_or_default();
-            let approach = ctx.world.facility_approach_route(origin, location).ok();
+            let approach = ctx
+                .world
+                .facility_approach_route_with(origin, location, facility_streets)
+                .ok();
             if s(data, "route_kind") == "deadhead_approach" {
                 // A relayed load: the corridor the save names, then the
                 // shipper's approach rebuilt fresh, joined as it was driven.
@@ -410,6 +420,7 @@ impl DrivingState {
             profile_mut_of(ctx).sync_calendar_hour_to(local_start);
         }
         state.resumed = true;
+        state.facility_streets_on = facility_streets;
         state.start_damage = f(data, "start_damage", state.start_damage);
         // A save from before the damage bands carries neither key: derive
         // the announced band from the damage it does carry, so a resumed

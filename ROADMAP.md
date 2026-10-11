@@ -41,6 +41,12 @@ bookmarks usable.
 
 ## 1.9 in flight (`feat/career-1.9`)
 
+- [x] Facility streets setting (owner, 2026-10-11, for players who want the
+      1.8 arrival): Settings, Gameplay, World and traffic. Off skips the
+      facility street chains both ways (the destination ramp ends at the
+      gate, a loaded run leaves straight onto the highway) and gives a
+      pickup in town the single synthetic access-road leg. On by default; a
+      drive and its save keep the value it started with.
 - [x] Controller radio controls: the right stick tunes stations and changes volume; right-bumper combinations manage playback, categories, and radio information.
 
 - [x] Call dispatch, a 2.0 teaser for 1.9.4 (owner, 2026-10-10): the pause
