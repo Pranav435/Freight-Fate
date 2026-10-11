@@ -2912,8 +2912,19 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       Mackinac Bridge wind restrictions need a wind speed in the weather.
 - [ ] **Bridge escorts.** Mackinac placarded, heavy and oversize escorts and
       Golden Gate explosive-load hours are not modelled.
-- [ ] **Chesapeake Bay Bridge (US 50) toll.** Eastbound toll needs the
-      official truck rate.
+- [x] **Chesapeake Bay Bridge (US 50) toll.** Charged eastbound at the
+      published 24 dollars E-ZPass, 36 video toll.
+- [x] **Published toll rates.** 48 of 53 toll events read from
+      the authorities' five-axle schedules, with plate rates and one-way
+      collection (see docs/road-crossings.md).
+- [ ] **Last estimated tolls.** 5 events still estimated: Aurora to
+      Rockford, Syracuse to Utica, the Mass Pike stretch into Boston, and the
+      New Jersey Turnpike and Delaware River bridge on New York to Philadelphia.
+- [ ] **Missing toll facilities.** Check every leg against the tolled roads
+      (tools/toll_evidence.py) and price any crossing with no toll event.
+- [ ] **tools/toll_price.py --write is lossy.** It writes `plate_amount`, not
+      `amount_plate`, and drops directions and second tolls on a leg; fix it
+      before using it.
 - [ ] **Hazard classes on freight.** The catalog does not name hazard
       classes, so a placarded packaged load is refused wherever any class is
       banned. Naming classes would let some loads through.

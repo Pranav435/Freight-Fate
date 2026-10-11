@@ -1040,3 +1040,48 @@ fn test_the_status_browse_says_how_much_to_the_next_level() {}
 #[test]
 #[ignore = "wrong crate: ff-core cannot see the game crate, so this case belongs in crates/freight-fate/tests/ -- AbandonJobConfirmationState"]
 fn test_abandoning_a_bobtail_costs_nothing() {}
+
+#[test]
+fn published_tolls_carry_plate_rates_and_one_way_collection() {
+    let world = world();
+    let tolls = |a: &str, b: &str| {
+        world
+            .legs
+            .iter()
+            .find(|leg| leg.a == a && leg.b == b)
+            .expect("leg")
+            .toll_events()
+            .to_vec()
+    };
+    let bay = |a: &str, b: &str| {
+        tolls(a, b)
+            .into_iter()
+            .find(|toll| toll.name == "Chesapeake Bay Bridge toll")
+            .expect("Bay Bridge toll")
+    };
+    let east = bay("baltimore_md_us", "dover_de_us");
+    assert_eq!(
+        (east.amount, east.plate_amount(), east.estimated),
+        (24.0, 36.0, false)
+    );
+    assert!(east.applies_to_direction(true) && !east.applies_to_direction(false));
+    let west = bay("salisbury_md_us", "baltimore_md_us");
+    assert!(!west.applies_to_direction(true) && west.applies_to_direction(false));
+    let gateway = tolls("pittsburgh_pa_us", "cleveland_oh_us")
+        .into_iter()
+        .find(|toll| toll.name.contains("Gateway"))
+        .expect("Gateway toll");
+    assert!(
+        !gateway.applies_to_direction(true),
+        "no toll westbound into Ohio"
+    );
+    let thruway = tolls("springfield_ma_us", "albany_ny_us");
+    assert_eq!(
+        thruway.len(),
+        2,
+        "Mass Pike and Berkshire Connector both charge"
+    );
+    assert!(thruway
+        .iter()
+        .all(|toll| !toll.estimated && toll.plate_amount() >= toll.amount));
+}

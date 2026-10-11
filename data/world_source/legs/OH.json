@@ -14476,9 +14476,10 @@
             "road": "Indiana Toll Road",
             "authority": "Indiana Toll Road Concession Company",
             "method": "ezpass",
-            "amount": 68.0,
-            "estimated": true,
-            "source": "Indiana Toll Road toll road rates, accessed 2026-06-16; estimated 5-axle commercial toll segment: https://www.indianatollroad.org/toll-road-rates/"
+            "amount": 91.37,
+            "estimated": false,
+            "source": "Indiana Toll Road calculator and published rate table, Eastpoint to Westpoint, eff. 2026-07-01; researched 2026-07-19 (tools/toll_rates.py in_full_length): https://www.indianatollroad.org/",
+            "amount_plate": 91.37
           }
         ],
         "interchanges": [

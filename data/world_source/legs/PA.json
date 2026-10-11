@@ -45057,8 +45057,8 @@
             "authority": "Pennsylvania Turnpike Commission",
             "method": "ticket_system",
             "amount": 0.0,
-            "estimated": true,
-            "source": "Pennsylvania Turnpike Commission toll calculator, accessed 2026-06-16; ticket/open-road entry marker for settlement estimate: https://www.paturnpike.com/toll-calculator"
+            "estimated": false,
+            "source": "Pennsylvania Turnpike ticket entry at Valley Forge (326); the toll is charged at exit, per the 2026 schedules: https://www.paturnpike.com/toll-calculator/toll-schedules"
           },
           {
             "name": "Pennsylvania Turnpike Allegheny settlement",
