@@ -125,7 +125,7 @@ fn lining_up_for_an_exit_the_call_stays_the_drivers() {
     raise(&mut harness, Some(1.5));
     assert_eq!(
         the_call(&harness),
-        "Change lanes or brake! Slow car right ahead. Left lane open."
+        "Change lanes or brake. Slow car right ahead. Left lane open."
     );
     assert!(harness.read_drive(|d| d.lane_change_target).is_none());
 

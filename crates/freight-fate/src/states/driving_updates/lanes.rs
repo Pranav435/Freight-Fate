@@ -562,7 +562,7 @@ impl DrivingState {
                 ctx.controller.rumble.impact(SIDESWIPE_DAMAGE);
                 self.trip.truck.apply_collision(SIDESWIPE_DAMAGE, true);
                 let text = format!(
-                    "You sideswiped a {vehicle_class} in the {} lane! Truck damage {:.0} percent.",
+                    "You sideswiped a {vehicle_class} in the {} lane. Truck damage {:.0} percent.",
                     self.lane.lane_name(),
                     self.trip.truck.damage_pct
                 );
@@ -763,7 +763,7 @@ impl DrivingState {
             ctx.audio.play("ui/warning");
             ctx.controller.rumble.alert();
             let text = format!(
-                "You are in the closed {} lane! Move to the {open_name} lane!",
+                "You are in the closed {} lane. Move to the {open_name} lane.",
                 lane_label(closed, self.lane.lane_count)
             );
             ctx.say_event_with(text, SayEvent::new().category(SpeechCategory::Safety));

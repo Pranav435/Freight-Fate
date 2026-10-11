@@ -358,7 +358,7 @@ fn test_urgent_only_keeps_achievements_out_of_the_drive() {
     assert!(
         review
             .iter()
-            .any(|line| line.starts_with("New achievement!")),
+            .any(|line| line.starts_with("New achievement:")),
         "{review:?}"
     );
 }

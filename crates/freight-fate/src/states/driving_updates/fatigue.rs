@@ -180,7 +180,7 @@ impl DrivingState {
         ctx.audio.play_with("vehicle/rumble_strip", 1.0, 0.0);
         ctx.controller.rumble.alert();
         ctx.say_event_with(
-            "Nodding off. Steer or brake now!",
+            "Nodding off. Steer or brake now.",
             SayEvent::new().category(SpeechCategory::Safety),
         );
     }

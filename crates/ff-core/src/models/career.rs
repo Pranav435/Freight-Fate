@@ -183,7 +183,7 @@ pub fn endorsement_announcement(key: &str) -> Option<&'static str> {
 /// license: on a real CDL the pair prints as the single letter X
 /// (49 CFR 383.153(a)(9)(v)), and it is what the fuel-tanker fleet hires on.
 pub const X_COMBINATION_ANNOUNCEMENT: &str =
-    "You now hold both the tank vehicle and hazmat endorsements -- the X \
+    "You now hold both the tank vehicle and hazmat endorsements, the X \
      combination on a real license. Bulk fuel freight is open.";
 
 /// Experience still owed before the next level, or None at the ceiling.
@@ -430,7 +430,7 @@ impl Career {
             for gained_level in (before_level + 1)..=level {
                 let rank = rank_for_level(gained_level);
                 messages.push(format!(
-                    "Level up! You are now level {gained_level}: {}. Unlock: {}",
+                    "Level up. You are now level {gained_level}: {}. Unlock: {}",
                     rank.title, rank.unlock
                 ));
             }

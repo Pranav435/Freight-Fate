@@ -49,7 +49,7 @@ fn test_cruise_control_requires_road_speed_and_cancels_on_hazard() {
         d.handle_trip_event(
             ctx,
             &hazard_event(
-                "Brake now!",
+                "Brake now.",
                 TripEventData {
                     deadline_s: Some(4.0),
                     ..Default::default()
@@ -78,7 +78,7 @@ fn test_hazard_announces_speed_control_pause_once() {
         d.handle_trip_event(
             ctx,
             &hazard_event(
-                "Brake now!",
+                "Brake now.",
                 TripEventData {
                     deadline_s: Some(4.0),
                     ..Default::default()
@@ -90,7 +90,7 @@ fn test_hazard_announces_speed_control_pause_once() {
     assert!(harness.read_drive(|d| d.speed_control_armed));
     assert!(harness.read_drive(|d| d.cruise_mph).is_none());
     let said = last(&harness);
-    assert!(said.starts_with("Brake now!"), "{said}");
+    assert!(said.starts_with("Brake now."), "{said}");
     assert_eq!(said.matches("Automatic speed control paused.").count(), 1);
     assert!(!said.contains("canceled"), "{said}");
 }
@@ -894,11 +894,11 @@ fn test_adaptive_cruise_switches_to_keeper_for_heavy_traffic() {
          Speed keeper holding 50 miles per hour."
     );
     // Live achievement announces are name-only now (R9: the flavor moved to
-    // the log). The announce reads exactly "New achievement! <name>." with no
+    // the log). The announce reads exactly "New achievement: <name>." with no
     // trailing flavor, unlike the full-record log line.
     assert_eq!(
         lines[lines.len() - 1],
-        "New achievement! Bumper-to-Bumper Blues."
+        "New achievement: Bumper-to-Bumper Blues."
     );
 }
 
@@ -1157,7 +1157,7 @@ fn test_cruise_keeps_aiming_at_a_limit_drop_once_it_has_eased_for_it() {
 
 #[test]
 fn test_a_hazard_that_leaves_the_truck_below_cruise_speed_still_resumes() {
-    // Owner, Willmar to Owatonna, 2026-09-16: "Brake! Slow car right ahead"
+    // Owner, Willmar to Owatonna, 2026-09-16: "Brake. Slow car right ahead"
     // matched a 17 mph car, "Well done", and then nothing. Adaptive cruise
     // refuses below 20, so the session sat paused with the driver holding 17
     // and nobody saying why. The keeper is the automation for the low-speed
@@ -1176,7 +1176,7 @@ fn test_a_hazard_that_leaves_the_truck_below_cruise_speed_still_resumes() {
         d.handle_trip_event(
             ctx,
             &hazard_event(
-                "Brake! Slow car right ahead.",
+                "Brake. Slow car right ahead.",
                 TripEventData {
                     deadline_s: Some(4.0),
                     ..Default::default()

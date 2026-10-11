@@ -136,7 +136,7 @@ pub fn hazard_ignored_to_100_damage() -> Outcome {
     // the automatic roadside rescue then patches it down to
     // BREAKDOWN_REPAIR_DAMAGE_PCT, long after the line was honest.
     let mut spoken_vs_actual: Vec<(f64, f64)> = Vec::new();
-    // And whether "Brake!" ever came back AFTER the truck hit the thing. The
+    // And whether "Brake." ever came back AFTER the truck hit the thing. The
     // warning is a ROUTE-and-up line, so the collision's own interrupt offers
     // it the rescue slot; its validity gate is what has to refuse, because by
     // then there is no hazard left to answer. Counted per pass, after the
@@ -149,7 +149,7 @@ pub fn hazard_ignored_to_100_damage() -> Outcome {
         }
         let event = TripEvent {
             kind: TripEventKind::Hazard,
-            message: SpokenMessage::new("Debris on the road ahead. Brake!"),
+            message: SpokenMessage::new("Debris on the road ahead. Brake."),
             data: TripEventData::default(),
         };
         rig.drive.handle_trip_event(&mut rig.app.ctx, &event);
@@ -160,9 +160,9 @@ pub fn hazard_ignored_to_100_damage() -> Outcome {
         rig.step(
             1200,
             DT,
-            Some(&move |rig: &Rig| rig.said("Collision!") > before),
+            Some(&move |rig: &Rig| rig.said("Collision.") > before),
         );
-        collisions = rig.said("Collision!");
+        collisions = rig.said("Collision.");
         replays_after_impact += rig.lines_with("Debris on the road ahead").len() - warnings_before;
         if collisions == before {
             break;

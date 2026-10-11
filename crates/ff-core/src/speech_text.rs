@@ -201,29 +201,29 @@ pub fn terse_silent(normal: impl Into<String>) -> SpokenMessage {
 /// word is the one that gets acted on. This call is only ever used where a
 /// lane is genuinely open: `Trip::open_side_at` gates it, and the line ends
 /// by NAMING that lane ("Left lane open.") so one tap is enough (owner,
-/// 2026-09-01). A stretch with nowhere to go gets a bare "Brake!" and "No
+/// 2026-09-01). A stretch with nowhere to go gets a bare "Brake." and "No
 /// lane open." instead. See [`in_lane_hazard_call`].
-pub const HAZARD_DODGE_CALL: &str = "Change lanes or brake!";
+pub const HAZARD_DODGE_CALL: &str = "Change lanes or brake.";
 
 // Calls the hazard warning tone already carries by itself. Terse drops them
 // and keeps the body -- the thing and where it is.
 //
-// "Brake!" was here and is not any more (owner playtest, 2026-08-17). It
-// reads like the same redundancy as "Brake now!" and is not: the emitter
+// "Brake." was here and is not any more (owner playtest, 2026-08-17). It
+// reads like the same redundancy as "Brake now." and is not: the emitter
 // uses it ONLY where the hazard is dodgeable but no lane is open, so it is
 // the one call that answers a question the driver is actively asking --
 // can I go around this? Dropped, quiet left a noun phrase with no verb
 // ("Brake lights right ahead.") and the owner reached for a lane change
 // three times in one drive on a one-lane stretch of US-285, getting "there
-// is no lane to your left here" each time. "Brake now!" stays implied: it
+// is no lane to your left here" each time. "Brake now." stays implied: it
 // marks a hazard that cannot be dodged at all, so there is no choice for
 // the word to inform.
-const TONE_IMPLIED_CALLS: [&str; 1] = ["Brake now!"];
+const TONE_IMPLIED_CALLS: [&str; 1] = ["Brake now."];
 
 /// The hazard warning: a call to action, then the thing and where.
 ///
 /// Terse keeps the call only when it carries information the hazard tone
-/// does not. A bare "Brake now!" is what the tone already said; "Brake!" is
+/// does not. A bare "Brake now." is what the tone already said; "Brake." is
 /// the emitter's word for a thing in the lane with nowhere to go around it,
 /// and survives. Either way the terse call is the normal call or nothing --
 /// never a rewording. The in-lane family, which ends by naming the open
@@ -242,17 +242,17 @@ pub fn hazard_call(call: &str, body: &str) -> SpokenMessage {
 /// and where, then the lane answer -- which neighbouring lane is open, or
 /// that none is (owner, 2026-09-01).
 ///
-/// "Change lanes or brake!" used to leave a blind driver guessing whether a
+/// "Change lanes or brake." used to leave a blind driver guessing whether a
 /// lane change was even possible, and reaching for one on a road that had
 /// nowhere to go. Now the line ends with the side ("Left lane open."), in the
 /// L key's own words, so one tap of that arrow is the whole answer; where
-/// both neighbours are held or there is one lane this side it is "Brake!"
+/// both neighbours are held or there is one lane this side it is "Brake."
 /// and "No lane open.", so the driver brakes without reaching for a move
 /// they cannot make.
 ///
 /// Terse drops [`HAZARD_DODGE_CALL`] and keeps the answer: "Slow car right
 /// ahead. Left lane open." says everything the opener did, in fewer words.
-/// "Brake!" stays in terse for the reason it always has (see
+/// "Brake." stays in terse for the reason it always has (see
 /// `TONE_IMPLIED_CALLS`): quiet must not leave a noun phrase with no verb.
 pub fn in_lane_hazard_call(body: &str, side: OpenSide) -> SpokenMessage {
     in_lane_hazard_call_named(body, side, side.spoken())
@@ -267,14 +267,14 @@ pub fn in_lane_hazard_call_named(body: &str, side: OpenSide, answer: &str) -> Sp
             format!("{body} {answer}"),
         )
     } else {
-        let normal = format!("Brake! {body} {answer}");
+        let normal = format!("Brake. {body} {answer}");
         SpokenMessage::with_terse(normal.clone(), normal)
     }
 }
 
 /// The same call when lane keeping on full answers it by passing: the thing
 /// and where, then what the truck is doing ("Slow car right ahead. Passing
-/// on the left."). No "Change lanes or brake!" -- the truck is the one
+/// on the left."). No "Change lanes or brake." -- the truck is the one
 /// changing lanes -- and terse is the same line. None where no lane is open.
 pub fn passing_hazard_call(body: &str, side: OpenSide) -> Option<SpokenMessage> {
     let side = if side.pass_step()? > 0 {
@@ -566,7 +566,7 @@ pub fn cruise_curve_paused(pacenote: &SpokenMessage) -> SpokenMessage {
 /// award, not spoken live -- the live announce is [`achievement_announced`].
 pub fn achievement_unlocked(name: &str, description: &str) -> SpokenMessage {
     SpokenMessage::with_terse(
-        format!("New achievement! {name}. {description}"),
+        format!("New achievement: {name}. {description}"),
         format!("{name}."),
     )
 }
@@ -575,10 +575,10 @@ pub fn achievement_unlocked(name: &str, description: &str) -> SpokenMessage {
 ///
 /// The flavor prose never speaks at speed (research doc R9); it waits in the
 /// message log and the achievements menu. Normal mode hears "New
-/// achievement! <name>."; terse hears the bare name, the sound having
+/// achievement: <name>."; terse hears the bare name, the sound having
 /// already said "new".
 pub fn achievement_announced(name: &str) -> SpokenMessage {
-    SpokenMessage::with_terse(format!("New achievement! {name}."), format!("{name}."))
+    SpokenMessage::with_terse(format!("New achievement: {name}."), format!("{name}."))
 }
 
 // -- roadside chatter ----------------------------------------------------------
@@ -732,7 +732,7 @@ mod tests {
         let pair = in_lane_hazard_call("Slow car right ahead.", OpenSide::Left);
         assert_eq!(
             pair.normal,
-            "Change lanes or brake! Slow car right ahead. Left lane open."
+            "Change lanes or brake. Slow car right ahead. Left lane open."
         );
         assert_eq!(
             pair.terse.as_deref(),
@@ -740,11 +740,11 @@ mod tests {
         );
         assert_eq!(
             in_lane_hazard_call("Debris on the road.", OpenSide::Right).normal,
-            "Change lanes or brake! Debris on the road. Right lane open."
+            "Change lanes or brake. Debris on the road. Right lane open."
         );
         assert_eq!(
             in_lane_hazard_call("Debris on the road.", OpenSide::Either).normal,
-            "Change lanes or brake! Debris on the road. Either lane open."
+            "Change lanes or brake. Debris on the road. Either lane open."
         );
     }
 
@@ -765,16 +765,16 @@ mod tests {
         assert_eq!(
             in_lane_hazard_call_named("A sudden lane closure ahead.", OpenSide::Left, &named)
                 .normal,
-            "Change lanes or brake! A sudden lane closure ahead. Middle lane open."
+            "Change lanes or brake. A sudden lane closure ahead. Middle lane open."
         );
     }
 
     #[test]
     fn test_with_no_lane_open_the_call_is_brake_and_says_so_in_both_modes() {
-        // Nowhere to go: the "Brake!" family, and the driver is told not to
-        // reach for a lane change. "Brake!" survives terse, as it always has.
+        // Nowhere to go: the "Brake." family, and the driver is told not to
+        // reach for a lane change. "Brake." survives terse, as it always has.
         let pair = in_lane_hazard_call("Slow car right ahead.", OpenSide::Neither);
-        assert_eq!(pair.normal, "Brake! Slow car right ahead. No lane open.");
+        assert_eq!(pair.normal, "Brake. Slow car right ahead. No lane open.");
         assert_eq!(pair.terse.as_deref(), Some(pair.normal.as_str()));
         assert!(!pair.normal.contains("Change lanes"));
     }
@@ -794,14 +794,14 @@ mod tests {
     #[test]
     fn test_the_dodge_call_is_the_phrase_the_help_teaches() {
         assert_eq!(
-            HAZARD_DODGE_CALL.trim_end_matches('!'),
+            HAZARD_DODGE_CALL.trim_end_matches('.'),
             "Change lanes or brake"
         );
     }
 
-    /// Only "Brake now!" is implied by the tone now.
+    /// Only "Brake now." is implied by the tone now.
     ///
-    /// "Brake!" was here until 2026-08-17. It looks like the same redundancy
+    /// "Brake." was here until 2026-08-17. It looks like the same redundancy
     /// and is not: the emitter uses it ONLY where the hazard is dodgeable but
     /// no lane is open, so it answers the question the driver is asking.
     /// With it dropped, quiet left a noun phrase with no verb and the owner
@@ -809,20 +809,20 @@ mod tests {
     #[test]
     fn test_tone_implied_calls_drop_to_the_body_in_terse() {
         assert_eq!(
-            hazard_call("Brake now!", "Deer in the road.")
+            hazard_call("Brake now.", "Deer in the road.")
                 .terse
                 .as_deref(),
             Some("Deer in the road.")
         );
         assert_eq!(
-            hazard_call("Brake now!", "Deer in the road.").normal,
-            "Brake now! Deer in the road."
+            hazard_call("Brake now.", "Deer in the road.").normal,
+            "Brake now. Deer in the road."
         );
         assert_eq!(
-            hazard_call("Brake!", "Mattress in your lane.")
+            hazard_call("Brake.", "Mattress in your lane.")
                 .terse
                 .as_deref(),
-            Some("Brake! Mattress in your lane.")
+            Some("Brake. Mattress in your lane.")
         );
     }
 
@@ -1062,11 +1062,11 @@ mod tests {
         );
         assert_eq!(
             pair.normal,
-            "New achievement! Bumper-to-Bumper Blues. Heavy traffic, and you kept it sane."
+            "New achievement: Bumper-to-Bumper Blues. Heavy traffic, and you kept it sane."
         );
         assert_eq!(pair.terse.as_deref(), Some("Bumper-to-Bumper Blues."));
         let live = achievement_announced("Bumper-to-Bumper Blues");
-        assert_eq!(live.normal, "New achievement! Bumper-to-Bumper Blues.");
+        assert_eq!(live.normal, "New achievement: Bumper-to-Bumper Blues.");
         assert_eq!(live.terse.as_deref(), Some("Bumper-to-Bumper Blues."));
     }
 
@@ -1081,8 +1081,8 @@ mod tests {
         assert_eq!(pair, "Watch your speed. The limit is 65 miles per hour.");
         assert!(pair.normal.contains("limit"));
         assert_eq!(format!("{pair}"), pair.normal);
-        let from_text: SpokenMessage = "Collision!".into();
-        assert_eq!(from_text.normal, "Collision!");
+        let from_text: SpokenMessage = "Collision.".into();
+        assert_eq!(from_text.normal, "Collision.");
         assert_eq!(from_text.terse, None);
     }
 
@@ -1101,7 +1101,7 @@ mod tests {
 
     #[test]
     fn test_no_terse_rendering_means_both_modes_speak_the_same() {
-        let line = SpokenMessage::new("Collision! The truck took damage.");
+        let line = SpokenMessage::new("Collision. The truck took damage.");
         assert_eq!(line.render(true), line.render(false));
         assert_eq!(line.render(true), line.to_string());
     }
@@ -1119,8 +1119,8 @@ mod tests {
     #[test]
     fn test_plus_extends_both_renderings() {
         let pair = SpokenMessage::with_terse(
-            "Change lanes or brake! Slow car ahead.",
-            "Change lanes or brake! Slow car ahead.",
+            "Change lanes or brake. Slow car ahead.",
+            "Change lanes or brake. Slow car ahead.",
         );
         let grown = pair.plus("Automatic speed control canceled.");
         assert!(grown
@@ -1129,11 +1129,11 @@ mod tests {
         assert!(grown
             .render(true)
             .ends_with("Automatic speed control canceled."));
-        assert!(grown.render(true).starts_with("Change lanes or brake!"));
+        assert!(grown.render(true).starts_with("Change lanes or brake."));
         // A line with no terse form stays that way.
-        let plain = SpokenMessage::new("Collision!").plus("Total damage 12 percent.");
+        let plain = SpokenMessage::new("Collision.").plus("Total damage 12 percent.");
         assert_eq!(plain.terse, None);
-        assert_eq!(plain.normal, "Collision! Total damage 12 percent.");
+        assert_eq!(plain.normal, "Collision. Total damage 12 percent.");
     }
 
     #[test]
@@ -1333,23 +1333,23 @@ mod tests {
     /// on a one-lane stretch of US-285, each answered with "there is no lane
     /// to your left here".
     ///
-    /// The emitter uses a bare "Brake!" ONLY where the hazard is dodgeable
+    /// The emitter uses a bare "Brake." ONLY where the hazard is dodgeable
     /// but no lane is open, so it is the one call that answers the question
     /// the driver is actually asking -- can I go around this? Terse used to
     /// drop it as tone-implied, leaving a noun phrase with no verb. "Brake
-    /// now!" stays implied: it marks a hazard that cannot be dodged, so
+    /// now." stays implied: it marks a hazard that cannot be dodged, so
     /// there is no choice for the word to inform.
     #[test]
     fn test_a_dodgeable_hazard_with_nowhere_to_go_keeps_the_word_brake() {
-        let no_lane = hazard_call("Brake!", "Brake lights right ahead.");
+        let no_lane = hazard_call("Brake.", "Brake lights right ahead.");
         assert!(
-            no_lane.render(true).starts_with("Brake!"),
+            no_lane.render(true).starts_with("Brake."),
             "{}",
             no_lane.render(true)
         );
 
-        let undodgeable = hazard_call("Brake now!", "Rockfall right ahead.");
-        assert!(!undodgeable.render(true).starts_with("Brake now!"));
+        let undodgeable = hazard_call("Brake now.", "Rockfall right ahead.");
+        assert!(!undodgeable.render(true).starts_with("Brake now."));
         assert_eq!(undodgeable.render(true), "Rockfall right ahead.");
 
         // The open-lane call survives whole: it names the better option.

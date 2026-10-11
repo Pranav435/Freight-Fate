@@ -57,7 +57,7 @@ fn realism_spoken_hazard_path_keeps_reaction_time_at_every_scale() {
         h.clear_speech();
         let event = TripEvent {
             kind: TripEventKind::Hazard,
-            message: "Brake now! Stopped traffic ahead.".into(),
+            message: "Brake now. Stopped traffic ahead.".into(),
             data: TripEventData {
                 deadline_s: Some(2.5),
                 ..Default::default()

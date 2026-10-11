@@ -396,7 +396,7 @@ impl Trip {
             // The same two questions, in the same order, for every hazard:
             // is the thing confined to one lane, and does the road give you
             // another one. Only both together mean a lane change answers it.
-            // "Brake now!" is reserved for a hazard no lane change could ever
+            // "Brake now." is reserved for a hazard no lane change could ever
             // answer -- fog, ice, a crosswind, a deer that may bolt either
             // way -- so it never loses its meaning to a road that merely
             // happens to be narrow here.
@@ -412,7 +412,7 @@ impl Trip {
             let message = if in_lane {
                 in_lane_hazard_call_named(&body, side, &self.open_side_spoken(side))
             } else {
-                hazard_call("Brake now!", &body)
+                hazard_call("Brake now.", &body)
             };
             let deadline_s = self.rng.uniform(3.0, 4.5) * self.visibility_reaction_factor();
             self.emit(
@@ -493,7 +493,7 @@ impl Trip {
         }
         let risk = severity * (1.0 - grip) * CONDITIONS_INCIDENT_RISK * self.hazard_scale;
         if self.cond_rng.random() < risk {
-            let message = hazard_call("Brake now!", self.conditions_incident_text());
+            let message = hazard_call("Brake now.", self.conditions_incident_text());
             let deadline_s = 1.5_f64.max(2.5 * self.visibility_reaction_factor());
             let name = self.conditions_incident_name().to_string();
             self.emit(

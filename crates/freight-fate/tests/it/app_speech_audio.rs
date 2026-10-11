@@ -11,12 +11,12 @@ use freight_fate::states::base::State;
 fn test_events_via_screen_reader_never_interrupt_even_when_critical() {
     let mut app = TestApp::new();
     app.ctx.settings.sapi_events = false; // event voice = screen reader
-    app.ctx.say_event("Brake now!"); // a critical event
+    app.ctx.say_event("Brake now."); // a critical event
                                      // Not on a separate voice, so the stale queue is flushed first and the
                                      // event is then spoken as a fresh screen-reader utterance.
     assert_eq!(app.speech().stop_main_calls(), 1);
     assert!(app.event_calls().is_empty());
-    assert_eq!(app.main_calls(), vec![("Brake now!".to_string(), false)]);
+    assert_eq!(app.main_calls(), vec![("Brake now.".to_string(), false)]);
     app.shutdown();
 }
 
@@ -24,14 +24,14 @@ fn test_events_via_screen_reader_never_interrupt_even_when_critical() {
 fn test_events_on_separate_sapi_voice_keep_requested_interrupt() {
     let mut app = TestApp::with_speech(CaptureSpeech::full_voice());
     app.ctx.settings.sapi_events = true; // dedicated SAPI event voice
-    app.ctx.say_event("Brake now!");
+    app.ctx.say_event("Brake now.");
     app.ctx
         .say_event_with("Weather changing.", freight_fate::app::SayEvent::queued());
     assert!(app.main_calls().is_empty());
     assert_eq!(
         app.event_calls(),
         vec![
-            ("Brake now!".to_string(), true),
+            ("Brake now.".to_string(), true),
             ("Weather changing.".to_string(), false)
         ]
     );

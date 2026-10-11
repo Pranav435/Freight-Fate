@@ -90,7 +90,7 @@ fn test_trip_event_sounds_use_contextual_cues() {
         data: TripEventData::default(),
     };
     assert_eq!(
-        route_event_sound(&plain(TripEventKind::Hazard, "Brake now!")),
+        route_event_sound(&plain(TripEventKind::Hazard, "Brake now.")),
         Some("events/hazard_warning")
     );
     assert_eq!(
@@ -320,7 +320,7 @@ fn test_single_hazard_is_named_in_its_resolution_line() {
     arm(
         &mut harness,
         a_hazard(
-            "Brake now! A deer crossing the road.",
+            "Brake now. A deer crossing the road.",
             4.0,
             false,
             "the deer",
@@ -357,7 +357,7 @@ fn test_two_stacked_hazards_are_each_named_once() {
     arm(
         &mut harness,
         a_hazard(
-            "Brake now! A deer crossing the road.",
+            "Brake now. A deer crossing the road.",
             4.0,
             false,
             "the deer",
@@ -373,7 +373,7 @@ fn test_two_stacked_hazards_are_each_named_once() {
     arm(
         &mut harness,
         a_hazard(
-            "Brake! Slowed traffic ahead.",
+            "Brake. Slowed traffic ahead.",
             2.5,
             false,
             "the slowed traffic",
@@ -418,7 +418,7 @@ fn test_stacked_hazard_wording_follows_the_strictest_dodgeability() {
     arm(
         &mut harness,
         a_hazard(
-            "Change lanes or brake! Debris on the road.",
+            "Change lanes or brake. Debris on the road.",
             4.0,
             true,
             "the debris",
@@ -429,7 +429,7 @@ fn test_stacked_hazard_wording_follows_the_strictest_dodgeability() {
     arm(
         &mut harness,
         a_hazard(
-            "Change lanes or brake! Retread debris from a blown tire.",
+            "Change lanes or brake. Retread debris from a blown tire.",
             4.0,
             true,
             "the tire debris",
@@ -470,7 +470,7 @@ fn test_a_hazard_already_outrun_gets_its_own_line_before_the_next_arms() {
     arm(
         &mut harness,
         a_hazard(
-            "Brake now! A deer crossing the road.",
+            "Brake now. A deer crossing the road.",
             4.0,
             false,
             "the deer",
@@ -482,7 +482,7 @@ fn test_a_hazard_already_outrun_gets_its_own_line_before_the_next_arms() {
     arm(
         &mut harness,
         a_hazard(
-            "Brake! Slowed traffic ahead.",
+            "Brake. Slowed traffic ahead.",
             2.5,
             false,
             "the slowed traffic",
@@ -545,7 +545,7 @@ fn stack_two(harness: &mut PlaytestHarness) {
     arm(
         harness,
         a_hazard(
-            "Brake now! A deer crossing the road.",
+            "Brake now. A deer crossing the road.",
             4.0,
             false,
             "the deer",
@@ -555,7 +555,7 @@ fn stack_two(harness: &mut PlaytestHarness) {
     arm(
         harness,
         a_hazard(
-            "Brake! Slowed traffic ahead.",
+            "Brake. Slowed traffic ahead.",
             2.5,
             false,
             "the slowed traffic",
@@ -569,7 +569,7 @@ fn test_terse_hazard_drops_brake_now_instruction() {
     harness.app.ctx.settings.driving_speech = "quiet".to_string();
     harness.clear_speech();
 
-    let call = hazard_call("Brake now!", "Debris on the shoulder.");
+    let call = hazard_call("Brake now.", "Debris on the shoulder.");
     harness.with_drive(move |drive, ctx| {
         drive.handle_trip_event(
             ctx,
@@ -664,7 +664,7 @@ fn test_a_folded_hazard_does_not_follow_the_truck_into_its_new_lane() {
     arm(
         &mut harness,
         a_hazard(
-            "Change lanes or brake! Retread debris from a blown tire.",
+            "Change lanes or brake. Retread debris from a blown tire.",
             4.0,
             true,
             "the tire debris",
@@ -681,7 +681,7 @@ fn test_a_folded_hazard_does_not_follow_the_truck_into_its_new_lane() {
     arm(
         &mut harness,
         a_hazard(
-            "Change lanes or brake! A shredded tire carcass.",
+            "Change lanes or brake. A shredded tire carcass.",
             4.0,
             true,
             "the carcass",

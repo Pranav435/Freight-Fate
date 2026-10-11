@@ -48,7 +48,7 @@ impl Trip {
             } else {
                 "All lanes open through the work. ".to_string()
             };
-            // NOT "Brake now!". This is an advance warning that fires up to
+            // NOT "Brake now.". This is an advance warning that fires up to
             // eight miles out, and "Brake now" is the emergency hazard
             // opening -- the words the cab uses for debris in your lane.
             // Telling a driver to brake now for something eight miles away is

@@ -419,7 +419,7 @@ impl DrivingState {
         // live. An interrupting line hands back what it cut so the cut
         // line finishes rather than vanishing, which is what rescued
         // "you swerve around the brake lights" -- but handed back after
-        // the truck is clear, "Change lanes or brake!" tells the driver
+        // the truck is clear, "Change lanes or brake." tells the driver
         // to dodge something that is no longer there. Same rule the
         // scale and destination exit instructions already carry: a
         // rescued line has to still be TRUE (Shane, 2026-08-21, on the
@@ -1021,7 +1021,7 @@ impl DrivingState {
             // road around you, which the pass-by and engine sounds already
             // carry, and no action attached at that distance (owner,
             // 2026-08-17: "sound is enough"). The act-now half of traffic is a
-            // HAZARD event -- "Change lanes or brake! Merging traffic right
+            // HAZARD event -- "Change lanes or brake. Merging traffic right
             // ahead" -- which is SAFETY and speaks at every rung. TRAFFIC,
             // not STATUS: quiet speaks status, and a player found quiet still
             // reading out every slow box truck and its speed (2026-10-03).

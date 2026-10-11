@@ -52,7 +52,7 @@ impl State for BareState {}
 fn test_hazard_warning_and_outcome_replay_on_a_comma_and_period() {
     let mut app = TestApp::new();
     let drive = drive_support::a_drive(&mut app);
-    let warning = "Brake now! A slow vehicle ahead.";
+    let warning = "Brake now. A slow vehicle ahead.";
     let outcome = "Hazard avoided. Well done.";
     let mut event = TripEvent {
         kind: TripEventKind::Hazard,
@@ -92,7 +92,7 @@ fn test_hazard_warning_and_outcome_replay_on_a_comma_and_period() {
 fn test_collision_outcome_replays_on_a_and_message_review() {
     let mut app = TestApp::new();
     let drive = drive_support::a_drive(&mut app);
-    let warning = "Brake now! Debris on the road.";
+    let warning = "Brake now. Debris on the road.";
     let mut event = TripEvent {
         kind: TripEventKind::Hazard,
         message: SpokenMessage::new(warning),
@@ -105,7 +105,7 @@ fn test_collision_outcome_replays_on_a_and_message_review() {
         d.hazard_deadline = Some(0.0);
         d.update_hazard(&mut app.ctx, 1.0 / 60.0);
         format!(
-            "Collision! The truck took damage. Total damage {} percent.",
+            "Collision. The truck took damage. Total damage {} percent.",
             ff_core::pyfmt::fmt_f(d.trip.truck.damage_pct, 0)
         )
     });
@@ -279,7 +279,7 @@ fn test_a_filter_says_what_it_is_holding_back() {
     app.push_state(menu());
     app.ctx
         .message_log
-        .add("Brake now! Debris on the road.", MessageCategory::Event);
+        .add("Brake now. Debris on the road.", MessageCategory::Event);
     app.clear_speech();
 
     // Wind the filter round to Event, the way the brackets do.
@@ -297,7 +297,7 @@ fn test_a_filter_says_what_it_is_holding_back() {
     app.dispatch_to_state(&key_event(Key::Comma));
     assert_eq!(
         app.main_lines().last().unwrap(),
-        "Brake now! Debris on the road. 1 newer message outside this filter."
+        "Brake now. Debris on the road. 1 newer message outside this filter."
     );
 
     // And pressing forward at the end of the list does not answer in silence.

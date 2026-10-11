@@ -228,7 +228,7 @@ fn test_walking_a_bad_trailer_finds_it_and_offers_the_refusal() {
     assert!(
         lines[found + 1..]
             .iter()
-            .any(|line| line.starts_with("New achievement!")),
+            .any(|line| line.starts_with("New achievement:")),
         "{lines:?}"
     );
     // Only once the driver has actually looked does refusing become an option.

@@ -293,12 +293,12 @@ fn test_single_level_up_speaks_the_one_rank() {
     let rank = rank_for_level(2);
     let level_ups: Vec<&String> = messages
         .iter()
-        .filter(|m| m.starts_with("Level up!"))
+        .filter(|m| m.starts_with("Level up."))
         .collect();
     assert_eq!(
         level_ups,
         vec![&format!(
-            "Level up! You are now level 2: {}. Unlock: {}",
+            "Level up. You are now level 2: {}. Unlock: {}",
             rank.title, rank.unlock
         )]
     );
@@ -318,13 +318,13 @@ fn test_multi_level_up_speaks_every_rank_passed_through() {
     assert_eq!(career.level(), 4);
     let level_ups: Vec<String> = messages
         .into_iter()
-        .filter(|m| m.starts_with("Level up!"))
+        .filter(|m| m.starts_with("Level up."))
         .collect();
     let expected: Vec<String> = [2, 3, 4]
         .iter()
         .map(|lvl| {
             format!(
-                "Level up! You are now level {lvl}: {}. Unlock: {}",
+                "Level up. You are now level {lvl}: {}. Unlock: {}",
                 rank_for_level(*lvl).title,
                 rank_for_level(*lvl).unlock
             )

@@ -103,7 +103,7 @@ fn test_repeat_key_replays_the_last_route_announcement() {
     let event = TripEvent {
         kind: TripEventKind::GpsCue,
         message: SpokenMessage::new(
-            "Brake now! In 2 miles, construction ahead. Merge left for the flagger taper; speed \
+            "Brake now. In 2 miles, construction ahead. Merge left for the flagger taper; speed \
              limit 55, then 45 through the work zone.",
         ),
         data: TripEventData::default(),

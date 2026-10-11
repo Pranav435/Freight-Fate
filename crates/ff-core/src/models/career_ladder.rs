@@ -577,7 +577,7 @@ pub fn relabel_level_up_announcements(
             company.title, company.unlock
         );
         for message in messages.iter_mut() {
-            if message.starts_with("Level up!") {
+            if message.starts_with("Level up.") {
                 *message = message.replace(&from, &to);
             }
         }
@@ -727,7 +727,7 @@ mod tests {
     #[test]
     fn relabel_rewrites_only_company_path_level_ups() {
         let mut messages = vec![
-            "Level up! You are now level 18: Leased-On Owner-Operator. Unlock: Leased-on owner-operator buy-in unlocks when other gates are met, and TWIC port card enrollment opens under Licenses and training."
+            "Level up. You are now level 18: Leased-On Owner-Operator. Unlock: Leased-on owner-operator buy-in unlocks when other gates are met, and TWIC port card enrollment opens under Licenses and training."
             .to_string()
         ];
         relabel_level_up_announcements(&mut messages, 17, 18, true);

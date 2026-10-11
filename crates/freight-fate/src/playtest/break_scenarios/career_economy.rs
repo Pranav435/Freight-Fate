@@ -591,7 +591,7 @@ pub fn level_up_at_settlement_boundary() -> Outcome {
     if levels_crossed >= 2 && level_up_count < levels_crossed {
         findings.push(format!(
             "one delivery pushed career level {level_before_skip} -> {} ({levels_crossed} levels \
-             in one settlement) but only {level_up_count} 'Level up!' line(s) were announced -- \
+             in one settlement) but only {level_up_count} 'Level up.' line(s) were announced -- \
              record_delivery's level-up message only ever reports the level it lands on, so \
              every intermediate rank (and that rank's own unlock text) goes completely unspoken",
             skip_career.level()

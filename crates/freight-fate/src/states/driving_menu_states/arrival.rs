@@ -1019,7 +1019,7 @@ impl ArrivalState {
         let unlock = display_rank_for(profile_of(ctx)).unlock;
         let target = format!("Unlock: {unlock}");
         for message in announcements.iter_mut() {
-            if message.starts_with("Level up!") && message.contains(&target) {
+            if message.starts_with("Level up.") && message.contains(&target) {
                 *message = message.replace(&target, &format!("{target} {WITHHELD_UNLOCK_TAIL}"));
                 return;
             }
@@ -1153,9 +1153,9 @@ impl ArrivalState {
             return None;
         }
         if names.len() == 1 {
-            return Some(format!("New achievement! {}.", names[0]));
+            return Some(format!("New achievement: {}.", names[0]));
         }
-        Some(format!("New achievements! {}.", names.join(", ")))
+        Some(format!("New achievements: {}.", names.join(", ")))
     }
 
     /// The badge sweep's two collectors, for `badges.rs`.
