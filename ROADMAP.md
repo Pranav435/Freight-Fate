@@ -2895,6 +2895,11 @@ branch. The older Phase A/B plan checklists are not a live completion list.
 - [ ] **Alaska Railroad alternative for placarded hazardous materials.**
       Placarded loads are refused at the tunnel; train carriage is not modeled.
 - [ ] **Whittier freight facilities.** Await a verified freight address and coordinates.
+- [ ] **Whittier is not yet reachable in a career.** With no freight it gets
+      no jobs, and Bear Valley and Whittier are not offered as home cities,
+      so only tests drive the tunnel until a verified facility lands.
+- [ ] **Tunnel refusal hold.** A refused truck is held at the staging end
+      for the rest of the trip with no turn-around or reroute.
 - [ ] **Whittier tunnel cold-weather and train disruption rules.** The
       sub-freezing five-minute opening rule and unscheduled-train delays are
       not modeled.

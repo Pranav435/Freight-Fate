@@ -228,13 +228,13 @@ pub fn log_wait_to_hos(clock: &mut HosClock, wait_minutes: i64, closed: bool) {
     }
 }
 
-/// Placarding and regulated weight for the load on the truck.  Chemicals of
-/// any weight are hazardous only by weight, so over 400 lb count as placarded.
+/// Placarding and regulated weight for the load on the truck.  The catalog's
+/// packaged chemicals ride without placards, so the tunnel's 400-pound limit
+/// on non-placarded regulated materials is what turns them away.
 pub fn hazmat_for_cargo(cargo_key: &str, cargo_lb: u32, truck_placarded: bool) -> (bool, u32) {
     let regulated = matches!(cargo_key, "hazardous" | "fuel_bulk" | "chemicals");
     let lb = if regulated { cargo_lb } else { 0 };
-    let placarded = truck_placarded || (cargo_key == "chemicals" && lb > 400);
-    (placarded, lb)
+    (truck_placarded, lb)
 }
 
 impl Trip {
@@ -514,9 +514,10 @@ mod tests {
         assert_eq!(long.driving_min, 0.0);
     }
     #[test]
-    fn chemicals_over_400_lb_are_placarded() {
+    fn packaged_chemicals_over_400_lb_hit_the_weight_limit() {
         let d = data();
         let (placarded, lb) = hazmat_for_cargo("chemicals", 40_000, false);
+        assert!(!placarded);
         let rig = RigForTunnel {
             length_ft: 73.5,
             width_ft: 8.5,
@@ -526,7 +527,7 @@ mod tests {
         };
         assert_eq!(
             refusal(&d, rig).as_deref(),
-            Some("Placarded hazardous materials cannot go through the tunnel. They move by Alaska Railroad.")
+            Some("Non-placarded hazardous materials are limited to 400 pounds.")
         );
         let (placarded, lb) = hazmat_for_cargo("chemicals", 400, false);
         assert!(!placarded);

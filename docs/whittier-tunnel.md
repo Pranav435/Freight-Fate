@@ -21,7 +21,7 @@ Sources, accessed 2026-10-09: [schedule](https://dot.alaska.gov/creg/whittiertun
 [tolls](https://dot.alaska.gov/creg/whittiertunnel/tolls.shtml),
 [vehicle size](https://dot.alaska.gov/creg/whittiertunnel/vehiclesize.shtml),
 [regulations](https://dot.alaska.gov/creg/whittiertunnel/tunnelregs.shtml),
-[commercial vehicle information](https://dot.alaska.gov/creg/whittiertunnel/mcinfo.shtml),
+[frequently asked questions](https://dot.alaska.gov/creg/whittiertunnel/faq.shtml),
 and the [Alaska Railroad Whittier Terminal Master Plan](https://www.alaskarailroad.com/sites/default/files/Communications/1.2025.08.29_WTMP_Final_Master_Plan.pdf).
 
 The normal-game combination convention remains the loaded-semi routing
