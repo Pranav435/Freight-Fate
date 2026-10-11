@@ -345,7 +345,7 @@ fn test_predictive_cruise_cue_names_the_grade_it_is_building_for() {
     assert!(bias.0 > 0.5, "{:?}", bias);
     harness.with_drive(move |d, ctx| d.say_predictive_cruise(ctx, 0.0, bias.0, bias.1));
     assert!(
-        said_any(&harness, "2.0 percent upgrade"),
+        said_any(&harness, "2.0 percent uphill grade"),
         "{:#?}",
         spoken(&harness)
     );
@@ -483,7 +483,7 @@ fn test_predictive_cruise_shaves_before_a_descent() {
         d.say_predictive_cruise(ctx, 0.0, bias, reason);
     });
     assert!(
-        said_any(&harness, "percent downgrade ahead"),
+        said_any(&harness, "percent downhill grade ahead"),
         "{:#?}",
         spoken(&harness)
     );
@@ -789,7 +789,11 @@ fn test_g_announces_upcoming_grade_without_nothing_steep() {
         harness.with_drive(|d, _| d.truck_mut().grade = -0.014);
         harness.clear_speech();
         harness.with_drive(|d, ctx| d.speak_grade(ctx));
-        let direction = if grade > 0.0 { "upgrade" } else { "downgrade" };
+        let direction = if grade > 0.0 {
+            "uphill grade"
+        } else {
+            "downhill grade"
+        };
         assert!(said_any(&harness, direction), "{:?}", spoken(&harness));
         assert!(said_any(&harness, "Grade 1.4 percent downhill"));
         assert!(!said_any(&harness, "Nothing"), "{:?}", spoken(&harness));

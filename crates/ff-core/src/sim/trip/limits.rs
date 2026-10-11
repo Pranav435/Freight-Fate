@@ -578,7 +578,7 @@ impl Trip {
             return stop_reason;
         }
         if self.lowered_limit_downgrade_ahead() {
-            return " for the downgrade".to_string();
+            return " for the downhill grade".to_string();
         }
         String::new()
     }

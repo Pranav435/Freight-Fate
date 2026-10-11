@@ -367,12 +367,12 @@ impl DrivingState {
                 // (tester, 2026-08-15).
                 let (climb_ahead, _) = self.grade_extremes_ahead();
                 format!(
-                    "Building speed for a {:.1} percent upgrade ahead.",
+                    "Building speed for a {:.1} percent uphill grade ahead.",
                     climb_ahead * 100.0
                 )
             }
             PccReason::EasingForDescent(descent_pct) => format!(
-                "Easing off for a {:.1} percent downgrade ahead.",
+                "Easing off for a {:.1} percent downhill grade ahead.",
                 descent_pct * 100.0
             ),
             _ => return,

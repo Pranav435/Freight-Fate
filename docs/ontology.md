@@ -373,6 +373,7 @@ from the words, and synonyms cost them a re-read.
 | Miles the fuel in the tank reaches at this drive's own miles per gallon | fuel range, range | mileage left, distance to empty, endurance | `DrivingState::fuel_range_mi` |
 | The once-per-shortfall cue when the fuel range will not reach the next fuel stop | fuel range warning | low fuel warning (that is the fifteen percent one), range alert | `DrivingState::check_fuel_range_warning` |
 | The emergency call-out for an empty tank | roadside rescue | roadside repair (that is the damage one) | `_handle_out_of_fuel` |
+| A sustained slope in the road, with its percent and direction ("6.0 percent downhill grade ahead") | grade; uphill grade, downhill grade | upgrade, downgrade (an upgrade is a truck purchase), incline, hill | `Trip::grade_at`, `DrivingState::update_grade_advisory` |
 | Losing the truck to speed, usually out of gear on a grade | runaway | overspeed (that is the posted-limit one) | `RUNAWAY_SPEED_MPH` |
 | Backing along a travelled lane, away from the destination | driving the wrong way; backing | reversing (that is the gear), wrong-way driver, going backwards | `WRONG_WAY_WARN_MI` |
 | The lane roadwork has coned off, named by the side of the road it is on | the right lane is closed; the left lane is closed | lane one, the outside/inside lane, the middle lane (a closure is always an edge lane), lane closure | `Zone.closed_side`, `Trip.closed_lane_at` |
