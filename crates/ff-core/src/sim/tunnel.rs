@@ -169,20 +169,36 @@ pub fn gate_decision(
     }
 }
 
-/// Translate the career calendar into a dated schedule lookup.  Tunnel
-/// schedules are published for the 2026 season, while the career calendar is
-/// cyclic, so retain the game's month/day and use the published season year.
+/// Translate the career calendar into a dated schedule lookup on a place's
+/// wall clock. The trip clock (`start_hour`, `game_minutes`) and career
+/// hours run on the Eastern reference clock, so the moment is shifted into
+/// `zone` before the date and time are read. Tunnel schedules are published
+/// for the 2026 season while the career calendar is cyclic, so the game's
+/// month and day are kept on the published season year.
 pub fn career_datetime(
     career_hours: Option<f64>,
     start_hour: f64,
     game_minutes: f64,
+    zone: crate::sim::timezones::TimeZone,
 ) -> NaiveDateTime {
-    let hours = career_hours.unwrap_or(0.0) + game_minutes / 60.0;
-    let day = crate::sim::season::day_of_year(hours).floor() as u32 + 1;
-    let date = NaiveDate::from_yo_opt(2026, day.min(365)).expect("valid calendar day");
-    let minute = ((start_hour + game_minutes / 60.0).rem_euclid(24.0) * 60.0).floor() as u32;
+    let local = career_local_hours(career_hours, start_hour, game_minutes, zone);
+    let day = crate::sim::season::day_of_year(local).floor() as u32;
+    let date = NaiveDate::from_yo_opt(2026, day.clamp(1, 365)).expect("valid calendar day");
+    let minute = (local.rem_euclid(24.0) * 60.0).floor() as u32;
     date.and_hms_opt(minute / 60, minute % 60, 0)
         .expect("valid clock time")
+}
+
+/// The career clock on `zone`'s wall clock, in career hours: the day comes
+/// from the career calendar, the time of day from the trip's start hour.
+pub fn career_local_hours(
+    career_hours: Option<f64>,
+    start_hour: f64,
+    game_minutes: f64,
+    zone: crate::sim::timezones::TimeZone,
+) -> f64 {
+    let day_start = (career_hours.unwrap_or(0.0) / 24.0).floor() * 24.0;
+    crate::sim::timezones::to_local(day_start + start_hour + game_minutes / 60.0, zone)
 }
 
 /// A short gate wait in the staging line is duty time.  A closure for the
@@ -201,6 +217,19 @@ pub fn log_wait_to_hos(clock: &mut HosClock, wait_minutes: i64, closed: bool) {
 }
 
 impl Trip {
+    /// The time zone of the city a leg starts from: the wall clock its
+    /// crossings keep. Eastern, the reference clock, when the city is unknown.
+    pub(crate) fn leg_start_zone(&self, leg_index: usize) -> crate::sim::timezones::TimeZone {
+        self.route
+            .cities
+            .get(leg_index)
+            .and_then(|id| self.world.cities.get(id))
+            .filter(|city| city.lat != 0.0 || city.lon != 0.0)
+            .map_or(crate::sim::timezones::EASTERN, |city| {
+                crate::sim::timezones::city_zone(city)
+            })
+    }
+
     /// The truck and load as a crossing judges them: the whole combination
     /// with a trailer on, the tractor alone without one.
     pub fn crossing_load(&self) -> CrossingLoad {
@@ -305,6 +334,8 @@ impl Trip {
             return Some(true);
         }
         if !refused {
+            self.game_minutes += ESCORT_WAIT_MINUTES;
+            self.weather.update(ESCORT_WAIT_MINUTES);
             self.log_wind_wait(
                 ESCORT_WAIT_MINUTES,
                 format!(
@@ -471,7 +502,12 @@ impl Trip {
         };
         match gate_decision(
             &data,
-            career_datetime(self.career_hours, self.start_hour, self.game_minutes),
+            career_datetime(
+                self.career_hours,
+                self.start_hour,
+                self.game_minutes,
+                self.leg_start_zone(leg_index),
+            ),
             direction,
         ) {
             TunnelDecision::Cross => false,
@@ -667,5 +703,31 @@ mod tests {
         long.drive(300.0);
         log_wait_to_hos(&mut long, 650, true);
         assert_eq!(long.driving_min, 0.0);
+    }
+    #[test]
+    fn career_datetime_reads_the_career_calendar_day_not_the_next_one() {
+        use crate::sim::season::calendar_date;
+        use crate::sim::timezones::EASTERN;
+        use chrono::Datelike;
+        for hours in [0.0, 30.0, 24.0 * 100.0 + 7.0] {
+            let at = career_datetime(Some(hours), hours.rem_euclid(24.0), 0.0, EASTERN);
+            let shown = calendar_date(hours);
+            assert_eq!((at.month(), at.day()), (shown.month(), shown.day()));
+        }
+    }
+
+    #[test]
+    fn career_datetime_is_the_crossing_wall_clock() {
+        use crate::sim::timezones::{ALASKA, EASTERN, PACIFIC};
+        let monday_eight = Some(24.0 * 5.0 + 8.0);
+        let eastern = career_datetime(monday_eight, 8.0, 30.0, EASTERN);
+        let pacific = career_datetime(monday_eight, 8.0, 30.0, PACIFIC);
+        let alaska = career_datetime(monday_eight, 8.0, 30.0, ALASKA);
+        assert_eq!(eastern.time(), NaiveTime::from_hms_opt(8, 30, 0).unwrap());
+        assert_eq!(pacific.time(), NaiveTime::from_hms_opt(5, 30, 0).unwrap());
+        assert_eq!(alaska.time(), NaiveTime::from_hms_opt(4, 30, 0).unwrap());
+        assert_eq!(eastern.date(), alaska.date());
+        let after_midnight = career_datetime(Some(24.0 * 5.0 + 1.0), 1.0, 0.0, ALASKA);
+        assert_eq!(after_midnight.date() + Duration::days(1), eastern.date());
     }
 }
