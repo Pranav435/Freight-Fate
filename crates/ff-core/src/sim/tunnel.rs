@@ -18,18 +18,6 @@ pub const WIND_WAIT_STEP_MINUTES: f64 = 30.0;
 /// The longest a closure is waited out before dispatch looks for a detour.
 pub const MAX_WIND_WAIT_MINUTES: f64 = 4.0 * 60.0;
 
-/// A wait spoken in hours and minutes, e.g. "1 hour 30 minutes".
-pub fn spoken_wait(minutes: f64) -> String {
-    let total = minutes.round().max(0.0) as i64;
-    let (hours, mins) = (total / 60, total % 60);
-    let unit = |n: i64, one: &str| format!("{n} {one}{}", if n == 1 { "" } else { "s" });
-    match (hours, mins) {
-        (0, m) => unit(m, "minute"),
-        (h, 0) => unit(h, "hour"),
-        (h, m) => format!("{} {}", unit(h, "hour"), unit(m, "minute")),
-    }
-}
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TunnelDirection {
     ToWhittier,
@@ -295,7 +283,7 @@ impl Trip {
                 ESCORT_WAIT_MINUTES,
                 format!(
                     "{text} You wait {} on duty.",
-                    spoken_wait(ESCORT_WAIT_MINUTES)
+                    wait_text(ESCORT_WAIT_MINUTES as i64)
                 ),
             );
             return None;
@@ -316,7 +304,7 @@ impl Trip {
             waited,
             format!(
                 "{text} You wait {} on duty for the wind to drop.",
-                spoken_wait(waited)
+                wait_text(waited.round() as i64)
             ),
         );
         match self.wind_call(leg_index, load) {
@@ -652,13 +640,5 @@ mod tests {
         long.drive(300.0);
         log_wait_to_hos(&mut long, 650, true);
         assert_eq!(long.driving_min, 0.0);
-    }
-
-    #[test]
-    fn waits_are_spoken_in_hours_and_minutes() {
-        assert_eq!(spoken_wait(20.0), "20 minutes");
-        assert_eq!(spoken_wait(60.0), "1 hour");
-        assert_eq!(spoken_wait(90.0), "1 hour 30 minutes");
-        assert_eq!(spoken_wait(240.0), "4 hours");
     }
 }
