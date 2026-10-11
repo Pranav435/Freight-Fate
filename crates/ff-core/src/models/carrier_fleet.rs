@@ -588,10 +588,14 @@ pub fn equipment_status_lines<P: CareerProfile + ?Sized>(profile: &P) -> Vec<Str
         // be held below and no next one to earn.
         return vec![format!("Truck: {truck}, your own")];
     }
+    // "Assigned by the carrier": a livestreamer reading "Level 9 earns the
+    // long-haul fleet" asked what the fleets meant and when he could get or
+    // buy a truck (owner, 2026-10-11). The carrier hands each fleet over;
+    // buying is the owner-operator's.
     let tier = assigned_fleet_tier(profile);
     if equipment_held_back(profile) {
         return vec![
-            format!("Truck: {truck}, {}", tier.label),
+            format!("Truck: {truck}, {}, assigned by the carrier", tier.label),
             equipment_hold_text(profile, false),
         ];
     }
@@ -600,8 +604,16 @@ pub fn equipment_status_lines<P: CareerProfile + ?Sized>(profile: &P) -> Vec<Str
             "Truck: {truck}, {}, the carrier's best equipment",
             tier.label
         )],
+        Some(upcoming) if slip_seats(profile) && upcoming.min_level >= DEDICATED_TRUCK_LEVEL => {
+            vec![format!(
+                "Truck: {truck}, {}, assigned by the carrier. At level {}, dispatch moves \
+                 you up to the {} and gives you the same truck for every load.",
+                tier.label, upcoming.min_level, upcoming.label
+            )]
+        }
         Some(upcoming) => vec![format!(
-            "Truck: {truck}, {}. Level {} earns the {}.",
+            "Truck: {truck}, {}, assigned by the carrier. At level {}, dispatch moves \
+             you up to the {}.",
             tier.label, upcoming.min_level, upcoming.label
         )],
     }

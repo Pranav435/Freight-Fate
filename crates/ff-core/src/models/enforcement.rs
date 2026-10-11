@@ -547,7 +547,7 @@ pub fn trust_band_text(band: &str) -> &'static str {
     }
     if band == TRUST_GUARDED {
         return "Dispatch trust: guarded. Dispatch is holding back some of the \
-                freight and fewer refusals.";
+                freight and allows fewer refusals.";
     }
     if band == TRUST_POOR {
         return "Dispatch trust: poor. You are back to assigned loads whatever your \

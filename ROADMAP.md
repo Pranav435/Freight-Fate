@@ -470,6 +470,13 @@ Everything found before 2026-09-25 moved to
 - [x] A way out of the training fleet (player report, 2026-10-10): a
       company driver at Great Lakes Training Transport can move to another
       carrier at level 4 with full dispatch trust.
+- [x] Plainer career and equipment wording, and a Common questions page
+      in How to play and the manual (owner, 2026-10-11, from a livestreamer
+      asking what the fleets meant and when he could get or buy a truck,
+      plus questions from the #FreightFate tag, AppleVis and GitHub). The
+      Weather app now lists active live weather alerts.
+- [ ] States visited is readable only on the online profile; a player
+      asked where to hear it in the game (Mastodon, 2026-07-05).
 - [ ] The exit-call truth test (`test_the_exit_calls_name_the_road_that_is_really_left`)
       failed once on the Linux ARM runner in the v1.9.1 tag build, hearing
       only the two-mile call, and passed on re-run. It passed 80 of 80 runs

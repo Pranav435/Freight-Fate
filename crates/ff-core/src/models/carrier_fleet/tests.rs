@@ -477,9 +477,19 @@ fn test_the_stats_screen_answers_what_is_holding_the_next_truck_back() {
     assert_eq!(lines.len(), 1);
     let upcoming = next_fleet_tier(&fine).expect("level 11 has a tier still to earn");
     assert!(lines[0].contains(&format!(
-        "Level {} earns the {}.",
+        "At level {}, dispatch moves you up to the {}.",
         upcoming.min_level, upcoming.label
     )));
+    assert!(lines[0].contains("assigned by the carrier"));
+
+    // Below the dedicated-truck level the next move also ends the spares.
+    let junior = fleet_driver(5);
+    let lines = equipment_status_lines(&junior);
+    assert!(
+        lines[0].ends_with("and gives you the same truck for every load."),
+        "{}",
+        lines[0]
+    );
 
     // And at the top of the ladder there is no next tier to name.
     let top = fleet_driver(20);
