@@ -26268,9 +26268,10 @@
             "road": "Pennsylvania Turnpike (I-76)",
             "authority": "Pennsylvania Turnpike Commission",
             "method": "ezpass",
-            "amount": 34.0,
-            "estimated": true,
-            "source": "estimated 5-axle commercial tractor-trailer toll per Pennsylvania Turnpike Commission published rates; https://www.paturnpike.com/toll-calculator"
+            "amount": 50.28,
+            "estimated": false,
+            "source": "Pennsylvania Turnpike Commission 2026 E-ZPass and toll-by-plate schedules, 5 axle high, Harrisburg East (247) to Valley Forge (326), accessed 2026-10-11: https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-e-zpass.pdf ; https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-toll-by-plate-(tbp).pdf",
+            "amount_plate": 100.56
           }
         ],
         "restrictions": [],
@@ -29749,9 +29750,10 @@
             "road": "Pennsylvania Turnpike (I-76)",
             "authority": "Pennsylvania Turnpike Commission",
             "method": "ezpass",
-            "amount": 70.0,
-            "estimated": true,
-            "source": "estimated 5-axle commercial tractor-trailer toll per Pennsylvania Turnpike Commission published rates; https://www.paturnpike.com/toll-calculator"
+            "amount": 94.68,
+            "estimated": false,
+            "source": "Pennsylvania Turnpike Commission 2026 E-ZPass and toll-by-plate schedules, 5 axle high, Carlisle (226) to Pittsburgh (57), accessed 2026-10-11: https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-e-zpass.pdf ; https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-toll-by-plate-(tbp).pdf",
+            "amount_plate": 189.36
           }
         ],
         "restrictions": [],
@@ -40052,9 +40054,10 @@
             "road": "I-95 Delaware Turnpike",
             "authority": "Delaware Department of Transportation",
             "method": "ezpass",
-            "amount": 24.0,
-            "estimated": true,
-            "source": "DelDOT toll rate information, accessed 2026-06-16; estimated commercial I-95 toll segment: https://deldot.gov/Programs/toll_rate_chart/"
+            "amount": 10.0,
+            "estimated": false,
+            "source": "Delaware Department of Transportation I-95 Newark toll plaza rates, 5 axle, cash and E-ZPass, accessed 2026-10-11: https://deldot.gov/public.ejs?command=PublicTollRateI95",
+            "amount_plate": 10.0
           },
           {
             "name": "JFK Memorial Highway toll settlement",
@@ -40062,9 +40065,13 @@
             "road": "I-95 JFK Memorial Highway",
             "authority": "Maryland Transportation Authority",
             "method": "ezpass",
-            "amount": 36.0,
-            "estimated": true,
-            "source": "Maryland Transportation Authority toll rate calculator, accessed 2026-06-16; estimated commercial vehicle toll segment: https://mdta.maryland.gov/TollRatesTables"
+            "amount": 48.0,
+            "estimated": false,
+            "source": "Maryland Transportation Authority toll rate tables, I-95 John F. Kennedy Memorial Highway, 5 axle E-ZPass and video toll, collected northbound only, accessed 2026-10-11: https://mdta.maryland.gov/TollRatesTables",
+            "amount_plate": 63.0,
+            "directions": [
+              "reverse"
+            ]
           }
         ],
         "interchanges": [
@@ -45059,9 +45066,10 @@
             "road": "Pennsylvania Turnpike I-76",
             "authority": "Pennsylvania Turnpike Commission",
             "method": "ezpass",
-            "amount": 185.0,
-            "estimated": true,
-            "source": "Pennsylvania Turnpike Commission toll calculator, accessed 2026-06-16; estimated 5-axle commercial vehicle cross-state toll: https://www.paturnpike.com/toll-calculator"
+            "amount": 164.68,
+            "estimated": false,
+            "source": "Pennsylvania Turnpike Commission 2026 E-ZPass and toll-by-plate schedules, 5 axle high, Valley Forge (326) to Pittsburgh (57), accessed 2026-10-11: https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-e-zpass.pdf ; https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-toll-by-plate-(tbp).pdf",
+            "amount_plate": 329.36
           }
         ],
         "tollway_detected": true,
@@ -52040,9 +52048,10 @@
             "road": "Pennsylvania Turnpike (I-76)",
             "authority": "Pennsylvania Turnpike Commission",
             "method": "ezpass",
-            "amount": 65.0,
-            "estimated": true,
-            "source": "estimated 5-axle commercial tractor-trailer toll per Pennsylvania Turnpike Commission published rates; https://www.paturnpike.com/toll-calculator"
+            "amount": 94.68,
+            "estimated": false,
+            "source": "Pennsylvania Turnpike Commission 2026 E-ZPass and toll-by-plate schedules, 5 axle high, Pittsburgh (57) to Carlisle (226), accessed 2026-10-11: https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-e-zpass.pdf ; https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-toll-by-plate-(tbp).pdf",
+            "amount_plate": 189.36
           }
         ],
         "restrictions": [],
@@ -54032,9 +54041,13 @@
             "road": "Pennsylvania Turnpike and Ohio Turnpike connector",
             "authority": "Pennsylvania Turnpike Commission",
             "method": "ezpass",
-            "amount": 28.0,
-            "estimated": true,
-            "source": "Pennsylvania Turnpike Commission toll calculator, accessed 2026-06-16; estimated commercial connector toll: https://www.paturnpike.com/toll-calculator"
+            "amount": 31.57,
+            "estimated": false,
+            "source": "Pennsylvania Turnpike Commission 2026 schedules, Gateway barrier T2, Class 4 (5 axle), eastbound only; no toll westbound into Ohio, accessed 2026-10-11: https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-e-zpass.pdf ; https://files.paturnpike.com/production/docs/default-source/resources/tolls/toll-schedule-2026/2026-toll-by-plate-(tbp).pdf",
+            "amount_plate": 63.78,
+            "directions": [
+              "reverse"
+            ]
           },
           {
             "name": "Ohio Turnpike east gate settlement",
@@ -54042,9 +54055,10 @@
             "road": "Ohio Turnpike",
             "authority": "Ohio Turnpike and Infrastructure Commission",
             "method": "ezpass",
-            "amount": 34.0,
-            "estimated": true,
-            "source": "Ohio Turnpike toll calculator, accessed 2026-06-16; estimated 5-axle commercial toll segment: https://www.ohioturnpike.org/e-zpass/toll-rates"
+            "amount": 10.75,
+            "estimated": false,
+            "source": "Ohio Turnpike and Infrastructure Commission fare calculator, class 6 (high 5 axle), Niles-Youngstown (218) to Streetsboro (187), E-ZPass and non-E-ZPass fares, accessed 2026-10-11: https://www.ohioturnpike.org/e-zpass/toll-rates",
+            "amount_plate": 13.25
           }
         ],
         "interchanges": [

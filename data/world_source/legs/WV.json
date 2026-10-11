@@ -1619,9 +1619,10 @@
             "road": "West Virginia Turnpike (I-77)",
             "authority": "West Virginia Parkways Authority",
             "method": "cash_card",
-            "amount": 13.0,
-            "estimated": true,
-            "source": "estimated 5-axle commercial tractor-trailer toll per West Virginia Parkways Authority published rates; https://www.wvturnpike.com/"
+            "amount": 26.0,
+            "estimated": false,
+            "source": "West Virginia Parkways Authority toll rates, 5 axle, Pax and Chelyan plazas, non-West Virginia E-ZPass and cash, accessed 2026-10-11: https://turnpike.wv.gov/toll-rates",
+            "amount_plate": 30.0
           }
         ],
         "restrictions": [],
@@ -3925,8 +3926,9 @@
             "authority": "West Virginia Parkways Authority",
             "method": "cash_card",
             "amount": 13.0,
-            "estimated": true,
-            "source": "estimated 5-axle commercial tractor-trailer toll per West Virginia Parkways Authority published rates; https://www.wvturnpike.com/"
+            "estimated": false,
+            "source": "West Virginia Parkways Authority toll rates, 5 axle, Ghent plaza, non-West Virginia E-ZPass and cash, accessed 2026-10-11: https://turnpike.wv.gov/toll-rates",
+            "amount_plate": 15.0
           }
         ],
         "restrictions": [],
