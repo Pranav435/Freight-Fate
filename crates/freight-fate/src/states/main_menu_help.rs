@@ -78,7 +78,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "Before a descent, reduce speed and choose a lower gear. Use the engine brake for steady control and short brake applications with cooling time between them.",
             "{{engine_brake}} enables the engine brake. While enabled, {{jake_stage_1}}, {{jake_stage_2}}, and {{jake_stage_3}} choose its stage. {{auto_jake}} selects automatic or manual stage management.",
             "Hot brakes lose stopping power. {{safe_speed}} gives a safe speed for the load, grade, weather, and bend. Strong engine braking can break traction on ice.",
-            "Noise-restricted towns warn before fining engine braking. Downgrades and emergencies have exceptions.",
+            "Noise-restricted towns warn before fining engine braking. Downhill grades and emergencies have exceptions.",
         ],
     ),
     (

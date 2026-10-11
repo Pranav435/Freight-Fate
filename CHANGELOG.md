@@ -28,6 +28,8 @@
 
 ### Changed
 
+- **Grades are now called uphill or downhill grades, not upgrades and downgrades.** You hear "6.0 percent downhill grade ahead"; the percent is unchanged.
+
 - **CB calls now say "trooper" instead of the trucker slang "bear".**
 
 - **The player manual has contents links for jumping straight to a chapter.**

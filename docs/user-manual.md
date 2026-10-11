@@ -423,7 +423,7 @@ On open road at twenty miles per hour or above, K starts adaptive cruise. In sup
 
 Plus and Minus move the cruise target outward to the next multiple of five: from 32, Plus selects 35, then 40. Hold Control to adjust one mile per hour at a time. Space tells you which mode is active, its target, and whether conditions are holding you below it. Braking cancels the control; Shift+K resumes. A pickup pauses the session through loading and saving, then resumes it after departure.
 
-J switches on the engine brake, and 1, 2, or 3 selects two, four, or six cylinders while it's enabled. A lower gear and higher RPM give it more braking effect. Alt+J chooses automatic stage management or manual selection. Listen for town noise restrictions: the game warns before fining you for using it, with exceptions for downgrades and emergencies.
+J switches on the engine brake, and 1, 2, or 3 selects two, four, or six cylinders while it's enabled. A lower gear and higher RPM give it more braking effect. Alt+J chooses automatic stage management or manual selection. Listen for town noise restrictions: the game warns before fining you for using it, with exceptions for downhill grades and emergencies.
 
 ## Truck damage and being out of service
 

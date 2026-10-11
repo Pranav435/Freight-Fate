@@ -415,7 +415,11 @@ impl DrivingState {
             ""
         };
         let length = format!(" for {about}{}", self.trip.distance_text(run_mi));
-        let direction = if sign > 0 { "upgrade" } else { "downgrade" };
+        let direction = if sign > 0 {
+            "uphill grade"
+        } else {
+            "downhill grade"
+        };
         ctx.audio.play_with("ui/notify", 0.55, 0.0);
         let advice = if sign < 0 {
             self.descend_advice(ctx)

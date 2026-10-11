@@ -517,7 +517,11 @@ impl DrivingState {
                 // Same filter the advisory uses: a third-of-a-mile dip is not
                 // the next grade, it is a bump in this one.
                 if run_mi >= GRADE_WARN_MIN_RUN_MI {
-                    let direction = if sign > 0 { "upgrade" } else { "downgrade" };
+                    let direction = if sign > 0 {
+                        "uphill grade"
+                    } else {
+                        "downhill grade"
+                    };
                     let ahead = probe - position;
                     let distance = if ahead >= GRADE_WARN_MIN_RUN_MI {
                         format!("in {}", self.trip.distance_text(ahead))
@@ -584,7 +588,11 @@ impl DrivingState {
             return String::new();
         }
         let pct = grade.abs() * 100.0;
-        let direction = if grade > 0.0 { "upgrade" } else { "downgrade" };
+        let direction = if grade > 0.0 {
+            "uphill grade"
+        } else {
+            "downhill grade"
+        };
         let where_text = ctx.settings.short_distance_text(ahead_mi);
         format!("Next, a {pct:.1} percent {direction} starts in {where_text}.")
     }
