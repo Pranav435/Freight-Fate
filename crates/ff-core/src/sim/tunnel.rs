@@ -444,7 +444,10 @@ impl Trip {
                     self.emit(
                         TripEventKind::GpsCue,
                         SpokenMessage::new(reason),
-                        TripEventData::default(),
+                        TripEventData {
+                            context: Some("crossing_refused".to_string()),
+                            ..Default::default()
+                        },
                     );
                     return true;
                 }
@@ -465,7 +468,10 @@ impl Trip {
         self.emit(
             TripEventKind::GpsCue,
             SpokenMessage::new(data.planning_text.clone()),
-            TripEventData::default(),
+            TripEventData {
+                context: Some("tunnel_planning".to_string()),
+                ..Default::default()
+            },
         );
         let forward = self.route.cities.get(leg_index) == Some(&leg_from);
         let direction = if forward {
@@ -489,7 +495,10 @@ impl Trip {
                 self.emit(
                     TripEventKind::GpsCue,
                     SpokenMessage::new(spoken),
-                    TripEventData::default(),
+                    TripEventData {
+                        context: Some("tunnel_hours_not_published".to_string()),
+                        ..Default::default()
+                    },
                 );
                 true
             }
