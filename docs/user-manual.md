@@ -349,17 +349,17 @@ These are the default keyboard controls. You can change eligible assignments und
 | P | Release or set the parking brake. Set it above a crawl and the spring brakes slam on: a screech, a hard stop, and permanent flat spots ground into the tires, worse the faster you were going. It is not a brake pedal. |
 | K | Start or cancel automatic speed control. It uses adaptive cruise on open roads and speed keeper in low-speed zones. It pauses through the planned pickup and resumes once the loaded truck is rolling. Braking elsewhere also cancels it. Parked with the parking brake set, K latches a high idle instead. |
 | Shift+K | Resume automatic speed control at the last speed you had set, after braking cancelled it. |
-| Plus / Minus | Raise or lower the open-road cruise target while automatic speed control is active, snapping outward to the next multiple of 5 mph, from 32 it lands on 35, then 40. The keypad Plus and Minus keys work too. |
+| Plus / Minus | Raise or lower the open-road cruise target while automatic speed control is active, snapping outward to the next multiple of 5 mph: from 32 it lands on 35, then 40. The keypad Plus and Minus keys work too. |
 | Ctrl+Plus / Ctrl+Minus | Raise or lower the open-road cruise target by exactly 1 mph, no snapping, for setting a precise number. |
 | X | Signal for or cancel the next announced route exit. The truck takes the ramp when speed, lane setup, and route intent are valid. |
 | T | While rolling, plan the next nearby sleep-capable stop and hear its distance, exit, and stopping-assistance state. T never signals or takes the exit; press X for that. When fully stopped at a supported route stop, T opens its menu; away from route points, it opens the emergency shoulder-sleep confirmation. |
 | J | Toggle the engine brake. It engages at the stage you last selected, like a real dash switch. In an automatic, J arms the truck's own retarder management unless you have turned that off. |
 | Alt+J | In an automatic, choose whether J arms the automatic retarder or leaves the stage entirely to you. |
-| Alt+T | Switch between automatic and manual transmission on the road. This changes your whole control scheme, so it is worth knowing you pressed it. |
+| Alt+T | Switch between automatic and manual transmission on the road. This changes your whole control scheme. |
 | 1 / 2 / 3 | Select the engine brake stage, two, four, or six cylinders of retard, while it is on. With the engine brake off these keys do nothing. |
 | H | Hold to sound the horn; release to stop it. |
 | Space | Report speed, gear, RPM, the active speed-control mode and open-road target when speed control is on, air pressure, and brake state. With the signal set for an exit, it ends with that exit and how far away it is. |
-| S | Report the posted speed limit here, the zone if any, and how far over you are. In bend country it adds the bend's advisory speed, the posted limit and the yellow diamond are different numbers on a real road. On a delivery ramp that ends at a traffic light, S answers with the light and the distance to the stop bar instead, since the light is the law there. |
+| S | Report the posted speed limit here, the zone if any, and how far over you are. In bend country it adds the bend's advisory speed, since the posted limit and the yellow diamond are different numbers on a real road. On a delivery ramp that ends at a traffic light, S answers with the light and the distance to the stop bar instead, since the light is the law there. |
 | D | Report one safe-speed number for right now. Weather grip, a steep downgrade, and the next bend are already baked into the number. On an exit ramp it is the exit speed. |
 | G | Report the grade under the wheels: the slope, how far it runs, and whether the truck is holding, pulling, or losing it, including whether the engine brake has the descent or is about to lose it. G also names the next grade ahead worth planning for, how far off and how long it runs, including one that steepens without flattening out first, and the gentler pull automatic speed control is building speed for when nothing steep is coming. |
 | I | Turn the lane locator on or off: a soft tock, once a beat, panned to where the truck sits inside its lane. It keeps ticking until you turn it off. Needs lane keeping on partial or off. |
@@ -381,9 +381,9 @@ These are the default keyboard controls. You can change eligible assignments und
 | Slash, hold | Straighten up. With lane keeping on partial or off, the truck squares itself with the road and stops drifting across the lane, wherever in the lane it is. Letting go of the arrows does the same; Slash does it while you keep another key held. |
 | A | Repeat the last route announcement, the last thing with consequences, even if other speech came after it. |
 | Alt+C | Repeat the last CB chatter, with the distance as it is now. Once you have passed what the CB called, it says so instead. |
-| U | Report the road ahead that no other key answers: the exit your signal is on for, first, then the ramp control coming up, the next imposed speed limit, the next stop, and the next bend that will demand slowing, with its advisory speed. Four short clauses at the most. It does not report police activity, enforcement reaches you on the CB. |
+| U | Report the road ahead that no other key answers: the exit your signal is on for, first, then the ramp control coming up, the next imposed speed limit, the next stop, and the next bend that will demand slowing, with its advisory speed. Four short clauses at the most. It does not report police activity; enforcement reaches you on the CB. |
 | F1 | Show the driving control list and current objective. |
-| F2 | List every driving command by name. Enter runs the one you are on and puts you back on the road; Escape returns without one. The held controls, pedals, steering, emergency brake, horn, are not on it. |
+| F2 | List every driving command by name. Enter runs the one you are on and puts you back on the road; Escape returns without one. The held controls (pedals, steering, emergency brake and horn) are not on it. |
 | Comma | Review earlier speech. The full review keys are listed under "Reviewing what the game said". |
 | Period | Move toward newer speech. |
 | Escape | Open the pause menu. |
@@ -434,7 +434,7 @@ Service the truck before wear stops the trip. Worn tires lose grip, worn brakes 
 | Under 50 percent | No damage-related power reduction. |
 | Past 50 percent | **Reduced power.** The engine holds back and burns more fuel for the same work. |
 | Past 75 percent | **Limp mode.** Reduced power, plus a road-speed cap of 45 miles per hour you cannot drive out of. The cap eases in over a few seconds rather than snapping on. |
-| Past 85 percent | A spoken last call that names the number ahead, so the wall is never a surprise. |
+| Past 85 percent | A spoken last call that names the out-of-service threshold before you reach it. |
 | Past 90 percent | **Out of service.** The truck may not be driven. It can still crawl clear of a live lane, because leaving a stricken truck stopped in traffic is worse, but the run does not continue under its own power. |
 
 The damage readout names a band as well as a percentage, so you can hear how serious the condition is. An out-of-service truck can move enough to clear traffic, but it needs help before continuing the trip.
@@ -849,7 +849,7 @@ Driving speech controls how much the game announces automatically. Standard incl
 | Say when a career is backed up | How often you hear that a career is backed up to your orinks.net account: every time, the default, once a session, or never. Backups keep going either way, and a refused backup is always spoken. |
 | Driving event voice | Routes road events through the main voice or a separate software voice when available. |
 | Output | Speech and braille is the default: you'll hear the game's messages and, with NVDA or JAWS, receive them on your braille display too. Choose Braille only to play without speech. Menus, readouts, and road events all go to the display, including messages normally spoken by the driving event voice. Braille only requires NVDA or JAWS; with another voice source, the game keeps speaking and explains why. If your screen reader closes during a drive, speech returns until it is running again. |
-| JAWS arrow keys | Appears only when JAWS is your screen reader. JAWS reads each arrow key with its own script, which waits for the screen to change, so menus answer slowly and held arrows lag. Faster adds a small script for this game to your JAWS settings, in your own user folder, so the arrows answer at once. Default removes it. The game touches only its own two files there, and leaves a script of the same name that it did not write alone. Restart JAWS if nothing changes. With JAWS, tapping another key while you hold an arrow keeps the hold for a moment, but the truck can still stop accelerating after a few seconds, so tap the arrow again to keep going. |
+| JAWS arrow keys | Appears only when JAWS is your screen reader. JAWS reads each arrow key with its own script, which waits for the screen to change, so menus answer slowly and held arrows lag. Faster adds a small script for this game to your JAWS settings, in your own user folder, so the arrows answer at once. Default removes it. The game touches only its own two files there, and leaves alone any script of the same name that it did not write. Restart JAWS if nothing changes. With JAWS, tapping another key while you hold an arrow keeps the hold for a moment, but the truck can still stop accelerating after a few seconds, so tap the arrow again to keep going. |
 | Speech rate | Appears only when the current voice source supports rate changes. |
 | Speech pitch | Appears only when the current voice source supports pitch changes. |
 | Speech volume | Appears only when the current voice source supports volume changes. |

@@ -678,7 +678,7 @@ fn playtest_road(args: &[String]) -> i32 {
         let mut guard = freight_fate::single_instance::SingleInstanceGuard::new();
         if !guard.acquire() {
             eprintln!(
-                "Freight Fate is already running. Close it first -- a second window would \
+                "Freight Fate is already running. Close it first. A second window would \
                  start rolling behind the one you are looking at."
             );
             return 1;
