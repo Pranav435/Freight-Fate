@@ -1163,6 +1163,9 @@ its status or release decision.
       fails on "bear" or "bears" in any case outside a line that names the
       CB; the song title "Black Bear Road" is the one exception. It lands
       green: today's hits are all CB chatter.
+- [x] CB calls say "trooper" now, and the sweep
+      (`test_bear_is_never_spoken_in_any_player_facing_string`) bans "bear"
+      from every spoken string but the song title (owner, 2026-10-11).
 
 ### September 11 trucking corrections
 

@@ -411,7 +411,7 @@ fn test_tableau_audio_defers_while_the_players_own_stop_is_active() {
 #[test]
 fn test_a_post_that_already_caught_the_player_never_also_runs_its_tableau() {
     // Once this post has had its own look at the player, its tableau story --
-    // "a bear has somebody stopped" -- no longer makes sense.
+    // "a trooper has somebody stopped" -- no longer makes sense.
     let mut app = TestApp::new();
     let mut drive = a_drive(&mut app, "Presence");
     let log = app.record_audio();

@@ -203,7 +203,7 @@ real local dealer where sourced data exists. Chapter 6.
 **The law is watching more than your speed.** Weigh-station blow-pasts
 and severe visible damage draw stops; running from lights escalates to a
 felony stop with spike strips; construction zones stage a merge and
-flagger before the barrels; CB chatter hints at bears ahead. Traffic
+flagger before the barrels; CB chatter hints at troopers ahead. Traffic
 stops read a real logbook — the in-cab Record of Duty Status — and dock
 work takes spoken on-duty time. Chapter 7.
 

@@ -570,20 +570,17 @@ reported incidents on the road ahead are different systems the player can act
 on differently. "Traffic is heavy" and "there is a wreck reported ahead" are
 not interchangeable.
 
-### "Bear" is CB voice only
+### "Bear" is never spoken
 
-"Bear" may appear in exactly one place: inside a clause the line attributes to
-the CB, spoken by a driver on the radio. It is trade slang, and it is flavour.
-In a warning, a menu item, a status readout, or anything the game says in its
-own voice, the word is "trooper".
+The officer is a "trooper" everywhere, the CB included. "Bear" is trucker
+slang most players never learned, so a CB call that said it taught a screen
+reader user a second noun for a thing that already had one (owner,
+2026-10-11; it was allowed as CB flavour until then).
 
 A sweep of every string literal in both crates' sources fails if the word
-appears outside a CB clause
-(`test_bear_is_cb_voice_only_in_every_player_facing_string` in
+appears (`test_bear_is_never_spoken_in_any_player_facing_string` in
 `crates/ff-core/tests/it/sim_enforcement_vocabulary.rs`); the song title
-"Black Bear Road" is its one exception. The check exists because slang leaks: the word is
-evocative, it reads well in a sentence, and one careless line teaches a screen
-reader user a second noun for a thing that already had one.
+"Black Bear Road" is its one exception.
 
 ### Driving speech rungs
 

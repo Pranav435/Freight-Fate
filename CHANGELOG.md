@@ -26,6 +26,8 @@
 
 ### Changed
 
+- **CB calls now say "trooper" instead of the trucker slang "bear".**
+
 - **The player manual has contents links for jumping straight to a chapter.**
 
 - **The player manual uses shorter explanations and clearer hotkey instructions.**
