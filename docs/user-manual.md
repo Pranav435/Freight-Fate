@@ -35,6 +35,7 @@ Start at the [main menu](#main-menu), then follow [your first delivery](#quick-s
 - [Radio and playlists](#radio-and-playlists)
 - [Achievements and career progress](#achievements-and-career-progress)
 - [Online sharing and cloud backups](#online-sharing-and-cloud-backups)
+- [Common questions](#common-questions)
 - [When you need help](#when-you-need-help)
 
 ## Main menu
@@ -301,7 +302,7 @@ Authority preparation can open at level 21. Own authority can open at level 25, 
 
 Owners can open Truck dealer from the terminal. Upgrades apply across the fleet, but the condition of each truck belongs to that truck.
 
-Company drivers receive upgrades at levels 4, 9, 13, and 17. Before level 9, dispatch assigns a spare suited to the load, and each spare keeps its own fuel, wear, and damage. At level 9, you get a dedicated seat.
+Company drivers never buy a truck: the carrier assigns one from a fleet that improves with your level. You start in the yard standard truck, then dispatch moves you up to the regional fleet at level 4, the long-haul fleet at level 9, the premium fleet at level 13, and first pick of the yard at level 17, at no cost to you. Before level 9, dispatch assigns a spare suited to each load, and each spare keeps its own fuel, wear, and damage. From level 9, you drive the same truck on every load. Career stats names your current fleet and the next one.
 
 ### Dispatch trust
 
@@ -668,7 +669,7 @@ Navigation reads your next guidance, route progress, and next listed exit. Open 
 
 ### Weather app
 
-Weather tells you where the report comes from, how old it is, what conditions are like, and the suggested safe speed. Simulated weather also gives you a forecast of what's coming next. A live report may have no forecast. If a live check is still updating or has failed, the app tells you; check how old the last report is before relying on it.
+Weather tells you where the report comes from, how old it is, what conditions are like, and the suggested safe speed. With live weather on, it also lists any active weather alerts, so you can hear a warning again after it was announced. Simulated weather also gives you a forecast of what's coming next. A live report may have no forecast. If a live check is still updating or has failed, the app tells you; check how old the last report is before relying on it.
 
 Use the weather's safe-speed guidance alongside the curve, grade, traffic, and truck conditions. V gives a quicker weather readout when you don't need the full report.
 
@@ -926,7 +927,7 @@ Streamer-safe mode limits the dial to built-in safe stations. With Synthesized m
 
 ### Playing your own music
 
-To bring your own music, put an M3U, M3U8, or PLS playlist in Playlists beside saves. Radio status tells you where the folder is and reloads it when you open that screen. Playlist entries can point to files, network paths, or stream URLs. Supported formats include mp3, ogg, opus, flac, aac, wma, and tracker .it, .xm, .s3m, .mod, and .mo3.
+To bring your own music, put an M3U, M3U8, or PLS playlist in the Playlists folder inside your saves folder. Radio status tells you where the folder is and reloads it when you open that screen. Playlist entries can point to files, network paths, or stream URLs. Supported formats include mp3, ogg, opus, flac, aac, wma, and tracker .it, .xm, .s3m, .mod, and .mo3.
 
 Stations remember their position when you tune away. Your playlists normally play in order and resume where you left them. Turn on Shuffle personal playlists to hear every track once in a random order, with a new order each time through. Unreadable entries are skipped, and slow streams get time to connect. If none can play, the game explains the problem and names the folder.
 
@@ -955,6 +956,84 @@ Your public profile can show lifetime earnings, but it doesn't publish current c
 Cloud backup uploads privately after each save and keeps ten accepted revisions per career, for up to ten careers. Connecting your account enables it. Restoring verifies the signature and keeps the replaced local save as a fallback. Back up this career now sends a backup immediately. Removing an old cloud career doesn't remove the local one.
 
 
+
+## Common questions
+
+### Do I have to buy a truck?
+
+No. As a company driver, the carrier assigns your truck and pays for its fuel, repairs, and insurance. Buying trucks opens with the owner-operator buy-in, from level 18. Business status lists the other requirements, and [Business status](#business-status) in this manual explains the costs.
+
+### What are the fleets on Career stats?
+
+Each fleet is a set of carrier trucks that dispatch assigns by level: the yard standard truck to start, the regional fleet at level 4, the long-haul fleet at level 9, the premium fleet at level 13, and first pick of the yard at level 17. Moving up costs you nothing. Career stats names the fleet your truck comes from and the level for the next one.
+
+### Why am I in a different truck on some loads?
+
+Until level 9, dispatch matches a spare truck to each load: a sleeper for a long run, a heavy-spec truck for a heavy load, a day cab for a short turn. Each spare keeps its own fuel and wear. From level 9 you drive the same truck on every load.
+
+### Why am I not in the truck my level earns?
+
+Low dispatch trust, a suspended CDL, debt, or your driving record can hold equipment back. Career stats names the reason and what brings the truck back.
+
+### What is the difference between reputation and dispatch trust?
+
+Reputation is a score out of 100 built from your deliveries and lowered by your driving record. Dispatch trust is what the carrier lets you do right now: how much of the board you see, how many loads you can refuse, and which truck you get. Your CDL, your record, and what you owe count toward it as well as reputation. See [Dispatch trust](#dispatch-trust).
+
+### How many levels are there?
+
+Thirty. Owner-operator and own authority open along the way; [Business status](#business-status) lists the levels.
+
+### Why can I not accept a load?
+
+It may need a certificate, endorsement, or trailer you do not have. Press F1 on the load to hear its requirements, then visit [Licenses and training](#licenses-and-training).
+
+### Why did I get a citation at a weigh station?
+
+When you hear "Open weigh station ahead", every truck must pull in. Press X to signal for the scale exit, stop at the scale, then press T to check in. A closed scale is not announced, and you can drive past it.
+
+### Why is the speed limit 55 on a fast highway?
+
+Some states, California among them, hold trucks below the car limit. S names the state when the limit you hear is a truck limit.
+
+### Why do I keep getting speeding tickets?
+
+S tells you the posted limit and how far over you are. The dash overspeed chime is a free warning, so slow down when you hear it. Automatic speed control holds no more than five over the posted limit and prepares for sharp limit drops.
+
+### I missed my exit. What now?
+
+Keep driving and follow the turnaround guidance to the next safe place to turn. R reads the distance left.
+
+### The truck will not move. What should I check?
+
+Fuel, the engine, air pressure, and the parking brake. Damage, worn parts, or a suspended CDL can also stop the truck. See [When you need help](#when-you-need-help).
+
+### How do I reverse?
+
+In an automatic, stop fully, release the brake, then press and hold the brake again. To go forward again, stop with the accelerator, release it, then press and hold it again. [Driving controls](#driving-controls) has the details.
+
+### How do I know when a hill ends?
+
+G reads the grade under the wheels and the next grade worth planning for.
+
+### How do I change stations or play my own music?
+
+With the engine running, M switches the radio on, and Page Up or Page Down tunes. Put M3U, M3U8, or PLS playlists in the Playlists folder inside your saves folder; Radio status says where it is. See [Radio and playlists](#radio-and-playlists).
+
+### Can I hear a weather warning again?
+
+With live weather on, the Weather app under Driver apps lists active alerts. Comma also steps back through recent messages.
+
+### Why did a delivery not post to Mastodon?
+
+Only deliveries that earn an achievement, a level, or a perfect streak are shared, and only after you link an account.
+
+### Can I steer the truck myself?
+
+Yes. Choose the Realistic preset, or set lane keeping to off, under Settings, Gameplay, Driving assistance. [Taking curves](#taking-curves) explains steering by sound.
+
+### Can I play in braille only?
+
+Set Output to braille only under Settings, Speech. It needs NVDA or JAWS.
 
 ## When you need help
 

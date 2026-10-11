@@ -4,6 +4,10 @@
 
 ### Added
 
+- **How to play and the manual now have a Common questions page.** It covers assigned trucks, fleets, weigh stations, missed exits, the radio and more.
+
+- **The Weather app now lists active live weather alerts.** A warning you missed can be heard again while driving.
+
 - **A Facility streets setting turns off the drive through city streets to and from facilities.** Off, the exit ramp ends at the gate, as in 1.8.
 
 - **The right stick now tunes the radio and adjusts its volume.** Hold up or down to keep changing volume.
@@ -27,6 +31,10 @@
 - **Drivers can call dispatch while stopped for trip-specific help.** Report delays, hours, road conditions, truck trouble or load trouble.
 
 ### Changed
+
+- **Career stats now says the carrier assigns your truck, and what the next fleet brings.** Business status and the garage say buying trucks starts with the owner-operator buy-in.
+
+- **Playlist help now says the Playlists folder is inside your saves folder.**
 
 - **Grades are now called uphill or downhill grades, not upgrades and downgrades.** You hear "6.0 percent downhill grade ahead"; the percent is unchanged.
 

@@ -528,7 +528,9 @@ impl UpgradeShopState {
 
     fn locked(&mut self, ctx: &mut GameContext) {
         ctx.audio.play("ui/error");
-        ctx.say("Upgrades unlock after the leased-on owner-operator buy-in.");
+        ctx.say(
+            "Upgrades unlock with the owner-operator buy-in, from level 18 under Business status.",
+        );
     }
 
     fn label(ctx: &GameContext, upgrade: &Upgrade) -> String {
@@ -563,7 +565,7 @@ impl UpgradeShopState {
     fn buy(&mut self, ctx: &mut GameContext, upgrade: &'static Upgrade) {
         if !is_owner_operator(&profile(ctx).business_status) {
             ctx.audio.play("ui/error");
-            ctx.say("Upgrades unlock after the leased-on owner-operator buy-in.");
+            ctx.say("Upgrades unlock with the owner-operator buy-in, from level 18 under Business status.");
             return;
         }
         let owned = profile(ctx).upgrades.get(upgrade.key).copied().unwrap_or(0);
@@ -650,7 +652,7 @@ impl Menu for UpgradeShopState {
                     "Upgrades locked: carrier-assigned tractor",
                     |s: &mut Self, ctx| s.locked(ctx),
                 )
-                .help("Upgrades unlock after the leased-on owner-operator buy-in."),
+                .help("Upgrades unlock with the owner-operator buy-in, from level 18 under Business status."),
                 MenuItem::new("Back", |s: &mut Self, ctx| s.go_back(ctx)),
             ];
         }
@@ -696,7 +698,7 @@ impl TruckShopState {
 
     fn locked(&mut self, ctx: &mut GameContext) {
         ctx.audio.play("ui/error");
-        ctx.say("Truck ownership unlocks after the leased-on owner-operator buy-in.");
+        ctx.say("Company drivers use the carrier's trucks. Buying trucks unlocks with the owner-operator buy-in, from level 18 under Business status.");
     }
 
     fn label(ctx: &GameContext, model: &TruckModel) -> String {
@@ -728,7 +730,7 @@ impl TruckShopState {
         }
         if !is_owner_operator(&profile(ctx).business_status) {
             ctx.audio.play("ui/error");
-            ctx.say("Truck purchases unlock after the leased-on owner-operator buy-in.");
+            ctx.say("Company drivers use the carrier's trucks. Buying trucks unlocks with the owner-operator buy-in, from level 18 under Business status.");
             return;
         }
         if !profile(ctx).owned_trucks.iter().any(|k| k == model.key) {
@@ -821,7 +823,9 @@ impl Menu for TruckShopState {
                     "Truck ownership locked: carrier-assigned tractor",
                     |s: &mut Self, ctx| s.locked(ctx),
                 )
-                .help("Unlocks after the leased-on owner-operator buy-in."),
+                .help(
+                    "Unlocks with the owner-operator buy-in, from level 18 under Business status.",
+                ),
                 MenuItem::new("Back", |s: &mut Self, ctx| s.go_back(ctx)),
             ];
         }
@@ -867,8 +871,8 @@ impl TrailerProgramState {
     fn locked(&mut self, ctx: &mut GameContext) {
         ctx.audio.play("ui/error");
         ctx.say(
-            "Trailer programs unlock after the leased-on owner-operator buy-in. The carrier \
-             provides trailers.",
+            "Trailer programs unlock with the owner-operator buy-in, from level 18 under \
+             Business status. The carrier provides trailers.",
         );
     }
 
@@ -910,7 +914,7 @@ impl TrailerProgramState {
     fn lease(&mut self, ctx: &mut GameContext, trailer: &TrailerType) {
         if !is_owner_operator(&profile(ctx).business_status) {
             ctx.audio.play("ui/error");
-            ctx.say("Trailer programs unlock after the leased-on owner-operator buy-in.");
+            ctx.say("Trailer programs unlock with the owner-operator buy-in, from level 18 under Business status.");
             return;
         }
         if profile(ctx)

@@ -356,7 +356,7 @@ fn the_trust_ladder_matches_the_python_tables() {
     assert_eq!(
         trust_text(30.0),
         "Dispatch trust: guarded. Dispatch is holding back some of the freight and \
-         fewer refusals. Clean on-time runs rebuild it."
+         allows fewer refusals. Clean on-time runs rebuild it."
     );
     assert_eq!(board_reputation_note(50.0), "");
     assert_eq!(board_reputation_note(20.0), trust_text(20.0));

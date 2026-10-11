@@ -206,6 +206,18 @@ impl DriverAppScreenState {
                 } else {
                     lines.push("Forecast ahead: unavailable.".to_string());
                 }
+                // A warning was spoken once as it arrived and then lived only
+                // in message review; a player asked how to hear a special
+                // weather statement again while driving (Mastodon, 2026-10-05).
+                if !d.trip.live_alerts.is_empty() {
+                    let alerts: Vec<String> = d
+                        .trip
+                        .live_alerts
+                        .iter()
+                        .map(|alert| alert.spoken())
+                        .collect();
+                    lines.push(format!("Weather alerts: {}.", alerts.join("; ")));
+                }
                 lines
             })
             .unwrap_or_default()

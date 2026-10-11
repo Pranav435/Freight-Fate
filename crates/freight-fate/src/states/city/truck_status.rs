@@ -74,8 +74,9 @@ impl TruckStatusState {
             );
             if slip_seats(p) {
                 assignment.push_str(
-                    " Slip-seating: dispatch matches a yard spare to each load, and each spare \
-                     keeps its own fuel and wear. A dedicated seat comes at level 9.",
+                    " Until level 9, dispatch matches a spare to each load, and each spare \
+                     keeps its own fuel and wear. From level 9 you drive the same truck \
+                     every load.",
                 );
             }
             let mut lines = vec![assignment];
