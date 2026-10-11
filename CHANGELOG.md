@@ -8,6 +8,7 @@
 - **Tolls now match each toll road's published truck rate.** The Maryland Bay Bridge now charges eastbound, and one-way tolls charge only one way.
 - **High winds now close the Chesapeake Bay Bridge-Tunnel and Mackinac Bridge to trucks.** Your truck waits on duty at the bridge until the wind drops.
 - **Hazardous and heavy loads now wait for an escort across the Mackinac Bridge.** The 20-minute wait counts as on duty.
+- **Tunnels and bridges now refuse only the hazardous loads they actually ban.** Explosives wait out weekday rush hours at the Golden Gate Bridge.
 - **Toll roads the game let you drive for free now charge.** These include the New York Thruway, the I-78 Toll Bridge and the Carquinez Bridge.
 
 - **Dispatch now routes hazardous and tank loads around real tunnels that ban them.** Boston, Baltimore, Pennsylvania Turnpike, Hampton Roads, Eisenhower and Seattle tunnels included.

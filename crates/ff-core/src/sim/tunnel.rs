@@ -214,6 +214,7 @@ impl Trip {
         let tank = cargo_type(key).is_some_and(|cargo| cargo.tank);
         CrossingLoad::plain(length_ft, self.truck.rig_width_ft, self.truck.rig_height_ft)
             .with_cargo(key, tank, cargo_lb)
+            .with_hazard_class(self.truck.hazard_class)
             .with_trailer(self.truck.trailer_attached)
             .with_gross((self.truck.gross_mass_kg() / KG_PER_LB).round().max(0.0) as u32)
     }
@@ -279,6 +280,31 @@ impl Trip {
             format!(
                 "{text} You wait {} on duty.",
                 wait_text(ESCORT_WAIT_MINUTES as i64)
+            ),
+        );
+    }
+
+    /// A crossing closed to this load's class at this hour, such as the
+    /// Golden Gate Bridge for explosives at weekday rush hours, is waited
+    /// out on duty at the approach until the window ends.
+    fn process_hazmat_hours(&mut self, leg_index: usize, load: &CrossingLoad) {
+        let at = career_datetime(self.career_hours, self.start_hour, self.game_minutes);
+        let Some((minutes, text)) = self.route.legs.get(leg_index).and_then(|leg| {
+            leg.crossings.iter().find_map(|c| {
+                let hours = c.hazmat_hours.as_ref()?;
+                Some((hours.wait_minutes(load, at)?, hours.text.clone()))
+            })
+        }) else {
+            return;
+        };
+        let until = at + Duration::minutes(minutes);
+        self.game_minutes += minutes as f64;
+        self.log_wind_wait(
+            minutes as f64,
+            format!(
+                "{text} You wait {} on duty, until {}.",
+                wait_text(minutes),
+                clock_text(until)
             ),
         );
     }
@@ -433,9 +459,8 @@ impl Trip {
                     let reason = leg
                         .crossings
                         .iter()
-                        .find_map(|c| c.refusal(&load))
-                        .unwrap_or_default()
-                        .to_string();
+                        .find_map(|c| c.refusal_spoken(&load))
+                        .unwrap_or_default();
                     self.emit(
                         TripEventKind::GpsCue,
                         SpokenMessage::new(reason),
@@ -448,6 +473,7 @@ impl Trip {
         if let Some(held) = self.process_wind_gate(leg_index, &load) {
             return held;
         }
+        self.process_hazmat_hours(leg_index, &load);
         self.process_escort(leg_index, &load);
         let Some(leg) = self.route.legs.get(leg_index) else {
             return false;

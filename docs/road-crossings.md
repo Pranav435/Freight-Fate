@@ -26,18 +26,43 @@ schedule, toll and gate are documented in [whittier-tunnel.md](whittier-tunnel.m
 
 ## Game loads and how rules read them
 
-The catalog does not name hazard classes, so these mappings are modelling
-choices, not measurements:
+Every placarded load names its material and its US DOT hazard class or
+division, read from the Hazardous Materials Table, 49 CFR 172.101
+(https://www.ecfr.gov/current/title-49/subtitle-B/chapter-I/subchapter-C/part-172/subpart-B/section-172.101,
+PHMSA; class definitions in 49 CFR 173.2; accessed 2026-10-11). A crossing
+that bans some classes refuses only those, so a load of another class drives
+through.
 
-- **Placarded hazardous materials** (`hazardous`): placarded packaged
-  freight of unnamed classes. A crossing that bans some classes outright
-  refuses it.
-- **Bulk fuel** (`fuel_bulk`): placarded Class 3 flammable liquid in a cargo
-  tank.
+| Material | Catalog cargo | ID number | Class or division |
+| --- | --- | --- | --- |
+| Paint | Placarded hazardous materials | UN1263 | 3, flammable liquid |
+| Propane cylinders (liquefied petroleum gas) | Placarded hazardous materials | UN1075 | 2.1, flammable gas |
+| Compressed nitrogen | Placarded hazardous materials | UN1066 | 2.2, nonflammable gas |
+| Chlorine cylinders | Placarded hazardous materials | UN1017 | 2.3, poison gas |
+| Calcium carbide | Placarded hazardous materials | UN1402 | 4.3, dangerous when wet |
+| Pool chlorine (calcium hypochlorite, dry) | Placarded hazardous materials | UN1748 | 5.1, oxidizer |
+| Sulfuric acid | Placarded hazardous materials | UN1830 | 8, corrosive |
+| Consumer fireworks | Placarded hazardous materials | UN0336 | 1.4G, explosive |
+| Blasting explosives (type E) | Placarded hazardous materials | UN0241 | 1.1D, explosive |
+| Gasoline | Bulk fuel | UN1203 | 3, flammable liquid, in a cargo tank |
+
+- **Placarded hazardous materials** (`hazardous`): one of the packaged
+  materials above, in drums, cylinders or bags (non-bulk). The board picks
+  the material from the lane, and the job saves it.
+- **Bulk fuel** (`fuel_bulk`): gasoline in a cargo tank.
 - **Packaged chemicals** (`chemicals`): regulated but below placard
   thresholds; counted by weight against a pound limit.
 - **Other tank freight** (milk, food-grade liquids): a cargo tank with no
   hazardous material, refused only where every cargo tanker is banned.
+
+A refusal names the load's class first only where the crossing bans some
+classes and not others ("This load is poison gas."); a crossing that bans
+every placard needs no class, and nothing is said where the load drives
+through.
+
+**Old saves.** A save from before classes keeps loading. Bulk fuel is read
+as gasoline. A packaged load with no saved material has no class, and a
+crossing that bans some classes refuses it, as before.
 
 Size limits use a stock rig: 73.5 feet with a trailer, 25 feet bobtail,
 8.5 feet wide, 13.5 feet high.
@@ -50,10 +75,10 @@ Size limits use a stock rig: 73.5 feet with a trailer, 25 feet bobtail,
 | Eisenhower-Johnson Memorial Tunnel | Denver to Salt Lake City; Denver to Silverthorne | Placarded loads banned (must use Loveland Pass while open) | https://www.codot.gov/travel/ejmt/metering |
 | Fort McHenry Tunnel | Wilmington to Baltimore; Philadelphia to Baltimore; Washington to Philadelphia | Placarded loads banned, including bulk fuel | https://www.mdta.maryland.gov/TunnelRestrictionsAndVehiclePermits |
 | Boston tunnels (Central Artery, Prudential, Tip O'Neill) | Boston to Hartford, Manchester, Providence, Worcester; New York, Portland and Portsmouth to Boston | All hazardous cargo (any amount) and all cargo tankers banned | https://www.mass.gov/info-details/hazardous-material-route-designation |
-| Hampton Roads Bridge-Tunnel | Norfolk to Richmond; Richmond to Virginia Beach | Banned classes refuse placarded packaged loads; flammables only non-bulk, so bulk fuel refused | https://law.lis.virginia.gov/admincode/title24/agency30/chapter61/section40/ |
-| Chesapeake Bay Bridge-Tunnel (Thimble Shoal and Chesapeake Channel tunnels) | Norfolk to Cape Charles | Banned classes refuse placarded packaged loads; Class 3 tank vehicles banned even empty | https://www.cbbt.com/regulations/ |
-| Pennsylvania Turnpike tunnels (Allegheny, Tuscarora, Kittatinny, Blue Mountain, Lehigh) | Baltimore, Harrisburg, Philadelphia, Carlisle and Hagerstown to Pittsburgh; Scranton to Allentown | Table 1 materials and explosives banned; flammable liquid banned in bulk | https://www.paturnpike.com/commercial/permits-restrictions/hazardous-materials-(placarded-loads) |
-| Interstate 90 tunnels across Lake Washington (Mount Baker Ridge, Mercer Island lid) | Seattle to Moses Lake, Wenatchee, Spokane, Tri-Cities and Yakima | Flammable cargo banned, so bulk fuel detours | https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359 |
+| Hampton Roads Bridge-Tunnel | Norfolk to Richmond; Richmond to Virginia Beach | Divisions 1.1 to 1.3, 2.3 and 4.3 banned; 2.1, 3, 5.1, 5.2 and 8 only non-bulk, so packaged loads pass and bulk fuel is refused | https://law.lis.virginia.gov/admincode/title24/agency30/chapter61/section40/ |
+| Chesapeake Bay Bridge-Tunnel (Thimble Shoal and Chesapeake Channel tunnels) | Norfolk to Cape Charles | Divisions 1.1 to 1.3, 2.3 and 4.3 banned; 2.1, 3, 4.1, 4.2, 5.1, 5.2, 8 and 9 capped far below a truckload, and 7 by permission, so refused; 1.4, 2.2 pass; Class 3 tank vehicles banned even empty | https://www.cbbt.com/regulations/ |
+| Pennsylvania Turnpike tunnels (Allegheny, Tuscarora, Kittatinny, Blue Mountain, Lehigh) | Baltimore, Harrisburg, Philadelphia, Carlisle and Hagerstown to Pittsburgh; Scranton to Allentown | Table 1 and explosives banned (all of Class 1, 2.3, 4.3, 5.2, 6.1, 7); 2.1, 3, 4.1, 4.2, 5.1, 6.1 and 8 banned in bulk; packaged 2.1, 3, 5.1, 8 and 2.2 pass | https://www.paturnpike.com/commercial/permits-restrictions/hazardous-materials-(placarded-loads) |
+| Interstate 90 tunnels across Lake Washington (Mount Baker Ridge, Mercer Island lid) | Seattle to Moses Lake, Wenatchee, Spokane, Tri-Cities and Yakima | Flammable cargo banned: placarded flammable gas (2.1) or flammable liquid (3), packaged or bulk | https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359 |
 
 Supporting sources: Colorado rule 2 CCR 601-8, 3.02 (EJMT placarded loads
 use Loveland Pass); COMAR 11.07.01.04 (Maryland tunnels); 700 CMR 7.11
@@ -78,14 +103,16 @@ hazardous and tank freight is not offered; Barnstable to Boston stays open.
 
 | Bridge | Legs | Rules modelled | Source (read 2026-10-11) |
 | --- | --- | --- | --- |
-| San Francisco-Oakland Bay Bridge | Sacramento, Stockton and Los Angeles to San Francisco; San Francisco to Portland and Salt Lake City | Explosives and flammable-placarded tank loads banned; placarded packaged freight refused (classes unnamed) | https://www.chp.ca.gov/siteassets/files/ib_hmroutes.pdf (21 CCR 1402.1) |
+| San Francisco-Oakland Bay Bridge | Sacramento, Stockton and Los Angeles to San Francisco; San Francisco to Portland and Salt Lake City | Divisions 1.1 to 1.3 explosives banned, and flammable gas or liquid in a tank; other placarded classes pass | https://www.chp.ca.gov/siteassets/files/ib_hmroutes.pdf (21 CCR 1402.1) |
 | Mackinac Bridge | Sault Ste. Marie to Traverse City | Toll: 5 dollars per axle, 25 dollars for a five-axle rig, both directions | https://www.mackinacbridge.org/fares-traffic/fare-schedule/ |
 | Mackinac Bridge | Sault Ste. Marie to Traverse City | Wind: escort from 35 mph, closed to trucks from 50, closed to all from 65. Escort in any weather for placarded loads and rigs over 40 tons (80,000 lb) gross | https://www.mackinacbridge.org/about-the-bridge/frequently-asked-questions/ (wind), https://www.mackinacbridge.org/fares-traffic/rules-regulations/ (escorts) |
 | Chesapeake Bay Bridge-Tunnel | Norfolk to Cape Charles | Toll corrected from an estimated 45 to the published 48 dollars (Class 12, initial crossing) | https://www.cbbt.com/tolls/ |
 | Chesapeake Bay Bridge-Tunnel | Norfolk to Cape Charles | Wind: tractor-trailers under 15,000 lb of cargo refused from 40 mph, every truck from 50, closed from 60 | https://cbbt.com/weather/ |
+| Golden Gate Bridge | San Francisco to Santa Rosa | Explosives (every Class 1 division) closed 6:30 to 9:30 and 4 to 7 on weekdays, waited out on duty; otherwise inspection and bridge escort, a 20-minute wait on duty | https://www.law.cornell.edu/regulations/california/13-CCR-1151.5 (13 CCR 1151.5(b)(3)) |
 
 Bay Bridge legs were matched where archived geometry runs within 60 metres
-of the Yerba Buena Island tunnel. The Mackinac toll sits at the St. Ignace
+of the Yerba Buena Island tunnel. The Golden Gate leg's geometry crosses the span
+from its south tower to its north end. The Mackinac toll sits at the St. Ignace
 plaza, 52.1 miles along its leg, from the same geometry.
 
 **Posted bridge weight limits and low clearances** were already on the map
@@ -130,6 +157,25 @@ start against the sky's sustained wind.
   modelled: game drivers hold none. The escort fee for heavy and oversize
   loads is not published with an amount, so none is charged.
 
+## Golden Gate explosive hours
+
+California's rule 13 CCR 1151.5(b)(3) bars vehicles transporting explosives
+from the Golden Gate Bridge from 6:30 to 9:30 in the morning and 4 to 7 in
+the evening on weekdays, and has every explosives vehicle stop for
+inspection and a bridge escort (also in the California Highway Patrol route
+list, https://www.chp.ca.gov/siteassets/files/ib_hmroutes.pdf). The game
+reads explosives as every Class 1 division, since Vehicle Code 31600 covers
+anything meant to detonate or burn rapidly
+(https://california.public.law/codes/vehicle_code_section_31600), and a
+load with no class as explosives.
+
+An explosives load reaching the bridge in a closed window waits on duty
+until it ends, and is told until when; then, at any hour, it waits 20
+minutes on duty for the inspection and escort. The bridge never refuses a
+load, so no route is changed and no job is withheld. The 20 minutes are
+the game's escort wait, not a published figure, and state holidays are not
+modelled.
+
 ## Researched and left out
 
 - **Baltimore Harbor Tunnel (I-895).** Same MDTA ban, but no leg runs
@@ -140,9 +186,6 @@ start against the sky's sustained wind.
 - **George Washington Bridge lower level.** Trucks are kept off the lower
   level, but placarded loads may use the upper level, so no load is turned
   away; a bridge in any case.
-- **Golden Gate Bridge (San Francisco to Santa Rosa).** It bans explosive
-  loads only at rush hours and escorts them otherwise; the game has no
-  explosives cargo or escort, so nothing is refused.
 - **Mackinac Bridge oversize escorts and 72-ton maximum.** Game rigs are
   never oversize, and the 72-ton maximum is above any legal game rig.
 

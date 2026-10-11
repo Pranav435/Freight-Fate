@@ -93,6 +93,10 @@ impl DrivingState {
         };
         truck.placarded_hazmat =
             phase == DRIVE_PHASE_DELIVERY && matches!(job.cargo.key, "hazardous" | "fuel_bulk");
+        truck.hazard_class = job
+            .hazmat
+            .filter(|_| phase == DRIVE_PHASE_DELIVERY)
+            .map(|m| m.class);
         // A reposition run is the tractor alone -- nothing on the fifth
         // wheel. Pickup deadheads haul their empty box.
         truck.trailer_attached = !job.bobtail;
