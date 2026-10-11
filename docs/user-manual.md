@@ -1,14 +1,14 @@
 # Freight Fate Player Manual
 
-Welcome to Freight Fate. You're about to start a trucking career, from collecting your first load to deciding what kind of work you want to take on. You'll hear the engine, traffic, and road cues around you, with spoken guidance to help you find your way.
+Welcome to Freight Fate. Start your trucking career with a first load, then choose the work you want to haul. Listen to the engine, nearby traffic, and road cues as spoken guidance helps you find your way.
 
-Getting the freight to its receiver is only part of the drive. You'll also need to leave time for rest, look after the truck, and bring the cargo in on time and undamaged. Start with the help you need while you learn the sounds and controls. You can change the driving assistance as you get more comfortable.
+Plan time for rest and truck care so you can deliver on time with the cargo undamaged. Use driving assistance while you learn the sounds and controls, and adjust it as you get comfortable.
 
-This guide begins at the [main menu](#main-menu) and talks you through [the first-delivery walkthrough](#quick-start). The traffic, Driver apps, and radio chapters explain what you can listen to and use along the way. You don't need to memorize every key before setting off. Return to the [driving controls](#driving-controls) when you need a reminder, or open How to play in the game for a shorter guide that names your current shortcuts.
+Start at the [main menu](#main-menu), then follow [your first delivery](#quick-start). Check the traffic, Driver apps, and radio chapters as you explore. You can return to the [driving controls](#driving-controls) for a reminder, or open How to play in the game for a shorter guide with your current shortcuts.
 
 ## Main menu
 
-New career is your starting point. Once you've chosen your driving assistance, you'll arrive at the main menu with no driver created and no saved trip to continue. You can start that career now or explore the help, sounds, settings, and online screens first.
+After choosing your driving assistance, you'll reach the main menu. Choose New career to create your first driver, or explore the help, sounds, settings, and online screens before starting.
 
 ### New career
 
@@ -16,7 +16,7 @@ Choose New career to start a new driver. You'll enter a name, choose your career
 
 ### Achievements
 
-Achievements is available on the menu before you create a career, but there isn't a career record to review yet. Opening it tells you there are no saved careers. After you've started playing, you can choose a saved career here and review its earned and locked achievements.
+Before you've created a career, Achievements tells you there are no saved careers. Once you've started playing, choose a saved career here to review its earned and locked achievements.
 
 ### Online
 
@@ -40,7 +40,7 @@ Report a problem opens the bug-report page in your web browser. Use it to report
 
 ### Quit
 
-Choose Quit when you're finished playing. It exits the game.
+Quit closes the game.
 
 ### Once you've created a career
 
@@ -48,15 +48,15 @@ Once you have a saved career, three more options appear on the main menu.
 
 #### Continue latest career
 
-Continue latest career loads your newest readable career save. Choose it when you want to pick up from that saved point.
+Continue latest career resumes your newest readable career save.
 
 #### Choose career
 
-Choose career is useful when you have different drivers for different kinds of play, because you can return to any of them without discarding the others or starting again. Select the career you want.
+Choose career lets you return to any saved driver. You can keep separate careers for different kinds of play.
 
 #### Manage careers
 
-Manage careers contains the reset and delete actions. Neither happens immediately: the game asks for confirmation, giving you a chance to check which career you've selected before the change goes ahead.
+Manage careers lets you reset or delete a career. Check the selected driver when the game asks you to confirm.
 
 ## Quick start
 
@@ -74,11 +74,11 @@ Your carrier affects the work dispatch offers and how you're paid. Read the comp
 
 #### Northstar Freight Lines
 
-Northstar offers balanced company-driver wages and a broad range of dispatch work. Choose it if you'd like a general mix of freight rather than a carrier focused on one type of run.
+Northstar has balanced company-driver wages and a broad mix of freight, with no focus on one type of run.
 
 #### Great Lakes Training Transport
 
-Great Lakes gives you more short-haul training work and pays better for stops on short loads. Its deadlines are also slightly more forgiving, giving you more room while you're learning to plan a trip. Once you reach level 4 with full dispatch trust, Business status lets you move to any of the other three carriers.
+Great Lakes has more short-haul training work, better stop pay on short loads, and slightly more forgiving deadlines while you learn to plan a trip. Once you reach level 4 with full dispatch trust, Business status lets you move to any of the other three carriers.
 
 #### Prairie Link Regional
 
@@ -86,7 +86,7 @@ Prairie Link keeps more of its work within the same region and emphasizes grain 
 
 #### Summit Value Logistics
 
-Summit offers more long-haul and high-value lanes. It pays a better percentage and on-time bonus, with a smaller guarantee. That arrangement makes the load's revenue and an on-time arrival more important to what you earn.
+Summit offers more long-haul and high-value lanes. It pays a better percentage and on-time bonus, with a smaller guarantee. Your earnings depend more on the load's revenue and an on-time arrival.
 
 #### Your starting money and home terminal
 
@@ -102,7 +102,7 @@ You'll begin at a terminal, where the first-day briefing explains your work and 
 
 Start the engine with E, then give the air pressure time to reach 100 psi. The brakes need that air supply. Once it's ready, P releases the parking brake. Hold Up to accelerate and Down to brake.
 
-You don't have to hold the accelerator for the whole trip. When automatic speed control is available, K starts it. That leaves you more time to listen to the road and learn the readouts. Use the space bar to check your speed at any given moment, along with information about what automatic speed control is doing and air brake information. On the open road, K uses adaptive cruise. In supported low-speed areas, it uses speed keeper to help you manage an approach to a pickup or delivery facility.
+You don't have to hold the accelerator for the whole trip. When automatic speed control is available, K starts it. That leaves you more time to listen to the road and learn the readouts. Press Space to check your speed, speed-control mode, and air pressure. On the open road, K uses adaptive cruise. In supported low-speed areas, it uses speed keeper to help you manage an approach to a pickup or delivery facility.
 
 ### Collecting the freight
 
@@ -112,9 +112,9 @@ Once you're loaded, a company driver follows the route dispatch assigned. As an 
 
 ### Keeping track of the road
 
-Several bits of information are available at any time during a trip. Space reads your speed and truck state. R tells you where you are and how far you've come. C gives the clock and your next hours limit, while U describes the road ahead.
+Use the readout hotkeys to check the trip while driving. Space reads your speed and truck state. R tells you where you are and how far you've come. C gives the clock and your next hours limit, while U describes the road ahead.
 
-Use those answers to plan before a stop becomes urgent. T helps you choose a rest stop while you're rolling; X signals for its exit. Keep an eye on your legal driving time as well as the delivery clock. Alt+A tells you how much time you've used at the wheel and on duty. Alt+S tells you when your break is due, and Alt+D tells you what will end the shift and which rest stops you can reach.
+Check those readouts before you need a stop. T helps you choose a rest stop while you're rolling; X signals for its exit. Keep an eye on your legal driving time as well as the delivery clock. Alt+A tells you how much time you've used at the wheel and on duty. Alt+S tells you when your break is due, and Alt+D tells you what will end the shift and which rest stops you can reach.
 
 When a break is due, pull into a stop and take it before driving farther. Don't wait for the eleven-hour driving limit: your break can come due earlier, and the duty window can end your shift before you've driven eleven hours. A short break won't reset the shift. Check the [hours and fatigue guide](#hours-of-service-and-fatigue) when you're deciding whether you need a break or sleep.
 
@@ -126,7 +126,7 @@ There's still some driving after the highway. Follow the local approach to the r
 
 ### Reading your settlement
 
-The settlement tells you how the trip worked out: what you earned, the condition of the load, and the effect on your career. Read it before looking for the next job. It's a chance to understand what went well and what cost you money.
+Read the settlement before looking for the next job. It shows your earnings, cargo condition, and career changes, including anything that cost you money.
 
 If you need a moment to check something, Escape pauses the drive. Learn game sounds is available on the main and pause menus, so you can hear a cue and learn what it means before meeting it on the road. Lower music, radio, or ambience if it makes the driving sounds hard to hear.
 
@@ -151,7 +151,7 @@ Use Up and Down to find the option you want, then Enter or Space to select it. E
 
 ### Reviewing what the game said
 
-Message review is there when a call passes before you've taken it in. You can return to it without waiting for the game to say it again.
+Use message review to replay an announcement you missed.
 
 | Key | Action |
 | --- | --- |
@@ -220,7 +220,7 @@ The terminal is your stop between jobs. Before taking another load, you can revi
 
 ### Looking after the truck
 
-Open Truck status before another load if you need to check fuel, damage, tire wear, or grime. Walk around the truck takes fifteen minutes on duty and checks the tractor for defects an inspector could find. When something needs attention, open Garage and choose the service for it rather than waiting for trouble on the road.
+Open Truck status before another load if you need to check fuel, damage, tire wear, or grime. Walk around the truck takes fifteen minutes on duty and checks the tractor for defects an inspector could find. If you find a problem, open Garage and choose the service you need before driving.
 
 Garage offers fuel, repairs, tire service, brake service, engine work, snow chains, and a wash. A company supplies your equipment and handles its routine costs. As an owner, you'll pay those bills yourself, so keep enough cash for service and fuel between settlements.
 
@@ -386,9 +386,7 @@ A loaded truck takes longer to accelerate. The automatic gearbox shifts for the 
 
 If the load is close to the weight limit, check before filling the tank. Fuel adds to gross weight, and the fuel menu shows the projected total. A CAT Scale checks the axle groups as well.
 
-The parking brake is for a stopped truck.
-
-Pulling it at speed brings a hard stop and can flat-spot the tires. With it set, K holds high idle until you release the brake.
+Set the parking brake once you're stopped. Pulling it at speed brings a hard stop and can flat-spot the tires. With it set, K holds high idle until you release the brake.
 
 On open road at twenty miles per hour or above, K starts adaptive cruise. In supported low-speed zones, it starts speed keeper instead. The control follows traffic and leaves a wider gap in bad weather.
 
@@ -416,7 +414,7 @@ Preventable damage can cost a safety bonus and add a deductible. Repairing it on
 
 ## Mountain driving
 
-Before a hill, G tells you the grade, its length, how the truck is performing, and the next relevant hill. Sustained grades of three percent over three quarters of a mile are normally announced ahead. With Quiet or Urgent only speech, you'll need to ask with G.
+Before a hill, G tells you the grade, its length, how the truck is performing, and the next relevant hill. Sustained grades of three percent over three quarters of a mile are normally announced ahead. With Quiet or Urgent only speech, check the grade with the G hotkey.
 
 Set your speed and gear before starting down a mountain. The engine brake helps hold a steady speed; use the service brakes in short applications with time to cool between them. Holding the service brakes continuously builds heat and fade. Take hot-brake warnings seriously.
 
@@ -440,7 +438,7 @@ On an undivided road, crossing the centerline puts you into opposing traffic. At
 
 ## Winter driving
 
-Snow, ice, and freezing rain leave you less grip, particularly on worn tires. Give the truck gradual steering and braking inputs. The engine brake needs care too; a strong setting can be more than the tires can hold.
+Snow, ice, and freezing rain leave you less grip, particularly on worn tires. Steer and brake gradually. The engine brake needs care too; a strong setting can be more than the tires can hold.
 
 | Equipment | What It Does |
 | --- | --- |
@@ -453,11 +451,11 @@ Level 1 chain law accepts winter tires or chains. Level 2 requires chains on the
 
 ## Traffic and sharing the road
 
-Traffic moves around you throughout the trip. Vehicles can slow, brake, merge, pass, and form queues. Busy metro roads can take longer during rush hour, so leave room in your delivery plan for more than the distance alone. If you're gaining on a vehicle ahead, ease off before the gap becomes a problem.
+Traffic moves around you throughout the trip. Vehicles can slow, brake, merge, pass, and form queues. Allow extra time for rush-hour traffic on busy metro roads. If you're gaining on a vehicle ahead, ease off before the gap becomes a problem.
 
 ### Following and passing
 
-L checks your lane and the space beside you. Ask before moving over, then listen for clearance before returning after a pass. Traffic sounds help you notice a vehicle, but they don't replace that lane check. A car may be beside you even while you're concentrating on an exit or a curve.
+L checks your lane and the space beside you. Check with the L hotkey before moving over, then listen for clearance before returning after a pass. Traffic sounds help you notice a vehicle, but they don't replace that lane check. A car may be beside you even while you're concentrating on an exit or a curve.
 
 Adaptive cruise follows traffic and leaves a wider gap in poor weather. It doesn't steer. With full lane keeping, the truck can pass slow traffic and return when there's room; it won't start a pass within two miles of an exit. You still need to respond to hazards and debris. If you missed the clearance announcement, L gives you another check.
 
@@ -475,7 +473,7 @@ When the game says Brake now, respond promptly. Some hazards need your speed bel
 
 ## Road events, weather, and rest stops
 
-The GPS announces state lines, towns, route changes, work zones, tolls, and useful stops. Listen ahead of your next decision, especially when a lane closes or your planned exit is approaching.
+The GPS announces state lines, towns, route changes, work zones, tolls, and useful stops. Listen for lane closures and the approach to your planned exit.
 
 ### Construction and exits
 
@@ -511,7 +509,7 @@ Don't wait for an empty tank before looking for fuel. Warnings tell you when it'
 
 ### Weather and calendar
 
-V reads the weather and simulated forecasts. Conditions affect much of the drive, including grip, visibility, safe speed, cruise gap, drag, fuel use, and sound. A career begins on March 21 and moves through the seasons as you drive and rest. Ask with C, open status, or check at the terminal to hear the date.
+V reads the weather and simulated forecasts. Conditions affect much of the drive, including grip, visibility, safe speed, cruise gap, drag, fuel use, and sound. A career begins on March 21 and moves through the seasons as you drive and rest. Check the date with the C hotkey, open status, or check at the terminal.
 
 Live weather normally controls the calendar. If you want the career calendar to advance independently, turn that option off. An established career starts its independent calendar on today's date, and conditions are adjusted to its season. At a terminal, the temperature comes from a live station when available; the game tells you if the reading is still loading.
 
@@ -572,11 +570,11 @@ Your legal hours are the same in both hours modes: eleven driving hours after te
 
 Any thirty consecutive minutes without driving can meet the driving-break requirement. Loading and inspections can count, but they won't reset the duty window. Moving the truck for work counts even when you're bobtail.
 
-Ask about your hours before choosing how far to continue. Alt+A reads time used, Alt+S tells you when the break is due, and Alt+D reads both shift limits with reachable legal rest. C gives the clock, deadline, and nearest limit. You'll hear warnings with two hours, one hour, and thirty minutes left.
+Check your hours before choosing how far to continue. Alt+A reads time used, Alt+S tells you when the break is due, and Alt+D reads both shift limits with reachable legal rest. C gives the clock, deadline, and nearest limit. You'll hear warnings with two hours, one hour, and thirty minutes left.
 
 A half-hour break won't solve a shift that's ending. Check reachability again if traffic or weather slows you down.
 
-A ten-hour sleep gives you a straightforward reset. At supported parking, you can also use two, three, seven, or eight hours in the berth to make an 8+2 or 7+3 split. The long half pauses the duty window. The short half counts until you complete the pair, then the game recalculates the duty between rests. If a nap leaves the window running, the description tells you when it closes.
+Ten hours of sleep resets your legal hours. At supported parking, you can also use two, three, seven, or eight hours in the berth to make an 8+2 or 7+3 split. The long half pauses the duty window. The short half counts until you complete the pair, then the game recalculates the duty between rests. If a nap leaves the window running, the description tells you when it closes.
 
 Open Logbook to review your current duty, limits, daily totals, and earlier entries with their place and reason. While driving, the ELD app gives your hours and reachable stops. If an inspection finds you over hours, it orders a ten-hour hold and explains what that does to the deadline.
 
@@ -590,7 +588,7 @@ Away from route points, stop fully and use T or the pause menu for emergency sho
 
 ## Status screens
 
-Sometimes you need one answer, such as fuel or time left. Use its quick key. For a fuller picture, Tab opens reports organized by topic, so you can choose the information you need.
+Use a readout hotkey for a quick check of fuel or time left. Press Tab to open the full status reports by topic.
 
 | Key | Information |
 | --- | --- |
@@ -641,7 +639,7 @@ Navigation reads your next guidance, route progress, and next listed exit. Open 
 
 Weather tells you where the report comes from, how old it is, what conditions are like, and the suggested safe speed. Simulated weather also gives you a forecast of what's coming next. A live report may have no forecast. If a live check is still updating or has failed, the app tells you; check how old the last report is before relying on it.
 
-The safe-speed guidance helps you judge conditions. You still need to allow for the curve, grade, traffic, and truck you're driving. V gives a quicker weather readout when you don't need the full report.
+Use the weather's safe-speed guidance alongside the curve, grade, traffic, and truck conditions. V gives a quicker weather readout when you don't need the full report.
 
 ### Traffic app
 
@@ -651,7 +649,7 @@ Open Traffic to hear about traffic ahead, including how far away a reported vehi
 
 Truck stops lists up to three upcoming route stops within the next hundred miles, with their distance and services. Check it before committing to a stop: a public rest area may offer parking without fuel or repairs. If the app finds no listed stop in that range, look farther ahead in Map and consider your fuel and legal hours before continuing.
 
-The app helps you compare stops. T plans a rest stop while you're rolling, and X signals for its exit. Once you're stopped at a supported location, T opens the services you can use there.
+After comparing stops, use T to plan a rest stop while rolling and X to signal for its exit. Once you're stopped at a supported location, T opens the services you can use there.
 
 ### Road chatter app
 
@@ -732,7 +730,7 @@ Latching brake is on by default. Tap the brake, then press and hold it again for
 
 ### Settings reference
 
-Use the category sections below to find the setting you need. If you're already in the game, F1 on a setting reads its explanation.
+Press F1 on a setting in the game to hear its explanation.
 
 ### Difficulty and hours of service
 
@@ -808,7 +806,7 @@ If one sound is covering another, adjust that sound's volume rather than lowerin
 
 ### Speech settings
 
-Start with Driving speech to choose how much the road tells you without being asked. Standard includes fuller updates and traffic calls. Quiet and Urgent only reduce those automatic announcements; your readout keys still answer when you need information. Roadside chatter and place names have their own controls.
+Driving speech controls how much the game announces automatically. Standard includes fuller updates and traffic calls. Quiet and Urgent only reduce those automatic announcements; your readout keys still answer when you need information. Roadside chatter and place names have their own controls.
 
 | Setting | Purpose |
 | --- | --- |
@@ -849,7 +847,7 @@ You can browse public driver information without sharing your own. Connect an ac
 
 ### Problem reports
 
-When you need to report something that happened in play, this screen tells you where the game log is saved. The log includes spoken output, which can help explain what you heard. Finding the log doesn't send it anywhere.
+Problem reports shows where the game log is saved. It includes the spoken output from your session and stays on your computer unless you share it.
 
 | Setting | Purpose |
 | --- | --- |
@@ -892,7 +890,7 @@ Radio status shows the stations you can receive. The Radio app lets you search, 
 
 Original, the default, plays licensed menu and Roadhouse music. Synthesized uses music the game composes, along with the original three tracks from Freight Fate 1.5. It removes voiced breaks and fictional regional stations. Real streams and personal playlists remain available unless streamer-safe mode hides them.
 
-Streamer-safe mode limits the dial to built-in safe stations. With Synthesized music, only the synthesized Roadhouse remains. You can still switch the radio on or off, adjust its volume, and ask what's playing, but other station controls do nothing.
+Streamer-safe mode limits the dial to built-in safe stations. With Synthesized music, only the synthesized Roadhouse remains. You can still switch the radio on or off, adjust its volume, and check what's playing, but other station controls do nothing.
 
 ### Playing your own music
 
@@ -912,7 +910,7 @@ Open Achievements from the main menu and choose a saved career. The menu reads h
 
 Earned entries include their descriptions. Locked entries don't give you the same detail, and hidden achievements keep their names secret until earned. You can browse them between trips without starting or changing a career.
 
-For your next practical goal, read Career plan at the terminal after your first dispatch. Career stats shows the level, reputation, deliveries, qualifications, and record that affect your opportunities. Business status explains your equipment and business position. Those screens help you decide whether your next aim is a new kind of freight, a different truck, or a move toward own authority.
+After your first dispatch, check Career plan at the terminal for your next goal. Career stats shows the level, reputation, deliveries, qualifications, and record that affect your opportunities. Business status explains your equipment and business position. Use those reports to plan for new freight, another truck, or own authority.
 
 ## Online sharing and cloud backups
 
