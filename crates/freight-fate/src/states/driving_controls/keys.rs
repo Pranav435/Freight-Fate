@@ -255,6 +255,12 @@ impl DrivingState {
             Action::Upcoming => self.speak_upcoming(ctx, 15.0),
             Action::Radio => self.toggle_radio(ctx),
             Action::RadioFavorite => self.toggle_radio_favorite(ctx),
+            Action::RadioTuneNext
+            | Action::RadioTunePrev
+            | Action::RadioVolumeUp
+            | Action::RadioVolumeDown
+            | Action::RadioCategoryNext
+            | Action::RadioCategoryPrev => {}
             Action::RadioNowPlaying => self.speak_radio_now_playing(ctx),
             Action::RadioStatus => self.speak_radio_status(ctx),
             Action::Accelerate | Action::Brake | Action::EmergencyBrake | Action::Straighten => {}

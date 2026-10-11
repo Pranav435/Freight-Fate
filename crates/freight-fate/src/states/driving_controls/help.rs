@@ -394,6 +394,19 @@ impl DrivingState {
             "emergency shoulder sleep. {} opens the status menu. ",
             capitalized(&n(Action::Status))
         ));
+        text.push_str(&format!(
+            "{} tunes to the previous station and {} to the next. {} and {} lower and raise the radio volume. {} or {} changes the radio category. {} turns the radio on or off, {} saves a favorite, {} reads radio status, and {} says what is playing. ",
+            capitalized(&n(Action::RadioTunePrev)),
+            n(Action::RadioTuneNext),
+            capitalized(&n(Action::RadioVolumeDown)),
+            n(Action::RadioVolumeUp),
+            capitalized(&n(Action::RadioCategoryPrev)),
+            n(Action::RadioCategoryNext),
+            capitalized(&n(Action::Radio)),
+            n(Action::RadioFavorite),
+            n(Action::RadioStatus),
+            n(Action::RadioNowPlaying),
+        ));
         text.push_str("Start pauses and unpauses. The Back button stops the driving voice ");
         text.push_str("while it is speaking; when nothing is being said, it repeats this help. ");
         text.push_str(&objective_help);

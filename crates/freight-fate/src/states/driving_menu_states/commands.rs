@@ -120,13 +120,20 @@ impl Menu for DrivingCommandsState {
         let mut items: Vec<MenuItem<Self>> = Action::all()
             .filter(|action| offers(*action))
             .map(|action| {
+                let mut help = format!("On the keyboard: {}.", ctx.bindings.spoken(action));
+                if action.on_pad() {
+                    help.push_str(&format!(
+                        " On the controller: {}.",
+                        ctx.bindings.pad_spoken(action)
+                    ));
+                }
                 MenuItem::new(
                     action.label(),
                     move |s: &mut Self, ctx: &mut GameContext| {
                         s.run_on_drive(ctx, |drive, ctx| drive.run_key_action(ctx, action));
                     },
                 )
-                .help(format!("On the keyboard: {}.", ctx.bindings.spoken(action)))
+                .help(help)
             })
             .collect();
         items.extend(Fixed::ALL.into_iter().map(|fixed| {

@@ -763,6 +763,13 @@ impl App {
                 self.ctx.run_deferred();
             }
         }
+        let generated = self.ctx.controller.take_generated_events();
+        if let Some(state) = self.ctx.state() {
+            for event in &generated {
+                state.borrow_mut().handle_controller(&mut self.ctx, event);
+                self.ctx.run_deferred();
+            }
+        }
     }
 
     /// Hand a keyboard/window event to the active state.
@@ -979,6 +986,20 @@ impl App {
         if let Some(state) = self.ctx.state() {
             if state.borrow().wants_controller_repeat() {
                 for event in &repeats {
+                    state.borrow_mut().handle_controller(&mut self.ctx, event);
+                    self.ctx.run_deferred();
+                }
+            } else {
+                for event in repeats.iter().filter(|event| {
+                    matches!(
+                        event,
+                        InputEvent::ControllerButtonDown {
+                            button: crate::controller::ControllerButton::RightStickUp
+                                | crate::controller::ControllerButton::RightStickDown,
+                            ..
+                        }
+                    )
+                }) {
                     state.borrow_mut().handle_controller(&mut self.ctx, event);
                     self.ctx.run_deferred();
                 }

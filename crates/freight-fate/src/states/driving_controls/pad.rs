@@ -153,6 +153,12 @@ impl DrivingState {
             Action::Neutral | Action::Reverse | Action::TransmissionMode => {}
             Action::Radio => self.toggle_radio(ctx),
             Action::RadioFavorite => self.toggle_radio_favorite(ctx),
+            Action::RadioTuneNext => self.tune_radio(ctx, 1),
+            Action::RadioTunePrev => self.tune_radio(ctx, -1),
+            Action::RadioVolumeUp => self.adjust_radio_volume(ctx, 1),
+            Action::RadioVolumeDown => self.adjust_radio_volume(ctx, -1),
+            Action::RadioCategoryNext => self.jump_radio_category(ctx, 1),
+            Action::RadioCategoryPrev => self.jump_radio_category(ctx, -1),
             Action::RadioStatus => self.speak_radio_status(ctx),
             Action::RadioNowPlaying => self.speak_radio_now_playing(ctx),
             Action::Accelerate
