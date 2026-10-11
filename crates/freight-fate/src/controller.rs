@@ -897,14 +897,32 @@ impl ControllerManager {
 
     fn on_button_down(&mut self, button: ControllerButton) {
         match button {
-            ControllerButton::RightShoulder => self.modifier = true,
+            ControllerButton::RightShoulder => {
+                self.modifier = true;
+                // A stick repeat that started on the plain layer is volume;
+                // it must not turn into a bumper action once RB goes down.
+                if matches!(
+                    self.repeat.button(),
+                    Some(ControllerButton::RightStickUp | ControllerButton::RightStickDown)
+                ) {
+                    self.repeat.clear();
+                }
+            }
             ControllerButton::LeftShoulder => self.clutch = 1.0, // instant, like holding Shift
             ControllerButton::LeftStick | ControllerButton::RightStick => {
                 self.guard_stick_buttons()
             }
             _ => {}
         }
-        self.repeat.press(button);
+        // The stick repeat is the plain-layer volume; with RB held the same
+        // directions are one-shot toggles and must not repeat.
+        let stick_vertical = matches!(
+            button,
+            ControllerButton::RightStickUp | ControllerButton::RightStickDown
+        );
+        if !(stick_vertical && self.modifier) {
+            self.repeat.press(button);
+        }
     }
 
     fn on_button_up(&mut self, button: ControllerButton) {

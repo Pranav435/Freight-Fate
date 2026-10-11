@@ -381,9 +381,26 @@ fn test_controller_help_and_hints_name_the_moved_button() {
     );
     assert!(help.contains("Controller buttons."), "{help}");
     assert!(
-        help.contains("Right stick left and right stick right tune the radio"),
+        help.contains(
+            "Right stick left tunes to the previous station and right stick right to the next."
+        ),
         "{help}"
     );
+    assert!(
+        help.contains("Right stick down and right stick up lower and raise the radio volume."),
+        "{help}"
+    );
+    assert!(
+        help.contains("Right bumper plus right stick up turns the radio on or off"),
+        "{help}"
+    );
+    assert!(!help.contains("Hold the right bumper with"), "{help}");
+    let status = help.find("opens the status menu").expect("status sentence");
+    let radio = help.find("tunes to the previous station").expect("radio");
+    let rest = help
+        .find("emergency shoulder sleep")
+        .expect("rest sentence");
+    assert!(rest < status && status < radio, "{help}");
 }
 
 #[test]
