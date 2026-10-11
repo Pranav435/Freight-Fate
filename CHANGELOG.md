@@ -29,6 +29,7 @@
 ### Changed
 
 - **Grades are now called uphill or downhill grades, not upgrades and downgrades.** You hear "6.0 percent downhill grade ahead"; the percent is unchanged.
+
 - **Sound explanations and a few manual lines read more plainly.** Dashes and run-on sentences are now shorter sentences.
 
 - **CB calls now say "trooper" instead of the trucker slang "bear".**
