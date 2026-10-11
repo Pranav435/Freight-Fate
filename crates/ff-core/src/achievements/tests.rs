@@ -94,7 +94,7 @@ fn test_achievement_copy_is_allusive_and_speech_sized() {
 
     let mut profile = TestProfile::default();
     let message = award(&mut profile, ACHIEVEMENTS[0].id).unwrap().message;
-    assert!(message.normal.starts_with("New achievement:"));
+    assert!(message.normal.starts_with("New achievement!"));
 }
 
 #[test]
@@ -369,7 +369,7 @@ fn test_live_announce_is_name_only_in_both_modes() {
     // The stored record keeps the flavor for the log and the menu...
     assert!(pair.normal.contains("kept it clean"));
     // ...but the live announce never speaks it, in either speech mode.
-    assert_eq!(live.normal, "New achievement: Night Owl.");
+    assert_eq!(live.normal, "New achievement! Night Owl.");
     assert_eq!(live.render(true), "Night Owl.");
     assert!(!live.normal.contains("kept it clean"));
 }

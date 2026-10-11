@@ -87,7 +87,7 @@ fn test_flush_restarts_the_projection() {
 fn test_interrupt_resets_to_truth() {
     let (mut pacer, _) = make_pacer();
     flush(&mut pacer, LONG_LINE);
-    interrupt(&mut pacer, "Collision.");
+    interrupt(&mut pacer, "Collision!");
     // The interrupting line purged the backlog; a short queued follow-up
     // starts right behind it, inside the staleness budget.
     assert!(!flush(&mut pacer, "Total damage 12 percent."));
@@ -150,7 +150,7 @@ fn test_many_short_lines_stay_within_budget_then_flush() {
 // seconds for the rest of the drive. The pacer now knows what the player
 // has already heard.
 
-const SIDESWIPE: &str = "You sideswiped a box truck in the right lane. The truck took damage, now 13 percent. Check your mirrors before moving over.";
+const SIDESWIPE: &str = "You sideswiped a box truck in the right lane! The truck took damage, now 13 percent. Check your mirrors before moving over.";
 
 #[test]
 fn test_identical_line_inside_the_window_is_a_repeat() {
@@ -429,7 +429,7 @@ fn test_a_line_cut_before_it_started_is_handed_back_whatever_its_age() {
 fn test_a_stale_flush_drops_a_safety_call_in_its_last_words() {
     let clock = FakeClock::at(0.0);
     let mut pacer = EventSpeechPacer::with_clock(clock.clock());
-    let brake = "Brake now. Stopped traffic ahead in both lanes, and a trooper on the shoulder.";
+    let brake = "Brake now! Stopped traffic ahead in both lanes, and a trooper on the shoulder.";
     pacer.note_interrupt(brake, EventPriority::Critical, None, None);
     // Chatter queued behind it: a real backlog.
     pacer.note_queued(CHATTER, EventPriority::Ambient, None, None);
@@ -610,7 +610,7 @@ fn test_a_stale_flush_never_steps_on_a_safety_call() {
 
     // A safety call starts speaking, chatter queued behind it.
     pacer.note_interrupt(
-        "Brake now. Stopped traffic ahead.",
+        "Brake now! Stopped traffic ahead.",
         EventPriority::Critical,
         None,
         None,
@@ -626,7 +626,7 @@ fn test_a_stale_flush_never_steps_on_a_safety_call() {
     ));
     let cut = pacer.take_flush_cut();
     let cut = cut.expect("the safety call was purged with no requeue");
-    assert_eq!(cut.0, "Brake now. Stopped traffic ahead.");
+    assert_eq!(cut.0, "Brake now! Stopped traffic ahead.");
     // Collected once only.
     assert_eq!(pacer.take_flush_cut(), None);
 }
@@ -844,7 +844,7 @@ fn test_a_rescued_line_dies_when_its_moment_has_passed() {
     assert_eq!(interrupt(&mut pacer2, "Brake lights ahead!"), None);
 }
 
-/// Shane, 2026-08-21, on "Change lanes or brake. Retread debris from a
+/// Shane, 2026-08-21, on "Change lanes or brake! Retread debris from a
 /// blown tire.": the line repeated two or three times.
 ///
 /// A cut line is handed back so it finishes -- that is what rescued the
@@ -854,7 +854,7 @@ fn test_a_rescued_line_dies_when_its_moment_has_passed() {
 /// destination exit already carry: a rescued line has to still be true.
 #[test]
 fn test_a_hazard_call_does_not_come_back_once_the_hazard_is_clear() {
-    let hazard_line = "Change lanes or brake. Retread debris from a blown tire. Left lane open.";
+    let hazard_line = "Change lanes or brake! Retread debris from a blown tire. Left lane open.";
     let live = Rc::new(Cell::new(true));
     let (mut pacer, _) = make_pacer();
     flush_at(&mut pacer, hazard_line, EventPriority::Critical);
@@ -930,7 +930,7 @@ fn test_the_overspeed_nag_dies_once_the_driver_has_slowed() {
     let (mut pacer, _) = make_pacer();
     flush_at(&mut pacer, nag, EventPriority::Route);
     pacer.track(nag, EventPriority::Route, None, always(over));
-    assert_eq!(interrupt(&mut pacer, "Brake now."), None);
+    assert_eq!(interrupt(&mut pacer, "Brake now!"), None);
 }
 
 mod settings;

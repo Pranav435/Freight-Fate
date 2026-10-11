@@ -263,7 +263,7 @@ fn test_fatigued_driver_gets_a_shorter_hazard_window() {
     let mut harness = a_drive_scaled("Tired Reactions", Some(20.0));
     let hazard = |deadline_s: f64| TripEvent {
         kind: TripEventKind::Hazard,
-        message: "Brake now.".into(),
+        message: "Brake now!".into(),
         data: TripEventData {
             deadline_s: Some(deadline_s),
             ..Default::default()
@@ -465,7 +465,7 @@ fn test_split_sleeper_rest_action_advances_clock_and_speaks_status() {
         .unwrap_or_else(|| panic!("no pending-split status line: {lines:#?}"));
     let badge_at = lines
         .iter()
-        .position(|line| line.contains("New achievement:"))
+        .position(|line| line.contains("New achievement!"))
         .unwrap_or_else(|| panic!("the sleep badge was never announced: {lines:#?}"));
     assert!(badge_at > status_at, "{lines:#?}");
     assert!(harness

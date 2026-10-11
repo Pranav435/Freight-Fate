@@ -28,8 +28,6 @@
 
 ### Changed
 
-- **Warnings and alerts end in a full stop instead of an exclamation mark.** The words are unchanged, from "Brake now" to "Level up".
-
 - **Sound explanations and a few manual lines read more plainly.** Dashes and run-on sentences are now shorter sentences.
 
 - **CB calls now say "trooper" instead of the trucker slang "bear".**

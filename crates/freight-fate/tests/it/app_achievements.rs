@@ -282,7 +282,7 @@ fn test_award_speaks_the_short_line_and_logs_the_flavor() {
         app.main_lines(),
         vec![achievement_announced(award.achievement.name).normal]
     );
-    assert!(award.message.normal.starts_with("New achievement:"));
+    assert!(award.message.normal.starts_with("New achievement!"));
     assert_eq!(
         app.ctx
             .message_log
@@ -360,7 +360,7 @@ fn test_suppressed_award_collects_without_chime_or_speech() {
     assert!(app.main_lines().is_empty(), "{:?}", app.main_lines());
     assert!(log.borrow().played.is_empty(), "{:?}", log.borrow().played);
     assert!(
-        app.ctx.achievement_notice.starts_with("New achievement:"),
+        app.ctx.achievement_notice.starts_with("New achievement!"),
         "{}",
         app.ctx.achievement_notice
     );
@@ -424,14 +424,12 @@ fn test_delivery_settlement_awards_only_first_delivery_on_a_first_run() {
         assert!(!earned(&app, id), "{id} needs more than one delivery");
     }
     // R9: the settlement names the run's badges but no longer reads their
-    // flavor paragraphs -- the story stays in the log. The announce leads with
-    // "New achievement: " or "New achievements: ", singular or plural.
+    // flavor paragraphs -- the story stays in the log. The announce keeps the
+    // exclamation style (owner preference), singular or plural.
     let summary = arrival.summary_parts.join(" ");
     assert!(summary.contains("Signed, Sealed, Hauled"), "{summary}");
-    assert!(
-        summary.contains("New achievement: ") || summary.contains("New achievements: "),
-        "{summary}"
-    );
+    assert!(summary.contains("New achievement"), "{summary}");
+    assert!(summary.contains('!'), "{summary}");
     assert!(!summary.contains("No fanfare needed"), "{summary}");
     let path = app.ctx.profile.as_ref().expect("a career").path();
     let reloaded = Profile::load(&path).expect("the career saved");
@@ -619,7 +617,7 @@ fn test_state_crossing_keeps_gameplay_prompt_before_achievement() {
     // Live, only the name (R9); the flavor waits in the log and menu.
     assert_eq!(
         app.main_lines().first().cloned().unwrap_or_default(),
-        "New achievement: Kept It Between the Lines."
+        "New achievement! Kept It Between the Lines."
     );
 }
 

@@ -283,7 +283,7 @@ fn test_terse_lane_departure_omits_recovery_instruction() {
         .last()
         .cloned()
         .expect("going off the pavement speaks");
-    assert_eq!(last, ("Off the road on the right.".to_string(), true));
+    assert_eq!(last, ("Off the road on the right!".to_string(), true));
 }
 
 #[test]
@@ -297,7 +297,7 @@ fn test_lane_departure_warning_flushes_event_voice() {
         .last()
         .cloned()
         .expect("going off the pavement speaks");
-    assert_eq!(last, ("Off the road on the right.".to_string(), true));
+    assert_eq!(last, ("Off the road on the right!".to_string(), true));
 }
 
 // -- the pull-over --------------------------------------------------------------------

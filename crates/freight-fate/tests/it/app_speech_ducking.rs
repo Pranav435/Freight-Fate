@@ -75,7 +75,7 @@ fn test_a_suppressed_repeat_does_not_duck() {
     // A line the pacer never lets reach the voice must not touch the mix.
     let mut app = TestApp::new();
     let (audio, _) = rig(&mut app);
-    let line = "You sideswiped a box truck in the right lane.";
+    let line = "You sideswiped a box truck in the right lane!";
     app.ctx.say_event(line);
     audio.borrow_mut().ducks.clear();
 

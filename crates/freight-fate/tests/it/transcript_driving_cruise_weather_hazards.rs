@@ -58,7 +58,7 @@ fn test_hazard_deadline_covers_braking_time_from_current_speed() {
         d.truck_mut().grip = 1.0;
         d.truck_mut().grade = 0.0;
     });
-    raise_hazard(&mut harness, hazard("Brake now.", 3.0, false));
+    raise_hazard(&mut harness, hazard("Brake now!", 3.0, false));
     let (speed, decel) =
         harness.read_drive(|d| (d.truck().speed_mph(), d.truck().full_service_decel_mps2()));
     let brake_s = (speed - HAZARD_SAFE_MPH) / MPH_PER_MPS / decel;
@@ -135,7 +135,7 @@ fn test_fixed_object_hazard_needs_nearly_a_stop_or_a_swerve() {
     harness.clear_speech();
     raise_hazard(
         &mut harness,
-        hazard("Change lanes or brake. Debris on the road.", 3.0, true),
+        hazard("Change lanes or brake! Debris on the road.", 3.0, true),
     );
     assert!(harness.read_drive(|d| d.hazard_dodgeable));
 
@@ -177,7 +177,7 @@ fn test_fixed_object_hazard_deadline_budgets_the_longer_stop() {
     });
     raise_hazard(
         &mut harness,
-        hazard("Change lanes or brake. Debris on the road.", 3.0, true),
+        hazard("Change lanes or brake! Debris on the road.", 3.0, true),
     );
     assert!(approx_abs(
         harness
@@ -261,7 +261,7 @@ fn test_the_driver_always_gets_a_real_window_before_the_assist_takes_over() {
         // The tightest slack the road emits: the traffic-pressure warning.
         raise_hazard(
             &mut harness,
-            hazard("Change lanes or brake. Slow truck right ahead.", 2.5, true),
+            hazard("Change lanes or brake! Slow truck right ahead.", 2.5, true),
         );
         let window = harness.read_drive(|d| {
             d.hazard_deadline.expect("a deadline") - d.aeb_engage_s(d.hazard_target_mph(None))
@@ -287,7 +287,7 @@ fn test_a_dodgeable_hazard_leaves_time_to_finish_the_lane_change_it_asks_for() {
     });
     raise_hazard(
         &mut harness,
-        hazard("Change lanes or brake. Debris on the road.", 2.5, true),
+        hazard("Change lanes or brake! Debris on the road.", 2.5, true),
     );
     let window = harness.read_drive(|d| {
         d.hazard_deadline.expect("a deadline") - d.aeb_engage_s(d.hazard_target_mph(None))
@@ -351,7 +351,7 @@ fn test_the_assist_stands_on_everything_when_service_braking_is_losing() {
     let damage_before = harness.read_drive(|d| d.truck().damage_pct);
     raise_hazard(
         &mut harness,
-        hazard("Change lanes or brake. Slow truck right ahead.", 2.5, true),
+        hazard("Change lanes or brake! Slow truck right ahead.", 2.5, true),
     );
     let mut stood_on_it = false;
     let mut elapsed = 0.0;
@@ -398,7 +398,7 @@ fn test_a_stop_service_braking_can_make_stays_on_the_service_brakes() {
     });
     raise_hazard(
         &mut harness,
-        hazard("Change lanes or brake. Slow truck right ahead.", 2.5, true),
+        hazard("Change lanes or brake! Slow truck right ahead.", 2.5, true),
     );
     let mut elapsed = 0.0;
     while harness.read_drive(|d| d.hazard_deadline).is_some() && elapsed < 120.0 {
@@ -458,7 +458,7 @@ fn test_a_routine_assisted_stop_costs_one_brake_application() {
     let psi_before = harness.read_drive(|d| d.truck().primary_air_psi);
     raise_hazard(
         &mut harness,
-        hazard("Brake now. Stopped traffic ahead.", 3.0, false),
+        hazard("Brake now! Stopped traffic ahead.", 3.0, false),
     );
 
     // Units of pedal RISE the air system charged for, the measure the fanning
@@ -538,7 +538,7 @@ fn test_the_escalation_reads_what_the_truck_is_doing_not_what_it_should() {
         });
         raise_hazard(
             &mut harness,
-            hazard("Brake now. Stopped traffic ahead.", 3.0, false),
+            hazard("Brake now! Stopped traffic ahead.", 3.0, false),
         );
         let mut stood_on_it = false;
         for _ in 0..(60 * 60) {
@@ -667,7 +667,7 @@ fn test_service_brakes_beat_a_highway_hazard_after_human_reaction() {
     });
     let damage_before = harness.read_drive(|d| d.truck().damage_pct);
 
-    raise_hazard(&mut harness, hazard("Brake now.", 3.0, false));
+    raise_hazard(&mut harness, hazard("Brake now!", 3.0, false));
     frames(&mut harness, (60.0 * 1.5) as usize, DT); // hearing the warning
     hold(&mut harness, &[Key::Down]); // then service brakes only
     for _ in 0..(60 * 20) {
@@ -687,7 +687,7 @@ fn test_service_brakes_beat_a_highway_hazard_after_human_reaction() {
 
 /// [`hazard`] with a name, and optionally the lead vehicle it is about.
 fn named_hazard(name: &str, dodgeable: bool, lead_mph: Option<f64>) -> TripEvent {
-    let mut event = hazard("Brake.", 3.0, dodgeable);
+    let mut event = hazard("Brake!", 3.0, dodgeable);
     event.data.name = Some(name.to_string());
     event.data.traffic = lead_mph.map(|mph| TrafficContext {
         lead: TrafficVehicle::new("lead", 0.5, mph, mph, 0, "cruise", "truck"),
@@ -806,7 +806,7 @@ fn test_folding_a_fixed_obstacle_into_a_vehicle_hazard_takes_the_near_stop_back(
 /// Returns the harness after the warning has spoken.
 ///
 /// Owner, 2026-09-01, on I-90 with adaptive cruise on: "Change lanes or
-/// brake." left a blind driver guessing whether a lane change was even
+/// brake!" left a blind driver guessing whether a lane change was even
 /// possible. The game already knew, so the call names the side.
 pub(crate) fn meet_a_slow_car(
     name: &str,
@@ -912,7 +912,7 @@ fn test_the_hazard_call_names_the_left_lane_when_that_is_the_open_one() {
     let harness = meet_a_slow_car("Left Open", "partial", 2, 0, &[], false);
     assert_eq!(
         the_call(&harness),
-        "Change lanes or brake. Slow car right ahead. Left lane open."
+        "Change lanes or brake! Slow car right ahead. Left lane open."
     );
     assert!(harness.read_drive(|d| d.hazard_dodgeable));
     // On partial the lane change is the driver's to make.
@@ -927,7 +927,7 @@ fn test_the_hazard_call_names_the_right_lane_when_that_is_the_open_one() {
     let harness = meet_a_slow_car("Right Open", "partial", 2, 1, &[], false);
     assert_eq!(
         the_call(&harness),
-        "Change lanes or brake. Slow car right ahead. Right lane open."
+        "Change lanes or brake! Slow car right ahead. Right lane open."
     );
     assert!(harness.read_drive(|d| d.hazard_dodgeable));
 }
@@ -937,14 +937,14 @@ fn test_the_hazard_call_offers_either_side_from_the_middle_of_three() {
     let harness = meet_a_slow_car("Either Open", "partial", 3, 1, &[], false);
     assert_eq!(
         the_call(&harness),
-        "Change lanes or brake. Slow car right ahead. Either lane open."
+        "Change lanes or brake! Slow car right ahead. Either lane open."
     );
     // A semi riding alongside on the left leaves only the right.
     drop(harness);
     let harness = meet_a_slow_car("Left Held", "partial", 3, 1, &[2], false);
     assert_eq!(
         the_call(&harness),
-        "Change lanes or brake. Slow car right ahead. Right lane open."
+        "Change lanes or brake! Slow car right ahead. Right lane open."
     );
 }
 
@@ -957,7 +957,7 @@ fn test_with_no_lane_open_the_call_is_brake_and_says_so() {
     let harness = meet_a_slow_car("Nowhere", "full", 2, 0, &[1], false);
     assert_eq!(
         the_call(&harness),
-        "Brake. Slow car right ahead. No lane open. Automatic speed control paused."
+        "Brake! Slow car right ahead. No lane open. Automatic speed control paused."
     );
     assert!(!harness.read_drive(|d| d.hazard_dodgeable));
     assert!(harness.read_drive(|d| d.cruise_mph).is_none());

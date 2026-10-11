@@ -130,7 +130,7 @@ fn test_tier_promotion_speaks_level_up_then_new_tractor() {
     assert!(approx(profile.truck_fuel_gal(), model.specs.fuel_tank_gal));
 
     result.assert_ordered(&[
-        "Level up. You are now level 4",
+        "Level up! You are now level 4",
         "Dispatch upgraded your assigned tractor",
         // Achievement flavor left the live announce (R9); the settlement now
         // names the run's badges in one batched "N new achievements:" row.
@@ -162,7 +162,7 @@ fn test_promotion_within_a_tier_stays_quiet_about_equipment() {
         2
     );
 
-    result.assert_ordered(&["Level up. You are now level 2"]);
+    result.assert_ordered(&["Level up! You are now level 2"]);
     assert!(!result
         .transcript_text()
         .contains("Dispatch upgraded your assigned tractor"));

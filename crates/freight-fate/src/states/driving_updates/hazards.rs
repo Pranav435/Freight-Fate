@@ -515,7 +515,7 @@ impl DrivingState {
     /// eased from sixty-five to fifty-five and was told it had nearly stopped
     /// and eased around. On a one-lane road it was untrue twice over -- there
     /// was nothing to ease around into, which is the same road the call
-    /// itself already gets right with a bare "Brake.". Easing around belongs
+    /// itself already gets right with a bare "Brake!". Easing around belongs
     /// to a fixed object in the lane, which is the case that still has no
     /// lead speed at all.
     ///
@@ -556,7 +556,7 @@ impl DrivingState {
         // next tick. That gate asks whether a hazard is still armed, so the
         // reading has to move with the deadline rather than wait for the next
         // frame: judged on last tick's answer it replays "Change lanes or
-        // brake." for a hazard that has just been dodged.
+        // brake!" for a hazard that has just been dodged.
         self.refresh_live_facts();
         self.release_hazard_brake();
         self.hazard_slow_hint_said = false;
@@ -731,8 +731,8 @@ impl DrivingState {
             self.trip.truck.apply_collision(severity, true);
             let damage = self.trip.truck.damage_pct;
             let mut message = SpokenMessage::with_terse(
-                format!("Collision. The truck took damage. Total damage {damage:.0} percent."),
-                format!("Collision. Damage {damage:.0} percent."),
+                format!("Collision! The truck took damage. Total damage {damage:.0} percent."),
+                format!("Collision! Damage {damage:.0} percent."),
             );
             // A dodgeable hazard's announcement leaves the session armed --
             // see `handle_trip_event` -- on the promise that only braking

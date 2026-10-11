@@ -97,7 +97,7 @@ fn a_hazard_call_is_not_handed_back_after_the_collision() {
     // The port projected the deadline forward onto the wall clock instead,
     // which stays open for the whole of any run whose simulated time outpaces
     // real time -- and the collision line is itself the interrupt that offers
-    // the rescue, so "Debris on the road ahead. Brake." came back immediately
+    // the rescue, so "Debris on the road ahead. Brake!" came back immediately
     // after the truck had already hit it.
     let mut app = TestApp::new();
     let _clock = app.fake_pacer_clock();
@@ -109,7 +109,7 @@ fn a_hazard_call_is_not_handed_back_after_the_collision() {
 
     let hazard = TripEvent {
         kind: TripEventKind::Hazard,
-        message: SpokenMessage::new("Debris on the road ahead. Brake."),
+        message: SpokenMessage::new("Debris on the road ahead. Brake!"),
         data: TripEventData::default(),
     };
     d.handle_trip_event(&mut app.ctx, &hazard);
@@ -120,7 +120,7 @@ fn a_hazard_call_is_not_handed_back_after_the_collision() {
     // answerable at the moment of impact.
     d.update_hazard(&mut app.ctx, 60.0);
     assert!(d.hazard_deadline.is_none());
-    assert_eq!(heard(&app, "Collision."), 1);
+    assert_eq!(heard(&app, "Collision!"), 1);
     assert_eq!(
         heard(&app, "Debris on the road ahead"),
         1,
@@ -144,7 +144,7 @@ fn a_hazard_call_is_still_handed_back_while_the_hazard_is_live() {
 
     let hazard = TripEvent {
         kind: TripEventKind::Hazard,
-        message: SpokenMessage::new("Debris on the road ahead. Brake."),
+        message: SpokenMessage::new("Debris on the road ahead. Brake!"),
         data: TripEventData::default(),
     };
     d.handle_trip_event(&mut app.ctx, &hazard);

@@ -15,7 +15,7 @@ use freight_fate::app::SayEvent;
 use freight_fate::speech::CaptureSpeech;
 
 const LONG_LINE_LEN: usize = 130; // ~10 seconds at the default 13 chars per second
-const SIDESWIPE: &str = "You sideswiped a box truck in the right lane. The truck took damage, \
+const SIDESWIPE: &str = "You sideswiped a box truck in the right lane! The truck took damage, \
 now 13 percent. Check your mirrors before moving over.";
 const CHATTER: &str = "Rain easing off, roads still wet."; // ~2.4s estimated
 const STOP_LINE: &str = "Planned stop, Iowa 80 Truckstop at Exit 284 in five miles.";

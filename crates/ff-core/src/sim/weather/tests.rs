@@ -2088,7 +2088,7 @@ fn test_construction_warning_lead_allows_normal_braking() {
     trip.position_mi = zone.start_mi - trip.zone_warning_lookahead_mi();
 
     let events = trip.update(0.0);
-    // NOT "Brake now." -- that is the emergency hazard opening, and this
+    // NOT "Brake now!" -- that is the emergency hazard opening, and this
     // warning fires miles out. It leads with the distance like every other
     // zone warning (Shane, 2026-08-24).
     let first = &gps_messages(&events)[0];

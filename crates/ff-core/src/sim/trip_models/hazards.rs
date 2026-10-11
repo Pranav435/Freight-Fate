@@ -23,14 +23,14 @@ const WILDLIFE_TIMES: [&str; 3] = ["dawn", "dusk", "night"];
 
 /// Where a dodge can go from the truck's own lane, as the hazard call names
 /// it (owner, 2026-09-01, on I-90 with adaptive cruise on: "Change lanes or
-/// brake." left a blind driver guessing whether a lane change was even
+/// brake!" left a blind driver guessing whether a lane change was even
 /// possible, and the game already knew).
 ///
 /// Read by `Trip::open_side_at` against the same rules a lane change is
 /// refused by -- the lane exists, is not coned off, and no vehicle holds it
 /// over the window the tap change takes -- so the call never names a lane the
 /// dodge would refuse. A hazard with no open side is not dodgeable at all:
-/// same "Brake." family, same window, as a one-lane road.
+/// same "Brake!" family, same window, as a one-lane road.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum OpenSide {
     Left,

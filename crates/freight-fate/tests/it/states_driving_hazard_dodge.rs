@@ -3,7 +3,7 @@
 //! Owner, 2026-08-24: traffic forces the truck to brake on a road with
 //! nowhere to go, and there the response should be firmer than where there is
 //! somewhere to go. The words already told the two roads apart -- one lane
-//! gets "Brake.", a road with an open lane gets "Change lanes or brake." --
+//! gets "Brake!", a road with an open lane gets "Change lanes or brake!" --
 //! and the physics did not. Worse than undifferentiated: every lead-vehicle
 //! hazard was emitted dodgeable whatever the road, so the driver with no lane
 //! was handed `LANE_TAP_CHANGE_S` of allowance for a move they could not make
@@ -70,7 +70,7 @@ fn a_hazard(name: &str, dodgeable: bool, in_lane: bool, lead_mph: Option<f64>) -
     });
     TripEvent {
         kind: TripEventKind::Hazard,
-        message: SpokenMessage::new("Brake."),
+        message: SpokenMessage::new("Brake!"),
         data: TripEventData {
             deadline_s: Some(3.0),
             dodgeable: Some(dodgeable),
@@ -253,13 +253,13 @@ fn lead_vehicle_hazard(lanes_your_side: i64) -> TripEvent {
 
 #[test]
 fn a_lead_vehicle_with_nowhere_to_go_is_not_dodgeable_and_the_call_agrees() {
-    // The owner's road. The words already said "Brake." here; what is new is
+    // The owner's road. The words already said "Brake!" here; what is new is
     // that the physics is handed the same answer, so no lane-change allowance
     // is added to a window on a road that offers no lane change.
     let event = lead_vehicle_hazard(1);
     assert_eq!(
         event.text(),
-        "Brake. Brake lights right ahead. No lane open."
+        "Brake! Brake lights right ahead. No lane open."
     );
     assert!(!event.text().contains("Change lanes"));
     assert_eq!(event.data.dodgeable, Some(false));
@@ -273,7 +273,7 @@ fn a_lead_vehicle_with_a_lane_open_keeps_both_its_offer_and_its_allowance() {
     let event = lead_vehicle_hazard(3);
     assert_eq!(
         event.text(),
-        "Change lanes or brake. Brake lights right ahead. Middle lane open."
+        "Change lanes or brake! Brake lights right ahead. Middle lane open."
     );
     assert_eq!(event.data.dodgeable, Some(true));
     assert_eq!(event.data.in_lane, Some(true));
@@ -348,7 +348,7 @@ fn a_fixed_obstacle_is_dodgeable_where_a_lane_is_open_and_the_call_says_so() {
     let open = drawn_hazard(3, "Debris on the road");
     assert_eq!(
         open.text(),
-        "Change lanes or brake. Debris on the road. Middle lane open."
+        "Change lanes or brake! Debris on the road. Middle lane open."
     );
     assert_eq!(open.data.dodgeable, Some(true));
     assert_eq!(open.data.in_lane, Some(true));
@@ -356,7 +356,7 @@ fn a_fixed_obstacle_is_dodgeable_where_a_lane_is_open_and_the_call_says_so() {
     // And on a road with one lane it is the near stop, said plainly, with no
     // lane change offered.
     let shut = drawn_hazard(1, "Debris on the road");
-    assert_eq!(shut.text(), "Brake. Debris on the road. No lane open.");
+    assert_eq!(shut.text(), "Brake! Debris on the road. No lane open.");
     assert!(!shut.text().contains("Change lanes"));
     assert_eq!(shut.data.dodgeable, Some(false));
     // Still in the lane, which is what keeps the near stop.
@@ -367,7 +367,7 @@ fn a_fixed_obstacle_is_dodgeable_where_a_lane_is_open_and_the_call_says_so() {
 fn a_hazard_that_spans_the_road_is_never_dodgeable_however_many_lanes() {
     // The kinds a lane change could never answer, named rather than lumped
     // in: ice, fog, a crosswind, a dust storm, and an animal that may bolt
-    // either way. "Brake now." is theirs alone, and it keeps its meaning
+    // either way. "Brake now!" is theirs alone, and it keeps its meaning
     // precisely because a merely narrow road no longer borrows it.
     for text in [
         "a deer crossing the road",
@@ -385,7 +385,7 @@ fn a_hazard_that_spans_the_road_is_never_dodgeable_however_many_lanes() {
     let event = drawn_hazard(3, "Stopped traffic around a fender bender");
     assert_eq!(
         event.text(),
-        "Brake now. Stopped traffic around a fender bender."
+        "Brake now! Stopped traffic around a fender bender."
     );
     assert_eq!(event.data.dodgeable, Some(false));
     assert_eq!(event.data.in_lane, Some(false));
@@ -468,12 +468,12 @@ fn with_nowhere_to_go_the_assist_acts_sooner_and_holds_the_truck_nearer() {
     let somewhere = bench_lead(2, 45.0);
 
     assert!(
-        nowhere.call.contains("Brake. Slow car"),
+        nowhere.call.contains("Brake! Slow car"),
         "{:?}",
         nowhere.call
     );
     assert!(
-        somewhere.call.contains("Change lanes or brake. Slow car"),
+        somewhere.call.contains("Change lanes or brake! Slow car"),
         "{:?}",
         somewhere.call
     );
@@ -640,7 +640,7 @@ fn a_hazard_event_that_says_nothing_about_its_lane_still_behaves() {
     harness.with_drive(|d, _| d.trip.truck.velocity_mps = 60.0 / MPH_PER_MPS);
     let event = TripEvent {
         kind: TripEventKind::Hazard,
-        message: SpokenMessage::new("Brake."),
+        message: SpokenMessage::new("Brake!"),
         data: TripEventData {
             deadline_s: Some(3.0),
             dodgeable: Some(true),

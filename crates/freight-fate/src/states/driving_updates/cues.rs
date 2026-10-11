@@ -76,9 +76,9 @@ impl DrivingState {
         let message = if boundary == "oncoming" {
             // Past an undivided centerline is not a shoulder: say the
             // real danger, on the side it lives.
-            "Across the centerline, in the oncoming lane.".to_string()
+            "Across the centerline, in the oncoming lane!".to_string()
         } else if boundary == "median" {
-            "Off the pavement, into the median on the left.".to_string()
+            "Off the pavement, into the median on the left!".to_string()
         } else {
             self.lane.describe()
         };

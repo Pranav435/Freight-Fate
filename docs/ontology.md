@@ -645,7 +645,7 @@ the separate zone warning/entry lines. Exit traffic keeps its speed --
 the truck itself is slowing for the ramp, not reacting to someone else's
 merge.
 
-**The dodgeable hazard call is "Change lanes or brake.", and it ends by
+**The dodgeable hazard call is "Change lanes or brake!", and it ends by
 naming the open lane.** The same phrase the help teaches, followed by the
 lane answer in the L key's own words: "Left lane open.", "Right lane open.",
 or "Either lane open." (owner, 2026-09-01, on I-90 with adaptive cruise on:
@@ -654,7 +654,7 @@ possible, and the game already knew). The side is read the way a lane change
 is refused -- the lane exists, it is not coned off, and nobody is holding it
 over the window the change takes -- so the call never names a lane a tap
 would refuse. Where nothing is open, on a one-lane road or with both
-neighbours held, the call is "Brake." and ends "No lane open.", and the
+neighbours held, the call is "Brake!" and ends "No lane open.", and the
 hazard is not dodgeable at all. Terse keeps the thing and the lane answer
 and drops the opener ("Slow car right ahead. Left lane open."): the named
 lane says everything the opener did. "Brake or swerve!" was a terse-only

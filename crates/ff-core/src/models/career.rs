@@ -430,7 +430,7 @@ impl Career {
             for gained_level in (before_level + 1)..=level {
                 let rank = rank_for_level(gained_level);
                 messages.push(format!(
-                    "Level up. You are now level {gained_level}: {}. Unlock: {}",
+                    "Level up! You are now level {gained_level}: {}. Unlock: {}",
                     rank.title, rank.unlock
                 ));
             }

@@ -7,8 +7,8 @@
 //!
 //! "Far too often" is a rate, so this file produces one. The sweep drives
 //! seeded deliveries over a spread of real corridors, records every occasion
-//! the trip raised a lead-vehicle hazard -- the "Change lanes or brake." /
-//! "Brake." call that the automatic brake then acts on -- and reports events
+//! the trip raised a lead-vehicle hazard -- the "Change lanes or brake!" /
+//! "Brake!" call that the automatic brake then acts on -- and reports events
 //! per hundred miles split by how many lanes the road has in the direction of
 //! travel.
 //!
@@ -1087,7 +1087,7 @@ pub fn bench_lead(lanes_your_side: i64, lead_mph: f64) -> BenchRun {
             run.call = harness
                 .transcript()
                 .iter()
-                .find(|line| line.contains("Brake. ") || line.contains("or brake. "))
+                .find(|line| line.contains("Brake!") || line.contains("brake!"))
                 .cloned()
                 .unwrap_or_default();
         }
@@ -1516,10 +1516,10 @@ fn with_no_lane_to_go_around_in_the_call_is_brake_and_nothing_else() {
     let (heard, bottom_mph) = met_a_slow_lead("One Lane Lead", 1, 45.0);
     let call = heard
         .iter()
-        .find(|line| line.contains("or brake. ") || line.contains("Brake. "))
+        .find(|line| line.contains("brake!") || line.contains("Brake!"))
         .unwrap_or_else(|| panic!("no lead warning was spoken: {heard:#?}"));
     assert!(
-        call.contains("Brake. Slow car"),
+        call.contains("Brake! Slow car"),
         "a one-lane road offered a lane change: {call:?}"
     );
     assert!(!call.contains("Change lanes"), "{call:?}");
@@ -1553,10 +1553,10 @@ fn with_a_lane_open_the_call_offers_it() {
     let (heard, _) = met_a_slow_lead("Two Lane Lead", 2, 45.0);
     let call = heard
         .iter()
-        .find(|line| line.contains("or brake. ") || line.contains("Brake. "))
+        .find(|line| line.contains("brake!") || line.contains("Brake!"))
         .unwrap_or_else(|| panic!("no lead warning was spoken: {heard:#?}"));
     assert!(
-        call.contains("Change lanes or brake. Slow car"),
+        call.contains("Change lanes or brake! Slow car"),
         "a two-lane road did not offer the lane change: {call:?}"
     );
     let resolution = heard

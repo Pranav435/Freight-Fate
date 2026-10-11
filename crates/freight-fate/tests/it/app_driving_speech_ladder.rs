@@ -102,13 +102,13 @@ fn test_safety_speaks_at_the_quietest_rung() {
     set_rung(&mut app, "urgent_only");
 
     app.ctx.say_event_with(
-        "Change lanes or brake. Slow car ahead.",
+        "Change lanes or brake! Slow car ahead.",
         SayEvent::new().category(SpeechCategory::Safety),
     );
 
     assert_eq!(
         app.event_lines(),
-        vec!["Change lanes or brake. Slow car ahead.".to_string()]
+        vec!["Change lanes or brake! Slow car ahead.".to_string()]
     );
     app.shutdown();
 }

@@ -422,7 +422,7 @@ impl DrivingState {
             // not snap on here at the full remembered error and floor the
             // throttle to chase a high target from a crawl. It used to wait,
             // silently, for the driver to bring the rig back up by hand --
-            // and after "Brake. Slow car right ahead" matched a car doing 17
+            // and after "Brake! Slow car right ahead" matched a car doing 17
             // the driver sat at 17 on a 55 road with nothing holding speed
             // and nothing said about why (owner, US-12 near Litchfield,
             // 2026-09-16). The keeper is the automation for the low-speed

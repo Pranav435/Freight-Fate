@@ -515,7 +515,7 @@ impl DrivingState {
                         self.say_safety_interrupt(
                             ctx,
                             &format!(
-                                "You ran the red light{place} and {hit}. Total damage \
+                                "You ran the red light{place} and {hit}! Total damage \
                                  {damage:.0} percent."
                             ),
                         );
@@ -648,7 +648,7 @@ impl DrivingState {
                     self.say_safety_interrupt(
                         ctx,
                         &format!(
-                            "You blew the stop sign{place} and {hit}. Total damage \
+                            "You blew the stop sign{place} and {hit}! Total damage \
                              {damage:.0} percent."
                         ),
                     );
@@ -810,7 +810,7 @@ impl DrivingState {
             self.say_safety_interrupt(
                 ctx,
                 &format!(
-                    "You rolled the {noun} into cross traffic and {hit}. Total damage \
+                    "You rolled the {noun} into cross traffic and {hit}! Total damage \
                      {damage:.0} percent."
                 ),
             );

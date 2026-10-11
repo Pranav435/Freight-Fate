@@ -1019,7 +1019,7 @@ fn test_swerving_into_occupied_space_is_a_sideswipe() {
 /// Pinballing across the same line is one sideswipe, not three.
 ///
 /// Tester transcript, 2026-08-11: "You sideswiped a box truck in the right
-/// lane. The truck took damage, now 13 percent." three times inside six
+/// lane! The truck took damage, now 13 percent." three times inside six
 /// tenths of a second, for one brush against one vehicle -- and the damage
 /// charged three times with it.
 #[test]
@@ -1065,7 +1065,7 @@ fn test_hazard_event_records_dodge_context() {
     rolling(&mut d, 60.0);
     let event = TripEvent {
         kind: TripEventKind::Hazard,
-        message: "Change lanes or brake. Debris on the road.".into(),
+        message: "Change lanes or brake! Debris on the road.".into(),
         data: TripEventData {
             deadline_s: Some(4.0),
             dodgeable: Some(true),
@@ -1081,7 +1081,7 @@ fn test_hazard_event_records_dodge_context() {
 // -- Hazard wording must not offer a lane change nobody can make -----------------------
 
 /// Manual playtest, US-285 toward Denver, 2026-08-12: one lane your side, and
-/// the lead-vehicle warning still said "Change lanes or brake." -- an escape
+/// the lead-vehicle warning still said "Change lanes or brake!" -- an escape
 /// the road never offered. The lead-vehicle branch must ask the same lane
 /// authority a real lane change answers to.
 ///
@@ -1108,7 +1108,7 @@ fn test_traffic_pressure_hazard_says_brake_only_with_no_lane_to_swerve_into() {
     assert!(!events.is_empty());
     assert_eq!(
         events[0].text(),
-        "Brake. Brake lights right ahead. No lane open."
+        "Brake! Brake lights right ahead. No lane open."
     );
     assert!(!events[0].text().contains("change lanes"));
     // And the physics is told the same thing the words were: there is
@@ -1141,7 +1141,7 @@ fn test_traffic_pressure_hazard_keeps_the_lane_offer_when_one_exists() {
     assert!(!events.is_empty());
     assert_eq!(
         events[0].text(),
-        "Change lanes or brake. Brake lights right ahead. Left lane open."
+        "Change lanes or brake! Brake lights right ahead. Left lane open."
     );
 }
 
@@ -1180,7 +1180,7 @@ fn test_random_dodgeable_hazard_says_brake_only_with_no_lane_to_swerve_into() {
         if !event.text().contains("Debris on the road") {
             continue;
         }
-        assert_eq!(event.text(), "Brake. Debris on the road. No lane open.");
+        assert_eq!(event.text(), "Brake! Debris on the road. No lane open.");
         // Same rule for an object as for a vehicle: no lane, no dodge. The
         // debris is still in our lane, so brake alone still owes the near
         // stop -- that is `in_lane`, not `dodgeable`.

@@ -134,7 +134,7 @@ fn test_only_the_hazard_call_stays_critical() {
 
     let hazard = event(
         TripEventKind::Hazard,
-        "Brake now.",
+        "Brake now!",
         TripEventData::default(),
     );
     assert!(DrivingState::is_critical_event(&hazard));
@@ -223,7 +223,7 @@ fn test_zone_warning_rides_route_while_weather_chatter_stays_ambient() {
     let mut app = TestApp::new();
     let mut d = a_drive(&mut app);
     let zone = Zone::new(5.0, 8.0, 45.0, "construction");
-    let warning = "Brake now. In 2 miles, construction ahead. Merge left for the \
+    let warning = "Brake now! In 2 miles, construction ahead. Merge left for the \
                    flagger taper; speed limit 55, then 45 through the work zone.";
     let e = zoned(TripEventKind::GpsCue, warning, &zone);
     assert_eq!(d.event_priority(&e), EventPriority::Route);
@@ -382,19 +382,19 @@ fn test_truly_ambient_chatter_is_spaced_without_blocking_safety() {
         &mut app.ctx,
         &event(
             TripEventKind::Hazard,
-            "Brake now. Debris.",
+            "Brake now! Debris.",
             TripEventData::default(),
         ),
     );
     assert_eq!(
         app.event_calls().last().cloned(),
-        Some(("Brake now. Debris.".to_string(), true))
+        Some(("Brake now! Debris.".to_string(), true))
     );
 
     d.update_ambient_events(&mut app.ctx, AMBIENT_EVENT_SPACING_S);
     assert_eq!(
         app.event_calls().last().cloned(),
-        Some(("Brake now. Debris.".to_string(), true))
+        Some(("Brake now! Debris.".to_string(), true))
     );
 
     d.hazard_deadline = None;
@@ -676,7 +676,7 @@ fn test_the_construction_warning_does_not_shout_brake_now_from_eight_miles() {
     //
     // The assists do not, in fact, slow early -- his own log has the ease
     // landing within seconds of the zone. He was slowing because the advance
-    // warning told him to: "Brake now. In 8 miles, construction ahead."
+    // warning told him to: "Brake now! In 8 miles, construction ahead."
     //
     // "Brake now" is the emergency hazard opening, the words used for debris
     // in your lane. Saying it about something eight miles off is untrue, gets

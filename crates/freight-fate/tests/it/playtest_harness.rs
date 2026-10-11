@@ -240,7 +240,7 @@ fn test_upcoming_key_leaves_traffic_pressure_to_its_own_advisory() {
 fn test_playtest_transcript_preserves_hazard_warning_and_outcome() {
     let mut harness = PlaytestHarness::new();
     harness.start_route("Buffalo", "Rochester", RouteSetup::default());
-    let warning = "Brake now. A slow vehicle ahead.";
+    let warning = "Brake now! A slow vehicle ahead.";
     harness.emit_trip_event(
         TripEventKind::Hazard,
         warning,

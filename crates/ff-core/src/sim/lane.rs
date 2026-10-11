@@ -569,7 +569,7 @@ impl LaneKeeping {
             return format!("{lane_part}, drifting {side}.");
         }
         if self.edge_excursion_inner() >= OFF_ROAD {
-            return format!("Off the road on the {side}.");
+            return format!("Off the road on the {side}!");
         }
         if away < CROSS_AT {
             return format!("{lane_part}, at the {side} edge of the lane.");
@@ -1222,7 +1222,7 @@ mod tests {
             "In the right lane, at the right edge of the lane."
         );
         lane.offset = 1.4;
-        assert_eq!(lane.describe(), "Off the road on the right.");
+        assert_eq!(lane.describe(), "Off the road on the right!");
         lane.offset = -1.2;
         assert_eq!(
             lane.describe(),
