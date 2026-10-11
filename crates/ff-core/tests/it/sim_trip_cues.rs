@@ -279,6 +279,16 @@ fn mackinac_escorts_placarded_and_heavy_loads_once_in_any_weather() {
     assert_eq!(placarded[0].0, Some(20.0));
     assert!(placarded[0].1.contains("escorts placarded and heavy loads"));
     assert!(placarded[0].1.contains("20 minutes on duty"));
+    let mut clocked = wind_trip("sault_ste_marie_mi_us", "traverse_city_mi_us", 9_000.0);
+    clocked.truck.cargo_key = "hazardous".into();
+    clocked.weather.forced = Some(WeatherKind::Clear);
+    clocked.weather.current = WeatherKind::Clear;
+    let start_minutes = clocked.game_minutes;
+    clocked.update(1.0);
+    assert!(
+        clocked.game_minutes - start_minutes >= 20.0,
+        "the escort wait moves the trip clock"
+    );
     assert!(waits("general", 13_600.0, WeatherKind::Clear).is_empty());
     assert_eq!(
         waits("general", 25_000.0, WeatherKind::Clear).len(),
