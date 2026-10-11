@@ -183,7 +183,7 @@ pub fn endorsement_announcement(key: &str) -> Option<&'static str> {
 /// license: on a real CDL the pair prints as the single letter X
 /// (49 CFR 383.153(a)(9)(v)), and it is what the fuel-tanker fleet hires on.
 pub const X_COMBINATION_ANNOUNCEMENT: &str =
-    "You now hold both the tank vehicle and hazmat endorsements -- the X \
+    "You now hold both the tank vehicle and hazmat endorsements, the X \
      combination on a real license. Bulk fuel freight is open.";
 
 /// Experience still owed before the next level, or None at the ceiling.
