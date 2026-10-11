@@ -12644,9 +12644,10 @@
             "road": "US-13 Chesapeake Bay Bridge-Tunnel",
             "authority": "Chesapeake Bay Bridge and Tunnel District",
             "method": "cash_card",
-            "amount": 45.0,
-            "estimated": true,
-            "source": "Chesapeake Bay Bridge-Tunnel District commercial toll schedule (five+ axle tractor-trailer), estimated; https://www.cbbt.com/tolls/"
+            "amount": 48.0,
+            "estimated": false,
+            "source": "https://www.cbbt.com/tolls/ (Class 12, five-axle under 84,000 lb, initial crossing, all payment types), accessed 2026-10-11.",
+            "amount_plate": 48.0
           }
         ],
         "restrictions": [
