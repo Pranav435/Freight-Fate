@@ -169,9 +169,12 @@ anything meant to detonate or burn rapidly
 (https://california.public.law/codes/vehicle_code_section_31600), and a
 load with no class as explosives.
 
-An explosives load reaching the bridge in a closed window waits on duty
-until it ends, and is told until when; then, at any hour, it waits 20
-minutes on duty for the inspection and escort. The bridge never refuses a
+The windows are read on the bridge's own clock, Pacific Time, and on the
+weekday the game's calendar speaks (the real weekday when the career follows
+the real date). An explosives load reaching the bridge in a closed window
+waits on duty until it ends; then, at any hour, it waits 20 minutes on duty
+for the inspection and escort. Both waits move the trip clock and the duty
+log, and are spoken as one line that says when the truck may cross. The bridge never refuses a
 load, so no route is changed and no job is withheld. The 20 minutes are
 the game's escort wait, not a published figure, and state holidays are not
 modelled.

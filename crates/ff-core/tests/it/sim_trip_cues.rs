@@ -368,25 +368,42 @@ fn golden_gate_holds_explosives_through_weekday_rush_hour_then_escorts_them() {
             .collect::<Vec<_>>();
         (waits, trip.game_minutes - start)
     };
-    // The career clock starts on Sunday 22 March 2026; a day on is Monday.
-    let monday = Some(24.0);
-    let (rush, minutes) = waits(Some(HazardClass::Explosive11), monday, 7.0);
-    assert_eq!(rush.len(), 2, "{rush:?}");
-    assert_eq!(rush[0].0, Some(150.0));
+    // The career calendar starts on a Wednesday, so five days on is Monday
+    // and four is Sunday. The trip clock is Eastern; San Francisco is three
+    // hours behind it, so Eastern 10 AM is 7 AM at the bridge.
+    let monday = Some(24.0 * 5.0);
+    let sunday = Some(24.0 * 4.0);
+    let (rush, minutes) = waits(Some(HazardClass::Explosive11), monday, 10.0);
+    assert_eq!(
+        rush.len(),
+        1,
+        "one line for the ban and the escort: {rush:?}"
+    );
+    assert_eq!(rush[0].0, Some(170.0));
     assert!(rush[0].1.contains("weekday rush hours"));
+    assert!(rush[0].1.contains("inspection and a bridge escort"));
     assert!(
-        rush[0].1.contains("2 hours 30 minutes on duty, until 9:30"),
+        rush[0].1.contains(
+            "You wait on duty until 9:30 AM, then 20 minutes for the escort, and may cross at 9:50 AM."
+        ),
         "{}",
         rush[0].1
     );
-    assert_eq!(rush[1].0, Some(20.0));
-    assert!(rush[1].1.contains("inspection and a bridge escort"));
-    assert!(minutes >= 150.0);
-    let (midday, _) = waits(Some(HazardClass::Explosive14), monday, 12.0);
+    assert!(
+        minutes >= 170.0,
+        "both waits move the trip clock: {minutes}"
+    );
+    let (before_dawn, minutes) = waits(Some(HazardClass::Explosive11), monday, 7.0);
+    assert_eq!(before_dawn.len(), 1, "4 AM at the bridge is before the ban");
+    assert_eq!(before_dawn[0].0, Some(20.0));
+    assert!(minutes >= 20.0, "the escort moves the trip clock");
+    let (midday, _) = waits(Some(HazardClass::Explosive14), monday, 15.0);
     assert_eq!(midday.len(), 1, "escort only");
-    let (sunday, _) = waits(Some(HazardClass::Explosive11), None, 7.0);
-    assert_eq!(sunday.len(), 1, "no rush-hour ban at the weekend");
-    assert!(waits(Some(HazardClass::FlammableLiquid), monday, 7.0)
+    assert_eq!(midday[0].0, Some(20.0));
+    let (weekend, _) = waits(Some(HazardClass::Explosive11), sunday, 10.0);
+    assert_eq!(weekend.len(), 1, "no rush-hour ban at the weekend");
+    assert_eq!(weekend[0].0, Some(20.0));
+    assert!(waits(Some(HazardClass::FlammableLiquid), monday, 10.0)
         .0
         .is_empty());
 }

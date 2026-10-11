@@ -214,6 +214,7 @@ impl DrivingState {
                 imperial: ctx.settings.imperial_units,
                 hazard_scale,
                 career_hours: Some(profile_of(ctx).game_hours),
+                live_calendar: profile_of(ctx).live_calendar,
                 traffic_provider: live_traffic_provider(ctx),
                 parking_provider: live_parking_provider(ctx),
                 bobtail: job.bobtail,

@@ -119,16 +119,21 @@ pub struct HazmatHours {
 
 impl HazmatHours {
     /// Minutes until a closed window ends, or None when the load may cross
-    /// at this time.
-    pub fn wait_minutes(&self, load: &CrossingLoad, at: chrono::NaiveDateTime) -> Option<i64> {
-        use chrono::{Datelike, NaiveTime, Weekday};
-        if !load.may_be(&self.classes) || matches!(at.weekday(), Weekday::Sat | Weekday::Sun) {
+    /// at this local time of day. `weekend` is the career calendar's.
+    pub fn wait_minutes(
+        &self,
+        load: &CrossingLoad,
+        time: chrono::NaiveTime,
+        weekend: bool,
+    ) -> Option<i64> {
+        use chrono::NaiveTime;
+        if weekend || !load.may_be(&self.classes) {
             return None;
         }
         self.weekday_closed.iter().find_map(|[from, to]| {
             let from = NaiveTime::parse_from_str(from, "%H:%M").ok()?;
             let to = NaiveTime::parse_from_str(to, "%H:%M").ok()?;
-            (from <= at.time() && at.time() < to).then(|| (to - at.time()).num_minutes().max(1))
+            (from <= time && time < to).then(|| (to - time).num_minutes().max(1))
         })
     }
 }
@@ -622,7 +627,6 @@ mod tests {
 
     #[test]
     fn class_hours_close_weekday_rush_hours_only() {
-        use chrono::NaiveDate;
         let hours = HazmatHours {
             classes: vec![HazardClass::Explosive11, HazardClass::Explosive14],
             weekday_closed: vec![
@@ -632,27 +636,21 @@ mod tests {
             text: "Closed.".into(),
             source_url: "https://example.gov/rule".into(),
         };
-        let at = |d: u32, h: u32, m: u32| {
-            NaiveDate::from_ymd_opt(2026, 10, d)
-                .unwrap()
-                .and_hms_opt(h, m, 0)
-                .unwrap()
-        };
+        let at = |h: u32, m: u32| chrono::NaiveTime::from_hms_opt(h, m, 0).unwrap();
         let blast = rig()
             .with_cargo("hazardous", false, 20_000)
             .with_hazard_class(Some(HazardClass::Explosive11));
-        // 2026-10-12 is a Monday, 2026-10-10 a Saturday.
-        assert_eq!(hours.wait_minutes(&blast, at(12, 7, 0)), Some(150));
-        assert_eq!(hours.wait_minutes(&blast, at(12, 18, 59)), Some(1));
-        assert_eq!(hours.wait_minutes(&blast, at(12, 9, 30)), None);
-        assert_eq!(hours.wait_minutes(&blast, at(12, 12, 0)), None);
-        assert_eq!(hours.wait_minutes(&blast, at(10, 7, 0)), None);
+        assert_eq!(hours.wait_minutes(&blast, at(7, 0), false), Some(150));
+        assert_eq!(hours.wait_minutes(&blast, at(18, 59), false), Some(1));
+        assert_eq!(hours.wait_minutes(&blast, at(9, 30), false), None);
+        assert_eq!(hours.wait_minutes(&blast, at(12, 0), false), None);
+        assert_eq!(hours.wait_minutes(&blast, at(7, 0), true), None);
         let paint = blast.with_hazard_class(Some(HazardClass::FlammableLiquid));
-        assert_eq!(hours.wait_minutes(&paint, at(12, 7, 0)), None);
+        assert_eq!(hours.wait_minutes(&paint, at(7, 0), false), None);
         let unknown = rig().with_cargo("hazardous", false, 20_000);
-        assert_eq!(hours.wait_minutes(&unknown, at(12, 7, 0)), Some(150));
+        assert_eq!(hours.wait_minutes(&unknown, at(7, 0), false), Some(150));
         let plain = rig().with_cargo("general", false, 20_000);
-        assert_eq!(hours.wait_minutes(&plain, at(12, 7, 0)), None);
+        assert_eq!(hours.wait_minutes(&plain, at(7, 0), false), None);
     }
 
     #[test]
