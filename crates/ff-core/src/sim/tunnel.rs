@@ -308,6 +308,8 @@ impl Trip {
             return Some(true);
         }
         if !refused {
+            self.game_minutes += ESCORT_WAIT_MINUTES;
+            self.weather.update(ESCORT_WAIT_MINUTES);
             self.log_wind_wait(
                 ESCORT_WAIT_MINUTES,
                 format!(

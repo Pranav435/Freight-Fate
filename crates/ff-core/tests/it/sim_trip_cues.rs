@@ -242,12 +242,17 @@ fn mackinac_high_wind_is_an_escort_wait_on_duty() {
     let mut trip = wind_trip("sault_ste_marie_mi_us", "traverse_city_mi_us", 13_600.0);
     trip.weather.forced = Some(WeatherKind::Wind);
     trip.weather.current = WeatherKind::Wind;
+    let start_minutes = trip.game_minutes;
     let events = trip.update(1.0);
     let wait = events
         .iter()
         .find(|e| e.data.context.as_deref() == Some("tunnel_wait"))
         .expect("escort wait");
     assert_eq!(wait.data.amount, Some(20.0));
+    assert!(
+        trip.game_minutes - start_minutes >= 20.0,
+        "the escort wait moves the trip clock"
+    );
     assert!(wait.text().contains("wait for an escort"));
     assert!(wait.text().contains("20 minutes on duty"));
     for _ in 0..30 {
