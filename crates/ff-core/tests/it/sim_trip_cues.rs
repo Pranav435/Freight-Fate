@@ -64,7 +64,7 @@ fn whittier_tunnel_gate_runs_in_the_trip_and_toll_is_one_way() {
         },
     );
     let events = trip.update(1.0);
-    assert!(events.iter().any(|event| event.text() == "Anton Anderson Memorial Tunnel. One lane shared with the railroad. Gates run on a published schedule."));
+    assert!(events.iter().any(|event| event.text().starts_with("Anton Anderson Memorial Tunnel. One lane shared with the railroad. Gates run on a published schedule.")));
     assert!(
         trip.game_minutes > 0.0,
         "the physical tunnel drive advances game time"

@@ -2889,6 +2889,14 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       and "Merge onto the tunnel" while it sits at the gate, and no cue is
       spoken when the gate opens after a wait. The HOS logging for waits has
       unit tests in the tunnel module but no driving-state test yet.
+- [ ] **Event-voice reissues read as repeats.** (Found along the way,
+      2026-10-11.) When a route line flushes the event voice while an
+      earlier route line is still waiting unheard, the pacer reissues that
+      line, interrupting; the voice hears it once, but the event log shows
+      it twice (the Whittier gate line before "Speed limit reduced to 25").
+      Hampton's merge cue replaying after a Clock readout is the sibling
+      rescue: an info key cut the cue mid-sentence on a shared voice, so it
+      is handed back by design. Both are pacer policy, not tunnel code.
 - [ ] **Tunnel combination length.** The 73.5 ft combination convention should
       be revisited if tractor lengths vary: a long-sleeper tractor with a
       53 ft trailer can exceed the 75 ft tunnel limit.

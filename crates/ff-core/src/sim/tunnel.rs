@@ -283,14 +283,10 @@ impl Trip {
         };
         let leg_from = leg.a.clone();
         self.processed_tunnel_gates.insert(leg_index);
-        self.emit(
-            TripEventKind::GpsCue,
-            SpokenMessage::new(data.planning_text.clone()),
-            TripEventData {
-                context: Some("tunnel_planning".to_string()),
-                ..Default::default()
-            },
-        );
+        // The tunnel's name and the gate's verdict are one line. Two route
+        // lines in one tick made the pacer flush the first and replay it in
+        // front of the second, so the name was delivered twice.
+        let gate_line = |verdict: &str| format!("{} {verdict}", data.planning_text);
         let cargo_lb = (self.truck.cargo_kg / KG_PER_LB).round().max(0.0) as u32;
         let (placarded_hazmat, hazmat_lb) = hazmat_for_cargo(
             self.truck.cargo_key.as_str(),
@@ -312,7 +308,7 @@ impl Trip {
             self.refused_tunnel_gates.insert(leg_index);
             self.emit(
                 TripEventKind::GpsCue,
-                SpokenMessage::new(spoken),
+                SpokenMessage::new(gate_line(&spoken)),
                 TripEventData {
                     context: Some("tunnel_refused".to_string()),
                     ..Default::default()
@@ -336,12 +332,22 @@ impl Trip {
             ),
             direction,
         ) {
-            TunnelDecision::Cross => false,
+            TunnelDecision::Cross => {
+                self.emit(
+                    TripEventKind::GpsCue,
+                    SpokenMessage::new(data.planning_text.clone()),
+                    TripEventData {
+                        context: Some("tunnel_planning".to_string()),
+                        ..Default::default()
+                    },
+                );
+                false
+            }
             TunnelDecision::HoursNotPublished { spoken } => {
                 self.refused_tunnel_gates.insert(leg_index);
                 self.emit(
                     TripEventKind::GpsCue,
-                    SpokenMessage::new(spoken),
+                    SpokenMessage::new(gate_line(&spoken)),
                     TripEventData {
                         context: Some("tunnel_hours_not_published".to_string()),
                         ..Default::default()
@@ -353,7 +359,7 @@ impl Trip {
                 self.game_minutes += minutes as f64;
                 self.emit(
                     TripEventKind::GpsCue,
-                    SpokenMessage::new(spoken),
+                    SpokenMessage::new(gate_line(&spoken)),
                     TripEventData {
                         amount: Some(minutes as f64),
                         context: Some("tunnel_wait".to_string()),
@@ -366,7 +372,7 @@ impl Trip {
                 self.game_minutes += minutes as f64;
                 self.emit(
                     TripEventKind::GpsCue,
-                    SpokenMessage::new(spoken),
+                    SpokenMessage::new(gate_line(&spoken)),
                     TripEventData {
                         amount: Some(minutes as f64),
                         context: Some("tunnel_closed".to_string()),
