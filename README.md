@@ -346,10 +346,21 @@ Hold the right bumper (RB) as a modifier for a second layer of driving bindings:
 | RB + A | Start / stop engine |
 | RB + B | Fuel and range |
 | RB + Y | Release / set parking brake |
-| RB + D-pad Up | Next listed highway exit |
+| RB + D-pad Up | Route progress |
 | RB + D-pad Down | Open a route stop, or emergency shoulder sleep away from stops, when fully stopped. |
 | RB + D-pad Left / Right | Lower / raise the open-road cruise target |
 | RB + Start | Driving status menu |
+
+#### Radio
+
+| Button | Action |
+| --- | --- |
+| Right stick left / right | Tune to the previous / next station |
+| Right stick down / up | Lower / raise radio volume (hold to repeat) |
+| RB + right stick up / down | Radio on / off; save or unsave the current station as a favorite |
+| RB + right stick left / right | Previous / next radio category |
+| RB + left stick click (L3) | Radio status |
+| RB + Back / Select | What the radio is playing |
 
 The left and right triggers are analog: hold them wherever you like for partial
 throttle or braking, rather than the ramped hold the arrow keys use. There is no

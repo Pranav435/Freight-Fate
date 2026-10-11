@@ -4,6 +4,10 @@
 
 ### Added
 
+- **The right stick now tunes the radio and adjusts its volume.** Hold up or down to keep changing volume.
+
+- **Right bumper combinations now cover the radio.** Use the right stick for power, favorites and categories, stick click for status, Back for what plays.
+
 - **Drivers at Great Lakes Training Transport can now move to another carrier.** At level 4 with full dispatch trust, Business status lists the other carriers.
 
 - **Interstates now have the sound of distant traffic, louder on busier stretches.**

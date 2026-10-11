@@ -41,6 +41,8 @@ bookmarks usable.
 
 ## 1.9 in flight (`feat/career-1.9`)
 
+- [x] Controller radio controls: the right stick tunes stations and changes volume; right-bumper combinations manage playback, categories, and radio information.
+
 - [x] Call dispatch, a 2.0 teaser for 1.9.4 (owner, 2026-10-10): the pause
       menu offers Call dispatch while the truck is stopped, with local answers
       about the delivery window, hours, the road ahead, truck trouble (which

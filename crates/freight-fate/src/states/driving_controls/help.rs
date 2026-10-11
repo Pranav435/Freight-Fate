@@ -389,6 +389,19 @@ impl DrivingState {
             "brake, {} plans a recommended break or sleep stop when hours of service planning hints are on, or the next sleep stop otherwise; stopped at a stop, it opens its actions. ",
             n(Action::Rest)
         ));
+        text.push_str(&format!(
+            "{} and {} tune the radio, while {} and {} lower or raise its volume. Hold the right bumper with {} or {} to move through radio categories, with {} to turn the radio on or off, {} to save a favorite, {} for radio status, and {} for what is playing. ",
+            capitalized(&n(Action::RadioTunePrev)),
+            n(Action::RadioTuneNext),
+            n(Action::RadioVolumeDown),
+            n(Action::RadioVolumeUp),
+            n(Action::RadioCategoryPrev),
+            n(Action::RadioCategoryNext),
+            n(Action::Radio),
+            n(Action::RadioFavorite),
+            n(Action::RadioStatus),
+            n(Action::RadioNowPlaying),
+        ));
         text.push_str("Away from route points while fully stopped, it opens ");
         text.push_str(&format!(
             "emergency shoulder sleep. {} opens the status menu. ",
