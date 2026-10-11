@@ -10,8 +10,9 @@ use crate::sim::trip_models::{TripEventData, TripEventKind};
 use crate::sim::vehicle::KG_PER_LB;
 use crate::speech_text::SpokenMessage;
 
-/// Queueing for a wind escort, in minutes. The authorities publish the wind
-/// levels but not the wait, so this is the game's figure.
+/// Queueing for a bridge escort, in wind or for a load the bridge always
+/// escorts, in minutes. No authority publishes the wait, so this is the
+/// game's figure.
 pub const ESCORT_WAIT_MINUTES: f64 = 20.0;
 /// How often a truck waiting out a wind closure checks the wind again.
 pub const WIND_WAIT_STEP_MINUTES: f64 = 30.0;
@@ -214,6 +215,7 @@ impl Trip {
         CrossingLoad::plain(length_ft, self.truck.rig_width_ft, self.truck.rig_height_ft)
             .with_cargo(key, tank, cargo_lb)
             .with_trailer(self.truck.trailer_attached)
+            .with_gross((self.truck.gross_mass_kg() / KG_PER_LB).round().max(0.0) as u32)
     }
 
     /// Swap in a road that shares everything behind the truck and differs
@@ -255,6 +257,30 @@ impl Trip {
                 WindDecision::Escort(text) => Some((false, text.to_string())),
                 WindDecision::Refused(text) => Some((true, text.to_string())),
             })
+    }
+
+    /// A crossing that escorts this load in any weather is a short wait on
+    /// duty, unless a wind escort already takes the truck across.
+    fn process_escort(&mut self, leg_index: usize, load: &CrossingLoad) {
+        if matches!(self.wind_call(leg_index, load), Some((false, _))) {
+            return;
+        }
+        let Some(text) = self.route.legs.get(leg_index).and_then(|leg| {
+            leg.crossings
+                .iter()
+                .filter_map(|c| c.escort.as_ref())
+                .find(|escort| escort.applies(load))
+                .map(|escort| escort.text.clone())
+        }) else {
+            return;
+        };
+        self.log_wind_wait(
+            ESCORT_WAIT_MINUTES,
+            format!(
+                "{text} You wait {} on duty.",
+                wait_text(ESCORT_WAIT_MINUTES as i64)
+            ),
+        );
     }
 
     /// Wind at a crossing: an escort is a short wait on duty; a closure is
@@ -422,6 +448,7 @@ impl Trip {
         if let Some(held) = self.process_wind_gate(leg_index, &load) {
             return held;
         }
+        self.process_escort(leg_index, &load);
         let Some(leg) = self.route.legs.get(leg_index) else {
             return false;
         };

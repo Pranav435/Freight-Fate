@@ -257,6 +257,35 @@ fn mackinac_high_wind_is_an_escort_wait_on_duty() {
 }
 
 #[test]
+fn mackinac_escorts_placarded_and_heavy_loads_once_in_any_weather() {
+    let waits = |key: &str, cargo_kg: f64, sky: WeatherKind| {
+        let mut trip = wind_trip("sault_ste_marie_mi_us", "traverse_city_mi_us", cargo_kg);
+        trip.truck.cargo_key = key.into();
+        trip.weather.forced = Some(sky);
+        trip.weather.current = sky;
+        trip.update(1.0)
+            .into_iter()
+            .filter(|e| e.data.context.as_deref() == Some("tunnel_wait"))
+            .map(|e| (e.data.amount, e.text().to_string()))
+            .collect::<Vec<_>>()
+    };
+    let placarded = waits("hazardous", 9_000.0, WeatherKind::Clear);
+    assert_eq!(placarded.len(), 1);
+    assert_eq!(placarded[0].0, Some(20.0));
+    assert!(placarded[0].1.contains("escorts placarded and heavy loads"));
+    assert!(placarded[0].1.contains("20 minutes on duty"));
+    assert!(waits("general", 13_600.0, WeatherKind::Clear).is_empty());
+    assert_eq!(
+        waits("general", 25_000.0, WeatherKind::Clear).len(),
+        1,
+        "over 40 tons gross"
+    );
+    let windy = waits("hazardous", 9_000.0, WeatherKind::Wind);
+    assert_eq!(windy.len(), 1, "one escort covers wind and placards");
+    assert!(windy[0].1.contains("wait for an escort"));
+}
+
+#[test]
 fn an_empty_trailer_waits_out_cbbt_wind_on_duty_then_holds() {
     let mut trip = wind_trip("norfolk_va_us", "cape_charles_va_us", 0.0);
     trip.weather.forced = Some(WeatherKind::Wind);
