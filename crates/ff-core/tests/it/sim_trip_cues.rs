@@ -1084,4 +1084,12 @@ fn published_tolls_carry_plate_rates_and_one_way_collection() {
     assert!(thruway
         .iter()
         .all(|toll| !toll.estimated && toll.plate_amount() >= toll.amount));
+    let carquinez = tolls("sacramento_ca_us", "san_francisco_ca_us")
+        .into_iter()
+        .find(|toll| toll.name == "Carquinez Bridge toll")
+        .expect("Carquinez toll");
+    assert!(
+        !carquinez.applies_to_direction(true) && carquinez.applies_to_direction(false),
+        "collected eastbound only"
+    );
 }

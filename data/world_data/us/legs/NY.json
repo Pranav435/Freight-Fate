@@ -26542,7 +26542,20 @@
             "source": "Derived from FHWA Highway Performance Monitoring System (HPMS) AADT and through-lane counts: median of HPMS sections snapping within 250 m of a 5-mile window of the leg, rounded to the nearest 500, lone dips between agreeing neighbours carried across. Sections queried from the national ArcGIS Living Atlas layer (Federal User Community hpms_v2_view) and snapped to checked-in route geometry, accessed 2026-07-05: https://www.fhwa.dot.gov/policyinformation/hpms.cfm"
           }
         ],
-        "state_crossings": []
+        "state_crossings": [],
+        "toll_events": [
+          {
+            "name": "New York State Thruway settlement",
+            "at_mi": 234,
+            "road": "New York State Thruway (I-90, I-87)",
+            "authority": "New York State Thruway Authority",
+            "method": "ezpass",
+            "amount": 167.53,
+            "estimated": false,
+            "source": "NY Thruway toll calculator 5H, exit 53 to the New York City line including the Mario Cuomo Bridge, effective 2026-01-01; researched 2026-07-19 (tools/toll_rates.py ny_buffalo_nyc): https://www.thruway.ny.gov/",
+            "amount_plate": 293.21
+          }
+        ]
       },
       "stops": [
         {
@@ -34498,7 +34511,20 @@
           "name": "level",
           "sections": 800,
           "source": "FHWA Highway Performance Monitoring System (HPMS) Terrain_Type, read from the national ArcGIS Living Atlas layer (Federal User Community hpms_v2_view). The class is HPMS's own; DERIVED here only in that one value stands for a whole leg -- the modal class over the HPMS sections intersecting the leg's bounding box, since HPMS classifies sections and a leg crosses many. Accessed 2026-08-19: https://www.fhwa.dot.gov/policyinformation/hpms.cfm"
-        }
+        },
+        "toll_events": [
+          {
+            "name": "New York State Thruway settlement",
+            "at_mi": 72,
+            "road": "New York State Thruway (I-87)",
+            "authority": "New York State Thruway Authority",
+            "method": "ezpass",
+            "amount": 46.43,
+            "estimated": false,
+            "source": "NY Thruway toll calculator 5H, New York City line to exit 24 including Spring Valley, effective 2026-01-01; researched 2026-07-19 (tools/toll_rates.py ny_nyc_albany): https://www.thruway.ny.gov/",
+            "amount_plate": 81.25
+          }
+        ]
       },
       "stops": [
         {
@@ -50420,7 +50446,20 @@
             "source": "OpenStreetMap lanes tags on the corridor highway ways (Overpass), development-time; total per the OSM lanes semantics (directional on oneway carriageways). ODbL, (c) OpenStreetMap contributors."
           }
         ],
-        "state_crossings": []
+        "state_crossings": [],
+        "toll_events": [
+          {
+            "name": "New York State Thruway settlement",
+            "at_mi": 200,
+            "road": "New York State Thruway (I-90, I-87)",
+            "authority": "New York State Thruway Authority",
+            "method": "ezpass",
+            "amount": 151.0,
+            "estimated": false,
+            "source": "NY Thruway toll calculator 5H, exit 45 to the New York City line, effective 2026-01-01; researched 2026-07-19 (tools/toll_rates.py ny_rochester_nyc): https://www.thruway.ny.gov/",
+            "amount_plate": 264.26
+          }
+        ]
       },
       "stops": [
         {

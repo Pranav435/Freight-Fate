@@ -113,8 +113,8 @@ duplicated here.
 
 ## Tolls
 
-Every toll on the map was an estimate until this audit. 48 of the
-53 toll events now carry a five-axle rate read from the authority's own
+Every toll on the map was an estimate until this audit. 62 of the
+67 toll events now carry a five-axle rate read from the authority's own
 schedule or calculator, with the source and access date on the event.
 
 - **Amount** is what a five-axle rig pays with a transponder: Class 5H in
@@ -127,8 +127,9 @@ schedule or calculator, with the source and access date on the event.
 - **One-way collection** is modelled where the authority collects in one
   direction only: the Chesapeake Bay Bridge (eastbound), the JFK Memorial
   Highway (northbound), the Pennsylvania Turnpike Gateway barrier
-  (eastbound; no toll westbound into Ohio) and the New England Thruway
-  (northbound).
+  (eastbound; no toll westbound into Ohio), the Ohio Turnpike Eastgate
+  barrier (westbound), the New England Thruway (northbound), the Carquinez
+  Bridge (eastbound) and the I-78 Toll Bridge (westbound, into Pennsylvania).
 - **Where the leg actually drives decides the fare.** Harrisburg to
   Pittsburgh enters at Carlisle; Cleveland to Toledo runs North Ridgeville to
   Perrysburg; Youngstown to Pittsburgh pays the Toll 376 Beaver Valley
@@ -146,6 +147,19 @@ Authority (https://www.maineturnpike.com/traveler-services/tolls), all read
 2026-10-11. The New York, Massachusetts, Indiana, Illinois, Kansas, Oklahoma
 and Florida rates come from the research recorded in `tools/toll_rates.py`
 (2026-07-19); each event names the schedule it came from.
+
+Tolls added where a leg drove a toll road for free: the New York Thruway
+on Buffalo, Rochester and Albany to New York and on Erie to Buffalo; the
+Northeast Extension on Scranton to Allentown; the New Jersey Turnpike
+western spur on Newark to New York; the I-78 Toll Bridge on Newark to
+Allentown and Allentown to New York; the Hampton plaza on Portsmouth to
+Boston; the Carquinez Bridge on Sacramento to San Francisco; the Chelyan
+and Pax barriers on Charleston to Richmond; the Cimarron Turnpike on
+Wichita to Tulsa; and the Ohio Turnpike Eastgate barrier on Pittsburgh to
+Cleveland. Each leg's road line was checked to pass the plaza or to run the
+priced stretch. The Thruway fares to New York City include the Mario Cuomo
+Bridge, which is collected southbound only, so the northbound fare is a few
+dollars high until the bridge is split out.
 
 Still estimated, because no official figure was matched to the leg's road:
 aurora_il_us:rockford_il_us Reagan Tollway settlement; new_york_ny_us:boston_ma_us Massachusetts Turnpike settlement segment; new_york_ny_us:philadelphia_pa_us New Jersey Turnpike ticket entry; new_york_ny_us:philadelphia_pa_us Delaware River Turnpike Toll Bridge settlement point; syracuse_ny_us:utica_ny_us New York State Thruway settlement.
