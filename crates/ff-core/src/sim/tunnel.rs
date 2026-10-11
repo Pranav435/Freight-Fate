@@ -2,13 +2,33 @@
 
 use chrono::{Duration, NaiveDate, NaiveDateTime, NaiveTime, Timelike};
 
-use crate::data::world_models::{CrossingLoad, Route, TunnelData};
+use crate::data::world_models::{CrossingLoad, Route, TunnelData, WindDecision};
 use crate::models::jobs::cargo_type;
 use crate::sim::hos::HosClock;
 use crate::sim::trip::{compute_leg_starts, Trip};
 use crate::sim::trip_models::{TripEventData, TripEventKind};
 use crate::sim::vehicle::KG_PER_LB;
 use crate::speech_text::SpokenMessage;
+
+/// Queueing for a wind escort, in minutes. The authorities publish the wind
+/// levels but not the wait, so this is the game's figure.
+pub const ESCORT_WAIT_MINUTES: f64 = 20.0;
+/// How often a truck waiting out a wind closure checks the wind again.
+pub const WIND_WAIT_STEP_MINUTES: f64 = 30.0;
+/// The longest a closure is waited out before dispatch looks for a detour.
+pub const MAX_WIND_WAIT_MINUTES: f64 = 4.0 * 60.0;
+
+/// A wait spoken in hours and minutes, e.g. "1 hour 30 minutes".
+pub fn spoken_wait(minutes: f64) -> String {
+    let total = minutes.round().max(0.0) as i64;
+    let (hours, mins) = (total / 60, total % 60);
+    let unit = |n: i64, one: &str| format!("{n} {one}{}", if n == 1 { "" } else { "s" });
+    match (hours, mins) {
+        (0, m) => unit(m, "minute"),
+        (h, 0) => unit(h, "hour"),
+        (h, m) => format!("{} {}", unit(h, "hour"), unit(m, "minute")),
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TunnelDirection {
@@ -205,6 +225,7 @@ impl Trip {
         let tank = cargo_type(key).is_some_and(|cargo| cargo.tank);
         CrossingLoad::plain(length_ft, self.truck.rig_width_ft, self.truck.rig_height_ft)
             .with_cargo(key, tank, cargo_lb)
+            .with_trailer(self.truck.trailer_attached)
     }
 
     /// Swap in a road that shares everything behind the truck and differs
@@ -230,6 +251,124 @@ impl Trip {
         self.chain_law_areas = self.place_chain_law_areas();
         self.posts = self.place_enforcement_posts();
         self.curves = self.place_curves();
+    }
+
+    /// The wind call at a crossing on this leg, if it has one, judged at
+    /// the sky's current sustained wind: (refused, spoken rule).
+    fn wind_call(&mut self, leg_index: usize, load: &CrossingLoad) -> Option<(bool, String)> {
+        let wind_mph = self.weather.wind_mph();
+        self.route
+            .legs
+            .get(leg_index)?
+            .crossings
+            .iter()
+            .find_map(|c| match c.wind.as_ref()?.decide(load, wind_mph) {
+                WindDecision::Cross => None,
+                WindDecision::Escort(text) => Some((false, text.to_string())),
+                WindDecision::Refused(text) => Some((true, text.to_string())),
+            })
+    }
+
+    /// Wind at a crossing: an escort is a short wait on duty; a closure is
+    /// waited out on duty, then driven around when a legal road exists, and
+    /// otherwise held at the approach until the wind drops. Returns Some
+    /// with whether the truck is held, or None when the wind lets it on.
+    fn process_wind_gate(&mut self, leg_index: usize, load: &CrossingLoad) -> Option<bool> {
+        let (refused, text) = match self.wind_call(leg_index, load) {
+            Some(call) => call,
+            None => {
+                if self.wind_held_gates.remove(&leg_index) {
+                    self.emit(
+                        TripEventKind::GpsCue,
+                        SpokenMessage::new("The wind has dropped. You may cross.".to_string()),
+                        TripEventData::default(),
+                    );
+                }
+                return None;
+            }
+        };
+        if self.wind_held_gates.contains(&leg_index) {
+            return Some(true);
+        }
+        if !refused {
+            self.log_wind_wait(
+                ESCORT_WAIT_MINUTES,
+                format!(
+                    "{text} You wait {} on duty.",
+                    spoken_wait(ESCORT_WAIT_MINUTES)
+                ),
+            );
+            return None;
+        }
+        let mut waited = 0.0;
+        while waited < MAX_WIND_WAIT_MINUTES {
+            self.game_minutes += WIND_WAIT_STEP_MINUTES;
+            self.weather.update(WIND_WAIT_STEP_MINUTES);
+            waited += WIND_WAIT_STEP_MINUTES;
+            if self
+                .wind_call(leg_index, load)
+                .is_none_or(|(refused, _)| !refused)
+            {
+                break;
+            }
+        }
+        self.log_wind_wait(
+            waited,
+            format!(
+                "{text} You wait {} on duty for the wind to drop.",
+                spoken_wait(waited)
+            ),
+        );
+        match self.wind_call(leg_index, load) {
+            Some((true, _)) => {}
+            Some((false, _)) => return self.process_wind_gate(leg_index, load),
+            None => return None,
+        }
+        let ahead = leg_index;
+        let avoid = self.route.legs.get(leg_index)?.id;
+        let city = self.route.cities.get(ahead).cloned().unwrap_or_default();
+        if let Some(route) = self.world.detour_ahead(&self.route, ahead, load, avoid) {
+            self.reroute_ahead(route);
+            self.processed_tunnel_gates.retain(|i| *i < leg_index);
+            self.refused_tunnel_gates.retain(|i| *i < leg_index);
+            let spoken = format!(
+                "The wind is still too strong. Dispatch reroutes you from {}.",
+                self.world.spoken_city(&city, None)
+            );
+            self.emit(
+                TripEventKind::GpsCue,
+                SpokenMessage::new(spoken),
+                TripEventData {
+                    context: Some("crossing_reroute".to_string()),
+                    ..Default::default()
+                },
+            );
+            return Some(false);
+        }
+        self.wind_held_gates.insert(leg_index);
+        self.emit(
+            TripEventKind::GpsCue,
+            SpokenMessage::new(
+                "There is no other road. You hold here until the wind drops.".to_string(),
+            ),
+            TripEventData::default(),
+        );
+        Some(true)
+    }
+
+    fn log_wind_wait(&mut self, minutes: f64, spoken: String) {
+        if minutes <= 0.0 {
+            return;
+        }
+        self.emit(
+            TripEventKind::GpsCue,
+            SpokenMessage::new(spoken),
+            TripEventData {
+                amount: Some(minutes),
+                context: Some("tunnel_wait".to_string()),
+                ..Default::default()
+            },
+        );
     }
 
     /// Judge a leg's crossings and tunnel gate at the city where the leg
@@ -292,6 +431,12 @@ impl Trip {
                 }
             }
         }
+        if let Some(held) = self.process_wind_gate(leg_index, &load) {
+            return held;
+        }
+        let Some(leg) = self.route.legs.get(leg_index) else {
+            return false;
+        };
         let Some(data) = leg.corridor().tunnel.clone() else {
             self.processed_tunnel_gates.insert(leg_index);
             return false;
@@ -507,5 +652,13 @@ mod tests {
         long.drive(300.0);
         log_wait_to_hos(&mut long, 650, true);
         assert_eq!(long.driving_min, 0.0);
+    }
+
+    #[test]
+    fn waits_are_spoken_in_hours_and_minutes() {
+        assert_eq!(spoken_wait(20.0), "20 minutes");
+        assert_eq!(spoken_wait(60.0), "1 hour");
+        assert_eq!(spoken_wait(90.0), "1 hour 30 minutes");
+        assert_eq!(spoken_wait(240.0), "4 hours");
     }
 }

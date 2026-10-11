@@ -364,6 +364,8 @@ pub struct Trip {
     /// Tunnel gates already reached in this run.  A refused gate remains
     /// closed rather than replaying its refusal every frame.
     pub processed_tunnel_gates: HashSet<usize>,
+    /// Crossings the truck is held at until the wind drops.
+    pub wind_held_gates: HashSet<usize>,
     pub refused_tunnel_gates: HashSet<usize>,
     /// The zone the truck was last known to be inside (Python
     /// `_active_zone`); compared by `zone_key`, the Rust stand-in for
@@ -524,6 +526,7 @@ impl Trip {
             announced_navigation: HashSet::new(),
             charged_tolls: HashSet::new(),
             processed_tunnel_gates: HashSet::new(),
+            wind_held_gates: HashSet::new(),
             refused_tunnel_gates: HashSet::new(),
             entered_zone: None,
             zone_entry_spoken: true,

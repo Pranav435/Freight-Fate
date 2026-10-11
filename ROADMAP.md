@@ -2908,8 +2908,13 @@ branch. The older Phase A/B plan checklists are not a live completion list.
 - [x] **Bridges with truck rules.** The San Francisco-Oakland Bay Bridge
       hazmat rule, the Mackinac Bridge toll and the published Chesapeake Bay
       Bridge-Tunnel toll are modelled (see docs/road-crossings.md).
-- [ ] **Bridge wind closures.** The Chesapeake Bay Bridge-Tunnel and
-      Mackinac Bridge wind restrictions need a wind speed in the weather.
+- [x] **Bridge wind closures.** The Chesapeake Bay Bridge-Tunnel and
+      Mackinac Bridge judge sustained wind at the leg start (NWS wind live,
+      a typical wind per simulated condition): escorts and closures are
+      waited out on duty, then detoured, or held until the wind drops.
+- [ ] **Wind for the Mackinac escort advisory and CBBT advisory.** The
+      20 to 35 mph advice levels (slow to 20 or 45 mph) are speed advice the
+      drive does not yet enforce.
 - [ ] **Bridge escorts.** Mackinac placarded, heavy and oversize escorts and
       Golden Gate explosive-load hours are not modelled.
 - [x] **Chesapeake Bay Bridge (US 50) toll.** Charged eastbound at the

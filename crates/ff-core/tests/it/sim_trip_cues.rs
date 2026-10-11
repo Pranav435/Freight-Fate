@@ -196,6 +196,135 @@ fn bay_bridge_turns_bulk_fuel_south_and_bridge_tolls_are_read() {
     );
 }
 
+fn wind_trip(from: &str, to: &str, cargo_kg: f64) -> Trip {
+    let world = world();
+    let leg = world
+        .legs
+        .iter()
+        .find(|leg| leg.a == from && leg.b == to)
+        .expect("wind leg")
+        .as_ref()
+        .clone();
+    assert!(leg.crossings.iter().any(|c| c.wind.is_some()));
+    let route = Route::from_legs(vec![from.into(), to.into()], vec![leg]);
+    let mut truck = TruckState::default();
+    truck.start_engine();
+    truck.trailer_attached = true;
+    truck.cargo_key = "general".into();
+    truck.cargo_kg = cargo_kg;
+    truck.velocity_mps = 10.0;
+    Trip::new(
+        route,
+        truck,
+        default_weather(),
+        TripOptions {
+            world: Some(world),
+            ..TripOptions::seeded(93)
+        },
+    )
+}
+
+#[derive(Clone)]
+struct StationWind(std::rc::Rc<std::cell::Cell<f64>>);
+
+impl ff_core::sim::weather::WeatherProvider for StationWind {
+    fn request(&mut self, _city: &str, _lat: f64, _lon: f64) {}
+    fn get(&mut self, _city: &str) -> Option<WeatherKind> {
+        Some(WeatherKind::Wind)
+    }
+    fn get_wind_kmh(&mut self, _city: &str) -> Option<f64> {
+        Some(self.0.get())
+    }
+}
+
+#[test]
+fn mackinac_high_wind_is_an_escort_wait_on_duty() {
+    let mut trip = wind_trip("sault_ste_marie_mi_us", "traverse_city_mi_us", 13_600.0);
+    trip.weather.forced = Some(WeatherKind::Wind);
+    trip.weather.current = WeatherKind::Wind;
+    let events = trip.update(1.0);
+    let wait = events
+        .iter()
+        .find(|e| e.data.context.as_deref() == Some("tunnel_wait"))
+        .expect("escort wait");
+    assert_eq!(wait.data.amount, Some(20.0));
+    assert!(wait.text().contains("wait for an escort"));
+    assert!(wait.text().contains("20 minutes on duty"));
+    for _ in 0..30 {
+        trip.update(1.0);
+    }
+    assert!(trip.position_mi > 0.0);
+}
+
+#[test]
+fn an_empty_trailer_waits_out_cbbt_wind_on_duty_then_holds() {
+    let mut trip = wind_trip("norfolk_va_us", "cape_charles_va_us", 0.0);
+    trip.weather.forced = Some(WeatherKind::Wind);
+    trip.weather.current = WeatherKind::Wind;
+    let start_minutes = trip.game_minutes;
+    let events = trip.update(1.0);
+    let wait = events
+        .iter()
+        .find(|e| e.data.context.as_deref() == Some("tunnel_wait"))
+        .expect("wind wait");
+    assert_eq!(wait.data.amount, Some(240.0));
+    assert!(wait.text().contains("Chesapeake Bay Bridge-Tunnel"));
+    assert!(wait.text().contains("4 hours on duty"));
+    assert!(trip.game_minutes - start_minutes >= 240.0);
+    // The way around the bay is far beyond the alternate-route allowance.
+    assert!(events
+        .iter()
+        .any(|e| e.text().contains("You hold here until the wind drops")));
+    assert!(events
+        .iter()
+        .all(|e| e.data.context.as_deref() != Some("crossing_reroute")));
+    let loaded = wind_trip("norfolk_va_us", "cape_charles_va_us", 9_000.0);
+    let mut loaded = loaded;
+    loaded.weather.forced = Some(WeatherKind::Wind);
+    loaded.weather.current = WeatherKind::Wind;
+    let events = loaded.update(1.0);
+    assert!(events
+        .iter()
+        .all(|e| e.data.context.as_deref() != Some("tunnel_wait")));
+    for _ in 0..30 {
+        loaded.update(1.0);
+    }
+    assert!(loaded.position_mi > 0.0, "a loaded rig crosses at 45 mph");
+}
+
+#[test]
+fn mackinac_closed_to_trucks_holds_until_the_wind_drops() {
+    let mut trip = wind_trip("sault_ste_marie_mi_us", "traverse_city_mi_us", 13_600.0);
+    let station = std::rc::Rc::new(std::cell::Cell::new(100.0));
+    trip.weather.provider = Some(Box::new(StationWind(station.clone())));
+    trip.weather.city = Some("sault_ste_marie_mi_us".into());
+    let events = trip.update(1.0);
+    assert!(events
+        .iter()
+        .any(|e| e.text().contains("closed to trucks in high winds")));
+    assert!(events
+        .iter()
+        .any(|e| e.text().contains("You hold here until the wind drops")));
+    assert!(!trip.wind_held_gates.is_empty());
+    for _ in 0..10 {
+        let quiet = trip.update(1.0);
+        assert!(quiet
+            .iter()
+            .all(|e| e.data.context.as_deref() != Some("tunnel_wait")));
+    }
+    assert!(trip.position_mi < 0.1, "held at the approach");
+    station.set(20.0);
+    let events = trip.update(1.0);
+    assert!(events
+        .iter()
+        .any(|e| e.text().contains("The wind has dropped")));
+    trip.truck.velocity_mps = 10.0;
+    for _ in 0..30 {
+        trip.update(1.0);
+    }
+    assert!(trip.position_mi > 0.0);
+}
+
 #[test]
 fn a_refused_truck_is_rerouted_at_the_crossing_not_held() {
     let world = world();

@@ -20,6 +20,16 @@ use crate::pyfmt::fmt_f;
 use crate::pyrandom::PyRandom;
 
 mod tables;
+/// The sustained wind the simulated sky carries with each condition.
+pub fn simulated_wind_mph(kind: WeatherKind) -> f64 {
+    match kind {
+        WeatherKind::Wind => 45.0,
+        WeatherKind::Thunderstorm => 35.0,
+        WeatherKind::HeavyRain | WeatherKind::Snow => 25.0,
+        _ => 10.0,
+    }
+}
+
 #[cfg(test)]
 mod tests;
 
@@ -116,6 +126,11 @@ pub trait WeatherProvider {
 
     /// The station temperature in Celsius, when the provider has one.
     fn get_temperature(&mut self, _city: &str) -> Option<f64> {
+        None
+    }
+
+    /// The station's sustained wind in km/h, when the provider has one.
+    fn get_wind_kmh(&mut self, _city: &str) -> Option<f64> {
         None
     }
 
@@ -729,6 +744,23 @@ impl WeatherSystem {
 
     pub fn effects(&self) -> WeatherEffects {
         effects(self.current)
+    }
+
+    /// Sustained wind in miles per hour: the station's reading while live
+    /// weather drives the sky, otherwise a level typical of the condition.
+    pub fn wind_mph(&mut self) -> f64 {
+        if self.live {
+            if let Some(city) = self.city.clone() {
+                if let Some(kmh) = self
+                    .provider
+                    .as_deref_mut()
+                    .and_then(|p| p.get_wind_kmh(&city))
+                {
+                    return kmh / 1.609_344;
+                }
+            }
+        }
+        simulated_wind_mph(self.current)
     }
 
     /// Modeled outdoor temperature in Celsius, or None when seasons are off.
