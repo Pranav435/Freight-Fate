@@ -330,7 +330,10 @@ impl Trip {
         self.emit(
             TripEventKind::GpsCue,
             SpokenMessage::new(data.planning_text.clone()),
-            TripEventData::default(),
+            TripEventData {
+                context: Some("tunnel_planning".to_string()),
+                ..Default::default()
+            },
         );
         let forward = self.route.cities.get(leg_index) == Some(&leg_from);
         let direction = if forward {
@@ -354,7 +357,10 @@ impl Trip {
                 self.emit(
                     TripEventKind::GpsCue,
                     SpokenMessage::new(spoken),
-                    TripEventData::default(),
+                    TripEventData {
+                        context: Some("tunnel_hours_not_published".to_string()),
+                        ..Default::default()
+                    },
                 );
                 true
             }
