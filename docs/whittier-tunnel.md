@@ -13,7 +13,8 @@ Bear Valley road leg was checked with public Valhalla truck costing on
 The schedule data claims only 2026-01-01 through 2027-04-30. It uses the
 published seasonal pattern: winter 7:00 AM–10:45 PM and summer 5:30 AM–11:15
 PM, with fifteen-minute directional openings every thirty minutes. Outside
-those dates, hours are not published. The verified toll direction is Bear
+those dates, hours are not published. The gate reads these times on Alaska Time, the tunnel's own clock, on the date the
+game's calendar shows. The verified toll direction is Bear
 Valley to Whittier, not Whittier to Bear Valley; the $137 Class D ticket is a
 round trip and is charged only on that direction.
 
