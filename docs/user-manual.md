@@ -6,6 +6,37 @@ Plan time for rest and truck care so you can deliver on time with the cargo unda
 
 Start at the [main menu](#main-menu), then follow [your first delivery](#quick-start). Check the traffic, Driver apps, and radio chapters as you explore. You can return to the [driving controls](#driving-controls) for a reminder, or open How to play in the game for a shorter guide with your current shortcuts.
 
+## Contents
+
+- [Main menu](#main-menu)
+- [Quick start](#quick-start)
+- [Menu controls](#menu-controls)
+- [Terminal and garage](#terminal-and-garage)
+- [Business status](#business-status)
+- [Dispatch and jobs](#dispatch-and-jobs)
+- [Pickup, loading, and route planning](#pickup-loading-and-route-planning)
+- [Driving controls](#driving-controls)
+- [Truck behavior](#truck-behavior)
+- [Truck damage and being out of service](#truck-damage-and-being-out-of-service)
+- [Mountain driving](#mountain-driving)
+- [Taking curves](#taking-curves)
+- [Winter driving](#winter-driving)
+- [Traffic and sharing the road](#traffic-and-sharing-the-road)
+- [Road events, weather, and rest stops](#road-events-weather-and-rest-stops)
+- [Enforcement, your record, and your CDL](#enforcement-your-record-and-your-cdl)
+- [When you owe money](#when-you-owe-money)
+- [Hours of service and fatigue](#hours-of-service-and-fatigue)
+- [Status screens](#status-screens)
+- [Driver apps](#driver-apps)
+- [Pause, save, and resume](#pause-save-and-resume)
+- [Destination and delivery](#destination-and-settlement)
+- [Settings walkthrough](#settings-walkthrough)
+- [Audio, speech, and accessibility](#audio-speech-and-accessibility)
+- [Radio and playlists](#radio-and-playlists)
+- [Achievements and career progress](#achievements-and-career-progress)
+- [Online sharing and cloud backups](#online-sharing-and-cloud-backups)
+- [When you need help](#when-you-need-help)
+
 ## Main menu
 
 After choosing your driving assistance, you'll reach the main menu. Choose New career to create your first driver, or explore the help, sounds, settings, and online screens before starting.
