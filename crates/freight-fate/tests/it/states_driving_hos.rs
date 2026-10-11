@@ -1575,13 +1575,10 @@ fn test_players_own_parking_brake_press_arms_waiting() {
 // `crates/freight-fate/tests/states_driving_trip_resume.rs`, beside the other
 // old-snapshot resume cases it shares its fixture with.
 
-#[test]
-fn test_whittier_gate_wait_is_spoken_after_the_tunnel_name() {
-    // In-game test, 2026-10-11: the gate spoke the tunnel's name and the
-    // merge cue, and the "Next opening ... You wait about ..." line never
-    // reached the voice. Both lines were chatter, and the verdict, queued
-    // behind the long name, was dropped as stale while the truck sat out
-    // the wait on duty.
+/// A drive from Anchorage into the Whittier tunnel's gate at 6:20 AM
+/// Alaska time on May 1: open for the season, with a wait for the next
+/// opening toward Whittier. The truck starts `short_mi` before the gate.
+fn a_whittier_approach(short_mi: f64) -> PlaytestHarness {
     use chrono::NaiveDate;
     use ff_core::data::world::get_world;
     use ff_core::data::world_models::Route;
@@ -1591,16 +1588,25 @@ fn test_whittier_gate_wait_is_spoken_after_the_tunnel_name() {
     let mut harness = a_drive("Whittier Gate");
     harness.app.ctx.settings.sapi_events = true;
     let world = get_world();
-    let leg = world
-        .legs
-        .iter()
-        .find(|leg| leg.a == "bear_valley_ak_us" && leg.b == "whittier_ak_us")
-        .expect("Whittier tunnel leg")
-        .as_ref()
-        .clone();
+    let leg = |a: &str, b: &str| {
+        world
+            .legs
+            .iter()
+            .find(|leg| leg.a == a && leg.b == b)
+            .unwrap_or_else(|| panic!("{a} to {b} leg"))
+            .as_ref()
+            .clone()
+    };
     let route = Route::from_legs(
-        vec!["bear_valley_ak_us".into(), "whittier_ak_us".into()],
-        vec![leg],
+        vec![
+            "anchorage_ak_us".into(),
+            "bear_valley_ak_us".into(),
+            "whittier_ak_us".into(),
+        ],
+        vec![
+            leg("anchorage_ak_us", "bear_valley_ak_us"),
+            leg("bear_valley_ak_us", "whittier_ak_us"),
+        ],
     );
     let mut truck = harness.read_drive(|d| d.trip.truck.clone());
     truck.trailer_attached = false;
@@ -1608,8 +1614,7 @@ fn test_whittier_gate_wait_is_spoken_after_the_tunnel_name() {
     truck.cargo_kg = 0.0;
     truck.placarded_hazmat = false;
     truck.velocity_mps = 25.0 * MPS_PER_MPH;
-    // 10:20 AM Eastern on May 1 is 6:20 AM at the tunnel: open for the
-    // season, with a wait for the next opening toward Whittier.
+    // 10:20 AM Eastern is 6:20 AM at the tunnel.
     let may = ff_core::sim::season::real_clock_game_hours(Some(
         NaiveDate::from_ymd_opt(2026, 5, 1)
             .unwrap()
@@ -1629,31 +1634,70 @@ fn test_whittier_gate_wait_is_spoken_after_the_tunnel_name() {
             ..TripOptions::seeded(91)
         },
     );
-    let events = trip.update(1.0);
-    let wait = events
-        .iter()
-        .find(|event| event.data.context.as_deref() == Some("tunnel_wait"))
-        .map(|event| event.text().to_string())
-        .expect("the gate holds the truck for the next opening");
-    assert!(wait.starts_with("Next opening toward Whittier"), "{wait}");
-    harness.clear_speech();
-    harness.with_drive(move |d, ctx| {
-        for event in &events {
-            d.handle_trip_event(ctx, event);
-        }
+    trip.set_npc_vehicles(Vec::new());
+    trip.position_mi = trip.leg_starts[1] - short_mi;
+    harness.with_drive(move |d, _| {
+        d.trip = trip;
+        d.reset_turn_state_for_trip();
     });
-    let spoken: Vec<String> = harness
+    harness.clear_speech();
+    harness
+}
+
+fn event_lines(harness: &PlaytestHarness) -> Vec<String> {
+    harness
         .app
         .event_calls()
         .into_iter()
         .map(|(text, _)| text)
-        .collect();
-    let name = spoken
-        .iter()
-        .position(|line| line.starts_with("Anton Anderson Memorial Tunnel"));
-    let verdict = spoken.iter().position(|line| *line == wait);
+        .collect()
+}
+
+#[test]
+fn test_whittier_gate_speaks_the_tunnel_and_its_wait_once() {
+    // In-game tests, 2026-10-11. First the gate's "Next opening ... You wait
+    // about ..." line never reached the voice: chatter queued behind the
+    // tunnel's name, dropped as stale while the truck sat out the wait. Then,
+    // as two route lines in one tick, the name was flushed and handed back
+    // in front of the wait. Now one line: the name, then the verdict.
+    //
+    // The road's next route line ("Speed limit reduced to 25") can still
+    // flush the voice while the gate line waits its turn, unheard; the
+    // pacer then reissues it, interrupting, which purges the waiting copy.
+    // That is one hearing, so a reissue is counted out (`handed_back_count`).
+    let mut harness = a_whittier_approach(0.3);
+    harness.drive_frames(60 * 40);
+    let calls = harness.app.event_calls();
+    let spoken = event_lines(&harness);
+    let heard = |phrase: &str| {
+        let delivered = spoken.iter().filter(|line| line.contains(phrase)).count();
+        delivered - harness.app.ctx.handed_back_count(phrase)
+    };
+    let gate = "Anton Anderson Memorial Tunnel. One lane shared with the railroad. Gates run on a published schedule. Next opening toward Whittier at 6:30 AM. You wait about";
+    assert_eq!(heard(gate), 1, "the gate line, heard once: {calls:?}");
     assert!(
-        matches!((name, verdict), (Some(n), Some(v)) if n < v),
-        "the tunnel's name, then its wait: {spoken:?}"
+        !spoken
+            .iter()
+            .any(|line| line == "Anton Anderson Memorial Tunnel. One lane shared with the railroad. Gates run on a published schedule."),
+        "the name is not a line of its own: {calls:?}"
     );
+    assert!(
+        calls
+            .iter()
+            .filter(|(line, _)| line.contains(gate))
+            .skip(1)
+            .all(|(_, interrupt)| *interrupt),
+        "a reissue purges the waiting copy: {calls:?}"
+    );
+    assert_eq!(
+        heard("Tunnel toll, 137 dollars"),
+        1,
+        "the toll, once: {calls:?}"
+    );
+    harness.read_drive(|d| {
+        assert!(
+            d.trip.position_mi > d.trip.leg_starts[1],
+            "the truck drove through the gate"
+        );
+    });
 }
