@@ -315,7 +315,10 @@ impl Trip {
                     self.emit(
                         TripEventKind::GpsCue,
                         SpokenMessage::new(reason),
-                        TripEventData::default(),
+                        TripEventData {
+                            context: Some("crossing_refused".to_string()),
+                            ..Default::default()
+                        },
                     );
                     return true;
                 }

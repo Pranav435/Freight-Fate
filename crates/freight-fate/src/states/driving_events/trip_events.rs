@@ -1157,14 +1157,13 @@ impl DrivingState {
         EventPriority::Ambient
     }
 
-    /// A line from a tunnel's gate: its name, a refusal, or the wait.
+    /// A line from a tunnel's or bridge's gate: its name, a refusal, a
+    /// reroute, or the wait.
     pub fn is_tunnel_gate_event(event: &TripEvent) -> bool {
         event.kind == TripEventKind::GpsCue
-            && event
-                .data
-                .context
-                .as_deref()
-                .is_some_and(|context| context.starts_with("tunnel_"))
+            && event.data.context.as_deref().is_some_and(|context| {
+                context.starts_with("tunnel_") || context.starts_with("crossing_")
+            })
     }
 
     /// `_should_ignore_untaken_destination_facility_event(event)`.
