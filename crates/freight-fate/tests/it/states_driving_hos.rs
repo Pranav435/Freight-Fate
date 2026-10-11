@@ -1574,3 +1574,86 @@ fn test_players_own_parking_brake_press_arms_waiting() {
 // `test_pre_1_5_snapshot_resumes_with_fresh_clock` runs in
 // `crates/freight-fate/tests/states_driving_trip_resume.rs`, beside the other
 // old-snapshot resume cases it shares its fixture with.
+
+#[test]
+fn test_whittier_gate_wait_is_spoken_after_the_tunnel_name() {
+    // In-game test, 2026-10-11: the gate spoke the tunnel's name and the
+    // merge cue, and the "Next opening ... You wait about ..." line never
+    // reached the voice. Both lines were chatter, and the verdict, queued
+    // behind the long name, was dropped as stale while the truck sat out
+    // the wait on duty.
+    use chrono::NaiveDate;
+    use ff_core::data::world::get_world;
+    use ff_core::data::world_models::Route;
+    use ff_core::sim::trip::{Trip, TripOptions};
+    use ff_core::sim::weather::WeatherSystem;
+
+    let mut harness = a_drive("Whittier Gate");
+    harness.app.ctx.settings.sapi_events = true;
+    let world = get_world();
+    let leg = world
+        .legs
+        .iter()
+        .find(|leg| leg.a == "bear_valley_ak_us" && leg.b == "whittier_ak_us")
+        .expect("Whittier tunnel leg")
+        .as_ref()
+        .clone();
+    let route = Route::from_legs(
+        vec!["bear_valley_ak_us".into(), "whittier_ak_us".into()],
+        vec![leg],
+    );
+    let mut truck = harness.read_drive(|d| d.trip.truck.clone());
+    truck.trailer_attached = false;
+    truck.cargo_key = String::new();
+    truck.cargo_kg = 0.0;
+    truck.placarded_hazmat = false;
+    truck.velocity_mps = 25.0 * MPS_PER_MPH;
+    // 10:20 AM Eastern on May 1 is 6:20 AM at the tunnel: open for the
+    // season, with a wait for the next opening toward Whittier.
+    let may = ff_core::sim::season::real_clock_game_hours(Some(
+        NaiveDate::from_ymd_opt(2026, 5, 1)
+            .unwrap()
+            .and_hms_opt(10, 20, 0)
+            .unwrap(),
+    ));
+    let mut weather = WeatherSystem::new("alaska", Some(3), None, None, true);
+    weather.current = WeatherKind::Clear;
+    let mut trip = Trip::new(
+        route,
+        truck,
+        weather,
+        TripOptions {
+            world: Some(world),
+            career_hours: Some(may),
+            start_hour: 10.0 + 20.0 / 60.0,
+            ..TripOptions::seeded(91)
+        },
+    );
+    let events = trip.update(1.0);
+    let wait = events
+        .iter()
+        .find(|event| event.data.context.as_deref() == Some("tunnel_wait"))
+        .map(|event| event.text().to_string())
+        .expect("the gate holds the truck for the next opening");
+    assert!(wait.starts_with("Next opening toward Whittier"), "{wait}");
+    harness.clear_speech();
+    harness.with_drive(move |d, ctx| {
+        for event in &events {
+            d.handle_trip_event(ctx, event);
+        }
+    });
+    let spoken: Vec<String> = harness
+        .app
+        .event_calls()
+        .into_iter()
+        .map(|(text, _)| text)
+        .collect();
+    let name = spoken
+        .iter()
+        .position(|line| line.starts_with("Anton Anderson Memorial Tunnel"));
+    let verdict = spoken.iter().position(|line| *line == wait);
+    assert!(
+        matches!((name, verdict), (Some(n), Some(v)) if n < v),
+        "the tunnel's name, then its wait: {spoken:?}"
+    );
+}
