@@ -76,7 +76,7 @@ impl TruckStatusState {
                 assignment.push_str(
                     " Until level 9, dispatch matches a spare to each load, and each spare \
                      keeps its own fuel and wear. From level 9 you drive the same truck \
-                     every load.",
+                     on every load.",
                 );
             }
             let mut lines = vec![assignment];
