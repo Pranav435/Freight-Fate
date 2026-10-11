@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use crate::sim_support::*;
 use chrono::NaiveDate;
 use ff_core::data::state_welcome::welcome_sign;
-use ff_core::data::world_models::Route;
+use ff_core::data::world_models::{CrossingLoad, Route};
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::traffic_manager::{BrakingZone, TrafficManager, TrafficVehicle};
 use ff_core::sim::trip::{Trip, TripOptions, ZONE_WARNING_MIN_MI};
@@ -104,6 +104,113 @@ fn whittier_tunnel_gate_runs_in_the_trip_and_toll_is_one_way() {
         1,
         "the toll cue is spoken toward Whittier"
     );
+}
+
+fn hazmat_load() -> CrossingLoad {
+    CrossingLoad::standard_rig(true).with_cargo("hazardous", false, 30_000)
+}
+
+#[test]
+fn crossings_wall_off_refused_legs_and_leave_plain_freight_alone() {
+    let world = world();
+    let plain = CrossingLoad::standard_rig(true).with_cargo("general", false, 30_000);
+    assert!(world.crossing_blocks(&plain).is_empty());
+    let fuel = CrossingLoad::standard_rig(true).with_cargo("fuel_bulk", true, 40_000);
+    let route = world
+        .legal_route("spokane_wa_us", "seattle_wa_us", &fuel)
+        .unwrap()
+        .expect("bulk fuel has a legal road to Seattle");
+    assert!(route
+        .legs
+        .iter()
+        .all(|leg| leg.crossings.iter().all(|c| c.refusal(&fuel).is_none())));
+    assert!(world
+        .legal_route_options("spokane_wa_us", "seattle_wa_us", 3, &fuel)
+        .unwrap()
+        .iter()
+        .all(|r| r
+            .legs
+            .iter()
+            .all(|leg| leg.crossings.iter().all(|c| c.refusal(&fuel).is_none()))));
+    assert_eq!(
+        world
+            .legal_route("spokane_wa_us", "seattle_wa_us", &plain)
+            .unwrap()
+            .map(|r| r.cities),
+        world
+            .supported_route("spokane_wa_us", "seattle_wa_us", None)
+            .unwrap()
+            .map(|r| r.cities),
+    );
+    assert!(
+        world
+            .legal_route("bear_valley_ak_us", "whittier_ak_us", &hazmat_load())
+            .unwrap()
+            .is_none(),
+        "the tunnel is the only road to Whittier, so no placarded load is planned there"
+    );
+}
+
+#[test]
+fn a_refused_truck_is_rerouted_at_the_crossing_not_held() {
+    let world = world();
+    let leg = world
+        .legs
+        .iter()
+        .find(|leg| leg.a == "denver_co_us" && leg.b == "salt_lake_city_ut_us")
+        .expect("Denver to Salt Lake City leg")
+        .as_ref()
+        .clone();
+    assert!(leg
+        .crossings
+        .iter()
+        .any(|c| c.refusal(&hazmat_load()).is_some()));
+    let route = Route::from_legs(
+        vec!["denver_co_us".into(), "salt_lake_city_ut_us".into()],
+        vec![leg],
+    );
+    let mut truck = TruckState::default();
+    truck.start_engine();
+    truck.cargo_key = "hazardous".into();
+    truck.cargo_kg = 13_600.0;
+    truck.placarded_hazmat = true;
+    truck.velocity_mps = 10.0;
+    let mut trip = Trip::new(
+        route,
+        truck,
+        default_weather(),
+        TripOptions {
+            world: Some(world),
+            ..TripOptions::seeded(93)
+        },
+    );
+    let events = trip.update(1.0);
+    assert!(events
+        .iter()
+        .any(|e| e.data.context.as_deref() == Some("crossing_reroute")
+            && e.text().contains("Loveland Pass")
+            && e.text().contains("Dispatch reroutes you from")));
+    assert_eq!(
+        trip.route.cities.first().map(String::as_str),
+        Some("denver_co_us")
+    );
+    assert_eq!(
+        trip.route.cities.last().map(String::as_str),
+        Some("salt_lake_city_ut_us")
+    );
+    assert!(trip.route.legs.iter().all(|leg| leg
+        .crossings
+        .iter()
+        .all(|c| c.refusal(&hazmat_load()).is_none())));
+    assert_eq!(trip.leg_starts.len(), trip.route.legs.len());
+    for _ in 0..30 {
+        trip.update(1.0);
+    }
+    assert!(
+        trip.position_mi > 0.0,
+        "the truck drives on instead of holding"
+    );
+    assert!(trip.refused_tunnel_gates.is_empty());
 }
 
 #[test]

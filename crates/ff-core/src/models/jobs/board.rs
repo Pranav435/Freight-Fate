@@ -8,8 +8,8 @@ use parking_lot::Mutex;
 
 use crate::data::lcv_turnpikes::cargo_requires_lcv_turnpike;
 use crate::data::seasonal_weight::{seasonal_gvw_cap_kg, strictest_on_route};
-use crate::data::world::World;
-use crate::data::world_models::{City, Location};
+use crate::data::world::{max_alternate_miles, World};
+use crate::data::world_models::{City, CrossingLoad, Location};
 use crate::models::business_constants::DIRECT_FREIGHT_PAY_MULT;
 use crate::models::carriers::carrier;
 use crate::models::jobs::{
@@ -798,11 +798,39 @@ impl<'w> JobBoard<'w> {
         carrier_key: &str,
         direct_freight: bool,
     ) -> Option<Job> {
-        let route = self
+        let open_route = self
             .world
             .supported_route(origin, destination, None)
             .ok()
             .flatten();
+        // A tunnel or bridge that turns this load away is planned around. No
+        // legal road, or one far longer than the open road, is no job: a
+        // dispatcher would not book a load that cannot make the trip.
+        let load = CrossingLoad::standard_rig(true).with_cargo(
+            cargo.key,
+            cargo.tank,
+            (cargo.weight_tons.1 * 2000.0).round() as u32,
+        );
+        let mut miles = miles;
+        let route = if load.regulated() {
+            let legal = self
+                .world
+                .legal_route(origin, destination, &load)
+                .ok()
+                .flatten();
+            if let Some(open) = &open_route {
+                let legal_road = legal.as_ref()?;
+                if legal_road.cities != open.cities {
+                    if legal_road.miles() > max_alternate_miles(open.miles()) {
+                        return None;
+                    }
+                    miles = legal_road.miles();
+                }
+            }
+            legal
+        } else {
+            open_route
+        };
         // Clamp to the legal gross for a stock tractor and what this freight
         // hooks: 80,000 lb for a single or STAA twin 28s, the route's
         // turnpike cap for turnpike doubles, with both trailers and the

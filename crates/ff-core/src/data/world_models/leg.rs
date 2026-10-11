@@ -162,6 +162,9 @@ pub struct Leg {
     /// computing it from their own fields, so behavior is unchanged. The
     /// world sets it so the route graph never has to parse deferred detail
     /// just to gate dispatch.
+    /// Truck rules at real tunnels and bridges on this leg. Eager, so the
+    /// route graph plans around them without parsing the corridor.
+    pub crossings: Vec<super::RoadCrossing>,
     pub meta_complete: Option<bool>,
     corridor: OnceCell<Result<CorridorDetail, DataError>>,
     detail_source: Mutex<Option<Deferred>>,
@@ -195,6 +198,7 @@ impl Leg {
             local_controls: Vec::new(),
             local_yard: false,
             divided: None,
+            crossings: Vec::new(),
             meta_complete: None,
             corridor: OnceCell::new(),
             detail_source: Mutex::new(None),
@@ -464,6 +468,7 @@ impl Clone for Leg {
             local_controls: self.local_controls.clone(),
             local_yard: self.local_yard,
             divided: self.divided,
+            crossings: self.crossings.clone(),
             meta_complete: self.meta_complete,
             corridor,
             detail_source: Mutex::new(self.detail_source.lock().clone()),

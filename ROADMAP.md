@@ -2885,8 +2885,7 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       then a truck that arrives after the tunnel closes is logged as
       sleeper-berth time (a wait of ten hours or more as a full reset), even
       though overnight staging parking is unverified.
-- [ ] **Tunnel gate cues.** After a refusal the truck still hears the toll cue
-      and "Merge onto the tunnel" while it sits at the gate, and no cue is
+- [ ] **Tunnel gate cues.** No cue is
       spoken when the gate opens after a wait. The HOS logging for waits has
       unit tests in the tunnel module but no driving-state test yet.
 - [ ] **Tunnel combination length.** The 73.5 ft combination convention should
@@ -2898,8 +2897,25 @@ branch. The older Phase A/B plan checklists are not a live completion list.
 - [ ] **Whittier is not yet reachable in a career.** With no freight it gets
       no jobs, and Bear Valley and Whittier are not offered as home cities,
       so only tests drive the tunnel until a verified facility lands.
-- [ ] **Tunnel refusal hold.** A refused truck is held at the staging end
-      for the rest of the trip with no turn-around or reroute.
+- [x] **Tunnel refusal hold.** Fixed: dispatch plans regulated loads
+      around tunnels that refuse them, departure offers only legal roads, and
+      a truck that still reaches one is re-planned from that city.
+- [x] **Tunnels with truck rules across the map.** Eisenhower-Johnson, Fort
+      McHenry, the Boston tunnels, Hampton Roads and Chesapeake Bay
+      bridge-tunnels, the Pennsylvania Turnpike tunnels and the I-90 Lake
+      Washington tunnels carry their published cargo rules (see
+      docs/road-crossings.md).
+- [ ] **Bridges with truck rules.** Posted weight limits, low clearances,
+      bridge hazmat rules (San Francisco-Oakland Bay Bridge), tolls and wind
+      closures (Chesapeake Bay Bridge-Tunnel) are not modelled yet.
+- [ ] **Hazard classes on freight.** The catalog does not name hazard
+      classes, so a placarded packaged load is refused wherever any class is
+      banned. Naming classes would let some loads through.
+- [ ] **Loveland Pass for placarded loads.** The Eisenhower tunnel's
+      required detour over US 6 is not on the map, so placarded loads are
+      planned off I-70 entirely.
+- [ ] **Board estimates on detoured loads.** The board's hours and route
+      readouts still use the open road; departure uses the legal one.
 - [ ] **Whittier tunnel cold-weather and train disruption rules.** The
       sub-freezing five-minute opening rule and unscheduled-train delays are
       not modeled.

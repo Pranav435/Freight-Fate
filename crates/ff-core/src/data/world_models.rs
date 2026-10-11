@@ -9,7 +9,7 @@
 
 use std::fmt;
 
-use chrono::{NaiveDate, NaiveTime};
+use chrono::{Datelike, NaiveDate, NaiveTime};
 use serde::{Deserialize, Serialize};
 
 use super::world_constants::{
@@ -18,9 +18,11 @@ use super::world_constants::{
 };
 use crate::pyfmt::{py_int, py_str_float, round_py_int, round_py_n};
 
+mod crossing;
 mod interchange;
 mod leg;
 mod street;
+pub use crossing::{CrossingLoad, HazmatRule, RoadCrossing};
 pub use interchange::{
     destinations_without_via, format_route_ref, join_destinations, route_token, Interchange,
 };
@@ -86,7 +88,6 @@ pub struct TunnelData {
     pub hours_not_published_text: String,
     pub hours: Vec<TunnelHours>,
     pub schedule: TunnelSchedule,
-    pub limits: TunnelLimits,
     pub speed_mph: f64,
     pub length_mi: f64,
     pub speed_source_url: String,
@@ -121,24 +122,6 @@ pub struct TunnelSchedule {
     pub access_date: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct TunnelLimits {
-    pub length_ft: f64,
-    pub width_ft: f64,
-    pub normal_width_ft: f64,
-    pub height_ft: f64,
-    pub normal_height_ft: f64,
-    pub placarded_hazmat_banned: bool,
-    pub non_placarded_hazmat_lb: u32,
-    pub source_url: String,
-    pub access_date: String,
-    pub length_text: String,
-    pub width_text: String,
-    pub height_text: String,
-    pub placarded_text: String,
-    pub non_placarded_text: String,
-}
-
 impl TunnelData {
     /// Validate source provenance and the published date/time windows at load,
     /// not the first time a player reaches the tunnel.
@@ -156,6 +139,27 @@ impl TunnelData {
         source(&self.source_url, &self.access_date, context)?;
         if self.hours.is_empty() {
             return Err(DataError::value(format!("{context} has no hours")));
+        }
+        // The career calendar maps every drive into 2026, so published hours
+        // must cover all of it: a gate with no known hours would hold the
+        // truck with no opening to wait for.
+        let ranges: Vec<(String, String)> = self
+            .hours
+            .iter()
+            .map(|h| (h.valid_from.clone(), h.valid_to.clone()))
+            .collect();
+        let mut day = NaiveDate::from_ymd_opt(2026, 1, 1)
+            .ok_or_else(|| DataError::value(format!("{context} calendar")))?;
+        while day.year() == 2026 {
+            let key = day.format("%Y-%m-%d").to_string();
+            if !ranges.iter().any(|(from, to)| *from <= key && key <= *to) {
+                return Err(DataError::value(format!(
+                    "{context} has no published hours for {key}"
+                )));
+            }
+            day = day
+                .succ_opt()
+                .ok_or_else(|| DataError::value(format!("{context} calendar")))?;
         }
         for hours in &self.hours {
             source(&hours.source_url, &hours.access_date, context)?;
@@ -175,7 +179,6 @@ impl TunnelData {
             &self.schedule.access_date,
             context,
         )?;
-        source(&self.limits.source_url, &self.limits.access_date, context)?;
         source(&self.speed_source_url, &self.speed_access_date, context)?;
         source(&self.length_source_url, &self.length_access_date, context)?;
         if self.schedule.opening_minutes == 0

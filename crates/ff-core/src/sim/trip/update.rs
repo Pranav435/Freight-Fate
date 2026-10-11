@@ -288,16 +288,17 @@ impl Trip {
             // ramp and pause highway events until the truck rejoins the road.
             return self.events.clone();
         }
-        // A tunnel gate is reached at the staging end, before any part of the
-        // truck enters the one-lane bore.  Refusal holds the truck at that
-        // end; a scheduled wait advances game time in `process_tunnel_gate`.
+        // A crossing is judged where its leg starts, before any part of the
+        // truck is on it. A refused load is re-planned from that city and a
+        // scheduled wait advances game time, both in `process_tunnel_gate`.
         let old_position = self.position_mi;
         let proposed_position = self.position_mi + moved_mi;
         let mut held_at_gate = false;
         for i in 0..self.route.legs.len() {
-            let Some(_) = self.route.legs[i].corridor().tunnel.as_ref() else {
+            let leg = &self.route.legs[i];
+            if leg.crossings.is_empty() && leg.corridor().tunnel.is_none() {
                 continue;
-            };
+            }
             let start = self.leg_starts[i];
             if old_position <= start && proposed_position >= start && self.process_tunnel_gate(i) {
                 self.position_mi = (start - 0.000_001).max(0.0);

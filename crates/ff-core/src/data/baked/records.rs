@@ -20,9 +20,9 @@ use crate::data::world_local_data::CityServiceEntry;
 use crate::data::world_models::{
     BillboardBan, City, CorridorDetail, Driveway, ElevationSample, ExitChain, FacilityApproach,
     FacilityEndpoint, GradeSegment, HpmsTerrain, Interchange, Landmark, LaneSegment, LocalApproach,
-    LocalGeometry, LocalGeometrySegment, Location, RouteCheckpoint, RoutePoint, RouteRestriction,
-    SpeedLimitSample, StateCrossing, StateMileage, Stop, StreetControl, StreetLimit, TollEvent,
-    TrafficVolumeSample, TunnelData,
+    LocalGeometry, LocalGeometrySegment, Location, RoadCrossing, RouteCheckpoint, RoutePoint,
+    RouteRestriction, SpeedLimitSample, StateCrossing, StateMileage, Stop, StreetControl,
+    StreetLimit, TollEvent, TrafficVolumeSample, TunnelData,
 };
 
 /// A mirror struct with the same field names and types as its model, and the
@@ -336,6 +336,7 @@ pub struct BakedLeg {
     pub terrain: String,
     pub stops: Vec<BakedStop>,
     pub truck_advisory: String,
+    pub crossings: Vec<RoadCrossing>,
     pub lanes: i64,
     pub local_cue: String,
     pub local_speed_mph: f64,

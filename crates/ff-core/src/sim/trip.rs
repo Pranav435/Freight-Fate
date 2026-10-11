@@ -888,7 +888,7 @@ impl Trip {
     }
 }
 
-fn compute_leg_starts(route: &Route) -> Vec<f64> {
+pub(crate) fn compute_leg_starts(route: &Route) -> Vec<f64> {
     let mut starts = Vec::new();
     let mut acc = 0.0;
     for leg in &route.legs {

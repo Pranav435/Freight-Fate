@@ -6504,7 +6504,25 @@
         }
       ],
       "divided": true,
-      "lanes": 2
+      "lanes": 2,
+      "crossings": [
+        {
+          "kind": "tunnel",
+          "name": "Pennsylvania Turnpike tunnels",
+          "hazmat": "classes",
+          "bulk_flammable_banned": true,
+          "tank_banned": false,
+          "regulated_lb_limit": null,
+          "max_length_ft": null,
+          "max_width_ft": null,
+          "max_height_ft": null,
+          "hazmat_text": "Explosives and the most dangerous hazardous materials may not use the Pennsylvania Turnpike tunnels, and flammable liquids may not go through in bulk.",
+          "size_text": "",
+          "source_url": "https://www.paturnpike.com/commercial/permits-restrictions/hazardous-materials-(placarded-loads)",
+          "access_date": "2026-10-11",
+          "basis": "Read: the Turnpike prohibits all Table 1 materials and all explosives in its tunnels, and prohibits flammable liquid and other classes in bulk packaging. Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. The tunnels are Allegheny, Tuscarora, Kittatinny, Blue Mountain and Lehigh. Assumed: the game's placarded hazardous load does not name its classes, so it is treated as carrying a banned class."
+        }
+      ]
     },
     {
       "from": "baltimore_md_us",

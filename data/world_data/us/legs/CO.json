@@ -22424,7 +22424,25 @@
         ]
       },
       "divided": false,
-      "lanes": 1
+      "lanes": 1,
+      "crossings": [
+        {
+          "kind": "tunnel",
+          "name": "Eisenhower-Johnson Memorial Tunnel",
+          "hazmat": "all",
+          "bulk_flammable_banned": true,
+          "tank_banned": false,
+          "regulated_lb_limit": null,
+          "max_length_ft": null,
+          "max_width_ft": null,
+          "max_height_ft": null,
+          "hazmat_text": "Placarded hazardous materials may not use the Eisenhower-Johnson Memorial Tunnel; they must take Loveland Pass while it is open.",
+          "size_text": "",
+          "source_url": "https://www.codot.gov/travel/ejmt/metering",
+          "access_date": "2026-10-11",
+          "basis": "Read: placarded loads must use Loveland Pass, US 6, while it is open (CDOT; Colorado rule 2 CCR 601-8, 3.02). Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. Assumed: Loveland Pass is not on the map and its closures are not modelled, so placarded loads are always planned off these legs."
+        }
+      ]
     },
     {
       "from": "denver_co_us",
@@ -24260,7 +24278,25 @@
         }
       ],
       "divided": true,
-      "lanes": 3
+      "lanes": 3,
+      "crossings": [
+        {
+          "kind": "tunnel",
+          "name": "Eisenhower-Johnson Memorial Tunnel",
+          "hazmat": "all",
+          "bulk_flammable_banned": true,
+          "tank_banned": false,
+          "regulated_lb_limit": null,
+          "max_length_ft": null,
+          "max_width_ft": null,
+          "max_height_ft": null,
+          "hazmat_text": "Placarded hazardous materials may not use the Eisenhower-Johnson Memorial Tunnel; they must take Loveland Pass while it is open.",
+          "size_text": "",
+          "source_url": "https://www.codot.gov/travel/ejmt/metering",
+          "access_date": "2026-10-11",
+          "basis": "Read: placarded loads must use Loveland Pass, US 6, while it is open (CDOT; Colorado rule 2 CCR 601-8, 3.02). Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. Assumed: Loveland Pass is not on the map and its closures are not modelled, so placarded loads are always planned off these legs."
+        }
+      ]
     },
     {
       "from": "durango_co_us",
