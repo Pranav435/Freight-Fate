@@ -22,6 +22,8 @@
 
 ### Changed
 
+- **The player manual has contents links for jumping straight to a chapter.**
+
 - **The player manual uses shorter explanations and clearer hotkey instructions.**
 
 - **The player manual and How to play now explain menus, driving, rest, radio, and career choices more clearly.**
