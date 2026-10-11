@@ -286,7 +286,10 @@ impl Trip {
         self.emit(
             TripEventKind::GpsCue,
             SpokenMessage::new(data.planning_text.clone()),
-            TripEventData::default(),
+            TripEventData {
+                context: Some("tunnel_planning".to_string()),
+                ..Default::default()
+            },
         );
         let cargo_lb = (self.truck.cargo_kg / KG_PER_LB).round().max(0.0) as u32;
         let (placarded_hazmat, hazmat_lb) = hazmat_for_cargo(
@@ -310,7 +313,10 @@ impl Trip {
             self.emit(
                 TripEventKind::GpsCue,
                 SpokenMessage::new(spoken),
-                TripEventData::default(),
+                TripEventData {
+                    context: Some("tunnel_refused".to_string()),
+                    ..Default::default()
+                },
             );
             return true;
         }
@@ -336,7 +342,10 @@ impl Trip {
                 self.emit(
                     TripEventKind::GpsCue,
                     SpokenMessage::new(spoken),
-                    TripEventData::default(),
+                    TripEventData {
+                        context: Some("tunnel_hours_not_published".to_string()),
+                        ..Default::default()
+                    },
                 );
                 true
             }

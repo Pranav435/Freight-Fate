@@ -1109,6 +1109,13 @@ impl DrivingState {
             if event.data.zone.is_some() {
                 return EventPriority::Route;
             }
+            // A tunnel gate speaks its name and then its verdict in one
+            // moment. As chatter the verdict waited behind the name past the
+            // stale budget and was dropped: the truck sat out the wait with
+            // nothing said about why or for how long.
+            if Self::is_tunnel_gate_event(event) {
+                return EventPriority::Route;
+            }
             // A limit change is what enforcement reads, and each one is said
             // once: the advance "drops to 55" marks 55 as announced, so when
             // the pacer dropped it as stale chatter the boundary stayed silent
@@ -1148,6 +1155,16 @@ impl DrivingState {
             return EventPriority::Route;
         }
         EventPriority::Ambient
+    }
+
+    /// A line from a tunnel's gate: its name, a refusal, or the wait.
+    pub fn is_tunnel_gate_event(event: &TripEvent) -> bool {
+        event.kind == TripEventKind::GpsCue
+            && event
+                .data
+                .context
+                .as_deref()
+                .is_some_and(|context| context.starts_with("tunnel_"))
     }
 
     /// `_should_ignore_untaken_destination_facility_event(event)`.
