@@ -259,6 +259,50 @@ fn a_refused_truck_is_rerouted_at_the_crossing_not_held() {
 }
 
 #[test]
+fn whittier_tunnel_schedule_keeps_alaska_time() {
+    let world = world();
+    let leg = world
+        .legs
+        .iter()
+        .find(|leg| leg.a == "bear_valley_ak_us" && leg.b == "whittier_ak_us")
+        .expect("Whittier tunnel leg")
+        .as_ref()
+        .clone();
+    let route = Route::from_legs(
+        vec!["bear_valley_ak_us".into(), "whittier_ak_us".into()],
+        vec![leg],
+    );
+    let mut truck = TruckState::default();
+    truck.start_engine();
+    truck.velocity_mps = 25.0 * 1609.344 / 3600.0;
+    // 8:00 AM Eastern on May 1 is 4:00 AM in Alaska: the tunnel is shut for
+    // the night until the 5:30 AM opening.
+    let may = ff_core::sim::season::real_clock_game_hours(Some(
+        NaiveDate::from_ymd_opt(2026, 5, 1)
+            .unwrap()
+            .and_hms_opt(8, 0, 0)
+            .unwrap(),
+    ));
+    let mut trip = Trip::new(
+        route,
+        truck,
+        default_weather(),
+        TripOptions {
+            world: Some(world),
+            career_hours: Some(may),
+            start_hour: 8.0,
+            ..TripOptions::seeded(93)
+        },
+    );
+    trip.update(1.0);
+    assert!(
+        trip.game_minutes >= 90.0,
+        "an Eastern 8 AM start waits out the Alaska night closure: {} minutes",
+        trip.game_minutes
+    );
+}
+
+#[test]
 fn test_border_booths_follow_inbound_country_crossings() {
     let world = world();
     let direct_trip = |from: &str, toward: &str| {
