@@ -326,7 +326,10 @@ impl Trip {
                     self.emit(
                         TripEventKind::GpsCue,
                         SpokenMessage::new("The wind has dropped. You may cross.".to_string()),
-                        TripEventData::default(),
+                        TripEventData {
+                            context: Some("crossing_wind_dropped".to_string()),
+                            ..Default::default()
+                        },
                     );
                 }
                 return None;
@@ -398,7 +401,10 @@ impl Trip {
             SpokenMessage::new(
                 "There is no other road. You hold here until the wind drops.".to_string(),
             ),
-            TripEventData::default(),
+            TripEventData {
+                context: Some("crossing_wind_hold".to_string()),
+                ..Default::default()
+            },
         );
         Some(true)
     }
@@ -472,7 +478,10 @@ impl Trip {
                     self.emit(
                         TripEventKind::GpsCue,
                         SpokenMessage::new(reason),
-                        TripEventData::default(),
+                        TripEventData {
+                            context: Some("crossing_refused".to_string()),
+                            ..Default::default()
+                        },
                     );
                     return true;
                 }
@@ -494,7 +503,10 @@ impl Trip {
         self.emit(
             TripEventKind::GpsCue,
             SpokenMessage::new(data.planning_text.clone()),
-            TripEventData::default(),
+            TripEventData {
+                context: Some("tunnel_planning".to_string()),
+                ..Default::default()
+            },
         );
         let forward = self.route.cities.get(leg_index) == Some(&leg_from);
         let direction = if forward {
@@ -518,7 +530,10 @@ impl Trip {
                 self.emit(
                     TripEventKind::GpsCue,
                     SpokenMessage::new(spoken),
-                    TripEventData::default(),
+                    TripEventData {
+                        context: Some("tunnel_hours_not_published".to_string()),
+                        ..Default::default()
+                    },
                 );
                 true
             }
