@@ -87,14 +87,14 @@ fn the_struct_carries_the_persisted_fields_in_python_order() {
     // radio_shuffle_playlists and steering_guide_inverted (2026-09-18), and
     // synth_music and music_seed (2026-09-21), touch_bindings (2026-09-29),
     // assist_preset_chosen (2026-09-30), and touch_haptics and
-    // touch_practice_offered (2026-10-07), and the six touch gesture
-    // thresholds (2026-10-08) were added on the Rust side;
+    // touch_practice_offered (2026-10-07), the six touch gesture
+    // thresholds (2026-10-08), and facility_streets (2026-10-11) were added on the Rust side;
     // lane_centering_assist was retired for 1.9.
-    assert_eq!(Settings::FIELD_NAMES.len(), 93);
+    assert_eq!(Settings::FIELD_NAMES.len(), 94);
     assert_eq!(Settings::FIELD_NAMES[0], "online_services");
     assert_eq!(Settings::FIELD_NAMES[79], "settings_layout_notice_from");
     let pairs = Settings::default().ordered_values();
-    assert_eq!(pairs.len(), 93);
+    assert_eq!(pairs.len(), 94);
     for ((name, _), field) in pairs.iter().zip(Settings::FIELD_NAMES) {
         assert_eq!(name, field);
     }
@@ -148,14 +148,15 @@ fn the_defaults_match_the_python_dataclass() {
         "touch_haptics": true, "touch_practice_offered": false,
         "touch_flick_points": 30.0, "touch_flick_ms": 150.0, "touch_deep_swipe_factor": 3.0,
         "touch_still_hold_ms": 500.0, "touch_rotate_degrees": 30.0, "touch_parking_brake_mph": 1.0,
-        "steering_guide_inverted": false, "assist_preset_chosen": false
+        "steering_guide_inverted": false, "assist_preset_chosen": false,
+        "facility_streets": true
     }"#,
     )
     .unwrap();
     let Value::Object(expected) = expected else {
         unreachable!()
     };
-    assert_eq!(expected.len(), 93);
+    assert_eq!(expected.len(), 94);
     for (name, value) in s.ordered_values() {
         assert_eq!(Some(&value), expected.get(name), "{name}");
     }
@@ -174,6 +175,17 @@ fn hos_planning_hints_default_off_and_round_trip_as_a_boolean() {
 }
 
 #[test]
+fn facility_streets_default_on_and_round_trip_as_a_boolean() {
+    assert!(Settings::default().facility_streets);
+    let mut classic = Settings::default();
+    classic.facility_streets = false;
+    let stored: Value = serde_json::from_str(&classic.to_file_text()).unwrap();
+    assert_eq!(stored["facility_streets"], false);
+    assert!(!from_json(stored).facility_streets);
+    assert!(from_json(json!({})).facility_streets);
+}
+
+#[test]
 fn the_file_text_is_what_json_dump_wrote() {
     let s = Settings::default();
     let text = s.to_file_text();
@@ -183,7 +195,7 @@ fn the_file_text_is_what_json_dump_wrote() {
          \"touch_flick_points\": 30.0,\n  \"touch_flick_ms\": 150.0,\n  \
          \"touch_deep_swipe_factor\": 3.0,\n  \"touch_still_hold_ms\": 500.0,\n  \
          \"touch_rotate_degrees\": 30.0,\n  \"touch_parking_brake_mph\": 1.0,\n  \
-         \"steering_guide_inverted\": false,\n  \"assist_preset_chosen\": false,\n  \"steering_assist\": \"off\"\n}"
+         \"steering_guide_inverted\": false,\n  \"assist_preset_chosen\": false,\n  \"facility_streets\": true,\n  \"steering_assist\": \"off\"\n}"
     ));
     assert!(text.contains("\n  \"time_scale\": 10.0,\n"));
     assert!(text.contains("\n  \"radio_volume\": 0.25,\n"));

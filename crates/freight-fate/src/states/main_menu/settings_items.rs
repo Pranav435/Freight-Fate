@@ -418,6 +418,7 @@ impl SettingsCategoryState {
                 adjust(|s, ctx, d| s.toggle_real_fuel_prices(ctx, d)),
                 adjust(|s, ctx, d| s.toggle_real_parking(ctx, d)),
                 adjust(|s, ctx, d| s.toggle_live_weather_calendar(ctx, d)),
+                adjust(|s, ctx, d| s.toggle_facility_streets(ctx, d)),
             ],
             "controls" => vec![
                 adjust(|s, ctx, d| s.toggle_units(ctx, d)),
@@ -588,6 +589,15 @@ impl SettingsCategoryState {
                     "On, live weather uses today's real date and season. Off, \
                      the career date advances at midnight and seasons pass while \
                      weather still comes from the real world.",
+                ),
+                row(
+                    dyn_label(|s| format!("Facility streets: {}", on_off(s.facility_streets))),
+                    adjust(|s, ctx, d| s.toggle_facility_streets(ctx, d)),
+                    "On, you drive the real streets between the highway and a \
+                     facility, turn by turn. Off, as in version 1.8, the exit ramp \
+                     ends at the facility gate, a loaded run leaves straight onto \
+                     the highway, and a pickup in town is one stretch of road. \
+                     Applies from your next drive.",
                 ),
                 back_row(),
             ],

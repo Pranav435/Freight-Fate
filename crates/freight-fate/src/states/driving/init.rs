@@ -523,6 +523,7 @@ impl DrivingState {
             stop_chain: None,
             stop_chain_end_said: false,
             stop_streets_on: crate::states::driving_events::chains::STOP_STREETS_IN_PLAY,
+            facility_streets_on: ctx.settings.facility_streets,
             highway_trip: None,
             departure_chain: false,
             departure_checked: false,

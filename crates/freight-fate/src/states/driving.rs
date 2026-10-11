@@ -574,6 +574,11 @@ pub struct DrivingState {
     // Whether a road stop's streets are driven at all
     // (`chains::STOP_STREETS_IN_PLAY`, off for 1.9).
     pub stop_streets_on: bool,
+    // Whether this drive takes the facility streets at all: the Facility
+    // streets setting as the drive started (a save carries its own), so a
+    // change in Settings applies from the next drive and a resumed chain
+    // rebuilds as it was driven.
+    pub facility_streets_on: bool,
     pub highway_trip: Option<Trip>,
     // Departure chain: the mirror. A loaded run out of a chain-capable
     // origin facility starts on its streets and merges onto the highway.

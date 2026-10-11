@@ -686,6 +686,14 @@ settings_fields! {
     /// file written before it existed, so everyone answers it once
     /// (owner, 2026-09-30).
     assist_preset_chosen: bool = false => bool_strict,
+    /// Whether a drive takes the real streets between the highway and a
+    /// facility: the turn-by-turn from the ramp's end to the gate, out of the
+    /// origin's gate to the on-ramp, and into a shipper in town. Off is the
+    /// 1.8 arrival players asked to keep (2026-10-11): the destination ramp
+    /// ends at the gate, a loaded run leaves straight onto the highway, and
+    /// a pickup in town is one access road. A drive keeps the value it
+    /// started with (`DrivingState::facility_streets_on`).
+    facility_streets: bool = true => bool_strict,
 }
 
 impl Settings {

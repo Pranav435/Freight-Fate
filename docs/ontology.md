@@ -109,6 +109,7 @@ belongs to the truck you own in this game, not to the driver.
 | A tank load and its sloshing wave | `LiquidLoad`, `SloshAxis` | `sim/surge.py` |
 | Stop-cue geometry from stopping distance | -- | `states/driving_stops.py` |
 | Planned rest-stop stopping assistance | `selected_stop_assist` | `settings.py`, `states/driving_events.py` |
+| Facility streets (the setting): on drives the streets between the highway and a facility; off is the 1.8 arrival at the ramp's end | `facility_streets`, `DrivingState::facility_streets_on` | `settings.rs`, `states/driving_events/chains.rs` |
 | Destination approach assistance | `destination_approach_assist` | `settings.py`, `states/driving_updates.py` |
 | Traffic vehicle | `TrafficVehicle`, `TrafficSituation`, `TrafficManager` | `sim/traffic_manager.py` |
 | Live traffic | `TrafficEvent`, `TrafficData`, `RealTrafficProvider` | `sim/real_traffic.py` |
