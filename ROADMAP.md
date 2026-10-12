@@ -2744,8 +2744,9 @@ collision.
       FM band near home; one the FCC does not list stays on the web band
       and is asked about again weekly.
 - [x] Accepted stations ship in every build (`data/radio_community.json`),
-      copied from the site before each nightly, so a first or offline launch
-      has them too.
+      copied from the site as each build is cut, so a first or offline launch
+      has them too. (The daily job that committed the copy to dev could
+      not get past dev's required checks; the build folds it now.)
 
 ### October 9 achievement sweep
 
