@@ -26433,7 +26433,7 @@ msgid "delay"
 msgstr "delay"
 
 msgid "hours"
-msgstr "hours"
+msgstr "heures"
 
 msgid "Call dispatch"
 msgstr "Appeler le dispatch"
