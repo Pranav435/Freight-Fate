@@ -4,9 +4,9 @@
 
 use ff_core::pyfmt::{py_str_float, round_py_n};
 use ff_core::settings::{
-    acc_gap_seconds, Settings, ACC_GAP_CHOICES, ACC_GAP_DEFAULT, BACKUP_ANNOUNCEMENT_MODES,
-    DRIVING_ASSIST_FIELDS, DRIVING_ASSIST_PRESETS, LANE_KEEPING_MODES, PLACE_CALLOUT_MODES,
-    TIME_SCALES,
+    acc_gap_seconds, ScoreDisplay, Settings, ACC_GAP_CHOICES, ACC_GAP_DEFAULT,
+    BACKUP_ANNOUNCEMENT_MODES, DRIVING_ASSIST_FIELDS, DRIVING_ASSIST_PRESETS, LANE_KEEPING_MODES,
+    PLACE_CALLOUT_MODES, TIME_SCALES,
 };
 use ff_core::sim::hos::clock_text;
 use ff_core::sim::season::{date_text, real_clock_game_hours};
@@ -80,6 +80,14 @@ pub(super) fn hos_label(s: &Settings) -> &'static str {
         "relaxed" => "relaxed",
         "debug_off" => "off (developer)",
         _ => "realistic",
+    }
+}
+
+pub(super) fn score_display_label(s: &Settings) -> &'static str {
+    match s.score_display {
+        ScoreDisplay::Both => "both",
+        ScoreDisplay::Percent => "percentage only",
+        ScoreDisplay::Description => "description only",
     }
 }
 
@@ -352,6 +360,20 @@ impl SettingsCategoryState {
         let modes = ["realistic", "relaxed"];
         let i = cycle_index(&modes, &ctx.settings.hos_mode, d, 0);
         ctx.settings.hos_mode = modes[i].to_string();
+        self.announce(ctx);
+    }
+
+    pub(super) fn cycle_score_display(&mut self, ctx: &mut GameContext, d: i64) {
+        let modes = [
+            ScoreDisplay::Both,
+            ScoreDisplay::Percent,
+            ScoreDisplay::Description,
+        ];
+        let current = modes
+            .iter()
+            .position(|mode| *mode == ctx.settings.score_display)
+            .unwrap_or(0) as i64;
+        ctx.settings.score_display = modes[(current + d).rem_euclid(modes.len() as i64) as usize];
         self.announce(ctx);
     }
 

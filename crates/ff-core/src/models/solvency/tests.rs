@@ -7,7 +7,7 @@ use super::test_profile::FakeProfile;
 use super::*;
 use crate::models::business_constants::LEASED_OWNER_OPERATOR;
 use crate::models::enforcement::{
-    self, board_offers_for_reputation, dispatch_trust_line, trust_text, TRUST_FULL,
+    self, board_offers_for_reputation, dispatch_trust_line, TRUST_FULL,
 };
 use crate::pyfmt::fmt_grouped;
 use crate::pyrandom::PyRandom;
@@ -60,8 +60,10 @@ fn test_a_clean_solvent_driver_is_untouched_by_any_of_this() {
     assert_eq!(debt_warning_line(&p, false), "");
     assert!(!company_termination_due(&p));
     assert!(!repossession_due(&p));
-    // The trust line a clean driver hears is the one they always heard.
-    assert_eq!(dispatch_trust_line(&p), trust_text(p.reputation));
+    assert_eq!(
+        dispatch_trust_line(&p),
+        "Dispatch trust: full, 50 out of 100. You get the whole board."
+    );
 }
 
 // --- collection never takes the whole cheque (the zero-pay trap) ------------

@@ -977,7 +977,7 @@ Low dispatch trust, a suspended CDL, debt, or your driving record can hold equip
 
 ### What is the difference between reputation and dispatch trust?
 
-Reputation is a score out of 100 built from your deliveries and lowered by your driving record. Dispatch trust is what the carrier lets you do right now: how much of the board you see, how many loads you can refuse, and which truck you get. Your CDL, your record, and what you owe count toward it as well as reputation. See [Dispatch trust](#dispatch-trust).
+Reputation is a score out of 100 built from your deliveries and lowered by your driving record. Its descriptions are Outstanding, Well regarded, Established, Unproven, Shaky, Damaged, and Ruined. In Settings, Speech, Score display can speak both the description and number, the percentage only, or the description only. Dispatch trust is what the carrier lets you do right now: how much of the board you see, how many loads you can refuse, and which truck you get. Your CDL, your record, and what you owe count toward it as well as reputation. See [Dispatch trust](#dispatch-trust).
 
 ### How many levels are there?
 

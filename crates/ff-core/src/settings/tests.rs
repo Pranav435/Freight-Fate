@@ -86,15 +86,15 @@ fn the_struct_carries_the_persisted_fields_in_python_order() {
     // (2026-09-12), the two shortcut tables (2026-09-14),
     // radio_shuffle_playlists and steering_guide_inverted (2026-09-18), and
     // synth_music and music_seed (2026-09-21), touch_bindings (2026-09-29),
-    // assist_preset_chosen (2026-09-30), and touch_haptics and
+    // score_display, assist_preset_chosen (2026-09-30), and touch_haptics and
     // touch_practice_offered (2026-10-07), the six touch gesture
     // thresholds (2026-10-08), and facility_streets (2026-10-11) were added on the Rust side;
     // lane_centering_assist was retired for 1.9.
-    assert_eq!(Settings::FIELD_NAMES.len(), 94);
+    assert_eq!(Settings::FIELD_NAMES.len(), 95);
     assert_eq!(Settings::FIELD_NAMES[0], "online_services");
-    assert_eq!(Settings::FIELD_NAMES[79], "settings_layout_notice_from");
+    assert_eq!(Settings::FIELD_NAMES[80], "settings_layout_notice_from");
     let pairs = Settings::default().ordered_values();
-    assert_eq!(pairs.len(), 94);
+    assert_eq!(pairs.len(), 95);
     for ((name, _), field) in pairs.iter().zip(Settings::FIELD_NAMES) {
         assert_eq!(name, field);
     }
@@ -116,7 +116,7 @@ fn the_defaults_match_the_python_dataclass() {
         "pace_retired_notice_left": 0, "real_weather": false, "real_traffic": false,
         "real_parking": false, "real_fuel_prices": true,
         "live_weather_controls_calendar": true,
-        "hos_mode": "realistic", "hos_planning_hints": false,
+        "hos_mode": "realistic", "score_display": "Both", "hos_planning_hints": false,
         "lane_keeping": "full", "lane_keeping_rename_notice_left": 0,
         "lane_cue_loudness": "standard", "lane_guide_tone": false,
         "driving_assistance_preset": "all", "automatic_emergency_braking": true,
@@ -156,7 +156,7 @@ fn the_defaults_match_the_python_dataclass() {
     let Value::Object(expected) = expected else {
         unreachable!()
     };
-    assert_eq!(expected.len(), 94);
+    assert_eq!(expected.len(), 95);
     for (name, value) in s.ordered_values() {
         assert_eq!(Some(&value), expected.get(name), "{name}");
     }
@@ -172,6 +172,22 @@ fn hos_planning_hints_default_off_and_round_trip_as_a_boolean() {
     assert_eq!(stored["hos_planning_hints"], true);
     assert!(from_json(stored).hos_planning_hints);
     assert!(!from_json(json!({"hos_planning_hints": "true"})).hos_planning_hints);
+}
+
+#[test]
+fn score_display_defaults_loads_old_files_and_round_trips() {
+    assert_eq!(Settings::default().score_display, ScoreDisplay::Both);
+    assert_eq!(from_json(json!({})).score_display, ScoreDisplay::Both);
+    for mode in [
+        ScoreDisplay::Both,
+        ScoreDisplay::Percent,
+        ScoreDisplay::Description,
+    ] {
+        let mut settings = Settings::default();
+        settings.score_display = mode;
+        let stored: Value = serde_json::from_str(&settings.to_file_text()).unwrap();
+        assert_eq!(from_json(stored).score_display, mode);
+    }
 }
 
 #[test]

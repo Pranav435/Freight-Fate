@@ -4,6 +4,8 @@
 
 ### Added
 
+- **Score display is configurable.** Choose descriptions, percentages, or both for reputation and dispatch trust.
+
 - **How to play and the manual now have a Common questions page.** It covers assigned trucks, fleets, weigh stations, missed exits, the radio and more.
 
 - **The Weather app now lists active live weather alerts.** A warning you missed can be heard again while driving.
