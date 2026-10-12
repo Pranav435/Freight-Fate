@@ -14503,24 +14503,6 @@ msgstr "Freight Fate按键探测"
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr "每个方向键都按住几秒钟；它会自动结束。"
 
-msgid "de"
-msgstr "de"
-
-msgid "es"
-msgstr "es"
-
-msgid "fr"
-msgstr "fr"
-
-msgid "ja"
-msgstr "ja"
-
-msgid "pl"
-msgstr "pl"
-
-msgid "ru"
-msgstr "ru"
-
 msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 
@@ -16703,6 +16685,9 @@ msgid ""
 "On your current hours, {risky} dispatch{s_ending} would need an extra legal "
 "rest. "
 msgstr "按你现在的工时，有{risky}个调度任务需要额外一次法定休息。 "
+
+msgid "es"
+msgstr "es"
 
 #. placeholders: {locked}
 msgid ""
@@ -36431,6 +36416,21 @@ msgstr "然后右转急弯掉头。"
 
 msgid "Then hairpin left."
 msgstr "然后左转急弯掉头。"
+
+#~ msgid "de"
+#~ msgstr "de"
+
+#~ msgid "fr"
+#~ msgstr "fr"
+
+#~ msgid "ja"
+#~ msgstr "ja"
+
+#~ msgid "pl"
+#~ msgstr "pl"
+
+#~ msgid "ru"
+#~ msgstr "ru"
 
 #~ msgid "In {lane_phrase}"
 #~ msgstr "在{lane_phrase}"
