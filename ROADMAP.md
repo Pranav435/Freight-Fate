@@ -41,6 +41,14 @@ bookmarks usable.
 
 ## 1.9 in flight (`feat/career-1.9`)
 
+- [x] Main menu ambience (owner, 2026-10-12): a truck stop lot at night
+      under the main menu and the screens opened from it, rendered with
+      genny, on the Gameplay cues volume. The terminal, docks and rest stops
+      already had their own beds.
+- [ ] Owner listening pass on the main menu bed. A rig idling in a yard
+      and a dispatch office were rendered as alternatives
+      (`sound-test/menu_ambience/batch.json`).
+
 - [x] Facility streets setting (owner, 2026-10-11, for players who want the
       1.8 arrival): Settings, Gameplay, World and traffic. Off skips the
       facility street chains both ways (the destination ramp ends at the

@@ -66,6 +66,12 @@ pub use crate::states::main_menu_help::{
 };
 pub use crate::states::update::{UpdateCheckState, UpdateChecker, UpdatePromptState};
 
+/// The bed under the main menu and the screens opened from it: a truck stop
+/// lot at night, so the menu is not silent with the music down or off. It
+/// rides the effects volume like every other ambience loop. Rendered with
+/// genny from `sound-test/menu_ambience/`.
+pub const MAIN_MENU_AMBIENCE: &str = "ambient/menu_night_lot";
+
 /// A clearly-named stand-in for a screen another port task still owns.
 ///
 /// Nothing pushes one any more: the city hub, the online offer, the online
@@ -706,6 +712,7 @@ impl Menu for MainMenuState {
         });
         let refs: Vec<&str> = sequence.iter().map(String::as_str).collect();
         ctx.play_music_sequence("menu", &refs);
+        ctx.audio.set_ambient(Some(MAIN_MENU_AMBIENCE));
         let armed = UPDATE_CHECK
             .lock()
             .unwrap_or_else(|e| e.into_inner())
@@ -714,6 +721,10 @@ impl Menu for MainMenuState {
         if !armed {
             Self::arm_update_check(&ctx.settings);
         }
+    }
+
+    fn exit(&mut self, ctx: &mut GameContext) {
+        ctx.audio.set_ambient(None);
     }
 
     fn update(&mut self, ctx: &mut GameContext, dt: f64) {
