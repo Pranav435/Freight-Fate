@@ -27,7 +27,7 @@ NUMBER = re.compile(r"\d+")
 # Key names as the help and the key settings speak them. "Shift" is left
 # out: it is also the gearshift verb ("Shift up").
 KEY_NAMES = re.compile(
-    r"\b(Enter|Escape|Backspace|Page Up|Page Down|Tab|Control|Alt|F(?:1[0-2]|[1-9]))\b"
+    r"(?<![A-Za-z])(Enter|Escape|Backspace|Page Up|Page Down|Tab|Control|Alt|F(?:1[0-2]|[1-9]))(?![A-Za-z])"
 )
 PLURAL_FORMS = {"zh_CN": 1, "ja": 1, "ru": 3, "pl": 3}
 
