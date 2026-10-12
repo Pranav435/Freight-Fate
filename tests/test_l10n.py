@@ -154,4 +154,4 @@ def test_the_template_keeps_the_back_row_and_the_button_apart():
     for gone in ("browse", "stations", "matches"):
         assert gone not in msgids
     assert not any("PageDown" in m and "{else}" in m for m in msgids)
-    assert "{n} copies the last thing the game said." in msgids
+    assert "{copy_last} copies the last thing the game said." in msgids

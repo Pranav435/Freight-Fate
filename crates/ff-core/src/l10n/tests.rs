@@ -521,3 +521,35 @@ msgstr "{f} por ciento de {what}."
         "Entregas: 3, 50 por ciento a tiempo."
     );
 }
+
+#[test]
+fn eld_status_translates_as_whole_sentences() {
+    let po = r#"
+msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "ELD status on duty not driving."
+msgstr "Estado del ELD: en servicio sin conducir."
+
+msgid "Hours of service: {duration_text} of driving left, {duration_text2} of duty window left."
+msgstr "Horas de servicio: quedan {duration_text} de conducción y {duration_text2} de ventana de servicio."
+
+msgid "Hold {up} to accelerate, {down} to brake."
+msgstr "Mantén {up} para acelerar y {down} para frenar."
+"#;
+    let t = Translator::new(Catalog::from_po("es", po).expect("parses"));
+    assert_eq!(
+        t.translate(
+            "ELD status on duty not driving. Hours of service: 9 hours of driving left, 3 hours of duty window left."
+        ),
+        "Estado del ELD: en servicio sin conducir. Horas de servicio: quedan 9 hours de conducción y 3 hours de ventana de servicio."
+    );
+    // A sentence the catalog lacks stays whole English beside one it has.
+    assert_eq!(
+        t.translate(
+            "Hold Up arrow to accelerate, Down arrow to brake. The throttle key never latches."
+        ),
+        "Mantén Up arrow para acelerar y Down arrow para frenar. The throttle key never latches."
+    );
+}
