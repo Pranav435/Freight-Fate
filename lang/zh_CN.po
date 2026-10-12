@@ -31956,6 +31956,8 @@ msgid ""
 "no light or stop sign, a loaded run leaves straight onto the highway, and a "
 "pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
+"打开时，你要在高速公路和厂区之间的真实街道上逐个转弯地驾驶。关闭时和1.8版本一样，出口匝道在厂区大门结束，没有红绿灯或停车标志，装好货的行程直接上高速"
+"公路，城里的取货只是一段道路。从你的下一次驾驶开始生效。"
 
 #. placeholders: {else}
 msgid "Units: {else}"
