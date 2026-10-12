@@ -40,6 +40,8 @@
 
 ### Changed
 
+- **Dispatch trust now changes half a point earlier at each cutoff.** It follows the rounded reputation you hear.
+
 - **The nearest town readout now says only the name.** Alt+3 says "Nearest town: Nashville" without the distance.
 
 - **Career stats now says the carrier assigns your truck, and what the next fleet brings.** Business status and the garage say buying trucks starts with the owner-operator buy-in.
