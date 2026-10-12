@@ -123,6 +123,26 @@ fn the_copy_row_copies_what_was_said_before_the_list_opened() {
 }
 
 #[test]
+fn the_copy_key_in_the_open_list_copies_the_focused_row_not_the_heading() {
+    use freight_fate::states::base::{InputEvent, Mods};
+    let mut harness = a_drive("Command Copy Key");
+    press(&mut harness, Key::F2);
+    let first = harness.menu_labels().first().cloned().unwrap();
+    harness.key(InputEvent::key_mods(
+        Key::C,
+        Mods {
+            shift: true,
+            ctrl: true,
+            alt: false,
+        },
+    ));
+    assert!(harness.state_is::<DrivingCommandsState>());
+    let copied = harness.app.ctx.clipboard.get_text().unwrap_or_default();
+    assert_eq!(copied, format!("{first}."));
+    assert_ne!(copied, "Driving commands.");
+}
+
+#[test]
 fn f2_cannot_be_given_to_another_control() {
     assert!(reserved_key_reason(&Chord::plain(Key::F2)).is_some());
     assert!(reserved_key_reason(&Chord::alt(Key::F2)).is_some());

@@ -420,16 +420,24 @@ fn copy_last_spoken_copies_a_menu_result_line_not_the_focused_option() {
     app.shutdown();
 }
 
-/// A menu heading can be copied: opening a screen logs its heading, and the
-/// focused option spoken after it is not logged.
+/// Until something new is logged on a screen, the copy key copies the
+/// focused row (without its position cue) rather than the screen heading.
 #[test]
-fn copy_last_spoken_copies_the_menu_heading() {
+fn copy_last_spoken_copies_the_focused_row_on_a_fresh_screen() {
     let mut app = TestApp::new();
     app.push_state(menu());
     app.dispatch_to_state(&copy_event());
-    let copied = app.ctx.clipboard.get_text().unwrap_or_default();
-    assert!(copied.contains("Main menu"), "{copied:?}");
-    assert!(!copied.contains(" of 3"), "{copied:?}");
+    assert_eq!(app.ctx.clipboard.get_text().as_deref(), Some("New career."));
+    app.dispatch_to_state(&key_event(Key::Down));
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(
+        app.ctx.clipboard.get_text().as_deref(),
+        Some("Continue career.")
+    );
+    // Once a new line is logged on the screen, that line wins.
+    app.ctx.say("Saved.");
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(app.ctx.clipboard.get_text().as_deref(), Some("Saved."));
     app.shutdown();
 }
 

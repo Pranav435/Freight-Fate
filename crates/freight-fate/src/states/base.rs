@@ -573,7 +573,15 @@ pub trait State: AsAny {
         if self.captures_text_input() {
             return false;
         }
-        handle_message_review(ctx, event)
+        let focus = self.copy_focus(ctx);
+        handle_message_review_with_focus(ctx, event, focus)
+    }
+
+    /// The screen heading and the focused row (no position cue), for the
+    /// copy key: until something new is logged on this screen, the row is
+    /// copied instead of the heading. None on screens without rows.
+    fn copy_focus(&self, _ctx: &GameContext) -> Option<CopyFocus> {
+        None
     }
 }
 
@@ -595,12 +603,28 @@ pub fn controller_key_map(button: ControllerButton) -> Option<Key> {
 /// through the log, `Ctrl+,`/`Ctrl+.` jump to the ends, `Ctrl+C` copies the
 /// message in review. True when the key was one of them.
 pub fn handle_message_review(ctx: &mut GameContext, event: &InputEvent) -> bool {
+    handle_message_review_with_focus(ctx, event, None)
+}
+
+/// A screen's heading as it was logged, and the row that has focus.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CopyFocus {
+    pub heading: String,
+    pub row: String,
+}
+
+/// `handle_message_review`, knowing the active screen's focused row.
+pub fn handle_message_review_with_focus(
+    ctx: &mut GameContext,
+    event: &InputEvent,
+    focus: Option<CopyFocus>,
+) -> bool {
     let Some((key, mods, _)) = event.key_down() else {
         return false;
     };
     let ctrl = mods.ctrl;
     if ctx.bindings.action_for(key, mods) == Some(Action::CopyLastSpoken) {
-        copy_last_spoken(ctx);
+        copy_last_spoken_with_focus(ctx, focus);
         return true;
     }
     match key {
@@ -702,7 +726,20 @@ pub fn strip_position_cue(text: &str) -> String {
 
 /// Put the newest message-log line on the clipboard and say how it went.
 pub fn copy_last_spoken(ctx: &mut GameContext) {
-    let text = newest_copyable_line(ctx);
+    copy_last_spoken_with_focus(ctx, None);
+}
+
+/// As `copy_last_spoken`, but when the newest logged line is still the
+/// heading of the screen that has focus (nothing new has been logged since
+/// it opened), the focused row is copied instead, without its position cue.
+pub fn copy_last_spoken_with_focus(ctx: &mut GameContext, focus: Option<CopyFocus>) {
+    let newest = newest_copyable_line(ctx);
+    let text = match focus {
+        Some(focus) if newest.is_none() || newest.as_deref() == Some(focus.heading.as_str()) => {
+            Some(focus.row)
+        }
+        _ => newest,
+    };
     copy_text(ctx, text);
 }
 
