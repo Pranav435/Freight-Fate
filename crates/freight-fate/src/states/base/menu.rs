@@ -264,11 +264,20 @@ pub trait Menu: Sized + 'static {
         None
     }
 
+    /// A hook for keys a menu handles itself (PageUp and PageDown on a paged
+    /// list). Return true when the key was used.
+    fn handle_extra_key(&mut self, _ctx: &mut GameContext, _key: Key) -> bool {
+        false
+    }
+
     fn handle_event(&mut self, ctx: &mut GameContext, event: &InputEvent) {
         let Some((key, _mods, text)) = event.key_down() else {
             return;
         };
         if event.key_repeat() && self.held_key_moves_nothing(key) {
+            return;
+        }
+        if self.handle_extra_key(ctx, key) {
             return;
         }
         match key {
