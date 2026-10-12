@@ -527,7 +527,13 @@ impl Pass<'_, '_> {
                 Part::Hole(name) => {
                     let raw = captures.get(name.as_str()).copied().unwrap_or_default();
                     if is_proper_name_hole(name) || depth >= MAX_DEPTH {
-                        out.push_str(raw);
+                        // "{the_city}" holds "the Chicago" in English; the
+                        // translation brings its own article, if any.
+                        let bare = name
+                            .starts_with("the_")
+                            .then(|| raw.strip_prefix("the ").or(raw.strip_prefix("The ")))
+                            .flatten();
+                        out.push_str(bare.unwrap_or(raw));
                     } else if let Some(number) =
                         plural::localize_number(&self.catalog.language, raw)
                     {

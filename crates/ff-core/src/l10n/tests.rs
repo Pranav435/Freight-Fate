@@ -270,3 +270,17 @@ fn a_captured_number_takes_the_languages_separators() {
     let tr = Translator::new(catalog);
     assert_eq!(tr.translate("25,000 dollars"), "25.000 Dollar");
 }
+
+#[test]
+fn a_the_hole_drops_the_english_article() {
+    let catalog = Catalog::from_po(
+        "de",
+        "msgid \"{the_city} metro freight market\"\nmsgstr \"Frachtmarkt Großraum {the_city}\"\n",
+    )
+    .expect("parses");
+    let tr = Translator::new(catalog);
+    assert_eq!(
+        tr.translate("the Chicago metro freight market"),
+        "Frachtmarkt Großraum Chicago"
+    );
+}

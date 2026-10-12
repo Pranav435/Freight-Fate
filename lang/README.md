@@ -65,7 +65,9 @@ once.
 1. **Placeholders stay whole.** A word in braces, like `{city}` or
    `{distance}`, is filled in by the game. Move it wherever your grammar
    needs it, but copy the name inside the braces exactly. A translation that
-   names a placeholder the English line does not have is ignored.
+   names a placeholder the English line does not have is ignored. A
+   placeholder starting with `the_`, like `{the_city}`, gets the bare name
+   without the English "the".
 2. **Numbers stay as written.** Every digit in the English line appears in
    the translation.
 3. **Key names stay in English**: Enter, Escape, Space, Tab, Page Up, F1 and
