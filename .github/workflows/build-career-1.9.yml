@@ -148,6 +148,25 @@ jobs:
             --exclude-stable-notes latest-stable-notes.md \
             >> "$GITHUB_OUTPUT"
 
+      - name: Fold the accepted community stations
+        # Every build ships the stations accepted on orinks.net up to the
+        # moment it was cut. Folded once here so all three platforms ship the
+        # same list. This used to be a daily job committing to dev, which
+        # dev's required checks refuse from the workflow token. When the site
+        # cannot be read the tool leaves the committed copy alone and the
+        # build ships that, since players also download the list at launch.
+        if: steps.check.outputs.should_build == 'true'
+        run: |
+          python3 tools/fold_community_stations.py \
+            || echo "::warning::Could not read the accepted stations; shipping the committed copy."
+
+      - uses: actions/upload-artifact@v7
+        if: steps.check.outputs.should_build == 'true'
+        with:
+          name: community-stations
+          path: data/radio_community.json
+          retention-days: 7
+
   format:
     # Formatting is the same on every platform, so it is checked once, on
     # the cheap Linux runner, instead of on each packaging runner. Release
@@ -222,6 +241,12 @@ jobs:
         # per-push workflow (rust.yml) leaves out run here, and only here.
         # They are headless driving logic, so the other runners skip them.
         run: cargo test -p ff-core -p freight-fate
+
+      - name: Ship the accepted community stations
+        uses: actions/download-artifact@v7
+        with:
+          name: community-stations
+          path: data
 
       - name: Build the portable release
         run: ./build-release.ps1 --tag "${{ needs.prepare.outputs.tag }}"
@@ -360,6 +385,12 @@ jobs:
             echo "MACOS_NOTARY_KEY_ID=$ASC_KEY_ID"
             echo "MACOS_NOTARY_ISSUER_ID=$ASC_ISSUER_ID"
           } >> "$GITHUB_ENV"
+
+      - name: Ship the accepted community stations
+        uses: actions/download-artifact@v7
+        with:
+          name: community-stations
+          path: data
 
       - name: Build the macOS release
         # --smoke boots the PACKAGED app for five frames with dummy drivers:
@@ -515,6 +546,12 @@ jobs:
         env:
           RUSTFLAGS: --cfg ci_quick
         run: cargo test -p ff-core -p freight-fate
+
+      - name: Ship the accepted community stations
+        uses: actions/download-artifact@v7
+        with:
+          name: community-stations
+          path: data
 
       - name: Build the Linux release
         # --smoke boots the staged tarball payload for five frames with dummy
