@@ -48,6 +48,24 @@ pub const RADIO_CATALOG_RESOURCE: &str = "radio_catalog.json";
 /// row at a time, so past this a search is a narrower search, not a longer
 /// list; the app says how many more there were.
 pub const RADIO_SEARCH_LIMIT: usize = 40;
+/// How many search hits one page of the Radio app's results list shows.
+/// Further hits sit behind next and previous page rows (and PageUp and
+/// PageDown), so no match is ever unreachable.
+pub const RADIO_SEARCH_PAGE_SIZE: usize = 25;
+
+/// Zero-based hit positions `(start, end)` shown on `page` of `total` hits,
+/// `end` exclusive. The page is clamped to the last real page.
+pub fn search_page_bounds(total: usize, page: usize, page_size: usize) -> (usize, usize) {
+    let size = page_size.max(1);
+    let last_page = total.saturating_sub(1) / size;
+    let start = page.min(last_page) * size;
+    (start, (start + size).min(total))
+}
+
+/// How many pages `total` hits fill (at least one, even when empty).
+pub fn search_page_count(total: usize, page_size: usize) -> usize {
+    total.saturating_sub(1) / page_size.max(1) + 1
+}
 pub const RADIO_IMPORTED_RESOURCE: &str = "radio_imported.json";
 pub const EARTH_RADIUS_MI: f64 = 3958.8;
 
