@@ -48,6 +48,8 @@ indexmap = { version = "2", features = ["serde"] }
 once_cell = "1"
 parking_lot = "0.12"
 regex = "1"
+aho-corasick = "1"
+sys-locale = "0.3"
 sdl2 = "0.38"
 raw-window-handle = "0.6"
 url = "2"

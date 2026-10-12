@@ -41,6 +41,23 @@ bookmarks usable.
 
 ## 1.9 in flight (`feat/career-1.9`)
 
+- [x] Translations (owner, 2026-10-11): every spoken line is translated
+      where it leaves for the speech channels, from gettext PO files in
+      `lang/` matched as templates, so the code stays English. Settings,
+      Speech, Language picks the language (Automatic follows the system on
+      a fresh install; an existing settings file keeps English). Radio and
+      recordings stay English. `lang/README.md` is the translator's guide;
+      corrections come as pull requests or the Translation correction issue
+      form. Languages land one pull request each.
+- [ ] (Found along the way) Lines the game assembles from pieces the
+      extractor cannot see (turn-by-turn street instructions, some stop
+      announcements) stay partly English until each shape is added to
+      `lang/extra.pot`. `FREIGHT_FATE_L10N_MISSES` lists them from a drive.
+- [ ] (Found along the way) A fluent player's review of each machine-made
+      translation, starting with whichever language players ask for first.
+- [ ] (Found along the way) The separate event voice keeps the system's
+      default voice; a player hearing a translation through it may need to
+      pick a voice in that language under Settings, Speech.
 - [x] Facility streets setting (owner, 2026-10-11, for players who want the
       1.8 arrival): Settings, Gameplay, World and traffic. Off skips the
       facility street chains both ways (the destination ramp ends at the

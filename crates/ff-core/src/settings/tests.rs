@@ -77,6 +77,13 @@ fn old_stopping_toggles_migrate_to_the_one_facility_assist() {
     }
 }
 
+#[test]
+fn a_fresh_install_follows_the_system_language_and_an_update_keeps_english() {
+    assert_eq!(Settings::from_dict(None).language, crate::l10n::AUTO);
+    assert_eq!(from_json(json!({})).language, crate::l10n::ENGLISH);
+    assert_eq!(from_json(json!({"language": "fr"})).language, "fr");
+}
+
 // -- the field table -----------------------------------------------------------
 
 #[test]
@@ -88,13 +95,14 @@ fn the_struct_carries_the_persisted_fields_in_python_order() {
     // synth_music and music_seed (2026-09-21), touch_bindings (2026-09-29),
     // assist_preset_chosen (2026-09-30), and touch_haptics and
     // touch_practice_offered (2026-10-07), the six touch gesture
-    // thresholds (2026-10-08), and facility_streets (2026-10-11) were added on the Rust side;
+    // thresholds (2026-10-08), facility_streets (2026-10-11) and language
+    // (2026-10-12) were added on the Rust side;
     // lane_centering_assist was retired for 1.9.
-    assert_eq!(Settings::FIELD_NAMES.len(), 94);
+    assert_eq!(Settings::FIELD_NAMES.len(), 95);
     assert_eq!(Settings::FIELD_NAMES[0], "online_services");
     assert_eq!(Settings::FIELD_NAMES[79], "settings_layout_notice_from");
     let pairs = Settings::default().ordered_values();
-    assert_eq!(pairs.len(), 94);
+    assert_eq!(pairs.len(), 95);
     for ((name, _), field) in pairs.iter().zip(Settings::FIELD_NAMES) {
         assert_eq!(name, field);
     }
@@ -149,14 +157,15 @@ fn the_defaults_match_the_python_dataclass() {
         "touch_flick_points": 30.0, "touch_flick_ms": 150.0, "touch_deep_swipe_factor": 3.0,
         "touch_still_hold_ms": 500.0, "touch_rotate_degrees": 30.0, "touch_parking_brake_mph": 1.0,
         "steering_guide_inverted": false, "assist_preset_chosen": false,
-        "facility_streets": true
+        "facility_streets": true,
+        "language": "auto"
     }"#,
     )
     .unwrap();
     let Value::Object(expected) = expected else {
         unreachable!()
     };
-    assert_eq!(expected.len(), 94);
+    assert_eq!(expected.len(), 95);
     for (name, value) in s.ordered_values() {
         assert_eq!(Some(&value), expected.get(name), "{name}");
     }
@@ -195,7 +204,8 @@ fn the_file_text_is_what_json_dump_wrote() {
          \"touch_flick_points\": 30.0,\n  \"touch_flick_ms\": 150.0,\n  \
          \"touch_deep_swipe_factor\": 3.0,\n  \"touch_still_hold_ms\": 500.0,\n  \
          \"touch_rotate_degrees\": 30.0,\n  \"touch_parking_brake_mph\": 1.0,\n  \
-         \"steering_guide_inverted\": false,\n  \"assist_preset_chosen\": false,\n  \"facility_streets\": true,\n  \"steering_assist\": \"off\"\n}"
+         \"steering_guide_inverted\": false,\n  \"assist_preset_chosen\": false,\n  \"facility_streets\": true,\n  \"language\": \"auto\",\n  \
+         \"steering_assist\": \"off\"\n}"
     ));
     assert!(text.contains("\n  \"time_scale\": 10.0,\n"));
     assert!(text.contains("\n  \"radio_volume\": 0.25,\n"));

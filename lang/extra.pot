@@ -1,0 +1,114 @@
+# Lines the game assembles from pieces, so the source never spells them out
+# whole. Written by hand; tools/l10n/extract.py folds them into the template.
+# Each one is a template like any other: a word in braces is filled in by the
+# game.
+
+#. A number and its unit, as the readouts build them.
+msgid "{count} miles"
+msgstr ""
+
+msgid "{count} mile"
+msgstr ""
+
+msgid "{count} kilometers"
+msgstr ""
+
+msgid "{count} kilometer"
+msgstr ""
+
+msgid "{count} feet"
+msgstr ""
+
+msgid "{count} meters"
+msgstr ""
+
+msgid "{count} hours"
+msgstr ""
+
+msgid "{count} hour"
+msgstr ""
+
+msgid "{count} minutes"
+msgstr ""
+
+msgid "{count} minute"
+msgstr ""
+
+msgid "{count} dollars"
+msgstr ""
+
+msgid "{count} percent"
+msgstr ""
+
+msgid "{count} miles per hour"
+msgstr ""
+
+msgid "{count} kilometers per hour"
+msgstr ""
+
+msgid "{count} RPM"
+msgstr ""
+
+#. A menu's position announcement after an item: "3 of 10".
+msgid "{index} of {count}"
+msgstr ""
+
+msgid "{index} of {count}."
+msgstr ""
+
+#. A turn instruction from the map, read before the turn. {street} is the
+#. street's own name and is never translated.
+msgid "In {distance}, turn left onto {street}."
+msgstr ""
+
+msgid "In {distance}, turn right onto {street}."
+msgstr ""
+
+msgid "In {distance}, continue onto {street}."
+msgstr ""
+
+msgid "Turn left onto {street}"
+msgstr ""
+
+msgid "Turn right onto {street}"
+msgstr ""
+
+msgid "Continue onto {street}"
+msgstr ""
+
+msgid "a side street"
+msgstr ""
+
+msgid "a service road"
+msgstr ""
+
+#. A stop ahead on the highway. {stop_name} is the stop's own name.
+msgid "{stop_name} at exit {exit} in {distance}."
+msgstr ""
+
+msgid "{stop_name} in {distance}."
+msgstr ""
+
+msgid "Passing {city}."
+msgstr ""
+
+msgid "Entering {place}."
+msgstr ""
+
+msgid "Then right."
+msgstr ""
+
+msgid "Then left."
+msgstr ""
+
+msgid "Then sharp right."
+msgstr ""
+
+msgid "Then sharp left."
+msgstr ""
+
+msgid "Then hairpin right."
+msgstr ""
+
+msgid "Then hairpin left."
+msgstr ""

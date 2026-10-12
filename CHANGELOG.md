@@ -4,6 +4,10 @@
 
 ### Added
 
+- **A Language setting lets the game speak other languages.** It is the first row of Settings, Speech; Automatic follows your system language, and the radio stays English.
+
+- **Anyone can correct a translation with the Translation correction form on GitHub.** It asks what the game said and what it should say.
+
 - **How to play and the manual now have a Common questions page.** It covers assigned trucks, fleets, weigh stations, missed exits, the radio and more.
 
 - **The Weather app now lists active live weather alerts.** A warning you missed can be heard again while driving.

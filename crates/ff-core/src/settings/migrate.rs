@@ -555,6 +555,13 @@ impl Settings {
         ] {
             *level = py_clamp_unit(*level);
         }
+        // The language setting arrived with the translations. A player who
+        // already had a settings file has been hearing English, so that is
+        // what they keep until they choose otherwise; only a fresh install
+        // follows the operating system's language.
+        if data.is_some_and(|data| !data.contains_key("language")) {
+            s.language = crate::l10n::ENGLISH.to_string();
+        }
         if s.radio_station_id.is_empty() || s.radio_station_id == coerce::JUNK {
             s.radio_station_id = "route_playlist".to_string();
         }

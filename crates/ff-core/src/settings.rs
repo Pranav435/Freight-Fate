@@ -694,6 +694,13 @@ settings_fields! {
     /// a pickup in town is one access road. A drive keeps the value it
     /// started with (`DrivingState::facility_streets_on`).
     facility_streets: bool = true => bool_strict,
+    /// The language the game speaks (`ff_core::l10n`): "auto" follows the
+    /// operating system when the game has a catalog for it, "en" is
+    /// English, and any other value is a catalog code such as "es" or
+    /// "pt_BR". A fresh install follows the system; a settings file written
+    /// before the setting existed loads as English, so an update never
+    /// changes the language a player already hears.
+    language: String = "auto" => str_plain,
 }
 
 impl Settings {

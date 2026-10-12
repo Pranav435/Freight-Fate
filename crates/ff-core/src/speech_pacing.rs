@@ -527,7 +527,7 @@ impl EventSpeechPacer {
     }
 
     fn duration_s(text: &str) -> f64 {
-        Self::BASE_UTTERANCE_S + text.chars().count() as f64 / Self::CHARS_PER_S
+        Self::BASE_UTTERANCE_S + spoken_length(text) / Self::CHARS_PER_S
     }
 
     // -- what the player has already heard ---------------------------------
@@ -1094,6 +1094,19 @@ impl EventSpeechPacer {
         self.purge_next = true;
         self.protected = None;
     }
+}
+
+/// A line's length in English characters' worth of speaking time. A Chinese
+/// or Japanese character carries a syllable or more, about as long to say
+/// as three English letters, so a translated line is not mistaken for a
+/// short one by the backlog projection.
+fn spoken_length(text: &str) -> f64 {
+    text.chars()
+        .map(|c| match c as u32 {
+            0x3040..=0x30FF | 0x3400..=0x4DBF | 0x4E00..=0x9FFF | 0xAC00..=0xD7AF => 3.0,
+            _ => 1.0,
+        })
+        .sum()
 }
 
 #[cfg(test)]

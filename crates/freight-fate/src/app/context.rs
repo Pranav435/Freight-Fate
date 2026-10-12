@@ -27,6 +27,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use ff_core::achievements::{award, AchievementAward};
 use ff_core::data::world::World;
+use ff_core::l10n::Translator;
 use ff_core::message_log::{MessageCategory, MessageLog};
 use ff_core::models::economy::Economy;
 use ff_core::models::profile::Profile;
@@ -145,6 +146,9 @@ pub struct GameContext {
     /// active career's progress and reward state.
     pub account_achievements: AccountAchievements,
     pub message_log: MessageLog,
+    /// Turns each finished English line into the player's language
+    /// (`app::language`); English passes lines through untouched.
+    pub translator: Translator,
     pub achievement_notice: String,
     pub achievement_notice_timer: f64,
     /// True while a playtest-lever scenario runs unsaved (see
@@ -251,6 +255,7 @@ impl GameContext {
             profile: None,
             account_achievements: parts.account_achievements,
             message_log: parts.message_log,
+            translator: Translator::english(),
             achievement_notice: String::new(),
             achievement_notice_timer: 0.0,
             playtest_sandbox: false,
