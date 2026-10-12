@@ -454,6 +454,43 @@ fn test_facility_streets_off_skips_both_chains() {
     assert!(streets.begin_departure_chain(&mut app.ctx, false));
 }
 
+/// With Facility streets off the facility's exit ramp ends at the facility,
+/// as in 1.8: no traffic light or stop sign at its end. Other exits keep
+/// theirs.
+#[test]
+fn test_facility_streets_off_has_no_light_or_sign_at_the_facility_ramp() {
+    let world = get_world();
+    let Some((city, location)) = a_turn_level_facility(world) else {
+        return;
+    };
+    let mut app = TestApp::new();
+    let Some(mut d) = a_drive_to(&mut app, &city, &location) else {
+        return;
+    };
+    let total = d.trip.total_miles();
+    let exits: Vec<f64> = (1..40).map(|i| total * f64::from(i) / 40.0).collect();
+    let controls = |d: &DrivingState, ctx: &freight_fate::app::GameContext, kind: &str| {
+        exits
+            .iter()
+            .map(|&at| d.ramp_control_for(ctx, &RoadStop::new("Exit", at, kind), None))
+            .collect::<Vec<_>>()
+    };
+    let with_streets = controls(&d, &app.ctx, "delivery_destination");
+    assert!(
+        with_streets.iter().any(|control| control != "none"),
+        "{with_streets:?}"
+    );
+    let truck_stop = controls(&d, &app.ctx, "truck_stop");
+
+    d.facility_streets_on = false;
+    let classic = controls(&d, &app.ctx, "delivery_destination");
+    assert!(
+        classic.iter().all(|control| control == "none"),
+        "{classic:?}"
+    );
+    assert_eq!(controls(&d, &app.ctx, "truck_stop"), truck_stop);
+}
+
 /// A drive keeps the Facility streets value it started with, across a save
 /// and a change of the setting before the resume.
 #[test]

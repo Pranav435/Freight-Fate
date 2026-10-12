@@ -20,7 +20,7 @@
 
 - **The Weather app now lists active live weather alerts.** A warning you missed can be heard again while driving.
 
-- **A Facility streets setting turns off the drive through city streets to and from facilities.** Off, the exit ramp ends at the gate, as in 1.8.
+- **A Facility streets setting turns off the drive through city streets to and from facilities.** Off, the exit ramp ends at the gate with no light or stop sign, as in 1.8.
 
 - **The right stick now tunes the radio and adjusts its volume.** Hold up or down to keep changing volume.
 
@@ -43,6 +43,8 @@
 - **Drivers can call dispatch while stopped for trip-specific help.** Report delays, hours, road conditions, truck trouble or load trouble.
 
 ### Changed
+
+- **The nearest town readout now says only the name.** Alt+3 says "Nearest town: Nashville" without the distance.
 
 - **Career stats now says the carrier assigns your truck, and what the next fleet brings.** Business status and the garage say buying trucks starts with the owner-operator buy-in.
 
