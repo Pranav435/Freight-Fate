@@ -309,6 +309,29 @@ fn test_a_clean_driver_sees_the_board_they_have_always_seen() {
 }
 
 #[test]
+fn test_trust_band_follows_the_rounded_score_the_player_hears() {
+    assert_eq!(trust_band(39.4), TRUST_GUARDED);
+    assert_eq!(trust_band(39.5), TRUST_FULL);
+    assert_eq!(trust_band(39.7), TRUST_FULL);
+    assert_eq!(trust_band(27.4), TRUST_POOR);
+    assert_eq!(trust_band(27.7), TRUST_GUARDED);
+    assert_eq!(trust_band(15.4), TRUST_LAST_CHANCE);
+    assert_eq!(trust_band(15.7), TRUST_POOR);
+    for rep in [39.4, 39.5, 39.7, 27.7, 15.7] {
+        let word = reputation_band_word(rep);
+        let band = trust_band(rep);
+        // Band words and trust bands share their edges at 40, 28 and 16.
+        let expected = match word {
+            "Unproven" | "Established" | "Well regarded" | "Outstanding" => TRUST_FULL,
+            "Shaky" => TRUST_GUARDED,
+            "Damaged" => TRUST_POOR,
+            _ => TRUST_LAST_CHANCE,
+        };
+        assert_eq!(band, expected, "reputation {rep}");
+    }
+}
+
+#[test]
 fn test_dispatch_trust_slides_the_whole_way_down() {
     let steps: Vec<i64> = [50.0, 40.0, 25.0, 5.0]
         .into_iter()

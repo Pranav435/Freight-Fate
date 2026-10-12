@@ -469,7 +469,11 @@ pub fn is_serious_speed(mph_over: f64) -> bool {
 // -- dispatch access --------------------------------------------------------
 
 /// How far dispatch trusts this driver right now.
+///
+/// The band is decided from the rounded score the player hears, so a spoken
+/// "40 out of 100" never sits beside a "guarded" trust line.
 pub fn trust_band(reputation: f64) -> &'static str {
+    let reputation = round_py_int(reputation.clamp(0.0, 100.0)) as f64;
     if reputation >= REPUTATION_FULL_BOARD {
         return TRUST_FULL;
     }
