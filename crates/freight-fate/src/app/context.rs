@@ -180,6 +180,8 @@ pub struct GameContext {
     /// handled. See `player_asked`: a readout somebody asked for cuts the
     /// line in progress even at the wheel, where unasked-for lines queue.
     pub(crate) speech_requested: bool,
+    /// The last line handed to a voice, for the copy-last-spoken key.
+    pub(crate) last_spoken: Option<String>,
     /// FIRST_OCCURRENCE and TRANSITIONS need memory of what has already
     /// been said; Settings cannot hold it, so it lives here beside the
     /// pacer. `ladder_said` is leg-scoped ("once per leg"), `ladder_last`
@@ -264,6 +266,7 @@ impl GameContext {
             running: false,
             speech_ducked: false,
             speech_requested: false,
+            last_spoken: None,
             ladder_said: HashSet::new(),
             ladder_last: HashMap::new(),
             handed_back: VecDeque::new(),

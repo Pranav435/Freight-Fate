@@ -73,6 +73,9 @@ pub enum Action {
     Grade,
     Upcoming,
     LastAnnouncement,
+    /// Keyboard only by default: copies the last spoken line to the
+    /// clipboard. Handled on every screen, not just at the wheel.
+    CopyLastSpoken,
     Cb,
     HosWheel,
     HosBreak,
@@ -450,6 +453,20 @@ const TABLE: &[Row] = &[
         "last_announcement",
         "Repeat the last announcement",
         &[Chord::plain(Key::A)],
+        &[],
+    ),
+    (
+        Action::CopyLastSpoken,
+        "copy_last_spoken",
+        "Copy the last spoken text",
+        &[Chord {
+            key: Key::C,
+            mods: Mods {
+                shift: true,
+                ctrl: true,
+                alt: false,
+            },
+        }],
         &[],
     ),
     (

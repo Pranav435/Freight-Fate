@@ -193,6 +193,7 @@ Use message review to replay an announcement you missed.
 | Ctrl+Period | Jump back to the newest message. |
 | Left bracket or right bracket | Switch between all messages, general messages, and driving events. |
 | Ctrl+C | Copy the message you are on to the clipboard. |
+| Ctrl+Shift+C | Copy the last spoken text to the clipboard, on any screen. Rebind it under Settings, Controls. |
 
 The history keeps 200 messages, leaving out routine menu movement. New announcements won't move you away from the message you're reviewing. After ten seconds without a review key, your next press starts at the newest message again; your chosen category stays selected. When you're typing in a text field, punctuation enters text instead of reviewing speech.
 

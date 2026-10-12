@@ -30,6 +30,7 @@ use ff_core::radio::RadioState;
 
 use crate::app::GameContext;
 pub use crate::app::Say;
+use crate::bindings::Action;
 use crate::controller::{ControllerAxis, ControllerButton};
 use crate::discord_presence::PresenceState;
 use crate::touch::Gesture;
@@ -598,6 +599,10 @@ pub fn handle_message_review(ctx: &mut GameContext, event: &InputEvent) -> bool 
         return false;
     };
     let ctrl = mods.ctrl;
+    if ctx.bindings.action_for(key, mods) == Some(Action::CopyLastSpoken) {
+        copy_last_spoken(ctx);
+        return true;
+    }
     match key {
         Key::LeftBracket => {
             if let Some(category) = ctx.message_log.previous_category() {
@@ -662,6 +667,23 @@ pub fn handle_message_review(ctx: &mut GameContext, event: &InputEvent) -> bool 
         }
         _ => false,
     }
+}
+
+/// Put the last spoken line on the clipboard and say how it went. The
+/// confirmation is not kept as "last spoken", so a second press copies the
+/// same line again rather than the word "Copied".
+fn copy_last_spoken(ctx: &mut GameContext) {
+    let Some(text) = ctx.last_spoken.clone() else {
+        ctx.say_with("Nothing to copy yet.", Say::new().review(false));
+        return;
+    };
+    let reply = if ctx.write_clipboard_text(&text) {
+        "Copied."
+    } else {
+        "Could not copy to the clipboard."
+    };
+    ctx.say_with(reply, Say::new().review(false));
+    ctx.last_spoken = Some(text);
 }
 
 /// How many newer messages the chosen category is holding back.

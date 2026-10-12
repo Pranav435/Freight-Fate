@@ -250,6 +250,8 @@ impl DrivingState {
             Action::SafeSpeed => self.speak_safe_speed(ctx),
             Action::HosWheel => self.speak_hos_wheel_time(ctx),
             Action::LastAnnouncement => self.speak_last_announcement(ctx),
+            // Answered on every screen before a state sees the key.
+            Action::CopyLastSpoken => {}
             Action::Grade => self.speak_grade(ctx),
             Action::LaneLocator => self.toggle_lane_locator(ctx),
             Action::Upcoming => self.speak_upcoming(ctx, 15.0),

@@ -219,6 +219,7 @@ speech and driving events.
 | Ctrl+Period | Jump to the newest message |
 | Left / Right bracket | Switch between all messages, general messages, and driving events |
 | Ctrl+C | Copy the message you are on |
+| Ctrl+Shift+C | Copy the last thing the game said, on any screen |
 
 #### Driving
 
