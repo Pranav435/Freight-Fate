@@ -307,6 +307,7 @@ fn a_capitalised_fragment_still_fills_its_template() {
         "es",
         "msgid \"divided, {lane_word} lanes your side\"\n\
          msgstr \"calzadas separadas, {lane_word} vías en tu sentido\"\n\n\
+         msgid \"{lane_word} lanes your side\"\nmsgstr \"{lane_word} vías en tu sentido\"\n\n\
          msgid \"two\"\nmsgstr \"dos\"\n",
     )
     .expect("parses");
