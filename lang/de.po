@@ -12945,9 +12945,17 @@ msgstr "Spur"
 msgid "the {lane_label} lane"
 msgstr "Spur {lane_label}"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "Position {lane_phrase}"
+msgid "In the lane"
+msgstr "Auf der Spur"
+
+msgid "In the right lane"
+msgstr "Auf der rechten Spur"
+
+msgid "In the left lane"
+msgstr "Auf der linken Spur"
+
+msgid "In the middle lane"
+msgstr "Auf der mittleren Spur"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -34364,10 +34372,6 @@ msgstr "Du weichst {names} aus."
 msgid "You swerve around {names}. Well done."
 msgstr "Du weichst {names} aus. Gut gemacht."
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "Position {lane_phrase}."
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -41924,6 +41928,12 @@ msgstr "Danach Haarnadelkurve rechts."
 
 msgid "Then hairpin left."
 msgstr "Danach Haarnadelkurve links."
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "Position {lane_phrase}"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "Position {lane_phrase}."
 
 #~ msgid "mostly divided, "
 #~ msgstr "überwiegend mit Mitteltrennung, "
