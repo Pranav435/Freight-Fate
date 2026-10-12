@@ -6,8 +6,10 @@ at launch (``crates/freight-fate/src/community_stations.rs``), which is how a
 new one arrives without an update. And every build ships a copy, written here
 to ``data/radio_community.json``, so a first launch, an offline one, or a
 player with the orinks.net services switched off still has every station
-accepted up to that build. The fold-community-stations workflow runs this
-before each nightly and commits the result to dev when it changed.
+accepted up to that build. The snapshot workflow (build-career-1.9.yml)
+runs this as each build is cut and ships the result without committing it,
+so the committed copy is only the fallback for a build that cannot reach
+the site.
 
 The file mirrors the site exactly: a station the owner accepted appears, one
 whose stream has died off the site's list disappears. Rows are checked the

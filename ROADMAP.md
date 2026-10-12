@@ -69,7 +69,11 @@ bookmarks usable.
       owner-operator hears a rig idling in the yard, and a company driver or
       a new driver hears the dispatch office. It is on the Gameplay cues
       volume. The owner picked the takes; the terminal, docks and rest stops
-      already had their own beds.
+      already had their own beds. At launch the bed used to wait for the
+      next screen change, because the menu asks for it before the sound
+      device has opened; the device now starts every bed still asked for
+      when it arrives (owner report, 2026-10-12).
+
 - [x] Facility streets setting (owner, 2026-10-11, for players who want the
       1.8 arrival): Settings, Gameplay, World and traffic. Off skips the
       facility street chains both ways (the destination ramp ends at the
@@ -79,6 +83,12 @@ bookmarks usable.
       the value it started with.
 - [x] Controller radio controls: the right stick tunes stations and changes volume; right-bumper combinations manage playback, categories, and radio information.
 
+- [x] Favorites play from anywhere (Orinks, 2026-10-12): a saved ranged
+      station keeps its real signal while it is clean, and past that it plays
+      its stream at full strength, spoken "streaming", so it never fades,
+      crackles or hands the dial over (`RadioState::reception`). A streamed
+      favorite is not counted as the strongest signal here when another
+      station fades out.
 - [x] Call dispatch, a 2.0 teaser for 1.9.4 (owner, 2026-10-10): the pause
       menu offers Call dispatch while the truck is stopped, with local answers
       about the delivery window, hours, the road ahead, truck trouble (which
@@ -2765,8 +2775,9 @@ collision.
       FM band near home; one the FCC does not list stays on the web band
       and is asked about again weekly.
 - [x] Accepted stations ship in every build (`data/radio_community.json`),
-      copied from the site before each nightly, so a first or offline launch
-      has them too.
+      copied from the site as each build is cut, so a first or offline launch
+      has them too. (The daily job that committed the copy to dev could
+      not get past dev's required checks; the build folds it now.)
 
 ### October 9 achievement sweep
 
