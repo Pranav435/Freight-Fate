@@ -207,6 +207,16 @@ impl Catalog {
                 Err(_) => continue,
             }
         }
+        // A fragment like "Billboard: " is also found by its bare words,
+        // the way a piece reaches it after trimming.
+        let trimmed: Vec<(String, String)> = exact
+            .iter()
+            .filter(|(key, _)| key.trim() != key.as_str() && !key.trim().is_empty())
+            .map(|(key, value)| (key.trim().to_string(), value.trim().to_string()))
+            .collect();
+        for (key, value) in trimmed {
+            exact.entry(key).or_insert(value);
+        }
         let mut embedded_keys: Vec<String> = exact
             .keys()
             .filter(|key| has_sentence_break(key))
@@ -379,10 +389,7 @@ impl Pass<'_, '_> {
         let lead = &text[..text.len() - text.trim_start().len()];
         let trail = &text[text.trim_end().len()..];
         let wrap = |inner: String| format!("{lead}{inner}{trail}");
-        if let Some(hit) = self.catalog.exact.get(core) {
-            return Some(wrap(hit.clone()));
-        }
-        if let Some(out) = self.template(core, depth) {
+        if let Some(out) = self.lookup(core, depth) {
             return Some(wrap(out));
         }
         // "Dispatch board." is the catalog's "Dispatch board" with the full
@@ -395,10 +402,7 @@ impl Pass<'_, '_> {
         {
             let bare = &core[..core.len() - mark.len_utf8()];
             if !bare.ends_with(['.', ':', ',', ';']) {
-                let found = match self.catalog.exact.get(bare) {
-                    Some(hit) => Some(hit.clone()),
-                    None => self.template(bare, depth),
-                };
+                let found = self.lookup(bare, depth);
                 if let Some(mut out) = found {
                     if mark == '.' {
                         out = self.with_full_stop(out);
@@ -496,6 +500,30 @@ impl Pass<'_, '_> {
 
     /// A translated piece with its sentence ended the way the language ends
     /// one, unless the translation already did.
+    /// A whole-piece match: exact, then a template, then the same with the
+    /// first letter's case flipped, since a fragment that opens a sentence
+    /// ("Confirmed truck parking.") is the catalog's lowercase fragment.
+    fn lookup(&mut self, core: &str, depth: usize) -> Option<String> {
+        if let Some(hit) = self.catalog.exact.get(core) {
+            return Some(hit.clone());
+        }
+        if let Some(out) = self.template(core, depth) {
+            return Some(out);
+        }
+        let mut chars = core.chars();
+        let first = chars.next()?;
+        let upper = first.is_uppercase();
+        let flipped: String = if upper {
+            first.to_lowercase().chain(chars).collect()
+        } else if first.is_lowercase() {
+            first.to_uppercase().chain(chars).collect()
+        } else {
+            return None;
+        };
+        let hit = self.catalog.exact.get(&flipped)?;
+        Some(if upper { capitalize(hit) } else { hit.clone() })
+    }
+
     fn with_full_stop(&self, mut out: String) -> String {
         if !out.trim_end().ends_with(['.', '!', '?', '。', '！', '？']) {
             let base = self.catalog.language.split('_').next().unwrap_or_default();
@@ -565,6 +593,15 @@ impl Pass<'_, '_> {
             .iter()
             .all(|seg| !matches!(seg, Seg::Hole(name) if !captures.contains_key(name.as_str()))));
         Some(out)
+    }
+}
+
+/// `text` with its first letter capitalized.
+fn capitalize(text: &str) -> String {
+    let mut chars = text.chars();
+    match chars.next() {
+        Some(first) => first.to_uppercase().chain(chars).collect(),
+        None => String::new(),
     }
 }
 

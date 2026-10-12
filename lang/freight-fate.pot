@@ -14872,16 +14872,16 @@ msgid "Lot limit {speed_value}."
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/limits.rs
-msgid "reduced to"
+msgid "reduced"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/limits.rs
-msgid "raised to"
+msgid "raised"
 msgstr ""
 
 #. placeholders: {verb}, {speed_value}
 #: crates/ff-core/src/sim/trip/limits.rs
-msgid "Speed limit {verb} {speed_value}."
+msgid "Speed limit {verb} to {speed_value}."
 msgstr ""
 
 #. placeholders: {speed_value}
@@ -14951,7 +14951,7 @@ msgstr ""
 
 #. placeholders: {verb}, {speed_value}, {where_}, {span}
 #: crates/ff-core/src/sim/trip/limits.rs
-msgid "Speed limit {verb} {speed_value}{where_}{span}."
+msgid "Speed limit {verb} to {speed_value}{where_}{span}."
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/limits.rs

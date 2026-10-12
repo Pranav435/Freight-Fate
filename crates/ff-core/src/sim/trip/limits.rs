@@ -241,11 +241,14 @@ impl Trip {
             // A new street's limit, said the way the road signs it: the
             // number, and which way it went.
             let verb = if zone.limit_mph < before.limit_mph {
-                "reduced to"
+                "reduced"
             } else {
-                "raised to"
+                "raised"
             };
-            return format!("Speed limit {verb} {}.", self.speed_value(zone.limit_mph));
+            return format!(
+                "Speed limit {verb} to {}.",
+                self.speed_value(zone.limit_mph)
+            );
         }
         if super::streets::is_street_zone_reason(&zone.reason) {
             // The first street: just its limit. The line onto the streets
@@ -526,7 +529,7 @@ impl Trip {
                 return;
             }
         }
-        let verb = if lowered { "reduced to" } else { "raised to" };
+        let verb = if lowered { "reduced" } else { "raised" };
         let near = if lowered {
             self.nearest_urban_city(self.position_mi)
         } else {
@@ -556,7 +559,7 @@ impl Trip {
         }
         self.event_breather.spoke("limit");
         let message = format!(
-            "Speed limit {verb} {}{where_}{span}.",
+            "Speed limit {verb} to {}{where_}{span}.",
             self.speed_value(limit)
         );
         self.emit(

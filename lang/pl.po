@@ -11751,14 +11751,14 @@ msgstr ""
 msgid "Lot limit {speed_value}."
 msgstr ""
 
-msgid "reduced to"
+msgid "reduced"
 msgstr ""
 
-msgid "raised to"
+msgid "raised"
 msgstr ""
 
 #. placeholders: {verb}, {speed_value}
-msgid "Speed limit {verb} {speed_value}."
+msgid "Speed limit {verb} to {speed_value}."
 msgstr ""
 
 #. placeholders: {speed_value}
@@ -11814,7 +11814,7 @@ msgid " for {short_miles}"
 msgstr ""
 
 #. placeholders: {verb}, {speed_value}, {where_}, {span}
-msgid "Speed limit {verb} {speed_value}{where_}{span}."
+msgid "Speed limit {verb} to {speed_value}{where_}{span}."
 msgstr ""
 
 msgid " for the downhill grade"

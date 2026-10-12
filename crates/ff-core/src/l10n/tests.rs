@@ -284,3 +284,19 @@ fn a_the_hole_drops_the_english_article() {
         "Frachtmarkt Großraum Chicago"
     );
 }
+
+#[test]
+fn a_fragment_opening_a_sentence_or_trimmed_still_matches() {
+    let catalog = Catalog::from_po(
+        "es",
+        "msgid \"confirmed truck parking\"\nmsgstr \"aparcamiento confirmado\"\n\n\
+         msgid \"Billboard: \"\nmsgstr \"Valla: \"\n",
+    )
+    .expect("parses");
+    let tr = Translator::new(catalog);
+    assert_eq!(
+        tr.translate("Confirmed truck parking."),
+        "Aparcamiento confirmado."
+    );
+    assert_eq!(tr.translate("Billboard:"), "Valla:");
+}
