@@ -36384,6 +36384,11 @@ msgid ""
 "no light or stop sign, a loaded run leaves straight onto the highway, and a "
 "pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
+"Se acceso, guidi le strade vere tra l'autostrada e una struttura, svolta "
+"dopo svolta. Se spento, come nella versione 1.8, la rampa di uscita finisce "
+"al cancello senza semaforo né stop, un viaggio carico esce dritto "
+"sull'autostrada e un ritiro in città è un unico tratto di strada. Vale dal "
+"tuo prossimo viaggio."
 
 #. placeholders: {else}
 msgid "Units: {else}"
