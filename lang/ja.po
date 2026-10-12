@@ -11205,9 +11205,17 @@ msgstr "車線"
 msgid "the {lane_label} lane"
 msgstr "{lane_label}車線"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "{lane_phrase}を走行中"
+msgid "In the lane"
+msgstr "車線を走行中"
+
+msgid "In the right lane"
+msgstr "右車線を走行中"
+
+msgid "In the left lane"
+msgstr "左車線を走行中"
+
+msgid "In the middle lane"
+msgstr "中央車線を走行中"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -30670,10 +30678,6 @@ msgstr "{names}をよけました。"
 msgid "You swerve around {names}. Well done."
 msgstr "{names}をよけました。お見事です。"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "{lane_phrase}にいます。"
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -37180,6 +37184,12 @@ msgstr "続いて、ヘアピンカーブを右です。"
 
 msgid "Then hairpin left."
 msgstr "続いて、ヘアピンカーブを左です。"
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "{lane_phrase}を走行中"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "{lane_phrase}にいます。"
 
 #~ msgid "mostly divided, "
 #~ msgstr "ほぼ中央分離帯あり、 "
