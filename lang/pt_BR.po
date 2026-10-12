@@ -14259,24 +14259,6 @@ msgstr ""
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr ""
 
-msgid "de"
-msgstr ""
-
-msgid "es"
-msgstr ""
-
-msgid "fr"
-msgstr ""
-
-msgid "ja"
-msgstr ""
-
-msgid "pl"
-msgstr ""
-
-msgid "ru"
-msgstr ""
-
 msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 msgstr ""
 
@@ -16370,6 +16352,9 @@ msgstr ""
 msgid ""
 "On your current hours, {risky} dispatch{s_ending} would need an extra legal "
 "rest. "
+msgstr ""
+
+msgid "es"
 msgstr ""
 
 #. placeholders: {locked}

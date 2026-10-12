@@ -48,7 +48,11 @@ bookmarks usable.
       a fresh install; an existing settings file keeps English). Radio and
       recordings stay English. `lang/README.md` is the translator's guide;
       corrections come as pull requests or the Translation correction issue
-      form. Languages land one pull request each.
+      form. Languages land one pull request each. A language added as a
+      `.po` file alone, built in or dropped into `saves/lang/`, is offered
+      by its `X-Language-Autonym` header with no code change; it gets two
+      plural forms and English number separators until a maintainer adds
+      its rules to `l10n::plural`.
 - [ ] (Found along the way) Lines the game assembles from pieces the
       extractor cannot see (turn-by-turn street instructions, some stop
       announcements) stay partly English until each shape is added to

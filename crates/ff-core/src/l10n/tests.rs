@@ -345,3 +345,31 @@ fn side_by_side_holes_split_before_a_comma_tail() {
         "Auf I-90 East Richtung Rochester, New York auffahren, dann 74 miles darauf."
     );
 }
+
+#[test]
+fn a_language_added_from_a_file_is_known_and_matches_its_locale() {
+    // The only test that adds a language: the list is set once a process.
+    super::add_languages([
+        ("tlh".to_string(), "tlhIngan Hol".to_string()),
+        ("es".to_string(), "not added again".to_string()),
+    ]);
+    assert_eq!(
+        super::language("tlh").map(|lang| lang.autonym),
+        Some("tlhIngan Hol")
+    );
+    assert_eq!(match_locale("tlh-US"), Some("tlh"));
+    assert_eq!(
+        super::language("es").map(|lang| lang.autonym),
+        Some("Español")
+    );
+}
+
+#[test]
+fn a_po_header_field_is_read_by_name() {
+    let text = "msgid \"\"\nmsgstr \"Language: nl\\nX-Language-Autonym: Nederlands\\n\"\n";
+    assert_eq!(
+        super::po::header_field(text, "x-language-autonym").as_deref(),
+        Some("Nederlands")
+    );
+    assert_eq!(super::po::header_field(text, "Plural-Forms"), None);
+}

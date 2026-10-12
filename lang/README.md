@@ -60,6 +60,30 @@ matched, set the environment variable `FREIGHT_FATE_L10N_MISSES` to a file
 path before starting the game. Each untranslated line is written there
 once.
 
+## Start a new language
+
+`freight-fate.pot` in this folder is the template: every line the game can
+speak, untranslated. To add a language the game does not have yet:
+
+1. In Poedit, choose "Create new translation" and open
+   `freight-fate.pot`, then pick your language. Any other PO editor, or a
+   copy of the file renamed by hand, works too.
+2. Save it here as `<code>.po`, where the code is your language's, such as
+   `nl.po` for Dutch or `pt_PT.po` for European Portuguese.
+3. In the file's header, set `X-Language-Autonym` to your language's name
+   in your language, such as `X-Language-Autonym: Nederlands`. Settings
+   reads that name out.
+
+That is all the game needs: with the file in `saves/lang/` it appears in
+Settings after a restart, and a pull request that adds it here builds it
+into the game. Translate as much or as little as you like; every empty
+entry is spoken in English. When the template gains new lines, they arrive
+in your file untranslated.
+
+A new language starts with two plural forms (one, and the rest) and
+English number formatting, such as 1,250.5. If yours needs more forms or
+other separators, say so in the pull request and a maintainer adds them.
+
 ## Rules for every line
 
 1. **Placeholders stay whole.** A word in braces, like `{city}` or

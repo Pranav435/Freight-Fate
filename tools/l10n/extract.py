@@ -138,7 +138,17 @@ TEMPLATE_HEADER = (
 )
 
 
-def language_header(code: str) -> str:
+def language_codes() -> list[str]:
+    """The built-in languages, then any other ``lang/*.po`` a translator added."""
+    added = sorted(p.stem for p in LANG.glob("*.po") if p.stem not in LANGUAGES)
+    return list(LANGUAGES) + added
+
+
+def language_header(code: str, existing: list[Entry]) -> str:
+    """A built-in language's header, or the one an added file brought."""
+    if code not in LANGUAGES:
+        brought = next((e.msgstr for e in existing if not e.msgid), "")
+        return brought or TEMPLATE_HEADER + f"Language: {code}\n"
     name, plural = LANGUAGES[code]
     return TEMPLATE_HEADER + f"Language: {code}\nPlural-Forms: {plural}\nX-Language-Name: {name}\n"
 
@@ -147,7 +157,7 @@ def merge(code: str, template: list[Entry], existing: list[Entry]) -> list[Entry
     """The language file for ``template``, keeping ``existing`` translations."""
     known = {e.msgid: e for e in existing if e.msgid and not e.obsolete}
     obsolete = {e.msgid: e for e in existing if e.msgid and e.obsolete}
-    out = [Entry(msgid="", msgstr=language_header(code))]
+    out = [Entry(msgid="", msgstr=language_header(code, existing))]
     for entry in template:
         old = known.pop(entry.msgid, None) or obsolete.pop(entry.msgid, None)
         merged = Entry(
@@ -172,7 +182,7 @@ def merge(code: str, template: list[Entry], existing: list[Entry]) -> list[Entry
 def render_all() -> dict[Path, str]:
     template = template_entries()
     files = {TEMPLATE: write_po([Entry(msgid="", msgstr=TEMPLATE_HEADER)] + template, refs=True)}
-    for code in LANGUAGES:
+    for code in language_codes():
         path = LANG / f"{code}.po"
         existing = parse_po(path.read_text(encoding="utf-8")) if path.exists() else []
         files[path] = write_po(merge(code, template, existing), refs=False)

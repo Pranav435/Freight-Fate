@@ -8,6 +8,8 @@
 
 - **Anyone can correct a translation with the Translation correction form on GitHub.** It asks what the game said and what it should say.
 
+- **A translator can add a new language with its translation file alone.** The game offers it in Settings by the name the file gives.
+
 - **The main menu now has background sound under the music, picked by your career.** A truck stop at night, your rig in the yard, or the dispatch office.
 
 - **Radio search results now page 25 at a time.** Next and previous page rows, PageDown and PageUp reach every match.
