@@ -14,10 +14,13 @@
 //! radio tablet app ... and favorite stations in the app too."
 
 use ff_core::models::profile;
-use ff_core::radio::{RadioReception, RadioStation, PLAYLISTS_DIR_NAME, RADIO_SEARCH_LIMIT};
+use ff_core::radio::{
+    search_page_bounds, search_page_count, RadioReception, RadioStation, PLAYLISTS_DIR_NAME,
+    RADIO_SEARCH_PAGE_SIZE,
+};
 
 use crate::app::{GameContext, Say};
-use crate::states::base::{Menu, MenuCore, MenuItem};
+use crate::states::base::{Key, Menu, MenuCore, MenuItem};
 use crate::states::driving::DrivingState;
 use crate::states::driving_menu_states::DriveRef;
 use crate::states::text_entry::{TextEntry, TextEntryCore};
@@ -215,7 +218,8 @@ pub struct RadioStationListState {
     pub kind: String,
     pub query: String,
     hits: Option<Vec<StationRow>>,
-    total: usize,
+    /// Zero-based page of a search's hits.
+    page: usize,
 }
 
 const STATION_LIST_INTRO_HELP: &str = "Enter tunes the station. Escape goes back.";
@@ -236,12 +240,12 @@ impl RadioStationListState {
             kind: kind.to_string(),
             query: String::new(),
             hits: None,
-            total: 0,
+            page: 0,
         }
     }
 
     /// The search variant: a fixed list of hits and how many there were.
-    pub fn search(driving: DriveRef, query: &str, hits: Vec<StationRow>, total: usize) -> Self {
+    pub fn search(driving: DriveRef, query: &str, hits: Vec<StationRow>, _total: usize) -> Self {
         RadioStationListState {
             menu: MenuCore::new(&list_title("search", query))
                 .with_intro_help(STATION_LIST_INTRO_HELP),
@@ -249,7 +253,7 @@ impl RadioStationListState {
             kind: "search".to_string(),
             query: query.to_string(),
             hits: Some(hits),
-            total,
+            page: 0,
         }
     }
 
@@ -269,8 +273,68 @@ impl RadioStationListState {
                         .collect()
                 })
                 .unwrap_or_default(),
-            _ => self.hits.clone().unwrap_or_default(),
+            _ => {
+                let hits = self.hits.as_deref().unwrap_or_default();
+                let (start, end) =
+                    search_page_bounds(hits.len(), self.page, RADIO_SEARCH_PAGE_SIZE);
+                hits[start..end].to_vec()
+            }
         }
+    }
+
+    /// How many hits the search holds in all.
+    fn hit_count(&self) -> usize {
+        self.hits.as_ref().map_or(0, Vec::len)
+    }
+
+    fn page_count(&self) -> usize {
+        search_page_count(self.hit_count(), RADIO_SEARCH_PAGE_SIZE)
+    }
+
+    /// "Results 26 to 50 of 52."
+    fn page_text(&self) -> String {
+        let total = self.hit_count();
+        let (start, end) = search_page_bounds(total, self.page, RADIO_SEARCH_PAGE_SIZE);
+        format!("Results {} to {} of {}.", start + 1, end, total)
+    }
+
+    /// Move to another page of a search; says the range, then the first row.
+    fn change_page(&mut self, ctx: &mut GameContext, forward: bool) {
+        if self.kind != "search" {
+            return;
+        }
+        let last = self.page_count() - 1;
+        if (forward && self.page >= last) || (!forward && self.page == 0) {
+            ctx.audio.play("ui/error");
+            let edge = if forward {
+                "Last page of results."
+            } else {
+                "First page of results."
+            };
+            ctx.say_with(
+                format!("{edge} {}", self.page_text()),
+                Say::new().review(false),
+            );
+            return;
+        }
+        self.page = if forward {
+            self.page + 1
+        } else {
+            self.page - 1
+        };
+        ctx.audio.play("ui/menu_move");
+        self.refresh(ctx, false);
+        let current = self.current_text(ctx);
+        ctx.say_with(
+            format!("{} {current}", self.page_text()),
+            Say::new().review(false),
+        );
+    }
+
+    fn next_page_preview(&self) -> String {
+        let (start, end) =
+            search_page_bounds(self.hit_count(), self.page + 1, RADIO_SEARCH_PAGE_SIZE);
+        format!("Results {} to {} of {}", start + 1, end, self.hit_count())
     }
 
     fn tune(
@@ -325,6 +389,25 @@ impl Menu for RadioStationListState {
                 .select_sound(None)
             })
             .collect();
+        if self.kind == "search" && self.page_count() > 1 {
+            if self.page + 1 < self.page_count() {
+                items.push(
+                    MenuItem::new(
+                        format!("Next page. {}", self.next_page_preview()),
+                        |s: &mut Self, ctx| s.change_page(ctx, true),
+                    )
+                    .help("Shows the next results. PageDown does the same."),
+                );
+            }
+            if self.page > 0 {
+                items.push(
+                    MenuItem::new("Previous page", |s: &mut Self, ctx| {
+                        s.change_page(ctx, false)
+                    })
+                    .help("Shows the earlier results. PageUp does the same."),
+                );
+            }
+        }
         if items.is_empty() {
             let label = if self.kind != "favorites" {
                 "No stations here yet."
@@ -343,16 +426,28 @@ impl Menu for RadioStationListState {
         items
     }
 
+    fn handle_extra_key(&mut self, ctx: &mut GameContext, key: Key) -> bool {
+        if self.kind != "search" {
+            return false;
+        }
+        match key {
+            Key::PageDown => self.change_page(ctx, true),
+            Key::PageUp => self.change_page(ctx, false),
+            _ => return false,
+        }
+        true
+    }
+
     fn announce_entry(&mut self, ctx: &mut GameContext) {
         let rows = self.rows();
         let title = self.menu.title.clone();
-        if self.kind == "search" && self.total > rows.len() {
-            // Capped, and said so: a list that quietly stops at forty reads
-            // as "that is everything" to someone who cannot see a scrollbar.
+        if self.kind == "search" && self.hit_count() > RADIO_SEARCH_PAGE_SIZE {
+            // Paged, and said so: a list that quietly stops reads as "that
+            // is everything" to someone who cannot see a scrollbar.
             ctx.say(&format!(
-                "{title}. {} matches, the first {} listed.",
-                self.total,
-                rows.len()
+                "{title}. {} matches. {} PageDown for the next page.",
+                self.hit_count(),
+                self.page_text()
             ));
         } else if rows.is_empty() {
             ctx.say(&format!("{title}. Nothing here yet."));
@@ -418,10 +513,7 @@ impl TextEntry for RadioSearchEntryState {
             );
             return;
         }
-        let Some((hits, total)) = self
-            .driving
-            .read(|d| d.radio.search(&query, RADIO_SEARCH_LIMIT))
-        else {
+        let Some((hits, total)) = self.driving.read(|d| d.radio.search(&query, usize::MAX)) else {
             return;
         };
         if hits.is_empty() {

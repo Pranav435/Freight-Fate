@@ -300,3 +300,19 @@ fn a_fragment_opening_a_sentence_or_trimmed_still_matches() {
     );
     assert_eq!(tr.translate("Billboard:"), "Valla:");
 }
+
+#[test]
+fn side_by_side_holes_split_before_a_comma_tail() {
+    let catalog = Catalog::from_po(
+        "de",
+        "msgid \"Merge onto {shield} toward {toward}{on_it_tail}.\"\n\
+         msgstr \"Auf {shield} Richtung {toward} auffahren{on_it_tail}.\"\n\n\
+         msgid \", then {distance} on it\"\nmsgstr \", dann {distance} darauf\"\n",
+    )
+    .expect("parses");
+    let tr = Translator::new(catalog);
+    assert_eq!(
+        tr.translate("Merge onto I-90 East toward Rochester, New York, then 74 miles on it."),
+        "Auf I-90 East Richtung Rochester, New York auffahren, dann 74 miles darauf."
+    );
+}
