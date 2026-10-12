@@ -669,11 +669,48 @@ pub fn handle_message_review(ctx: &mut GameContext, event: &InputEvent) -> bool 
     }
 }
 
-/// Put the last spoken line on the clipboard and say how it went. The
-/// confirmation is not kept as "last spoken", so a second press copies the
-/// same line again rather than the word "Copied".
-fn copy_last_spoken(ctx: &mut GameContext) {
-    let Some(text) = ctx.last_spoken.clone() else {
+/// The text the copy key puts on the clipboard: the newest line in the
+/// message log, whatever the review filter shows. The log leaves out routine
+/// menu movement and the review and clipboard confirmations, so after a
+/// search this is the result line, and on a new screen it is the heading.
+pub fn newest_copyable_line(ctx: &GameContext) -> Option<String> {
+    ctx.message_log
+        .messages
+        .iter()
+        .rev()
+        .map(|message| strip_position_cue(&message.text))
+        .find(|text| !text.is_empty())
+}
+
+/// Drop a trailing menu position cue ("Achievements. 2 of 8." becomes
+/// "Achievements."). Only a cue standing as its own sentence is removed, so
+/// "Results 1 to 25 of 52." is kept whole.
+pub fn strip_position_cue(text: &str) -> String {
+    let trimmed = text.trim_end();
+    let body = trimmed.strip_suffix('.').unwrap_or(trimmed);
+    if let Some((head, cue)) = body.rsplit_once(". ") {
+        let mut parts = cue.split(" of ");
+        if let (Some(n), Some(m), None) = (parts.next(), parts.next(), parts.next()) {
+            let digits = |s: &str| !s.is_empty() && s.chars().all(|c| c.is_ascii_digit());
+            if digits(n) && digits(m) {
+                return format!("{head}.");
+            }
+        }
+    }
+    trimmed.to_string()
+}
+
+/// Put the newest message-log line on the clipboard and say how it went.
+pub fn copy_last_spoken(ctx: &mut GameContext) {
+    let text = newest_copyable_line(ctx);
+    copy_text(ctx, text);
+}
+
+/// Put `text` on the clipboard and say how it went. The replies are not
+/// logged, so a second press copies the same line again rather than
+/// "Copied.".
+pub fn copy_text(ctx: &mut GameContext, text: Option<String>) {
+    let Some(text) = text else {
         ctx.say_with("Nothing to copy yet.", Say::new().review(false));
         return;
     };
@@ -683,7 +720,6 @@ fn copy_last_spoken(ctx: &mut GameContext) {
         "Could not copy to the clipboard."
     };
     ctx.say_with(reply, Say::new().review(false));
-    ctx.last_spoken = Some(text);
 }
 
 /// How many newer messages the chosen category is holding back.

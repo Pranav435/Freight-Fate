@@ -108,6 +108,21 @@ fn escape_closes_the_list_without_a_command() {
 }
 
 #[test]
+fn the_copy_row_copies_what_was_said_before_the_list_opened() {
+    let mut harness = a_drive("Command Copy");
+    harness.app.ctx.say("Weigh station in 2 miles.");
+    press(&mut harness, Key::F2);
+    harness.clear_speech();
+    harness.select_menu_item(Action::CopyLastSpoken.label());
+    assert!(harness.state_is::<DrivingState>());
+    assert_eq!(
+        harness.app.ctx.clipboard.get_text().as_deref(),
+        Some("Weigh station in 2 miles.")
+    );
+    assert_eq!(last_main(&harness), "Copied.");
+}
+
+#[test]
 fn f2_cannot_be_given_to_another_control() {
     assert!(reserved_key_reason(&Chord::plain(Key::F2)).is_some());
     assert!(reserved_key_reason(&Chord::alt(Key::F2)).is_some());

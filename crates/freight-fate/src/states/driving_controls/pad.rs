@@ -142,7 +142,7 @@ impl DrivingState {
             Action::Grade => self.speak_grade(ctx),
             Action::Upcoming => self.speak_upcoming(ctx, 15.0),
             Action::LastAnnouncement => self.speak_last_announcement(ctx),
-            Action::CopyLastSpoken => {}
+            Action::CopyLastSpoken => crate::states::base::copy_last_spoken(ctx),
             Action::Cb => self.speak_last_cb_chatter(ctx),
             Action::HosWheel => self.speak_hos_wheel_time(ctx),
             Action::HosBreak => self.speak_hos_break(ctx),

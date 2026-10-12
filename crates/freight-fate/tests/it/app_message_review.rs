@@ -373,7 +373,8 @@ impl freight_fate::app::context::Clipboard for RefusingClipboard {
     }
 }
 
-/// Ctrl+Shift+C copies the last spoken line, menu text included, and says so.
+/// Ctrl+Shift+C copies the newest message-log line and says so. Moving
+/// through a menu is not logged, so it does not replace that line.
 #[test]
 fn ctrl_shift_c_copies_the_last_spoken_line() {
     let mut app = TestApp::new();
@@ -392,11 +393,86 @@ fn ctrl_shift_c_copies_the_last_spoken_line() {
         app.ctx.clipboard.get_text().as_deref(),
         Some("Weigh station ahead.")
     );
-    // Menu navigation speaks the item, and that is what is copied.
+    // Menu navigation speaks the item but is not what is copied.
     app.dispatch_to_state(&key_event(Key::Down));
     app.dispatch_to_state(&copy_event());
-    let copied = app.ctx.clipboard.get_text().unwrap();
-    assert!(copied.contains("Continue career"), "{copied}");
+    assert_eq!(
+        app.ctx.clipboard.get_text().as_deref(),
+        Some("Weigh station ahead.")
+    );
+    app.shutdown();
+}
+
+/// A result line spoken in a menu (a search result, a status reply) is what
+/// is copied, not the option that has focus.
+#[test]
+fn copy_last_spoken_copies_a_menu_result_line_not_the_focused_option() {
+    let mut app = TestApp::new();
+    app.push_state(menu());
+    app.ctx
+        .say("Stations matching network. 52 matches. Results 1 to 25 of 52.");
+    app.dispatch_to_state(&key_event(Key::Down));
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(
+        app.ctx.clipboard.get_text().as_deref(),
+        Some("Stations matching network. 52 matches. Results 1 to 25 of 52.")
+    );
+    app.shutdown();
+}
+
+/// A menu heading can be copied: opening a screen logs its heading, and the
+/// focused option spoken after it is not logged.
+#[test]
+fn copy_last_spoken_copies_the_menu_heading() {
+    let mut app = TestApp::new();
+    app.push_state(menu());
+    app.dispatch_to_state(&copy_event());
+    let copied = app.ctx.clipboard.get_text().unwrap_or_default();
+    assert!(copied.contains("Main menu"), "{copied:?}");
+    assert!(!copied.contains(" of 3"), "{copied:?}");
+    app.shutdown();
+}
+
+/// A menu position cue is never part of what is copied.
+#[test]
+fn copy_last_spoken_leaves_out_the_position_cue() {
+    use freight_fate::states::base::strip_position_cue;
+    assert_eq!(strip_position_cue("Achievements. 2 of 8."), "Achievements.");
+    assert_eq!(
+        strip_position_cue("750 Network Radio, Web radio, always available. 1 of 27."),
+        "750 Network Radio, Web radio, always available."
+    );
+    assert_eq!(
+        strip_position_cue("52 matches. Results 1 to 25 of 52."),
+        "52 matches. Results 1 to 25 of 52."
+    );
+    assert_eq!(strip_position_cue("Fuel is low."), "Fuel is low.");
+    let mut app = TestApp::new();
+    app.push_state(BareState);
+    app.ctx.say("Achievements. 2 of 8.");
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(
+        app.ctx.clipboard.get_text().as_deref(),
+        Some("Achievements.")
+    );
+    app.shutdown();
+}
+
+/// Ctrl+Shift+C right after Ctrl+C copies the line, not the
+/// "Message copied to clipboard." confirmation.
+#[test]
+fn copy_last_spoken_skips_the_ctrl_c_confirmation() {
+    let mut app = TestApp::new();
+    app.push_state(BareState);
+    app.ctx.say("Rest area in 5 miles.");
+    app.dispatch_to_state(&key_event(Key::Comma));
+    app.dispatch_to_state(&ctrl_key_event(Key::C));
+    app.ctx.clipboard.set_text("something else");
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(
+        app.ctx.clipboard.get_text().as_deref(),
+        Some("Rest area in 5 miles.")
+    );
     app.shutdown();
 }
 

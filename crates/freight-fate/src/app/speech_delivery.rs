@@ -353,7 +353,6 @@ impl GameContext {
             // right behind it.
             cut = self.event_pacer.note_channel_purged();
         }
-        self.last_spoken = Some(text.clone());
         self.speech.say(&text, interrupt);
         self.log_mostly_heard_cut();
         if let Some(cut) = cut {
@@ -446,7 +445,6 @@ impl GameContext {
         } else {
             self.speech.say(&text, false);
         }
-        self.last_spoken = Some(text);
     }
 
     /// How many of the voice's deliveries containing `phrase` were the pacer
@@ -715,7 +713,6 @@ impl GameContext {
             }
             self.speech.say(&text, false);
         }
-        self.last_spoken = Some(text.clone());
         if receipt {
             if let Some(key) = key {
                 self.event_pacer.track_delivery(key, &text);
