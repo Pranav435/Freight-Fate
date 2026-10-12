@@ -226,14 +226,24 @@ fn match_from<'s, 'a>(
             };
             let next_text = match next {
                 Seg::Lit(text) => text.as_str(),
-                // Two holes side by side: this one takes nothing and the
-                // next one decides (a leading "{prefix}" is usually empty).
+                // Two holes side by side. The second is usually a tail that
+                // opens with a comma (", then 74 miles on it"), so try each
+                // ", " from the right first; failing that this one takes
+                // nothing and the next decides (a leading "{prefix}" is
+                // usually empty).
                 Seg::Hole(_) => {
-                    out.push((name, ""));
-                    if match_from(rest, line, pos, out) {
-                        return true;
+                    let splits = line[pos..]
+                        .rmatch_indices(", ")
+                        .map(|(at, _)| pos + at)
+                        .chain(std::iter::once(pos));
+                    for at in splits {
+                        let depth = out.len();
+                        out.push((name, &line[pos..at]));
+                        if match_from(rest, line, at, out) {
+                            return true;
+                        }
+                        out.truncate(depth);
                     }
-                    out.pop();
                     return false;
                 }
             };
