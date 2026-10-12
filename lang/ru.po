@@ -29212,16 +29212,9 @@ msgstr "Городов рядом нет."
 msgid "In {name}."
 msgstr "Место: {name}."
 
-#. placeholders: {closing_text}
-msgid "{closing_text} off the road"
-msgstr "{closing_text} от дороги"
-
-msgid "right beside the road"
-msgstr "прямо у дороги"
-
-#. placeholders: {name}, {where_text}
-msgid "Nearest town, {name}: {where_text}."
-msgstr "Ближайший город, {name}: {where_text}."
+#. placeholders: {name}
+msgid "Nearest town: {name}."
+msgstr "Ближайший город: {name}."
 
 msgid "On city streets. No signed direction here."
 msgstr "На городских улицах. Указателей направления здесь нет."
@@ -36483,14 +36476,10 @@ msgstr "Улицы к объектам: {on_off}"
 
 msgid ""
 "On, you drive the real streets between the highway and a facility, turn by "
-"turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
-"loaded run leaves straight onto the highway, and a pickup in town is one "
-"stretch of road. Applies from your next drive."
+"turn. Off, as in version 1.8, the exit ramp ends at the facility gate with "
+"no light or stop sign, a loaded run leaves straight onto the highway, and a "
+"pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
-"Включено: вы едете по настоящим улицам между трассой и объектом, поворот за "
-"поворотом. Выключено: как в версии 1.8, съезд заканчивается у ворот "
-"объекта, гружёный рейс выезжает прямо на трассу, а погрузка в городе это "
-"один отрезок дороги. Действует со следующей поездки."
 
 #. placeholders: {else}
 msgid "Units: {else}"
@@ -41904,6 +41893,26 @@ msgstr "Затем крутой разворот направо."
 
 msgid "Then hairpin left."
 msgstr "Затем крутой разворот налево."
+
+#~ msgid "{closing_text} off the road"
+#~ msgstr "{closing_text} от дороги"
+
+#~ msgid "right beside the road"
+#~ msgstr "прямо у дороги"
+
+#~ msgid "Nearest town, {name}: {where_text}."
+#~ msgstr "Ближайший город, {name}: {where_text}."
+
+#~ msgid ""
+#~ "On, you drive the real streets between the highway and a facility, turn by "
+#~ "turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
+#~ "loaded run leaves straight onto the highway, and a pickup in town is one "
+#~ "stretch of road. Applies from your next drive."
+#~ msgstr ""
+#~ "Включено: вы едете по настоящим улицам между трассой и объектом, поворот за "
+#~ "поворотом. Выключено: как в версии 1.8, съезд заканчивается у ворот "
+#~ "объекта, гружёный рейс выезжает прямо на трассу, а погрузка в городе это "
+#~ "один отрезок дороги. Действует со следующей поездки."
 
 #~ msgid "de"
 #~ msgstr "de"
