@@ -11,7 +11,7 @@ use super::settings::{Adjust, SettingsCategoryState};
 use super::settings_actions::{
     acc_gap_label, assist_preset_label, backup_announcements_label, cue_loudness_label,
     descent_level_label, event_voice_label, hos_label, lane_keeping_label, language_label,
-    output_label, pace_label, update_channel,
+    output_label, pace_label, score_display_label, update_channel,
 };
 use super::shortcuts::{ShortcutDevice, ShortcutsState};
 use super::touch_gestures::TouchGesturesState;
@@ -217,6 +217,11 @@ impl SettingsCategoryState {
                 action: adjust(|s, ctx, d| s.cycle_language(ctx, d)),
                 help: "Automatic follows your system language. Radio and \
                        recorded voices stay in English.",
+            },
+            SpeechSpec {
+                label: dyn_label(|s| format!("Score display: {}", score_display_label(s))),
+                action: adjust(|s, ctx, d| s.cycle_score_display(ctx, d)),
+                help: "Choose whether reputation and dispatch trust read both their descriptive band and score, only the score, or only the description. A trust score is spoken only when service sets its band.",
             },
             SpeechSpec {
                 label: dyn_label(|s| {
