@@ -26,6 +26,7 @@ pub const SETTINGS_FILE_NAME: &str = "settings.json";
 /// field kind. Each takes the field (already holding its default), the raw
 /// value, and the key (for the level warning).
 pub(crate) mod coerce {
+    use crate::settings::ScoreDisplay;
     use serde_json::Value;
 
     /// A string the value checks never accept: what a non-string lands on
@@ -69,6 +70,15 @@ pub(crate) mod coerce {
         if let Value::String(s) = value {
             *target = s.clone();
         }
+    }
+
+    pub(crate) fn score_display(target: &mut ScoreDisplay, value: &Value, _key: &str) {
+        *target = match value.as_str() {
+            Some("Both") | Some("both") => ScoreDisplay::Both,
+            Some("Percent") | Some("percent") => ScoreDisplay::Percent,
+            Some("Description") | Some("description") => ScoreDisplay::Description,
+            _ => ScoreDisplay::Both,
+        };
     }
 
     /// `pedal_latch` shipped as a bool, then a three-way that also caught

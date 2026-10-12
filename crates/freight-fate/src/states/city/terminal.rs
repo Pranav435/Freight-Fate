@@ -436,6 +436,7 @@ impl CityMenuState {
     /// whether the career has slowed. All of it is available on demand from
     /// Career stats; none of it is ever repeated on a timer.
     fn check_standing(&mut self, ctx: &mut GameContext) {
+        let score_display = ctx.settings.score_display;
         let line = {
             let p = profile_mut(ctx);
             let band = enforcement::standing_band(p);
@@ -449,7 +450,7 @@ impl CityMenuState {
             if first_time && band == enforcement::TRUST_FULL {
                 return; // a clean driver is never told they are fine
             }
-            let mut line = enforcement::dispatch_trust_line(p);
+            let mut line = enforcement::dispatch_trust_line_with_display(p, score_display);
             if improved && band == enforcement::TRUST_FULL && !p.owns_equipment() {
                 line = format!("{line} {}", fleet_assignment_text(p));
             }

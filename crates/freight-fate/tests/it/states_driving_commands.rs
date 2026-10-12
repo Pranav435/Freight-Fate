@@ -108,6 +108,52 @@ fn escape_closes_the_list_without_a_command() {
 }
 
 #[test]
+fn the_copy_row_copies_what_was_said_before_the_list_opened() {
+    let mut harness = a_drive("Command Copy");
+    harness.app.ctx.say("Weigh station in 2 miles.");
+    press(&mut harness, Key::F2);
+    harness.clear_speech();
+    harness.select_menu_item(Action::CopyLastSpoken.label());
+    assert!(harness.state_is::<DrivingState>());
+    assert_eq!(
+        harness.app.ctx.clipboard.get_text().as_deref(),
+        Some("Weigh station in 2 miles.")
+    );
+    assert_eq!(last_main(&harness), "Copied.");
+}
+
+#[test]
+fn the_copy_key_in_the_open_list_copies_the_heading_then_the_focused_row() {
+    use freight_fate::states::base::{InputEvent, Mods};
+    let copy = InputEvent::key_mods(
+        Key::C,
+        Mods {
+            shift: true,
+            ctrl: true,
+            alt: false,
+        },
+    );
+    let mut harness = a_drive("Command Copy Key");
+    press(&mut harness, Key::F2);
+    let second = harness.menu_labels().get(1).cloned().unwrap();
+    // The first copy gives the line the list opened with.
+    harness.key(copy.clone());
+    assert!(harness.state_is::<DrivingCommandsState>());
+    assert_eq!(
+        harness.app.ctx.clipboard.get_text().as_deref(),
+        Some("Driving commands.")
+    );
+    // A focus move copies the focused row.
+    press(&mut harness, Key::Down);
+    harness.key(copy);
+    assert!(harness.state_is::<DrivingCommandsState>());
+    assert_eq!(
+        harness.app.ctx.clipboard.get_text().unwrap_or_default(),
+        format!("{second}.")
+    );
+}
+
+#[test]
 fn f2_cannot_be_given_to_another_control() {
     assert!(reserved_key_reason(&Chord::plain(Key::F2)).is_some());
     assert!(reserved_key_reason(&Chord::alt(Key::F2)).is_some());

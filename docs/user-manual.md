@@ -193,6 +193,7 @@ Use message review to replay an announcement you missed.
 | Ctrl+Period | Jump back to the newest message. |
 | Left bracket or right bracket | Switch between all messages, general messages, and driving events. |
 | Ctrl+C | Copy the message you are on to the clipboard. |
+| Ctrl+Shift+C | Copy the newest line in the message history to the clipboard, on any screen: a heading, a search or status result, a call, a driving line. Menu positions such as "2 of 8" are left out. Rebind it under Settings, Controls. |
 
 The history keeps 200 messages, leaving out routine menu movement. New announcements won't move you away from the message you're reviewing. After ten seconds without a review key, your next press starts at the newest message again; your chosen category stays selected. When you're typing in a text field, punctuation enters text instead of reviewing speech.
 
@@ -638,7 +639,7 @@ Use a readout hotkey for a quick check of fuel or time left. Press Tab to open t
 | ; / ' | The same, on keyboards where the Page keys are awkward: semicolon tunes to the previous station and apostrophe to the next. |
 | Ctrl with any tune key | Jump to the previous or next dial category: route playlist, Freight Fate stations, your playlists, favorites, terrestrial, AFN, satellite, international, fallback, web radio, and other stations. |
 | Shift with any tune key | Change the in-cab radio volume in 10 percent steps: up on Page Up or Shift+semicolon, down on Page Down or Shift+apostrophe. Works whether the radio is on or off, and speaks the new level. |
-| O | Save or unsave the current station as a favorite. Favorites become their own early dial category. |
+| O | Save or unsave the current station as a favorite. Favorites become their own early dial category and play from anywhere on the map. |
 | Y | Speak radio station, source, signal or fallback state, volume, and streamer-safe status. |
 | Shift+Y | Speak what the radio is playing right now. |
 | Tab | Grouped driving status screens. |
@@ -659,7 +660,7 @@ Press Tab while driving and choose Driver apps from Driving status. You'll find 
 
 ### Radio app
 
-Radio opens a menu where you can switch the radio on or off, tune a station, save or remove a favorite, browse stations in range, and suggest a station. Search stations lets you type part of a name, call sign, or format and press Enter for results. Results show 25 at a time; use the Next page and Previous page rows, or PageDown and PageUp, to reach the rest. Choose a result and press Enter to tune it. A station marked out of range here cannot be tuned from your current location.
+Radio opens a menu where you can switch the radio on or off, tune a station, save or remove a favorite, browse stations in range, and suggest a station. Search stations lets you type part of a name, call sign, or format and press Enter for results. Results show 25 at a time; use the Next page and Previous page rows, or PageDown and PageUp, to reach the rest. Browse by category lists all stations or one category, such as Terrestrial or Web radio, in the same 25-row pages. Stations in range come first, local terrestrial ahead of web radio, and a station that repeats is listed once; out-of-range stations follow. Choose a result and press Enter to tune it. A station marked out of range here cannot be tuned from your current location.
 
 Favorites gives you a shorter list of stations you've saved. The Radio report under Driving status is useful for reading reception and playlist information; open the Radio app when you want to choose a station. The [radio guide](#radio-and-playlists) explains the dial, signal changes, personal music, and music settings.
 
@@ -918,7 +919,7 @@ For volume, hold Shift: Page Up or semicolon raises it by ten percent, and Page 
 
 Hold Control with a tuning key to move between route music, Freight Fate stations, your playlists, favorites, terrestrial stations, AFN, satellite, international, fallback, web radio, and other stations. This saves you from moving through the whole dial one station at a time. Open the [Radio app](#radio-app) if you already know the name or want to browse your favorites.
 
-Radio status shows the stations you can receive. The Radio app lets you search, tune, and manage favorites. Regional stations fade as you leave their range. When a signal is lost, the game tries a clear local station, then a fallback if needed. A failed stream leaves the dial for that session. Roadhouse and Night Line are available across the map.
+Radio status shows the stations you can receive. The Radio app lets you search, tune, and manage favorites. Regional stations fade as you leave their range. A favorite does not fade: once its signal thins, the radio plays the station's stream instead, and the signal reads as streaming. When a signal is lost, the game tries a clear local station, then a fallback if needed. A failed stream leaves the dial for that session. Roadhouse and Night Line are available across the map.
 
 ### Choosing music for your drive
 
@@ -978,7 +979,7 @@ Low dispatch trust, a suspended CDL, debt, or your driving record can hold equip
 
 ### What is the difference between reputation and dispatch trust?
 
-Reputation is a score out of 100 built from your deliveries and lowered by your driving record. Dispatch trust is what the carrier lets you do right now: how much of the board you see, how many loads you can refuse, and which truck you get. Your CDL, your record, and what you owe count toward it as well as reputation. See [Dispatch trust](#dispatch-trust).
+Reputation is a score out of 100 built from your deliveries and lowered by your driving record. Its descriptions are Outstanding (90 and up), Well regarded (75 to 89), Established (60 to 74), Unproven (40 to 59, where every new driver starts at 50), Shaky, Damaged, and Ruined. Dispatch trust lines add it as, for example, "Dispatch trust: full. Reputation 85 out of 100." In Settings, Speech, Score display can speak both the description and number, the percentage only, or the description only. Dispatch trust is what the carrier lets you do right now: how much of the board you see, how many loads you can refuse, and which truck you get. Your CDL, your record, and what you owe count toward it as well as reputation. See [Dispatch trust](#dispatch-trust).
 
 ### How many levels are there?
 

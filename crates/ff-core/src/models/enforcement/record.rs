@@ -6,9 +6,8 @@ use serde_json::{Map, Value};
 
 use super::{
     FATIGUE_EVENTS_BEFORE_SERIOUS, HOURS_PER_DAY, MAJOR_FIRST_DISQUALIFICATION_DAYS,
-    REPUTATION_FULL_BOARD, REVIEW_WINDOW_DAYS, SERIOUS_SECOND_SUSPENSION_DAYS,
-    SERIOUS_THIRD_SUSPENSION_DAYS, SERIOUS_WINDOW_DAYS, SUSPENSION_LIFETIME, SUSPENSION_MAJOR,
-    SUSPENSION_SERIOUS,
+    REVIEW_WINDOW_DAYS, SERIOUS_SECOND_SUSPENSION_DAYS, SERIOUS_THIRD_SUSPENSION_DAYS,
+    SERIOUS_WINDOW_DAYS, SUSPENSION_LIFETIME, SUSPENSION_MAJOR, SUSPENSION_SERIOUS,
 };
 use crate::models::save_migration::{json_f64, json_i64};
 
@@ -415,7 +414,7 @@ pub fn seed_record_from_save(data: &Map<String, Value>) -> DrivingRecord {
         Some(rep) if rep != 0.0 => rep,
         _ => 50.0,
     };
-    if !record.clean(game_hours) || reputation < REPUTATION_FULL_BOARD {
+    if !record.clean(game_hours) || super::trust_band(reputation) != super::TRUST_FULL {
         record.notice_pending = true;
     }
     record
