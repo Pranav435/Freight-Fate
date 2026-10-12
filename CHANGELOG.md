@@ -4,7 +4,7 @@
 
 ### Added
 
-- **The game can speak Chinese.** Choose 简体中文 under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Simplified Chinese.** Choose 简体中文 under Settings, Speech, Language; the radio stays in English.
 
 - **A Language setting lets the game speak other languages.** It is the first row of Settings, Speech; Automatic follows your system language, and the radio stays English.
 
