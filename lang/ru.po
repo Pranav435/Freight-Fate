@@ -12718,9 +12718,17 @@ msgstr "полоса"
 msgid "the {lane_label} lane"
 msgstr "полоса {lane_label}"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "Положение: {lane_phrase}"
+msgid "In the lane"
+msgstr "В полосе"
+
+msgid "In the right lane"
+msgstr "В правой полосе"
+
+msgid "In the left lane"
+msgstr "В левой полосе"
+
+msgid "In the middle lane"
+msgstr "В средней полосе"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -34426,10 +34434,6 @@ msgstr "Вы резко объезжаете препятствие: {names}."
 msgid "You swerve around {names}. Well done."
 msgstr "Вы резко объезжаете препятствие: {names}. Молодец."
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "В {lane_phrase}."
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -41915,6 +41919,12 @@ msgstr "Затем крутой разворот направо."
 
 msgid "Then hairpin left."
 msgstr "Затем крутой разворот налево."
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "Положение: {lane_phrase}"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "В {lane_phrase}."
 
 #~ msgid "mostly divided, "
 #~ msgstr "в основном с разделительной полосой,"
