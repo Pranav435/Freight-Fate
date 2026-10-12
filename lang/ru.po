@@ -9481,6 +9481,35 @@ msgstr "Great Lakes Training Transport"
 msgid " It is doubled because you were in a construction zone."
 msgstr " Он удвоен, потому что вы были в зоне ремонта."
 
+msgid "Outstanding"
+msgstr "Отличная"
+
+msgid "Well regarded"
+msgstr "Хорошая"
+
+msgid "Established"
+msgstr "Прочная"
+
+msgid "Unproven"
+msgstr "Непроверенная"
+
+msgid "Shaky"
+msgstr "Шаткая"
+
+msgid "Damaged"
+msgstr "Подмоченная"
+
+msgid "Ruined"
+msgstr "Испорченная"
+
+#. placeholders: {word}, {number}
+msgid "{word}. {number} out of 100."
+msgstr "{word}. {number} из 100."
+
+#. placeholders: {number}
+msgid "{number} out of 100."
+msgstr "{number} из 100."
+
 msgid "Dispatch trust: full. You get the whole board."
 msgstr "Доверие диспетчера: полное. Вам доступна вся доска заказов."
 
@@ -9509,6 +9538,27 @@ msgstr ""
 #. placeholders: {trust_band_text}
 msgid "{trust_band_text} Clean on-time runs rebuild it."
 msgstr "{trust_band_text} Чистые рейсы вовремя восстанавливают его."
+
+#. placeholders: {band}
+msgid "Dispatch trust: {band}."
+msgstr "Доверие диспетчера: {band}."
+
+#. placeholders: {band}, {number}
+msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+msgstr "Доверие диспетчера: {band}. Репутация {number} из 100."
+
+#. placeholders: {number}
+#. one sentence of a longer line
+msgid "Reputation {number} out of 100."
+msgstr "Репутация {number} из 100."
+
+#. one sentence of a longer line
+msgid "Dispatch trust."
+msgstr "Доверие диспетчера."
+
+#. placeholders: {number}
+msgid "Dispatch trust. Reputation {number} out of 100."
+msgstr "Доверие диспетчера. Репутация {number} из 100."
 
 msgid "licence"
 msgstr "права"
@@ -11908,6 +11958,9 @@ msgstr "afn-humphreys"
 msgid "local"
 msgstr "местная"
 
+msgid "streaming"
+msgstr "через интернет"
+
 msgid "always available"
 msgstr "доступна всегда"
 
@@ -12021,6 +12074,9 @@ msgstr "личный плейлист"
 #. placeholders: {file_name}
 msgid "your playlist file {file_name}"
 msgstr "ваш файл плейлиста {file_name}"
+
+msgid "favorite"
+msgstr "в избранном"
 
 #. placeholders: {spoken}
 msgid ", {spoken} away"
@@ -12141,6 +12197,15 @@ msgstr "{display_name} добавлена в избранное."
 #. placeholders: {trip_seed}
 msgid "{trip_seed}|radio airtime"
 msgstr "{trip_seed}|radio airtime"
+
+msgid "Both"
+msgstr "Оба"
+
+msgid "Percent"
+msgstr "Процент"
+
+msgid "Description"
+msgstr "Описание"
 
 msgid "wilderness"
 msgstr "дикая природа"
@@ -16559,9 +16624,6 @@ msgstr ""
 "Подержите каждую клавишу со стрелкой несколько секунд; проверка закончится "
 "сама."
 
-msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-
 msgid "ff-rust-app"
 msgstr "ff-rust-app"
 
@@ -16747,6 +16809,9 @@ msgstr "Дорога впереди"
 
 msgid "Repeat the last announcement"
 msgstr "Повторить последнее объявление"
+
+msgid "Copy the last spoken text"
+msgstr "Скопировать последний произнесённый текст"
 
 msgid "cb"
 msgstr "cb"
@@ -18277,6 +18342,15 @@ msgstr "заглавная {ch}"
 msgid "Message copied to clipboard."
 msgstr "Сообщение скопировано в буфер обмена."
 
+msgid "Nothing to copy yet."
+msgstr "Пока нечего копировать."
+
+msgid "Copied."
+msgstr "Скопировано."
+
+msgid "Could not copy to the clipboard."
+msgstr "Не удалось скопировать в буфер обмена."
+
 msgid "messages"
 msgstr "messages"
 
@@ -18387,9 +18461,9 @@ msgstr ", высший уровень"
 msgid "Level {level} driver, {f} experience{next}"
 msgstr "Водитель уровня {level}, опыт: {f}{next}"
 
-#. placeholders: {f}
-msgid "Reputation: {f} out of 100"
-msgstr "Репутация: {f} из 100"
+#. placeholders: {reputation_text}
+msgid "Reputation: {reputation_text}"
+msgstr "Репутация: {reputation_text}"
 
 #. placeholders: {grouped}
 msgid "Balance: {grouped} dollars"
@@ -23849,6 +23923,10 @@ msgstr ""
 
 msgid "Control C copies the message you are on. "
 msgstr "Control C копирует сообщение, на котором вы находитесь. "
+
+#. placeholders: {n}
+msgid "{n} copies the last thing the game said. "
+msgstr "{n} копирует последнее, что сказала игра. "
 
 #. placeholders: {n}
 msgid ""
@@ -29722,11 +29800,13 @@ msgstr "Бонус опыта карьеры за {join}{tail}."
 msgid "Career experience is coming in {rate_clause}."
 msgstr "Опыт карьеры начисляется {rate_clause}."
 
-#. placeholders: {grouped}, {f}
-msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
+#. placeholders: {grouped}, {reputation_text}
+msgid ""
+"Dispatch trust bonus: {grouped} dollars for your reputation: "
+"{reputation_text}"
 msgstr ""
 "Бонус за доверие диспетчера: {grouped} {grouped:доллар|доллара|долларов} за "
-"вашу репутацию {f}."
+"вашу репутацию: {reputation_text}"
 
 #. placeholders: {f}
 msgid " Receiver service after check-in took {f} hours."
@@ -30009,9 +30089,6 @@ msgstr "Freight Fate: {title}."
 
 msgid "Delivery summary copied to clipboard."
 msgstr "Сводка доставки скопирована в буфер обмена."
-
-msgid "Could not copy to the clipboard."
-msgstr "Не удалось скопировать в буфер обмена."
 
 msgid "Repeat this settlement line."
 msgstr "Повторить эту строку расчёта."
@@ -31091,9 +31168,6 @@ msgstr "здесь вне зоны приёма"
 msgid "tuned now"
 msgstr "сейчас настроена"
 
-msgid "favorite"
-msgstr "в избранном"
-
 msgid "Enter on a station tunes it. Escape returns to Driver apps."
 msgstr ""
 "Enter на станции настраивает её. Escape возвращает в «Приложения водителя»."
@@ -31142,6 +31216,16 @@ msgstr ""
 "Введите часть названия, позывного или формата. Совпадения идут от самого "
 "сильного сигнала."
 
+msgid "Browse by category"
+msgstr "Обзор по категориям"
+
+msgid ""
+"Browse all stations, or one category such as Terrestrial or Web radio. "
+"Stations in range list first."
+msgstr ""
+"Все станции или одна категория, например Эфирные или Интернет-радио. "
+"Станции в зоне приёма идут первыми."
+
 #. placeholders: {in_range}
 msgid "Stations in range: {in_range}"
 msgstr "Станции в зоне приёма: {in_range}"
@@ -31175,6 +31259,9 @@ msgstr "Станции в зоне приёма"
 #. placeholders: {query}
 msgid "Stations matching {query}"
 msgstr "Станции по запросу {query}"
+
+msgid "browse"
+msgstr "обзор"
 
 msgid "search"
 msgstr "search"
@@ -31231,22 +31318,21 @@ msgstr "В этом списке нечего настраивать."
 msgid "Go back."
 msgstr "Назад."
 
-#. placeholders: {hit_count}
-#. one sentence of a longer line
-msgid "{hit_count} matches."
-msgstr "{hit_count} {hit_count:совпадение|совпадения|совпадений}."
-
 #. placeholders: {page_text}
 #. one sentence of a longer line
 msgid "{page_text} PageDown for the next page."
 msgstr "{page_text} PageDown — следующая страница."
 
-#. placeholders: {title}, {hit_count}, {page_text}
-msgid ""
-"{title}. {hit_count} matches. {page_text} PageDown for the next page."
+#. placeholders: {title}, {hit_count}, {else}, {page_text}
+msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
 msgstr ""
-"{title}. {hit_count} {hit_count:совпадение|совпадения|совпадений}. "
-"{page_text} PageDown — следующая страница."
+"{title}. {else}: {hit_count}. {page_text} PageDown — следующая страница."
+
+msgid "stations"
+msgstr "Станций"
+
+msgid "matches"
+msgstr "Совпадений"
 
 #. one sentence of a longer line
 msgid "Nothing here yet."
@@ -31299,6 +31385,24 @@ msgstr "Сначала введите, что искать."
 #. placeholders: {query}
 msgid "No stations match {query}."
 msgstr "Нет станций по запросу {query}."
+
+msgid "Enter opens a category. Escape goes back."
+msgstr "Enter открывает категорию. Escape возвращает назад."
+
+#. placeholders: {label}
+msgid "No stations in {label}."
+msgstr "В категории {label} нет станций."
+
+#. placeholders: {all}
+msgid "All stations: {all}"
+msgstr "Все станции: {all}"
+
+msgid "Every station on the dial. Stations in range list first."
+msgstr "Все станции на шкале. Станции в зоне приёма идут первыми."
+
+msgid "Enter lists this category. Stations in range list first."
+msgstr ""
+"Enter показывает станции этой категории. Станции в зоне приёма идут первыми."
 
 msgid "Suggesting a station needs Online services on, in the Online menu."
 msgstr "Чтобы предложить станцию, включите онлайн-службы в меню «Онлайн»."
@@ -35774,6 +35878,12 @@ msgstr "{g} {g:раз|раза|раз}"
 msgid "off (developer)"
 msgstr "выключено (для разработчиков)"
 
+msgid "percentage only"
+msgstr "только процент"
+
+msgid "description only"
+msgstr "только описание"
+
 msgid " and a half"
 msgstr " с половиной"
 
@@ -36115,6 +36225,19 @@ msgid ""
 msgstr ""
 "«Автоматически» следует языку системы. Радио и записанные голоса остаются "
 "на английском."
+
+#. placeholders: {score_display_label}
+msgid "Score display: {score_display_label}"
+msgstr "Показ оценки: {score_display_label}"
+
+msgid ""
+"Choose whether reputation and dispatch trust read both their descriptive "
+"band and score, only the score, or only the description. A trust score is "
+"spoken only when service sets its band."
+msgstr ""
+"Выберите, как читать репутацию и доверие диспетчера: описание и баллы, "
+"только баллы или только описание. Баллы доверия звучат, только когда служба "
+"задаёт его уровень."
 
 #. placeholders: {replace}
 msgid "Driving speech: {replace}"
@@ -37505,11 +37628,12 @@ msgstr ""
 
 msgid ""
 "The brackets choose all, general, or driving messages. Control C copies the "
-"selected message. Review keys type normally inside text fields."
+"selected message. Control Shift C copies the last thing the game said. "
+"Review keys type normally inside text fields."
 msgstr ""
 "Квадратные скобки выбирают все, общие или дорожные сообщения. Control C "
-"копирует выбранное сообщение. В текстовых полях клавиши повтора печатают "
-"как обычно."
+"копирует выбранное сообщение. Control Shift C копирует последнее, что "
+"сказала игра. В текстовых полях клавиши повтора печатают как обычно."
 
 msgid ""
 "In How to play, Left and Right or the Page keys change pages. Up and Down "
@@ -39112,15 +39236,16 @@ msgstr ""
 "«Радио» можно выбрать или найти станцию и просмотреть избранное."
 
 msgid ""
-"Regional stations fade as you leave their range. If reception fails, the "
-"radio tries a clear local station, then a fallback. Failed streams leave "
-"the dial for that session. Roadhouse and Night Line are available across "
-"the map."
+"Regional stations fade as you leave their range. Favorites play from "
+"anywhere and never fade. If reception fails, the radio tries a clear local "
+"station, then a fallback. Failed streams leave the dial for that session. "
+"Roadhouse and Night Line are available across the map."
 msgstr ""
-"Региональные станции затихают, когда вы выезжаете из зоны их приёма. Если "
-"приём пропадает, радио пробует чистую местную станцию, затем запасную. "
-"Потоки, которые не заработали, убираются со шкалы до конца сеанса. "
-"Roadhouse и Night Line доступны по всей карте."
+"Региональные станции затихают, когда вы выезжаете из зоны их приёма. "
+"Избранные станции играют где угодно и никогда не затихают. Если приём "
+"пропадает, радио пробует чистую местную станцию, затем запасную. Потоки, "
+"которые не заработали, убираются со шкалы до конца сеанса. Roadhouse и "
+"Night Line доступны по всей карте."
 
 msgid ""
 "Put M3U, M3U8, or PLS playlists in the Playlists folder inside your saves "
@@ -39396,14 +39521,22 @@ msgstr ""
 
 msgid ""
 "What is the difference between reputation and dispatch trust? Reputation is "
-"a score out of 100 from your deliveries, lowered by your driving record. "
-"Dispatch trust is what the carrier lets you do right now; your CDL, your "
-"record, and what you owe count toward it too."
+"a score from your deliveries, lowered by your driving record: Outstanding, "
+"Well regarded, Established, Unproven, Shaky, Damaged, or Ruined. New "
+"drivers start at 50, Unproven. A trust line shows it as, for example, "
+"Dispatch trust: full. Reputation 85 out of 100. Dispatch trust is what the "
+"carrier lets you do right now; your CDL, your record, and what you owe "
+"count toward it too. Settings, Speech has Score display: both, percentage "
+"only, or description only."
 msgstr ""
-"Чем репутация отличается от доверия диспетчера? Репутация это оценка из 100 "
-"за ваши доставки, которую снижает история вождения. Доверие диспетчера это "
-"то, что перевозчик позволяет вам прямо сейчас; на него влияют также ваши "
-"права CDL, история вождения и то, сколько вы должны."
+"Чем репутация отличается от доверия диспетчера? Репутация — это оценка "
+"ваших доставок, которую снижает история вождения: Отличная, Хорошая, "
+"Прочная, Непроверенная, Шаткая, Подмоченная или Испорченная. Новые водители "
+"начинают с 50, Непроверенная. Строка доверия звучит, например, так: Доверие "
+"диспетчера: полное. Репутация 85 из 100. Доверие диспетчера — это то, что "
+"перевозчик позволяет вам прямо сейчас; на него влияют и ваши права CDL, и "
+"история, и долги. В разделе Настройки, Речь есть Показ оценки: оба, только "
+"процент или только описание."
 
 msgid ""
 "Why can I not accept a load? It may need a certificate, endorsement, or "
@@ -40923,10 +41056,6 @@ msgstr "Заработок карьеры за всё время: {money_text}"
 msgid "Net worth: {money_text}"
 msgstr "Чистые активы: {money_text}"
 
-#. placeholders: {whole}
-msgid "Reputation: {whole} out of 100"
-msgstr "Репутация: {whole} из 100"
-
 msgid "Endorsements: none yet"
 msgstr "Отметки в правах: пока нет"
 
@@ -41897,6 +42026,59 @@ msgstr "Затем крутой разворот направо."
 
 msgid "Then hairpin left."
 msgstr "Затем крутой разворот налево."
+
+#~ msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
+#~ msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
+
+#~ msgid "Reputation: {f} out of 100"
+#~ msgstr "Репутация: {f} из 100"
+
+#~ msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
+#~ msgstr ""
+#~ "Бонус за доверие диспетчера: {grouped} {grouped:доллар|доллара|долларов} за "
+#~ "вашу репутацию {f}."
+
+#~ msgid "{hit_count} matches."
+#~ msgstr "{hit_count} {hit_count:совпадение|совпадения|совпадений}."
+
+#~ msgid ""
+#~ "{title}. {hit_count} matches. {page_text} PageDown for the next page."
+#~ msgstr ""
+#~ "{title}. {hit_count} {hit_count:совпадение|совпадения|совпадений}. "
+#~ "{page_text} PageDown — следующая страница."
+
+#~ msgid ""
+#~ "The brackets choose all, general, or driving messages. Control C copies the "
+#~ "selected message. Review keys type normally inside text fields."
+#~ msgstr ""
+#~ "Квадратные скобки выбирают все, общие или дорожные сообщения. Control C "
+#~ "копирует выбранное сообщение. В текстовых полях клавиши повтора печатают "
+#~ "как обычно."
+
+#~ msgid ""
+#~ "Regional stations fade as you leave their range. If reception fails, the "
+#~ "radio tries a clear local station, then a fallback. Failed streams leave "
+#~ "the dial for that session. Roadhouse and Night Line are available across "
+#~ "the map."
+#~ msgstr ""
+#~ "Региональные станции затихают, когда вы выезжаете из зоны их приёма. Если "
+#~ "приём пропадает, радио пробует чистую местную станцию, затем запасную. "
+#~ "Потоки, которые не заработали, убираются со шкалы до конца сеанса. "
+#~ "Roadhouse и Night Line доступны по всей карте."
+
+#~ msgid ""
+#~ "What is the difference between reputation and dispatch trust? Reputation is "
+#~ "a score out of 100 from your deliveries, lowered by your driving record. "
+#~ "Dispatch trust is what the carrier lets you do right now; your CDL, your "
+#~ "record, and what you owe count toward it too."
+#~ msgstr ""
+#~ "Чем репутация отличается от доверия диспетчера? Репутация это оценка из 100 "
+#~ "за ваши доставки, которую снижает история вождения. Доверие диспетчера это "
+#~ "то, что перевозчик позволяет вам прямо сейчас; на него влияют также ваши "
+#~ "права CDL, история вождения и то, сколько вы должны."
+
+#~ msgid "Reputation: {whole} out of 100"
+#~ msgstr "Репутация: {whole} из 100"
 
 #~ msgid "{closing_text} off the road"
 #~ msgstr "{closing_text} от дороги"

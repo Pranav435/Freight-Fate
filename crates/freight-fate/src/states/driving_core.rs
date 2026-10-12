@@ -744,7 +744,27 @@ impl RadioPlaybackBackend for DrivingRadioBackend<'_> {
         _volume: f64,
     ) -> Result<(), RadioPlaybackError> {
         let reception = self.reception_for(station);
-        self.driving.radio_signal_factor = signal_volume_factor(&reception);
+        self.start(&reception)
+    }
+
+    fn play_reception(
+        &mut self,
+        reception: &RadioReception,
+        _volume: f64,
+    ) -> Result<(), RadioPlaybackError> {
+        self.start(reception)
+    }
+
+    fn stop_radio(&mut self) {
+        self.ctx.audio.stop_music_with(600);
+    }
+}
+
+impl DrivingRadioBackend<'_> {
+    /// Start `reception.station` at the volume its signal supports.
+    fn start(&mut self, reception: &RadioReception) -> Result<(), RadioPlaybackError> {
+        let station = &reception.station;
+        self.driving.radio_signal_factor = signal_volume_factor(reception);
         if station.source_type == PERSONAL_PLAYLIST_SOURCE_TYPE {
             self.driving.apply_radio_volume(self.ctx);
             // A playlist with nothing playable in it must reach the dial's
@@ -782,10 +802,6 @@ impl RadioPlaybackBackend for DrivingRadioBackend<'_> {
             self.driving.start_station_rotation(self.ctx, station, 900);
         }
         Ok(())
-    }
-
-    fn stop_radio(&mut self) {
-        self.ctx.audio.stop_music_with(600);
     }
 }
 

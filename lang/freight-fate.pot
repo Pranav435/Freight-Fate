@@ -6026,7 +6026,7 @@ msgstr ""
 msgid "placeholder"
 msgstr ""
 
-#: crates/ff-core/src/data/world_constants.rs crates/ff-core/src/data/world_models.rs crates/ff-core/src/sim/enforcement_posts.rs
+#: crates/ff-core/src/data/world_constants.rs crates/ff-core/src/data/world_models.rs crates/ff-core/src/sim/enforcement_posts.rs crates/freight-fate/src/states/main_menu/settings_actions.rs
 msgid "both"
 msgstr ""
 
@@ -10064,6 +10064,44 @@ msgid " It is doubled because you were in a construction zone."
 msgstr ""
 
 #: crates/ff-core/src/models/enforcement.rs
+msgid "Outstanding"
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Well regarded"
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Established"
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Unproven"
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Shaky"
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Damaged"
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Ruined"
+msgstr ""
+
+#. placeholders: {word}, {number}
+#: crates/ff-core/src/models/enforcement.rs
+msgid "{word}. {number} out of 100."
+msgstr ""
+
+#. placeholders: {number}
+#: crates/ff-core/src/models/enforcement.rs
+msgid "{number} out of 100."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
 msgid "Dispatch trust: full. You get the whole board."
 msgstr ""
 
@@ -10088,6 +10126,32 @@ msgstr ""
 #. placeholders: {trust_band_text}
 #: crates/ff-core/src/models/enforcement.rs
 msgid "{trust_band_text} Clean on-time runs rebuild it."
+msgstr ""
+
+#. placeholders: {band}
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: {band}."
+msgstr ""
+
+#. placeholders: {band}, {number}
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+msgstr ""
+
+#. placeholders: {number}
+#. one sentence of a longer line
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Reputation {number} out of 100."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust."
+msgstr ""
+
+#. placeholders: {number}
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust. Reputation {number} out of 100."
 msgstr ""
 
 #: crates/ff-core/src/models/enforcement.rs
@@ -12611,6 +12675,10 @@ msgid "local"
 msgstr ""
 
 #: crates/ff-core/src/radio.rs
+msgid "streaming"
+msgstr ""
+
+#: crates/ff-core/src/radio.rs
 msgid "always available"
 msgstr ""
 
@@ -12760,6 +12828,10 @@ msgstr ""
 msgid "your playlist file {file_name}"
 msgstr ""
 
+#: crates/ff-core/src/radio/state.rs crates/freight-fate/src/states/driving_radio_app.rs
+msgid "favorite"
+msgstr ""
+
 #. placeholders: {spoken}
 #: crates/ff-core/src/radio/state.rs
 msgid ", {spoken} away"
@@ -12898,6 +12970,18 @@ msgstr ""
 #. placeholders: {trip_seed}
 #: crates/ff-core/src/radio_rotation.rs
 msgid "{trip_seed}|radio airtime"
+msgstr ""
+
+#: crates/ff-core/src/settings.rs
+msgid "Both"
+msgstr ""
+
+#: crates/ff-core/src/settings.rs
+msgid "Percent"
+msgstr ""
+
+#: crates/ff-core/src/settings.rs
+msgid "Description"
 msgstr ""
 
 #: crates/ff-core/src/settings.rs
@@ -18043,10 +18127,6 @@ msgstr ""
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr ""
 
-#: crates/freight-fate/src/app/sdl_shell.rs
-msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-msgstr ""
-
 #: crates/freight-fate/src/app/testing.rs
 msgid "ff-rust-app"
 msgstr ""
@@ -18291,6 +18371,10 @@ msgstr ""
 
 #: crates/freight-fate/src/bindings.rs
 msgid "Repeat the last announcement"
+msgstr ""
+
+#: crates/freight-fate/src/bindings.rs
+msgid "Copy the last spoken text"
 msgstr ""
 
 #: crates/freight-fate/src/bindings.rs
@@ -20025,6 +20109,18 @@ msgid "Message copied to clipboard."
 msgstr ""
 
 #: crates/freight-fate/src/states/base.rs
+msgid "Nothing to copy yet."
+msgstr ""
+
+#: crates/freight-fate/src/states/base.rs
+msgid "Copied."
+msgstr ""
+
+#: crates/freight-fate/src/states/base.rs crates/freight-fate/src/states/driving_menu_states/arrival.rs
+msgid "Could not copy to the clipboard."
+msgstr ""
+
+#: crates/freight-fate/src/states/base.rs
 msgid "messages"
 msgstr ""
 
@@ -20153,9 +20249,9 @@ msgstr ""
 msgid "Level {level} driver, {f} experience{next}"
 msgstr ""
 
-#. placeholders: {f}
-#: crates/freight-fate/src/states/career_stats.rs
-msgid "Reputation: {f} out of 100"
+#. placeholders: {reputation_text}
+#: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/driving_menu_states/status.rs crates/freight-fate/src/states/online_states/profile.rs
+msgid "Reputation: {reputation_text}"
 msgstr ""
 
 #. placeholders: {grouped}
@@ -25846,6 +25942,11 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_controls/help.rs
 msgid "Control C copies the message you are on. "
+msgstr ""
+
+#. placeholders: {n}
+#: crates/freight-fate/src/states/driving_controls/help.rs
+msgid "{n} copies the last thing the game said. "
 msgstr ""
 
 #. placeholders: {n}
@@ -32166,9 +32267,11 @@ msgstr ""
 msgid "Career experience is coming in {rate_clause}."
 msgstr ""
 
-#. placeholders: {grouped}, {f}
+#. placeholders: {grouped}, {reputation_text}
 #: crates/freight-fate/src/states/driving_menu_states/arrival.rs
-msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
+msgid ""
+"Dispatch trust bonus: {grouped} dollars for your reputation: "
+"{reputation_text}"
 msgstr ""
 
 #. placeholders: {f}
@@ -32470,10 +32573,6 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_menu_states/arrival.rs
 msgid "Delivery summary copied to clipboard."
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_menu_states/arrival.rs
-msgid "Could not copy to the clipboard."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_menu_states/arrival.rs
@@ -33668,10 +33767,6 @@ msgid "tuned now"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_radio_app.rs
-msgid "favorite"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_radio_app.rs
 msgid "Enter on a station tunes it. Escape returns to Driver apps."
 msgstr ""
 
@@ -33729,6 +33824,16 @@ msgid ""
 "first."
 msgstr ""
 
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Browse by category"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid ""
+"Browse all stations, or one category such as Terrestrial or Web radio. "
+"Stations in range list first."
+msgstr ""
+
 #. placeholders: {in_range}
 #: crates/freight-fate/src/states/driving_radio_app.rs
 msgid "Stations in range: {in_range}"
@@ -33767,6 +33872,10 @@ msgstr ""
 #. placeholders: {query}
 #: crates/freight-fate/src/states/driving_radio_app.rs
 msgid "Stations matching {query}"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "browse"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_radio_app.rs
@@ -33838,22 +33947,23 @@ msgstr ""
 msgid "Go back."
 msgstr ""
 
-#. placeholders: {hit_count}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_radio_app.rs
-msgid "{hit_count} matches."
-msgstr ""
-
 #. placeholders: {page_text}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_radio_app.rs
 msgid "{page_text} PageDown for the next page."
 msgstr ""
 
-#. placeholders: {title}, {hit_count}, {page_text}
+#. placeholders: {title}, {hit_count}, {else}, {page_text}
 #: crates/freight-fate/src/states/driving_radio_app.rs
-msgid ""
-"{title}. {hit_count} matches. {page_text} PageDown for the next page."
+msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "stations"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "matches"
 msgstr ""
 
 #. one sentence of a longer line
@@ -33912,6 +34022,28 @@ msgstr ""
 #. placeholders: {query}
 #: crates/freight-fate/src/states/driving_radio_app.rs
 msgid "No stations match {query}."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Enter opens a category. Escape goes back."
+msgstr ""
+
+#. placeholders: {label}
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "No stations in {label}."
+msgstr ""
+
+#. placeholders: {all}
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "All stations: {all}"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Every station on the dial. Stations in range list first."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Enter lists this category. Stations in range list first."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_radio_suggest.rs
@@ -38630,6 +38762,14 @@ msgid "off (developer)"
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu/settings_actions.rs
+msgid "percentage only"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_actions.rs
+msgid "description only"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_actions.rs
 msgid " and a half"
 msgstr ""
 
@@ -38967,6 +39107,18 @@ msgstr ""
 msgid ""
 "Automatic follows your system language. Radio and recorded voices stay in "
 "English."
+msgstr ""
+
+#. placeholders: {score_display_label}
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid "Score display: {score_display_label}"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid ""
+"Choose whether reputation and dispatch trust read both their descriptive "
+"band and score, only the score, or only the description. A trust score is "
+"spoken only when service sets its band."
 msgstr ""
 
 #. placeholders: {replace}
@@ -40344,7 +40496,8 @@ msgstr ""
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
 "The brackets choose all, general, or driving messages. Control C copies the "
-"selected message. Review keys type normally inside text fields."
+"selected message. Control Shift C copies the last thing the game said. "
+"Review keys type normally inside text fields."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
@@ -41732,10 +41885,10 @@ msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
-"Regional stations fade as you leave their range. If reception fails, the "
-"radio tries a clear local station, then a fallback. Failed streams leave "
-"the dial for that session. Roadhouse and Night Line are available across "
-"the map."
+"Regional stations fade as you leave their range. Favorites play from "
+"anywhere and never fade. If reception fails, the radio tries a clear local "
+"station, then a fallback. Failed streams leave the dial for that session. "
+"Roadhouse and Night Line are available across the map."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
@@ -41948,9 +42101,13 @@ msgstr ""
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
 "What is the difference between reputation and dispatch trust? Reputation is "
-"a score out of 100 from your deliveries, lowered by your driving record. "
-"Dispatch trust is what the carrier lets you do right now; your CDL, your "
-"record, and what you owe count toward it too."
+"a score from your deliveries, lowered by your driving record: Outstanding, "
+"Well regarded, Established, Unproven, Shaky, Damaged, or Ruined. New "
+"drivers start at 50, Unproven. A trust line shows it as, for example, "
+"Dispatch trust: full. Reputation 85 out of 100. Dispatch trust is what the "
+"carrier lets you do right now; your CDL, your record, and what you owe "
+"count toward it too. Settings, Speech has Score display: both, percentage "
+"only, or description only."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
@@ -43497,11 +43654,6 @@ msgstr ""
 #. placeholders: {money_text}
 #: crates/freight-fate/src/states/online_states/profile.rs
 msgid "Net worth: {money_text}"
-msgstr ""
-
-#. placeholders: {whole}
-#: crates/freight-fate/src/states/online_states/profile.rs
-msgid "Reputation: {whole} out of 100"
 msgstr ""
 
 #: crates/freight-fate/src/states/online_states/profile.rs

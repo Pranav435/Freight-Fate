@@ -14,7 +14,7 @@
 //! one on the dial twice.
 //!
 //! Accepted stations also ship: `tools/fold_community_stations.py` copies the
-//! site's list into `data/radio_community.json` before each nightly, so a
+//! site's list into `data/radio_community.json` as each build is cut, so a
 //! first launch, an offline one, or a copy with the orinks.net services off
 //! still has every station accepted up to its build. That file is the third
 //! tier of the shipped catalog, under the curated and imported ones
