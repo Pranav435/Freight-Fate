@@ -12901,9 +12901,17 @@ msgstr "corsia"
 msgid "the {lane_label} lane"
 msgstr "corsia {lane_label}"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "In {lane_phrase}"
+msgid "In the lane"
+msgstr "In corsia"
+
+msgid "In the right lane"
+msgstr "Nella corsia di destra"
+
+msgid "In the left lane"
+msgstr "Nella corsia di sinistra"
+
+msgid "In the middle lane"
+msgstr "Nella corsia centrale"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -34333,10 +34341,6 @@ msgstr "Sterzi intorno a {names}."
 msgid "You swerve around {names}. Well done."
 msgstr "Sterzi intorno a {names}. Ben fatto."
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "In {lane_phrase}."
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -41860,6 +41864,12 @@ msgstr "Poi tornante a destra."
 
 msgid "Then hairpin left."
 msgstr "Poi tornante a sinistra."
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "In {lane_phrase}"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "In {lane_phrase}."
 
 #~ msgid "mostly divided, "
 #~ msgstr "per lo più a carreggiate separate, "
