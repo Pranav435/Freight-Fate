@@ -667,7 +667,8 @@ impl Route {
         ranked.sort_by(|a, b| (-a.1).partial_cmp(&(-b.1)).expect("finite miles"));
         let top = ranked[0].0;
         let divided = divided_mi >= 0.5 * total_mi;
-        let lead = if divided { "mostly divided, " } else { "" };
+        // Each wording is written out whole so a translation sees the
+        // complete phrase, never a "divided" prefix glued to a count.
         // A clear second value that holds real distance earns a range.
         if ranked.len() > 1 && ranked[1].1 >= 0.25 * total_mi {
             let (lo, hi) = if ranked[0].0 <= ranked[1].0 {
@@ -675,17 +676,29 @@ impl Route {
             } else {
                 (ranked[1].0, ranked[0].0)
             };
-            return format!(
-                "{lead}{} to {} lanes your side",
-                lane_word(lo),
-                lane_word(hi)
-            );
+            return if divided {
+                format!(
+                    "mostly divided, {} to {} lanes your side",
+                    lane_word(lo),
+                    lane_word(hi)
+                )
+            } else {
+                format!("{} to {} lanes your side", lane_word(lo), lane_word(hi))
+            };
         }
-        format!(
-            "{lead}{} lane{} your side",
-            lane_word(top),
-            if top != 1 { "s" } else { "" }
-        )
+        if divided {
+            format!(
+                "mostly divided, {} lane{} your side",
+                lane_word(top),
+                if top != 1 { "s" } else { "" }
+            )
+        } else {
+            format!(
+                "{} lane{} your side",
+                lane_word(top),
+                if top != 1 { "s" } else { "" }
+            )
+        }
     }
 
     pub fn describe(&self, distance_text: &str) -> String {
