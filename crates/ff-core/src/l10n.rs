@@ -507,28 +507,35 @@ impl Pass<'_, '_> {
         if let Some(hit) = self.catalog.exact.get(core) {
             return Some(hit.clone());
         }
-        if let Some(out) = self.template(core, depth) {
-            return Some(out);
-        }
         let mut chars = core.chars();
         let first = chars.next()?;
         let upper = first.is_uppercase();
-        let flipped: String = if upper {
-            first.to_lowercase().chain(chars).collect()
+        let flipped: Option<String> = if upper {
+            Some(first.to_lowercase().chain(chars).collect())
         } else if first.is_lowercase() {
-            first.to_uppercase().chain(chars).collect()
+            Some(first.to_uppercase().chain(chars).collect())
         } else {
-            return None;
+            None
         };
-        if let Some(hit) = self.catalog.exact.get(&flipped) {
-            return Some(if upper { capitalize(hit) } else { hit.clone() });
-        }
+        let direct = self.template(core, depth);
         // A fragment the game capitalised to open a sentence ("Divided, two
-        // lanes your side") still fills its lowercase template.
-        if upper {
-            return self.template(&flipped, depth).map(|out| capitalize(&out));
+        // lanes your side") fills its lowercase template, and that template
+        // wins over a looser one that would swallow "Divided" into a hole.
+        if let Some(lower) = flipped.as_deref().filter(|_| upper) {
+            if self.catalog.exact.get(lower).is_none() {
+                if let Some((weight, out)) = self.template(lower, depth) {
+                    if direct.as_ref().is_none_or(|(best, _)| weight > *best) {
+                        return Some(capitalize(&out));
+                    }
+                }
+            }
         }
-        None
+        if let Some((_, out)) = direct {
+            return Some(out);
+        }
+        let flipped = flipped?;
+        let hit = self.catalog.exact.get(&flipped)?;
+        Some(if upper { capitalize(hit) } else { hit.clone() })
     }
 
     fn with_full_stop(&self, mut out: String) -> String {
@@ -543,8 +550,9 @@ impl Pass<'_, '_> {
         out
     }
 
-    /// The best template the line fills, rendered with its captures.
-    fn template(&mut self, core: &str, depth: usize) -> Option<String> {
+    /// The best template the line fills, rendered with its captures, and
+    /// that template's literal weight.
+    fn template(&mut self, core: &str, depth: usize) -> Option<(usize, String)> {
         // A one-sentence template never swallows several sentences into a
         // hole: "It is {tod}." must not match "It is 9:00. Fuel is low.",
         // which the sentence splitter translates whole.
@@ -599,7 +607,7 @@ impl Pass<'_, '_> {
             .segs
             .iter()
             .all(|seg| !matches!(seg, Seg::Hole(name) if !captures.contains_key(name.as_str()))));
-        Some(out)
+        Some((template.weight, out))
     }
 }
 
