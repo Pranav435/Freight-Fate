@@ -726,6 +726,13 @@ def test_career_19_snapshot_workflow_contract():
     assert "group: career-19-snapshot\n" in workflow
     assert "career-19-snapshot-${{ github.ref }}" not in workflow
     assert 'cron: "37 2 * * *"' in workflow
+    # The backup start (GitHub dropped every scheduled start on 2026-10-12)
+    # builds only when the day's snapshot is missing, and a scheduled start
+    # queues behind a running build rather than cancelling it.
+    assert 'cron: "37 8 * * *"' in workflow
+    assert '[ "$SCHEDULE" = "37 8 * * *" ]' in workflow
+    assert 'gh release view "1.9-tester-$(date -u +%Y%m%d)"' in workflow
+    assert "cancel-in-progress: ${{ github.event_name != 'schedule' }}" in workflow
     assert "tag=1.9-tester-$(date -u +%Y%m%d)" in workflow
     assert "commit_sha: ${{ steps.check.outputs.commit_sha }}" in workflow
     assert 'echo "commit_sha=$(git rev-parse HEAD)"' in workflow

@@ -12,7 +12,13 @@
 
 - **The main menu now has background sound under the music, picked by your career.** A truck stop at night, your rig in the yard, or the dispatch office.
 
+- **The Radio app can browse by category.** List all stations or one category, in-range and local stations first, repeats removed.
+
 - **Radio search results now page 25 at a time.** Next and previous page rows, PageDown and PageUp reach every match.
+
+- **Control Shift C copies the last spoken text to the clipboard on any screen.** It says Copied, and the key can be moved in Controls.
+
+- **Score display is configurable.** Choose descriptions, percentages, or both for reputation and dispatch trust.
 
 - **How to play and the manual now have a Common questions page.** It covers assigned trucks, fleets, weigh stations, missed exits, the radio and more.
 
@@ -40,7 +46,11 @@
 
 - **Drivers can call dispatch while stopped for trip-specific help.** Report delays, hours, road conditions, truck trouble or load trouble.
 
+- **Favorite stations now play from anywhere.** A saved local station keeps playing after you leave its area, with no fade or static.
+
 ### Changed
+
+- **Dispatch trust now changes half a point earlier at each cutoff.** It follows the rounded reputation you hear.
 
 - **The nearest town readout now says only the name.** Alt+3 says "Nearest town: Nashville" without the distance.
 
@@ -53,6 +63,8 @@
 - **Sound explanations and a few manual lines read more plainly.** Dashes and run-on sentences are now shorter sentences.
 
 - **CB calls now say "trooper" instead of the trucker slang "bear".**
+
+- **88.3 Life FM now plays on the FM band around Bakersfield, California.** It used to be a web station heard everywhere.
 
 - **The player manual has contents links for jumping straight to a chapter.**
 
