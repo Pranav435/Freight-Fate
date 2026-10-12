@@ -47,7 +47,10 @@ bookmarks usable.
       owner-operator hears a rig idling in the yard, and a company driver or
       a new driver hears the dispatch office. It is on the Gameplay cues
       volume. The owner picked the takes; the terminal, docks and rest stops
-      already had their own beds.
+      already had their own beds. At launch the bed used to wait for the
+      next screen change, because the menu asks for it before the sound
+      device has opened; the device now starts every bed still asked for
+      when it arrives (owner report, 2026-10-12).
 
 - [x] Facility streets setting (owner, 2026-10-11, for players who want the
       1.8 arrival): Settings, Gameplay, World and traffic. Off skips the
