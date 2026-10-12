@@ -25155,15 +25155,8 @@ msgstr ""
 msgid "In {name}."
 msgstr ""
 
-#. placeholders: {closing_text}
-msgid "{closing_text} off the road"
-msgstr ""
-
-msgid "right beside the road"
-msgstr ""
-
-#. placeholders: {name}, {where_text}
-msgid "Nearest town, {name}: {where_text}."
+#. placeholders: {name}
+msgid "Nearest town: {name}."
 msgstr ""
 
 msgid "On city streets. No signed direction here."
@@ -31360,9 +31353,9 @@ msgstr ""
 
 msgid ""
 "On, you drive the real streets between the highway and a facility, turn by "
-"turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
-"loaded run leaves straight onto the highway, and a pickup in town is one "
-"stretch of road. Applies from your next drive."
+"turn. Off, as in version 1.8, the exit ramp ends at the facility gate with "
+"no light or stop sign, a loaded run leaves straight onto the highway, and a "
+"pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
 
 #. placeholders: {else}

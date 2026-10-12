@@ -1870,10 +1870,11 @@ fn test_town_key_places_a_town_off_the_road() {
     let ahead = if forward { native + 4.0 } else { native - 4.0 };
     set_leg_landmarks(&mut d, vec![a_village("Fairfield", ahead, 6.3)]);
     d.speak_current_town(&mut app.ctx);
-    let said = app.main_lines().last().expect("a town line").clone();
-    assert!(said.contains("Fairfield"));
-    assert!(said.contains("ahead"));
-    assert!(said.contains("off the road"));
+    // Only the name: the distance off the road was filler (owner, 2026-10-12).
+    assert_eq!(
+        app.main_lines().last().expect("a town line"),
+        "Nearest town: Fairfield."
+    );
 }
 
 #[test]
@@ -1914,13 +1915,15 @@ fn test_town_key_names_the_route_town_just_passed() {
     d.speak_current_town(&mut app.ctx);
     assert_eq!(app.main_lines().last().expect("a town line"), "In Batavia.");
 
-    // Once it is a few miles back it is named as behind, not forgotten.
+    // Once it is a few miles back it is still the nearest town, not forgotten.
     app.clear_speech();
     let back = if forward { native - 4.0 } else { native + 4.0 };
     set_leg_checkpoints(&mut d, vec![a_route_town("Batavia", back)]);
     d.speak_current_town(&mut app.ctx);
-    let said = app.main_lines().last().expect("a town line").clone();
-    assert!(said.contains("Batavia") && said.contains("back"), "{said}");
+    assert_eq!(
+        app.main_lines().last().expect("a town line"),
+        "Nearest town: Batavia."
+    );
 }
 
 #[test]

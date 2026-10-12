@@ -26026,16 +26026,9 @@ msgstr "近くに町はありません。"
 msgid "In {name}."
 msgstr "{name}にいます。"
 
-#. placeholders: {closing_text}
-msgid "{closing_text} off the road"
-msgstr "道路から{closing_text}"
-
-msgid "right beside the road"
-msgstr "道路のすぐそば"
-
-#. placeholders: {name}, {where_text}
-msgid "Nearest town, {name}: {where_text}."
-msgstr "最寄りの町は{name}、{where_text}。"
+#. placeholders: {name}
+msgid "Nearest town: {name}."
+msgstr "最寄りの町：{name}。"
 
 msgid "On city streets. No signed direction here."
 msgstr "市街地です。ここには方面の標識がありません。"
@@ -32474,12 +32467,10 @@ msgstr "施設までの街路：{on_off}"
 
 msgid ""
 "On, you drive the real streets between the highway and a facility, turn by "
-"turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
-"loaded run leaves straight onto the highway, and a pickup in town is one "
-"stretch of road. Applies from your next drive."
+"turn. Off, as in version 1.8, the exit ramp ends at the facility gate with "
+"no light or stop sign, a loaded run leaves straight onto the highway, and a "
+"pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
-"オンでは、高速道路と施設の間の実際の街路を、曲がり角ごとに運転します。オフでは、バージョン1.8と同じく、出口ランプが施設のゲートで終わり、積荷を載せた"
-"運行はそのまま高速道路に出て、町での集荷は一続きの道路になります。次の運転から適用されます。"
 
 #. placeholders: {else}
 msgid "Units: {else}"
@@ -37169,6 +37160,24 @@ msgstr "続いて、ヘアピンカーブを右です。"
 
 msgid "Then hairpin left."
 msgstr "続いて、ヘアピンカーブを左です。"
+
+#~ msgid "{closing_text} off the road"
+#~ msgstr "道路から{closing_text}"
+
+#~ msgid "right beside the road"
+#~ msgstr "道路のすぐそば"
+
+#~ msgid "Nearest town, {name}: {where_text}."
+#~ msgstr "最寄りの町は{name}、{where_text}。"
+
+#~ msgid ""
+#~ "On, you drive the real streets between the highway and a facility, turn by "
+#~ "turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
+#~ "loaded run leaves straight onto the highway, and a pickup in town is one "
+#~ "stretch of road. Applies from your next drive."
+#~ msgstr ""
+#~ "オンでは、高速道路と施設の間の実際の街路を、曲がり角ごとに運転します。オフでは、バージョン1.8と同じく、出口ランプが施設のゲートで終わり、積荷を載せた"
+#~ "運行はそのまま高速道路に出て、町での集荷は一続きの道路になります。次の運転から適用されます。"
 
 #~ msgid "de"
 #~ msgstr "de"
