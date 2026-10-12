@@ -29195,16 +29195,9 @@ msgstr "No hay ningún pueblo cerca."
 msgid "In {name}."
 msgstr "En {name}."
 
-#. placeholders: {closing_text}
-msgid "{closing_text} off the road"
-msgstr "a {closing_text} de la carretera"
-
-msgid "right beside the road"
-msgstr "justo al lado de la carretera"
-
-#. placeholders: {name}, {where_text}
-msgid "Nearest town, {name}: {where_text}."
-msgstr "Pueblo más cercano, {name}: {where_text}."
+#. placeholders: {name}
+msgid "Nearest town: {name}."
+msgstr "Pueblo más cercano: {name}."
 
 msgid "On city streets. No signed direction here."
 msgstr "En calles de la ciudad. Aquí no hay dirección señalizada."
@@ -36385,15 +36378,10 @@ msgstr "Calles de las instalaciones: {on_off}"
 
 msgid ""
 "On, you drive the real streets between the highway and a facility, turn by "
-"turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
-"loaded run leaves straight onto the highway, and a pickup in town is one "
-"stretch of road. Applies from your next drive."
+"turn. Off, as in version 1.8, the exit ramp ends at the facility gate with "
+"no light or stop sign, a loaded run leaves straight onto the highway, and a "
+"pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
-"Activado, conduces por las calles reales entre la autopista y una "
-"instalación, giro a giro. Desactivado, como en la versión 1.8, la rampa de "
-"salida termina en la entrada de la instalación, un viaje cargado sale "
-"directo a la autopista y una recogida en la ciudad es un solo tramo de "
-"carretera. Se aplica desde tu próximo viaje."
 
 #. placeholders: {else}
 msgid "Units: {else}"
@@ -41862,6 +41850,27 @@ msgstr "Luego, curva cerrada en horquilla a la derecha."
 
 msgid "Then hairpin left."
 msgstr "Luego, curva cerrada en horquilla a la izquierda."
+
+#~ msgid "{closing_text} off the road"
+#~ msgstr "a {closing_text} de la carretera"
+
+#~ msgid "right beside the road"
+#~ msgstr "justo al lado de la carretera"
+
+#~ msgid "Nearest town, {name}: {where_text}."
+#~ msgstr "Pueblo más cercano, {name}: {where_text}."
+
+#~ msgid ""
+#~ "On, you drive the real streets between the highway and a facility, turn by "
+#~ "turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
+#~ "loaded run leaves straight onto the highway, and a pickup in town is one "
+#~ "stretch of road. Applies from your next drive."
+#~ msgstr ""
+#~ "Activado, conduces por las calles reales entre la autopista y una "
+#~ "instalación, giro a giro. Desactivado, como en la versión 1.8, la rampa de "
+#~ "salida termina en la entrada de la instalación, un viaje cargado sale "
+#~ "directo a la autopista y una recogida en la ciudad es un solo tramo de "
+#~ "carretera. Se aplica desde tu próximo viaje."
 
 #~ msgid "de"
 #~ msgstr "de"
