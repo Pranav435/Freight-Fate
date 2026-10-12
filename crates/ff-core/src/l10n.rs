@@ -88,9 +88,37 @@ pub const LANGUAGES: &[Language] = &[
     },
 ];
 
+/// Languages a translator added as a file alone, beyond [`LANGUAGES`].
+static ADDED: std::sync::OnceLock<Vec<Language>> = std::sync::OnceLock::new();
+
+/// Offer languages that came as a catalog file with no entry in
+/// [`LANGUAGES`]: `(code, autonym)` pairs, read from the files' headers.
+/// The game calls this once, before the language is first resolved; a
+/// later call changes nothing. Codes already known are skipped.
+pub fn add_languages(found: impl IntoIterator<Item = (String, String)>) {
+    let mut added: Vec<Language> = Vec::new();
+    for (code, autonym) in found {
+        if language(&code).is_some() || added.iter().any(|lang| lang.code == code) {
+            continue;
+        }
+        // Leaked once per language at launch: the settings row and the
+        // resolved code hand these out as `&'static str` like the built-ins.
+        added.push(Language {
+            code: Box::leak(code.into_boxed_str()),
+            autonym: Box::leak(autonym.into_boxed_str()),
+        });
+    }
+    let _ = ADDED.set(added);
+}
+
+/// Every language the game has: [`LANGUAGES`], then any added from a file.
+pub fn languages() -> impl Iterator<Item = &'static Language> {
+    LANGUAGES.iter().chain(ADDED.get().into_iter().flatten())
+}
+
 /// The language a code names, if the game has it.
 pub fn language(code: &str) -> Option<&'static Language> {
-    LANGUAGES.iter().find(|lang| lang.code == code)
+    languages().find(|lang| lang.code == code)
 }
 
 /// The catalog for an operating-system locale tag ("es-MX", "pt_BR.UTF-8",
@@ -111,9 +139,11 @@ pub fn match_locale(tag: &str) -> Option<&'static str> {
         "zh" => "zh_CN",
         other => other,
     };
-    LANGUAGES
-        .iter()
-        .find(|lang| lang.code == code)
+    // An added catalog may be regional ("pt_PT"); the whole tag picks it
+    // before the base language does.
+    let whole = tag.replace('-', "_");
+    language(&whole)
+        .or_else(|| language(code))
         .map(|lang| lang.code)
 }
 

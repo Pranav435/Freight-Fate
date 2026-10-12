@@ -16559,24 +16559,6 @@ msgstr ""
 "Подержите каждую клавишу со стрелкой несколько секунд; проверка закончится "
 "сама."
 
-msgid "de"
-msgstr "de"
-
-msgid "es"
-msgstr "es"
-
-msgid "fr"
-msgstr "fr"
-
-msgid "ja"
-msgstr "ja"
-
-msgid "pl"
-msgstr "pl"
-
-msgid "ru"
-msgstr "ru"
-
 msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 
@@ -18931,6 +18913,9 @@ msgid ""
 msgstr ""
 "При ваших текущих часах {risky} {risky:заказу|заказам|заказам} понадобится "
 "дополнительный обязательный отдых. "
+
+msgid "es"
+msgstr "es"
 
 #. placeholders: {locked}
 msgid ""
@@ -41919,6 +41904,21 @@ msgstr "Затем крутой разворот направо."
 
 msgid "Then hairpin left."
 msgstr "Затем крутой разворот налево."
+
+#~ msgid "de"
+#~ msgstr "de"
+
+#~ msgid "fr"
+#~ msgstr "fr"
+
+#~ msgid "ja"
+#~ msgstr "ja"
+
+#~ msgid "pl"
+#~ msgstr "pl"
+
+#~ msgid "ru"
+#~ msgstr "ru"
 
 #~ msgid "In {lane_phrase}"
 #~ msgstr "Положение: {lane_phrase}"

@@ -11,8 +11,8 @@ use std::borrow::Cow;
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
-use ff_core::l10n::{self, Catalog, Translator, ENGLISH};
-use ff_core::models::profile::data_dir;
+use ff_core::l10n::{self, po, Catalog, Translator, ENGLISH};
+use ff_core::models::profile::{data_dir, data_dir_if_allowed};
 
 use super::GameContext;
 
@@ -23,15 +23,8 @@ pub const LANG_ENV: &str = "FREIGHT_FATE_LANG";
 /// each: the to-do list a translator works from.
 pub const MISSES_ENV: &str = "FREIGHT_FATE_L10N_MISSES";
 
-macro_rules! catalogs {
-    ($($code:literal),* $(,)?) => {
-        &[$(($code, include_str!(concat!("../../../../lang/", $code, ".po")))),*]
-    };
-}
-
-/// Every built-in catalog, by code.
-const BUILT_IN: &[(&str, &str)] =
-    catalogs!["es", "fr", "de", "pt_BR", "it", "ru", "pl", "zh_CN", "ja"];
+/// Every built-in catalog, by code: each `lang/*.po`, listed by `build.rs`.
+const BUILT_IN: &[(&str, &str)] = include!(concat!(env!("OUT_DIR"), "/catalogs.rs"));
 
 /// A built-in catalog's text.
 pub fn built_in_catalog(code: &str) -> Option<&'static str> {
@@ -61,25 +54,93 @@ fn catalog_text(dir: &Path, code: &str) -> Option<Cow<'static, str>> {
     built_in_catalog(code).map(Cow::Borrowed)
 }
 
-/// How many lines a language's built-in catalog translates; a language
-/// with none is not offered in Settings.
+/// How many lines a language's catalog translates (the data folder's copy
+/// when there is one); a language with none is not offered in Settings.
 pub fn translated_count(code: &str) -> usize {
     if code == ENGLISH {
         return usize::MAX;
     }
-    built_in_catalog(code)
-        .and_then(|text| Catalog::from_po(code, text).ok())
+    let text = match data_dir_if_allowed() {
+        Some(dir) => catalog_text(&dir, code),
+        None => built_in_catalog(code).map(Cow::Borrowed),
+    };
+    text.and_then(|text| Catalog::from_po(code, &text).ok())
         .map_or(0, |catalog| catalog.len())
 }
 
+/// The `(code, name)` of every catalog that `l10n::LANGUAGES` does not
+/// list: a language a translator added as a file alone, either built in
+/// from `lang/` or dropped into `dir`'s `lang/` folder. The name is the
+/// file's `X-Language-Autonym` header, else its `X-Language-Name`, else the
+/// code itself.
+pub fn added_languages(dir: &Path) -> Vec<(String, String)> {
+    added_languages_in(Some(dir))
+}
+
+/// [`added_languages`], with no data folder to look in when `dir` is `None`.
+fn added_languages_in(dir: Option<&Path>) -> Vec<(String, String)> {
+    let mut found: Vec<(String, String)> = Vec::new();
+    let mut consider = |code: &str, text: &str| {
+        let plausible = !code.is_empty()
+            && code
+                .chars()
+                .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-');
+        if !plausible
+            || l10n::LANGUAGES.iter().any(|lang| lang.code == code)
+            || found.iter().any(|(known, _)| known == code)
+        {
+            return;
+        }
+        let name = po::header_field(text, "X-Language-Autonym")
+            .or_else(|| po::header_field(text, "X-Language-Name"))
+            .unwrap_or_else(|| code.to_string());
+        found.push((code.to_string(), name));
+    };
+    for (code, text) in BUILT_IN {
+        consider(code, text);
+    }
+    let mut dropped: Vec<PathBuf> = dir
+        .and_then(|dir| std::fs::read_dir(dir.join("lang")).ok())
+        .into_iter()
+        .flatten()
+        .flatten()
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().is_some_and(|ext| ext == "po"))
+        .collect();
+    dropped.sort();
+    for path in dropped {
+        let Some(code) = path.file_stem().and_then(|stem| stem.to_str()) else {
+            continue;
+        };
+        match std::fs::read_to_string(&path) {
+            Ok(text) => consider(code, &text),
+            Err(err) => log::warn!("Could not read {}: {err}", path.display()),
+        }
+    }
+    found
+}
+
+/// Hand the added languages to `l10n` once, before any setting resolves.
+/// A process with no data folder of its own (a test that pinned none) gets
+/// the built-in ones only.
+fn register_added_languages() {
+    static DONE: OnceLock<()> = OnceLock::new();
+    DONE.get_or_init(|| {
+        let added = added_languages_in(data_dir_if_allowed().as_deref());
+        for (code, name) in &added {
+            log::info!("Offering {name} ({code}) from its translation file");
+        }
+        l10n::add_languages(added);
+    });
+}
+
 /// The languages the Settings row cycles through: English, then every
-/// language whose catalog translates something.
-/// Worked out once: every catalog is compiled into the executable.
+/// language whose catalog translates something. Worked out once a launch.
 pub fn offered_languages() -> &'static [&'static l10n::Language] {
     static OFFERED: OnceLock<Vec<&'static l10n::Language>> = OnceLock::new();
     OFFERED.get_or_init(|| {
-        l10n::LANGUAGES
-            .iter()
+        register_added_languages();
+        l10n::languages()
             .filter(|lang| translated_count(lang.code) > 0)
             .collect()
     })
@@ -132,6 +193,7 @@ impl GameContext {
 
     /// Speak `setting` (a code, or `auto`) from now on.
     pub fn set_language(&mut self, setting: &str) {
+        register_added_languages();
         let code = l10n::resolve(setting, system_locale().as_deref());
         if code != self.translator.language() {
             self.translator = load_translator(code, &data_dir());
