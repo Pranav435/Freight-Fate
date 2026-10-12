@@ -7175,9 +7175,9 @@ msgstr ""
 msgid "{lead}{lane_word} to {lane_word2} lanes your side"
 msgstr ""
 
-#. placeholders: {lead}, {lane_word}, {else}
+#. placeholders: {lead}, {lane_word}, {s_ending}
 #: crates/ff-core/src/data/world_models/leg.rs
-msgid "{lead}{lane_word} lane{else} your side"
+msgid "{lead}{lane_word} lane{s_ending} your side"
 msgstr ""
 
 #. placeholders: {f}
@@ -7185,10 +7185,11 @@ msgstr ""
 msgid "{f} miles"
 msgstr ""
 
-#. placeholders: {distance}, {via}, {legs}, {else}, {terrain_summary}, {lane_part}
+#. placeholders: {distance}, {via}, {legs}, {s_ending}, {terrain_summary}, {lane_part}
 #: crates/ff-core/src/data/world_models/leg.rs
 msgid ""
-"{distance} via {via}, {legs} leg{else}, terrain {terrain_summary}{lane_part}"
+"{distance} via {via}, {legs} leg{s_ending}, terrain "
+"{terrain_summary}{lane_part}"
 msgstr ""
 
 #: crates/ff-core/src/data/world_services.rs
@@ -10879,25 +10880,25 @@ msgstr ""
 msgid "no 30-minute break"
 msgstr ""
 
-#. placeholders: {breaks}, {else}
+#. placeholders: {breaks}, {s_ending}
 #: crates/ff-core/src/models/jobs/deadline.rs
-msgid "{breaks} 30-minute break{else}"
+msgid "{breaks} 30-minute break{s_ending}"
 msgstr ""
 
 #: crates/ff-core/src/models/jobs/deadline.rs
 msgid "no 10-hour sleep"
 msgstr ""
 
-#. placeholders: {sleeps}, {else}
+#. placeholders: {sleeps}, {s_ending}
 #: crates/ff-core/src/models/jobs/deadline.rs
-msgid "{sleeps} 10-hour sleep{else}"
+msgid "{sleeps} 10-hour sleep{s_ending}"
 msgstr ""
 
-#. placeholders: {break_stop_count}, {else}, {sleep_stop_count}, {else2}
+#. placeholders: {break_stop_count}, {s_ending}, {sleep_stop_count}, {s_ending2}
 #: crates/ff-core/src/models/jobs/deadline.rs
 msgid ""
-" Route has {break_stop_count} break-capable stop{else} and "
-"{sleep_stop_count} sleep-capable stop{else2}."
+" Route has {break_stop_count} break-capable stop{s_ending} and "
+"{sleep_stop_count} sleep-capable stop{s_ending2}."
 msgstr ""
 
 #. placeholders: {f}, {break_text}, {sleep_text}, {coverage}
@@ -14984,9 +14985,9 @@ msgid ""
 "{next_context}"
 msgstr ""
 
-#. placeholders: {lane_word}, {else}
+#. placeholders: {lane_word}, {s_ending}
 #: crates/ff-core/src/sim/trip/lookups.rs
-msgid "{lane_word} lane{else} your side"
+msgid "{lane_word} lane{s_ending} your side"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/lookups.rs
@@ -15099,9 +15100,9 @@ msgstr ""
 msgid "Road widens to {lane_word} lanes your side."
 msgstr ""
 
-#. placeholders: {lane_word}, {else}
+#. placeholders: {lane_word}, {s_ending}
 #: crates/ff-core/src/sim/trip/lookups.rs
-msgid "Down to {lane_word} lane{else} your side."
+msgid "Down to {lane_word} lane{s_ending} your side."
 msgstr ""
 
 #. placeholders: {distance}
@@ -15183,13 +15184,14 @@ msgstr ""
 msgid "Passing {place}{state} on {highway}."
 msgstr ""
 
+#. placeholders: {amount}
 #: crates/ff-core/src/sim/trip/placement.rs
-msgid "Estimated "
+msgid "Estimated toll {amount} dollars, billed to carrier settlement."
 msgstr ""
 
-#. placeholders: {estimate}, {else}, {f}
+#. placeholders: {amount}
 #: crates/ff-core/src/sim/trip/placement.rs
-msgid "{estimate}{else}oll {f} dollars, billed to carrier settlement."
+msgid "Toll {amount} dollars, billed to carrier settlement."
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/placement.rs
@@ -20527,10 +20529,10 @@ msgstr ""
 msgid "No alternative freight is available to request."
 msgstr ""
 
-#. placeholders: {remaining}, {else}
+#. placeholders: {remaining}, {s_ending}
 #: crates/freight-fate/src/states/city/board.rs
 msgid ""
-"{remaining} decline{else} left before your next promotion, each costing "
+"{remaining} decline{s_ending} left before your next promotion, each costing "
 "dispatch trust."
 msgstr ""
 
@@ -20590,9 +20592,9 @@ msgstr ""
 msgid "Accept assigned dispatch: {describe}"
 msgstr ""
 
-#. placeholders: {remaining}, {else}
+#. placeholders: {remaining}, {s_ending}
 #: crates/freight-fate/src/states/city/board.rs
-msgid "Decline and request another load: {remaining} decline{else} left"
+msgid "Decline and request another load: {remaining} decline{s_ending} left"
 msgstr ""
 
 #: crates/freight-fate/src/states/city/board.rs
@@ -20668,9 +20670,9 @@ msgstr ""
 msgid "declined"
 msgstr ""
 
-#. placeholders: {remaining}, {else}
+#. placeholders: {remaining}, {s_ending}
 #: crates/freight-fate/src/states/city/board.rs
-msgid "You have {remaining} decline{else} left."
+msgid "You have {remaining} decline{s_ending} left."
 msgstr ""
 
 #: crates/freight-fate/src/states/city/board.rs
@@ -20705,10 +20707,10 @@ msgid ""
 "Sleeping first clears that. "
 msgstr ""
 
-#. placeholders: {risky}, {else}
+#. placeholders: {risky}, {s_ending}
 #: crates/freight-fate/src/states/city/board.rs
 msgid ""
-"On your current hours, {risky} dispatch{else} would need an extra legal "
+"On your current hours, {risky} dispatch{s_ending} would need an extra legal "
 "rest. "
 msgstr ""
 
@@ -23754,16 +23756,17 @@ msgstr ""
 msgid "Route planning to {destination_facility_text}."
 msgstr ""
 
-#. placeholders: {destination_facility_text}, {routes}, {else}
+#. placeholders: {destination_facility_text}, {routes}, {s_ending}
 #: crates/freight-fate/src/states/city_pickup.rs
 msgid ""
-"Route planning to {destination_facility_text}. {routes} route option{else}."
+"Route planning to {destination_facility_text}. {routes} route "
+"option{s_ending}."
 msgstr ""
 
-#. placeholders: {routes}, {else}
+#. placeholders: {routes}, {s_ending}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/city_pickup.rs
-msgid "{routes} route option{else}."
+msgid "{routes} route option{s_ending}."
 msgstr ""
 
 #: crates/freight-fate/src/states/city_pickup.rs
@@ -24172,10 +24175,10 @@ msgstr ""
 msgid "Route planning to {destination}."
 msgstr ""
 
-#. placeholders: {destination}, {routes}, {else}, {dispatch_note}, {current}
+#. placeholders: {destination}, {routes}, {s_ending}, {dispatch_note}, {current}
 #: crates/freight-fate/src/states/city_pickup.rs
 msgid ""
-"Route planning to {destination}. {routes} route option{else}. "
+"Route planning to {destination}. {routes} route option{s_ending}. "
 "{dispatch_note}{current}"
 msgstr ""
 

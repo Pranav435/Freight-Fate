@@ -5684,17 +5684,18 @@ msgstr ""
 msgid "{lead}{lane_word} to {lane_word2} lanes your side"
 msgstr ""
 
-#. placeholders: {lead}, {lane_word}, {else}
-msgid "{lead}{lane_word} lane{else} your side"
+#. placeholders: {lead}, {lane_word}, {s_ending}
+msgid "{lead}{lane_word} lane{s_ending} your side"
 msgstr ""
 
 #. placeholders: {f}
 msgid "{f} miles"
 msgstr ""
 
-#. placeholders: {distance}, {via}, {legs}, {else}, {terrain_summary}, {lane_part}
+#. placeholders: {distance}, {via}, {legs}, {s_ending}, {terrain_summary}, {lane_part}
 msgid ""
-"{distance} via {via}, {legs} leg{else}, terrain {terrain_summary}{lane_part}"
+"{distance} via {via}, {legs} leg{s_ending}, terrain "
+"{terrain_summary}{lane_part}"
 msgstr ""
 
 msgid "unnamed public road"
@@ -8604,21 +8605,21 @@ msgstr ""
 msgid "no 30-minute break"
 msgstr ""
 
-#. placeholders: {breaks}, {else}
-msgid "{breaks} 30-minute break{else}"
+#. placeholders: {breaks}, {s_ending}
+msgid "{breaks} 30-minute break{s_ending}"
 msgstr ""
 
 msgid "no 10-hour sleep"
 msgstr ""
 
-#. placeholders: {sleeps}, {else}
-msgid "{sleeps} 10-hour sleep{else}"
+#. placeholders: {sleeps}, {s_ending}
+msgid "{sleeps} 10-hour sleep{s_ending}"
 msgstr ""
 
-#. placeholders: {break_stop_count}, {else}, {sleep_stop_count}, {else2}
+#. placeholders: {break_stop_count}, {s_ending}, {sleep_stop_count}, {s_ending2}
 msgid ""
-" Route has {break_stop_count} break-capable stop{else} and "
-"{sleep_stop_count} sleep-capable stop{else2}."
+" Route has {break_stop_count} break-capable stop{s_ending} and "
+"{sleep_stop_count} sleep-capable stop{s_ending2}."
 msgstr ""
 
 #. placeholders: {f}, {break_text}, {sleep_text}, {coverage}
@@ -11840,8 +11841,8 @@ msgid ""
 "{next_context}"
 msgstr ""
 
-#. placeholders: {lane_word}, {else}
-msgid "{lane_word} lane{else} your side"
+#. placeholders: {lane_word}, {s_ending}
+msgid "{lane_word} lane{s_ending} your side"
 msgstr ""
 
 msgid "Current grade 0.0 percent, level"
@@ -11931,8 +11932,8 @@ msgstr ""
 msgid "Road widens to {lane_word} lanes your side."
 msgstr ""
 
-#. placeholders: {lane_word}, {else}
-msgid "Down to {lane_word} lane{else} your side."
+#. placeholders: {lane_word}, {s_ending}
+msgid "Down to {lane_word} lane{s_ending} your side."
 msgstr ""
 
 #. placeholders: {distance}
@@ -11997,11 +11998,12 @@ msgstr ""
 msgid "Passing {place}{state} on {highway}."
 msgstr ""
 
-msgid "Estimated "
+#. placeholders: {amount}
+msgid "Estimated toll {amount} dollars, billed to carrier settlement."
 msgstr ""
 
-#. placeholders: {estimate}, {else}, {f}
-msgid "{estimate}{else}oll {f} dollars, billed to carrier settlement."
+#. placeholders: {amount}
+msgid "Toll {amount} dollars, billed to carrier settlement."
 msgstr ""
 
 msgid "Entry recorded for carrier settlement."
@@ -16206,9 +16208,9 @@ msgstr ""
 msgid "No alternative freight is available to request."
 msgstr ""
 
-#. placeholders: {remaining}, {else}
+#. placeholders: {remaining}, {s_ending}
 msgid ""
-"{remaining} decline{else} left before your next promotion, each costing "
+"{remaining} decline{s_ending} left before your next promotion, each costing "
 "dispatch trust."
 msgstr ""
 
@@ -16258,8 +16260,8 @@ msgstr ""
 msgid "Accept assigned dispatch: {describe}"
 msgstr ""
 
-#. placeholders: {remaining}, {else}
-msgid "Decline and request another load: {remaining} decline{else} left"
+#. placeholders: {remaining}, {s_ending}
+msgid "Decline and request another load: {remaining} decline{s_ending} left"
 msgstr ""
 
 msgid ""
@@ -16321,8 +16323,8 @@ msgstr ""
 msgid "declined"
 msgstr ""
 
-#. placeholders: {remaining}, {else}
-msgid "You have {remaining} decline{else} left."
+#. placeholders: {remaining}, {s_ending}
+msgid "You have {remaining} decline{s_ending} left."
 msgstr ""
 
 msgid "That was your last decline until your next promotion."
@@ -16351,9 +16353,9 @@ msgid ""
 "Sleeping first clears that. "
 msgstr ""
 
-#. placeholders: {risky}, {else}
+#. placeholders: {risky}, {s_ending}
 msgid ""
-"On your current hours, {risky} dispatch{else} would need an extra legal "
+"On your current hours, {risky} dispatch{s_ending} would need an extra legal "
 "rest. "
 msgstr ""
 
@@ -18818,14 +18820,15 @@ msgstr ""
 msgid "Route planning to {destination_facility_text}."
 msgstr ""
 
-#. placeholders: {destination_facility_text}, {routes}, {else}
+#. placeholders: {destination_facility_text}, {routes}, {s_ending}
 msgid ""
-"Route planning to {destination_facility_text}. {routes} route option{else}."
+"Route planning to {destination_facility_text}. {routes} route "
+"option{s_ending}."
 msgstr ""
 
-#. placeholders: {routes}, {else}
+#. placeholders: {routes}, {s_ending}
 #. one sentence of a longer line
-msgid "{routes} route option{else}."
+msgid "{routes} route option{s_ending}."
 msgstr ""
 
 msgid "Back to pickup facility"
@@ -19149,9 +19152,9 @@ msgstr ""
 msgid "Route planning to {destination}."
 msgstr ""
 
-#. placeholders: {destination}, {routes}, {else}, {dispatch_note}, {current}
+#. placeholders: {destination}, {routes}, {s_ending}, {dispatch_note}, {current}
 msgid ""
-"Route planning to {destination}. {routes} route option{else}. "
+"Route planning to {destination}. {routes} route option{s_ending}. "
 "{dispatch_note}{current}"
 msgstr ""
 

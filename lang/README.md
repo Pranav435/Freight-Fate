@@ -101,6 +101,14 @@ The forms are in this order:
 - Polish: one (1 only), few (2 to 4, 22 to 24), many (the rest).
 - Chinese, Japanese: no plurals; one form, or none at all.
 
+`{s_ending}` is the English plural "s" and nothing else. Leave it out, and
+choose the word by the number instead:
+
+```po
+msgid "{breaks} 30-minute break{s_ending}"
+msgstr "{breaks} {breaks:pausa|pausas} de 30 minutos"
+```
+
 ### Lines built from pieces
 
 Some lines are assembled from smaller pieces at run time, so the whole

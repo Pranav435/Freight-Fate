@@ -330,6 +330,12 @@ def _strip_test_modules(tokens: list[tuple[str, str, int]]) -> list[tuple[str, s
     return out
 
 
+#: The hole an English plural ending ("s", "es") fills; a translation may
+#: leave it out.
+PLURAL_ENDING = "s_ending"
+ENGLISH_ENDINGS = {"", "s", "es", "S", "ES"}
+
+
 def _arg_name(expr: list[tuple[str, str, int]]) -> str:
     """A readable placeholder name for one ``format!`` argument expression."""
     # Drop a trailing method chain that only converts: .to_string(), .round().
@@ -359,6 +365,11 @@ def _arg_name(expr: list[tuple[str, str, int]]) -> str:
         "to_owned",
     }
     idents = [t for t in expr if t[0] == "ident"]
+    # `if n == 1 { "" } else { "s" }`: the English plural ending, which a
+    # translation leaves out and replaces with a {count:form|forms} choice.
+    strings = [t[1] for t in expr if t[0] == "str"]
+    if any(t[1] == "if" for t in idents) and strings and set(strings) <= ENGLISH_ENDINGS:
+        return PLURAL_ENDING
     if not idents:
         return "value"
     # Walk back over call groups: `fmt_miles(d)` names the function.

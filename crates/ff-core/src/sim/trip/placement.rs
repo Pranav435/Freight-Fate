@@ -314,13 +314,15 @@ impl Trip {
                 // A sentence of its own after the point's name, so it starts
                 // like one: "...ticket entry. Estimated toll 18 dollars..."
                 // (agent playtest, 2026-09-02).
+                // Two whole sentences rather than one spliced "{T}oll", so a
+                // translation can match either.
                 let toll_text = if toll.amount > 0.0 {
-                    let estimate = if toll.estimated { "Estimated " } else { "" };
-                    format!(
-                        "{estimate}{}oll {} dollars, billed to carrier settlement.",
-                        if toll.estimated { "t" } else { "T" },
-                        fmt_f(toll.amount, 0)
-                    )
+                    let amount = fmt_f(toll.amount, 0);
+                    if toll.estimated {
+                        format!("Estimated toll {amount} dollars, billed to carrier settlement.")
+                    } else {
+                        format!("Toll {amount} dollars, billed to carrier settlement.")
+                    }
                 } else {
                     "Entry recorded for carrier settlement.".to_string()
                 };

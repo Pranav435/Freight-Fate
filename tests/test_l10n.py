@@ -86,6 +86,7 @@ def test_checker_catches_what_the_game_would_lose():
         "names {hora}, which the English line does not have",
         "drops {tod}",
     ]
+    assert check.check_entry("es", "{n} break{s_ending}", "{n} {n:pausa|pausas}") == []
     assert check.check_entry("es", "Exit 42 ahead.", "Salida adelante.") == ["loses the number 42"]
     assert check.check_entry("es", "Press Enter.", "Pulsa Intro.") == [
         "translates or drops the key name Enter"
