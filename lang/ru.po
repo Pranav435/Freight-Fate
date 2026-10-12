@@ -36480,6 +36480,10 @@ msgid ""
 "no light or stop sign, a loaded run leaves straight onto the highway, and a "
 "pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
+"Включено: вы едете по настоящим улицам между трассой и объектом, поворот за "
+"поворотом. Выключено: как в версии 1.8, съезд заканчивается у ворот объекта "
+"без светофора и знака «Стоп», гружёный рейс выезжает прямо на трассу, а "
+"погрузка в городе это один отрезок дороги. Действует со следующей поездки."
 
 #. placeholders: {else}
 msgid "Units: {else}"
