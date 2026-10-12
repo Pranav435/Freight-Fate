@@ -745,15 +745,18 @@ impl Trip {
         let Some((n, divided)) = self.lanes_at(None) else {
             return String::new();
         };
-        let lanes = format!(
-            "{} lane{} your side",
-            lane_word(n),
-            if n != 1 { "s" } else { "" }
-        );
         if divided {
-            format!("divided, {lanes}")
+            format!(
+                "divided, {} lane{} your side",
+                lane_word(n),
+                if n != 1 { "s" } else { "" }
+            )
         } else {
-            lanes
+            format!(
+                "{} lane{} your side",
+                lane_word(n),
+                if n != 1 { "s" } else { "" }
+            )
         }
     }
 

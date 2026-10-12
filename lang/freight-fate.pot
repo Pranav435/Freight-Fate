@@ -7166,18 +7166,24 @@ msgstr ""
 msgid "rolling hills"
 msgstr ""
 
+#. placeholders: {lane_word}, {lane_word2}
 #: crates/ff-core/src/data/world_models/leg.rs
-msgid "mostly divided, "
+msgid "mostly divided, {lane_word} to {lane_word2} lanes your side"
 msgstr ""
 
-#. placeholders: {lead}, {lane_word}, {lane_word2}
+#. placeholders: {lane_word}, {lane_word2}
 #: crates/ff-core/src/data/world_models/leg.rs
-msgid "{lead}{lane_word} to {lane_word2} lanes your side"
+msgid "{lane_word} to {lane_word2} lanes your side"
 msgstr ""
 
-#. placeholders: {lead}, {lane_word}, {s_ending}
+#. placeholders: {lane_word}, {s_ending}
 #: crates/ff-core/src/data/world_models/leg.rs
-msgid "{lead}{lane_word} lane{s_ending} your side"
+msgid "mostly divided, {lane_word} lane{s_ending} your side"
+msgstr ""
+
+#. placeholders: {lane_word}, {s_ending}
+#: crates/ff-core/src/data/world_models/leg.rs crates/ff-core/src/sim/trip/lookups.rs
+msgid "{lane_word} lane{s_ending} your side"
 msgstr ""
 
 #. placeholders: {f}
@@ -14987,7 +14993,7 @@ msgstr ""
 
 #. placeholders: {lane_word}, {s_ending}
 #: crates/ff-core/src/sim/trip/lookups.rs
-msgid "{lane_word} lane{s_ending} your side"
+msgid "divided, {lane_word} lane{s_ending} your side"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/lookups.rs
