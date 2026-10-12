@@ -4,6 +4,8 @@
 
 ### Added
 
+- **The main menu now has background sound under the music, picked by your career.** A truck stop at night, your rig in the yard, or the dispatch office.
+
 - **The Radio app can browse by category.** List all stations or one category, in-range and local stations first, repeats removed.
 
 - **Radio search results now page 25 at a time.** Next and previous page rows, PageDown and PageUp reach every match.

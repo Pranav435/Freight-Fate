@@ -83,7 +83,7 @@ ADDON_LIB_DIR = PACKAGE_DIR / SOURCE_ASSETS / "lib"
 DEFAULT_MUSIC_URL = "https://www.orinks.net/downloads/music.pak"
 DEFAULT_MUSIC_SHA256 = "c56401a2a45057faba0bd4bf7d024ce7dd3908f682f4c35526643a1870cb7798"
 # Channel 3000's clips, packed by tools/build_channel3000.py from the
-# channel3000-clips branch. Its own pack rather than more of music.pak, which
+# owner's local clips folder. Its own pack rather than more of music.pak, which
 # the game reads whole into memory; the game opens this one only when the
 # radio is first tuned to 87.7. The digest is of that tool's build of the
 # branch after tools/level_channel3000.py --write (98 clips, 2026-10-10). Each
