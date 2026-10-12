@@ -10966,9 +10966,17 @@ msgstr "车道"
 msgid "the {lane_label} lane"
 msgstr "{lane_label}车道"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "在{lane_phrase}"
+msgid "In the lane"
+msgstr "在车道上"
+
+msgid "In the right lane"
+msgstr "在右车道"
+
+msgid "In the left lane"
+msgstr "在左车道"
+
+msgid "In the middle lane"
+msgstr "在中间车道"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -30194,10 +30202,6 @@ msgstr "你急打方向绕过了{names}。"
 msgid "You swerve around {names}. Well done."
 msgstr "你急打方向绕过了{names}。干得好。"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "在{lane_phrase}。"
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -36427,6 +36431,12 @@ msgstr "然后右转急弯掉头。"
 
 msgid "Then hairpin left."
 msgstr "然后左转急弯掉头。"
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "在{lane_phrase}"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "在{lane_phrase}。"
 
 #~ msgid "mostly divided, "
 #~ msgstr "大多为分隔道路， "
