@@ -4,6 +4,10 @@
 
 ### Added
 
+- **On a controller with lane keeping on full, pushing the left stick left or right now changes one lane.**
+
+- **Driving status now lists every driving command, so a controller can run the ones with no button.**
+
 - **A Language setting lets the game speak other languages.** It is the first row of Settings, Speech; Automatic follows your system language, and the radio stays English.
 
 - **Anyone can correct a translation with the Translation correction form on GitHub.** It asks what the game said and what it should say.
@@ -49,6 +53,8 @@
 - **Favorite stations now play from anywhere.** A saved local station keeps playing after you leave its area, with no fade or static.
 
 ### Changed
+
+- **The manual now names the controller button beside each driving key, and how to drive each part of the game with a controller.**
 
 - **The Controller setting now names the controller the game is using.** Plugging one in or reconnecting it says its name.
 

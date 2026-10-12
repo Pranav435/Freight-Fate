@@ -341,8 +341,8 @@ impl DrivingState {
 
         let mut text = String::new();
         text.push_str("Right trigger is the gas, left trigger the brake; the left trigger ");
-        text.push_str("fully in is the hardest stop. The left stick steers unless lane ");
-        text.push_str("keeping is on full. ");
+        text.push_str("fully in is the hardest stop. The left stick steers; with lane ");
+        text.push_str("keeping on full, pushing it left or right changes one lane. ");
         text.push_str(&gears);
         text.push_str(&format!(
             "{} starts automatic speed control: adaptive cruise on ",
@@ -395,7 +395,7 @@ impl DrivingState {
         ));
         text.push_str("Away from route points while fully stopped, it opens ");
         text.push_str(&format!(
-            "emergency shoulder sleep. {} opens the status menu. ",
+            "emergency shoulder sleep. {} opens the status menu, which also lists every driving command. ",
             capitalized(&n(Action::Status))
         ));
         text.push_str(&format!(

@@ -158,3 +158,16 @@ fn f2_cannot_be_given_to_another_control() {
     assert!(reserved_key_reason(&Chord::plain(Key::F2)).is_some());
     assert!(reserved_key_reason(&Chord::alt(Key::F2)).is_some());
 }
+
+/// The pad has no F2, so the status menu carries the list; a command run
+/// from it answers over the road, not over the status menu.
+#[test]
+fn the_status_menu_opens_the_list_in_its_own_place() {
+    let mut harness = a_drive("Command Status");
+    press(&mut harness, Key::Tab);
+    assert!(harness.state_is::<DrivingStatusState>());
+    harness.select_menu_item("Driving commands");
+    assert!(harness.state_is::<DrivingCommandsState>());
+    harness.select_menu_item(Action::Speed.label());
+    assert!(harness.state_is::<DrivingState>());
+}

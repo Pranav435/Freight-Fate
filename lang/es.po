@@ -20772,10 +20772,10 @@ msgstr ""
 msgid "Right trigger is the gas, left trigger the brake; the left trigger "
 msgstr ""
 
-msgid "fully in is the hardest stop. The left stick steers unless lane "
+msgid "fully in is the hardest stop. The left stick steers; with lane "
 msgstr ""
 
-msgid "keeping is on full. "
+msgid "keeping on full, pushing it left or right changes one lane. "
 msgstr ""
 
 #. placeholders: {capitalized}
@@ -20856,12 +20856,15 @@ msgid "emergency shoulder sleep."
 msgstr ""
 
 #. placeholders: {capitalized}
-msgid "emergency shoulder sleep. {capitalized} opens the status menu. "
+msgid ""
+"emergency shoulder sleep. {capitalized} opens the status menu, which also "
+"lists every driving command. "
 msgstr ""
 
 #. placeholders: {capitalized}
 #. one sentence of a longer line
-msgid "{capitalized} opens the status menu."
+msgid ""
+"{capitalized} opens the status menu, which also lists every driving command."
 msgstr ""
 
 #. placeholders: {capitalized2}, {n2}
@@ -26222,6 +26225,10 @@ msgstr ""
 
 #. placeholders: {label}
 msgid "Open the {label} status screen."
+msgstr ""
+
+msgid ""
+"Every driving command by name. Choose one to run it and return to driving."
 msgstr ""
 
 msgid "Close status and resume driving."
@@ -33854,7 +33861,8 @@ msgstr ""
 
 msgid ""
 "Right trigger accelerates, left trigger brakes, and fully pressing the left "
-"trigger gives emergency braking. The left stick steers."
+"trigger gives emergency braking. The left stick steers; with lane keeping "
+"on full, push it left or right to change one lane."
 msgstr ""
 
 msgid ""
@@ -33869,8 +33877,8 @@ msgstr ""
 #. placeholders: {pad_shift_up}, {pad_shift_down}, {pad_cruise}, {pad_speed}
 msgid ""
 "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
-"{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
-"speed."
+"{pad_shift_down} down, past first into neutral and then reverse. "
+"{pad_cruise} starts speed control; {pad_speed} reads speed."
 msgstr ""
 
 #. placeholders: {pad_cruise}, {pad_speed}
@@ -33880,7 +33888,9 @@ msgstr ""
 
 #. placeholders: {pad_shift_up}, {pad_shift_down}
 #. one sentence of a longer line
-msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
+msgid ""
+"{pad_shift_up} shifts up and {pad_shift_down} down, past first into neutral "
+"and then reverse."
 msgstr ""
 
 #. placeholders: {pad_horn}, {pad_engine_brake}
@@ -33947,12 +33957,34 @@ msgstr ""
 #. placeholders: {pad_cruise_down}, {pad_cruise_up}, {pad_status}
 msgid ""
 "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
-"{pad_status} opens driving status."
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
 msgstr ""
 
 #. placeholders: {pad_status}
 #. one sentence of a longer line
-msgid "{pad_status} opens driving status."
+msgid ""
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
+msgstr ""
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}
+#. one sentence of a longer line
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume."
+msgstr ""
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}, {pad_radio}
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume. "
+"{pad_radio} turns it on or off."
+msgstr ""
+
+#. placeholders: {pad_radio}
+#. one sentence of a longer line
+msgid "{pad_radio} turns it on or off."
 msgstr ""
 
 msgid ""

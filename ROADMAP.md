@@ -519,6 +519,11 @@ Everything found before 2026-09-25 moved to
       controller): How to play and the manual name the View and Menu
       buttons, warn that the Xbox button opens the Game Bar, list the
       default buttons, and say what to check when a controller does nothing.
+- [x] Controller driving through the whole manual (owner, 2026-10-12): every
+      driving key names its controller button, and each chapter says how to
+      do its part on a controller. A push of the left stick changes lanes on
+      full lane keeping, and Driving status lists every driving command, so
+      the commands with no button are reachable from the controller.
 - [ ] With several controllers connected (a second pad, or Steam's virtual
       one), the game listens only to the first it found, and the other's
       buttons do nothing. It could switch to whichever controller the
