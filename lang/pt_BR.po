@@ -29035,16 +29035,9 @@ msgstr "Nenhuma cidade por perto."
 msgid "In {name}."
 msgstr "Em {name}."
 
-#. placeholders: {closing_text}
-msgid "{closing_text} off the road"
-msgstr "a {closing_text} da estrada"
-
-msgid "right beside the road"
-msgstr "bem ao lado da estrada"
-
-#. placeholders: {name}, {where_text}
-msgid "Nearest town, {name}: {where_text}."
-msgstr "Cidade mais próxima, {name}: {where_text}."
+#. placeholders: {name}
+msgid "Nearest town: {name}."
+msgstr "Cidade mais próxima: {name}."
 
 msgid "On city streets. No signed direction here."
 msgstr "Nas ruas da cidade. Sem sentido sinalizado aqui."
@@ -36166,14 +36159,10 @@ msgstr "Ruas das instalações: {on_off}"
 
 msgid ""
 "On, you drive the real streets between the highway and a facility, turn by "
-"turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
-"loaded run leaves straight onto the highway, and a pickup in town is one "
-"stretch of road. Applies from your next drive."
+"turn. Off, as in version 1.8, the exit ramp ends at the facility gate with "
+"no light or stop sign, a loaded run leaves straight onto the highway, and a "
+"pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
-"Ligado, você dirige pelas ruas reais entre a rodovia e uma instalação, "
-"curva por curva. Desligado, como na versão 1.8, a rampa de saída termina na "
-"portaria, uma viagem carregada sai direto para a rodovia, e uma coleta na "
-"cidade é um único trecho de estrada. Vale a partir da sua próxima viagem."
 
 #. placeholders: {else}
 msgid "Units: {else}"
@@ -41585,6 +41574,26 @@ msgstr "Depois, curva fechadíssima à direita."
 
 msgid "Then hairpin left."
 msgstr "Depois, curva fechadíssima à esquerda."
+
+#~ msgid "{closing_text} off the road"
+#~ msgstr "a {closing_text} da estrada"
+
+#~ msgid "right beside the road"
+#~ msgstr "bem ao lado da estrada"
+
+#~ msgid "Nearest town, {name}: {where_text}."
+#~ msgstr "Cidade mais próxima, {name}: {where_text}."
+
+#~ msgid ""
+#~ "On, you drive the real streets between the highway and a facility, turn by "
+#~ "turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
+#~ "loaded run leaves straight onto the highway, and a pickup in town is one "
+#~ "stretch of road. Applies from your next drive."
+#~ msgstr ""
+#~ "Ligado, você dirige pelas ruas reais entre a rodovia e uma instalação, "
+#~ "curva por curva. Desligado, como na versão 1.8, a rampa de saída termina na "
+#~ "portaria, uma viagem carregada sai direto para a rodovia, e uma coleta na "
+#~ "cidade é um único trecho de estrada. Vale a partir da sua próxima viagem."
 
 #~ msgid "de"
 #~ msgstr "de"
