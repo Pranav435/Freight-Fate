@@ -351,6 +351,9 @@ pub struct ControllerManager {
     instance_id: Option<u32>,
     name: String,
     disconnected: bool, // latched until the app consumes it
+    // Set when a hot-plug binds a pad, so the app can say which one the
+    // game is now listening to; latched until the app consumes it.
+    connected_notice: bool,
     // A freshly opened pad reports a device id that a hot-plug can leave
     // stale (the events then arrive under a different id). We treat the
     // opened id as provisional and adopt the id of the first real event we
@@ -407,6 +410,7 @@ impl ControllerManager {
             instance_id: None,
             name: String::new(),
             disconnected: false,
+            connected_notice: false,
             id_pending: false,
             buttons_down: HashSet::new(),
             logged_mismatch_id: None,
@@ -646,6 +650,16 @@ impl ControllerManager {
         false
     }
 
+    /// Return and clear the hot-plug connect notice: the name of the pad a
+    /// plug-in or reconnect just bound, `None` when nothing new was bound.
+    pub fn take_connect(&mut self) -> Option<String> {
+        if self.connected_notice {
+            self.connected_notice = false;
+            return Some(self.name.clone());
+        }
+        None
+    }
+
     fn reset_analog(&mut self) {
         self.steer_target = 0.0;
         self.throttle_target = 0.0;
@@ -723,6 +737,9 @@ impl ControllerManager {
                 // deliberately do not cycle the SDL subsystem, which would
                 // double every controller event.
                 self.reopen();
+                if self.connected() {
+                    self.connected_notice = true;
+                }
                 return false;
             }
             InputEvent::ControllerRemoved { instance_id } => {

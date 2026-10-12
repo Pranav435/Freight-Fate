@@ -439,7 +439,7 @@ Start on its own, Back, both bumpers, both triggers, and the left stick always k
 #### If the controller doesn't respond
 
 - Connect it with a USB cable, an Xbox Wireless Adapter, or Bluetooth. Over Bluetooth, a newer Xbox controller may need a firmware update first: install the Xbox Accessories app from the Microsoft Store, connect the controller by cable, and update it there.
-- Check that Controller is enabled in Settings, Gameplay, Controls.
+- Check Controller in Settings, Gameplay, Controls. It should say enabled and name your controller; if it says none connected, the game hasn't found it. Plugging a controller in, or reconnecting one, names it out loud.
 - The game uses the first controller it finds. A second controller, or a virtual one from Steam or a remapping tool, can get there first. Turn off or unplug the others, and close Steam, or turn off Steam Input for Freight Fate, if it is running.
 - The game hears the controller only while its window has focus. If buttons stop working after you switched programs, switch back with Alt+Tab.
 - If some buttons work but the triggers or bumpers don't, include the game log in your report; it names your controller and notes any controls that weren't mapped. From a command prompt in the game folder, `FreightFate.exe --controller-diagnostics` also records every button you press to `controller-diagnostics.log`.
@@ -843,7 +843,7 @@ This is where you change units, transmission, and eligible shortcuts. Open Keybo
 | Units | Switch speed and distance between miles and kilometers. |
 | Transmission | Switch between automatic and manual transmission. |
 | Automatic direction changes | In an automatic, both styles now change direction the same way: a fresh press held at a standstill. A brake held through a stop just holds the truck. The setting remains for familiarity. |
-| Controller | Accept controller input alongside the keyboard. The keyboard always stays active. |
+| Controller | Accept controller input alongside the keyboard. The keyboard always stays active. While it is on, it names the controller the game is using. |
 | Haptics | Use controller vibration for hazards, hard braking, rumble strips, and road seams. |
 | Keyboard shortcuts | Choose the control you want to change and press Enter, then press your preferred key, with Shift, Control, or Alt held if you want a chord. A key another control already has is refused by name; Escape keeps the current key. The pause key, Enter, F1, F2, the Control keys that stop the voice, plus and minus, the radio dial keys, and the message review keys stay fixed. Choose the reset option to restore every default shortcut. |
 | Controller buttons | Choose the controller action you want to change and press Enter, then press your preferred button, with the right bumper held for the second layer. Press its current button to keep the assignment. Start, Back, the bumpers, the triggers, and the sticks stay fixed. |

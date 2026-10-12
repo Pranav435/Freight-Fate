@@ -17855,6 +17855,15 @@ msgid "Lane keeping is on full. Flick left or right to change lanes."
 msgstr ""
 
 #: crates/freight-fate/src/app.rs
+msgid "Controller connected."
+msgstr ""
+
+#. placeholders: {name}
+#: crates/freight-fate/src/app.rs
+msgid "Controller connected: {name}."
+msgstr ""
+
+#: crates/freight-fate/src/app.rs
 msgid ""
 "Controller disconnected. You can keep playing with the keyboard, or "
 "reconnect your controller."
@@ -38892,6 +38901,19 @@ msgid ""
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid "Controller: disabled"
+msgstr ""
+
+#. placeholders: {name}
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid "Controller: enabled, {name} connected"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid "Controller: enabled, none connected"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
 msgid "a soft tone leans"
 msgstr ""
 
@@ -39496,19 +39518,6 @@ msgid ""
 "and press everywhere. Automatic transmission only."
 msgstr ""
 
-#. placeholders: {else}
-#: crates/freight-fate/src/states/main_menu/settings_items.rs
-msgid "Controller: {else}"
-msgstr ""
-
-#: crates/freight-fate/src/states/main_menu/settings_items.rs crates/freight-fate/src/states/main_menu/touch_gestures.rs
-msgid "enabled"
-msgstr ""
-
-#: crates/freight-fate/src/states/main_menu/settings_items.rs crates/freight-fate/src/states/main_menu/touch_gestures.rs
-msgid "disabled"
-msgstr ""
-
 #: crates/freight-fate/src/states/main_menu/settings_items.rs
 msgid ""
 "Game-controller input alongside the keyboard, which always stays active. "
@@ -39518,6 +39527,14 @@ msgstr ""
 #. placeholders: {else}
 #: crates/freight-fate/src/states/main_menu/settings_items.rs
 msgid "Haptics: {else}"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs crates/freight-fate/src/states/main_menu/touch_gestures.rs
+msgid "enabled"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs crates/freight-fate/src/states/main_menu/touch_gestures.rs
+msgid "disabled"
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu/settings_items.rs

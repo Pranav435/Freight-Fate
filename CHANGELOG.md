@@ -50,6 +50,8 @@
 
 ### Changed
 
+- **The Controller setting now names the controller the game is using.** Plugging one in or reconnecting it says its name.
+
 - **Dispatch trust now changes half a point earlier at each cutoff.** It follows the rounded reputation you hear.
 
 - **The nearest town readout now says only the name.** Alt+3 says "Nearest town: Nashville" without the distance.

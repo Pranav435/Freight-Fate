@@ -1015,6 +1015,16 @@ impl App {
         }
         // Reconnect speech if the player's screen reader changed.
         self.ctx.speech.poll(dt);
+        if let Some(name) = self.ctx.controller.take_connect() {
+            // SDL can leave a pad unnamed; the manager then calls it
+            // "controller", which would only repeat the opening word.
+            let line = if name == "controller" {
+                "Controller connected.".to_string()
+            } else {
+                format!("Controller connected: {name}.")
+            };
+            self.ctx.say(&line);
+        }
         if self.ctx.controller.take_disconnect() {
             self.ctx.say(
                 "Controller disconnected. You can keep playing with the \

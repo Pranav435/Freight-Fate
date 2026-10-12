@@ -14109,6 +14109,13 @@ msgstr ""
 msgid "Lane keeping is on full. Flick left or right to change lanes."
 msgstr ""
 
+msgid "Controller connected."
+msgstr ""
+
+#. placeholders: {name}
+msgid "Controller connected: {name}."
+msgstr ""
+
 msgid ""
 "Controller disconnected. You can keep playing with the keyboard, or "
 "reconnect your controller."
@@ -31010,6 +31017,16 @@ msgid ""
 "until one of them is running."
 msgstr ""
 
+msgid "Controller: disabled"
+msgstr ""
+
+#. placeholders: {name}
+msgid "Controller: enabled, {name} connected"
+msgstr ""
+
+msgid "Controller: enabled, none connected"
+msgstr ""
+
 msgid "a soft tone leans"
 msgstr ""
 
@@ -31509,16 +31526,6 @@ msgid ""
 "and press everywhere. Automatic transmission only."
 msgstr ""
 
-#. placeholders: {else}
-msgid "Controller: {else}"
-msgstr ""
-
-msgid "enabled"
-msgstr ""
-
-msgid "disabled"
-msgstr ""
-
 msgid ""
 "Game-controller input alongside the keyboard, which always stays active. "
 "The first connected controller is used."
@@ -31526,6 +31533,12 @@ msgstr ""
 
 #. placeholders: {else}
 msgid "Haptics: {else}"
+msgstr ""
+
+msgid "enabled"
+msgstr ""
+
+msgid "disabled"
 msgstr ""
 
 msgid ""
