@@ -4,7 +4,7 @@
 
 use ff_core::data::curves::{advisory_with_bank_mph, superelevation_at};
 use ff_core::pyfmt::fmt_grouped;
-use ff_core::sim::lane::RoadConditions;
+use ff_core::sim::lane::{in_lane_phrase, RoadConditions};
 use ff_core::sim::trip_models::Zone;
 use ff_core::speech_pacing::{EventPriority, SpeechCategory};
 use ff_core::speech_text::SpokenMessage;
@@ -611,7 +611,7 @@ impl DrivingState {
             // precedent in driving_lane_gap.py (automation-handoff sweep,
             // 2026-08-20, the deferred 2026-08-15 audit).
             ctx.say_event_with(
-                format!("In {}.", lane_phrase(lane_index, lane_count)),
+                format!("{}.", in_lane_phrase(lane_index, lane_count)),
                 SayEvent::queued()
                     .priority(EventPriority::Route)
                     .category(category),

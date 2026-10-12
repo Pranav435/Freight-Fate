@@ -13614,9 +13614,20 @@ msgstr ""
 msgid "the {lane_label} lane"
 msgstr ""
 
-#. placeholders: {lane_phrase}
 #: crates/ff-core/src/sim/lane.rs
-msgid "In {lane_phrase}"
+msgid "In the lane"
+msgstr ""
+
+#: crates/ff-core/src/sim/lane.rs
+msgid "In the right lane"
+msgstr ""
+
+#: crates/ff-core/src/sim/lane.rs
+msgid "In the left lane"
+msgstr ""
+
+#: crates/ff-core/src/sim/lane.rs
+msgid "In the middle lane"
 msgstr ""
 
 #. placeholders: {lane_part}
@@ -37208,11 +37219,6 @@ msgstr ""
 #. placeholders: {names}
 #: crates/freight-fate/src/states/driving_updates/lanes.rs
 msgid "You swerve around {names}. Well done."
-msgstr ""
-
-#. placeholders: {lane_phrase}
-#: crates/freight-fate/src/states/driving_updates/lanes.rs
-msgid "In {lane_phrase}."
 msgstr ""
 
 #. placeholders: {lane_label}

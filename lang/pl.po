@@ -12736,9 +12736,17 @@ msgstr "pas"
 msgid "the {lane_label} lane"
 msgstr "{lane_label} pas"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "{lane_phrase}"
+msgid "In the lane"
+msgstr "Na pasie"
+
+msgid "In the right lane"
+msgstr "Na prawym pasie"
+
+msgid "In the left lane"
+msgstr "Na lewym pasie"
+
+msgid "In the middle lane"
+msgstr "Na środkowym pasie"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -34212,10 +34220,6 @@ msgstr "Gwałtownie omijasz: {names}."
 msgid "You swerve around {names}. Well done."
 msgstr "Gwałtownie omijasz: {names}. Dobra robota."
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "{lane_phrase}."
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -41680,6 +41684,12 @@ msgstr "Potem nawrotka w prawo."
 
 msgid "Then hairpin left."
 msgstr "Potem nawrotka w lewo."
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "{lane_phrase}"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "{lane_phrase}."
 
 #~ msgid "mostly divided, "
 #~ msgstr "przeważnie z rozdzielonymi jezdniami, "
