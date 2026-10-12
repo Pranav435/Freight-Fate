@@ -14,7 +14,7 @@ use freight_fate::states::base::{Key, Menu};
 use freight_fate::states::driving_core::Instructor;
 use freight_fate::states::driving_menu_states::DriveRef;
 use freight_fate::states::driving_radio_app::{
-    RadioAppState, RadioSearchEntryState, RadioStationListState,
+    RadioAppState, RadioCategoryState, RadioSearchEntryState, RadioStationListState,
 };
 use freight_fate::states::driving_school::{
     DrivingSchoolState, LessonKind, RollingBasicsLesson, SchoolDrivingState,
@@ -599,4 +599,31 @@ fn test_search_with_40_and_50_and_51_matches_count_pages_right() {
         assert_eq!(seen, count);
         assert_eq!(visited, pages, "{count} matches");
     }
+}
+
+// -- category browser --------------------------------------------------------------------------
+
+#[test]
+fn test_browse_by_category_lists_all_stations_and_each_category_paged() {
+    let mut app = TestApp::new();
+    let drive = a_radio_drive(&mut app);
+    let mut menu = RadioCategoryState::new(DriveRef::of(&drive));
+    Menu::enter(&mut menu, &mut app.ctx);
+    let rows = labels(&menu, &app.ctx);
+    assert!(rows[0].starts_with("All stations: "), "{rows:?}");
+    assert!(
+        rows.iter().any(|r| r.starts_with("Terrestrial: ")),
+        "{rows:?}"
+    );
+    assert_eq!(rows.last().map(String::as_str), Some("Back"));
+
+    let hits = with_drive(&drive, |d| d.radio.browse(None));
+    assert!(hits.len() > 25);
+    let mut list = RadioStationListState::browse(DriveRef::of(&drive), "All stations", hits);
+    Menu::enter(&mut list, &mut app.ctx);
+    let rows = labels(&list, &app.ctx);
+    assert!(rows.iter().any(|r| r.starts_with("Next page.")), "{rows:?}");
+    app.clear_speech();
+    press(&mut list, &mut app, Key::PageDown);
+    assert!(last(&app).starts_with("Results 26 to "), "{}", last(&app));
 }

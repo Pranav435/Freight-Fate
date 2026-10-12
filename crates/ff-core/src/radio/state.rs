@@ -380,6 +380,75 @@ impl RadioState {
         (ordered, total)
     }
 
+    /// The dial categories the Radio app can browse, in dial order, each with
+    /// how many distinct stations it holds: `(group, name, count)`. Only
+    /// categories with at least one allowed station appear. Favorites and the
+    /// route playlist are not here; favorites has its own list.
+    pub fn browse_categories(&self) -> Vec<(i32, &'static str, usize)> {
+        let mut counts: std::collections::BTreeMap<i32, std::collections::HashSet<String>> =
+            std::collections::BTreeMap::new();
+        for station in &self.catalog {
+            if !self.station_allowed(station) {
+                continue;
+            }
+            let group = dial_group(station);
+            if group == 0 || group == FAVORITES_GROUP {
+                continue;
+            }
+            counts
+                .entry(group)
+                .or_default()
+                .insert(station_identity(station));
+        }
+        counts
+            .into_iter()
+            .map(|(group, ids)| (group, dial_category_name(group), ids.len()))
+            .collect()
+    }
+
+    /// Every allowed station, or only one dial category's (`Some(group)`),
+    /// each paired with its reception here (None when out of range). A
+    /// multi-site station is one row, its best site. In-range stations come
+    /// first, then out-of-range ones; inside each, dial category order puts
+    /// local terrestrial ahead of web radio, then strongest signal, then name.
+    pub fn browse(&self, group: Option<i32>) -> Vec<StationHit> {
+        let receivable: HashMap<String, RadioReception> = self
+            .receivable_stations()
+            .into_iter()
+            .map(|r| (r.station.id.clone(), r))
+            .collect();
+        let mut seen: IndexMap<String, StationHit> = IndexMap::new();
+        for station in &self.catalog {
+            if !self.station_allowed(station) {
+                continue;
+            }
+            let station_group = dial_group(station);
+            if station_group == 0 && group.is_none() {
+                continue;
+            }
+            if group.is_some_and(|g| g != station_group) {
+                continue;
+            }
+            let identity = station_identity(station);
+            let reception = receivable.get(&station.id).cloned();
+            let replace = match seen.get(&identity) {
+                None => true,
+                Some((_, kept)) => reception.is_some() && kept.is_none(),
+            };
+            if replace {
+                seen.insert(identity, (station.clone(), reception));
+            }
+        }
+        let mut ordered: Vec<StationHit> = seen.into_values().collect();
+        ordered.sort_by(|a, b| {
+            a.1.is_none()
+                .cmp(&b.1.is_none())
+                .then(dial_group(&a.0).cmp(&dial_group(&b.0)))
+                .then_with(|| Self::hit_order(a, b))
+        });
+        ordered
+    }
+
     /// [`RadioState::search`] with the Radio app's default list cap.
     pub fn search_default(&self, query: &str) -> (Vec<StationHit>, usize) {
         self.search(query, RADIO_SEARCH_LIMIT)

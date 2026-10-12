@@ -4,6 +4,8 @@
 
 ### Added
 
+- **The Radio app can browse by category.** List all stations or one category, in-range and local stations first, repeats removed.
+
 - **Radio search results now page 25 at a time.** Next and previous page rows, PageDown and PageUp reach every match.
 
 - **How to play and the manual now have a Common questions page.** It covers assigned trucks, fleets, weigh stations, missed exits, the radio and more.

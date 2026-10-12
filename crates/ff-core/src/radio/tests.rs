@@ -2270,3 +2270,65 @@ fn search_page_bounds_cover_every_hit_once() {
     assert_eq!(search_page_bounds(52, 1, 25), (25, 50));
     assert_eq!(search_page_bounds(52, 9, 25), (50, 52));
 }
+
+fn web_fixture(station_id: &str, name: &str, url: &str) -> RadioStation {
+    RadioStation {
+        source_type: "web".to_string(),
+        stream_url: url.to_string(),
+        real_stream: true,
+        ..RadioStation::new(station_id, name, "", "pop", "browse fixture")
+    }
+}
+
+#[test]
+fn browse_lists_in_range_first_terrestrial_before_web_and_dedupes() {
+    let mut all = vec![
+        terrestrial_at("br-far", "KFAR", 20.0),
+        terrestrial_at("br-near", "KNEA", 0.0),
+        web_fixture("br-web-a", "Zed Web", "https://example.test/live"),
+        web_fixture("br-web-b", "Zed Web copy", "https://example.test/live"),
+    ];
+    all.extend(catalog());
+    let radio = RadioState::new(all).with_position(Some(DALLAS));
+    let everything = radio.browse(None);
+    let pos = |id: &str| everything.iter().position(|(s, _)| s.id == id).unwrap();
+    // Local terrestrial ahead of web, and in-range ahead of out-of-range.
+    assert!(pos("br-near") < pos("br-web-a"));
+    assert!(pos("br-web-a") < pos("br-far"));
+    assert!(everything[pos("br-near")].1.is_some());
+    assert!(everything[pos("br-far")].1.is_none());
+    // The repeated stream is one row.
+    let copies = everything
+        .iter()
+        .filter(|(s, _)| s.id == "br-web-a" || s.id == "br-web-b")
+        .count();
+    assert_eq!(copies, 1);
+}
+
+#[test]
+fn browse_by_category_keeps_to_one_group_with_out_of_range_included() {
+    let mut all = vec![
+        terrestrial_at("br-far", "KFAR", 20.0),
+        terrestrial_at("br-near", "KNEA", 0.0),
+        web_fixture("br-web", "Zed Web", "https://example.test/live"),
+    ];
+    all.extend(catalog());
+    let radio = RadioState::new(all).with_position(Some(DALLAS));
+    let terrestrial = radio.browse(Some(TERRESTRIAL_GROUP));
+    assert!(terrestrial
+        .iter()
+        .all(|(s, _)| dial_group(s) == TERRESTRIAL_GROUP));
+    let first_out = terrestrial.iter().position(|(_, r)| r.is_none()).unwrap();
+    assert!(terrestrial[..first_out].iter().all(|(_, r)| r.is_some()));
+    assert!(terrestrial.iter().any(|(s, _)| s.id == "br-far"));
+    let categories = radio.browse_categories();
+    let (_, name, count) = categories
+        .iter()
+        .find(|(g, _, _)| *g == TERRESTRIAL_GROUP)
+        .copied()
+        .unwrap();
+    assert_eq!(name, "Terrestrial");
+    assert_eq!(count, terrestrial.len());
+    assert!(categories.iter().any(|(g, _, _)| *g == 9));
+    assert!(categories.windows(2).all(|w| w[0].0 < w[1].0));
+}
