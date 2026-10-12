@@ -68,7 +68,9 @@ mod tests_portable;
 mod tests_python_fixture;
 
 pub use condition::{fresh_condition, truck_tank_gal, CONDITION_FIELDS};
-pub use paths::{data_dir, game_root, profiles_dir, save_root, SaveRoots, DATA_DIR_ENV};
+pub use paths::{
+    data_dir, data_dir_if_allowed, game_root, profiles_dir, save_root, SaveRoots, DATA_DIR_ENV,
+};
 pub use signing::{
     decode_save_bytes, encode_save_bytes, is_signature_valid, signature_for,
     signature_for_with_secret, ProfileIntegrityError,

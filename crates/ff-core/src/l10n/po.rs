@@ -223,3 +223,16 @@ pub fn quote(text: &str) -> String {
     out.push('"');
     out
 }
+
+/// A field of a PO file's header (the empty `msgid`'s translation), such as
+/// `Language` or `X-Language-Autonym`; `None` when the file has no header,
+/// does not parse, or leaves the field out or blank.
+pub fn header_field(text: &str, field: &str) -> Option<String> {
+    let entries = parse(text).ok()?;
+    let header = entries.iter().find(|entry| entry.msgid.is_empty())?;
+    header.msgstr.lines().find_map(|line| {
+        let (name, value) = line.split_once(':')?;
+        let value = value.trim();
+        (name.trim().eq_ignore_ascii_case(field) && !value.is_empty()).then(|| value.to_string())
+    })
+}
