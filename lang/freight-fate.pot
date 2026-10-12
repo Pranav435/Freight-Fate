@@ -33785,6 +33785,24 @@ msgstr ""
 msgid "search"
 msgstr ""
 
+#. placeholders: {start}, {end}, {total}
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Results {start} to {end} of {total}."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Last page of results."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "First page of results."
+msgstr ""
+
+#. placeholders: {start}, {end}, {hit_count}
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Results {start} to {end} of {hit_count}"
+msgstr ""
+
 #. placeholders: {display_name}
 #: crates/freight-fate/src/states/driving_radio_app.rs
 msgid "{display_name} is out of range here."
@@ -33792,6 +33810,28 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_radio_app.rs
 msgid "Enter tunes this station."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Next page."
+msgstr ""
+
+#. placeholders: {next_page_preview}
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Next page. {next_page_preview}"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Shows the next results. PageDown does the same."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Previous page"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Shows the earlier results. PageUp does the same."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_radio_app.rs
@@ -33810,15 +33850,22 @@ msgstr ""
 msgid "Go back."
 msgstr ""
 
-#. placeholders: {title}, {total}, {rows}
-#: crates/freight-fate/src/states/driving_radio_app.rs
-msgid "{title}. {total} matches, the first {rows} listed."
-msgstr ""
-
-#. placeholders: {total}, {rows}
+#. placeholders: {hit_count}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_radio_app.rs
-msgid "{total} matches, the first {rows} listed."
+msgid "{hit_count} matches."
+msgstr ""
+
+#. placeholders: {page_text}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid "{page_text} PageDown for the next page."
+msgstr ""
+
+#. placeholders: {title}, {hit_count}, {page_text}
+#: crates/freight-fate/src/states/driving_radio_app.rs
+msgid ""
+"{title}. {hit_count} matches. {page_text} PageDown for the next page."
 msgstr ""
 
 #. one sentence of a longer line

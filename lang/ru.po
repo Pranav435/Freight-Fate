@@ -31185,12 +31185,43 @@ msgstr "Станции по запросу {query}"
 msgid "search"
 msgstr "search"
 
+#. placeholders: {start}, {end}, {total}
+msgid "Results {start} to {end} of {total}."
+msgstr "Результаты с {start} по {end} из {total}."
+
+msgid "Last page of results."
+msgstr "Последняя страница результатов."
+
+msgid "First page of results."
+msgstr "Первая страница результатов."
+
+#. placeholders: {start}, {end}, {hit_count}
+msgid "Results {start} to {end} of {hit_count}"
+msgstr "Результаты с {start} по {end} из {hit_count}"
+
 #. placeholders: {display_name}
 msgid "{display_name} is out of range here."
 msgstr "{display_name} здесь вне зоны приёма."
 
 msgid "Enter tunes this station."
 msgstr "Enter настраивает эту станцию."
+
+#. one sentence of a longer line
+msgid "Next page."
+msgstr "Следующая страница."
+
+#. placeholders: {next_page_preview}
+msgid "Next page. {next_page_preview}"
+msgstr "Следующая страница. {next_page_preview}"
+
+msgid "Shows the next results. PageDown does the same."
+msgstr "Показывает следующие результаты. PageDown делает то же самое."
+
+msgid "Previous page"
+msgstr "Предыдущая страница"
+
+msgid "Shows the earlier results. PageUp does the same."
+msgstr "Показывает предыдущие результаты. PageUp делает то же самое."
 
 msgid "No stations here yet."
 msgstr "Здесь пока нет станций."
@@ -31206,14 +31237,22 @@ msgstr "В этом списке нечего настраивать."
 msgid "Go back."
 msgstr "Назад."
 
-#. placeholders: {title}, {total}, {rows}
-msgid "{title}. {total} matches, the first {rows} listed."
-msgstr "{title}. Совпадений: {total}, показаны первые {rows}."
-
-#. placeholders: {total}, {rows}
+#. placeholders: {hit_count}
 #. one sentence of a longer line
-msgid "{total} matches, the first {rows} listed."
-msgstr "Совпадений: {total}, показаны первые {rows}."
+msgid "{hit_count} matches."
+msgstr "{hit_count} {hit_count:совпадение|совпадения|совпадений}."
+
+#. placeholders: {page_text}
+#. one sentence of a longer line
+msgid "{page_text} PageDown for the next page."
+msgstr "{page_text} PageDown — следующая страница."
+
+#. placeholders: {title}, {hit_count}, {page_text}
+msgid ""
+"{title}. {hit_count} matches. {page_text} PageDown for the next page."
+msgstr ""
+"{title}. {hit_count} {hit_count:совпадение|совпадения|совпадений}. "
+"{page_text} PageDown — следующая страница."
 
 #. one sentence of a longer line
 msgid "Nothing here yet."
@@ -41868,3 +41907,9 @@ msgstr "Затем крутой разворот направо."
 
 msgid "Then hairpin left."
 msgstr "Затем крутой разворот налево."
+
+#~ msgid "{title}. {total} matches, the first {rows} listed."
+#~ msgstr "{title}. Совпадений: {total}, показаны первые {rows}."
+
+#~ msgid "{total} matches, the first {rows} listed."
+#~ msgstr "Совпадений: {total}, показаны первые {rows}."

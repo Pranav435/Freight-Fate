@@ -58,6 +58,14 @@ bookmarks usable.
 - [ ] (Found along the way) The separate event voice keeps the system's
       default voice; a player hearing a translation through it may need to
       pick a voice in that language under Settings, Speech.
+
+- [x] Main menu ambience (owner, 2026-10-12): an ElevenLabs bed under the
+      main menu and the screens opened from it, picked like the music by
+      the career it would load. After dark it is a truck stop lot. By day an
+      owner-operator hears a rig idling in the yard, and a company driver or
+      a new driver hears the dispatch office. It is on the Gameplay cues
+      volume. The owner picked the takes; the terminal, docks and rest stops
+      already had their own beds.
 - [x] Facility streets setting (owner, 2026-10-11, for players who want the
       1.8 arrival): Settings, Gameplay, World and traffic. Off skips the
       facility street chains both ways (the destination ramp ends at the
