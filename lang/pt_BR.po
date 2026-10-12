@@ -30950,12 +30950,43 @@ msgstr "Estações que correspondem a {query}"
 msgid "search"
 msgstr "search"
 
+#. placeholders: {start}, {end}, {total}
+msgid "Results {start} to {end} of {total}."
+msgstr "Resultados {start} a {end} de {total}."
+
+msgid "Last page of results."
+msgstr "Última página de resultados."
+
+msgid "First page of results."
+msgstr "Primeira página de resultados."
+
+#. placeholders: {start}, {end}, {hit_count}
+msgid "Results {start} to {end} of {hit_count}"
+msgstr "Resultados {start} a {end} de {hit_count}"
+
 #. placeholders: {display_name}
 msgid "{display_name} is out of range here."
 msgstr "{display_name} está fora de alcance aqui."
 
 msgid "Enter tunes this station."
 msgstr "Enter sintoniza esta estação."
+
+#. one sentence of a longer line
+msgid "Next page."
+msgstr "Próxima página."
+
+#. placeholders: {next_page_preview}
+msgid "Next page. {next_page_preview}"
+msgstr "Próxima página. {next_page_preview}"
+
+msgid "Shows the next results. PageDown does the same."
+msgstr "Mostra os próximos resultados. PageDown faz o mesmo."
+
+msgid "Previous page"
+msgstr "Página anterior"
+
+msgid "Shows the earlier results. PageUp does the same."
+msgstr "Mostra os resultados anteriores. PageUp faz o mesmo."
 
 msgid "No stations here yet."
 msgstr "Ainda não há estações aqui."
@@ -30970,14 +31001,22 @@ msgstr "Nada para sintonizar nesta lista."
 msgid "Go back."
 msgstr "Voltar."
 
-#. placeholders: {title}, {total}, {rows}
-msgid "{title}. {total} matches, the first {rows} listed."
-msgstr "{title}. {total} resultados, os primeiros {rows} listados."
-
-#. placeholders: {total}, {rows}
+#. placeholders: {hit_count}
 #. one sentence of a longer line
-msgid "{total} matches, the first {rows} listed."
-msgstr "{total} resultados, os primeiros {rows} listados."
+msgid "{hit_count} matches."
+msgstr "{hit_count} {hit_count:resultado|resultados}."
+
+#. placeholders: {page_text}
+#. one sentence of a longer line
+msgid "{page_text} PageDown for the next page."
+msgstr "{page_text} PageDown para a próxima página."
+
+#. placeholders: {title}, {hit_count}, {page_text}
+msgid ""
+"{title}. {hit_count} matches. {page_text} PageDown for the next page."
+msgstr ""
+"{title}. {hit_count} {hit_count:resultado|resultados}. {page_text} PageDown "
+"para a próxima página."
 
 #. one sentence of a longer line
 msgid "Nothing here yet."
@@ -41551,3 +41590,9 @@ msgstr "Depois, curva fechadíssima à direita."
 
 msgid "Then hairpin left."
 msgstr "Depois, curva fechadíssima à esquerda."
+
+#~ msgid "{title}. {total} matches, the first {rows} listed."
+#~ msgstr "{title}. {total} resultados, os primeiros {rows} listados."
+
+#~ msgid "{total} matches, the first {rows} listed."
+#~ msgstr "{total} resultados, os primeiros {rows} listados."
