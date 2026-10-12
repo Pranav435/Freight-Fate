@@ -207,6 +207,9 @@ pub struct RadioReception {
     pub signal: f64,
     pub reason: String,
     pub fallback: bool,
+    /// A saved station heard through its stream because the truck is outside
+    /// its clear signal: see [`RadioState::reception`].
+    pub streamed: bool,
 }
 
 impl RadioReception {
@@ -222,12 +225,16 @@ impl RadioReception {
             signal,
             reason: reason.to_string(),
             fallback: false,
+            streamed: false,
         }
     }
 
     pub fn signal_label(&self) -> &'static str {
         if self.fallback {
             return "fallback";
+        }
+        if self.streamed {
+            return "streaming";
         }
         if self.station.always_available {
             return "always available";
@@ -266,6 +273,16 @@ pub trait RadioPlaybackBackend {
         station: &RadioStation,
         volume: f64,
     ) -> Result<(), RadioPlaybackError>;
+    /// Start the station the radio just judged. A backend that scales the
+    /// program by signal reads it from `reception` rather than measuring the
+    /// station again, so it hears a streamed favorite the way the dial does.
+    fn play_reception(
+        &mut self,
+        reception: &RadioReception,
+        volume: f64,
+    ) -> Result<(), RadioPlaybackError> {
+        self.play_station(&reception.station, volume)
+    }
     fn stop_radio(&mut self);
 }
 
@@ -807,7 +824,11 @@ pub const STATIC_SIGNAL_THRESHOLD: f64 = 0.12; // static smear lives in the oute
 /// the deep fringe, and go silent past the range edge.
 pub fn signal_volume_factor(reception: &RadioReception) -> f64 {
     let station = &reception.station;
-    if reception.fallback || station.always_available || station.range_miles <= 0.0 {
+    if reception.fallback
+        || reception.streamed
+        || station.always_available
+        || station.range_miles <= 0.0
+    {
         return 1.0;
     }
     let signal = reception.signal;

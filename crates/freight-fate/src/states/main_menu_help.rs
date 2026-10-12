@@ -225,7 +225,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "Hold Shift to change volume in ten percent steps: Page Up or semicolon raises it, Page Down or apostrophe lowers it.",
             "{{radio_favorite}} saves or removes a favorite. {{radio_status}} reads station, reception, volume, and streamer-safe status. {{radio_now_playing}} reads available song information.",
             "Radio status lists receivable stations. Use the Radio app to choose or search for a station and browse favorites.",
-            "Regional stations fade as you leave their range. If reception fails, the radio tries a clear local station, then a fallback. Failed streams leave the dial for that session. Roadhouse and Night Line are available across the map.",
+            "Regional stations fade as you leave their range. Favorites play from anywhere and never fade. If reception fails, the radio tries a clear local station, then a fallback. Failed streams leave the dial for that session. Roadhouse and Night Line are available across the map.",
             "Put M3U, M3U8, or PLS playlists in the Playlists folder inside your saves folder. Radio status tells you the folder location and reloads it when opened. Entries can be audio files, network paths, or stream addresses.",
             "Personal playlists normally play in order and resume where you left them. Shuffle plays every track once in a random order, then chooses a new order. Unreadable entries are skipped.",
             "Original music uses licensed menu and Roadhouse tracks. Synthesized uses music the game composes and the original three tracks, removing fictional regional stations and voiced breaks. Real streams and personal playlists remain unless streamer-safe mode hides them.",

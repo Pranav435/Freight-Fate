@@ -40,6 +40,8 @@
 
 - **Drivers can call dispatch while stopped for trip-specific help.** Report delays, hours, road conditions, truck trouble or load trouble.
 
+- **Favorite stations now play from anywhere.** A saved local station keeps playing after you leave its area, with no fade or static.
+
 ### Changed
 
 - **Dispatch trust now changes half a point earlier at each cutoff.** It follows the rounded reputation you hear.

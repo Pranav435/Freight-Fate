@@ -61,6 +61,12 @@ bookmarks usable.
       the value it started with.
 - [x] Controller radio controls: the right stick tunes stations and changes volume; right-bumper combinations manage playback, categories, and radio information.
 
+- [x] Favorites play from anywhere (Orinks, 2026-10-12): a saved ranged
+      station keeps its real signal while it is clean, and past that it plays
+      its stream at full strength, spoken "streaming", so it never fades,
+      crackles or hands the dial over (`RadioState::reception`). A streamed
+      favorite is not counted as the strongest signal here when another
+      station fades out.
 - [x] Call dispatch, a 2.0 teaser for 1.9.4 (owner, 2026-10-10): the pause
       menu offers Call dispatch while the truck is stopped, with local answers
       about the delivery window, hours, the road ahead, truck trouble (which

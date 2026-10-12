@@ -1073,20 +1073,130 @@ fn test_category_jump_lands_on_favorites() {
     assert!(action.unwrap().message.contains("Favorites"));
 }
 
+const SEATTLE: (f64, f64) = (47.6062, -122.3321);
+
+/// A Dallas station that comes in strong in Dallas, and is saved.
+fn dallas_favorite(radio: &mut RadioState) -> RadioStation {
+    let station = radio
+        .receivable_stations()
+        .into_iter()
+        .find(|r| r.station.source_type == "imported" && r.signal >= 0.8)
+        .unwrap()
+        .station;
+    radio.station_id = station.id.clone();
+    radio.toggle_favorite();
+    station
+}
+
 #[test]
-fn test_out_of_range_favorite_stays_off_the_dial() {
+fn test_an_out_of_range_station_that_is_not_saved_stays_off_the_dial() {
     let mut radio = dallas_radio();
     let dallas_local = radio
         .available_stations()
         .into_iter()
         .find(|s| s.source_type == "imported")
         .unwrap();
-    radio.favorite_ids.insert(dallas_local.id.clone());
-    radio.update_position(Some((47.6062, -122.3321)), None); // Seattle
+    radio.update_position(Some(SEATTLE), None);
     assert!(!radio
         .available_stations()
         .iter()
         .any(|s| s.id == dallas_local.id));
+}
+
+#[test]
+fn test_a_favorite_plays_clean_from_anywhere() {
+    let mut radio = dallas_radio();
+    let favorite = dallas_favorite(&mut radio);
+    radio.update_position(Some(SEATTLE), None);
+    let on_dial = radio
+        .receivable_stations()
+        .into_iter()
+        .find(|r| r.station.id == favorite.id)
+        .expect("a favorite stays on the dial outside its area");
+    assert!(on_dial.streamed);
+    assert_eq!(on_dial.signal_label(), "streaming");
+    assert_eq!(signal_volume_factor(&on_dial), 1.0);
+    assert_eq!(radio.group(&favorite), FAVORITES_GROUP);
+    // Still tuned: nothing faded out.
+    assert_eq!(radio.current_station().id, favorite.id);
+    let mut backend = RecordingBackend::default();
+    let action = radio.play(Some(&mut backend), "");
+    assert!(!action.fallback_used);
+    assert_eq!(backend.played.last().unwrap().0, favorite.id);
+    assert!(action.message.contains("streaming"), "{}", action.message);
+}
+
+#[test]
+fn test_a_favorite_keeps_its_real_signal_at_home() {
+    let mut radio = dallas_radio();
+    let favorite = dallas_favorite(&mut radio);
+    let reception = radio.current_reception();
+    assert_eq!(reception.station.id, favorite.id);
+    assert!(!reception.streamed);
+    assert_eq!(reception.signal_label(), "strong signal");
+}
+
+#[test]
+fn test_a_favorite_streams_once_its_signal_thins() {
+    // Where it would start to fade, it streams instead: a favorite has no
+    // fringe to crackle through.
+    let mut radio = dallas_radio();
+    let favorite = dallas_favorite(&mut radio);
+    let edge = effective_range_miles(&favorite, None);
+    let (lat, lon) = (favorite.lat.unwrap(), favorite.lon.unwrap());
+    radio.update_position(Some(north_of((lat, lon), edge * 0.97)), None);
+    let physical = estimate_signal(&favorite, radio.position, None);
+    assert!(physical.signal > 0.0 && physical.signal < SIGNAL_FULL_VOLUME);
+    let reception = radio.current_reception();
+    assert!(reception.streamed);
+    assert_eq!(signal_volume_factor(&reception), 1.0);
+}
+
+#[test]
+fn test_unsaving_a_far_favorite_lets_it_fade() {
+    let mut radio = dallas_radio();
+    let favorite = dallas_favorite(&mut radio);
+    radio.update_position(Some(SEATTLE), None);
+    radio.toggle_favorite();
+    assert_ne!(radio.current_station().id, favorite.id);
+}
+
+#[test]
+fn test_a_streamed_favorite_is_not_the_strongest_signal_here() {
+    let mut radio = dallas_radio();
+    let favorite = dallas_favorite(&mut radio);
+    radio.update_position(Some(SEATTLE), None);
+    let seattle_local = radio
+        .receivable_stations()
+        .into_iter()
+        .find(|r| r.station.source_type == "imported" && !r.streamed)
+        .unwrap()
+        .station;
+    let next = radio.strongest_terrestrial(&seattle_local).unwrap();
+    assert_ne!(next.station.id, favorite.id);
+    assert!(!next.streamed);
+}
+
+#[test]
+fn test_power_on_keeps_a_far_favorite() {
+    let mut radio = dallas_radio();
+    let favorite = dallas_favorite(&mut radio);
+    radio.update_position(Some(SEATTLE), None);
+    radio.enabled = false;
+    radio.toggle(None);
+    assert_eq!(radio.current_station().id, favorite.id);
+}
+
+#[test]
+fn test_streamer_safe_mode_still_hides_a_far_favorite() {
+    let mut radio = dallas_radio();
+    let favorite = dallas_favorite(&mut radio);
+    radio.update_position(Some(SEATTLE), None);
+    radio.streamer_safe = true;
+    assert!(!radio
+        .available_stations()
+        .iter()
+        .any(|s| s.id == favorite.id));
 }
 
 #[test]
