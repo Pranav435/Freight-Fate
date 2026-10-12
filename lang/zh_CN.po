@@ -25605,16 +25605,9 @@ msgstr "附近没有城镇。"
 msgid "In {name}."
 msgstr "在{name}。"
 
-#. placeholders: {closing_text}
-msgid "{closing_text} off the road"
-msgstr "离道路{closing_text}"
-
-msgid "right beside the road"
-msgstr "就在路边"
-
-#. placeholders: {name}, {where_text}
-msgid "Nearest town, {name}: {where_text}."
-msgstr "最近的城镇，{name}：{where_text}。"
+#. placeholders: {name}
+msgid "Nearest town: {name}."
+msgstr "最近的城镇：{name}。"
 
 msgid "On city streets. No signed direction here."
 msgstr "在城市街道上。这里没有方向标志。"
@@ -31959,12 +31952,10 @@ msgstr "厂区街道：{on_off}"
 
 msgid ""
 "On, you drive the real streets between the highway and a facility, turn by "
-"turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
-"loaded run leaves straight onto the highway, and a pickup in town is one "
-"stretch of road. Applies from your next drive."
+"turn. Off, as in version 1.8, the exit ramp ends at the facility gate with "
+"no light or stop sign, a loaded run leaves straight onto the highway, and a "
+"pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
-"打开时，你要在高速公路和厂区之间的真实街道上逐个转弯地驾驶。关闭时和1.8版本一样，出口匝道在厂区大门结束，装好货的行程直接上高速公路，城里的取货只是一"
-"段道路。从你的下一次驾驶开始生效。"
 
 #. placeholders: {else}
 msgid "Units: {else}"
@@ -36416,6 +36407,24 @@ msgstr "然后右转急弯掉头。"
 
 msgid "Then hairpin left."
 msgstr "然后左转急弯掉头。"
+
+#~ msgid "{closing_text} off the road"
+#~ msgstr "离道路{closing_text}"
+
+#~ msgid "right beside the road"
+#~ msgstr "就在路边"
+
+#~ msgid "Nearest town, {name}: {where_text}."
+#~ msgstr "最近的城镇，{name}：{where_text}。"
+
+#~ msgid ""
+#~ "On, you drive the real streets between the highway and a facility, turn by "
+#~ "turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
+#~ "loaded run leaves straight onto the highway, and a pickup in town is one "
+#~ "stretch of road. Applies from your next drive."
+#~ msgstr ""
+#~ "打开时，你要在高速公路和厂区之间的真实街道上逐个转弯地驾驶。关闭时和1.8版本一样，出口匝道在厂区大门结束，装好货的行程直接上高速公路，城里的取货只是一"
+#~ "段道路。从你的下一次驾驶开始生效。"
 
 #~ msgid "de"
 #~ msgstr "de"
