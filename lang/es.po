@@ -26195,7 +26195,7 @@ msgid "delay"
 msgstr "delay"
 
 msgid "hours"
-msgstr "hours"
+msgstr "horas"
 
 msgid "Call dispatch"
 msgstr "Llamar a despacho"
