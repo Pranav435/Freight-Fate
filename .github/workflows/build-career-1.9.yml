@@ -15,6 +15,10 @@ name: Career 1.9 snapshot
 on:
   schedule:
     - cron: "37 2 * * *"
+    # Backup start. GitHub sometimes drops a scheduled start outright
+    # (2026-10-12: no scheduled workflow in the repo fired). This one builds
+    # only when the day's snapshot does not exist yet; see Prepare.
+    - cron: "37 8 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -41,7 +45,9 @@ permissions:
 
 concurrency:
   group: career-19-snapshot
-  cancel-in-progress: true
+  # A scheduled start queues behind a running build instead of cancelling
+  # it, so the backup start can never kill a late primary run.
+  cancel-in-progress: ${{ github.event_name != 'schedule' }}
 
 env:
   PYTHON_VERSION: "3.12"
@@ -102,6 +108,7 @@ jobs:
         id: check
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SCHEDULE: ${{ github.event.schedule }}
         run: |
           echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
@@ -125,6 +132,15 @@ jobs:
 
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             echo "should_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # The backup start builds only when the primary start never made
+          # today's snapshot (dropped, or failed past its retry).
+          if [ "$SCHEDULE" = "37 8 * * *" ] \
+            && gh release view "1.9-tester-$(date -u +%Y%m%d)" >/dev/null 2>&1; then
+            echo "Today's snapshot already exists; the backup start has nothing to do."
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
