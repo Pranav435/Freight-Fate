@@ -91,6 +91,9 @@ def test_checker_catches_what_the_game_would_lose():
     assert check.check_entry("es", "Press Enter.", "Pulsa Intro.") == [
         "translates or drops the key name Enter"
     ]
+    assert check.check_entry("it", "{n} miles", "{n:{n} miglio|miglia}") == [
+        "has a brace inside a placeholder, or an unmatched brace"
+    ]
     # A key name may touch Chinese or Japanese text with no space.
     assert check.check_entry("zh_CN", "Press Enter.", "按Enter。") == []
     assert check.check_entry("ru", "{n} miles", "{n} {n:миля|мили}") == [

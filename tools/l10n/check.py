@@ -46,6 +46,15 @@ def check_entry(code: str, msgid: str, msgstr: str) -> list[str]:
     # {s_ending} is the English "s"; a translation leaves it out.
     for name in sorted(source_holes - used - {"s_ending"}):
         problems.append(f"drops {{{name}}}")
+    depth = 0
+    for ch in msgstr:
+        depth += {"{": 1, "}": -1}.get(ch, 0)
+        if depth > 1 or depth < 0:
+            problems.append("has a brace inside a placeholder, or an unmatched brace")
+            break
+    else:
+        if depth:
+            problems.append("has an unmatched brace")
     want = PLURAL_FORMS.get(code, 2)
     for m in translated:
         if m.group(2) is not None:
