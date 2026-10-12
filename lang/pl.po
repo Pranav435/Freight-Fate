@@ -2378,9 +2378,6 @@ msgstr ""
 msgid "Big Buck's"
 msgstr ""
 
-msgid "landmark"
-msgstr ""
-
 msgid "big buck"
 msgstr ""
 
@@ -7925,8 +7922,18 @@ msgstr ""
 msgid ", background check clears in about {wait_days} days"
 msgstr ""
 
+#. placeholders: {wait_days}
+#. one clause of a longer line
+msgid "background check clears in about {wait_days} days"
+msgstr ""
+
 #. placeholders: {level}
 msgid ", carrier-sponsored free at level {level}"
+msgstr ""
+
+#. placeholders: {level}
+#. one clause of a longer line
+msgid "carrier-sponsored free at level {level}"
 msgstr ""
 
 msgid "Pay advance already taken for this load. Deliver it first."
@@ -8054,7 +8061,15 @@ msgstr ""
 msgid ", next year"
 msgstr ""
 
+#. one clause of a longer line
+msgid "next year"
+msgstr ""
+
 msgid ", the year after next"
+msgstr ""
+
+#. one clause of a longer line
+msgid "the year after next"
 msgstr ""
 
 #. placeholders: {record_clears_text}
@@ -8525,6 +8540,10 @@ msgstr ""
 msgid ", planned around the 10-hour rest your hours will force. "
 msgstr ""
 
+#. one clause of a longer line
+msgid "planned around the 10-hour rest your hours will force."
+msgstr ""
+
 #. placeholders: {f2}, {rest}, {equipment_text}, {trailer}, {preview}, {market}, {endorsement}
 #. one sentence of a longer line
 msgid ""
@@ -8880,6 +8899,9 @@ msgstr ""
 #. placeholders: {action}, {name}, {distance}
 msgid ""
 "Last reachable {action} stop: {name}, {distance} ahead. Plan to stop here."
+msgstr ""
+
+msgid "landmark"
 msgstr ""
 
 msgid "generic"
@@ -10047,9 +10069,6 @@ msgstr ""
 msgid "afn-humphreys"
 msgstr ""
 
-msgid "local"
-msgstr ""
-
 msgid "streaming"
 msgstr ""
 
@@ -10079,6 +10098,9 @@ msgid "radio catalog contains duplicate station ids"
 msgstr ""
 
 msgid "imported stations collide with curated station ids"
+msgstr ""
+
+msgid "local"
 msgstr ""
 
 msgid "codec"
@@ -10171,6 +10193,11 @@ msgstr ""
 
 #. placeholders: {spoken}
 msgid ", {spoken} away"
+msgstr ""
+
+#. placeholders: {spoken}
+#. one clause of a longer line
+msgid "{spoken} away"
 msgstr ""
 
 #. placeholders: {source}
@@ -10579,13 +10606,7 @@ msgstr ""
 msgid "you must take a 30 minute break at a rest stop"
 msgstr ""
 
-msgid "drive"
-msgstr ""
-
 msgid "your driving time for this shift ends. You need 10 hours of sleep"
-msgstr ""
-
-msgid "duty"
 msgstr ""
 
 msgid "your duty window closes. You need 10 hours of sleep"
@@ -10675,6 +10696,12 @@ msgstr ""
 msgid "Duty window closes in {duration_text}."
 msgstr ""
 
+msgid "drive"
+msgstr ""
+
+msgid "duty"
+msgstr ""
+
 msgid "At the wheel: no driving yet"
 msgstr ""
 
@@ -10725,7 +10752,16 @@ msgid ", duty window {duration_text}"
 msgstr ""
 
 #. placeholders: {duration_text}
+#. one clause of a longer line
+msgid "duty window {duration_text}"
+msgstr ""
+
+#. placeholders: {duration_text}
 msgid ", but your duty window closes first, in {duration_text}"
+msgstr ""
+
+#. one clause of a longer line
+msgid "but your duty window closes first"
 msgstr ""
 
 #. placeholders: {answer}, {shift_over}
@@ -10742,6 +10778,10 @@ msgid "Driving time left: no limit{else}"
 msgstr ""
 
 msgid ", and no duty window"
+msgstr ""
+
+#. one clause of a longer line
+msgid "and no duty window"
 msgstr ""
 
 #. placeholders: {duration_text}
@@ -10770,6 +10810,10 @@ msgid "{duty_text}, before your driving time runs out. {drive_text}"
 msgstr ""
 
 msgid ", break overdue"
+msgstr ""
+
+#. one clause of a longer line
+msgid "break overdue"
 msgstr ""
 
 msgid ". Your 30-minute break is overdue and comes first"
@@ -11169,6 +11213,11 @@ msgstr ""
 
 #. placeholders: {minutes}
 msgid ", about {minutes} minutes slower"
+msgstr ""
+
+#. placeholders: {minutes}
+#. one clause of a longer line
+msgid "about {minutes} minutes slower"
 msgstr ""
 
 #. placeholders: {join}
@@ -11937,6 +11986,11 @@ msgstr ""
 msgid ", terrain {terrain}"
 msgstr ""
 
+#. placeholders: {terrain}
+#. one clause of a longer line
+msgid "terrain {terrain}"
+msgstr ""
+
 #. placeholders: {f}, {direction}, {terrain_text}
 msgid "Current grade {f} percent {direction}{terrain_text}"
 msgstr ""
@@ -12017,6 +12071,11 @@ msgstr ""
 
 #. placeholders: {distance}
 msgid ", then {distance} on it"
+msgstr ""
+
+#. placeholders: {distance}
+#. one clause of a longer line
+msgid "then {distance} on it"
 msgstr ""
 
 msgid "500 meters"
@@ -12889,9 +12948,6 @@ msgstr ""
 msgid "empty"
 msgstr ""
 
-msgid "dry"
-msgstr ""
-
 msgid "schema"
 msgstr ""
 
@@ -13087,6 +13143,9 @@ msgid "cloudy"
 msgstr ""
 
 msgid "high winds"
+msgstr ""
+
+msgid "dry"
 msgstr ""
 
 msgid "wet"
@@ -14186,8 +14245,18 @@ msgstr ""
 msgid ", {spacing} ms after the last press"
 msgstr ""
 
+#. placeholders: {spacing}
+#. one clause of a longer line
+msgid "{spacing} ms after the last press"
+msgstr ""
+
 #. placeholders: {gap}
 msgid ", {gap} ms after its press"
+msgstr ""
+
+#. placeholders: {gap}
+#. one clause of a longer line
+msgid "{gap} ms after its press"
 msgstr ""
 
 #. placeholders: {saturating_sub}, {else}, {name}, {detail}, {else2}, {else3}, {else4}, {else5}, {frame_ms}
@@ -14806,6 +14875,7 @@ msgstr ""
 msgid "an unnamed key"
 msgstr ""
 
+msgctxt "controller button"
 msgid "Back"
 msgstr ""
 
@@ -15891,6 +15961,9 @@ msgstr ""
 msgid "Ready in {remaining} seconds."
 msgstr ""
 
+msgid "Back"
+msgstr ""
+
 msgid "Enter selects, Escape goes back. Control stops the current speech."
 msgstr ""
 
@@ -15900,8 +15973,10 @@ msgstr ""
 msgid "No options available."
 msgstr ""
 
-#. placeholders: {label}, {index}, {items}
-msgid "{label} {index} of {items}."
+#. placeholders: {position}, {count}
+#. A menu row's position, spoken after the row: "4 of 8." The game
+#. translates it apart from the row, so keep both {position} and {count}.
+msgid "{position} of {count}."
 msgstr ""
 
 msgid "Repeat this line."
@@ -15973,7 +16048,16 @@ msgstr ""
 msgid ", {grouped} to level {level}"
 msgstr ""
 
+#. placeholders: {grouped}, {level}
+#. one clause of a longer line
+msgid "{grouped} to level {level}"
+msgstr ""
+
 msgid ", top level"
+msgstr ""
+
+#. one clause of a longer line
+msgid "top level"
 msgstr ""
 
 #. placeholders: {level}, {f}, {next}
@@ -17015,6 +17099,10 @@ msgstr ""
 msgid ", this week's price"
 msgstr ""
 
+#. one clause of a longer line
+msgid "this week's price"
+msgstr ""
+
 #. placeholders: {f}, {live}
 msgid "Garage: fuel {f} per gallon{live}"
 msgstr ""
@@ -17777,12 +17865,22 @@ msgstr ""
 msgid ", tier {owned} of {max_tier}"
 msgstr ""
 
+#. placeholders: {owned}, {max_tier}
+#. one clause of a longer line
+msgid "tier {owned} of {max_tier}"
+msgstr ""
+
 #. placeholders: {label}, {tiers}
 msgid "{label}: owned{tiers}"
 msgstr ""
 
 #. placeholders: {owned}
 msgid ", tier {owned} owned"
+msgstr ""
+
+#. placeholders: {owned}
+#. one clause of a longer line
+msgid "tier {owned} owned"
 msgstr ""
 
 #. placeholders: {label}, {owned}, {max_tier}, {grouped}, {owned_part}
@@ -20570,7 +20668,7 @@ msgid "Control C copies the message you are on. "
 msgstr ""
 
 #. placeholders: {n}
-msgid "{n} copies the last thing the game said. "
+msgid "{n} copies the last thing the game said."
 msgstr ""
 
 #. placeholders: {n}
@@ -20980,11 +21078,24 @@ msgstr ""
 msgid ", open-road target {speed_text}"
 msgstr ""
 
+#. placeholders: {speed_text}
+#. one clause of a longer line
+msgid "open-road target {speed_text}"
+msgstr ""
+
 msgid ", open-road target will use the posted limit"
+msgstr ""
+
+#. one clause of a longer line
+msgid "open-road target will use the posted limit"
 msgstr ""
 
 #. placeholders: {cruise_holding_text}
 msgid ", automatic speed control, {cruise_holding_text}"
+msgstr ""
+
+#. one clause of a longer line
+msgid "automatic speed control"
 msgstr ""
 
 #. placeholders: {keeper_holding_text}, {keeper_target}
@@ -20993,6 +21104,10 @@ msgstr ""
 
 #. placeholders: {keeper_target}
 msgid ", automatic speed control paused{keeper_target}"
+msgstr ""
+
+#. one clause of a longer line
+msgid "automatic speed control paused"
 msgstr ""
 
 #. placeholders: {signal_verb}, {armed_exit_name}, {distance_text}
@@ -21016,6 +21131,11 @@ msgstr ""
 
 #. placeholders: {reason}
 msgid ", in a {reason} zone"
+msgstr ""
+
+#. placeholders: {reason}
+#. one clause of a longer line
+msgid "in a {reason} zone"
 msgstr ""
 
 #. placeholders: {speed_text}
@@ -21043,6 +21163,10 @@ msgid " for the bend"
 msgstr ""
 
 msgid ", the exit speed"
+msgstr ""
+
+#. one clause of a longer line
+msgid "the exit speed"
 msgstr ""
 
 #. placeholders: {spoken}, {context}
@@ -21211,13 +21335,29 @@ msgstr ""
 msgid ", where the ramp ends at a traffic light"
 msgstr ""
 
+#. one clause of a longer line
+msgid "where the ramp ends at a traffic light"
+msgstr ""
+
 msgid ", where the ramp ends at a stop sign"
+msgstr ""
+
+#. one clause of a longer line
+msgid "where the ramp ends at a stop sign"
 msgstr ""
 
 msgid ", where the ramp ends at a yield"
 msgstr ""
 
+#. one clause of a longer line
+msgid "where the ramp ends at a yield"
+msgstr ""
+
 msgid ", where the ramp ends at a roundabout"
+msgstr ""
+
+#. one clause of a longer line
+msgid "where the ramp ends at a roundabout"
 msgstr ""
 
 #. placeholders: {fraction}, {gallons}
@@ -24344,6 +24484,11 @@ msgstr ""
 msgid ", speed limit {limit_text}"
 msgstr ""
 
+#. placeholders: {limit_text}
+#. one clause of a longer line
+msgid "speed limit {limit_text}"
+msgstr ""
+
 #. placeholders: {short_distance_text}, {limit_clause}
 msgid ""
 "Stop sign, about {short_distance_text} to the stop bar{limit_clause}."
@@ -24709,6 +24854,14 @@ msgid ", carrier."
 msgstr ""
 
 msgid ", your settlement."
+msgstr ""
+
+#. one clause of a longer line
+msgid "carrier."
+msgstr ""
+
+#. one clause of a longer line
+msgid "your settlement."
 msgstr ""
 
 msgid "Automatic speed control paused."
@@ -26444,12 +26597,22 @@ msgstr ""
 msgid ", advise {speed_text}"
 msgstr ""
 
+#. placeholders: {speed_text}
+#. one clause of a longer line
+msgid "advise {speed_text}"
+msgstr ""
+
 #. placeholders: {tail}
 msgid " Then {tail}."
 msgstr ""
 
 #. placeholders: {direction_word}
 msgid ", then {direction_word}"
+msgstr ""
+
+#. placeholders: {direction_word}
+#. one clause of a longer line
+msgid "then {direction_word}"
 msgstr ""
 
 msgid "Paused"
@@ -26952,9 +27115,6 @@ msgstr ""
 msgid "Stations matching {query}"
 msgstr ""
 
-msgid "browse"
-msgstr ""
-
 msgid "search"
 msgstr ""
 
@@ -27008,19 +27168,27 @@ msgstr ""
 msgid "Go back."
 msgstr ""
 
-#. placeholders: {page_text}
+#. placeholders: {count}
 #. one sentence of a longer line
-msgid "{page_text} PageDown for the next page."
+msgid "{count} stations."
 msgstr ""
 
-#. placeholders: {title}, {hit_count}, {else}, {page_text}
-msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
+#. placeholders: {page}
+#. one sentence of a longer line
+msgid "{page} PageDown for the next page."
 msgstr ""
 
-msgid "stations"
+#. placeholders: {title}, {count}, {page}
+msgid "{title}. {count} stations. {page} PageDown for the next page."
 msgstr ""
 
-msgid "matches"
+#. placeholders: {count}
+#. one sentence of a longer line
+msgid "{count} matches."
+msgstr ""
+
+#. placeholders: {title}, {count}, {page}
+msgid "{title}. {count} matches. {page} PageDown for the next page."
 msgstr ""
 
 #. one sentence of a longer line
@@ -30888,6 +31056,13 @@ msgid ""
 msgstr ""
 
 msgid "English"
+msgstr ""
+
+#. placeholders: {name}
+#. The Language row's value when it follows the system: {name} is the
+#. language's own name ("Español"). The row reads "Language: automatic,
+#. Español."
+msgid "automatic, {name}"
 msgstr ""
 
 msgid "Realistic"
@@ -35412,6 +35587,11 @@ msgstr ""
 
 #. placeholders: {mb}
 msgid ", {mb} megabytes"
+msgstr ""
+
+#. placeholders: {mb}
+#. one clause of a longer line
+msgid "{mb} megabytes"
 msgstr ""
 
 #. placeholders: {title}, {size}

@@ -225,9 +225,10 @@ impl DrivingState {
         );
         text.push_str("Control C copies the message you are on. ");
         text.push_str(&format!(
-            "{} copies the last thing the game said. ",
+            "{} copies the last thing the game said.",
             n(Action::CopyLastSpoken)
         ));
+        text.push(' ');
         text.push_str(&format!(
             "{} reads the road ahead that no other key answers: the exit your \
              signal is on for, the ramp ",

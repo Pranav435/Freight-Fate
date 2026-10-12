@@ -116,3 +116,42 @@ def test_an_added_language_keeps_its_own_header(tmp_path, monkeypatch):
     merged = extract.merge("nl", template, existing)
     assert merged[0].msgstr == header
     assert [(e.msgid, e.msgstr) for e in merged[1:]] == [("Old.", "Oud."), ("New line.", "")]
+
+
+def test_a_word_leading_into_a_value_is_extracted():
+    src = 'fn f() { format!("automatic, {name}") }'
+    (lit,) = literals_in(src)
+    assert is_player_text(lit.text, lit.is_format, lit.is_key)
+    assert not is_player_text("barrels:{start_mi}", True)
+
+
+def test_a_context_survives_parse_write_and_merge():
+    text = write_po(
+        [
+            Entry(msgid="Back"),
+            Entry(msgid="Back", msgctxt="controller button"),
+        ],
+        refs=False,
+    )
+    assert 'msgctxt "controller button"' in text
+    entries = parse_po(text)
+    assert [e.key for e in entries] == [(None, "Back"), ("controller button", "Back")]
+    existing = [Entry(msgid="Back", msgstr="Volver")]
+    merged = extract.merge("es", entries, existing)
+    by_key = {e.key: e.msgstr for e in merged if e.msgid}
+    assert by_key == {(None, "Back"): "Volver", ("controller button", "Back"): ""}
+
+
+def test_the_template_keeps_the_back_row_and_the_button_apart():
+    entries = extract.template_entries()
+    keys = {e.key for e in entries}
+    assert (None, "Back") in keys
+    assert ("controller button", "Back") in keys
+    msgids = {e.msgid for e in entries}
+    assert "{position} of {count}." in msgids
+    assert "automatic, {name}" in msgids
+    assert "automatic speed control paused" in msgids
+    for gone in ("browse", "stations", "matches"):
+        assert gone not in msgids
+    assert not any("PageDown" in m and "{else}" in m for m in msgids)
+    assert "{n} copies the last thing the game said." in msgids
