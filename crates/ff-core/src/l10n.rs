@@ -520,8 +520,15 @@ impl Pass<'_, '_> {
         } else {
             return None;
         };
-        let hit = self.catalog.exact.get(&flipped)?;
-        Some(if upper { capitalize(hit) } else { hit.clone() })
+        if let Some(hit) = self.catalog.exact.get(&flipped) {
+            return Some(if upper { capitalize(hit) } else { hit.clone() });
+        }
+        // A fragment the game capitalised to open a sentence ("Divided, two
+        // lanes your side") still fills its lowercase template.
+        if upper {
+            return self.template(&flipped, depth).map(|out| capitalize(&out));
+        }
+        None
     }
 
     fn with_full_stop(&self, mut out: String) -> String {
