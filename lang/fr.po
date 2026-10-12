@@ -36666,6 +36666,12 @@ msgid ""
 "no light or stop sign, a loaded run leaves straight onto the highway, and a "
 "pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
+"Activé, vous conduisez dans les vraies rues entre l'autoroute et un site, "
+"intersection par intersection. Désactivé, comme dans la version 1.8, la "
+"bretelle de sortie s'arrête au portail du site sans feu ni panneau stop, un "
+"trajet en charge repart directement sur l'autoroute, et un chargement en "
+"ville est une seule portion de route. S'applique à partir de votre "
+"prochaine conduite."
 
 #. placeholders: {else}
 msgid "Units: {else}"
