@@ -393,12 +393,12 @@ fn ctrl_shift_c_copies_the_last_spoken_line() {
         app.ctx.clipboard.get_text().as_deref(),
         Some("Weigh station ahead.")
     );
-    // Menu navigation speaks the item but is not what is copied.
+    // Moving focus copies the newly focused row, without its position cue.
     app.dispatch_to_state(&key_event(Key::Down));
     app.dispatch_to_state(&copy_event());
     assert_eq!(
         app.ctx.clipboard.get_text().as_deref(),
-        Some("Weigh station ahead.")
+        Some("Continue career.")
     );
     app.shutdown();
 }
@@ -411,7 +411,6 @@ fn copy_last_spoken_copies_a_menu_result_line_not_the_focused_option() {
     app.push_state(menu());
     app.ctx
         .say("Stations matching network. 52 matches. Results 1 to 25 of 52.");
-    app.dispatch_to_state(&key_event(Key::Down));
     app.dispatch_to_state(&copy_event());
     assert_eq!(
         app.ctx.clipboard.get_text().as_deref(),
@@ -438,6 +437,73 @@ fn copy_last_spoken_copies_the_focused_row_on_a_fresh_screen() {
     app.ctx.say("Saved.");
     app.dispatch_to_state(&copy_event());
     assert_eq!(app.ctx.clipboard.get_text().as_deref(), Some("Saved."));
+    app.shutdown();
+}
+
+/// A screen that says more than its title on opening (the main menu's
+/// welcome line) still lets the focused row be copied.
+#[test]
+fn copy_last_spoken_copies_the_focused_row_after_a_welcome_line() {
+    use freight_fate::states::main_menu::MainMenuState;
+    let mut app = TestApp::new();
+    app.push_state(MainMenuState::new());
+    app.dispatch_to_state(&copy_event());
+    let first = app.ctx.clipboard.get_text().unwrap_or_default();
+    assert!(!first.is_empty());
+    assert!(!first.contains("Welcome"), "{first:?}");
+    assert!(!first.contains(" of "), "{first:?}");
+    app.dispatch_to_state(&key_event(Key::Down));
+    app.dispatch_to_state(&copy_event());
+    let second = app.ctx.clipboard.get_text().unwrap_or_default();
+    assert!(!second.contains("Welcome"), "{second:?}");
+    assert_ne!(first, second);
+    app.shutdown();
+}
+
+/// A prompt screen that opens on a question copies the focused answer.
+#[test]
+fn copy_last_spoken_copies_the_focused_row_on_a_prompt_screen() {
+    use freight_fate::states::assist_picker::AssistPickerState;
+    let mut app = TestApp::new();
+    app.push_state(AssistPickerState::new());
+    app.dispatch_to_state(&copy_event());
+    let copied = app.ctx.clipboard.get_text().unwrap_or_default();
+    assert!(!copied.is_empty());
+    assert!(!copied.contains("How much should the truck"), "{copied:?}");
+    assert!(!copied.contains(" of "), "{copied:?}");
+    app.shutdown();
+}
+
+/// Enter re-reading a row logs it; moving on copies the new row, not the
+/// re-read one.
+#[test]
+fn copy_last_spoken_after_enter_then_down_copies_the_new_row() {
+    let mut app = TestApp::new();
+    app.push_state(SimpleMenuState::new(
+        "Career stats",
+        vec![
+            MenuItem::new("Dispatch trust: full", |_, ctx: &mut GameContext| {
+                ctx.say("Dispatch trust: full. You get the whole board.")
+            }),
+            MenuItem::new("CDL: clear", |_, _| {}),
+            MenuItem::new("Record: clean", |_, _| {}),
+        ],
+    ));
+    app.dispatch_to_state(&key_event(Key::Return));
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(
+        app.ctx.clipboard.get_text().as_deref(),
+        Some("Dispatch trust: full. You get the whole board.")
+    );
+    app.dispatch_to_state(&key_event(Key::Down));
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(app.ctx.clipboard.get_text().as_deref(), Some("CDL: clear."));
+    app.dispatch_to_state(&key_event(Key::Down));
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(
+        app.ctx.clipboard.get_text().as_deref(),
+        Some("Record: clean.")
+    );
     app.shutdown();
 }
 

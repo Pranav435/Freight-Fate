@@ -332,12 +332,12 @@ pub trait Menu: Sized + 'static {
 
     // -- menu behaviour -------------------------------------------------------------
 
-    /// The heading `announce_entry` logs and the focused row's label.
+    /// The focused row's label and index.
     fn copy_focus(&self, ctx: &GameContext) -> Option<CopyFocus> {
         let core = self.menu();
         let item = core.items.get(core.index)?;
         Some(CopyFocus {
-            heading: end_sentence(&core.title),
+            index: core.index,
             row: end_sentence(&item.text(self, ctx)),
         })
     }

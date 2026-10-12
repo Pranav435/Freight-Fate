@@ -180,6 +180,11 @@ pub struct GameContext {
     /// handled. See `player_asked`: a readout somebody asked for cuts the
     /// line in progress even at the wheel, where unasked-for lines queue.
     pub(crate) speech_requested: bool,
+    /// Which screen and row had focus when the copy mark was last set.
+    copy_focus_key: Option<(usize, usize)>,
+    /// `message_log.total_added()` when the screen opened or focus last
+    /// moved. While nothing newer is logged, the copy key copies the row.
+    pub(crate) copy_mark: u64,
     /// FIRST_OCCURRENCE and TRANSITIONS need memory of what has already
     /// been said; Settings cannot hold it, so it lives here beside the
     /// pacer. `ladder_said` is leg-scoped ("once per leg"), `ladder_last`
@@ -264,6 +269,8 @@ impl GameContext {
             running: false,
             speech_ducked: false,
             speech_requested: false,
+            copy_focus_key: None,
+            copy_mark: 0,
             ladder_said: HashSet::new(),
             ladder_last: HashMap::new(),
             handed_back: VecDeque::new(),
@@ -495,6 +502,28 @@ impl GameContext {
                     },
                 }
             }
+        }
+        self.note_copy_focus();
+    }
+
+    /// Set the copy mark when the top screen or its focused row changed:
+    /// what was logged up to now (a welcome line, a re-read row) is behind
+    /// the mark, so the copy key copies the newly focused row.
+    pub(crate) fn note_copy_focus(&mut self) {
+        let Some(state) = self.state() else {
+            self.copy_focus_key = None;
+            return;
+        };
+        let Ok(borrowed) = state.try_borrow() else {
+            return;
+        };
+        let key = borrowed
+            .copy_focus(self)
+            .map(|focus| (Rc::as_ptr(&state) as *const () as usize, focus.index));
+        drop(borrowed);
+        if key != self.copy_focus_key {
+            self.copy_focus_key = key;
+            self.copy_mark = self.message_log.total_added();
         }
     }
 

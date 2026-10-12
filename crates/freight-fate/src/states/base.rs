@@ -577,9 +577,9 @@ pub trait State: AsAny {
         handle_message_review_with_focus(ctx, event, focus)
     }
 
-    /// The screen heading and the focused row (no position cue), for the
-    /// copy key: until something new is logged on this screen, the row is
-    /// copied instead of the heading. None on screens without rows.
+    /// The focused row (no position cue) and its index, for the copy key:
+    /// until something new is logged after the screen opened or focus last
+    /// moved, the row is copied. None on screens without rows.
     fn copy_focus(&self, _ctx: &GameContext) -> Option<CopyFocus> {
         None
     }
@@ -606,10 +606,10 @@ pub fn handle_message_review(ctx: &mut GameContext, event: &InputEvent) -> bool 
     handle_message_review_with_focus(ctx, event, None)
 }
 
-/// A screen's heading as it was logged, and the row that has focus.
+/// The row that has focus, and where it sits.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct CopyFocus {
-    pub heading: String,
+    pub index: usize,
     pub row: String,
 }
 
@@ -729,15 +729,14 @@ pub fn copy_last_spoken(ctx: &mut GameContext) {
     copy_last_spoken_with_focus(ctx, None);
 }
 
-/// As `copy_last_spoken`, but when the newest logged line is still the
-/// heading of the screen that has focus (nothing new has been logged since
-/// it opened), the focused row is copied instead, without its position cue.
+/// As `copy_last_spoken`, but when nothing has been logged since the
+/// screen opened or focus last moved (`GameContext::note_copy_focus`), the
+/// focused row is copied instead, without its position cue.
 pub fn copy_last_spoken_with_focus(ctx: &mut GameContext, focus: Option<CopyFocus>) {
     let newest = newest_copyable_line(ctx);
+    let quiet = ctx.message_log.total_added() == ctx.copy_mark;
     let text = match focus {
-        Some(focus) if newest.is_none() || newest.as_deref() == Some(focus.heading.as_str()) => {
-            Some(focus.row)
-        }
+        Some(focus) if quiet || newest.is_none() => Some(focus.row),
         _ => newest,
     };
     copy_text(ctx, text);
