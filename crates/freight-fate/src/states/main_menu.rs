@@ -16,7 +16,7 @@ use ff_core::models::business::status_label;
 use ff_core::models::jobs::facility_text;
 use ff_core::models::profile::{data_dir, LegacyCareerError, LoadError, Profile};
 use ff_core::models::start_options::option_for_profile;
-use ff_core::music::{select_menu_music_sequence, MenuMusicProfile};
+use ff_core::music::{select_menu_ambience, select_menu_music_sequence, MenuMusicProfile};
 use ff_core::playtest_levers::apply_continue_levers;
 use ff_core::pyfmt::{fmt_f, fmt_grouped};
 
@@ -65,12 +65,6 @@ pub use crate::states::main_menu_help::{
     controls_help_page, help_page, help_pages, render_help_line, HelpState, HELP_PAGES,
 };
 pub use crate::states::update::{UpdateCheckState, UpdateChecker, UpdatePromptState};
-
-/// The bed under the main menu and the screens opened from it: a truck stop
-/// lot at night, so the menu is not silent with the music down or off. It
-/// rides the effects volume like every other ambience loop. Rendered with
-/// genny from `sound-test/menu_ambience/`.
-pub const MAIN_MENU_AMBIENCE: &str = "ambient/menu_night_lot";
 
 /// A clearly-named stand-in for a screen another port task still owns.
 ///
@@ -692,7 +686,7 @@ impl Menu for MainMenuState {
     }
 
     fn enter(&mut self, ctx: &mut GameContext) {
-        let sequence = reuse_loadable_saves_scan(|| {
+        let (sequence, ambience) = reuse_loadable_saves_scan(|| {
             // The base `Menu::enter`: rebuild the rows, play the open sound,
             // announce.
             self.refresh(ctx, true);
@@ -708,11 +702,15 @@ impl Menu for MainMenuState {
                     newest.as_ref()
                 }
             };
-            select_menu_music_sequence(profile.map(|p| p as &dyn MenuMusicProfile))
+            let profile = profile.map(|p| p as &dyn MenuMusicProfile);
+            (
+                select_menu_music_sequence(profile),
+                select_menu_ambience(profile),
+            )
         });
         let refs: Vec<&str> = sequence.iter().map(String::as_str).collect();
         ctx.play_music_sequence("menu", &refs);
-        ctx.audio.set_ambient(Some(MAIN_MENU_AMBIENCE));
+        ctx.audio.set_ambient(Some(ambience));
         let armed = UPDATE_CHECK
             .lock()
             .unwrap_or_else(|e| e.into_inner())

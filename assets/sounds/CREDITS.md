@@ -114,7 +114,9 @@ not distributed in this repository.
 | Weigh station lane | `poi/weigh_station_lane.ogg` | Parked weigh-station lane ambience loop |
 | Facility gate | `poi/facility_gate.ogg` | ElevenLabs-generated loading-dock gate ambience loop |
 | Dock and deliver | `poi/dock_and_deliver.ogg` | Destination docking action cue |
-| Main menu night lot | `ambient/menu_night_lot.ogg` | Original synthesized truck-stop-at-night loop (idling diesels, a reefer unit, distant interstate), rendered with the genny CLI from `sound-test/menu_ambience/batch.json` (2026-10-12) |
+| Main menu, night | `ambient/menu_night_lot.ogg` | ElevenLabs-generated truck-stop-at-night ambience loop |
+| Main menu, owner-operator by day | `ambient/menu_yard.ogg` | ElevenLabs-generated loop of one rig idling in a truck yard |
+| Main menu, company driver by day | `ambient/menu_dispatch_office.ogg` | ElevenLabs-generated trucking dispatch office ambience loop |
 | Truck stop by day | `ambient/truck_stop.ogg` | ElevenLabs-generated daytime truck-stop lot ambience loop |
 | Warehouse interior | `ambient/warehouse.ogg` | ElevenLabs-generated warehouse dock interior ambience loop |
 | Night driving | `ambient/night.ogg` | In-cab night ambience loop, shared by Darren Duff |

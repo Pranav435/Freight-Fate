@@ -193,8 +193,9 @@ fn test_main_menu_ambience_ships_in_the_pack() {
     if !shipped_sounds() {
         return;
     }
-    let key = freight_fate::states::main_menu::MAIN_MENU_AMBIENCE;
-    assert!(asset_bytes(key, SFX_EXTENSIONS).is_some(), "{key}");
+    for key in ff_core::music::MENU_AMBIENCE {
+        assert!(asset_bytes(key, SFX_EXTENSIONS).is_some(), "{key}");
+    }
 }
 
 #[test]
