@@ -88,7 +88,7 @@ fn rows(app: &TestApp, shared: &SharedState) -> Vec<String> {
 #[test]
 fn test_the_rows_follow_the_designs_spoken_order_one_fact_each() {
     assert_eq!(
-        profile_rows(&full_profile())
+        profile_rows(&full_profile(), ff_core::settings::ScoreDisplay::Both)
             .into_iter()
             .map(|row| row.replace(&updated_phrase(), "updated"))
             .collect::<Vec<_>>(),
@@ -113,7 +113,7 @@ fn test_the_rows_follow_the_designs_spoken_order_one_fact_each() {
             "Longest haul: 1,200 miles",
             "Lifetime career earnings: 123,456 dollars",
             "Net worth: 9,999 dollars",
-            "Reputation: 78 out of 100",
+            "Reputation: Well regarded. 78 out of 100.",
             "Endorsements: Hazmat, Tanker",
             "Achievements across every career: 14",
             "Recent achievement: First Delivery. The first load signed for and delivered.",
@@ -139,7 +139,7 @@ fn test_a_driver_with_nothing_shared_yet_reads_as_empty_not_broken() {
         "events": [],
     });
     assert_eq!(
-        profile_rows(&profile),
+        profile_rows(&profile, ff_core::settings::ScoreDisplay::Both),
         vec![
             "New Driver",
             "Off duty",
@@ -157,7 +157,7 @@ fn test_a_site_that_does_not_send_orders_reads_the_record_without_them() {
         .as_object_mut()
         .expect("a record")
         .remove("outOfServiceOrders");
-    let listed = profile_rows(&profile);
+    let listed = profile_rows(&profile, ff_core::settings::ScoreDisplay::Both);
     let record = listed
         .iter()
         .find(|r| r.starts_with("Safety record"))
@@ -169,7 +169,7 @@ fn test_a_site_that_does_not_send_orders_reads_the_record_without_them() {
 fn test_net_worth_is_left_out_until_every_part_of_it_is_known() {
     let mut profile = full_profile();
     profile["snapshot"]["netWorthComplete"] = json!(false);
-    let listed = profile_rows(&profile);
+    let listed = profile_rows(&profile, ff_core::settings::ScoreDisplay::Both);
     assert!(
         !listed.iter().any(|r| r.starts_with("Net worth")),
         "{listed:?}"

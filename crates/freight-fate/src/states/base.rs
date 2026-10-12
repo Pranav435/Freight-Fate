@@ -30,6 +30,7 @@ use ff_core::radio::RadioState;
 
 use crate::app::GameContext;
 pub use crate::app::Say;
+use crate::bindings::Action;
 use crate::controller::{ControllerAxis, ControllerButton};
 use crate::discord_presence::PresenceState;
 use crate::touch::Gesture;
@@ -572,7 +573,15 @@ pub trait State: AsAny {
         if self.captures_text_input() {
             return false;
         }
-        handle_message_review(ctx, event)
+        let focus = self.copy_focus(ctx);
+        handle_message_review_with_focus(ctx, event, focus)
+    }
+
+    /// The focused row (no position cue) and its index, for the copy key:
+    /// until something new is logged after the screen opened or focus last
+    /// moved, the row is copied. None on screens without rows.
+    fn copy_focus(&self, _ctx: &GameContext) -> Option<CopyFocus> {
+        None
     }
 }
 
@@ -594,10 +603,30 @@ pub fn controller_key_map(button: ControllerButton) -> Option<Key> {
 /// through the log, `Ctrl+,`/`Ctrl+.` jump to the ends, `Ctrl+C` copies the
 /// message in review. True when the key was one of them.
 pub fn handle_message_review(ctx: &mut GameContext, event: &InputEvent) -> bool {
+    handle_message_review_with_focus(ctx, event, None)
+}
+
+/// The row that has focus, and where it sits.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CopyFocus {
+    pub index: usize,
+    pub row: String,
+}
+
+/// `handle_message_review`, knowing the active screen's focused row.
+pub fn handle_message_review_with_focus(
+    ctx: &mut GameContext,
+    event: &InputEvent,
+    focus: Option<CopyFocus>,
+) -> bool {
     let Some((key, mods, _)) = event.key_down() else {
         return false;
     };
     let ctrl = mods.ctrl;
+    if ctx.bindings.action_for(key, mods) == Some(Action::CopyLastSpoken) {
+        copy_last_spoken_with_focus(ctx, focus);
+        return true;
+    }
     match key {
         Key::LeftBracket => {
             if let Some(category) = ctx.message_log.previous_category() {
@@ -662,6 +691,71 @@ pub fn handle_message_review(ctx: &mut GameContext, event: &InputEvent) -> bool 
         }
         _ => false,
     }
+}
+
+/// The text the copy key puts on the clipboard: the newest line in the
+/// message log, whatever the review filter shows. The log leaves out routine
+/// menu movement and the review and clipboard confirmations, so after a
+/// search this is the result line, and on a new screen it is the heading.
+pub fn newest_copyable_line(ctx: &GameContext) -> Option<String> {
+    ctx.message_log
+        .messages
+        .iter()
+        .rev()
+        .map(|message| strip_position_cue(&message.text))
+        .find(|text| !text.is_empty())
+}
+
+/// Drop a trailing menu position cue ("Achievements. 2 of 8." becomes
+/// "Achievements."). Only a cue standing as its own sentence is removed, so
+/// "Results 1 to 25 of 52." is kept whole.
+pub fn strip_position_cue(text: &str) -> String {
+    let trimmed = text.trim_end();
+    let body = trimmed.strip_suffix('.').unwrap_or(trimmed);
+    if let Some((head, cue)) = body.rsplit_once(". ") {
+        let mut parts = cue.split(" of ");
+        if let (Some(n), Some(m), None) = (parts.next(), parts.next(), parts.next()) {
+            let digits = |s: &str| !s.is_empty() && s.chars().all(|c| c.is_ascii_digit());
+            if digits(n) && digits(m) {
+                return format!("{head}.");
+            }
+        }
+    }
+    trimmed.to_string()
+}
+
+/// Put the newest message-log line on the clipboard and say how it went.
+pub fn copy_last_spoken(ctx: &mut GameContext) {
+    copy_last_spoken_with_focus(ctx, None);
+}
+
+/// As `copy_last_spoken`, but when nothing has been logged since the
+/// screen opened or focus last moved (`GameContext::note_copy_focus`), the
+/// focused row is copied instead, without its position cue.
+pub fn copy_last_spoken_with_focus(ctx: &mut GameContext, focus: Option<CopyFocus>) {
+    let newest = newest_copyable_line(ctx);
+    let quiet = ctx.message_log.total_added() == ctx.copy_mark;
+    let text = match focus {
+        Some(focus) if quiet || newest.is_none() => Some(focus.row),
+        _ => newest,
+    };
+    copy_text(ctx, text);
+}
+
+/// Put `text` on the clipboard and say how it went. The replies are not
+/// logged, so a second press copies the same line again rather than
+/// "Copied.".
+pub fn copy_text(ctx: &mut GameContext, text: Option<String>) {
+    let Some(text) = text else {
+        ctx.say_with("Nothing to copy yet.", Say::new().review(false));
+        return;
+    };
+    let reply = if ctx.write_clipboard_text(&text) {
+        "Copied."
+    } else {
+        "Could not copy to the clipboard."
+    };
+    ctx.say_with(reply, Say::new().review(false));
 }
 
 /// How many newer messages the chosen category is holding back.

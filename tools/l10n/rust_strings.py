@@ -92,6 +92,8 @@ SKIP_CALLS = {
     "query",
     "pointer",
     "target",
+    # SDL hints (sdl2::hint::set) are configuration values, never spoken.
+    "set",
 }
 
 FORMAT_MACROS = {"format", "write", "writeln", "format_args"}

@@ -8088,6 +8088,35 @@ msgstr "Great Lakes Training Transport"
 msgid " It is doubled because you were in a construction zone."
 msgstr " 因为你在施工区，所以翻倍。"
 
+msgid "Outstanding"
+msgstr "出色"
+
+msgid "Well regarded"
+msgstr "口碑良好"
+
+msgid "Established"
+msgstr "稳固"
+
+msgid "Unproven"
+msgstr "有待证明"
+
+msgid "Shaky"
+msgstr "不稳"
+
+msgid "Damaged"
+msgstr "受损"
+
+msgid "Ruined"
+msgstr "败坏"
+
+#. placeholders: {word}, {number}
+msgid "{word}. {number} out of 100."
+msgstr "{word}。{number}，满分100。"
+
+#. placeholders: {number}
+msgid "{number} out of 100."
+msgstr "{number}，满分100。"
+
 msgid "Dispatch trust: full. You get the whole board."
 msgstr "调度信任度：完全。整个调度板都对你开放。"
 
@@ -8109,6 +8138,27 @@ msgstr "调度信任度：最后机会。一次只指派一单货物，不能拒
 #. placeholders: {trust_band_text}
 msgid "{trust_band_text} Clean on-time runs rebuild it."
 msgstr "{trust_band_text}准时、干净的行程能把它重建起来。"
+
+#. placeholders: {band}
+msgid "Dispatch trust: {band}."
+msgstr "调度信任度：{band}。"
+
+#. placeholders: {band}, {number}
+msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+msgstr "调度信任度：{band}。声誉{number}，满分100。"
+
+#. placeholders: {number}
+#. one sentence of a longer line
+msgid "Reputation {number} out of 100."
+msgstr "声誉{number}，满分100。"
+
+#. one sentence of a longer line
+msgid "Dispatch trust."
+msgstr "调度信任度。"
+
+#. placeholders: {number}
+msgid "Dispatch trust. Reputation {number} out of 100."
+msgstr "调度信任度。声誉{number}，满分100。"
 
 msgid "licence"
 msgstr "驾照"
@@ -10180,6 +10230,9 @@ msgstr "afn-humphreys"
 msgid "local"
 msgstr "local"
 
+msgid "streaming"
+msgstr "网络播放"
+
 msgid "always available"
 msgstr "随时可用"
 
@@ -10292,6 +10345,9 @@ msgstr "个人播放列表"
 #. placeholders: {file_name}
 msgid "your playlist file {file_name}"
 msgstr "你的播放列表文件{file_name}"
+
+msgid "favorite"
+msgstr "收藏"
 
 #. placeholders: {spoken}
 msgid ", {spoken} away"
@@ -10408,6 +10464,15 @@ msgstr "已把{display_name}加入收藏。"
 #. placeholders: {trip_seed}
 msgid "{trip_seed}|radio airtime"
 msgstr "{trip_seed}|radio airtime"
+
+msgid "Both"
+msgstr "两者"
+
+msgid "Percent"
+msgstr "百分比"
+
+msgid "Description"
+msgstr "描述"
 
 msgid "wilderness"
 msgstr "荒野"
@@ -14503,9 +14568,6 @@ msgstr "Freight Fate按键探测"
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr "每个方向键都按住几秒钟；它会自动结束。"
 
-msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-
 msgid "ff-rust-app"
 msgstr "ff-rust-app"
 
@@ -14691,6 +14753,9 @@ msgstr "前方道路"
 
 msgid "Repeat the last announcement"
 msgstr "重复上一条播报"
+
+msgid "Copy the last spoken text"
+msgstr "复制最后读出的文字"
 
 msgid "cb"
 msgstr "cb"
@@ -16133,6 +16198,15 @@ msgstr "大写{ch}"
 msgid "Message copied to clipboard."
 msgstr "消息已复制到剪贴板。"
 
+msgid "Nothing to copy yet."
+msgstr "还没有可复制的内容。"
+
+msgid "Copied."
+msgstr "已复制。"
+
+msgid "Could not copy to the clipboard."
+msgstr "无法复制到剪贴板。"
+
 msgid "messages"
 msgstr "消息"
 
@@ -16233,9 +16307,9 @@ msgstr "，已是最高等级"
 msgid "Level {level} driver, {f} experience{next}"
 msgstr "{level}级司机，经验{f}{next}"
 
-#. placeholders: {f}
-msgid "Reputation: {f} out of 100"
-msgstr "声誉：{f}，满分100"
+#. placeholders: {reputation_text}
+msgid "Reputation: {reputation_text}"
+msgstr "声誉：{reputation_text}"
 
 #. placeholders: {grouped}
 msgid "Balance: {grouped} dollars"
@@ -20886,6 +20960,10 @@ msgstr "方括号键在全部消息、一般消息和驾驶事件之间切换。
 
 msgid "Control C copies the message you are on. "
 msgstr "Control C复制你当前所在的消息。 "
+
+#. placeholders: {n}
+msgid "{n} copies the last thing the game said. "
+msgstr "{n}复制游戏最后说的一句话。 "
 
 #. placeholders: {n}
 msgid ""
@@ -26047,9 +26125,11 @@ msgstr "职业经验奖励：{join}{tail}。"
 msgid "Career experience is coming in {rate_clause}."
 msgstr "职业经验{rate_clause}增长。"
 
-#. placeholders: {grouped}, {f}
-msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
-msgstr "调度信任度奖励：凭你{f}的声誉获得{grouped}美元。"
+#. placeholders: {grouped}, {reputation_text}
+msgid ""
+"Dispatch trust bonus: {grouped} dollars for your reputation: "
+"{reputation_text}"
+msgstr "调度信任度奖励：{grouped}美元，来自你的声誉：{reputation_text}"
 
 #. placeholders: {f}
 msgid " Receiver service after check-in took {f} hours."
@@ -26299,9 +26379,6 @@ msgstr "Freight Fate：{title}。"
 
 msgid "Delivery summary copied to clipboard."
 msgstr "送货摘要已复制到剪贴板。"
-
-msgid "Could not copy to the clipboard."
-msgstr "无法复制到剪贴板。"
 
 msgid "Repeat this settlement line."
 msgstr "重复这一条结算信息。"
@@ -27264,9 +27341,6 @@ msgstr "这里收不到"
 msgid "tuned now"
 msgstr "正在收听"
 
-msgid "favorite"
-msgstr "收藏"
-
 msgid "Enter on a station tunes it. Escape returns to Driver apps."
 msgstr "在电台上按Enter调到它。Escape返回司机应用。"
 
@@ -27312,6 +27386,14 @@ msgid ""
 "first."
 msgstr "输入名称、呼号或节目类型的一部分。匹配结果按信号从近到远列出。"
 
+msgid "Browse by category"
+msgstr "按类别浏览"
+
+msgid ""
+"Browse all stations, or one category such as Terrestrial or Web radio. "
+"Stations in range list first."
+msgstr "浏览全部电台，或者一个类别，比如地面广播或网络电台。范围内的电台排在前面。"
+
 #. placeholders: {in_range}
 msgid "Stations in range: {in_range}"
 msgstr "范围内的电台：{in_range}"
@@ -27342,6 +27424,9 @@ msgstr "范围内的电台"
 #. placeholders: {query}
 msgid "Stations matching {query}"
 msgstr "匹配{query}的电台"
+
+msgid "browse"
+msgstr "浏览"
 
 msgid "search"
 msgstr "search"
@@ -27396,20 +27481,20 @@ msgstr "这个列表上没有可调的电台。"
 msgid "Go back."
 msgstr "返回。"
 
-#. placeholders: {hit_count}
-#. one sentence of a longer line
-msgid "{hit_count} matches."
-msgstr "{hit_count} 个结果。"
-
 #. placeholders: {page_text}
 #. one sentence of a longer line
 msgid "{page_text} PageDown for the next page."
 msgstr "{page_text} 按 PageDown 翻到下一页。"
 
-#. placeholders: {title}, {hit_count}, {page_text}
-msgid ""
-"{title}. {hit_count} matches. {page_text} PageDown for the next page."
-msgstr "{title}。{hit_count} 个结果。{page_text} 按 PageDown 翻到下一页。"
+#. placeholders: {title}, {hit_count}, {else}, {page_text}
+msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
+msgstr "{title}。{hit_count} 个{else}。{page_text} 按 PageDown 翻到下一页。"
+
+msgid "stations"
+msgstr "电台"
+
+msgid "matches"
+msgstr "结果"
 
 #. one sentence of a longer line
 msgid "Nothing here yet."
@@ -27458,6 +27543,23 @@ msgstr "先输入要搜索的内容。"
 #. placeholders: {query}
 msgid "No stations match {query}."
 msgstr "没有电台匹配{query}。"
+
+msgid "Enter opens a category. Escape goes back."
+msgstr "Enter打开一个类别。Escape返回。"
+
+#. placeholders: {label}
+msgid "No stations in {label}."
+msgstr "{label}里没有电台。"
+
+#. placeholders: {all}
+msgid "All stations: {all}"
+msgstr "全部电台：{all}"
+
+msgid "Every station on the dial. Stations in range list first."
+msgstr "频段上的所有电台。范围内的电台排在前面。"
+
+msgid "Enter lists this category. Stations in range list first."
+msgstr "Enter列出这个类别。范围内的电台排在前面。"
 
 msgid "Suggesting a station needs Online services on, in the Online menu."
 msgstr "推荐电台需要在“在线”菜单里打开在线服务。"
@@ -31368,6 +31470,12 @@ msgstr "{g}倍"
 msgid "off (developer)"
 msgstr "关闭（开发者）"
 
+msgid "percentage only"
+msgstr "仅百分比"
+
+msgid "description only"
+msgstr "仅描述"
+
 msgid " and a half"
 msgstr "点5"
 
@@ -31655,6 +31763,16 @@ msgid ""
 "Automatic follows your system language. Radio and recorded voices stay in "
 "English."
 msgstr "“自动”跟随你的系统语言。电台和录制的语音仍然是英语。"
+
+#. placeholders: {score_display_label}
+msgid "Score display: {score_display_label}"
+msgstr "分数显示：{score_display_label}"
+
+msgid ""
+"Choose whether reputation and dispatch trust read both their descriptive "
+"band and score, only the score, or only the description. A trust score is "
+"spoken only when service sets its band."
+msgstr "选择声誉和调度信任度是同时读出描述等级和分数，只读分数，还是只读描述。只有服务记录决定了信任度的等级时，才会读出信任分数。"
 
 #. placeholders: {replace}
 msgid "Driving speech: {replace}"
@@ -32824,8 +32942,11 @@ msgstr "逗号重复最新的消息，再按就往前翻。句号往后翻。和
 
 msgid ""
 "The brackets choose all, general, or driving messages. Control C copies the "
-"selected message. Review keys type normally inside text fields."
-msgstr "方括号键选择全部、一般或驾驶消息。Control C复制选中的消息。在文本框里，回顾键照常输入文字。"
+"selected message. Control Shift C copies the last thing the game said. "
+"Review keys type normally inside text fields."
+msgstr ""
+"方括号键选择全部、常规或驾驶消息。Control C复制选中的消息。Control Shift "
+"C复制游戏最后说的一句话。在文本框里，消息回顾的按键照常输入文字。"
 
 msgid ""
 "In How to play, Left and Right or the Page keys change pages. Up and Down "
@@ -34045,13 +34166,13 @@ msgid ""
 msgstr "电台状态会列出能收到的电台。用“电台”应用选择或搜索电台，以及浏览收藏。"
 
 msgid ""
-"Regional stations fade as you leave their range. If reception fails, the "
-"radio tries a clear local station, then a fallback. Failed streams leave "
-"the dial for that session. Roadhouse and Night Line are available across "
-"the map."
+"Regional stations fade as you leave their range. Favorites play from "
+"anywhere and never fade. If reception fails, the radio tries a clear local "
+"station, then a fallback. Failed streams leave the dial for that session. "
+"Roadhouse and Night Line are available across the map."
 msgstr ""
-"离开覆盖范围时，地区电台会逐渐消失。如果信号断了，收音机会先找一个清晰的本地电台，再换备用电台。播放失败的网络电台在本次游戏中会从频道中移除。Roadh"
-"ouse和Night Line在整张地图上都能收到。"
+"离开覆盖范围时，地区电台会逐渐消失。收藏的电台在任何地方都能播放，也不会消失。如果信号断了，收音机会先找一个清晰的本地电台，再换备用电台。播放失败的网络"
+"电台在本次游戏中会从频道中移除。Roadhouse和Night Line在整张地图上都能收到。"
 
 msgid ""
 "Put M3U, M3U8, or PLS playlists in the Playlists folder inside your saves "
@@ -34251,12 +34372,17 @@ msgstr ""
 
 msgid ""
 "What is the difference between reputation and dispatch trust? Reputation is "
-"a score out of 100 from your deliveries, lowered by your driving record. "
-"Dispatch trust is what the carrier lets you do right now; your CDL, your "
-"record, and what you owe count toward it too."
+"a score from your deliveries, lowered by your driving record: Outstanding, "
+"Well regarded, Established, Unproven, Shaky, Damaged, or Ruined. New "
+"drivers start at 50, Unproven. A trust line shows it as, for example, "
+"Dispatch trust: full. Reputation 85 out of 100. Dispatch trust is what the "
+"carrier lets you do right now; your CDL, your record, and what you owe "
+"count toward it too. Settings, Speech has Score display: both, percentage "
+"only, or description only."
 msgstr ""
-"声誉和调度信任度有什么区别？声誉是根据你的送货情况得出的分数，满分100，会因你的驾驶记录而降低。调度信任度是承运商现在允许你做什么；你的CDL、你的记"
-"录和你欠的钱也都算在内。"
+"声誉和调度信任度有什么区别？声誉是根据你的送货情况得出的分数，会因你的驾驶记录而降低：出色、口碑良好、稳固、有待证明、不稳、受损或败坏。新司机从50开始"
+"，也就是有待证明。信任度播报会这样读，例如：调度信任度：完全。声誉85，满分100。调度信任度是承运商现在允许你做什么；你的CDL、你的记录和你欠的钱也"
+"都算在内。设置、语音里有分数显示：两者、仅百分比或仅描述。"
 
 msgid ""
 "Why can I not accept a load? It may need a certificate, endorsement, or "
@@ -35558,10 +35684,6 @@ msgstr "职业生涯累计收入：{money_text}"
 msgid "Net worth: {money_text}"
 msgstr "净资产：{money_text}"
 
-#. placeholders: {whole}
-msgid "Reputation: {whole} out of 100"
-msgstr "声誉：{whole}，满分100"
-
 msgid "Endorsements: none yet"
 msgstr "驾照签注：还没有"
 
@@ -36409,6 +36531,48 @@ msgstr "然后右转急弯掉头。"
 
 msgid "Then hairpin left."
 msgstr "然后左转急弯掉头。"
+
+#~ msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
+#~ msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
+
+#~ msgid "Reputation: {f} out of 100"
+#~ msgstr "声誉：{f}，满分100"
+
+#~ msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
+#~ msgstr "调度信任度奖励：凭你{f}的声誉获得{grouped}美元。"
+
+#~ msgid "{hit_count} matches."
+#~ msgstr "{hit_count} 个结果。"
+
+#~ msgid ""
+#~ "{title}. {hit_count} matches. {page_text} PageDown for the next page."
+#~ msgstr "{title}。{hit_count} 个结果。{page_text} 按 PageDown 翻到下一页。"
+
+#~ msgid ""
+#~ "The brackets choose all, general, or driving messages. Control C copies the "
+#~ "selected message. Review keys type normally inside text fields."
+#~ msgstr "方括号键选择全部、一般或驾驶消息。Control C复制选中的消息。在文本框里，回顾键照常输入文字。"
+
+#~ msgid ""
+#~ "Regional stations fade as you leave their range. If reception fails, the "
+#~ "radio tries a clear local station, then a fallback. Failed streams leave "
+#~ "the dial for that session. Roadhouse and Night Line are available across "
+#~ "the map."
+#~ msgstr ""
+#~ "离开覆盖范围时，地区电台会逐渐消失。如果信号断了，收音机会先找一个清晰的本地电台，再换备用电台。播放失败的网络电台在本次游戏中会从频道中移除。Roadh"
+#~ "ouse和Night Line在整张地图上都能收到。"
+
+#~ msgid ""
+#~ "What is the difference between reputation and dispatch trust? Reputation is "
+#~ "a score out of 100 from your deliveries, lowered by your driving record. "
+#~ "Dispatch trust is what the carrier lets you do right now; your CDL, your "
+#~ "record, and what you owe count toward it too."
+#~ msgstr ""
+#~ "声誉和调度信任度有什么区别？声誉是根据你的送货情况得出的分数，满分100，会因你的驾驶记录而降低。调度信任度是承运商现在允许你做什么；你的CDL、你的记"
+#~ "录和你欠的钱也都算在内。"
+
+#~ msgid "Reputation: {whole} out of 100"
+#~ msgstr "声誉：{whole}，满分100"
 
 #~ msgid "{closing_text} off the road"
 #~ msgstr "离道路{closing_text}"
