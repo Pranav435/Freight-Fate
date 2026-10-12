@@ -5790,16 +5790,21 @@ msgstr "局部多山"
 msgid "rolling hills"
 msgstr "起伏的丘陵"
 
-msgid "mostly divided, "
-msgstr "大多为分隔道路， "
+#. placeholders: {lane_word}, {lane_word2}
+msgid "mostly divided, {lane_word} to {lane_word2} lanes your side"
+msgstr "大多为分隔道路，你这侧{lane_word}到{lane_word2}条车道"
 
-#. placeholders: {lead}, {lane_word}, {lane_word2}
-msgid "{lead}{lane_word} to {lane_word2} lanes your side"
-msgstr "{lead}你这侧{lane_word}到{lane_word2}条车道"
+#. placeholders: {lane_word}, {lane_word2}
+msgid "{lane_word} to {lane_word2} lanes your side"
+msgstr "你这侧{lane_word}到{lane_word2}条车道"
 
-#. placeholders: {lead}, {lane_word}, {s_ending}
-msgid "{lead}{lane_word} lane{s_ending} your side"
-msgstr "{lead}你这侧{lane_word}条车道"
+#. placeholders: {lane_word}, {s_ending}
+msgid "mostly divided, {lane_word} lane{s_ending} your side"
+msgstr "大多为分隔道路，你这侧{lane_word}条车道"
+
+#. placeholders: {lane_word}, {s_ending}
+msgid "{lane_word} lane{s_ending} your side"
+msgstr "你这侧{lane_word}条车道"
 
 #. placeholders: {f}
 msgid "{f} miles"
@@ -12037,8 +12042,8 @@ msgstr ""
 "}"
 
 #. placeholders: {lane_word}, {s_ending}
-msgid "{lane_word} lane{s_ending} your side"
-msgstr "你这侧{lane_word}条车道"
+msgid "divided, {lane_word} lane{s_ending} your side"
+msgstr "分隔道路，你这侧{lane_word}条车道"
 
 msgid "Current grade 0.0 percent, level"
 msgstr "当前坡度百分之0.0，平路"
@@ -36422,3 +36427,12 @@ msgstr "然后右转急弯掉头。"
 
 msgid "Then hairpin left."
 msgstr "然后左转急弯掉头。"
+
+#~ msgid "mostly divided, "
+#~ msgstr "大多为分隔道路， "
+
+#~ msgid "{lead}{lane_word} to {lane_word2} lanes your side"
+#~ msgstr "{lead}你这侧{lane_word}到{lane_word2}条车道"
+
+#~ msgid "{lead}{lane_word} lane{s_ending} your side"
+#~ msgstr "{lead}你这侧{lane_word}条车道"
