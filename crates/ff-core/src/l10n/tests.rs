@@ -302,6 +302,22 @@ fn a_fragment_opening_a_sentence_or_trimmed_still_matches() {
 }
 
 #[test]
+fn a_capitalised_fragment_still_fills_its_template() {
+    let catalog = Catalog::from_po(
+        "es",
+        "msgid \"divided, {lane_word} lanes your side\"\n\
+         msgstr \"calzadas separadas, {lane_word} vías en tu sentido\"\n\n\
+         msgid \"two\"\nmsgstr \"dos\"\n",
+    )
+    .expect("parses");
+    let tr = Translator::new(catalog);
+    assert_eq!(
+        tr.translate("Divided, two lanes your side."),
+        "Calzadas separadas, dos vías en tu sentido."
+    );
+}
+
+#[test]
 fn side_by_side_holes_split_before_a_comma_tail() {
     let catalog = Catalog::from_po(
         "de",
