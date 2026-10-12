@@ -319,6 +319,18 @@ fn a_capitalised_fragment_still_fills_its_template() {
 }
 
 #[test]
+fn an_exact_phrase_with_a_full_stop_beats_a_template() {
+    let catalog = Catalog::from_po(
+        "es",
+        "msgid \"{at} the {noun}.\"\nmsgstr \"{at}: {noun}.\"\n\n\
+         msgid \"In the right lane\"\nmsgstr \"En el carril derecho\"\n",
+    )
+    .expect("parses");
+    let tr = Translator::new(catalog);
+    assert_eq!(tr.translate("In the right lane."), "En el carril derecho.");
+}
+
+#[test]
 fn side_by_side_holes_split_before_a_comma_tail() {
     let catalog = Catalog::from_po(
         "de",
