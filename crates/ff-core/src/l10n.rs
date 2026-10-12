@@ -522,7 +522,7 @@ impl Pass<'_, '_> {
         // lanes your side") fills its lowercase template, and that template
         // wins over a looser one that would swallow "Divided" into a hole.
         if let Some(lower) = flipped.as_deref().filter(|_| upper) {
-            if self.catalog.exact.get(lower).is_none() {
+            if !self.catalog.exact.contains_key(lower) {
                 if let Some((weight, out)) = self.template(lower, depth) {
                     if direct.as_ref().is_none_or(|(best, _)| weight > *best) {
                         return Some(capitalize(&out));
