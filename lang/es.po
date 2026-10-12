@@ -12915,9 +12915,17 @@ msgstr "el carril"
 msgid "the {lane_label} lane"
 msgstr "el carril de la {lane_label}"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "En {lane_phrase}"
+msgid "In the lane"
+msgstr "En el carril"
+
+msgid "In the right lane"
+msgstr "En el carril derecho"
+
+msgid "In the left lane"
+msgstr "En el carril izquierdo"
+
+msgid "In the middle lane"
+msgstr "En el carril central"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -34327,10 +34335,6 @@ msgstr "Esquivas {names}."
 msgid "You swerve around {names}. Well done."
 msgstr "Esquivas {names}. Bien hecho."
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "En {lane_phrase}."
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -41873,6 +41877,12 @@ msgstr "Luego, curva cerrada en horquilla a la derecha."
 
 msgid "Then hairpin left."
 msgstr "Luego, curva cerrada en horquilla a la izquierda."
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "En {lane_phrase}"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "En {lane_phrase}."
 
 #~ msgid "mostly divided, "
 #~ msgstr "en su mayoría con calzadas separadas, "

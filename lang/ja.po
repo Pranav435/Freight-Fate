@@ -10777,8 +10777,16 @@ msgstr ""
 msgid "the {lane_label} lane"
 msgstr ""
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
+msgid "In the lane"
+msgstr ""
+
+msgid "In the right lane"
+msgstr ""
+
+msgid "In the left lane"
+msgstr ""
+
+msgid "In the middle lane"
 msgstr ""
 
 #. placeholders: {lane_part}
@@ -29657,10 +29665,6 @@ msgstr ""
 
 #. placeholders: {names}
 msgid "You swerve around {names}. Well done."
-msgstr ""
-
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
 msgstr ""
 
 #. placeholders: {lane_label}
