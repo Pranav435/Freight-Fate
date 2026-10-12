@@ -7957,6 +7957,35 @@ msgstr ""
 msgid " It is doubled because you were in a construction zone."
 msgstr ""
 
+msgid "Outstanding"
+msgstr ""
+
+msgid "Well regarded"
+msgstr ""
+
+msgid "Established"
+msgstr ""
+
+msgid "Unproven"
+msgstr ""
+
+msgid "Shaky"
+msgstr ""
+
+msgid "Damaged"
+msgstr ""
+
+msgid "Ruined"
+msgstr ""
+
+#. placeholders: {word}, {number}
+msgid "{word}. {number} out of 100."
+msgstr ""
+
+#. placeholders: {number}
+msgid "{number} out of 100."
+msgstr ""
+
 msgid "Dispatch trust: full. You get the whole board."
 msgstr ""
 
@@ -7977,6 +8006,27 @@ msgstr ""
 
 #. placeholders: {trust_band_text}
 msgid "{trust_band_text} Clean on-time runs rebuild it."
+msgstr ""
+
+#. placeholders: {band}
+msgid "Dispatch trust: {band}."
+msgstr ""
+
+#. placeholders: {band}, {number}
+msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+msgstr ""
+
+#. placeholders: {number}
+#. one sentence of a longer line
+msgid "Reputation {number} out of 100."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Dispatch trust."
+msgstr ""
+
+#. placeholders: {number}
+msgid "Dispatch trust. Reputation {number} out of 100."
 msgstr ""
 
 msgid "licence"
@@ -10000,6 +10050,9 @@ msgstr ""
 msgid "local"
 msgstr ""
 
+msgid "streaming"
+msgstr ""
+
 msgid "always available"
 msgstr ""
 
@@ -10113,6 +10166,9 @@ msgstr ""
 msgid "your playlist file {file_name}"
 msgstr ""
 
+msgid "favorite"
+msgstr ""
+
 #. placeholders: {spoken}
 msgid ", {spoken} away"
 msgstr ""
@@ -10224,6 +10280,15 @@ msgstr ""
 
 #. placeholders: {trip_seed}
 msgid "{trip_seed}|radio airtime"
+msgstr ""
+
+msgid "Both"
+msgstr ""
+
+msgid "Percent"
+msgstr ""
+
+msgid "Description"
 msgstr ""
 
 msgid "wilderness"
@@ -14260,9 +14325,6 @@ msgstr ""
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr ""
 
-msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-msgstr ""
-
 msgid "ff-rust-app"
 msgstr ""
 
@@ -14447,6 +14509,9 @@ msgid "Road ahead"
 msgstr ""
 
 msgid "Repeat the last announcement"
+msgstr ""
+
+msgid "Copy the last spoken text"
 msgstr ""
 
 msgid "cb"
@@ -15806,6 +15871,15 @@ msgstr ""
 msgid "Message copied to clipboard."
 msgstr ""
 
+msgid "Nothing to copy yet."
+msgstr ""
+
+msgid "Copied."
+msgstr ""
+
+msgid "Could not copy to the clipboard."
+msgstr ""
+
 msgid "messages"
 msgstr ""
 
@@ -15906,8 +15980,8 @@ msgstr ""
 msgid "Level {level} driver, {f} experience{next}"
 msgstr ""
 
-#. placeholders: {f}
-msgid "Reputation: {f} out of 100"
+#. placeholders: {reputation_text}
+msgid "Reputation: {reputation_text}"
 msgstr ""
 
 #. placeholders: {grouped}
@@ -20493,6 +20567,10 @@ msgid ""
 msgstr ""
 
 msgid "Control C copies the message you are on. "
+msgstr ""
+
+#. placeholders: {n}
+msgid "{n} copies the last thing the game said. "
 msgstr ""
 
 #. placeholders: {n}
@@ -25590,8 +25668,10 @@ msgstr ""
 msgid "Career experience is coming in {rate_clause}."
 msgstr ""
 
-#. placeholders: {grouped}, {f}
-msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
+#. placeholders: {grouped}, {reputation_text}
+msgid ""
+"Dispatch trust bonus: {grouped} dollars for your reputation: "
+"{reputation_text}"
 msgstr ""
 
 #. placeholders: {f}
@@ -25835,9 +25915,6 @@ msgid "Freight Fate: {title}."
 msgstr ""
 
 msgid "Delivery summary copied to clipboard."
-msgstr ""
-
-msgid "Could not copy to the clipboard."
 msgstr ""
 
 msgid "Repeat this settlement line."
@@ -26791,9 +26868,6 @@ msgstr ""
 msgid "tuned now"
 msgstr ""
 
-msgid "favorite"
-msgstr ""
-
 msgid "Enter on a station tunes it. Escape returns to Driver apps."
 msgstr ""
 
@@ -26839,6 +26913,14 @@ msgid ""
 "first."
 msgstr ""
 
+msgid "Browse by category"
+msgstr ""
+
+msgid ""
+"Browse all stations, or one category such as Terrestrial or Web radio. "
+"Stations in range list first."
+msgstr ""
+
 #. placeholders: {in_range}
 msgid "Stations in range: {in_range}"
 msgstr ""
@@ -26868,6 +26950,9 @@ msgstr ""
 
 #. placeholders: {query}
 msgid "Stations matching {query}"
+msgstr ""
+
+msgid "browse"
 msgstr ""
 
 msgid "search"
@@ -26923,19 +27008,19 @@ msgstr ""
 msgid "Go back."
 msgstr ""
 
-#. placeholders: {hit_count}
-#. one sentence of a longer line
-msgid "{hit_count} matches."
-msgstr ""
-
 #. placeholders: {page_text}
 #. one sentence of a longer line
 msgid "{page_text} PageDown for the next page."
 msgstr ""
 
-#. placeholders: {title}, {hit_count}, {page_text}
-msgid ""
-"{title}. {hit_count} matches. {page_text} PageDown for the next page."
+#. placeholders: {title}, {hit_count}, {else}, {page_text}
+msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
+msgstr ""
+
+msgid "stations"
+msgstr ""
+
+msgid "matches"
 msgstr ""
 
 #. one sentence of a longer line
@@ -26983,6 +27068,23 @@ msgstr ""
 
 #. placeholders: {query}
 msgid "No stations match {query}."
+msgstr ""
+
+msgid "Enter opens a category. Escape goes back."
+msgstr ""
+
+#. placeholders: {label}
+msgid "No stations in {label}."
+msgstr ""
+
+#. placeholders: {all}
+msgid "All stations: {all}"
+msgstr ""
+
+msgid "Every station on the dial. Stations in range list first."
+msgstr ""
+
+msgid "Enter lists this category. Stations in range list first."
 msgstr ""
 
 msgid "Suggesting a station needs Online services on, in the Online menu."
@@ -30807,6 +30909,12 @@ msgstr ""
 msgid "off (developer)"
 msgstr ""
 
+msgid "percentage only"
+msgstr ""
+
+msgid "description only"
+msgstr ""
+
 msgid " and a half"
 msgstr ""
 
@@ -31080,6 +31188,16 @@ msgstr ""
 msgid ""
 "Automatic follows your system language. Radio and recorded voices stay in "
 "English."
+msgstr ""
+
+#. placeholders: {score_display_label}
+msgid "Score display: {score_display_label}"
+msgstr ""
+
+msgid ""
+"Choose whether reputation and dispatch trust read both their descriptive "
+"band and score, only the score, or only the description. A trust score is "
+"spoken only when service sets its band."
 msgstr ""
 
 #. placeholders: {replace}
@@ -32198,7 +32316,8 @@ msgstr ""
 
 msgid ""
 "The brackets choose all, general, or driving messages. Control C copies the "
-"selected message. Review keys type normally inside text fields."
+"selected message. Control Shift C copies the last thing the game said. "
+"Review keys type normally inside text fields."
 msgstr ""
 
 msgid ""
@@ -33370,10 +33489,10 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Regional stations fade as you leave their range. If reception fails, the "
-"radio tries a clear local station, then a fallback. Failed streams leave "
-"the dial for that session. Roadhouse and Night Line are available across "
-"the map."
+"Regional stations fade as you leave their range. Favorites play from "
+"anywhere and never fade. If reception fails, the radio tries a clear local "
+"station, then a fallback. Failed streams leave the dial for that session. "
+"Roadhouse and Night Line are available across the map."
 msgstr ""
 
 msgid ""
@@ -33554,9 +33673,13 @@ msgstr ""
 
 msgid ""
 "What is the difference between reputation and dispatch trust? Reputation is "
-"a score out of 100 from your deliveries, lowered by your driving record. "
-"Dispatch trust is what the carrier lets you do right now; your CDL, your "
-"record, and what you owe count toward it too."
+"a score from your deliveries, lowered by your driving record: Outstanding, "
+"Well regarded, Established, Unproven, Shaky, Damaged, or Ruined. New "
+"drivers start at 50, Unproven. A trust line shows it as, for example, "
+"Dispatch trust: full. Reputation 85 out of 100. Dispatch trust is what the "
+"carrier lets you do right now; your CDL, your record, and what you owe "
+"count toward it too. Settings, Speech has Score display: both, percentage "
+"only, or description only."
 msgstr ""
 
 msgid ""
@@ -34811,10 +34934,6 @@ msgstr ""
 
 #. placeholders: {money_text}
 msgid "Net worth: {money_text}"
-msgstr ""
-
-#. placeholders: {whole}
-msgid "Reputation: {whole} out of 100"
 msgstr ""
 
 msgid "Endorsements: none yet"
