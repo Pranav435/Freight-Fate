@@ -616,9 +616,9 @@ impl ArrivalState {
         self.debt_settlement_lines(ctx, d);
         if trust_bonus >= 1.0 {
             self.summary_parts.push(format!(
-                "Dispatch trust bonus: {} dollars for your {} reputation.",
+                "Dispatch trust bonus: {} dollars for your reputation: {}",
                 fmt_grouped(trust_bonus, 0),
-                fmt_f(reputation_before, 0)
+                enforcement::reputation_text(reputation_before, ctx.settings.score_display)
             ));
         }
         let (game_hours, market_day) = {

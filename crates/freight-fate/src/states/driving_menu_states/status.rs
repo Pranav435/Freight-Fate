@@ -208,13 +208,23 @@ impl DrivingStatusScreenState {
                 // doing something. A driver in full trust already hears it on
                 // the career stats screen and does not need it twice.
                 let trust = if enforcement::standing_band(profile) != enforcement::TRUST_FULL {
-                    enforcement::dispatch_trust_line(profile)
+                    enforcement::dispatch_trust_line_with_display(
+                        profile,
+                        ctx.settings.score_display,
+                    )
                 } else {
                     String::new()
                 };
                 let mut lines = vec![
                     format!("Driver: {}", profile.name),
                     format!("Money: {} dollars", fmt_grouped(profile.money(), 0)),
+                    format!(
+                        "Reputation: {}",
+                        enforcement::reputation_text(
+                            profile.standing(),
+                            ctx.settings.score_display
+                        )
+                    ),
                 ];
                 if !owed.is_empty() {
                     lines.push(owed);

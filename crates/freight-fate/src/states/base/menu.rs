@@ -10,7 +10,7 @@ use ff_core::radio::RadioState;
 use crate::app::{GameContext, Say};
 use crate::controller::ControllerAction;
 use crate::discord_presence::PresenceState;
-use crate::states::base::{end_sentence, InputEvent, Key};
+use crate::states::base::{end_sentence, CopyFocus, InputEvent, Key};
 
 // -- menus -------------------------------------------------------------------------------
 
@@ -332,6 +332,16 @@ pub trait Menu: Sized + 'static {
 
     // -- menu behaviour -------------------------------------------------------------
 
+    /// The focused row's label and index.
+    fn copy_focus(&self, ctx: &GameContext) -> Option<CopyFocus> {
+        let core = self.menu();
+        let item = core.items.get(core.index)?;
+        Some(CopyFocus {
+            index: core.index,
+            row: end_sentence(&item.text(self, ctx)),
+        })
+    }
+
     fn announce_entry(&mut self, ctx: &mut GameContext) {
         let title = end_sentence(&self.menu().title);
         ctx.say(&title);
@@ -495,6 +505,12 @@ macro_rules! impl_state_for_menu {
             }
             fn update(&mut self, ctx: &mut $crate::app::GameContext, dt: f64) {
                 <Self as $crate::states::base::Menu>::update(self, ctx, dt)
+            }
+            fn copy_focus(
+                &self,
+                ctx: &$crate::app::GameContext,
+            ) -> Option<$crate::states::base::CopyFocus> {
+                <Self as $crate::states::base::Menu>::copy_focus(self, ctx)
             }
             fn lines(&self, ctx: &$crate::app::GameContext) -> Vec<String> {
                 <Self as $crate::states::base::Menu>::lines(self, ctx)

@@ -9688,6 +9688,35 @@ msgstr "Great Lakes Training Transport"
 msgid " It is doubled because you were in a construction zone."
 msgstr " Er ist verdoppelt, weil du in einer Baustelle warst."
 
+msgid "Outstanding"
+msgstr "Hervorragend"
+
+msgid "Well regarded"
+msgstr "Angesehen"
+
+msgid "Established"
+msgstr "Etabliert"
+
+msgid "Unproven"
+msgstr "Unbewiesen"
+
+msgid "Shaky"
+msgstr "Wackelig"
+
+msgid "Damaged"
+msgstr "Beschädigt"
+
+msgid "Ruined"
+msgstr "Ruiniert"
+
+#. placeholders: {word}, {number}
+msgid "{word}. {number} out of 100."
+msgstr "{word}. {number} von 100."
+
+#. placeholders: {number}
+msgid "{number} out of 100."
+msgstr "{number} von 100."
+
 msgid "Dispatch trust: full. You get the whole board."
 msgstr ""
 "Vertrauen der Disposition: voll. Du bekommst die ganze Auftragsbörse."
@@ -9717,6 +9746,27 @@ msgstr ""
 #. placeholders: {trust_band_text}
 msgid "{trust_band_text} Clean on-time runs rebuild it."
 msgstr "{trust_band_text} Saubere, pünktliche Fahrten bauen es wieder auf."
+
+#. placeholders: {band}
+msgid "Dispatch trust: {band}."
+msgstr "Vertrauen der Disposition: {band}."
+
+#. placeholders: {band}, {number}
+msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+msgstr "Vertrauen der Disposition: {band}. Ruf {number} von 100."
+
+#. placeholders: {number}
+#. one sentence of a longer line
+msgid "Reputation {number} out of 100."
+msgstr "Ruf {number} von 100."
+
+#. one sentence of a longer line
+msgid "Dispatch trust."
+msgstr "Vertrauen der Disposition."
+
+#. placeholders: {number}
+msgid "Dispatch trust. Reputation {number} out of 100."
+msgstr "Vertrauen der Disposition. Ruf {number} von 100."
 
 msgid "licence"
 msgstr "Führerschein"
@@ -12130,6 +12180,9 @@ msgstr "afn-humphreys"
 msgid "local"
 msgstr "lokal"
 
+msgid "streaming"
+msgstr "Streaming"
+
 msgid "always available"
 msgstr "immer verfügbar"
 
@@ -12242,6 +12295,9 @@ msgstr "persönliche Playlist"
 #. placeholders: {file_name}
 msgid "your playlist file {file_name}"
 msgstr "deine Playlist-Datei {file_name}"
+
+msgid "favorite"
+msgstr "Favorit"
 
 #. placeholders: {spoken}
 msgid ", {spoken} away"
@@ -12363,6 +12419,15 @@ msgstr "{display_name} in den Favoriten gespeichert."
 #. placeholders: {trip_seed}
 msgid "{trip_seed}|radio airtime"
 msgstr "{trip_seed}|radio airtime"
+
+msgid "Both"
+msgstr "Beides"
+
+msgid "Percent"
+msgstr "Prozent"
+
+msgid "Description"
+msgstr "Beschreibung"
 
 msgid "wilderness"
 msgstr "Wildnis"
@@ -16776,9 +16841,6 @@ msgstr "Freight Fate Tastenprobe"
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr "Halte jede Pfeiltaste ein paar Sekunden lang; sie endet von selbst."
 
-msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-
 msgid "ff-rust-app"
 msgstr "ff-rust-app"
 
@@ -16964,6 +17026,9 @@ msgstr "Straße voraus"
 
 msgid "Repeat the last announcement"
 msgstr "Letzte Ansage wiederholen"
+
+msgid "Copy the last spoken text"
+msgstr "Den zuletzt gesprochenen Text kopieren"
 
 msgid "cb"
 msgstr "cb"
@@ -18502,6 +18567,15 @@ msgstr "groß {ch}"
 msgid "Message copied to clipboard."
 msgstr "Nachricht in die Zwischenablage kopiert."
 
+msgid "Nothing to copy yet."
+msgstr "Noch nichts zum Kopieren."
+
+msgid "Copied."
+msgstr "Kopiert."
+
+msgid "Could not copy to the clipboard."
+msgstr "Kopieren in die Zwischenablage hat nicht geklappt."
+
 msgid "messages"
 msgstr "Nachrichten"
 
@@ -18609,9 +18683,9 @@ msgstr ", höchstes Level"
 msgid "Level {level} driver, {f} experience{next}"
 msgstr "Fahrer auf Level {level}, {f} Erfahrung{next}"
 
-#. placeholders: {f}
-msgid "Reputation: {f} out of 100"
-msgstr "Ruf: {f} von 100"
+#. placeholders: {reputation_text}
+msgid "Reputation: {reputation_text}"
+msgstr "Ruf: {reputation_text}"
 
 #. placeholders: {grouped}
 msgid "Balance: {grouped} dollars"
@@ -23988,6 +24062,10 @@ msgstr ""
 
 msgid "Control C copies the message you are on. "
 msgstr "Control C kopiert die Nachricht, auf der du gerade bist. "
+
+#. placeholders: {n}
+msgid "{n} copies the last thing the game said. "
+msgstr "{n} kopiert, was das Spiel zuletzt gesagt hat. "
 
 #. placeholders: {n}
 msgid ""
@@ -29720,11 +29798,13 @@ msgstr "Bonus an Karriereerfahrung für {join}{tail}."
 msgid "Career experience is coming in {rate_clause}."
 msgstr "Karriereerfahrung kommt {rate_clause}."
 
-#. placeholders: {grouped}, {f}
-msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
+#. placeholders: {grouped}, {reputation_text}
+msgid ""
+"Dispatch trust bonus: {grouped} dollars for your reputation: "
+"{reputation_text}"
 msgstr ""
-"Bonus für das Vertrauen der Disposition: {grouped} Dollar für deinen Ruf "
-"von {f}."
+"Bonus für das Vertrauen der Disposition: {grouped} Dollar für deinen Ruf: "
+"{reputation_text}"
 
 #. placeholders: {f}
 msgid " Receiver service after check-in took {f} hours."
@@ -29989,9 +30069,6 @@ msgstr "Freight Fate: {title}."
 
 msgid "Delivery summary copied to clipboard."
 msgstr "Lieferübersicht in die Zwischenablage kopiert."
-
-msgid "Could not copy to the clipboard."
-msgstr "Kopieren in die Zwischenablage hat nicht geklappt."
 
 msgid "Repeat this settlement line."
 msgstr "Diese Abrechnungszeile wiederholen."
@@ -31053,9 +31130,6 @@ msgstr "hier außer Reichweite"
 msgid "tuned now"
 msgstr "gerade eingestellt"
 
-msgid "favorite"
-msgstr "Favorit"
-
 msgid "Enter on a station tunes it. Escape returns to Driver apps."
 msgstr ""
 "Enter auf einem Sender stellt ihn ein. Escape führt zurück zu den "
@@ -31106,6 +31180,16 @@ msgstr ""
 "Tipp einen Teil von Name, Rufzeichen oder Format. Treffer mit dem stärksten "
 "Signal kommen zuerst."
 
+msgid "Browse by category"
+msgstr "Nach Kategorie stöbern"
+
+msgid ""
+"Browse all stations, or one category such as Terrestrial or Web radio. "
+"Stations in range list first."
+msgstr ""
+"Stöbere in allen Sendern oder in einer Kategorie wie Terrestrisch oder "
+"Webradio. Sender in Reichweite stehen vorn."
+
 #. placeholders: {in_range}
 msgid "Stations in range: {in_range}"
 msgstr "Sender in Reichweite: {in_range}"
@@ -31138,6 +31222,9 @@ msgstr "Sender in Reichweite"
 #. placeholders: {query}
 msgid "Stations matching {query}"
 msgstr "Sender passend zu {query}"
+
+msgid "browse"
+msgstr "stöbern"
 
 msgid "search"
 msgstr "search"
@@ -31194,22 +31281,21 @@ msgstr "In dieser Liste gibt es nichts einzustellen."
 msgid "Go back."
 msgstr "Zurück."
 
-#. placeholders: {hit_count}
-#. one sentence of a longer line
-msgid "{hit_count} matches."
-msgstr "{hit_count} {hit_count:Treffer|Treffer}."
-
 #. placeholders: {page_text}
 #. one sentence of a longer line
 msgid "{page_text} PageDown for the next page."
 msgstr "{page_text} PageDown für die nächste Seite."
 
-#. placeholders: {title}, {hit_count}, {page_text}
-msgid ""
-"{title}. {hit_count} matches. {page_text} PageDown for the next page."
+#. placeholders: {title}, {hit_count}, {else}, {page_text}
+msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
 msgstr ""
-"{title}. {hit_count} {hit_count:Treffer|Treffer}. {page_text} PageDown für "
-"die nächste Seite."
+"{title}. {hit_count} {else}. {page_text} PageDown für die nächste Seite."
+
+msgid "stations"
+msgstr "Sender"
+
+msgid "matches"
+msgstr "Treffer"
 
 #. one sentence of a longer line
 msgid "Nothing here yet."
@@ -31262,6 +31348,23 @@ msgstr "Tipp zuerst etwas ein, wonach gesucht werden soll."
 #. placeholders: {query}
 msgid "No stations match {query}."
 msgstr "Keine Sender passend zu {query}."
+
+msgid "Enter opens a category. Escape goes back."
+msgstr "Enter öffnet eine Kategorie. Escape geht zurück."
+
+#. placeholders: {label}
+msgid "No stations in {label}."
+msgstr "Keine Sender in {label}."
+
+#. placeholders: {all}
+msgid "All stations: {all}"
+msgstr "Alle Sender: {all}"
+
+msgid "Every station on the dial. Stations in range list first."
+msgstr "Jeder Sender auf der Skala. Sender in Reichweite stehen vorn."
+
+msgid "Enter lists this category. Stations in range list first."
+msgstr "Enter listet diese Kategorie auf. Sender in Reichweite stehen vorn."
 
 msgid "Suggesting a station needs Online services on, in the Online menu."
 msgstr ""
@@ -35724,6 +35827,12 @@ msgstr "{g}-fach"
 msgid "off (developer)"
 msgstr "aus (Entwickler)"
 
+msgid "percentage only"
+msgstr "nur Prozent"
+
+msgid "description only"
+msgstr "nur Beschreibung"
+
 msgid " and a half"
 msgstr " einhalb"
 
@@ -36062,6 +36171,19 @@ msgid ""
 msgstr ""
 "Automatisch folgt deiner Systemsprache. Radio und aufgenommene Stimmen "
 "bleiben auf Englisch."
+
+#. placeholders: {score_display_label}
+msgid "Score display: {score_display_label}"
+msgstr "Anzeige der Werte: {score_display_label}"
+
+msgid ""
+"Choose whether reputation and dispatch trust read both their descriptive "
+"band and score, only the score, or only the description. A trust score is "
+"spoken only when service sets its band."
+msgstr ""
+"Wähle, ob Ruf und Vertrauen der Disposition ihre beschreibende Stufe und "
+"ihren Wert ansagen, nur den Wert oder nur die Beschreibung. Ein "
+"Vertrauenswert wird nur angesagt, wenn dein Service seine Stufe festlegt."
 
 #. placeholders: {replace}
 msgid "Driving speech: {replace}"
@@ -37462,11 +37584,12 @@ msgstr ""
 
 msgid ""
 "The brackets choose all, general, or driving messages. Control C copies the "
-"selected message. Review keys type normally inside text fields."
+"selected message. Control Shift C copies the last thing the game said. "
+"Review keys type normally inside text fields."
 msgstr ""
 "Die eckigen Klammern wählen alle, allgemeine oder Fahrnachrichten. Control "
-"C kopiert die ausgewählte Nachricht. In Textfeldern tippen die "
-"Rückblicktasten ganz normal."
+"C kopiert die gewählte Nachricht. Control Shift C kopiert, was das Spiel "
+"zuletzt gesagt hat. In Textfeldern tippen die Rückblicktasten ganz normal."
 
 msgid ""
 "In How to play, Left and Right or the Page keys change pages. Up and Down "
@@ -39077,15 +39200,16 @@ msgstr ""
 "Sender zu wählen oder zu suchen und deine Favoriten durchzugehen."
 
 msgid ""
-"Regional stations fade as you leave their range. If reception fails, the "
-"radio tries a clear local station, then a fallback. Failed streams leave "
-"the dial for that session. Roadhouse and Night Line are available across "
-"the map."
+"Regional stations fade as you leave their range. Favorites play from "
+"anywhere and never fade. If reception fails, the radio tries a clear local "
+"station, then a fallback. Failed streams leave the dial for that session. "
+"Roadhouse and Night Line are available across the map."
 msgstr ""
-"Regionale Sender verblassen, wenn du ihre Reichweite verlässt. Fällt der "
-"Empfang aus, versucht das Radio einen klaren Sender vor Ort, dann einen "
-"Ersatz. Fehlgeschlagene Streams verschwinden für diese Sitzung von der "
-"Skala. Roadhouse und Night Line sind auf der ganzen Karte verfügbar."
+"Regionale Sender verblassen, wenn du ihre Reichweite verlässt. Favoriten "
+"spielen überall und verblassen nie. Fällt der Empfang aus, versucht das "
+"Radio einen klaren Sender vor Ort, dann einen Ersatz. Fehlgeschlagene "
+"Streams verschwinden für diese Sitzung von der Skala. Roadhouse und Night "
+"Line sind auf der ganzen Karte verfügbar."
 
 msgid ""
 "Put M3U, M3U8, or PLS playlists in the Playlists folder inside your saves "
@@ -39365,15 +39489,23 @@ msgstr ""
 
 msgid ""
 "What is the difference between reputation and dispatch trust? Reputation is "
-"a score out of 100 from your deliveries, lowered by your driving record. "
-"Dispatch trust is what the carrier lets you do right now; your CDL, your "
-"record, and what you owe count toward it too."
+"a score from your deliveries, lowered by your driving record: Outstanding, "
+"Well regarded, Established, Unproven, Shaky, Damaged, or Ruined. New "
+"drivers start at 50, Unproven. A trust line shows it as, for example, "
+"Dispatch trust: full. Reputation 85 out of 100. Dispatch trust is what the "
+"carrier lets you do right now; your CDL, your record, and what you owe "
+"count toward it too. Settings, Speech has Score display: both, percentage "
+"only, or description only."
 msgstr ""
 "Was ist der Unterschied zwischen Ruf und Vertrauen der Disposition? Der Ruf "
-"ist ein Wert bis 100 aus deinen Lieferungen, gesenkt durch deine "
-"Fahrerakte. Das Vertrauen der Disposition ist das, was dich die Spedition "
-"gerade machen lässt; dein CDL, deine Akte und was du schuldest zählen auch "
-"dazu."
+"ist ein Wert aus deinen Lieferungen, gesenkt durch deine Fahrerakte: "
+"Hervorragend, Angesehen, Etabliert, Unbewiesen, Wackelig, Beschädigt oder "
+"Ruiniert. Neue Fahrer beginnen bei 50, Unbewiesen. Eine Vertrauenszeile "
+"zeigt das zum Beispiel so: Vertrauen der Disposition: voll. Ruf 85 von 100. "
+"Das Vertrauen der Disposition ist das, was die Spedition dich gerade machen "
+"lässt; dein CDL, deine Akte und deine Schulden zählen auch dazu. Unter "
+"Einstellungen, Sprache gibt es Anzeige der Werte: beides, nur Prozent oder "
+"nur Beschreibung."
 
 msgid ""
 "Why can I not accept a load? It may need a certificate, endorsement, or "
@@ -40913,10 +41045,6 @@ msgstr "Einnahmen der ganzen Laufbahn: {money_text}"
 msgid "Net worth: {money_text}"
 msgstr "Nettovermögen: {money_text}"
 
-#. placeholders: {whole}
-msgid "Reputation: {whole} out of 100"
-msgstr "Ruf: {whole} von 100"
-
 msgid "Endorsements: none yet"
 msgstr "Zusatzberechtigungen: noch keine"
 
@@ -41906,6 +42034,60 @@ msgstr "Danach Haarnadelkurve rechts."
 
 msgid "Then hairpin left."
 msgstr "Danach Haarnadelkurve links."
+
+#~ msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
+#~ msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
+
+#~ msgid "Reputation: {f} out of 100"
+#~ msgstr "Ruf: {f} von 100"
+
+#~ msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
+#~ msgstr ""
+#~ "Bonus für das Vertrauen der Disposition: {grouped} Dollar für deinen Ruf "
+#~ "von {f}."
+
+#~ msgid "{hit_count} matches."
+#~ msgstr "{hit_count} {hit_count:Treffer|Treffer}."
+
+#~ msgid ""
+#~ "{title}. {hit_count} matches. {page_text} PageDown for the next page."
+#~ msgstr ""
+#~ "{title}. {hit_count} {hit_count:Treffer|Treffer}. {page_text} PageDown für "
+#~ "die nächste Seite."
+
+#~ msgid ""
+#~ "The brackets choose all, general, or driving messages. Control C copies the "
+#~ "selected message. Review keys type normally inside text fields."
+#~ msgstr ""
+#~ "Die eckigen Klammern wählen alle, allgemeine oder Fahrnachrichten. Control "
+#~ "C kopiert die ausgewählte Nachricht. In Textfeldern tippen die "
+#~ "Rückblicktasten ganz normal."
+
+#~ msgid ""
+#~ "Regional stations fade as you leave their range. If reception fails, the "
+#~ "radio tries a clear local station, then a fallback. Failed streams leave "
+#~ "the dial for that session. Roadhouse and Night Line are available across "
+#~ "the map."
+#~ msgstr ""
+#~ "Regionale Sender verblassen, wenn du ihre Reichweite verlässt. Fällt der "
+#~ "Empfang aus, versucht das Radio einen klaren Sender vor Ort, dann einen "
+#~ "Ersatz. Fehlgeschlagene Streams verschwinden für diese Sitzung von der "
+#~ "Skala. Roadhouse und Night Line sind auf der ganzen Karte verfügbar."
+
+#~ msgid ""
+#~ "What is the difference between reputation and dispatch trust? Reputation is "
+#~ "a score out of 100 from your deliveries, lowered by your driving record. "
+#~ "Dispatch trust is what the carrier lets you do right now; your CDL, your "
+#~ "record, and what you owe count toward it too."
+#~ msgstr ""
+#~ "Was ist der Unterschied zwischen Ruf und Vertrauen der Disposition? Der Ruf "
+#~ "ist ein Wert bis 100 aus deinen Lieferungen, gesenkt durch deine "
+#~ "Fahrerakte. Das Vertrauen der Disposition ist das, was dich die Spedition "
+#~ "gerade machen lässt; dein CDL, deine Akte und was du schuldest zählen auch "
+#~ "dazu."
+
+#~ msgid "Reputation: {whole} out of 100"
+#~ msgstr "Ruf: {whole} von 100"
 
 #~ msgid "{closing_text} off the road"
 #~ msgstr "{closing_text} abseits der Straße"

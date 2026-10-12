@@ -191,6 +191,17 @@ impl Menu for RadioAppState {
                 ctx.push_state(state);
             })
             .help("Type part of a name, call sign, or format. Matches list nearest signal first."),
+            MenuItem::new("Browse by category", |s: &mut Self, ctx| {
+                if Self::dial_locked(ctx) {
+                    return;
+                }
+                let state = RadioCategoryState::new(s.driving.clone());
+                ctx.push_state(state);
+            })
+            .help(
+                "Browse all stations, or one category such as Terrestrial or Web radio. Stations \
+                 in range list first.",
+            ),
             MenuItem::new(
                 format!("Stations in range: {in_range}"),
                 |s: &mut Self, ctx| s.open_list(ctx, "range"),
@@ -242,6 +253,23 @@ impl RadioStationListState {
             hits: None,
             page: 0,
         }
+    }
+
+    /// The browse variant: one category (or the whole dial) as a paged list.
+    pub fn browse(driving: DriveRef, label: &str, hits: Vec<StationRow>) -> Self {
+        RadioStationListState {
+            menu: MenuCore::new(label).with_intro_help(STATION_LIST_INTRO_HELP),
+            driving,
+            kind: "browse".to_string(),
+            query: String::new(),
+            hits: Some(hits),
+            page: 0,
+        }
+    }
+
+    /// Search and browse lists page; favorites and in-range lists do not.
+    fn paged(&self) -> bool {
+        self.kind == "search" || self.kind == "browse"
     }
 
     /// The search variant: a fixed list of hits and how many there were.
@@ -300,7 +328,7 @@ impl RadioStationListState {
 
     /// Move to another page of a search; says the range, then the first row.
     fn change_page(&mut self, ctx: &mut GameContext, forward: bool) {
-        if self.kind != "search" {
+        if !self.paged() {
             return;
         }
         let last = self.page_count() - 1;
@@ -325,10 +353,12 @@ impl RadioStationListState {
         ctx.audio.play("ui/menu_move");
         self.refresh(ctx, false);
         let current = self.current_text(ctx);
-        ctx.say_with(
-            format!("{} {current}", self.page_text()),
-            Say::new().review(false),
-        );
+        // Logged on its own (the row is not), so the copy key and message
+        // review can reach the range.
+        let page = self.page_text();
+        ctx.message_log
+            .add(&page, ff_core::message_log::MessageCategory::General);
+        ctx.say_with(format!("{page} {current}"), Say::new().review(false));
     }
 
     fn next_page_preview(&self) -> String {
@@ -389,7 +419,7 @@ impl Menu for RadioStationListState {
                 .select_sound(None)
             })
             .collect();
-        if self.kind == "search" && self.page_count() > 1 {
+        if self.paged() && self.page_count() > 1 {
             if self.page + 1 < self.page_count() {
                 items.push(
                     MenuItem::new(
@@ -427,7 +457,7 @@ impl Menu for RadioStationListState {
     }
 
     fn handle_extra_key(&mut self, ctx: &mut GameContext, key: Key) -> bool {
-        if self.kind != "search" {
+        if !self.paged() {
             return false;
         }
         match key {
@@ -441,12 +471,17 @@ impl Menu for RadioStationListState {
     fn announce_entry(&mut self, ctx: &mut GameContext) {
         let rows = self.rows();
         let title = self.menu.title.clone();
-        if self.kind == "search" && self.hit_count() > RADIO_SEARCH_PAGE_SIZE {
+        if self.paged() && self.hit_count() > RADIO_SEARCH_PAGE_SIZE {
             // Paged, and said so: a list that quietly stops reads as "that
             // is everything" to someone who cannot see a scrollbar.
             ctx.say(&format!(
-                "{title}. {} matches. {} PageDown for the next page.",
+                "{title}. {} {}. {} PageDown for the next page.",
                 self.hit_count(),
+                if self.kind == "browse" {
+                    "stations"
+                } else {
+                    "matches"
+                },
                 self.page_text()
             ));
         } else if rows.is_empty() {
@@ -531,3 +566,73 @@ impl TextEntry for RadioSearchEntryState {
 }
 
 impl_state_for_text_entry!(RadioSearchEntryState);
+
+/// The category browser: all stations, or one dial category with its count.
+pub struct RadioCategoryState {
+    menu: MenuCore<Self>,
+    driving: DriveRef,
+}
+
+impl RadioCategoryState {
+    pub fn new(driving: DriveRef) -> Self {
+        RadioCategoryState {
+            menu: MenuCore::new("Browse by category")
+                .with_intro_help("Enter opens a category. Escape goes back."),
+            driving,
+        }
+    }
+
+    fn open(&mut self, ctx: &mut GameContext, group: Option<i32>, label: &str) {
+        let Some(hits) = self.driving.read(|d| d.radio.browse(group)) else {
+            return;
+        };
+        if hits.is_empty() {
+            ctx.audio.play("ui/error");
+            ctx.say_with(format!("No stations in {label}."), Say::new().review(false));
+            return;
+        }
+        ctx.audio.play("ui/menu_select");
+        let state = RadioStationListState::browse(self.driving.clone(), label, hits);
+        ctx.push_state(state);
+    }
+}
+
+impl Menu for RadioCategoryState {
+    fn menu(&self) -> &MenuCore<Self> {
+        &self.menu
+    }
+
+    fn menu_mut(&mut self) -> &mut MenuCore<Self> {
+        &mut self.menu
+    }
+
+    fn build_items(&mut self, ctx: &mut GameContext) -> Vec<MenuItem<Self>> {
+        let categories = self
+            .driving
+            .read(|d| d.radio.browse_categories())
+            .unwrap_or_default();
+        let all: usize = self
+            .driving
+            .read(|d| d.radio.browse(None).len())
+            .unwrap_or(0);
+        let _ = ctx;
+        let mut items = vec![MenuItem::new(
+            format!("All stations: {all}"),
+            |s: &mut Self, ctx: &mut GameContext| s.open(ctx, None, "All stations"),
+        )
+        .help("Every station on the dial. Stations in range list first.")];
+        for (group, name, count) in categories {
+            items.push(
+                MenuItem::new(
+                    format!("{name}: {count}"),
+                    move |s: &mut Self, ctx: &mut GameContext| s.open(ctx, Some(group), name),
+                )
+                .help("Enter lists this category. Stations in range list first."),
+            );
+        }
+        items.push(MenuItem::new("Back", |s: &mut Self, ctx| s.go_back(ctx)).help("Go back."));
+        items
+    }
+}
+
+impl_state_for_menu!(RadioCategoryState);
