@@ -12820,9 +12820,17 @@ msgstr "a faixa"
 msgid "the {lane_label} lane"
 msgstr "a faixa {lane_label}"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "Na {lane_phrase}"
+msgid "In the lane"
+msgstr "Na faixa"
+
+msgid "In the right lane"
+msgstr "Na faixa da direita"
+
+msgid "In the left lane"
+msgstr "Na faixa da esquerda"
+
+msgid "In the middle lane"
+msgstr "Na faixa do meio"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -34131,10 +34139,6 @@ msgstr "Você desvia de {names}."
 msgid "You swerve around {names}. Well done."
 msgstr "Você desvia de {names}. Muito bem."
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "Na {lane_phrase}."
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -41596,6 +41600,12 @@ msgstr "Depois, curva fechadíssima à direita."
 
 msgid "Then hairpin left."
 msgstr "Depois, curva fechadíssima à esquerda."
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "Na {lane_phrase}"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "Na {lane_phrase}."
 
 #~ msgid "mostly divided, "
 #~ msgstr "quase toda com pista dupla, "
