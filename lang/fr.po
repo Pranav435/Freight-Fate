@@ -29443,16 +29443,9 @@ msgstr "Aucune ville près d'ici."
 msgid "In {name}."
 msgstr "À {name}."
 
-#. placeholders: {closing_text}
-msgid "{closing_text} off the road"
-msgstr "à {closing_text} de la route"
-
-msgid "right beside the road"
-msgstr "juste au bord de la route"
-
-#. placeholders: {name}, {where_text}
-msgid "Nearest town, {name}: {where_text}."
-msgstr "Ville la plus proche, {name} : {where_text}."
+#. placeholders: {name}
+msgid "Nearest town: {name}."
+msgstr "Ville la plus proche : {name}."
 
 msgid "On city streets. No signed direction here."
 msgstr "Dans les rues de la ville. Pas de direction indiquée ici."
@@ -36669,15 +36662,10 @@ msgstr "Rues des sites : {on_off}"
 
 msgid ""
 "On, you drive the real streets between the highway and a facility, turn by "
-"turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
-"loaded run leaves straight onto the highway, and a pickup in town is one "
-"stretch of road. Applies from your next drive."
+"turn. Off, as in version 1.8, the exit ramp ends at the facility gate with "
+"no light or stop sign, a loaded run leaves straight onto the highway, and a "
+"pickup in town is one stretch of road. Applies from your next drive."
 msgstr ""
-"Activé, vous conduisez dans les vraies rues entre l'autoroute et un site, "
-"intersection par intersection. Désactivé, comme dans la version 1.8, la "
-"bretelle de sortie s'arrête au portail du site, un trajet en charge repart "
-"directement sur l'autoroute, et un chargement en ville est une seule "
-"portion de route. S'applique à partir de votre prochaine conduite."
 
 #. placeholders: {else}
 msgid "Units: {else}"
@@ -42184,6 +42172,27 @@ msgstr "Puis virage en épingle à droite."
 
 msgid "Then hairpin left."
 msgstr "Puis virage en épingle à gauche."
+
+#~ msgid "{closing_text} off the road"
+#~ msgstr "à {closing_text} de la route"
+
+#~ msgid "right beside the road"
+#~ msgstr "juste au bord de la route"
+
+#~ msgid "Nearest town, {name}: {where_text}."
+#~ msgstr "Ville la plus proche, {name} : {where_text}."
+
+#~ msgid ""
+#~ "On, you drive the real streets between the highway and a facility, turn by "
+#~ "turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a "
+#~ "loaded run leaves straight onto the highway, and a pickup in town is one "
+#~ "stretch of road. Applies from your next drive."
+#~ msgstr ""
+#~ "Activé, vous conduisez dans les vraies rues entre l'autoroute et un site, "
+#~ "intersection par intersection. Désactivé, comme dans la version 1.8, la "
+#~ "bretelle de sortie s'arrête au portail du site, un trajet en charge repart "
+#~ "directement sur l'autoroute, et un chargement en ville est une seule "
+#~ "portion de route. S'applique à partir de votre prochaine conduite."
 
 #~ msgid "de"
 #~ msgstr "de"
