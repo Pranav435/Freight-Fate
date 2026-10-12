@@ -378,8 +378,9 @@ fn reputation_words_round_before_banding_and_never_overlap_trust_words() {
         (27.5, "Shaky"),
         (39.49, "Shaky"),
         (39.5, "Unproven"),
-        (49.49, "Unproven"),
-        (49.5, "Established"),
+        (50.0, "Unproven"),
+        (59.49, "Unproven"),
+        (59.5, "Established"),
         (74.5, "Established"),
         (74.6, "Well regarded"),
         (89.49, "Well regarded"),
@@ -419,11 +420,11 @@ fn score_display_formats_reputation_and_trust_honestly() {
     service.reputation = 85.0;
     assert!(
         dispatch_trust_line_with_display(&service, ScoreDisplay::Both)
-            .starts_with("Dispatch trust: full, 85 out of 100.")
+            .starts_with("Dispatch trust: full. Reputation 85 out of 100.")
     );
     assert!(
         dispatch_trust_line_with_display(&service, ScoreDisplay::Percent)
-            .starts_with("Dispatch trust: 85 out of 100.")
+            .starts_with("Dispatch trust. Reputation 85 out of 100.")
     );
     assert!(
         dispatch_trust_line_with_display(&service, ScoreDisplay::Description)
@@ -725,7 +726,7 @@ fn test_the_way_back_names_the_cause_rather_than_promising_clean_runs() {
     assert!(line.contains("career experience comes in more slowly"));
     assert_eq!(
         dispatch_trust_line(&profile()),
-        "Dispatch trust: full, 50 out of 100. You get the whole board."
+        "Dispatch trust: full. Reputation 50 out of 100. You get the whole board."
     );
     // A hold clause from the fleet rides between the way back and the rate.
     let mut held = profile();

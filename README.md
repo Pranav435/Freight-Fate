@@ -12,7 +12,7 @@ visual display mirrors all speech for sighted players and helpers.
 
 ## Features
 
-Score display in Settings, Speech can read reputation and dispatch trust as both a description and number, percentage only, or description only.
+Score display in Settings, Speech can read reputation and dispatch trust as both a description and number, percentage only, or description only. A trust line reads, for example, "Dispatch trust: full. Reputation 85 out of 100."
 
 - **Career mode** — accept jobs inside metro freight markets, deadhead to
   specific origin facilities, deliver to specific receivers, earn money and

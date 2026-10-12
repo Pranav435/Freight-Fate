@@ -487,8 +487,8 @@ pub fn reputation_band_word(score: f64) -> &'static str {
     match round_py_int(score.clamp(0.0, 100.0)) {
         90..=100 => "Outstanding",
         75..=89 => "Well regarded",
-        50..=74 => "Established",
-        40..=49 => "Unproven",
+        60..=74 => "Established",
+        40..=59 => "Unproven",
         28..=39 => "Shaky",
         16..=27 => "Damaged",
         _ => "Ruined",
@@ -599,18 +599,18 @@ pub fn trust_text_with_display(reputation: f64, mode: ScoreDisplay) -> String {
     let suffix = text
         .strip_prefix(&format!("Dispatch trust: {band}."))
         .unwrap_or("");
-    format!(
-        "Dispatch trust: {}.{suffix}",
-        trust_score_clause(reputation, mode)
-    )
+    format!("{}{suffix}", trust_score_head(reputation, mode))
 }
 
-fn trust_score_clause(reputation: f64, mode: ScoreDisplay) -> String {
-    let number = format!("{} out of 100", round_py_int(reputation.clamp(0.0, 100.0)));
+/// The opening of a trust line. The number is always labelled as reputation
+/// so it never reads as a trust score of its own.
+fn trust_score_head(reputation: f64, mode: ScoreDisplay) -> String {
+    let band = trust_band(reputation);
+    let number = round_py_int(reputation.clamp(0.0, 100.0));
     match mode {
-        ScoreDisplay::Both => format!("{}, {number}", trust_band(reputation)),
-        ScoreDisplay::Percent => number,
-        ScoreDisplay::Description => trust_band(reputation).to_string(),
+        ScoreDisplay::Both => format!("Dispatch trust: {band}. Reputation {number} out of 100."),
+        ScoreDisplay::Percent => format!("Dispatch trust. Reputation {number} out of 100."),
+        ScoreDisplay::Description => format!("Dispatch trust: {band}."),
     }
 }
 
@@ -1020,8 +1020,8 @@ pub fn dispatch_trust_line_with_display<P: StandingProfile + ?Sized>(
             .strip_prefix(&format!("Dispatch trust: {band}."))
             .unwrap_or("");
         format!(
-            "Dispatch trust: {}.{suffix}",
-            trust_score_clause(profile.career_reputation(), mode)
+            "{}{suffix}",
+            trust_score_head(profile.career_reputation(), mode)
         )
     } else {
         trust_band_text(band).to_string()

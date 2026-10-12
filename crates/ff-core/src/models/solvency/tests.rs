@@ -62,7 +62,7 @@ fn test_a_clean_solvent_driver_is_untouched_by_any_of_this() {
     assert!(!repossession_due(&p));
     assert_eq!(
         dispatch_trust_line(&p),
-        "Dispatch trust: full, 50 out of 100. You get the whole board."
+        "Dispatch trust: full. Reputation 50 out of 100. You get the whole board."
     );
 }
 
