@@ -21,6 +21,7 @@ use serde_json::json;
 use super::*;
 use crate::models::solvency::test_profile::FakeProfile;
 use crate::models::solvency::REPOSSESSION_FLOOR;
+use crate::settings::ScoreDisplay;
 
 const DAY: f64 = 24.0;
 
@@ -308,6 +309,29 @@ fn test_a_clean_driver_sees_the_board_they_have_always_seen() {
 }
 
 #[test]
+fn test_trust_band_follows_the_rounded_score_the_player_hears() {
+    assert_eq!(trust_band(39.4), TRUST_GUARDED);
+    assert_eq!(trust_band(39.5), TRUST_FULL);
+    assert_eq!(trust_band(39.7), TRUST_FULL);
+    assert_eq!(trust_band(27.4), TRUST_POOR);
+    assert_eq!(trust_band(27.7), TRUST_GUARDED);
+    assert_eq!(trust_band(15.4), TRUST_LAST_CHANCE);
+    assert_eq!(trust_band(15.7), TRUST_POOR);
+    for rep in [39.4, 39.5, 39.7, 27.7, 15.7] {
+        let word = reputation_band_word(rep);
+        let band = trust_band(rep);
+        // Band words and trust bands share their edges at 40, 28 and 16.
+        let expected = match word {
+            "Unproven" | "Established" | "Well regarded" | "Outstanding" => TRUST_FULL,
+            "Shaky" => TRUST_GUARDED,
+            "Damaged" => TRUST_POOR,
+            _ => TRUST_LAST_CHANCE,
+        };
+        assert_eq!(band, expected, "reputation {rep}");
+    }
+}
+
+#[test]
 fn test_dispatch_trust_slides_the_whole_way_down() {
     let steps: Vec<i64> = [50.0, 40.0, 25.0, 5.0]
         .into_iter()
@@ -365,6 +389,79 @@ fn the_trust_ladder_matches_the_python_tables() {
         TRUST_POOR
     );
     assert_eq!(worst_band(&[TRUST_FULL]), TRUST_FULL);
+}
+
+#[test]
+fn reputation_words_round_before_banding_and_never_overlap_trust_words() {
+    for (score, word) in [
+        (-1.0, "Ruined"),
+        (15.49, "Ruined"),
+        (15.5, "Damaged"),
+        (27.49, "Damaged"),
+        (27.5, "Shaky"),
+        (39.49, "Shaky"),
+        (39.5, "Unproven"),
+        (50.0, "Unproven"),
+        (59.49, "Unproven"),
+        (59.5, "Established"),
+        (74.5, "Established"),
+        (74.6, "Well regarded"),
+        (89.49, "Well regarded"),
+        (89.6, "Outstanding"),
+        (101.0, "Outstanding"),
+    ] {
+        assert_eq!(reputation_band_word(score), word);
+    }
+    for word in [
+        "Outstanding",
+        "Well regarded",
+        "Established",
+        "Unproven",
+        "Shaky",
+        "Damaged",
+        "Ruined",
+    ] {
+        assert!(![TRUST_FULL, TRUST_GUARDED, TRUST_POOR, TRUST_LAST_CHANCE].contains(&word));
+    }
+}
+
+#[test]
+fn score_display_formats_reputation_and_trust_honestly() {
+    assert_eq!(
+        reputation_text(62.0, ScoreDisplay::Both),
+        "Established. 62 out of 100."
+    );
+    assert_eq!(
+        reputation_text(62.0, ScoreDisplay::Percent),
+        "62 out of 100."
+    );
+    assert_eq!(
+        reputation_text(62.0, ScoreDisplay::Description),
+        "Established."
+    );
+    let mut service = profile();
+    service.reputation = 85.0;
+    assert!(
+        dispatch_trust_line_with_display(&service, ScoreDisplay::Both)
+            .starts_with("Dispatch trust: full. Reputation 85 out of 100.")
+    );
+    assert!(
+        dispatch_trust_line_with_display(&service, ScoreDisplay::Percent)
+            .starts_with("Dispatch trust. Reputation 85 out of 100.")
+    );
+    assert!(
+        dispatch_trust_line_with_display(&service, ScoreDisplay::Description)
+            .starts_with("Dispatch trust: full.")
+    );
+    let mut debt = service;
+    debt.money = -5_000.0;
+    for mode in [
+        ScoreDisplay::Both,
+        ScoreDisplay::Percent,
+        ScoreDisplay::Description,
+    ] {
+        assert!(!dispatch_trust_line_with_display(&debt, mode).contains("out of 100"));
+    }
 }
 
 // --- persistence and retroactivity -----------------------------------------
@@ -650,7 +747,10 @@ fn test_the_way_back_names_the_cause_rather_than_promising_clean_runs() {
     let line = dispatch_trust_line(&both);
     assert!(line.starts_with(trust_band_text(standing_band(&both))));
     assert!(line.contains("career experience comes in more slowly"));
-    assert_eq!(dispatch_trust_line(&profile()), trust_text(50.0));
+    assert_eq!(
+        dispatch_trust_line(&profile()),
+        "Dispatch trust: full. Reputation 50 out of 100. You get the whole board."
+    );
     // A hold clause from the fleet rides between the way back and the rate.
     let mut held = profile();
     held.money = -5_000.0;

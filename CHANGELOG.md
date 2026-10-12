@@ -6,15 +6,19 @@
 
 - **The main menu now has background sound under the music, picked by your career.** A truck stop at night, your rig in the yard, or the dispatch office.
 
+- **The Radio app can browse by category.** List all stations or one category, in-range and local stations first, repeats removed.
+
 - **Radio search results now page 25 at a time.** Next and previous page rows, PageDown and PageUp reach every match.
 
 - **Control Shift C copies the last spoken text to the clipboard on any screen.** It says Copied, and the key can be moved in Controls.
+
+- **Score display is configurable.** Choose descriptions, percentages, or both for reputation and dispatch trust.
 
 - **How to play and the manual now have a Common questions page.** It covers assigned trucks, fleets, weigh stations, missed exits, the radio and more.
 
 - **The Weather app now lists active live weather alerts.** A warning you missed can be heard again while driving.
 
-- **A Facility streets setting turns off the drive through city streets to and from facilities.** Off, the exit ramp ends at the gate, as in 1.8.
+- **A Facility streets setting turns off the drive through city streets to and from facilities.** Off, the exit ramp ends at the gate with no light or stop sign, as in 1.8.
 
 - **The right stick now tunes the radio and adjusts its volume.** Hold up or down to keep changing volume.
 
@@ -37,6 +41,8 @@
 - **Drivers can call dispatch while stopped for trip-specific help.** Report delays, hours, road conditions, truck trouble or load trouble.
 
 ### Changed
+
+- **The nearest town readout now says only the name.** Alt+3 says "Nearest town: Nashville" without the distance.
 
 - **Career stats now says the carrier assigns your truck, and what the next fleet brings.** Business status and the garage say buying trucks starts with the owner-operator buy-in.
 

@@ -11,7 +11,7 @@ use super::settings::{Adjust, SettingsCategoryState};
 use super::settings_actions::{
     acc_gap_label, assist_preset_label, backup_announcements_label, cue_loudness_label,
     descent_level_label, event_voice_label, hos_label, lane_keeping_label, output_label,
-    pace_label, update_channel,
+    pace_label, score_display_label, update_channel,
 };
 use super::shortcuts::{ShortcutDevice, ShortcutsState};
 use super::touch_gestures::TouchGesturesState;
@@ -212,6 +212,11 @@ impl SettingsCategoryState {
     pub(super) fn speech_control_specs(&self, ctx: &GameContext) -> Vec<SpeechSpec> {
         let speech = &ctx.speech;
         let mut specs = vec![
+            SpeechSpec {
+                label: dyn_label(|s| format!("Score display: {}", score_display_label(s))),
+                action: adjust(|s, ctx, d| s.cycle_score_display(ctx, d)),
+                help: "Choose whether reputation and dispatch trust read both their descriptive band and score, only the score, or only the description. A trust score is spoken only when service sets its band.",
+            },
             SpeechSpec {
                 label: dyn_label(|s| {
                     format!("Driving speech: {}", s.driving_speech.replace('_', " "))
@@ -595,8 +600,9 @@ impl SettingsCategoryState {
                     adjust(|s, ctx, d| s.toggle_facility_streets(ctx, d)),
                     "On, you drive the real streets between the highway and a \
                      facility, turn by turn. Off, as in version 1.8, the exit ramp \
-                     ends at the facility gate, a loaded run leaves straight onto \
-                     the highway, and a pickup in town is one stretch of road. \
+                     ends at the facility gate with no light or stop sign, a \
+                     loaded run leaves straight onto the highway, and a pickup in \
+                     town is one stretch of road. \
                      Applies from your next drive.",
                 ),
                 back_row(),

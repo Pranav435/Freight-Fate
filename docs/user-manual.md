@@ -660,7 +660,7 @@ Press Tab while driving and choose Driver apps from Driving status. You'll find 
 
 ### Radio app
 
-Radio opens a menu where you can switch the radio on or off, tune a station, save or remove a favorite, browse stations in range, and suggest a station. Search stations lets you type part of a name, call sign, or format and press Enter for results. Results show 25 at a time; use the Next page and Previous page rows, or PageDown and PageUp, to reach the rest. Choose a result and press Enter to tune it. A station marked out of range here cannot be tuned from your current location.
+Radio opens a menu where you can switch the radio on or off, tune a station, save or remove a favorite, browse stations in range, and suggest a station. Search stations lets you type part of a name, call sign, or format and press Enter for results. Results show 25 at a time; use the Next page and Previous page rows, or PageDown and PageUp, to reach the rest. Browse by category lists all stations or one category, such as Terrestrial or Web radio, in the same 25-row pages. Stations in range come first, local terrestrial ahead of web radio, and a station that repeats is listed once; out-of-range stations follow. Choose a result and press Enter to tune it. A station marked out of range here cannot be tuned from your current location.
 
 Favorites gives you a shorter list of stations you've saved. The Radio report under Driving status is useful for reading reception and playlist information; open the Radio app when you want to choose a station. The [radio guide](#radio-and-playlists) explains the dial, signal changes, personal music, and music settings.
 
@@ -798,7 +798,7 @@ Here you choose where the game's weather, traffic reports, and fuel prices come 
 | Fuel prices | This week's national average, the default, puts the federal weekly diesel price at every pump, with each region's usual difference on top. Simulated draws a price per region for the session. |
 | Parking source | Switches between simulated truck parking and live availability when available. |
 | Live weather controls calendar | When on, live weather uses today's real date and season. When off, live conditions continue while the career date advances at midnight and its seasons pass. |
-| Facility streets | On by default: you drive the real streets between the highway and a facility, turn by turn. Off, as in version 1.8, the exit ramp ends at the facility gate, a loaded run leaves straight onto the highway, and a pickup in town is one stretch of road. A change applies from your next drive. |
+| Facility streets | On by default: you drive the real streets between the highway and a facility, turn by turn. Off, as in version 1.8, the exit ramp ends at the facility gate with no light or stop sign, a loaded run leaves straight onto the highway, and a pickup in town is one stretch of road. A change applies from your next drive. |
 
 ### Controls
 
@@ -978,7 +978,7 @@ Low dispatch trust, a suspended CDL, debt, or your driving record can hold equip
 
 ### What is the difference between reputation and dispatch trust?
 
-Reputation is a score out of 100 built from your deliveries and lowered by your driving record. Dispatch trust is what the carrier lets you do right now: how much of the board you see, how many loads you can refuse, and which truck you get. Your CDL, your record, and what you owe count toward it as well as reputation. See [Dispatch trust](#dispatch-trust).
+Reputation is a score out of 100 built from your deliveries and lowered by your driving record. Its descriptions are Outstanding (90 and up), Well regarded (75 to 89), Established (60 to 74), Unproven (40 to 59, where every new driver starts at 50), Shaky, Damaged, and Ruined. Dispatch trust lines add it as, for example, "Dispatch trust: full. Reputation 85 out of 100." In Settings, Speech, Score display can speak both the description and number, the percentage only, or the description only. Dispatch trust is what the carrier lets you do right now: how much of the board you see, how many loads you can refuse, and which truck you get. Your CDL, your record, and what you owe count toward it as well as reputation. See [Dispatch trust](#dispatch-trust).
 
 ### How many levels are there?
 
