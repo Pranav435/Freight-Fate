@@ -48,8 +48,8 @@ msgstr "Tablón de cargas"
 msgid "{label} {index} of {count}."
 msgstr "{label} {index} de {count}."
 
-msgid "{index} of {count}."
-msgstr "{index} de {count}."
+msgid "{position} of {count}."
+msgstr "{position} de {count}."
 
 msgid "{prefix}{tons} tons of {cargo}"
 msgstr "{prefix}{tons} toneladas de {cargo}"
@@ -372,4 +372,152 @@ fn a_po_header_field_is_read_by_name() {
         Some("Nederlands")
     );
     assert_eq!(super::po::header_field(text, "Plural-Forms"), None);
+}
+
+const MIXED_PO: &str = r#"
+msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "Language: {language_label}"
+msgstr "Idioma: {language_label}"
+
+msgid "automatic, {name}"
+msgstr "automático, {name}"
+
+msgid "Back"
+msgstr "Volver"
+
+msgctxt "controller button"
+msgid "Back"
+msgstr "Back"
+
+msgid "How to play"
+msgstr "Cómo jugar"
+
+msgid "Left"
+msgstr "Izquierda"
+
+msgid "Up"
+msgstr "Arriba"
+
+msgid "and"
+msgstr "y"
+
+msgid "Route"
+msgstr "Ruta"
+
+msgid "{count} left"
+msgstr "quedan {count}"
+
+msgid "Lifetime {what}"
+msgstr "{what} en total"
+
+msgid "Escape goes back"
+msgstr "Escape vuelve atrás"
+
+msgid "{position} of {count}."
+msgstr "{position} de {count}."
+"#;
+
+fn mixed() -> Translator {
+    Translator::new(Catalog::from_po("es", MIXED_PO).expect("test catalog parses"))
+}
+
+#[test]
+fn the_automatic_language_row_translates_whole() {
+    assert_eq!(
+        mixed().translate("Language: automatic, Español."),
+        "Idioma: automático, Español."
+    );
+}
+
+#[test]
+fn the_back_row_is_the_plain_entry_and_the_button_name_is_left_out() {
+    let catalog = Catalog::from_po("es", MIXED_PO).expect("parses");
+    let entries = po::parse(MIXED_PO).expect("parses");
+    let button = entries
+        .iter()
+        .find(|entry| entry.msgctxt.as_deref() == Some("controller button"))
+        .expect("the button entry keeps its context");
+    assert_eq!(button.msgid, "Back");
+    // Whichever order the file lists them, the row's translation is spoken.
+    assert_eq!(
+        Translator::new(catalog).translate("Back. 7 of 7."),
+        "Volver. 7 de 7."
+    );
+    let reversed = MIXED_PO.replace(
+        "msgid \"Back\"\nmsgstr \"Volver\"\n\nmsgctxt \"controller button\"\nmsgid \"Back\"\nmsgstr \"Back\"",
+        "msgctxt \"controller button\"\nmsgid \"Back\"\nmsgstr \"Back\"\n\nmsgid \"Back\"\nmsgstr \"Volver\"",
+    );
+    assert_ne!(reversed, MIXED_PO);
+    let tr = Translator::new(Catalog::from_po("es", &reversed).expect("parses"));
+    assert_eq!(tr.translate("Back."), "Volver.");
+}
+
+#[test]
+fn a_sentence_with_only_single_words_matching_stays_english() {
+    let tr = mixed();
+    let intro = "Left and Right arrows or Page Up and Page Down change pages. \
+                 Up and Down let you read a little at a time.";
+    assert_eq!(tr.translate(intro), intro);
+    // Clauses go all together or not at all.
+    assert_eq!(tr.translate("Route: 2 miles of 2"), "Route: 2 miles of 2");
+    assert_eq!(
+        tr.translate("Lifetime earnings: 0 dollars."),
+        "Lifetime earnings: 0 dollars."
+    );
+    // A whole sentence the catalog has still translates beside English ones.
+    assert_eq!(
+        tr.translate("Up and Down read it. Escape goes back."),
+        "Up and Down read it. Escape vuelve atrás."
+    );
+    // A name-like clause does not hold its sentence back.
+    assert_eq!(
+        tr.translate("Route: Bemidji Company Yard"),
+        "Ruta: Bemidji Company Yard"
+    );
+}
+
+#[test]
+fn the_position_cue_translates_apart_from_its_row() {
+    let tr = mixed();
+    // The row is in the catalog.
+    assert_eq!(tr.translate("How to play. 4 of 8."), "Cómo jugar. 4 de 8.");
+    // The row is not; the cue is still the player's language.
+    assert_eq!(
+        tr.translate("Business status. 4 of 14."),
+        "Business status. 4 de 14."
+    );
+    // A range is not a position cue.
+    assert_eq!(
+        tr.translate("Results 26 to 50 of 52."),
+        "Results 26 to 50 of 52."
+    );
+    // Without a cue translation the cue stays English.
+    let tr = Translator::new(
+        Catalog::from_po("es", "msgid \"How to play\"\nmsgstr \"Cómo jugar\"\n").expect("parses"),
+    );
+    assert_eq!(tr.translate("How to play. 4 of 8."), "Cómo jugar. 4 of 8.");
+}
+
+#[test]
+fn a_template_without_a_stop_beats_a_looser_one_with_it() {
+    let tr = Translator::new(
+        Catalog::from_po(
+            "es",
+            r#"
+msgid "Deliveries: {deliveries}, {f} percent on time"
+msgstr "Entregas: {deliveries}, {f} por ciento a tiempo"
+
+msgid "{f} percent {what}."
+msgstr "{f} por ciento de {what}."
+"#,
+        )
+        .expect("parses"),
+    );
+    assert_eq!(
+        tr.translate("Deliveries: 3, 50 percent on time."),
+        "Entregas: 3, 50 por ciento a tiempo."
+    );
 }
