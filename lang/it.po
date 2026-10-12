@@ -6999,16 +6999,23 @@ msgstr "montuoso a tratti"
 msgid "rolling hills"
 msgstr "colline ondulate"
 
-msgid "mostly divided, "
-msgstr "per lo più a carreggiate separate, "
+#. placeholders: {lane_word}, {lane_word2}
+msgid "mostly divided, {lane_word} to {lane_word2} lanes your side"
+msgstr ""
+"per lo più a carreggiate separate, da {lane_word} a {lane_word2} corsie dal "
+"tuo lato"
 
-#. placeholders: {lead}, {lane_word}, {lane_word2}
-msgid "{lead}{lane_word} to {lane_word2} lanes your side"
-msgstr "{lead}da {lane_word} a {lane_word2} corsie dal tuo lato"
+#. placeholders: {lane_word}, {lane_word2}
+msgid "{lane_word} to {lane_word2} lanes your side"
+msgstr "da {lane_word} a {lane_word2} corsie dal tuo lato"
 
-#. placeholders: {lead}, {lane_word}, {s_ending}
-msgid "{lead}{lane_word} lane{s_ending} your side"
-msgstr "{lead}corsie dal tuo lato: {lane_word}"
+#. placeholders: {lane_word}, {s_ending}
+msgid "mostly divided, {lane_word} lane{s_ending} your side"
+msgstr "per lo più a carreggiate separate, corsie dal tuo lato: {lane_word}"
+
+#. placeholders: {lane_word}, {s_ending}
+msgid "{lane_word} lane{s_ending} your side"
+msgstr "corsie dal tuo lato: {lane_word}"
 
 #. placeholders: {f}
 msgid "{f} miles"
@@ -13984,8 +13991,8 @@ msgstr ""
 "{next_context}"
 
 #. placeholders: {lane_word}, {s_ending}
-msgid "{lane_word} lane{s_ending} your side"
-msgstr "corsie dal tuo lato: {lane_word}"
+msgid "divided, {lane_word} lane{s_ending} your side"
+msgstr "a carreggiate separate, corsie dal tuo lato: {lane_word}"
 
 msgid "Current grade 0.0 percent, level"
 msgstr "Pendenza attuale 0,0 per cento, in piano"
@@ -41853,6 +41860,15 @@ msgstr "Poi tornante a destra."
 
 msgid "Then hairpin left."
 msgstr "Poi tornante a sinistra."
+
+#~ msgid "mostly divided, "
+#~ msgstr "per lo più a carreggiate separate, "
+
+#~ msgid "{lead}{lane_word} to {lane_word2} lanes your side"
+#~ msgstr "{lead}da {lane_word} a {lane_word2} corsie dal tuo lato"
+
+#~ msgid "{lead}{lane_word} lane{s_ending} your side"
+#~ msgstr "{lead}corsie dal tuo lato: {lane_word}"
 
 #~ msgid "{title}. {total} matches, the first {rows} listed."
 #~ msgstr "{title}. {total} risultati, elencati i primi {rows}."
