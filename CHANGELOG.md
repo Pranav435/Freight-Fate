@@ -10,6 +10,8 @@
 
 - **Radio search results now page 25 at a time.** Next and previous page rows, PageDown and PageUp reach every match.
 
+- **Control Shift C copies the last spoken text to the clipboard on any screen.** It says Copied, and the key can be moved in Controls.
+
 - **Score display is configurable.** Choose descriptions, percentages, or both for reputation and dispatch trust.
 
 - **How to play and the manual now have a Common questions page.** It covers assigned trucks, fleets, weigh stations, missed exits, the radio and more.

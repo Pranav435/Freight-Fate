@@ -46,7 +46,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "Up and Down choose an option. Enter or Space selects it; Escape returns. Home and End jump to the first or last option.",
             "Type a letter to find an option starting with it. F1 explains the selected option.",
             "Comma repeats the latest message, then steps backward. Period moves forward. Control with either jumps to the oldest or newest message.",
-            "The brackets choose all, general, or driving messages. Control C copies the selected message. Review keys type normally inside text fields.",
+            "The brackets choose all, general, or driving messages. Control C copies the selected message. Control Shift C copies the last thing the game said. Review keys type normally inside text fields.",
             "In How to play, Left and Right or the Page keys change pages. Up and Down let you read a little at a time. Enter or Space reads the page; either Control key or F1 stops speech.",
             "Learn game sounds plays road cues and explains their meaning. It is available on the main and pause menus.",
         ],

@@ -552,6 +552,11 @@ fn test_search_with_52_matches_reaches_every_page() {
         "{}",
         last(&app)
     );
+    // The range is logged on its own, so it can be reviewed and copied.
+    assert_eq!(
+        app.ctx.message_log.messages.last().map(|m| m.text.as_str()),
+        Some("Results 26 to 50 of 52.")
+    );
     press(&mut list, &mut app, Key::PageUp);
     press(&mut list, &mut app, Key::PageUp);
     assert!(
