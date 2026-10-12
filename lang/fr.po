@@ -13041,9 +13041,17 @@ msgstr "la voie"
 msgid "the {lane_label} lane"
 msgstr "la voie {lane_label}"
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}"
-msgstr "Sur {lane_phrase}"
+msgid "In the lane"
+msgstr "Sur la voie"
+
+msgid "In the right lane"
+msgstr "Sur la voie de droite"
+
+msgid "In the left lane"
+msgstr "Sur la voie de gauche"
+
+msgid "In the middle lane"
+msgstr "Sur la voie du milieu"
 
 #. placeholders: {lane_part}
 msgid "{lane_part}, centered."
@@ -34585,10 +34593,6 @@ msgstr "Vous faites un écart autour de {names}."
 msgid "You swerve around {names}. Well done."
 msgstr "Vous faites un écart autour de {names}. Bien joué."
 
-#. placeholders: {lane_phrase}
-msgid "In {lane_phrase}."
-msgstr "Sur {lane_phrase}."
-
 #. placeholders: {lane_label}
 #. one sentence of a longer line
 msgid "The {lane_label} lane is closed where the road narrows."
@@ -42195,6 +42199,12 @@ msgstr "Puis virage en épingle à droite."
 
 msgid "Then hairpin left."
 msgstr "Puis virage en épingle à gauche."
+
+#~ msgid "In {lane_phrase}"
+#~ msgstr "Sur {lane_phrase}"
+
+#~ msgid "In {lane_phrase}."
+#~ msgstr "Sur {lane_phrase}."
 
 #~ msgid "mostly divided, "
 #~ msgstr "surtout à chaussées séparées, "
