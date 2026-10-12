@@ -56,6 +56,8 @@
 
 - **CB calls now say "trooper" instead of the trucker slang "bear".**
 
+- **88.3 Life FM now plays on the FM band around Bakersfield, California.** It used to be a web station heard everywhere.
+
 - **The player manual has contents links for jumping straight to a chapter.**
 
 - **The player manual uses shorter explanations and clearer hotkey instructions.**
