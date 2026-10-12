@@ -10,8 +10,10 @@
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
+use ff_core::models::enforcement;
 use ff_core::models::solvency::money_text;
 use ff_core::pyfmt::{fmt_grouped, py_int};
+use ff_core::settings::ScoreDisplay;
 use serde_json::Value;
 
 use crate::app::GameContext;
@@ -119,7 +121,7 @@ fn safety_record_text(record: &Value) -> String {
 
 /// The spoken rows for a profile the site sent, in the design's order. Back
 /// is not among them; the screen adds it.
-pub fn profile_rows(profile: &Value) -> Vec<String> {
+pub fn profile_rows(profile: &Value, score_display: ScoreDisplay) -> Vec<String> {
     let mut rows = Vec::new();
     let driver = profile.get("driver").cloned().unwrap_or(Value::Null);
     rows.push(text(&driver, "displayName").unwrap_or_else(|| "A driver".to_string()));
@@ -217,7 +219,10 @@ pub fn profile_rows(profile: &Value) -> Vec<String> {
         rows.push(format!("Net worth: {}", money_text(n)));
     }
     if let Some(n) = num(snapshot, "reputation") {
-        rows.push(format!("Reputation: {} out of 100", whole(n)));
+        rows.push(format!(
+            "Reputation: {}",
+            enforcement::reputation_text(n, score_display)
+        ));
     }
     if let Some(Value::Array(endorsements)) = snapshot.get("endorsements") {
         let names: Vec<String> = endorsements
@@ -414,7 +419,7 @@ impl Menu for DriverProfileState {
         menu_default_enter(self, ctx);
     }
 
-    fn build_items(&mut self, _ctx: &mut GameContext) -> Vec<MenuItem<Self>> {
+    fn build_items(&mut self, ctx: &mut GameContext) -> Vec<MenuItem<Self>> {
         self.absorb();
         let speak = |s: &mut Self, ctx: &mut GameContext| s.speak_current(ctx);
         let mut items: Vec<MenuItem<Self>> = Vec::new();
@@ -426,7 +431,7 @@ impl Menu for DriverProfileState {
                 items.push(MenuItem::new("Checking the profile", speak));
             }
             Some(ProfileFetch::Profile(profile)) => {
-                for row in profile_rows(profile) {
+                for row in profile_rows(profile, ctx.settings.score_display) {
                     items.push(MenuItem::new(row, speak));
                 }
             }

@@ -49,6 +49,7 @@ pub use record::{
 use crate::models::business_constants::is_owner_operator;
 use crate::models::solvency::{debt_owed, debt_rung, money_text};
 use crate::pyfmt::{round_py_int, round_py_n};
+use crate::settings::ScoreDisplay;
 use crate::sim::season::{date_text, weekday_name, CAREER_START_DAY_OF_YEAR, DAYS_PER_YEAR};
 
 pub const HOURS_PER_DAY: f64 = 24.0;
@@ -468,7 +469,11 @@ pub fn is_serious_speed(mph_over: f64) -> bool {
 // -- dispatch access --------------------------------------------------------
 
 /// How far dispatch trusts this driver right now.
+///
+/// The band is decided from the rounded score the player hears, so a spoken
+/// "40 out of 100" never sits beside a "guarded" trust line.
 pub fn trust_band(reputation: f64) -> &'static str {
+    let reputation = round_py_int(reputation.clamp(0.0, 100.0)) as f64;
     if reputation >= REPUTATION_FULL_BOARD {
         return TRUST_FULL;
     }
@@ -479,6 +484,30 @@ pub fn trust_band(reputation: f64) -> &'static str {
         return TRUST_POOR;
     }
     TRUST_LAST_CHANCE
+}
+
+/// The plain-language reputation band, using the rounded score players hear.
+pub fn reputation_band_word(score: f64) -> &'static str {
+    match round_py_int(score.clamp(0.0, 100.0)) {
+        90..=100 => "Outstanding",
+        75..=89 => "Well regarded",
+        60..=74 => "Established",
+        40..=59 => "Unproven",
+        28..=39 => "Shaky",
+        16..=27 => "Damaged",
+        _ => "Ruined",
+    }
+}
+
+/// A reputation score in the player's preferred spoken form.
+pub fn reputation_text(score: f64, mode: ScoreDisplay) -> String {
+    let word = reputation_band_word(score);
+    let number = round_py_int(score.clamp(0.0, 100.0));
+    match mode {
+        ScoreDisplay::Both => format!("{word}. {number} out of 100."),
+        ScoreDisplay::Percent => format!("{number} out of 100."),
+        ScoreDisplay::Description => format!("{word}."),
+    }
 }
 
 /// How many loads dispatch will still put in front of this driver.
@@ -565,6 +594,28 @@ pub fn trust_text(reputation: f64) -> String {
         return trust_band_text(band).to_string();
     }
     format!("{} Clean on-time runs rebuild it.", trust_band_text(band))
+}
+
+/// [`trust_text`] in the player's preferred score-display mode.
+pub fn trust_text_with_display(reputation: f64, mode: ScoreDisplay) -> String {
+    let band = trust_band(reputation);
+    let text = trust_text(reputation);
+    let suffix = text
+        .strip_prefix(&format!("Dispatch trust: {band}."))
+        .unwrap_or("");
+    format!("{}{suffix}", trust_score_head(reputation, mode))
+}
+
+/// The opening of a trust line. The number is always labelled as reputation
+/// so it never reads as a trust score of its own.
+fn trust_score_head(reputation: f64, mode: ScoreDisplay) -> String {
+    let band = trust_band(reputation);
+    let number = round_py_int(reputation.clamp(0.0, 100.0));
+    match mode {
+        ScoreDisplay::Both => format!("Dispatch trust: {band}. Reputation {number} out of 100."),
+        ScoreDisplay::Percent => format!("Dispatch trust. Reputation {number} out of 100."),
+        ScoreDisplay::Description => format!("Dispatch trust: {band}."),
+    }
 }
 
 // -- the whole picture: service, licence, and money -------------------------
@@ -958,8 +1009,27 @@ use crate::models::career::xp_rate_clause;
 /// a timer, and never for a driver in full trust beyond the one plain line
 /// they already heard.
 pub fn dispatch_trust_line<P: StandingProfile + ?Sized>(profile: &P) -> String {
+    dispatch_trust_line_with_display(profile, ScoreDisplay::Both)
+}
+
+/// [`dispatch_trust_line`] in the player's preferred score-display mode.
+pub fn dispatch_trust_line_with_display<P: StandingProfile + ?Sized>(
+    profile: &P,
+    mode: ScoreDisplay,
+) -> String {
     let band = standing_band(profile);
-    let mut parts = vec![trust_band_text(band).to_string()];
+    let service_sets_band = band == trust_band(profile.career_reputation());
+    let mut parts = vec![if service_sets_band {
+        let suffix = trust_band_text(band)
+            .strip_prefix(&format!("Dispatch trust: {band}."))
+            .unwrap_or("");
+        format!(
+            "{}{suffix}",
+            trust_score_head(profile.career_reputation(), mode)
+        )
+    } else {
+        trust_band_text(band).to_string()
+    }];
     let way_back = standing_way_back(profile);
     if !way_back.is_empty() {
         parts.push(way_back);

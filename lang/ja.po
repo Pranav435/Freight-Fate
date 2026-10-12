@@ -8261,6 +8261,35 @@ msgstr "Great Lakes Training Transport"
 msgid " It is doubled because you were in a construction zone."
 msgstr " 工事区間だったため、2倍になっています。"
 
+msgid "Outstanding"
+msgstr "抜群"
+
+msgid "Well regarded"
+msgstr "好評"
+
+msgid "Established"
+msgstr "定着"
+
+msgid "Unproven"
+msgstr "未知数"
+
+msgid "Shaky"
+msgstr "不安定"
+
+msgid "Damaged"
+msgstr "損なわれた"
+
+msgid "Ruined"
+msgstr "失墜"
+
+#. placeholders: {word}, {number}
+msgid "{word}. {number} out of 100."
+msgstr "{word}。100中{number}。"
+
+#. placeholders: {number}
+msgid "{number} out of 100."
+msgstr "100中{number}。"
+
 msgid "Dispatch trust: full. You get the whole board."
 msgstr "配車係の信頼：フル。ボードの依頼をすべて選べます。"
 
@@ -8282,6 +8311,27 @@ msgstr "配車係の信頼：最後のチャンス。割り当ての積荷が一
 #. placeholders: {trust_band_text}
 msgid "{trust_band_text} Clean on-time runs rebuild it."
 msgstr "{trust_band_text}期限内の無事故運行で回復します。"
+
+#. placeholders: {band}
+msgid "Dispatch trust: {band}."
+msgstr "配車係の信頼：{band}。"
+
+#. placeholders: {band}, {number}
+msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+msgstr "配車係の信頼：{band}。評判は100中{number}。"
+
+#. placeholders: {number}
+#. one sentence of a longer line
+msgid "Reputation {number} out of 100."
+msgstr "評判は100中{number}。"
+
+#. one sentence of a longer line
+msgid "Dispatch trust."
+msgstr "配車係の信頼。"
+
+#. placeholders: {number}
+msgid "Dispatch trust. Reputation {number} out of 100."
+msgstr "配車係の信頼。評判は100中{number}。"
 
 msgid "licence"
 msgstr "免許"
@@ -10419,6 +10469,9 @@ msgstr "afn-humphreys"
 msgid "local"
 msgstr "ローカル"
 
+msgid "streaming"
+msgstr "ネット配信"
+
 msgid "always available"
 msgstr "いつでも受信可"
 
@@ -10531,6 +10584,9 @@ msgstr "個人のプレイリスト"
 #. placeholders: {file_name}
 msgid "your playlist file {file_name}"
 msgstr "プレイリストファイル {file_name}"
+
+msgid "favorite"
+msgstr "お気に入り"
 
 #. placeholders: {spoken}
 msgid ", {spoken} away"
@@ -10647,6 +10703,15 @@ msgstr "{display_name}をお気に入りに保存しました。"
 #. placeholders: {trip_seed}
 msgid "{trip_seed}|radio airtime"
 msgstr "{trip_seed}|radio airtime"
+
+msgid "Both"
+msgstr "両方"
+
+msgid "Percent"
+msgstr "パーセント"
+
+msgid "Description"
+msgstr "説明"
 
 msgid "wilderness"
 msgstr "原野"
@@ -14801,9 +14866,6 @@ msgstr "Freight Fate キー計測"
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr "矢印キーを一つずつ数秒間押し続けてください。自動的に終わります。"
 
-msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
-
 msgid "ff-rust-app"
 msgstr "ff-rust-app"
 
@@ -14989,6 +15051,9 @@ msgstr "この先の道路"
 
 msgid "Repeat the last announcement"
 msgstr "直前のお知らせを繰り返す"
+
+msgid "Copy the last spoken text"
+msgstr "最後に読み上げた文をコピー"
 
 msgid "cb"
 msgstr "cb"
@@ -16426,6 +16491,15 @@ msgstr "大文字の{ch}"
 msgid "Message copied to clipboard."
 msgstr "メッセージをクリップボードにコピーしました。"
 
+msgid "Nothing to copy yet."
+msgstr "まだコピーするものがありません。"
+
+msgid "Copied."
+msgstr "コピーしました。"
+
+msgid "Could not copy to the clipboard."
+msgstr "クリップボードにコピーできませんでした。"
+
 msgid "messages"
 msgstr "メッセージ"
 
@@ -16526,9 +16600,9 @@ msgstr "、最高レベル"
 msgid "Level {level} driver, {f} experience{next}"
 msgstr "レベル{level}のドライバー、経験値{f}{next}"
 
-#. placeholders: {f}
-msgid "Reputation: {f} out of 100"
-msgstr "評判：100中{f}"
+#. placeholders: {reputation_text}
+msgid "Reputation: {reputation_text}"
+msgstr "評判：{reputation_text}"
 
 #. placeholders: {grouped}
 msgid "Balance: {grouped} dollars"
@@ -21256,6 +21330,10 @@ msgstr "角かっこのキーで、すべてのメッセージ、一般のメッ
 
 msgid "Control C copies the message you are on. "
 msgstr "Control C で今のメッセージをコピーします。 "
+
+#. placeholders: {n}
+msgid "{n} copies the last thing the game said. "
+msgstr "{n}で、ゲームが最後に話した内容をコピーします。 "
 
 #. placeholders: {n}
 msgid ""
@@ -26471,9 +26549,11 @@ msgstr "{join}{tail}によるキャリア経験値のボーナス。"
 msgid "Career experience is coming in {rate_clause}."
 msgstr "キャリア経験値は{rate_clause}増えています。"
 
-#. placeholders: {grouped}, {f}
-msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
-msgstr "配車係の信頼ボーナス：評判{f}に対して{grouped}ドル。"
+#. placeholders: {grouped}, {reputation_text}
+msgid ""
+"Dispatch trust bonus: {grouped} dollars for your reputation: "
+"{reputation_text}"
+msgstr "配車係の信頼ボーナス：{grouped}ドル。評判：{reputation_text}"
 
 #. placeholders: {f}
 msgid " Receiver service after check-in took {f} hours."
@@ -26725,9 +26805,6 @@ msgstr "Freight Fate：{title}。"
 
 msgid "Delivery summary copied to clipboard."
 msgstr "配達の概要をクリップボードにコピーしました。"
-
-msgid "Could not copy to the clipboard."
-msgstr "クリップボードにコピーできませんでした。"
 
 msgid "Repeat this settlement line."
 msgstr "この精算の行を繰り返します。"
@@ -27699,9 +27776,6 @@ msgstr "ここでは受信できません"
 msgid "tuned now"
 msgstr "選局中"
 
-msgid "favorite"
-msgstr "お気に入り"
-
 msgid "Enter on a station tunes it. Escape returns to Driver apps."
 msgstr "局で Enter を押すと選局します。Escape でドライバーアプリに戻ります。"
 
@@ -27747,6 +27821,14 @@ msgid ""
 "first."
 msgstr "名前、コールサイン、フォーマットの一部を入力してください。電波の強い局から順に一覧になります。"
 
+msgid "Browse by category"
+msgstr "カテゴリーで探す"
+
+msgid ""
+"Browse all stations, or one category such as Terrestrial or Web radio. "
+"Stations in range list first."
+msgstr "すべての局か、地上波やウェブラジオのような一つのカテゴリーを見ます。受信できる局が先に並びます。"
+
 #. placeholders: {in_range}
 msgid "Stations in range: {in_range}"
 msgstr "受信できる局：{in_range}"
@@ -27777,6 +27859,9 @@ msgstr "受信できる局"
 #. placeholders: {query}
 msgid "Stations matching {query}"
 msgstr "{query}に一致する局"
+
+msgid "browse"
+msgstr "閲覧"
 
 msgid "search"
 msgstr "search"
@@ -27831,20 +27916,20 @@ msgstr "この一覧には選局できるものがありません。"
 msgid "Go back."
 msgstr "戻ります。"
 
-#. placeholders: {hit_count}
-#. one sentence of a longer line
-msgid "{hit_count} matches."
-msgstr "{hit_count} 件見つかりました。"
-
 #. placeholders: {page_text}
 #. one sentence of a longer line
 msgid "{page_text} PageDown for the next page."
 msgstr "{page_text} PageDown で次のページへ。"
 
-#. placeholders: {title}, {hit_count}, {page_text}
-msgid ""
-"{title}. {hit_count} matches. {page_text} PageDown for the next page."
-msgstr "{title}。{hit_count} 件見つかりました。{page_text} PageDown で次のページへ。"
+#. placeholders: {title}, {hit_count}, {else}, {page_text}
+msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
+msgstr "{title}。{else}は{hit_count} 件。{page_text} PageDown で次のページへ。"
+
+msgid "stations"
+msgstr "局"
+
+msgid "matches"
+msgstr "一致した結果"
 
 #. one sentence of a longer line
 msgid "Nothing here yet."
@@ -27894,6 +27979,23 @@ msgstr "先に検索する言葉を入力してください。"
 #. placeholders: {query}
 msgid "No stations match {query}."
 msgstr "{query}に一致する局はありません。"
+
+msgid "Enter opens a category. Escape goes back."
+msgstr "Enter でカテゴリーを開きます。 Escape で戻ります。"
+
+#. placeholders: {label}
+msgid "No stations in {label}."
+msgstr "{label}には局がありません。"
+
+#. placeholders: {all}
+msgid "All stations: {all}"
+msgstr "すべての局：{all}"
+
+msgid "Every station on the dial. Stations in range list first."
+msgstr "ダイヤルのすべての局です。受信できる局が先に並びます。"
+
+msgid "Enter lists this category. Stations in range list first."
+msgstr "Enter でこのカテゴリーの局を一覧にします。受信できる局が先に並びます。"
 
 msgid "Suggesting a station needs Online services on, in the Online menu."
 msgstr "局の提案には、オンラインメニューでオンラインサービスをオンにする必要があります。"
@@ -31866,6 +31968,12 @@ msgstr "{g}倍"
 msgid "off (developer)"
 msgstr "オフ（開発者用）"
 
+msgid "percentage only"
+msgstr "パーセントのみ"
+
+msgid "description only"
+msgstr "説明のみ"
+
 msgid " and a half"
 msgstr " 点五"
 
@@ -32160,6 +32268,18 @@ msgid ""
 "Automatic follows your system language. Radio and recorded voices stay in "
 "English."
 msgstr "自動では、システムの言語に合わせます。ラジオと録音された声は英語のままです。"
+
+#. placeholders: {score_display_label}
+msgid "Score display: {score_display_label}"
+msgstr "スコアの表示：{score_display_label}"
+
+msgid ""
+"Choose whether reputation and dispatch trust read both their descriptive "
+"band and score, only the score, or only the description. A trust score is "
+"spoken only when service sets its band."
+msgstr ""
+"評判と配車係の信頼について、説明の段階とスコアの両方を読むか、スコアだけか、説明だけかを選びます。信頼のスコアは、仕事の記録で段階が決まるときだけ読み上"
+"げます。"
 
 #. placeholders: {replace}
 msgid "Driving speech: {replace}"
@@ -33361,10 +33481,11 @@ msgstr ""
 
 msgid ""
 "The brackets choose all, general, or driving messages. Control C copies the "
-"selected message. Review keys type normally inside text fields."
+"selected message. Control Shift C copies the last thing the game said. "
+"Review keys type normally inside text fields."
 msgstr ""
-"角かっこのキーで、すべて、一般、運転のメッセージを選びます。Control C "
-"で選んだメッセージをコピーします。テキスト入力欄の中では、振り返りのキーは普通に文字を入力します。"
+"角かっこのキーで、すべて、一般、運転中のメッセージを切り替えます。 Control C で選んだメッセージをコピーします。 Control Shift "
+"C で、ゲームが最後に話した内容をコピーします。文字の入力欄では、振り返りのキーは普通に文字を入力します。"
 
 msgid ""
 "In How to play, Left and Right or the Page keys change pages. Up and Down "
@@ -34688,13 +34809,14 @@ msgid ""
 msgstr "ラジオの状態では、受信できる局を一覧にします。ラジオのアプリで、局を選んだり検索したり、お気に入りを見たりできます。"
 
 msgid ""
-"Regional stations fade as you leave their range. If reception fails, the "
-"radio tries a clear local station, then a fallback. Failed streams leave "
-"the dial for that session. Roadhouse and Night Line are available across "
-"the map."
+"Regional stations fade as you leave their range. Favorites play from "
+"anywhere and never fade. If reception fails, the radio tries a clear local "
+"station, then a fallback. Failed streams leave the dial for that session. "
+"Roadhouse and Night Line are available across the map."
 msgstr ""
-"地域の局は、範囲を離れると小さくなっていきます。受信できなくなると、ラジオは聞こえる地元の局を探し、なければ予備の局にします。失敗したストリームは、その"
-"セッションの間ダイヤルから外れます。Roadhouse と Night Line はマップ全体で聞けます。"
+"地域の局は、範囲を離れると小さくなっていきます。お気に入りの局はどこでも聞けて、小さくなりません。受信できなくなると、ラジオは聞こえる地元の局を探し、な"
+"ければ予備の局にします。失敗したストリームは、そのセッションの間ダイヤルから外れます。Roadhouse と Night Line "
+"はマップ全体で聞けます。"
 
 msgid ""
 "Put M3U, M3U8, or PLS playlists in the Playlists folder inside your saves "
@@ -34921,12 +35043,17 @@ msgstr ""
 
 msgid ""
 "What is the difference between reputation and dispatch trust? Reputation is "
-"a score out of 100 from your deliveries, lowered by your driving record. "
-"Dispatch trust is what the carrier lets you do right now; your CDL, your "
-"record, and what you owe count toward it too."
+"a score from your deliveries, lowered by your driving record: Outstanding, "
+"Well regarded, Established, Unproven, Shaky, Damaged, or Ruined. New "
+"drivers start at 50, Unproven. A trust line shows it as, for example, "
+"Dispatch trust: full. Reputation 85 out of 100. Dispatch trust is what the "
+"carrier lets you do right now; your CDL, your record, and what you owe "
+"count toward it too. Settings, Speech has Score display: both, percentage "
+"only, or description only."
 msgstr ""
-"評判と配車係の信頼の違いは何ですか？評判は、配達から決まる100点満点のスコアで、運転記録で下がります。配車係の信頼は、運送会社が今何をさせてくれるかで"
-"、CDL、記録、借りている額も影響します。"
+"評判と配車係の信頼の違いは何ですか？評判は、配達から決まるスコアで、運転記録で下がります。段階は、抜群、好評、定着、未知数、不安定、損なわれた、失墜です"
+"。新しいドライバーは50、未知数から始まります。信頼の読み上げは、たとえば、配車係の信頼：フル。評判は100中85。のようになります。配車係の信頼は、運"
+"送会社が今何をさせてくれるかで、CDL、記録、借りている額も影響します。設定の読み上げにスコアの表示があり、両方、パーセントのみ、説明のみから選べます。"
 
 msgid ""
 "Why can I not accept a load? It may need a certificate, endorsement, or "
@@ -36283,10 +36410,6 @@ msgstr "キャリアの生涯の収入：{money_text}"
 msgid "Net worth: {money_text}"
 msgstr "純資産：{money_text}"
 
-#. placeholders: {whole}
-msgid "Reputation: {whole} out of 100"
-msgstr "評判：100点中{whole}点"
-
 msgid "Endorsements: none yet"
 msgstr "免許付記：まだなし"
 
@@ -37162,6 +37285,50 @@ msgstr "続いて、ヘアピンカーブを右です。"
 
 msgid "Then hairpin left."
 msgstr "続いて、ヘアピンカーブを左です。"
+
+#~ msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
+#~ msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
+
+#~ msgid "Reputation: {f} out of 100"
+#~ msgstr "評判：100中{f}"
+
+#~ msgid "Dispatch trust bonus: {grouped} dollars for your {f} reputation."
+#~ msgstr "配車係の信頼ボーナス：評判{f}に対して{grouped}ドル。"
+
+#~ msgid "{hit_count} matches."
+#~ msgstr "{hit_count} 件見つかりました。"
+
+#~ msgid ""
+#~ "{title}. {hit_count} matches. {page_text} PageDown for the next page."
+#~ msgstr "{title}。{hit_count} 件見つかりました。{page_text} PageDown で次のページへ。"
+
+#~ msgid ""
+#~ "The brackets choose all, general, or driving messages. Control C copies the "
+#~ "selected message. Review keys type normally inside text fields."
+#~ msgstr ""
+#~ "角かっこのキーで、すべて、一般、運転のメッセージを選びます。Control C "
+#~ "で選んだメッセージをコピーします。テキスト入力欄の中では、振り返りのキーは普通に文字を入力します。"
+
+#~ msgid ""
+#~ "Regional stations fade as you leave their range. If reception fails, the "
+#~ "radio tries a clear local station, then a fallback. Failed streams leave "
+#~ "the dial for that session. Roadhouse and Night Line are available across "
+#~ "the map."
+#~ msgstr ""
+#~ "地域の局は、範囲を離れると小さくなっていきます。受信できなくなると、ラジオは聞こえる地元の局を探し、なければ予備の局にします。失敗したストリームは、その"
+#~ "セッションの間ダイヤルから外れます。Roadhouse と Night Line はマップ全体で聞けます。"
+
+#~ msgid ""
+#~ "What is the difference between reputation and dispatch trust? Reputation is "
+#~ "a score out of 100 from your deliveries, lowered by your driving record. "
+#~ "Dispatch trust is what the carrier lets you do right now; your CDL, your "
+#~ "record, and what you owe count toward it too."
+#~ msgstr ""
+#~ "評判と配車係の信頼の違いは何ですか？評判は、配達から決まる100点満点のスコアで、運転記録で下がります。配車係の信頼は、運送会社が今何をさせてくれるかで"
+#~ "、CDL、記録、借りている額も影響します。"
+
+#~ msgid "Reputation: {whole} out of 100"
+#~ msgstr "評判：100点中{whole}点"
 
 #~ msgid "{closing_text} off the road"
 #~ msgstr "道路から{closing_text}"

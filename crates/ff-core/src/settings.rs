@@ -20,6 +20,25 @@ use crate::units::{
     distance_unit, hud_speed, spoken_distance, spoken_gap, to_distance, MILES_TO_KM,
 };
 
+/// How score readouts balance the descriptive band and the numeric score.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ScoreDisplay {
+    #[default]
+    Both,
+    Percent,
+    Description,
+}
+
+impl From<ScoreDisplay> for Value {
+    fn from(value: ScoreDisplay) -> Self {
+        match value {
+            ScoreDisplay::Both => Self::String("Both".to_string()),
+            ScoreDisplay::Percent => Self::String("Percent".to_string()),
+            ScoreDisplay::Description => Self::String("Description".to_string()),
+        }
+    }
+}
+
 mod migrate;
 pub mod paths;
 #[cfg(test)]
@@ -384,6 +403,10 @@ settings_fields! {
     /// hours of service: realistic/relaxed (debug_off is an internal dev
     /// bypass)
     hos_mode: String = "realistic" => str_checked,
+    /// Whether score readouts speak both the band and number, only the
+    /// number, or only the descriptive band.
+    #[serde(default)]
+    score_display: ScoreDisplay = ScoreDisplay::Both => score_display,
     /// Optional early advice from the legal-reach planner. The mandatory
     /// hours warnings and requested readouts do not depend on this switch.
     hos_planning_hints: bool = false => bool_strict,
