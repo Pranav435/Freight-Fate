@@ -123,23 +123,34 @@ fn the_copy_row_copies_what_was_said_before_the_list_opened() {
 }
 
 #[test]
-fn the_copy_key_in_the_open_list_copies_the_focused_row_not_the_heading() {
+fn the_copy_key_in_the_open_list_copies_the_heading_then_the_focused_row() {
     use freight_fate::states::base::{InputEvent, Mods};
-    let mut harness = a_drive("Command Copy Key");
-    press(&mut harness, Key::F2);
-    let first = harness.menu_labels().first().cloned().unwrap();
-    harness.key(InputEvent::key_mods(
+    let copy = InputEvent::key_mods(
         Key::C,
         Mods {
             shift: true,
             ctrl: true,
             alt: false,
         },
-    ));
+    );
+    let mut harness = a_drive("Command Copy Key");
+    press(&mut harness, Key::F2);
+    let second = harness.menu_labels().get(1).cloned().unwrap();
+    // The first copy gives the line the list opened with.
+    harness.key(copy.clone());
     assert!(harness.state_is::<DrivingCommandsState>());
-    let copied = harness.app.ctx.clipboard.get_text().unwrap_or_default();
-    assert_eq!(copied, format!("{first}."));
-    assert_ne!(copied, "Driving commands.");
+    assert_eq!(
+        harness.app.ctx.clipboard.get_text().as_deref(),
+        Some("Driving commands.")
+    );
+    // A focus move copies the focused row.
+    press(&mut harness, Key::Down);
+    harness.key(copy);
+    assert!(harness.state_is::<DrivingCommandsState>());
+    assert_eq!(
+        harness.app.ctx.clipboard.get_text().unwrap_or_default(),
+        format!("{second}.")
+    );
 }
 
 #[test]

@@ -353,10 +353,12 @@ impl RadioStationListState {
         ctx.audio.play("ui/menu_move");
         self.refresh(ctx, false);
         let current = self.current_text(ctx);
-        ctx.say_with(
-            format!("{} {current}", self.page_text()),
-            Say::new().review(false),
-        );
+        // Logged on its own (the row is not), so the copy key and message
+        // review can reach the range.
+        let page = self.page_text();
+        ctx.message_log
+            .add(&page, ff_core::message_log::MessageCategory::General);
+        ctx.say_with(format!("{page} {current}"), Say::new().review(false));
     }
 
     fn next_page_preview(&self) -> String {

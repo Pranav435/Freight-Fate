@@ -416,6 +416,13 @@ fn copy_last_spoken_copies_a_menu_result_line_not_the_focused_option() {
         app.ctx.clipboard.get_text().as_deref(),
         Some("Stations matching network. 52 matches. Results 1 to 25 of 52.")
     );
+    // Moving on copies the focused row.
+    app.dispatch_to_state(&key_event(Key::Down));
+    app.dispatch_to_state(&copy_event());
+    assert_eq!(
+        app.ctx.clipboard.get_text().as_deref(),
+        Some("Continue career.")
+    );
     app.shutdown();
 }
 
@@ -425,8 +432,9 @@ fn copy_last_spoken_copies_a_menu_result_line_not_the_focused_option() {
 fn copy_last_spoken_copies_the_focused_row_on_a_fresh_screen() {
     let mut app = TestApp::new();
     app.push_state(menu());
+    // The first copy gives the line the screen opened with.
     app.dispatch_to_state(&copy_event());
-    assert_eq!(app.ctx.clipboard.get_text().as_deref(), Some("New career."));
+    assert_eq!(app.ctx.clipboard.get_text().as_deref(), Some("Main menu."));
     app.dispatch_to_state(&key_event(Key::Down));
     app.dispatch_to_state(&copy_event());
     assert_eq!(
@@ -447,11 +455,17 @@ fn copy_last_spoken_copies_the_focused_row_after_a_welcome_line() {
     use freight_fate::states::main_menu::MainMenuState;
     let mut app = TestApp::new();
     app.push_state(MainMenuState::new());
+    // The first copy gives the opening line; a focus move gives the row.
+    app.dispatch_to_state(&copy_event());
+    let opening = app.ctx.clipboard.get_text().unwrap_or_default();
+    assert!(!opening.is_empty());
+    app.dispatch_to_state(&key_event(Key::Down));
     app.dispatch_to_state(&copy_event());
     let first = app.ctx.clipboard.get_text().unwrap_or_default();
     assert!(!first.is_empty());
     assert!(!first.contains("Welcome"), "{first:?}");
     assert!(!first.contains(" of "), "{first:?}");
+    assert_ne!(first, opening);
     app.dispatch_to_state(&key_event(Key::Down));
     app.dispatch_to_state(&copy_event());
     let second = app.ctx.clipboard.get_text().unwrap_or_default();
@@ -466,6 +480,10 @@ fn copy_last_spoken_copies_the_focused_row_on_a_prompt_screen() {
     use freight_fate::states::assist_picker::AssistPickerState;
     let mut app = TestApp::new();
     app.push_state(AssistPickerState::new());
+    app.dispatch_to_state(&copy_event());
+    let opening = app.ctx.clipboard.get_text().unwrap_or_default();
+    assert!(opening.contains("How much should the truck"), "{opening:?}");
+    app.dispatch_to_state(&key_event(Key::Down));
     app.dispatch_to_state(&copy_event());
     let copied = app.ctx.clipboard.get_text().unwrap_or_default();
     assert!(!copied.is_empty());

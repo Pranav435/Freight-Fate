@@ -185,6 +185,10 @@ pub struct GameContext {
     /// `message_log.total_added()` when the screen opened or focus last
     /// moved. While nothing newer is logged, the copy key copies the row.
     pub(crate) copy_mark: u64,
+    /// `message_log.total_added()` at the end of the last input, so a
+    /// screen's opening lines (or a page line) logged by the input that
+    /// moved focus stay ahead of the mark and can be copied first.
+    copy_seen: u64,
     /// FIRST_OCCURRENCE and TRANSITIONS need memory of what has already
     /// been said; Settings cannot hold it, so it lives here beside the
     /// pacer. `ladder_said` is leg-scoped ("once per leg"), `ladder_last`
@@ -271,6 +275,7 @@ impl GameContext {
             speech_requested: false,
             copy_focus_key: None,
             copy_mark: 0,
+            copy_seen: 0,
             ladder_said: HashSet::new(),
             ladder_last: HashMap::new(),
             handed_back: VecDeque::new(),
@@ -506,9 +511,11 @@ impl GameContext {
         self.note_copy_focus();
     }
 
-    /// Set the copy mark when the top screen or its focused row changed:
-    /// what was logged up to now (a welcome line, a re-read row) is behind
-    /// the mark, so the copy key copies the newly focused row.
+    /// Set the copy mark when the top screen or its focused row changed. The
+    /// mark is the log count from before the input that changed focus, so
+    /// what that input logged (a screen's opening lines, a search result, a
+    /// page line) is copied first; what came earlier (a re-read row) is
+    /// behind the mark, so the next focus move copies the focused row.
     pub(crate) fn note_copy_focus(&mut self) {
         let Some(state) = self.state() else {
             self.copy_focus_key = None;
@@ -523,8 +530,9 @@ impl GameContext {
         drop(borrowed);
         if key != self.copy_focus_key {
             self.copy_focus_key = key;
-            self.copy_mark = self.message_log.total_added();
+            self.copy_mark = self.copy_seen;
         }
+        self.copy_seen = self.message_log.total_added();
     }
 
     /// Push `state` and enter it (`push_state(state, should_enter=True)`).
