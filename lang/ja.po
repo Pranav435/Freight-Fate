@@ -14801,24 +14801,6 @@ msgstr "Freight Fate キー計測"
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr "矢印キーを一つずつ数秒間押し続けてください。自動的に終わります。"
 
-msgid "de"
-msgstr "de"
-
-msgid "es"
-msgstr "es"
-
-msgid "fr"
-msgstr "fr"
-
-msgid "ja"
-msgstr "ja"
-
-msgid "pl"
-msgstr "pl"
-
-msgid "ru"
-msgstr "ru"
-
 msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 
@@ -17004,6 +16986,9 @@ msgid ""
 "On your current hours, {risky} dispatch{s_ending} would need an extra legal "
 "rest. "
 msgstr "今の勤務時間では、{risky}件の配車に追加の法定休息が必要になります。 "
+
+msgid "es"
+msgstr "es"
 
 #. placeholders: {locked}
 msgid ""
@@ -37184,6 +37169,21 @@ msgstr "続いて、ヘアピンカーブを右です。"
 
 msgid "Then hairpin left."
 msgstr "続いて、ヘアピンカーブを左です。"
+
+#~ msgid "de"
+#~ msgstr "de"
+
+#~ msgid "fr"
+#~ msgstr "fr"
+
+#~ msgid "ja"
+#~ msgstr "ja"
+
+#~ msgid "pl"
+#~ msgstr "pl"
+
+#~ msgid "ru"
+#~ msgstr "ru"
 
 #~ msgid "In {lane_phrase}"
 #~ msgstr "{lane_phrase}を走行中"
