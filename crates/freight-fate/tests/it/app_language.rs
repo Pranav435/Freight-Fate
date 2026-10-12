@@ -4,7 +4,7 @@
 
 use ff_core::l10n::{self, Catalog};
 use ff_core::models::profile::data_dir;
-use freight_fate::app::language::{built_in_catalog, offered_languages};
+use freight_fate::app::language::{added_languages, built_in_catalog, offered_languages};
 use freight_fate::app::testing::TestApp;
 
 const TEST_CATALOG: &str = r#"
@@ -89,4 +89,22 @@ fn test_apps_speak_english_whatever_the_setting() {
     assert!(app.ctx.translator.is_english());
     app.ctx.say("New screen.");
     assert_eq!(app.main_lines(), vec!["New screen."]);
+}
+
+#[test]
+fn a_language_added_as_a_file_alone_is_found_with_its_name() {
+    let dir = tempfile::tempdir().expect("temp dir");
+    std::fs::create_dir_all(dir.path().join("lang")).expect("lang folder");
+    std::fs::write(
+        dir.path().join("lang").join("nl.po"),
+        "msgid \"\"\nmsgstr \"Language: nl\\nX-Language-Autonym: Nederlands\\n\"\n\n\
+         msgid \"New screen.\"\nmsgstr \"Nieuw scherm.\"\n",
+    )
+    .expect("file written");
+    // A built-in language dropped in the same folder is an override, not
+    // a new language.
+    std::fs::write(dir.path().join("lang").join("es.po"), TEST_CATALOG).expect("file written");
+    let added = added_languages(dir.path());
+    assert!(added.contains(&("nl".to_string(), "Nederlands".to_string())));
+    assert!(!added.iter().any(|(code, _)| code == "es"));
 }

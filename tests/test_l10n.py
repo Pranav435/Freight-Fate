@@ -99,3 +99,20 @@ def test_checker_catches_what_the_game_would_lose():
     assert check.check_entry("ru", "{n} miles", "{n} {n:миля|мили}") == [
         "{n:...} gives 2 forms; ru has 3"
     ]
+
+
+def test_an_added_language_keeps_its_own_header(tmp_path, monkeypatch):
+    # A translator's new language is one file; the extractor merges new
+    # lines into it like any built-in one and leaves its header alone.
+    monkeypatch.setattr(extract, "LANG", tmp_path)
+    header = "Language: nl\nX-Language-Autonym: Nederlands\n"
+    (tmp_path / "nl.po").write_text(
+        write_po([Entry(msgid="", msgstr=header), Entry(msgid="Old.", msgstr="Oud.")], refs=False),
+        encoding="utf-8",
+    )
+    assert "nl" in extract.language_codes()
+    template = [Entry(msgid="Old."), Entry(msgid="New line.")]
+    existing = parse_po((tmp_path / "nl.po").read_text(encoding="utf-8"))
+    merged = extract.merge("nl", template, existing)
+    assert merged[0].msgstr == header
+    assert [(e.msgid, e.msgstr) for e in merged[1:]] == [("Old.", "Oud."), ("New line.", "")]

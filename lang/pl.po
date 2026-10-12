@@ -16546,24 +16546,6 @@ msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr ""
 "Przytrzymaj każdą strzałkę przez kilka sekund; sonda kończy się sama."
 
-msgid "de"
-msgstr "de"
-
-msgid "es"
-msgstr "es"
-
-msgid "fr"
-msgstr "fr"
-
-msgid "ja"
-msgstr "ja"
-
-msgid "pl"
-msgstr "pl"
-
-msgid "ru"
-msgstr "ru"
-
 msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 
@@ -18917,6 +18899,9 @@ msgid ""
 msgstr ""
 "Przy twoich obecnych godzinach zlecenia wymagające dodatkowego ustawowego "
 "odpoczynku: {risky}. "
+
+msgid "es"
+msgstr "es"
 
 #. placeholders: {locked}
 msgid ""
@@ -41684,6 +41669,21 @@ msgstr "Potem nawrotka w prawo."
 
 msgid "Then hairpin left."
 msgstr "Potem nawrotka w lewo."
+
+#~ msgid "de"
+#~ msgstr "de"
+
+#~ msgid "fr"
+#~ msgstr "fr"
+
+#~ msgid "ja"
+#~ msgstr "ja"
+
+#~ msgid "pl"
+#~ msgstr "pl"
+
+#~ msgid "ru"
+#~ msgstr "ru"
 
 #~ msgid "In {lane_phrase}"
 #~ msgstr "{lane_phrase}"
