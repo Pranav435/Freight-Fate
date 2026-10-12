@@ -19,7 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from extract import LANG, LANGUAGES  # noqa: E402
+from extract import LANG, LANGUAGES, language_codes  # noqa: E402
 from po import PoError, parse_po  # noqa: E402
 
 HOLE = re.compile(r"\{([A-Za-z_][A-Za-z0-9_]*)(?::([^{}]*))?\}")
@@ -101,7 +101,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--stats", action="store_true", help="print how much is translated")
     args = parser.parse_args(argv)
     failed = False
-    for code, (name, _) in LANGUAGES.items():
+    for code in language_codes():
+        name = LANGUAGES[code][0] if code in LANGUAGES else code
         path = LANG / f"{code}.po"
         if not path.exists():
             print(f"missing: lang/{code}.po")

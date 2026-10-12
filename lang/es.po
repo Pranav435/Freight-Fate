@@ -16761,24 +16761,6 @@ msgstr "Prueba de teclas de Freight Fate"
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr "Mantén pulsada cada flecha unos segundos; termina sola."
 
-msgid "de"
-msgstr "de"
-
-msgid "es"
-msgstr "es"
-
-msgid "fr"
-msgstr "fr"
-
-msgid "ja"
-msgstr "ja"
-
-msgid "pl"
-msgstr "pl"
-
-msgid "ru"
-msgstr "ru"
-
 msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 
@@ -19122,6 +19104,9 @@ msgid ""
 msgstr ""
 "Con tus horas actuales, {risky} {risky:despacho necesitaría|despachos "
 "necesitarían} un descanso legal extra. "
+
+msgid "es"
+msgstr "es"
 
 #. placeholders: {locked}
 msgid ""
@@ -41877,6 +41862,21 @@ msgstr "Luego, curva cerrada en horquilla a la derecha."
 
 msgid "Then hairpin left."
 msgstr "Luego, curva cerrada en horquilla a la izquierda."
+
+#~ msgid "de"
+#~ msgstr "de"
+
+#~ msgid "fr"
+#~ msgstr "fr"
+
+#~ msgid "ja"
+#~ msgstr "ja"
+
+#~ msgid "pl"
+#~ msgstr "pl"
+
+#~ msgid "ru"
+#~ msgstr "ru"
 
 #~ msgid "In {lane_phrase}"
 #~ msgstr "En {lane_phrase}"

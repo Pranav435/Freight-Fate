@@ -15855,7 +15855,7 @@ msgstr ""
 msgid "the runaway truck"
 msgstr ""
 
-#: crates/ff-core/src/sim/trip_models/hazards.rs crates/freight-fate/src/app/language.rs crates/freight-fate/src/audio/assets.rs crates/freight-fate/src/states/driving_events/trip_events.rs
+#: crates/ff-core/src/sim/trip_models/hazards.rs crates/freight-fate/src/audio/assets.rs crates/freight-fate/src/states/driving_events/trip_events.rs crates/freight-fate/src/states/driving_updates/hazards.rs
 msgid "it"
 msgstr ""
 
@@ -18041,30 +18041,6 @@ msgstr ""
 
 #: crates/freight-fate/src/app/key_probe.rs
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
-msgstr ""
-
-#: crates/freight-fate/src/app/language.rs
-msgid "de"
-msgstr ""
-
-#: crates/freight-fate/src/app/language.rs crates/freight-fate/src/states/city/board.rs
-msgid "es"
-msgstr ""
-
-#: crates/freight-fate/src/app/language.rs
-msgid "fr"
-msgstr ""
-
-#: crates/freight-fate/src/app/language.rs
-msgid "ja"
-msgstr ""
-
-#: crates/freight-fate/src/app/language.rs
-msgid "pl"
-msgstr ""
-
-#: crates/freight-fate/src/app/language.rs
-msgid "ru"
 msgstr ""
 
 #: crates/freight-fate/src/app/sdl_shell.rs
@@ -20729,6 +20705,10 @@ msgstr ""
 msgid ""
 "On your current hours, {risky} dispatch{s_ending} would need an extra legal "
 "rest. "
+msgstr ""
+
+#: crates/freight-fate/src/states/city/board.rs
+msgid "es"
 msgstr ""
 
 #. placeholders: {locked}
