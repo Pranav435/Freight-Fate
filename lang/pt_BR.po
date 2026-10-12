@@ -16653,24 +16653,6 @@ msgstr "Sonda de teclas do Freight Fate"
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr "Segure cada seta por alguns segundos; termina sozinha."
 
-msgid "de"
-msgstr "de"
-
-msgid "es"
-msgstr "es"
-
-msgid "fr"
-msgstr "fr"
-
-msgid "ja"
-msgstr "ja"
-
-msgid "pl"
-msgstr "pl"
-
-msgid "ru"
-msgstr "ru"
-
 msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 
@@ -19018,6 +19000,9 @@ msgid ""
 msgstr ""
 "Com as suas horas atuais, {risky} {risky:frete precisaria|fretes "
 "precisariam} de um descanso legal extra. "
+
+msgid "es"
+msgstr "es"
 
 #. placeholders: {locked}
 msgid ""
@@ -41600,6 +41585,21 @@ msgstr "Depois, curva fechadíssima à direita."
 
 msgid "Then hairpin left."
 msgstr "Depois, curva fechadíssima à esquerda."
+
+#~ msgid "de"
+#~ msgstr "de"
+
+#~ msgid "fr"
+#~ msgstr "fr"
+
+#~ msgid "ja"
+#~ msgstr "ja"
+
+#~ msgid "pl"
+#~ msgstr "pl"
+
+#~ msgid "ru"
+#~ msgstr "ru"
 
 #~ msgid "In {lane_phrase}"
 #~ msgstr "Na {lane_phrase}"
