@@ -4,6 +4,12 @@
 
 ### Added
 
+- **A Language setting lets the game speak other languages.** It is the first row of Settings, Speech; Automatic follows your system language, and the radio stays English.
+
+- **Anyone can correct a translation with the Translation correction form on GitHub.** It asks what the game said and what it should say.
+
+- **A translator can add a new language with its translation file alone.** The game offers it in Settings by the name the file gives.
+
 - **The main menu now has background sound under the music, picked by your career.** A truck stop at night, your rig in the yard, or the dispatch office.
 
 - **The Radio app can browse by category.** List all stations or one category, in-range and local stations first, repeats removed.

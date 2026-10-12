@@ -286,6 +286,19 @@ cleanup](https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.ht
 - Lint: `uv run ruff check tests tools`
 - Byte-compile check: `uv run python -m compileall tests tools`
 
+### Translations
+
+- Spoken text is translated at the speech boundary (`ff_core::l10n`, wired in
+  `GameContext::say`/`say_event` through `app/language.rs`), so code stays in
+  English. After changing any player-facing string, run
+  `uv run python tools/l10n/extract.py`; `tests/test_l10n.py` fails while
+  `lang/` is stale. `uv run python tools/l10n/check.py --stats` checks the
+  language files. A line assembled from pieces the extractor cannot see goes
+  in `lang/extra.pot` as a template.
+- Headless runs stay English. `FREIGHT_FATE_LANG=es` forces a language for a
+  run (harness and agent server included), and `FREIGHT_FATE_L10N_MISSES=path`
+  writes every line no translation matched.
+
 ### Both
 
 - Headless runs: set `FREIGHT_FATE_NO_SPEECH=1` (CI also uses

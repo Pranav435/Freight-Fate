@@ -2,6 +2,7 @@
 //! `SettingsCategoryState` in `main_menu.py`, plus the spoken value labels
 //! the rows read.
 
+use ff_core::l10n;
 use ff_core::pyfmt::{py_str_float, round_py_n};
 use ff_core::settings::{
     acc_gap_seconds, ScoreDisplay, Settings, ACC_GAP_CHOICES, ACC_GAP_DEFAULT,
@@ -14,7 +15,7 @@ use ff_core::speech_pacing::DRIVING_SPEECH_MODES;
 
 use super::settings::{save_settings, SettingsCategoryState};
 use super::settings_items::assist_flag;
-use crate::app::{version, GameContext, Say};
+use crate::app::{language, version, GameContext, Say};
 use crate::audio::VolumeUpdate;
 use crate::bindings::Action;
 use crate::states::text_entry::TextEntryState;
@@ -47,6 +48,18 @@ fn cycle_index(options: &[&str], current: &str, d: i64, fallback_index: usize) -
         .position(|o| *o == current)
         .unwrap_or(fallback_index) as i64;
     (i + d).rem_euclid(options.len() as i64) as usize
+}
+
+/// The Language row's value: the language's own name, after "automatic"
+/// when the row follows the system.
+pub(super) fn language_label(s: &Settings) -> String {
+    let resolved = l10n::resolve(&s.language, language::system_locale().as_deref());
+    let name = l10n::language(resolved).map_or("English", |lang| lang.autonym);
+    if s.language == l10n::AUTO || s.language.is_empty() {
+        format!("automatic, {name}")
+    } else {
+        name.to_string()
+    }
 }
 
 pub(super) fn assist_preset_label(s: &Settings) -> &'static str {
@@ -623,6 +636,17 @@ impl SettingsCategoryState {
         save_settings(&ctx.settings);
         ctx.apply_speech();
         self.announce_speech_preview(ctx, attr);
+    }
+
+    pub(super) fn cycle_language(&mut self, ctx: &mut GameContext, d: i64) {
+        let mut options = vec![l10n::AUTO];
+        options.extend(language::offered_languages().iter().map(|lang| lang.code));
+        let i = cycle_index(&options, &ctx.settings.language, d, 0);
+        ctx.settings.language = options[i].to_string();
+        save_settings(&ctx.settings);
+        let setting = ctx.settings.language.clone();
+        ctx.set_language(&setting);
+        self.announce(ctx);
     }
 
     pub(super) fn cycle_voice(&mut self, ctx: &mut GameContext, d: i64) {

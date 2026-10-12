@@ -77,6 +77,10 @@ on:
       - "tests/python_signed_save.*"
       - "tools/jaws/**"
       - "tools/fetch_bass.py"
+      # The translations: compiled in with include_str!, and the extractor
+      # that keeps them in step with the spoken text in crates/.
+      - "lang/**"
+      - "tools/l10n/**"
   pull_request:
     branches: [main, dev, feat/career-1.9]
     # Keep in step with the push list (tests/test_ci_workflow.py checks).
@@ -95,6 +99,8 @@ on:
       - "tests/python_signed_save.*"
       - "tools/jaws/**"
       - "tools/fetch_bass.py"
+      - "lang/**"
+      - "tools/l10n/**"
   # A manual run is the FULL suite: no `--cfg ci_quick`, sweeps included.
   workflow_dispatch:
 
@@ -128,6 +134,13 @@ jobs:
 
       - name: cargo fmt --check
         run: cargo fmt --all --check
+
+      # Spoken text changed in crates/ must reach lang/ in the same change,
+      # or translators work from a stale list. Standard library only.
+      - name: Translation files up to date
+        run: |
+          python3 tools/l10n/extract.py --check
+          python3 tools/l10n/check.py
 
   test-core:
     # ff-core is everything headless: no window, audio device, screen

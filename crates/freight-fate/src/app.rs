@@ -39,6 +39,7 @@ pub mod boot_timing;
 pub mod context;
 pub mod held_keys;
 pub mod key_probe;
+pub mod language;
 pub mod logging;
 pub mod sdl_shell;
 pub mod speech_delivery;
@@ -558,6 +559,13 @@ impl App {
                 mastodon,
             },
         });
+        // The windowed game speaks the player's language. Headless runs (the
+        // tests, the harness, the tools) stay English unless a language is
+        // forced for the run, so a developer's own locale never changes a
+        // transcript a test reads.
+        if shell.is_some() || std::env::var_os(language::LANG_ENV).is_some() {
+            ctx.apply_language();
+        }
         ctx.apply_volumes();
         ctx.apply_speech();
         boot_timing::mark("volumes and voice");
