@@ -389,6 +389,20 @@ impl Pass<'_, '_> {
         let lead = &text[..text.len() - text.trim_start().len()];
         let trail = &text[text.trim_end().len()..];
         let wrap = |inner: String| format!("{lead}{inner}{trail}");
+        if let Some(hit) = self.catalog.exact.get(core) {
+            return Some(wrap(hit.clone()));
+        }
+        // "In the right lane." is the catalog's exact "In the right lane"
+        // with a full stop: that beats any template the stopped line also
+        // fills ("{at} the {noun}.").
+        if let Some(hit) = core
+            .strip_suffix('.')
+            .filter(|bare| !bare.ends_with(['.', ':', ',', ';']))
+            .and_then(|bare| self.catalog.exact.get(bare))
+        {
+            let out = self.with_full_stop(hit.clone());
+            return Some(wrap(out));
+        }
         if let Some(out) = self.lookup(core, depth) {
             return Some(wrap(out));
         }
