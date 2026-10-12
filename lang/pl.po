@@ -26882,11 +26882,42 @@ msgstr ""
 msgid "search"
 msgstr ""
 
+#. placeholders: {start}, {end}, {total}
+msgid "Results {start} to {end} of {total}."
+msgstr ""
+
+msgid "Last page of results."
+msgstr ""
+
+msgid "First page of results."
+msgstr ""
+
+#. placeholders: {start}, {end}, {hit_count}
+msgid "Results {start} to {end} of {hit_count}"
+msgstr ""
+
 #. placeholders: {display_name}
 msgid "{display_name} is out of range here."
 msgstr ""
 
 msgid "Enter tunes this station."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Next page."
+msgstr ""
+
+#. placeholders: {next_page_preview}
+msgid "Next page. {next_page_preview}"
+msgstr ""
+
+msgid "Shows the next results. PageDown does the same."
+msgstr ""
+
+msgid "Previous page"
+msgstr ""
+
+msgid "Shows the earlier results. PageUp does the same."
 msgstr ""
 
 msgid "No stations here yet."
@@ -26901,13 +26932,19 @@ msgstr ""
 msgid "Go back."
 msgstr ""
 
-#. placeholders: {title}, {total}, {rows}
-msgid "{title}. {total} matches, the first {rows} listed."
+#. placeholders: {hit_count}
+#. one sentence of a longer line
+msgid "{hit_count} matches."
 msgstr ""
 
-#. placeholders: {total}, {rows}
+#. placeholders: {page_text}
 #. one sentence of a longer line
-msgid "{total} matches, the first {rows} listed."
+msgid "{page_text} PageDown for the next page."
+msgstr ""
+
+#. placeholders: {title}, {hit_count}, {page_text}
+msgid ""
+"{title}. {hit_count} matches. {page_text} PageDown for the next page."
 msgstr ""
 
 #. one sentence of a longer line
