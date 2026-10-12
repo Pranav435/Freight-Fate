@@ -42287,6 +42287,13 @@ msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
+"On newer Xbox controllers, Back is the View button, left of the Xbox "
+"button, and Start is the Menu button on its right. On Windows, the Xbox "
+"button opens the Game Bar; press it again to return."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu_help.rs
+msgid ""
 "In menus, D-pad moves, A confirms, B returns, and Back reads help. During "
 "driving speech, Back stops the voice; otherwise it reads help. Start pauses."
 msgstr ""
@@ -42410,6 +42417,13 @@ msgstr ""
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid "{pad_status} opens driving status."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu_help.rs
+msgid ""
+"If the controller does nothing, check that Controller is enabled under "
+"Settings, Gameplay, Controls. The game uses the first controller it finds, "
+"so unplug other controllers and close Steam."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs

@@ -66,6 +66,8 @@
 
 - **88.3 Life FM now plays on the FM band around Bakersfield, California.** It used to be a web station heard everywhere.
 
+- **Controller help now covers newer Xbox controllers and what to check when a controller does nothing.** The manual also lists the default buttons.
+
 - **The player manual has contents links for jumping straight to a chapter.**
 
 - **The player manual uses shorter explanations and clearer hotkey instructions.**

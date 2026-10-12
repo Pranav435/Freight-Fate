@@ -410,6 +410,40 @@ Drive with the right trigger for acceleration and the left trigger for braking. 
 
 Inside How to play, D-pad Left and Right change pages, while Up and Down let you read a little at a time. A reads the whole page, Back stops speech, and B returns.
 
+#### Finding the buttons
+
+Newer Xbox controllers use different names for two of these buttons. Back is the View button, the small button left of the Xbox button, marked with two overlapping squares. Start is the Menu button on the other side, marked with three lines. The bumpers are the long buttons on top of the controller, and the triggers sit behind them under your index fingers. A stick click means pressing a stick straight down until it clicks.
+
+The game doesn't use the Xbox button. On Windows it opens the Xbox Game Bar, which takes focus away from the game; press the Xbox button again to come back. To stop that, turn off the controller option under Windows Settings, Gaming, Xbox Game Bar.
+
+#### Default buttons
+
+These are the starting assignments. You can change most of them under Settings, Gameplay, Controls, Controller buttons, and the controller help in a drive always names your current ones.
+
+| Button | On its own | With right bumper held |
+| --- | --- | --- |
+| A | Shift up | Start or stop the engine |
+| B | Read speed | Read fuel |
+| X | Shift down | Read the speed limit |
+| Y | Start speed control | Set or release the parking brake |
+| D-pad up | Read route and location | Read route and location |
+| D-pad down | Signal for an exit | Route-stop actions, or shoulder sleep when stopped |
+| D-pad left | Read weather | Lower the cruise target |
+| D-pad right | Read clock and hours | Raise the cruise target |
+| Left stick click | Horn | |
+| Right stick click | Engine brake | Step through engine brake stages |
+| Start | Pause | Driving status |
+
+Start on its own, Back, both bumpers, both triggers, and the left stick always keep their jobs.
+
+#### If the controller doesn't respond
+
+- Connect it with a USB cable, an Xbox Wireless Adapter, or Bluetooth. Over Bluetooth, a newer Xbox controller may need a firmware update first: install the Xbox Accessories app from the Microsoft Store, connect the controller by cable, and update it there.
+- Check that Controller is enabled in Settings, Gameplay, Controls.
+- The game uses the first controller it finds. A second controller, or a virtual one from Steam or a remapping tool, can get there first. Turn off or unplug the others, and close Steam, or turn off Steam Input for Freight Fate, if it is running.
+- The game hears the controller only while its window has focus. If buttons stop working after you switched programs, switch back with Alt+Tab.
+- If some buttons work but the triggers or bumpers don't, include the game log in your report; it names your controller and notes any controls that weren't mapped. From a command prompt in the game folder, `FreightFate.exe --controller-diagnostics` also records every button you press to `controller-diagnostics.log`.
+
 
 ## Truck behavior
 
@@ -1040,6 +1074,8 @@ Set Output to braille only under Settings, Speech. It needs NVDA or JAWS.
 ## When you need help
 
 If the truck won't move, check the basics first: fuel, engine, air pressure, and parking brake. Damage, wear, or a suspended CDL can also stop you. Roadside help can restore fuel or mobility.
+
+If your controller doesn't respond, see [If the controller doesn't respond](#if-the-controller-doesnt-respond).
 
 If you're trying to rest, T opens a supported stop when you're fully stopped or plans rest while rolling. You need to stop completely before shoulder sleep. For a missed destination exit, follow the turnaround guidance.
 
