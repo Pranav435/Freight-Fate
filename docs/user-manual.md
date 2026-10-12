@@ -660,7 +660,7 @@ Press Tab while driving and choose Driver apps from Driving status. You'll find 
 
 ### Radio app
 
-Radio opens a menu where you can switch the radio on or off, tune a station, save or remove a favorite, browse stations in range, and suggest a station. Search stations lets you type part of a name, call sign, or format and press Enter for results. Choose a result and press Enter to tune it. A station marked out of range here cannot be tuned from your current location.
+Radio opens a menu where you can switch the radio on or off, tune a station, save or remove a favorite, browse stations in range, and suggest a station. Search stations lets you type part of a name, call sign, or format and press Enter for results. Results show 25 at a time; use the Next page and Previous page rows, or PageDown and PageUp, to reach the rest. Choose a result and press Enter to tune it. A station marked out of range here cannot be tuned from your current location.
 
 Favorites gives you a shorter list of stations you've saved. The Radio report under Driving status is useful for reading reception and playlist information; open the Radio app when you want to choose a station. The [radio guide](#radio-and-playlists) explains the dial, signal changes, personal music, and music settings.
 

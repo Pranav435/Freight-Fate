@@ -2254,3 +2254,19 @@ fn test_search_finds_the_whole_dial_in_range_first() {
     assert!(total > 5);
     assert_eq!(radio.band_name(&hits[0].0), "Terrestrial");
 }
+
+#[test]
+fn search_page_bounds_cover_every_hit_once() {
+    for total in [0usize, 1, 25, 26, 40, 41, 50, 51, 52] {
+        let pages = search_page_count(total, 25);
+        let mut covered = 0;
+        for page in 0..pages {
+            let (start, end) = search_page_bounds(total, page, 25);
+            assert_eq!(start, covered, "total {total} page {page}");
+            covered = end;
+        }
+        assert_eq!(covered, total);
+    }
+    assert_eq!(search_page_bounds(52, 1, 25), (25, 50));
+    assert_eq!(search_page_bounds(52, 9, 25), (50, 52));
+}
