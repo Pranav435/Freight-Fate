@@ -16776,24 +16776,6 @@ msgstr "Freight Fate Tastenprobe"
 msgid "Hold each arrow key for a few seconds; it finishes by itself."
 msgstr "Halte jede Pfeiltaste ein paar Sekunden lang; sie endet von selbst."
 
-msgid "de"
-msgstr "de"
-
-msgid "es"
-msgstr "es"
-
-msgid "fr"
-msgstr "fr"
-
-msgid "ja"
-msgstr "ja"
-
-msgid "pl"
-msgstr "pl"
-
-msgid "ru"
-msgstr "ru"
-
 msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 
@@ -19157,6 +19139,9 @@ msgid ""
 msgstr ""
 "Mit deinen aktuellen Stunden bräuchten {risky} {risky:Auftrag|Aufträge} "
 "eine zusätzliche gesetzliche Ruhezeit. "
+
+msgid "es"
+msgstr "es"
 
 #. placeholders: {locked}
 msgid ""
@@ -41928,6 +41913,21 @@ msgstr "Danach Haarnadelkurve rechts."
 
 msgid "Then hairpin left."
 msgstr "Danach Haarnadelkurve links."
+
+#~ msgid "de"
+#~ msgstr "de"
+
+#~ msgid "fr"
+#~ msgstr "fr"
+
+#~ msgid "ja"
+#~ msgstr "ja"
+
+#~ msgid "pl"
+#~ msgstr "pl"
+
+#~ msgid "ru"
+#~ msgstr "ru"
 
 #~ msgid "In {lane_phrase}"
 #~ msgstr "Position {lane_phrase}"
