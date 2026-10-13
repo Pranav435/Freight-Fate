@@ -8010,12 +8010,28 @@ msgid ""
 "the carrier is deciding whether to keep you."
 msgstr ""
 
+msgid "You get the whole board."
+msgstr ""
+
+msgid ""
+"Dispatch is holding back some of the freight and allows fewer refusals."
+msgstr ""
+
+msgid ""
+"You are back to assigned loads whatever your level, the board is down to "
+"two, and the good freight is going to other drivers."
+msgstr ""
+
+msgid ""
+"One assigned load at a time, no refusals, and the carrier is deciding "
+"whether to keep you."
+msgstr ""
+
 #. placeholders: {trust_band_text}
 msgid "{trust_band_text} Clean on-time runs rebuild it."
 msgstr ""
 
-#. placeholders: {band}
-msgid "Dispatch trust: {band}."
+msgid " Clean on-time runs rebuild it."
 msgstr ""
 
 #. placeholders: {band}, {number}
@@ -8033,6 +8049,10 @@ msgstr ""
 
 #. placeholders: {number}
 msgid "Dispatch trust. Reputation {number} out of 100."
+msgstr ""
+
+#. placeholders: {band}
+msgid "Dispatch trust: {band}."
 msgstr ""
 
 msgid "licence"
@@ -20503,6 +20523,10 @@ msgstr ""
 msgid "{status} status menu."
 msgstr ""
 
+#. placeholders: {fuel}
+msgid "{fuel} fuel."
+msgstr ""
+
 #. placeholders: {clock}
 msgid "{clock} clock, deadline, and the hours limit that comes first."
 msgstr ""
@@ -20525,6 +20549,10 @@ msgid ""
 msgstr ""
 
 msgid "The keypad numbers work the same way."
+msgstr ""
+
+#. placeholders: {weather}
+msgid "{weather} weather."
 msgstr ""
 
 #. placeholders: {lane}
@@ -20633,6 +20661,10 @@ msgstr ""
 msgid ""
 "Fully stopped away from route points, {rest} opens the emergency "
 "shoulder-sleep warning instead."
+msgstr ""
+
+#. placeholders: {horn}
+msgid "{horn} horn."
 msgstr ""
 
 #. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
@@ -21071,6 +21103,10 @@ msgid "Nothing else steep"
 msgstr ""
 
 msgid "Nothing steep"
+msgstr ""
+
+#. placeholders: {nothing}
+msgid "{nothing} ahead."
 msgstr ""
 
 #. placeholders: {nothing}, {distance_text}
@@ -26202,8 +26238,8 @@ msgstr ""
 msgid "Time: {clock_text} {clock_zone_label}, {deadline_text}"
 msgstr ""
 
-#. placeholders: {name}
-msgid "Driver: {name}"
+#. placeholders: {driver_name}
+msgid "Driver: {driver_name}"
 msgstr ""
 
 #. placeholders: {grouped}
@@ -30642,6 +30678,10 @@ msgid "{name} could not be deleted. The save is still on this computer."
 msgstr ""
 
 #. placeholders: {name}
+msgid "{name} deleted."
+msgstr ""
+
+#. placeholders: {name}
 #. one sentence of a longer line
 msgid "{name} deleted from this computer."
 msgstr ""
@@ -32322,6 +32362,10 @@ msgstr ""
 
 #. placeholders: {name}
 msgid "Loaded over existing driver named {name}. "
+msgstr ""
+
+#. placeholders: {region}
+msgid "{region} terminals."
 msgstr ""
 
 #. placeholders: {terminal_name}, {place}
@@ -35435,6 +35479,10 @@ msgstr ""
 
 #. one sentence of a longer line
 msgid "The next update will still be offered."
+msgstr ""
+
+#. placeholders: {mb}
+msgid " {mb} megabytes."
 msgstr ""
 
 #. one sentence of a longer line

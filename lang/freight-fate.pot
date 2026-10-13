@@ -10131,14 +10131,34 @@ msgid ""
 "the carrier is deciding whether to keep you."
 msgstr ""
 
+#: crates/ff-core/src/models/enforcement.rs
+msgid "You get the whole board."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid ""
+"Dispatch is holding back some of the freight and allows fewer refusals."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid ""
+"You are back to assigned loads whatever your level, the board is down to "
+"two, and the good freight is going to other drivers."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid ""
+"One assigned load at a time, no refusals, and the carrier is deciding "
+"whether to keep you."
+msgstr ""
+
 #. placeholders: {trust_band_text}
 #: crates/ff-core/src/models/enforcement.rs
 msgid "{trust_band_text} Clean on-time runs rebuild it."
 msgstr ""
 
-#. placeholders: {band}
 #: crates/ff-core/src/models/enforcement.rs
-msgid "Dispatch trust: {band}."
+msgid " Clean on-time runs rebuild it."
 msgstr ""
 
 #. placeholders: {band}, {number}
@@ -10160,6 +10180,11 @@ msgstr ""
 #. placeholders: {number}
 #: crates/ff-core/src/models/enforcement.rs
 msgid "Dispatch trust. Reputation {number} out of 100."
+msgstr ""
+
+#. placeholders: {band}
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: {band}."
 msgstr ""
 
 #: crates/ff-core/src/models/enforcement.rs
@@ -25860,6 +25885,11 @@ msgstr ""
 msgid "{status} status menu."
 msgstr ""
 
+#. placeholders: {fuel}
+#: crates/freight-fate/src/states/driving_controls/help.rs
+msgid "{fuel} fuel."
+msgstr ""
+
 #. placeholders: {clock}
 #: crates/freight-fate/src/states/driving_controls/help.rs
 msgid "{clock} clock, deadline, and the hours limit that comes first."
@@ -25887,6 +25917,11 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_controls/help.rs
 msgid "The keypad numbers work the same way."
+msgstr ""
+
+#. placeholders: {weather}
+#: crates/freight-fate/src/states/driving_controls/help.rs
+msgid "{weather} weather."
 msgstr ""
 
 #. placeholders: {lane}
@@ -26017,6 +26052,11 @@ msgstr ""
 msgid ""
 "Fully stopped away from route points, {rest} opens the emergency "
 "shoulder-sleep warning instead."
+msgstr ""
+
+#. placeholders: {horn}
+#: crates/freight-fate/src/states/driving_controls/help.rs
+msgid "{horn} horn."
 msgstr ""
 
 #. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
@@ -26560,6 +26600,11 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_controls/info.rs
 msgid "Nothing steep"
+msgstr ""
+
+#. placeholders: {nothing}
+#: crates/freight-fate/src/states/driving_controls/info.rs
+msgid "{nothing} ahead."
 msgstr ""
 
 #. placeholders: {nothing}, {distance_text}
@@ -32931,9 +32976,9 @@ msgstr ""
 msgid "Time: {clock_text} {clock_zone_label}, {deadline_text}"
 msgstr ""
 
-#. placeholders: {name}
+#. placeholders: {driver_name}
 #: crates/freight-fate/src/states/driving_menu_states/status.rs
-msgid "Driver: {name}"
+msgid "Driver: {driver_name}"
 msgstr ""
 
 #. placeholders: {grouped}
@@ -38421,6 +38466,11 @@ msgid "{name} could not be deleted. The save is still on this computer."
 msgstr ""
 
 #. placeholders: {name}
+#: crates/freight-fate/src/states/main_menu/careers.rs
+msgid "{name} deleted."
+msgstr ""
+
+#. placeholders: {name}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/main_menu/careers.rs
 msgid "{name} deleted from this computer."
@@ -40508,6 +40558,11 @@ msgstr ""
 #. placeholders: {name}
 #: crates/freight-fate/src/states/main_menu_career.rs
 msgid "Loaded over existing driver named {name}. "
+msgstr ""
+
+#. placeholders: {region}
+#: crates/freight-fate/src/states/main_menu_career.rs
+msgid "{region} terminals."
 msgstr ""
 
 #. placeholders: {terminal_name}, {place}
@@ -44268,6 +44323,11 @@ msgstr ""
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/update.rs
 msgid "The next update will still be offered."
+msgstr ""
+
+#. placeholders: {mb}
+#: crates/freight-fate/src/states/update.rs
+msgid " {mb} megabytes."
 msgstr ""
 
 #. one sentence of a longer line

@@ -526,6 +526,10 @@ def is_player_text(text: str, is_format: bool, is_key: bool = False) -> bool:
             r"^[a-z]{3,}, \{[A-Za-z_][A-Za-z0-9_]*(:[^}]*)?\}$", text.strip()
         ):
             return True
+        # A key and what it reads ("{fuel} fuel.", "{horn} horn."): the
+        # help's one-word sentences.
+        if is_format and re.match(r"^\{[A-Za-z_][A-Za-z0-9_]*\} [a-z]{2,}\.$", text.strip()):
+            return True
         if is_key or not re.match(r"^[a-z]{2,}$", stripped):
             return False
     return True

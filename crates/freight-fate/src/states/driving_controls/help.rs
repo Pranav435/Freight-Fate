@@ -335,7 +335,7 @@ impl DrivingState {
              Keyboard shortcuts."
                 .to_string(),
         );
-        ctx.say(&lines.join(" "));
+        ctx.say(&sentences(&lines));
     }
 
     /// `_speak_controller_help()`: controller layout help, spoken from the
@@ -478,7 +478,7 @@ impl DrivingState {
              Controller buttons."
                 .to_string(),
         );
-        ctx.say(&lines.join(" "));
+        ctx.say(&sentences(&lines));
     }
 }
 
@@ -536,4 +536,22 @@ fn capitalized(phrase: &str) -> String {
         Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
         None => String::new(),
     }
+}
+
+/// The help's sentences joined with spaces, each opening with a capital: a
+/// key name leads some ("the Left arrow and the Right arrow steer"), and a
+/// sentence that starts lowercase is neither good English nor found as its
+/// own sentence by a translation.
+fn sentences(lines: &[String]) -> String {
+    lines
+        .iter()
+        .map(|line| {
+            let mut chars = line.chars();
+            match chars.next() {
+                Some(first) => first.to_uppercase().chain(chars).collect(),
+                None => String::new(),
+            }
+        })
+        .collect::<Vec<String>>()
+        .join(" ")
 }

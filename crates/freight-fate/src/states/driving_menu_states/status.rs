@@ -227,8 +227,10 @@ impl DrivingStatusScreenState {
                 } else {
                     String::new()
                 };
+                // Named as the driver's own: a player name is kept as it is.
+                let driver_name = &profile.name;
                 let mut lines = vec![
-                    format!("Driver: {}", profile.name),
+                    format!("Driver: {driver_name}"),
                     format!("Money: {} dollars", fmt_grouped(profile.money(), 0)),
                     format!(
                         "Reputation: {}",

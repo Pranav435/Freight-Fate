@@ -553,3 +553,159 @@ msgstr "Mantén {up} para acelerar y {down} para frenar."
         "Mantén Up arrow para acelerar y Down arrow para frenar. The throttle key never latches."
     );
 }
+
+/// Lines a Spanish listen heard mixed although the catalog had every
+/// sentence: the matcher, not the catalog, left them English.
+const LISTEN_PO: &str = r#"
+msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "Place callouts: {place_callouts}"
+msgstr "Avisos de lugares: {place_callouts}"
+
+msgid "sparse"
+msgstr "pocos"
+
+msgid "Driving speech: {replace}"
+msgstr "Avisos de conducción: {replace}"
+
+msgid "standard"
+msgstr "estándar"
+
+msgid "Open-road target: {open_road_target}"
+msgstr "Objetivo en carretera abierta: {open_road_target}"
+
+msgid "posted limit when the open road begins"
+msgstr "límite señalizado cuando empiece la carretera abierta"
+
+msgid "How to play. {controls} {page_title}"
+msgstr "Cómo jugar. {controls} {page_title}"
+
+msgid "Left and Right arrows change pages. Escape goes back."
+msgstr "Las flechas izquierda y derecha cambian de página. Escape vuelve atrás."
+
+msgid "Left"
+msgstr "Izquierda"
+
+msgid "Page {page} of {total}: {title}."
+msgstr "Página {page} de {total}: {title}."
+
+msgid "Main menu"
+msgstr "Menú principal"
+
+msgid "It is {tod}."
+msgstr "Son las {tod}."
+
+msgid "{remaining} remaining of {f}"
+msgstr "quedan {remaining} de {f}"
+
+msgid "{place}{state} on {highway}"
+msgstr "{place}{state} en {highway}"
+
+msgid "Next place in {ahead_text}: {text}."
+msgstr "Próximo lugar en {ahead_text}: {text}."
+
+msgid "{carrier} is looking for steady service."
+msgstr "{carrier} busca un servicio constante."
+
+msgid " Career objective: {terminal_text}"
+msgstr " Objetivo de carrera: {terminal_text}"
+
+msgid "You have {grouped} dollars."
+msgstr "Tienes {grouped} dólares."
+
+msgid "ELD: {summary}"
+msgstr "{summary}"
+
+msgid "ELD status on duty not driving."
+msgstr "Estado del ELD: en servicio sin conducir."
+
+msgid "Driver: {driver_name}"
+msgstr "Conductor: {driver_name}"
+
+msgid "Tap the brake to latch it."
+msgstr "Toca el freno para retenerlo."
+
+msgid "the Down arrow"
+msgstr "la flecha abajo"
+
+msgid "{down} once releases it."
+msgstr "{down} una vez lo suelta."
+"#;
+
+fn listen() -> Translator {
+    Translator::new(Catalog::from_po("es", LISTEN_PO).expect("listen catalog parses"))
+}
+
+#[test]
+fn a_value_hole_named_like_a_place_is_still_translated() {
+    let tr = listen();
+    // "place_callouts", "replace" and "open_road_target" hold values, not
+    // names: they were matched as names because "place" and "road" sit
+    // inside them.
+    assert_eq!(
+        tr.translate("Place callouts: sparse."),
+        "Avisos de lugares: pocos."
+    );
+    assert_eq!(
+        tr.translate("Driving speech: standard."),
+        "Avisos de conducción: estándar."
+    );
+    assert_eq!(
+        tr.translate("Open-road target: posted limit when the open road begins."),
+        "Objetivo en carretera abierta: límite señalizado cuando empiece la carretera abierta."
+    );
+}
+
+#[test]
+fn two_holes_split_by_a_space_split_where_a_sentence_ends() {
+    assert_eq!(
+        listen().translate(
+            "How to play. Left and Right arrows change pages. Escape goes back. Page 1 of 19: Main menu."
+        ),
+        "Cómo jugar. Las flechas izquierda y derecha cambian de página. Escape vuelve atrás. \
+         Página 1 de 19: Menú principal."
+    );
+}
+
+#[test]
+fn a_sentence_opens_with_a_capital_and_names_need_few_letters_of_frame() {
+    let tr = listen();
+    assert_eq!(
+        tr.translate("It is 8 AM. 451 miles remaining of 451."),
+        "Son las 8 AM. Quedan 451 miles de 451."
+    );
+    assert_eq!(
+        tr.translate("Next place in 20 miles: Groton, South Dakota on US-12."),
+        "Próximo lugar en 20 miles: Groton, South Dakota en US-12."
+    );
+}
+
+#[test]
+fn a_joined_piece_and_a_name_with_a_label_still_translate() {
+    assert_eq!(
+        listen().translate(
+            "You have 5,000 dollars.  Career objective: Northstar Freight Lines is looking for steady service."
+        ),
+        "Tienes 5.000 dólares.  Objetivo de carrera: Northstar Freight Lines busca un servicio constante."
+    );
+}
+
+#[test]
+fn a_summary_without_its_full_stop_finds_its_sentence() {
+    let tr = listen();
+    assert_eq!(
+        tr.translate("ELD: ELD status on duty not driving."),
+        "Estado del ELD: en servicio sin conducir."
+    );
+    assert_eq!(tr.translate("Driver: Playtest."), "Conductor: Playtest.");
+}
+
+#[test]
+fn help_sentences_after_a_key_name_translate_whole() {
+    assert_eq!(
+        listen().translate("Tap the brake to latch it. The Down arrow once releases it."),
+        "Toca el freno para retenerlo. La flecha abajo una vez lo suelta."
+    );
+}
