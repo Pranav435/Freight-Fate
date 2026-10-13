@@ -25101,8 +25101,13 @@ msgstr ""
 msgid "The road narrows to {lane_count_words}."
 msgstr ""
 
-#. placeholders: {here}
-msgid "Staying in the {here} lane."
+msgid "Staying in the left lane."
+msgstr ""
+
+msgid "Staying in the right lane."
+msgstr ""
+
+msgid "Staying in the middle lane."
 msgstr ""
 
 #. placeholders: {name}

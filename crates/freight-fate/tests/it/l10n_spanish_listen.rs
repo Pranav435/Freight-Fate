@@ -120,3 +120,27 @@ fn the_keyboard_help_is_whole_spanish() {
         assert_eq!(english_left(&es, line), Vec::<String>::new());
     }
 }
+
+#[test]
+fn a_called_off_lane_keeping_move_is_whole_spanish() {
+    // The line lane keeping says when it calls a move off was left
+    // untranslated, so a Spanish listen heard it in English.
+    let es = spanish();
+    for (line, want) in [
+        (
+            "Staying in the left lane.",
+            "Sigues en el carril izquierdo.",
+        ),
+        ("Staying in the right lane.", "Sigues en el carril derecho."),
+        (
+            "Staying in the middle lane.",
+            "Sigues en el carril central.",
+        ),
+        (
+            "The road narrows to two lanes.",
+            "La carretera se estrecha a dos carriles.",
+        ),
+    ] {
+        assert_eq!(es.translate(line), want);
+    }
+}

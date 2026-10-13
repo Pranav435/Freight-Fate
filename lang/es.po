@@ -29111,9 +29111,14 @@ msgstr "Cambiando al carril de la {name} para la salida."
 msgid "The road narrows to {lane_count_words}."
 msgstr "La carretera se estrecha a {lane_count_words}."
 
-#. placeholders: {here}
-msgid "Staying in the {here} lane."
-msgstr ""
+msgid "Staying in the left lane."
+msgstr "Sigues en el carril izquierdo."
+
+msgid "Staying in the right lane."
+msgstr "Sigues en el carril derecho."
+
+msgid "Staying in the middle lane."
+msgstr "Sigues en el carril central."
 
 #. placeholders: {name}
 msgid "{name} lane closed for construction."
