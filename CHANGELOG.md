@@ -104,6 +104,8 @@
 
 - **With score display set to percentage only, the dispatch trust line keeps its trust level.**
 
+- **Spanish dispatch trust levels now agree with confianza (completa, con reservas, baja, última oportunidad).**
+
 - **Lane keeping no longer pulls out to pass into the oncoming lane on two-lane roads.** Where a passing lane serves only the other direction, the truck stays in its own lane.
 
 - **Lane keeping now calls off a lane change if the lane fills or ends before the truck is across.** You hear "Staying in the left lane" instead of a sideswipe. If a vehicle then paces the truck in the right lane, lane keeping says it is easing off, lets it by and moves back in three seconds behind it, and the CB no longer tells you off for the wait. A narrowing lane is announced once, not again after automatic braking.

@@ -628,16 +628,34 @@ pub fn trust_text_with_display(reputation: f64, mode: ScoreDisplay) -> String {
 
 /// The opening of a trust line. The number is always labelled as reputation
 /// so it never reads as a trust score of its own.
+///
+/// Each band is a whole English literal so a translation can agree in gender
+/// with "confianza" without changing the bare word "full", which lane assist
+/// also uses.
 fn trust_score_head(reputation: f64, mode: ScoreDisplay) -> String {
     let band = trust_band(reputation);
     let number = round_py_int(reputation.clamp(0.0, 100.0));
     // Percentage-only drops reputation's band word elsewhere; trust has no
     // number of its own, so the trust band stays in Percent too.
     match mode {
-        ScoreDisplay::Both | ScoreDisplay::Percent => {
-            format!("Dispatch trust: {band}. Reputation {number} out of 100.")
-        }
-        ScoreDisplay::Description => format!("Dispatch trust: {band}."),
+        ScoreDisplay::Both | ScoreDisplay::Percent => match band {
+            TRUST_FULL => {
+                format!("Dispatch trust: full. Reputation {number} out of 100.")
+            }
+            TRUST_GUARDED => {
+                format!("Dispatch trust: guarded. Reputation {number} out of 100.")
+            }
+            TRUST_POOR => {
+                format!("Dispatch trust: poor. Reputation {number} out of 100.")
+            }
+            _ => format!("Dispatch trust: last chance. Reputation {number} out of 100."),
+        },
+        ScoreDisplay::Description => match band {
+            TRUST_FULL => "Dispatch trust: full.".to_string(),
+            TRUST_GUARDED => "Dispatch trust: guarded.".to_string(),
+            TRUST_POOR => "Dispatch trust: poor.".to_string(),
+            _ => "Dispatch trust: last chance.".to_string(),
+        },
     }
 }
 

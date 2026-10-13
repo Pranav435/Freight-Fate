@@ -118,11 +118,22 @@ pub fn xp_rate_clause(band: &str) -> String {
     if standing_xp_rate(band) >= 1.0 {
         return String::new();
     }
-    format!(
-        "While your dispatch trust is {band}, the carrier keeps you on \
-         routine freight, so career experience comes in more slowly until it \
-         is back up."
-    )
+    // Whole literals per band so a translation can agree with "confianza"
+    // without changing the bare word "full" that lane assist also uses.
+    match band {
+        "guarded" => "While your dispatch trust is guarded, the carrier keeps you on \
+             routine freight, so career experience comes in more slowly until it \
+             is back up."
+            .to_string(),
+        "poor" => "While your dispatch trust is poor, the carrier keeps you on \
+             routine freight, so career experience comes in more slowly until it \
+             is back up."
+            .to_string(),
+        _ => "While your dispatch trust is last chance, the carrier keeps you on \
+             routine freight, so career experience comes in more slowly until it \
+             is back up."
+            .to_string(),
+    }
 }
 
 /// The same fact as a clause, to ride an existing settlement line.
@@ -130,7 +141,11 @@ pub fn xp_rate_settlement_clause(band: &str) -> String {
     if standing_xp_rate(band) >= 1.0 {
         return String::new();
     }
-    format!("at the slower rate that comes with {band} dispatch trust")
+    match band {
+        "guarded" => "at the slower rate that comes with guarded dispatch trust".to_string(),
+        "poor" => "at the slower rate that comes with poor dispatch trust".to_string(),
+        _ => "at the slower rate that comes with last chance dispatch trust".to_string(),
+    }
 }
 
 /// What `xp_class_multiplier` reads off a `Cargo` (`models::jobs`, wave 2):

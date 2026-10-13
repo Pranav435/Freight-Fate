@@ -6308,14 +6308,28 @@ msgstr ""
 msgid "last chance"
 msgstr ""
 
-#. placeholders: {band}
 msgid ""
-"While your dispatch trust is {band}, the carrier keeps you on routine "
+"While your dispatch trust is guarded, the carrier keeps you on routine "
 "freight, so career experience comes in more slowly until it is back up."
 msgstr ""
 
-#. placeholders: {band}
-msgid "at the slower rate that comes with {band} dispatch trust"
+msgid ""
+"While your dispatch trust is poor, the carrier keeps you on routine "
+"freight, so career experience comes in more slowly until it is back up."
+msgstr ""
+
+msgid ""
+"While your dispatch trust is last chance, the carrier keeps you on routine "
+"freight, so career experience comes in more slowly until it is back up."
+msgstr ""
+
+msgid "at the slower rate that comes with guarded dispatch trust"
+msgstr ""
+
+msgid "at the slower rate that comes with poor dispatch trust"
+msgstr ""
+
+msgid "at the slower rate that comes with last chance dispatch trust"
 msgstr ""
 
 msgid ""
@@ -8034,8 +8048,8 @@ msgstr ""
 msgid " Clean on-time runs rebuild it."
 msgstr ""
 
-#. placeholders: {band}, {number}
-msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+#. placeholders: {number}
+msgid "Dispatch trust: full. Reputation {number} out of 100."
 msgstr ""
 
 #. placeholders: {number}
@@ -8043,8 +8057,28 @@ msgstr ""
 msgid "Reputation {number} out of 100."
 msgstr ""
 
-#. placeholders: {band}
-msgid "Dispatch trust: {band}."
+#. placeholders: {number}
+msgid "Dispatch trust: guarded. Reputation {number} out of 100."
+msgstr ""
+
+#. placeholders: {number}
+msgid "Dispatch trust: poor. Reputation {number} out of 100."
+msgstr ""
+
+#. placeholders: {number}
+msgid "Dispatch trust: last chance. Reputation {number} out of 100."
+msgstr ""
+
+msgid "Dispatch trust: full."
+msgstr ""
+
+msgid "Dispatch trust: guarded."
+msgstr ""
+
+msgid "Dispatch trust: poor."
+msgstr ""
+
+msgid "Dispatch trust: last chance."
 msgstr ""
 
 msgid "licence"
@@ -8209,6 +8243,10 @@ msgid "{line} Paying it down brings it back."
 msgstr ""
 
 msgid "Clean on-time runs rebuild it."
+msgstr ""
+
+#. placeholders: {band}
+msgid "Dispatch trust: {band}."
 msgstr ""
 
 msgid "nine"

@@ -7698,18 +7698,41 @@ msgstr "baja"
 msgid "last chance"
 msgstr "última oportunidad"
 
-#. placeholders: {band}
 msgid ""
-"While your dispatch trust is {band}, the carrier keeps you on routine "
+"While your dispatch trust is guarded, the carrier keeps you on routine "
 "freight, so career experience comes in more slowly until it is back up."
 msgstr ""
-"Mientras tu confianza de despacho sea {band}, la empresa te mantiene en "
-"carga rutinaria, así que la experiencia de carrera llega más despacio hasta "
-"que se recupere."
+"Mientras tu confianza de despacho sea con reservas, la empresa te mantiene "
+"en carga rutinaria, así que la experiencia de carrera llega más despacio "
+"hasta que se recupere."
 
-#. placeholders: {band}
-msgid "at the slower rate that comes with {band} dispatch trust"
-msgstr "al ritmo más lento que conlleva una confianza de despacho {band}"
+msgid ""
+"While your dispatch trust is poor, the carrier keeps you on routine "
+"freight, so career experience comes in more slowly until it is back up."
+msgstr ""
+"Mientras tu confianza de despacho sea baja, la empresa te mantiene en carga "
+"rutinaria, así que la experiencia de carrera llega más despacio hasta que "
+"se recupere."
+
+msgid ""
+"While your dispatch trust is last chance, the carrier keeps you on routine "
+"freight, so career experience comes in more slowly until it is back up."
+msgstr ""
+"Mientras tu confianza de despacho sea última oportunidad, la empresa te "
+"mantiene en carga rutinaria, así que la experiencia de carrera llega más "
+"despacio hasta que se recupere."
+
+msgid "at the slower rate that comes with guarded dispatch trust"
+msgstr ""
+"al ritmo más lento que conlleva una confianza de despacho con reservas"
+
+msgid "at the slower rate that comes with poor dispatch trust"
+msgstr "al ritmo más lento que conlleva una confianza de despacho baja"
+
+msgid "at the slower rate that comes with last chance dispatch trust"
+msgstr ""
+"al ritmo más lento que conlleva una confianza de despacho de última "
+"oportunidad"
 
 msgid ""
 "You now hold both the tank vehicle and hazmat endorsements, the X "
@@ -9762,18 +9785,39 @@ msgstr "{trust_band_text} Los viajes limpios y puntuales la recuperan."
 msgid " Clean on-time runs rebuild it."
 msgstr " Los viajes limpios y puntuales la recuperan."
 
-#. placeholders: {band}, {number}
-msgid "Dispatch trust: {band}. Reputation {number} out of 100."
-msgstr "Confianza de despacho: {band}. Reputación {number} de 100."
+#. placeholders: {number}
+msgid "Dispatch trust: full. Reputation {number} out of 100."
+msgstr "Confianza de despacho: completa. Reputación {number} de 100."
 
 #. placeholders: {number}
 #. one sentence of a longer line
 msgid "Reputation {number} out of 100."
 msgstr "Reputación {number} de 100."
 
-#. placeholders: {band}
-msgid "Dispatch trust: {band}."
-msgstr "Confianza de despacho: {band}."
+#. placeholders: {number}
+msgid "Dispatch trust: guarded. Reputation {number} out of 100."
+msgstr "Confianza de despacho: con reservas. Reputación {number} de 100."
+
+#. placeholders: {number}
+msgid "Dispatch trust: poor. Reputation {number} out of 100."
+msgstr "Confianza de despacho: baja. Reputación {number} de 100."
+
+#. placeholders: {number}
+msgid "Dispatch trust: last chance. Reputation {number} out of 100."
+msgstr ""
+"Confianza de despacho: última oportunidad. Reputación {number} de 100."
+
+msgid "Dispatch trust: full."
+msgstr "Confianza de despacho: completa."
+
+msgid "Dispatch trust: guarded."
+msgstr "Confianza de despacho: con reservas."
+
+msgid "Dispatch trust: poor."
+msgstr "Confianza de despacho: baja."
+
+msgid "Dispatch trust: last chance."
+msgstr "Confianza de despacho: última oportunidad."
 
 msgid "licence"
 msgstr "licencia"
@@ -9981,6 +10025,10 @@ msgstr "{line} Pagarlo la recupera."
 
 msgid "Clean on-time runs rebuild it."
 msgstr "Los viajes limpios y puntuales la recuperan."
+
+#. placeholders: {band}
+msgid "Dispatch trust: {band}."
+msgstr "Confianza de despacho: {band}."
 
 msgid "nine"
 msgstr "nueve"
@@ -42639,6 +42687,20 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid ""
+#~ "While your dispatch trust is {band}, the carrier keeps you on routine "
+#~ "freight, so career experience comes in more slowly until it is back up."
+#~ msgstr ""
+#~ "Mientras tu confianza de despacho sea {band}, la empresa te mantiene en "
+#~ "carga rutinaria, así que la experiencia de carrera llega más despacio hasta "
+#~ "que se recupere."
+
+#~ msgid "at the slower rate that comes with {band} dispatch trust"
+#~ msgstr "al ritmo más lento que conlleva una confianza de despacho {band}"
+
+#~ msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+#~ msgstr "Confianza de despacho: {band}. Reputación {number} de 100."
 
 #~ msgid "Dispatch trust."
 #~ msgstr "Confianza de despacho."
