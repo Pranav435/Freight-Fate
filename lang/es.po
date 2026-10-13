@@ -5162,13 +5162,13 @@ msgid "us"
 msgstr "us"
 
 msgid "flat"
-msgstr "flat"
+msgstr "llano"
 
 msgid "hills"
-msgstr "hills"
+msgstr "colinas"
 
 msgid "mountain"
-msgstr "mountain"
+msgstr "montaña"
 
 #. placeholders: {signed}, {signed2}, {f}, {road_class}, {terrain}
 msgid ""
@@ -5992,16 +5992,16 @@ msgid "repair shop"
 msgstr "taller de reparación"
 
 msgid "confirmed"
-msgstr "confirmed"
+msgstr "confirmado"
 
 msgid "confirmed truck parking"
 msgstr "aparcamiento para camiones confirmado"
 
 msgid "likely"
-msgstr "likely"
+msgstr "probable"
 
 msgid "limited"
-msgstr "limited"
+msgstr "limitado"
 
 msgid "limited truck parking"
 msgstr "aparcamiento para camiones limitado"
@@ -6010,13 +6010,13 @@ msgid "parking not verified"
 msgstr "aparcamiento sin verificar"
 
 msgid "unknown"
-msgstr "unknown"
+msgstr "desconocido"
 
 msgid "no truck parking"
 msgstr "sin aparcamiento para camiones"
 
 msgid "none"
-msgstr "none"
+msgstr "ninguno"
 
 msgid "curated"
 msgstr "curated"
@@ -6025,7 +6025,7 @@ msgid "placeholder"
 msgstr "placeholder"
 
 msgid "both"
-msgstr "both"
+msgstr "ambos"
 
 msgid "forward"
 msgstr "forward"
@@ -18625,7 +18625,7 @@ msgid "Ready in {remaining} seconds."
 msgstr "Listo en {remaining} segundos."
 
 msgid "Back"
-msgstr "Back"
+msgstr "Atrás"
 
 msgid "Enter selects, Escape goes back. Control stops the current speech."
 msgstr ""
@@ -35944,7 +35944,7 @@ msgid "deliberate"
 msgstr "deliberado"
 
 msgid "simple"
-msgstr "simple"
+msgstr "sencillo"
 
 #. placeholders: {date_text}, {clock_text}
 msgid "Clock aligned to {date_text}, {clock_text}."
