@@ -146,6 +146,8 @@ class Literal:
     is_format: bool = False
     # Compared or matched against (`== "x"`, `"x" =>`): a key, not words.
     is_key: bool = False
+    # A struct field set straight from it (`kind: "browse".to_string()`).
+    is_field_value: bool = False
 
 
 @dataclass
@@ -462,6 +464,12 @@ def literals_in(src: str) -> list[Literal]:
                 or after.startswith(("=>", "|", "==", "!="))
                 or (before.endswith("|") and not before.endswith("||"))
             )
+            lit.is_field_value = (
+                i >= 2
+                and tokens[i - 1][1] == ":"
+                and tokens[i - 2][0] == "ident"
+                and (i < 3 or tokens[i - 3][1] != ":")
+            )
             if stack and stack[-1].rstrip("!") in FORMAT_MACROS and stack[-1].endswith("!"):
                 # The format string is the first literal directly after the
                 # opening paren (format!) or after the writer arg (write!).
@@ -512,6 +520,12 @@ def is_player_text(text: str, is_format: bool, is_key: bool = False) -> bool:
             return True
         # A lowercase word is a value spoken in a sentence ("off", "sparse")
         # unless the code only compares or matches it.
+        # A lowercase word leading into a placeholder ("automatic, {name}")
+        # is a phrase a value is spoken inside.
+        if is_format and re.match(
+            r"^[a-z]{3,}, \{[A-Za-z_][A-Za-z0-9_]*(:[^}]*)?\}$", text.strip()
+        ):
+            return True
         if is_key or not re.match(r"^[a-z]{2,}$", stripped):
             return False
     return True
@@ -595,7 +609,13 @@ def extract(root: Path, crates: list[str]) -> dict[str, Template]:
             if any(part in "/" + rel for part in SKIP_PATH_PARTS):
                 continue
             src = path.read_text(encoding="utf-8")
-            for lit in literals_in(src):
+            lits = literals_in(src)
+            # A lowercase word the file compares against (`kind == "browse"`)
+            # is a key where a struct field is set to it, too.
+            keys = {lit.text for lit in lits if lit.is_key and re.match(r"^[a-z]{2,}$", lit.text)}
+            for lit in lits:
+                if lit.is_field_value and lit.text in keys:
+                    continue
                 if _skipped(lit) or not is_player_text(lit.text, lit.is_format, lit.is_key):
                     continue
                 msgid, names = to_template(lit)
