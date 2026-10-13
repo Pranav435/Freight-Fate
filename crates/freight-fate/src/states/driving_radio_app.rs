@@ -474,16 +474,15 @@ impl Menu for RadioStationListState {
         if self.paged() && self.hit_count() > RADIO_SEARCH_PAGE_SIZE {
             // Paged, and said so: a list that quietly stops reads as "that
             // is everything" to someone who cannot see a scrollbar.
-            ctx.say(&format!(
-                "{title}. {} {}. {} PageDown for the next page.",
-                self.hit_count(),
-                if self.kind == "browse" {
-                    "stations"
-                } else {
-                    "matches"
-                },
-                self.page_text()
-            ));
+            // Each count is a whole sentence, so a language that inflects
+            // the noun for the number has the number beside it.
+            let count = self.hit_count();
+            let page = self.page_text();
+            ctx.say(&if self.kind == "browse" {
+                format!("{title}. {count} stations. {page} PageDown for the next page.")
+            } else {
+                format!("{title}. {count} matches. {page} PageDown for the next page.")
+            });
         } else if rows.is_empty() {
             ctx.say(&format!("{title}. Nothing here yet."));
         } else {

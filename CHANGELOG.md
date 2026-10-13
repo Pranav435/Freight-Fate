@@ -8,6 +8,8 @@
 
 - **A Language setting lets the game speak other languages.** It is the first row of Settings, Speech; Automatic follows your system language, and the radio stays English.
 
+- **Translated speech now uses whole sentences, so lines are never half translated.** A sentence the language file lacks is spoken whole in English.
+
 - **Anyone can correct a translation with the Translation correction form on GitHub.** It asks what the game said and what it should say.
 
 - **A translator can add a new language with its translation file alone.** The game offers it in Settings by the name the file gives.
