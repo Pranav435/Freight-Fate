@@ -16424,6 +16424,13 @@ msgid "Lane keeping is on full. Flick left or right to change lanes."
 msgstr ""
 "Удержание полосы полное. Смахните влево или вправо, чтобы сменить полосу."
 
+msgid "Controller connected."
+msgstr "Геймпад подключён."
+
+#. placeholders: {name}
+msgid "Controller connected: {name}."
+msgstr "Геймпад подключён: {name}."
+
 msgid ""
 "Controller disconnected. You can keep playing with the keyboard, or "
 "reconnect your controller."
@@ -24021,6 +24028,9 @@ msgstr "Escape — меню паузы."
 msgid "F2 lists every driving command by name."
 msgstr "F2 перечисляет все команды вождения по названиям."
 
+msgid "Shift F1 names what each key does."
+msgstr "Shift F1 называет действие каждой клавиши."
+
 #. placeholders: {shift_up}, {shift_down}, {reverse}, {neutral}
 msgid ""
 "Hold Left Shift for clutch, then {shift_up} to shift up or {shift_down} to "
@@ -24044,8 +24054,12 @@ msgstr ""
 "Правый курок — газ, левый — тормоз; левый курок до упора — самая жёсткая "
 "остановка."
 
-msgid "The left stick steers unless lane keeping is on full."
-msgstr "Левый стик рулит, если удержание полосы не полное."
+msgid ""
+"The left stick steers; with lane keeping on full, pushing it left or right "
+"changes one lane."
+msgstr ""
+"Left stick управляет рулём; при полном удержании полосы наклон влево или "
+"вправо меняет одну полосу."
 
 #. placeholders: {shift_up}, {shift_down}
 msgid ""
@@ -24159,8 +24173,15 @@ msgstr ""
 "обочине."
 
 #. placeholders: {status}
-msgid "{status} opens the status menu."
-msgstr "{status} открывает меню статуса."
+msgid ""
+"{status} opens the status menu, which also lists every driving command."
+msgstr ""
+"{status} открывает меню состояния, где также перечислены все команды "
+"вождения."
+
+msgid "Hold Back and press Start to hear what each button does."
+msgstr ""
+"Удерживайте Back и нажмите Start, чтобы услышать, что делает каждая кнопка."
 
 #. placeholders: {tune_prev}, {tune_next}
 msgid ""
@@ -30348,6 +30369,12 @@ msgstr "Состояние в пути"
 msgid "Open the {label} status screen."
 msgstr "Открыть экран состояния «{label}»."
 
+msgid ""
+"Every driving command by name. Choose one to run it and return to driving."
+msgstr ""
+"Все команды вождения по названиям. Выберите одну, чтобы выполнить её и "
+"вернуться к вождению."
+
 msgid "Close status and resume driving."
 msgstr "Закрыть состояние и продолжить вождение."
 
@@ -30658,6 +30685,13 @@ msgstr "Изучить звуки игры"
 
 msgid "Plays any sound the road uses and says what it means."
 msgstr "Проигрывает любой звук дороги и объясняет, что он значит."
+
+msgid "Practice keys and buttons"
+msgstr "Тренировка клавиш и кнопок"
+
+msgid "Names what each key or controller button does while driving."
+msgstr ""
+"Называет, что делает каждая клавиша или кнопка геймпада во время вождения."
 
 msgid ""
 "A mobile mechanic patches the truck up enough to drive on. Far dearer than "
@@ -35607,6 +35641,141 @@ msgstr ""
 "Не удалось связаться с сайтом, поэтому резервные копии в облаке остались; "
 "пункт «Облачное копирование» в меню «Онлайн» сможет удалить их позже."
 
+msgid "Leaving key and button practice."
+msgstr "Выход из тренировки клавиш и кнопок."
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}: pause menu."
+msgstr "{name}: меню паузы."
+
+#. placeholders: {name}
+msgid "{name}: pause menu. Again to leave practice."
+msgstr "{name}: меню паузы. Ещё раз, чтобы выйти из тренировки."
+
+msgid "Back plus Start: key and button practice."
+msgstr "Back и Start: тренировка клавиш и кнопок."
+
+msgid "Right trigger: Accelerate, as far as you press it."
+msgstr "Right trigger: газ, насколько нажмёте."
+
+msgid ""
+"Left trigger: Brake, as far as you press it. All the way down: Emergency "
+"brake."
+msgstr ""
+"Left trigger: тормоз, насколько нажмёте. До упора: экстренное торможение."
+
+msgid "Left stick: push left or right to change one lane."
+msgstr "Left stick: наклоните влево или вправо, чтобы сменить одну полосу."
+
+msgid "Left stick: steer."
+msgstr "Left stick: руль."
+
+msgid "Change one lane left"
+msgstr "Сменить полосу влево"
+
+msgid "Change one lane right"
+msgstr "Сменить полосу вправо"
+
+#. placeholders: {label}
+msgid "{label}, in a manual truck"
+msgstr "{label}, на грузовике с механикой"
+
+msgid "Control: stop the driving voice."
+msgstr "Control: остановить голос вождения."
+
+msgid "Shift: hold as the clutch in a manual truck."
+msgstr "Shift: удерживать как сцепление на грузовике с механикой."
+
+msgid "Alt: hold with another key."
+msgstr "Alt: удерживать вместе с другой клавишей."
+
+msgid "key and button practice"
+msgstr "тренировка клавиш и кнопок"
+
+msgid "driving commands"
+msgstr "команды вождения"
+
+msgid "oldest message"
+msgstr "самое старое сообщение"
+
+msgid "newest message"
+msgstr "самое новое сообщение"
+
+msgid "previous message"
+msgstr "предыдущее сообщение"
+
+msgid "next message"
+msgstr "следующее сообщение"
+
+msgid "previous message category"
+msgstr "предыдущая категория сообщений"
+
+msgid "next message category"
+msgstr "следующая категория сообщений"
+
+msgid "copy the message in review"
+msgstr "скопировать просматриваемое сообщение"
+
+msgid "cruise target up by 1"
+msgstr "скорость круиза плюс 1"
+
+msgid "cruise target up to the next 5"
+msgstr "скорость круиза вверх до следующих 5"
+
+msgid "cruise target down by 1"
+msgstr "скорость круиза минус 1"
+
+msgid "cruise target down to the next 5"
+msgstr "скорость круиза вниз до следующих 5"
+
+msgid "choose, or confirm an arrival"
+msgstr "выбрать или подтвердить прибытие"
+
+msgid "previous radio category"
+msgstr "предыдущая категория радио"
+
+msgid "raise radio volume"
+msgstr "громче радио"
+
+msgid "tune to the previous radio station"
+msgstr "предыдущая радиостанция"
+
+msgid "next radio category"
+msgstr "следующая категория радио"
+
+msgid "lower radio volume"
+msgstr "тише радио"
+
+msgid "tune to the next radio station"
+msgstr "следующая радиостанция"
+
+msgid "no command"
+msgstr "нет команды"
+
+msgid "hold for the second layer of buttons"
+msgstr "удерживать для второго слоя кнопок"
+
+msgid "hold as the clutch in a manual truck"
+msgstr "удерживать как сцепление на грузовике с механикой"
+
+msgid "help, or stop the driving voice while it speaks"
+msgstr "справка или остановить голос вождения, пока он говорит"
+
+msgid "confirm an arrival when one is ready"
+msgstr "подтвердить прибытие, когда оно готово"
+
+#. placeholders: {text}
+msgid "{text}, or confirm an arrival when one is ready"
+msgstr "{text} или подтвердить прибытие, когда оно готово"
+
+msgid ""
+"Key and button practice. Press a key or button to hear what it does while "
+"driving. Escape twice, or Start twice, to leave."
+msgstr ""
+"Тренировка клавиш и кнопок. Нажмите клавишу или кнопку, чтобы услышать, что "
+"она делает во время вождения. Дважды Escape или дважды Start для выхода."
+
 msgid "Gameplay"
 msgstr "Игровой процесс"
 
@@ -35926,6 +36095,16 @@ msgid ""
 msgstr ""
 "Выводить игру на брайлевский дисплей умеют только NVDA и JAWS. Речь "
 "остаётся включённой, пока одна из них не запущена."
+
+msgid "Controller: disabled"
+msgstr "Геймпад: выключен"
+
+#. placeholders: {name}
+msgid "Controller: enabled, {name} connected"
+msgstr "Геймпад: включён, подключён {name}"
+
+msgid "Controller: enabled, none connected"
+msgstr "Геймпад: включён, не подключён"
 
 msgid "a soft tone leans"
 msgstr "мягкий тон смещается"
@@ -36582,16 +36761,6 @@ msgstr ""
 "удержанный во время остановки, просто держит грузовик. «Осознанный» везде "
 "требует отпустить и нажать снова. Только для автоматической коробки."
 
-#. placeholders: {else}
-msgid "Controller: {else}"
-msgstr "Геймпад: {else}"
-
-msgid "enabled"
-msgstr "включён"
-
-msgid "disabled"
-msgstr "выключен"
-
 msgid ""
 "Game-controller input alongside the keyboard, which always stays active. "
 "The first connected controller is used."
@@ -36602,6 +36771,12 @@ msgstr ""
 #. placeholders: {else}
 msgid "Haptics: {else}"
 msgstr "Вибрация: {else}"
+
+msgid "enabled"
+msgstr "включён"
+
+msgid "disabled"
+msgstr "выключен"
 
 msgid ""
 "Controller rumble for hazards, hard braking, the rumble strip, and road "
@@ -37587,6 +37762,18 @@ msgid ""
 msgstr ""
 "«Изучить звуки игры» проигрывает дорожные сигналы и объясняет, что они "
 "значат. Этот раздел есть в главном меню и в меню паузы."
+
+msgid ""
+"Practice keys and buttons names what each key or controller button does "
+"while driving, without moving the truck. Shift F1 opens it from any screen, "
+"as does holding Back and pressing Start on a controller. It is also on the "
+"main and pause menus. Press Escape or Start twice to leave."
+msgstr ""
+"Тренировка клавиш и кнопок называет, что делает каждая клавиша или кнопка "
+"геймпада во время вождения, не двигая грузовик. Shift F1 открывает её с "
+"любого экрана, как и удержание Back с нажатием Start на геймпаде. Она также "
+"есть в главном меню и в меню паузы. Нажмите Escape или Start дважды для "
+"выхода."
 
 msgid "Starting and stopping the truck"
 msgstr "Запуск и остановка грузовика"
@@ -39687,10 +39874,12 @@ msgstr ""
 
 msgid ""
 "Right trigger accelerates, left trigger brakes, and fully pressing the left "
-"trigger gives emergency braking. The left stick steers."
+"trigger gives emergency braking. The left stick steers; with lane keeping "
+"on full, push it left or right to change one lane."
 msgstr ""
-"Правый курок разгоняет, левый курок тормозит, а полное нажатие левого курка "
-"даёт экстренное торможение. Левый стик рулит."
+"Right trigger — газ, Left trigger — тормоз, а нажатие Left trigger до упора "
+"даёт экстренное торможение. Left stick управляет рулём; при полном "
+"удержании полосы наклоните его влево или вправо, чтобы сменить одну полосу."
 
 msgid ""
 "To reverse in automatic, stop, release the left trigger, then press and "
@@ -39707,12 +39896,12 @@ msgstr "Удерживайте left bumper для ручного сцеплен�
 #. placeholders: {pad_shift_up}, {pad_shift_down}, {pad_cruise}, {pad_speed}
 msgid ""
 "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
-"{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
-"speed."
+"{pad_shift_down} down, past first into neutral and then reverse. "
+"{pad_cruise} starts speed control; {pad_speed} reads speed."
 msgstr ""
-"Удерживайте left bumper для ручного сцепления. {pad_shift_up} переключает "
-"вверх, а {pad_shift_down} вниз. {pad_cruise} включает управление скоростью; "
-"{pad_speed} называет скорость."
+"Удерживайте left bumper как ручное сцепление. {pad_shift_up} переключает "
+"вверх, а {pad_shift_down} вниз, после первой на нейтраль и затем на задний "
+"ход. {pad_cruise} включает круиз-контроль; {pad_speed} называет скорость."
 
 #. placeholders: {pad_cruise}, {pad_speed}
 #. one sentence of a longer line
@@ -39722,8 +39911,12 @@ msgstr ""
 
 #. placeholders: {pad_shift_up}, {pad_shift_down}
 #. one sentence of a longer line
-msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
-msgstr "{pad_shift_up} переключает вверх, а {pad_shift_down} вниз."
+msgid ""
+"{pad_shift_up} shifts up and {pad_shift_down} down, past first into neutral "
+"and then reverse."
+msgstr ""
+"{pad_shift_up} переключает вверх, а {pad_shift_down} вниз, после первой на "
+"нейтраль и затем на задний ход."
 
 #. placeholders: {pad_horn}, {pad_engine_brake}
 #. one sentence of a longer line
@@ -39805,24 +39998,63 @@ msgstr "{pad_cruise_down} и {pad_cruise_up} меняют цель круиз-к
 #. placeholders: {pad_cruise_down}, {pad_cruise_up}, {pad_status}
 msgid ""
 "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
-"{pad_status} opens driving status."
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
 msgstr ""
-"{pad_cruise_down} и {pad_cruise_up} меняют цель круиз-контроля. "
-"{pad_status} открывает состояние в пути."
+"{pad_cruise_down} и {pad_cruise_up} меняют скорость круиза. {pad_status} "
+"открывает состояние в пути, где в разделе Команды вождения перечислены все "
+"команды, включая те, у которых нет кнопки."
 
 #. placeholders: {pad_status}
 #. one sentence of a longer line
-msgid "{pad_status} opens driving status."
-msgstr "{pad_status} открывает состояние в пути."
+msgid ""
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
+msgstr ""
+"{pad_status} открывает состояние в пути, где в разделе Команды вождения "
+"перечислены все команды, включая те, у которых нет кнопки."
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}
+#. one sentence of a longer line
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume."
+msgstr ""
+"{pad_radio_tune_prev} и {pad_radio_tune_next} переключают радиостанции, а "
+"{pad_radio_volume_down} и {pad_radio_volume_up} меняют громкость."
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}, {pad_radio}
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume. "
+"{pad_radio} turns it on or off."
+msgstr ""
+"{pad_radio_tune_prev} и {pad_radio_tune_next} переключают радиостанции, а "
+"{pad_radio_volume_down} и {pad_radio_volume_up} меняют громкость. "
+"{pad_radio} включает или выключает радио."
+
+#. placeholders: {pad_radio}
+#. one sentence of a longer line
+msgid "{pad_radio} turns it on or off."
+msgstr "{pad_radio} включает или выключает радио."
+
+msgid ""
+"To learn the buttons, hold Back and press Start on any screen. Each button "
+"you press says what it does; Start twice leaves."
+msgstr ""
+"Чтобы выучить кнопки, удерживайте Back и нажмите Start на любом экране. "
+"Каждая нажатая кнопка называет своё действие; дважды Start — выход."
 
 msgid ""
 "If the controller does nothing, check that Controller is enabled under "
 "Settings, Gameplay, Controls. The game uses the first controller it finds, "
-"so unplug other controllers and close Steam."
+"so unplug other controllers and close Steam. If the Xbox button opens Steam "
+"Big Picture, press B to close it."
 msgstr ""
-"Если геймпад ничего не делает, проверьте, что Геймпад включён в разделе "
+"Если геймпад не реагирует, проверьте, что Геймпад включён в разделе "
 "Настройки, Игровой процесс, Управление. Игра использует первый найденный "
-"геймпад, поэтому отключите другие геймпады и закройте Steam."
+"геймпад, поэтому отключите остальные геймпады и закройте Steam. Если кнопка "
+"Xbox открывает Steam Big Picture, нажмите B, чтобы закрыть его."
 
 msgid "pad"
 msgstr "pad"
@@ -41986,6 +42218,53 @@ msgstr "Затем крутой разворот направо."
 
 msgid "Then hairpin left."
 msgstr "Затем крутой разворот налево."
+
+#~ msgid "The left stick steers unless lane keeping is on full."
+#~ msgstr "Левый стик рулит, если удержание полосы не полное."
+
+#~ msgid "{status} opens the status menu."
+#~ msgstr "{status} открывает меню статуса."
+
+#~ msgid "Controller: {else}"
+#~ msgstr "Геймпад: {else}"
+
+#~ msgid ""
+#~ "Right trigger accelerates, left trigger brakes, and fully pressing the left "
+#~ "trigger gives emergency braking. The left stick steers."
+#~ msgstr ""
+#~ "Правый курок разгоняет, левый курок тормозит, а полное нажатие левого курка "
+#~ "даёт экстренное торможение. Левый стик рулит."
+
+#~ msgid ""
+#~ "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
+#~ "{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
+#~ "speed."
+#~ msgstr ""
+#~ "Удерживайте left bumper для ручного сцепления. {pad_shift_up} переключает "
+#~ "вверх, а {pad_shift_down} вниз. {pad_cruise} включает управление скоростью; "
+#~ "{pad_speed} называет скорость."
+
+#~ msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
+#~ msgstr "{pad_shift_up} переключает вверх, а {pad_shift_down} вниз."
+
+#~ msgid ""
+#~ "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
+#~ "{pad_status} opens driving status."
+#~ msgstr ""
+#~ "{pad_cruise_down} и {pad_cruise_up} меняют цель круиз-контроля. "
+#~ "{pad_status} открывает состояние в пути."
+
+#~ msgid "{pad_status} opens driving status."
+#~ msgstr "{pad_status} открывает состояние в пути."
+
+#~ msgid ""
+#~ "If the controller does nothing, check that Controller is enabled under "
+#~ "Settings, Gameplay, Controls. The game uses the first controller it finds, "
+#~ "so unplug other controllers and close Steam."
+#~ msgstr ""
+#~ "Если геймпад ничего не делает, проверьте, что Геймпад включён в разделе "
+#~ "Настройки, Игровой процесс, Управление. Игра использует первый найденный "
+#~ "геймпад, поэтому отключите другие геймпады и закройте Steam."
 
 #~ msgid "ELD status {status}."
 #~ msgstr "Статус в бортовом журнале: {status}."
