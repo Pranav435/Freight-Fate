@@ -401,7 +401,7 @@ fn test_the_felony_stop_cancels_the_load_and_releases_the_driver() {
     assert_eq!(with_drive(&drive, |d| d.failure_to_stop_count), 1);
 
     let rows = build_labels(&mut state, &mut app.ctx);
-    assert_eq!(rows, vec!["Return to terminal"]);
+    assert_eq!(rows, vec!["Continue"]);
 }
 
 #[test]

@@ -799,15 +799,16 @@ fn felony_load_text(p: &Profile, load_lost: bool, d: &DrivingState) -> String {
         return "No loaded trailer to lose, but the assignment is canceled.".to_string();
     }
     if own_authority {
-        let lead = if load_lost {
-            format!(
-                "The {} load does not deliver, so no pay for this run.",
-                d.job.spoken_cargo_label()
-            )
-        } else {
-            "No loaded trailer to lose, but the load is canceled.".to_string()
-        };
-        return format!("{lead} The load is yours to sort out with the shipper.");
+        // Only a load on the trailer leaves anything to sort out with the
+        // shipper.
+        if !load_lost {
+            return "No loaded trailer to lose, but the load is canceled.".to_string();
+        }
+        return format!(
+            "The {} load does not deliver, so no pay for this run. The load is yours to sort \
+             out with the shipper.",
+            d.job.spoken_cargo_label()
+        );
     }
     if !load_lost {
         return "No loaded trailer to lose, but the assignment is canceled.".to_string();
@@ -866,7 +867,7 @@ impl Menu for FelonyStopState {
 
     fn build_items(&mut self, _ctx: &mut GameContext) -> Vec<MenuItem<Self>> {
         vec![
-            MenuItem::new("Return to terminal", |s: &mut Self, ctx| s.go_back(ctx))
+            MenuItem::new("Continue", |s: &mut Self, ctx| s.go_back(ctx))
                 .help("Continue from where the truck is parked."),
         ]
     }

@@ -35,7 +35,8 @@ use freight_fate::states::base::{Menu, MenuItem};
 use freight_fate::states::city::CityMenuState;
 use freight_fate::states::driving::DrivingState;
 use freight_fate::states::driving_core::{
-    DRIVE_PHASE_DELIVERY, MICROSLEEP_FORCE_STOP_MISSES, PURSUIT_RUN_S, SPEEDING_LEEWAY_MPH,
+    DRIVE_PHASE_DELIVERY, DRIVE_PHASE_PICKUP, MICROSLEEP_FORCE_STOP_MISSES, PURSUIT_RUN_S,
+    SPEEDING_LEEWAY_MPH,
 };
 use freight_fate::states::driving_engine_brake::JAKE_ZONE_FINES;
 use freight_fate::states::driving_rest_states::{
@@ -470,6 +471,20 @@ fn test_a_felony_stop_leaves_an_own_authority_load_to_the_shipper() {
     );
     assert!(!summary.contains("recovered the load"), "{summary}");
     assert!(!summary.contains("Dispatch"), "{summary}");
+}
+
+#[test]
+fn test_a_felony_stop_with_nothing_loaded_leaves_nothing_to_the_shipper() {
+    let mut app = TestApp::new();
+    let mut drive = a_drive(&mut app, "Authority");
+    app.ctx.profile.as_mut().expect("a career").business_status = INDEPENDENT_AUTHORITY.to_string();
+    drive.phase = DRIVE_PHASE_PICKUP;
+    let summary = felony_summary(&mut app, &mut drive);
+    assert!(
+        summary.contains("No loaded trailer to lose, but the load is canceled."),
+        "{summary}"
+    );
+    assert!(!summary.contains("yours to sort out"), "{summary}");
 }
 
 fn carrier_name(app: &TestApp) -> String {
