@@ -54,7 +54,7 @@ pub trait RoadsideExit: Menu {
                 |s: &mut Self, ctx| s.end_run_suspended(ctx),
             )
             .help(
-                "Licence pulled, so you cannot drive on. A relief driver takes the truck back \
+                "License pulled, so you cannot drive on. A relief driver takes the truck back \
                  to the city this run left from, and dispatch takes the load back.",
             );
         }
@@ -90,13 +90,13 @@ pub trait RoadsideExit: Menu {
         let record = &profile.driving_record;
         if record.lifetime_disqualified {
             return format!(
-                " The licence is gone for good, so you cannot drive the truck another mile. \
+                " The license is gone for good, so you cannot drive the truck another mile. \
                  {load}, and a relief driver takes the truck back to {city}, where you are \
                  released."
             );
         }
         format!(
-            " The licence is pulled as of now, so you cannot drive the truck another mile. \
+            " The license is pulled as of now, so you cannot drive the truck another mile. \
              {load}, and a relief driver takes the truck back to {city}. You wait out the {} \
              there; it ends {}.",
             enforcement::status_noun(record),
