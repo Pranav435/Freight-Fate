@@ -18,6 +18,7 @@ use crate::states::driving_core::{
     unique_consecutive, KG_PER_TON,
 };
 use crate::states::driving_menu_states::apps::DriverAppsState;
+use crate::states::driving_menu_states::commands::DrivingCommandsState;
 use crate::states::driving_menu_states::DriveRef;
 use crate::states::driving_stop_detail::StopDetailState;
 
@@ -89,6 +90,17 @@ impl Menu for DrivingStatusState {
                 .help(format!("Open the {} status screen.", label.to_lowercase()))
             })
             .collect();
+        // The pad has no F2, and its buttons are all taken, so a controller
+        // driver reaches the controls with no button of their own here. The
+        // list takes this screen's place: a command it runs answers over the
+        // road, not over the status menu.
+        items.push(
+            MenuItem::new("Driving commands", |s: &mut Self, ctx: &mut GameContext| {
+                let state = DrivingCommandsState::with_drive(s.driving.clone());
+                ctx.replace_state(state);
+            })
+            .help("Every driving command by name. Choose one to run it and return to driving."),
+        );
         items.push(
             MenuItem::new("Back to driving", |s: &mut Self, ctx| s.go_back(ctx))
                 .help("Close status and resume driving."),
