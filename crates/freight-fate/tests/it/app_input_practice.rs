@@ -140,3 +140,30 @@ fn the_pause_menu_opens_practice() {
     harness.select_menu_item("Practice keys and buttons");
     assert!(harness.state_is::<InputPracticeState>());
 }
+
+#[test]
+fn back_plus_start_opens_practice_mid_drive_and_inside_names_itself() {
+    let mut harness = a_drive("Practice Chord");
+    pad(&mut harness);
+    button(&mut harness, ControllerButton::Back);
+    button(&mut harness, ControllerButton::Start);
+    assert!(harness.state_is::<InputPracticeState>());
+    button_up(&mut harness, ControllerButton::Start);
+    button(&mut harness, ControllerButton::Start);
+    assert!(harness.state_is::<InputPracticeState>());
+    assert_eq!(
+        last_main(&harness),
+        "Back plus Start: key and button practice."
+    );
+}
+
+#[test]
+fn back_plus_start_opens_practice_over_the_pause_menu() {
+    let mut harness = a_drive("Practice Chord Menu");
+    press(&mut harness, Key::Escape);
+    assert!(harness.state_is::<PauseMenuState>());
+    pad(&mut harness);
+    button(&mut harness, ControllerButton::Back);
+    button(&mut harness, ControllerButton::Start);
+    assert!(harness.state_is::<InputPracticeState>());
+}

@@ -526,9 +526,9 @@ Everything found before 2026-09-25 moved to
       the commands with no button are reachable from the controller.
 - [x] Key and button practice (owner, 2026-10-13): the keyboard and
       controller counterpart of gesture practice. Every key, button, trigger
-      and stick names its driving command without running it. Shift F1 opens
-      it over any screen, the drive included; the main and pause menus carry
-      it for a controller.
+      and stick names its driving command without running it. Shift F1, or
+      Back plus Start on a controller, opens it over any screen, the drive
+      included; the main and pause menus carry it too.
 - [ ] With several controllers connected (a second pad, or Steam's virtual
       one), the game listens only to the first it found, and the other's
       buttons do nothing. It could switch to whichever controller the

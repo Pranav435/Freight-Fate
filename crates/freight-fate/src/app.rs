@@ -33,7 +33,8 @@ use crate::speech::{NullSpeech, SpeechSink};
 use crate::states::base::{InputEvent, Key, Mods, State};
 use crate::states::driving::DrivingState;
 use crate::states::main_menu::{
-    opens_input_practice, ConfirmQuitState, InputPracticeState, TouchPracticeState,
+    opens_input_practice, opens_input_practice_pad, ConfirmQuitState, InputPracticeState,
+    TouchPracticeState,
 };
 use crate::touch::Gesture;
 
@@ -768,6 +769,19 @@ impl App {
     pub fn dispatch_controller(&mut self, event: &InputEvent) {
         let forward = self.ctx.controller.process_event(event);
         if forward && self.ctx.controller.active() {
+            // Back plus Start opens key and button practice over any screen;
+            // inside practice it is one more chord to name.
+            if let InputEvent::ControllerButtonDown { button, .. } = event {
+                let practising = self
+                    .ctx
+                    .state()
+                    .is_some_and(|state| state.borrow().as_any().is::<InputPracticeState>());
+                if !practising && opens_input_practice_pad(&self.ctx, *button) {
+                    self.ctx.push_state(InputPracticeState::new());
+                    self.ctx.run_deferred();
+                    return;
+                }
+            }
             if let Some(state) = self.ctx.state() {
                 state.borrow_mut().handle_controller(&mut self.ctx, event);
                 self.ctx.run_deferred();

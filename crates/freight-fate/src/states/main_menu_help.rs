@@ -49,7 +49,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "The brackets choose all, general, or driving messages. Control C copies the selected message. Control Shift C copies the last thing the game said. Review keys type normally inside text fields.",
             "In How to play, Left and Right or the Page keys change pages. Up and Down let you read a little at a time. Enter or Space reads the page; either Control key or F1 stops speech.",
             "Learn game sounds plays road cues and explains their meaning. It is available on the main and pause menus.",
-            "Practice keys and buttons names what each key or controller button does while driving, without moving the truck. Shift F1 opens it from any screen, and it is on the main and pause menus. Press Escape or Start twice to leave.",
+            "Practice keys and buttons names what each key or controller button does while driving, without moving the truck. Shift F1 opens it from any screen, as does holding Back and pressing Start on a controller. It is also on the main and pause menus. Press Escape or Start twice to leave.",
         ],
     ),
     (
@@ -298,7 +298,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "{{pad:parking_brake}} controls the parking brake. {{pad:take_exit}} signals for an exit; {{pad:rest}} opens route-stop actions or emergency shoulder sleep when fully stopped.",
             "{{pad:cruise_down}} and {{pad:cruise_up}} change the cruise target. {{pad:status}} opens driving status, where Driving commands lists every command, including those with no button.",
             "{{pad:radio_tune_prev}} and {{pad:radio_tune_next}} tune the radio, and {{pad:radio_volume_down}} and {{pad:radio_volume_up}} change its volume. {{pad:radio}} turns it on or off.",
-            "To learn the buttons, choose Practice keys and buttons from the main or pause menu. Each button you press says what it does; Start twice leaves.",
+            "To learn the buttons, hold Back and press Start on any screen. Each button you press says what it does; Start twice leaves.",
             "If the controller does nothing, check that Controller is enabled under Settings, Gameplay, Controls. The game uses the first controller it finds, so unplug other controllers and close Steam.",
         ],
     ),

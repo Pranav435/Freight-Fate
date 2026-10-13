@@ -20854,8 +20854,7 @@ msgid "Away from route points while fully stopped, it opens "
 msgstr ""
 
 #. one sentence of a longer line
-msgid ""
-"Practice keys and buttons, on the pause menu, names what each button does."
+msgid "Hold Back and press Start to hear what each button does."
 msgstr ""
 
 #. one sentence of a longer line
@@ -20865,8 +20864,8 @@ msgstr ""
 #. placeholders: {capitalized}
 msgid ""
 "emergency shoulder sleep. {capitalized} opens the status menu, which also "
-"lists every driving command. Practice keys and buttons, on the pause menu, "
-"names what each button does. "
+"lists every driving command. Hold Back and press Start to hear what each "
+"button does. "
 msgstr ""
 
 #. placeholders: {capitalized}
@@ -30781,6 +30780,9 @@ msgstr ""
 msgid "{name}: pause menu. Again to leave practice."
 msgstr ""
 
+msgid "Back plus Start: key and button practice."
+msgstr ""
+
 msgid "Right trigger: Accelerate, as far as you press it."
 msgstr ""
 
@@ -32496,7 +32498,8 @@ msgstr ""
 msgid ""
 "Practice keys and buttons names what each key or controller button does "
 "while driving, without moving the truck. Shift F1 opens it from any screen, "
-"and it is on the main and pause menus. Press Escape or Start twice to leave."
+"as does holding Back and pressing Start on a controller. It is also on the "
+"main and pause menus. Press Escape or Start twice to leave."
 msgstr ""
 
 msgid "Starting and stopping the truck"
@@ -34137,8 +34140,8 @@ msgid "{pad_radio} turns it on or off."
 msgstr ""
 
 msgid ""
-"To learn the buttons, choose Practice keys and buttons from the main or "
-"pause menu. Each button you press says what it does; Start twice leaves."
+"To learn the buttons, hold Back and press Start on any screen. Each button "
+"you press says what it does; Start twice leaves."
 msgstr ""
 
 msgid ""

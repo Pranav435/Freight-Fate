@@ -52,7 +52,10 @@ pub use achievements::{AchievementCareerState, AchievementCategoryState, Achieve
 pub use careers::{
     CareerAction, CareerActionsState, ConfirmCareerActionState, LoadDriverState, ManageCareersState,
 };
-pub use input_practice::{describe_button, describe_key, opens_input_practice, InputPracticeState};
+pub use input_practice::{
+    describe_button, describe_key, opens_input_practice, opens_input_practice_pad,
+    InputPracticeState,
+};
 pub use settings::{
     GameplaySettingsState, SettingsCategoryState, SettingsState, SETTINGS_LAYOUT_NOTICES,
 };

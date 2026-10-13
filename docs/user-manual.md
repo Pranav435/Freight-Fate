@@ -66,7 +66,7 @@ Use Learn game sounds when you want to get familiar with a road cue before heari
 
 Practice keys and buttons tells you what each key or controller button does while driving, without sending it to the game. Press a key, a button, a trigger or a stick and you'll hear its name and its command, such as "E: Engine on or off" or "Right bumper plus X: Posted speed limit." The answers follow your own assignments from Settings, Gameplay, Controls.
 
-Shift F1 opens practice from any screen, including during a drive. The drive waits while you practice. On a controller, open it from the main menu or the pause menu. Press Escape twice, or Start twice, to leave.
+Shift F1 opens practice from any screen, including during a drive; on a controller, hold Back and press Start. The drive waits while you practice. It is also on the main menu and the pause menu. Press Escape twice, or Start twice, to leave.
 
 ### Settings
 
@@ -442,7 +442,7 @@ Drive with the right trigger for acceleration and the left trigger for braking. 
 
 Most driving commands have a button. For the rest, such as the grade, the lane check, and the road ahead, hold the right bumper and press Start, then choose Driving commands. The list names every command; choosing one runs it and returns you to the road.
 
-To check what a button does, press Start and choose Practice keys and buttons. Each button, trigger and stick you press says its command; Start twice returns to the drive.
+To check what a button does, hold Back and press Start for key and button practice. Each button, trigger and stick you press says its command; Start twice returns to the drive.
 
 Inside How to play, D-pad Left and Right change pages, while Up and Down let you read a little at a time. A reads the whole page, Back stops speech, and B returns.
 
@@ -472,6 +472,7 @@ You can change most of these under Settings, Gameplay, Controls, Controller butt
 | Right stick up or down | Radio volume | Up turns the radio on or off; down saves a favorite |
 | Start | Pause | Driving status |
 | Back | Help, or stop speech while it plays | Say what the radio is playing |
+| Start while holding Back | Key and button practice | Key and button practice |
 
 Start and Back on their own, both bumpers, both triggers, and the left stick always keep their jobs.
 

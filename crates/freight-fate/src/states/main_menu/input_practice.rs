@@ -23,6 +23,12 @@ pub fn opens_input_practice(key: Key, mods: Mods) -> bool {
     key == Key::F1 && mods == Mods::SHIFT
 }
 
+/// The global pad chord that opens practice: Start while Back is held. Both
+/// are fixed buttons, so the chord means the same on every screen.
+pub fn opens_input_practice_pad(ctx: &GameContext, button: ControllerButton) -> bool {
+    button == ControllerButton::Start && ctx.controller.is_down(ControllerButton::Back)
+}
+
 #[derive(Default)]
 pub struct InputPracticeState {
     last_leave: Option<Instant>,
@@ -65,6 +71,11 @@ impl InputPracticeState {
 
     fn button_down(&mut self, ctx: &mut GameContext, button: ControllerButton) {
         let modified = ctx.controller.modifier && button != ControllerButton::RightShoulder;
+        if opens_input_practice_pad(ctx, button) {
+            self.last_leave = None;
+            ctx.say("Back plus Start: key and button practice.");
+            return;
+        }
         if button == ControllerButton::Start && !modified {
             self.leave_press(ctx, "Start");
             return;

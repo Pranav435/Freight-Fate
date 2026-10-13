@@ -483,6 +483,11 @@ impl ControllerManager {
         self.subsystem.is_some()
     }
 
+    /// Whether the bound pad is holding `button` down right now.
+    pub fn is_down(&self, button: ControllerButton) -> bool {
+        self.buttons_down.contains(&button)
+    }
+
     pub fn connected(&self) -> bool {
         self.slot.borrow().device.is_some()
     }

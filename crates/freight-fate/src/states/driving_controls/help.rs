@@ -395,7 +395,7 @@ impl DrivingState {
         ));
         text.push_str("Away from route points while fully stopped, it opens ");
         text.push_str(&format!(
-            "emergency shoulder sleep. {} opens the status menu, which also lists every driving command. Practice keys and buttons, on the pause menu, names what each button does. ",
+            "emergency shoulder sleep. {} opens the status menu, which also lists every driving command. Hold Back and press Start to hear what each button does. ",
             capitalized(&n(Action::Status))
         ));
         text.push_str(&format!(
