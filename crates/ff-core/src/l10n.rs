@@ -7,10 +7,18 @@
 //! template: `It is {tod}.` matches "It is 3:15 PM." and hands `3:15 PM` to
 //! the translation, `Es la hora: {tod}.` or however the language puts it.
 //!
-//! A line no template fills is split into sentences, then clauses, and each
-//! piece is tried on its own. Whatever is still untranslated stays English,
-//! so a missing or partial catalog never costs the player a line, only its
-//! language. English itself is the identity: no catalog, no lookups.
+//! A line no template fills is split into sentences, and each sentence is
+//! tried on its own. A sentence is translated whole or not at all: it may
+//! be split into clauses only when every clause that is not a name
+//! translates, and a template whose holes would keep more English words
+//! than the template itself supplies is passed over. So a line never comes
+//! out mixed word by word ("Izquierda and Right arrows"); what is not
+//! translated stays English, and a missing or partial catalog never costs
+//! the player a line, only its language. English itself is the identity:
+//! no catalog, no lookups.
+//!
+//! A menu row's position cue ("4 of 8.") is translated apart from the row
+//! (see [`POSITION_CUE`]), so the cue never depends on the row matching.
 //!
 //! The catalogs are gettext PO files in the repository's `lang/` folder;
 //! `lang/README.md` is the translator's guide. `tools/l10n/extract.py`
@@ -29,6 +37,9 @@ pub mod plural;
 pub mod po;
 
 use matcher::{hole_names, parse_source, parse_translation, Part, Seg, Template, TemplateSet};
+
+/// The catalog entry for a menu row's position cue, as `menu.rs` builds it.
+pub const POSITION_CUE: &str = "{position} of {count}.";
 
 /// The setting value that follows the operating system's language.
 pub const AUTO: &str = "auto";
@@ -190,6 +201,8 @@ pub struct Catalog {
     embedded: Option<AhoCorasick>,
     embedded_keys: Vec<String>,
     templates: TemplateSet,
+    /// The translation of [`POSITION_CUE`], when the catalog has one.
+    position_cue: Option<String>,
     /// Entries that were rejected while compiling, for the checker.
     pub problems: Vec<String>,
 }
@@ -203,8 +216,28 @@ impl Catalog {
         let mut exact = HashMap::new();
         let mut templates = Vec::new();
         let mut problems = Vec::new();
+        let mut position_cue = None;
         for entry in entries {
-            if entry.msgid.is_empty() || entry.msgstr.is_empty() || entry.is_fuzzy() {
+            // An entry with a msgctxt tells a translator apart a second use
+            // of the same English (the controller's Back button beside the
+            // Back row); the game matches finished lines, so the plain entry
+            // is the one it speaks.
+            if entry.msgid.is_empty()
+                || entry.msgstr.is_empty()
+                || entry.is_fuzzy()
+                || entry.msgctxt.is_some()
+            {
+                continue;
+            }
+            if entry.msgid == POSITION_CUE {
+                if entry.msgstr.contains("{position}") && entry.msgstr.contains("{count}") {
+                    position_cue = Some(entry.msgstr.clone());
+                } else {
+                    problems.push(format!(
+                        "line {}: the position cue needs both {{position}} and {{count}}",
+                        entry.line
+                    ));
+                }
                 continue;
             }
             let segs = parse_source(&entry.msgid);
@@ -264,12 +297,25 @@ impl Catalog {
             embedded_keys,
             exact,
             templates: TemplateSet::new(templates),
+            position_cue,
             problems,
         })
     }
 
     pub fn language(&self) -> &str {
         &self.language
+    }
+
+    /// "4 of 8." in the catalog's language, or as English has it.
+    fn position_cue(&self, position: &str, count: &str) -> String {
+        let Some(cue) = &self.position_cue else {
+            return format!("{position} of {count}.");
+        };
+        let number = |raw: &str| {
+            plural::localize_number(&self.language, raw).unwrap_or_else(|| raw.to_string())
+        };
+        cue.replace("{position}", &number(position))
+            .replace("{count}", &number(count))
     }
 
     /// How many lines the catalog translates.
@@ -348,12 +394,25 @@ impl Translator {
             return Cow::Owned(hit.clone());
         }
         let mut missed = Vec::new();
-        let out = Pass {
-            catalog,
-            missed: &mut missed,
-        }
-        .line(line, 0)
-        .unwrap_or_else(|| line.to_string());
+        let out = match split_position_cue(line) {
+            Some((row, position, count)) => {
+                let row = Pass {
+                    catalog,
+                    missed: &mut missed,
+                }
+                .line(row, 0)
+                .unwrap_or_else(|| row.to_string());
+                let cue = catalog.position_cue(position, count);
+                let sep = if ends_full_width(&row) { "" } else { " " };
+                format!("{row}{sep}{cue}")
+            }
+            None => Pass {
+                catalog,
+                missed: &mut missed,
+            }
+            .line(line, 0)
+            .unwrap_or_else(|| line.to_string()),
+        };
         if let Some(log) = &self.misses {
             log.lock().record(&missed);
         }
@@ -433,29 +492,37 @@ impl Pass<'_, '_> {
             let out = self.with_full_stop(hit.clone());
             return Some(wrap(out));
         }
-        if let Some(out) = self.lookup(core, depth) {
-            return Some(wrap(out));
-        }
+        let direct = self.lookup(core, depth);
         // "Dispatch board." is the catalog's "Dispatch board" with the full
         // stop a menu adds after an item.
         // A lead-in like "Billboard:" keeps its colon the same way.
-        if let Some(mark) = core
+        // The heavier of the two wins: "Deliveries: 1, 0 percent on time."
+        // is the catalog's "Deliveries: {deliveries}, {f} percent on time"
+        // with a stop, not a looser template that ends in one.
+        let stopped = core
             .chars()
             .next_back()
             .filter(|c| matches!(c, '.' | ':' | ',' | ';'))
-        {
-            let bare = &core[..core.len() - mark.len_utf8()];
-            if !bare.ends_with(['.', ':', ',', ';']) {
-                let found = self.lookup(bare, depth);
-                if let Some(mut out) = found {
-                    if mark == '.' {
-                        out = self.with_full_stop(out);
-                    } else {
-                        out.push(mark);
-                    }
-                    return Some(wrap(out));
+            .and_then(|mark| {
+                let bare = &core[..core.len() - mark.len_utf8()];
+                if bare.ends_with(['.', ':', ',', ';']) {
+                    return None;
                 }
-            }
+                let (weight, mut out) = self.lookup(bare, depth)?;
+                if mark == '.' {
+                    out = self.with_full_stop(out);
+                } else {
+                    out.push(mark);
+                }
+                Some((weight, out))
+            });
+        let best = match (direct, stopped) {
+            (Some(direct), Some(stopped)) if stopped.0 > direct.0 => Some(stopped),
+            (Some(direct), _) => Some(direct),
+            (None, stopped) => stopped,
+        };
+        if let Some((_, out)) = best {
+            return Some(wrap(out));
         }
         if !split || depth >= MAX_DEPTH {
             return None;
@@ -463,15 +530,16 @@ impl Pass<'_, '_> {
         if let Some(out) = self.embedded(core, depth) {
             return Some(wrap(out));
         }
-        for splitter in [
-            split_sentences as fn(&str) -> Vec<(&str, &str)>,
-            split_clauses,
+        for (clauses, splitter) in [
+            (false, split_sentences as fn(&str) -> Vec<(&str, &str)>),
+            (true, split_clauses),
         ] {
             let pieces = splitter(core);
             if pieces.len() < 2 {
                 continue;
             }
             let mut any = false;
+            let mut whole = true;
             let mut out = String::new();
             let mut missed = Vec::new();
             for (piece, sep) in &pieces {
@@ -483,6 +551,7 @@ impl Pass<'_, '_> {
                     inner.line(piece, depth + 1)
                 };
                 any |= translated.is_some();
+                whole &= translated.is_some() || !has_words(piece) || is_name_like(piece);
                 let piece_out = translated.unwrap_or_else(|| (*piece).to_string());
                 let sep = if sep.trim().is_empty() && ends_full_width(&piece_out) {
                     ""
@@ -492,7 +561,9 @@ impl Pass<'_, '_> {
                 out.push_str(&piece_out);
                 out.push_str(sep);
             }
-            if any {
+            // Clauses are words of one sentence: translated all together,
+            // or the sentence stays English rather than come out mixed.
+            if any && (whole || !clauses) {
                 self.missed.extend(missed);
                 return Some(wrap(out));
             }
@@ -547,9 +618,11 @@ impl Pass<'_, '_> {
     /// A whole-piece match: exact, then a template, then the same with the
     /// first letter's case flipped, since a fragment that opens a sentence
     /// ("Confirmed truck parking.") is the catalog's lowercase fragment.
-    fn lookup(&mut self, core: &str, depth: usize) -> Option<String> {
+    /// With the match's weight: a template's literal letters, or
+    /// `usize::MAX` for an exact entry.
+    fn lookup(&mut self, core: &str, depth: usize) -> Option<(usize, String)> {
         if let Some(hit) = self.catalog.exact.get(core) {
-            return Some(hit.clone());
+            return Some((usize::MAX, hit.clone()));
         }
         let mut chars = core.chars();
         let first = chars.next()?;
@@ -569,17 +642,20 @@ impl Pass<'_, '_> {
             if !self.catalog.exact.contains_key(lower) {
                 if let Some((weight, out)) = self.template(lower, depth) {
                     if direct.as_ref().is_none_or(|(best, _)| weight > *best) {
-                        return Some(capitalize(&out));
+                        return Some((weight, capitalize(&out)));
                     }
                 }
             }
         }
-        if let Some((_, out)) = direct {
-            return Some(out);
+        if direct.is_some() {
+            return direct;
         }
         let flipped = flipped?;
         let hit = self.catalog.exact.get(&flipped)?;
-        Some(if upper { capitalize(hit) } else { hit.clone() })
+        Some((
+            usize::MAX,
+            if upper { capitalize(hit) } else { hit.clone() },
+        ))
     }
 
     fn with_full_stop(&self, mut out: String) -> String {
@@ -608,6 +684,9 @@ impl Pass<'_, '_> {
                 || !caps.values().any(|value| has_sentence_break(value))
         })?;
         let mut out = String::new();
+        // English words the holes would keep, untranslated, inside the
+        // translated frame.
+        let mut kept_english = 0;
         for part in &template.translation {
             match part {
                 Part::Lit(text) => out.push_str(text),
@@ -635,6 +714,11 @@ impl Pass<'_, '_> {
                             missed: &mut ignored,
                         }
                         .piece(raw, depth + 1, has_sentence_break(raw));
+                        // A measure ("2 miles") or a name kept as is is
+                        // not a word left behind.
+                        if translated.is_none() && !is_name_like(raw) && !is_measure(raw) {
+                            kept_english += raw.chars().filter(|c| c.is_alphabetic()).count();
+                        }
                         out.push_str(translated.as_deref().unwrap_or(raw));
                     }
                 }
@@ -643,6 +727,11 @@ impl Pass<'_, '_> {
                     out.push_str(plural::choose(&self.catalog.language, forms, raw));
                 }
             }
+        }
+        // "Lifetime earnings" in "{what} en total" is a word-by-word
+        // translation, not a translated line: as much English as frame.
+        if kept_english >= template.weight {
+            return None;
         }
         // Every source hole must have been captured for the line to match;
         // a template whose segments carry a hole the translation drops is
@@ -670,6 +759,48 @@ fn is_number(text: &str) -> bool {
         && text
             .chars()
             .all(|c| c.is_ascii_digit() || matches!(c, ',' | '.' | ':' | '-' | ' '))
+}
+
+/// A trailing menu position cue: "Settings. 4 of 8." is the row
+/// "Settings." with position 4 of 8. The row must end a sentence, so
+/// "Results 26 to 50 of 52." is not one.
+fn split_position_cue(line: &str) -> Option<(&str, &str, &str)> {
+    let body = line.strip_suffix('.')?;
+    let (rest, count) = body.rsplit_once(' ')?;
+    let rest = rest.strip_suffix(" of")?;
+    let (row, position) = rest.rsplit_once(' ')?;
+    let digits = |s: &str| !s.is_empty() && s.chars().all(|c| c.is_ascii_digit());
+    if !digits(count) || !digits(position) {
+        return None;
+    }
+    let row = row.trim_end();
+    row.ends_with(['.', '!', '?', ':'])
+        .then_some((row, position, count))
+}
+
+/// A piece that reads as a name or a number, not words to translate:
+/// ".977 Smooth Jazz", "Bemidji Company Yard", "US-12". Every word opens
+/// with a capital letter, a digit or a mark, and there is more than one
+/// word or a digit: a lone capitalized word ("Deliveries") is as likely
+/// a label the catalog lacks as a name.
+fn is_name_like(text: &str) -> bool {
+    let mut words = text.split_whitespace().peekable();
+    if words.peek().is_none() {
+        return false;
+    }
+    let capitalized = text.split_whitespace().all(|word| {
+        !word
+            .chars()
+            .find(|c| c.is_alphanumeric())
+            .is_some_and(char::is_lowercase)
+    });
+    capitalized && (text.split_whitespace().count() > 1 || text.chars().any(|c| c.is_ascii_digit()))
+}
+
+/// A number and its unit, as a readout says one: "2 miles", "3:15 PM".
+fn is_measure(text: &str) -> bool {
+    text.trim_start().starts_with(|c: char| c.is_ascii_digit())
+        && text.split_whitespace().count() <= 2
 }
 
 fn has_words(text: &str) -> bool {

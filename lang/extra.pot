@@ -112,3 +112,14 @@ msgstr ""
 
 msgid "Then hairpin left."
 msgstr ""
+
+#. A menu row's position, spoken after the row: "4 of 8." The game
+#. translates it apart from the row, so keep both {position} and {count}.
+msgid "{position} of {count}."
+msgstr ""
+
+#. The Language row's value when it follows the system: {name} is the
+#. language's own name ("Español"). The row reads "Language: automatic,
+#. Español."
+msgid "automatic, {name}"
+msgstr ""
