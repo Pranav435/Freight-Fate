@@ -161,3 +161,9 @@ def test_a_key_and_the_one_word_it_reads_is_extracted():
     src = 'fn f() { format!("{fuel} fuel.") }'
     (lit,) = literals_in(src)
     assert is_player_text(lit.text, lit.is_format, lit.is_key)
+
+
+def test_an_abbreviated_label_leading_into_a_value_is_extracted():
+    src = 'fn f() { format!("ELD: {summary}") }'
+    (lit,) = literals_in(src)
+    assert is_player_text(lit.text, lit.is_format, lit.is_key)

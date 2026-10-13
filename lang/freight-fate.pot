@@ -31895,6 +31895,11 @@ msgstr ""
 msgid "Road chatter: reports are informal and may be stale."
 msgstr ""
 
+#. placeholders: {summary}
+#: crates/freight-fate/src/states/driving_menu_states/apps.rs
+msgid "ELD: {summary}"
+msgstr ""
+
 #: crates/freight-fate/src/states/driving_menu_states/apps.rs
 msgid "ELD route note: no legal stop warning."
 msgstr ""
