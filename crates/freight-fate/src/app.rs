@@ -32,7 +32,10 @@ use crate::online_presence::{IdentityStore, OnlinePresence, OnlinePresenceOption
 use crate::speech::{NullSpeech, SpeechSink};
 use crate::states::base::{InputEvent, Key, Mods, State};
 use crate::states::driving::DrivingState;
-use crate::states::main_menu::{ConfirmQuitState, TouchPracticeState};
+use crate::states::main_menu::{
+    opens_input_practice, opens_input_practice_pad, ConfirmQuitState, InputPracticeState,
+    TouchPracticeState,
+};
 use crate::touch::Gesture;
 
 pub mod boot_timing;
@@ -766,6 +769,19 @@ impl App {
     pub fn dispatch_controller(&mut self, event: &InputEvent) {
         let forward = self.ctx.controller.process_event(event);
         if forward && self.ctx.controller.active() {
+            // Back plus Start opens key and button practice over any screen;
+            // inside practice it is one more chord to name.
+            if let InputEvent::ControllerButtonDown { button, .. } = event {
+                let practising = self
+                    .ctx
+                    .state()
+                    .is_some_and(|state| state.borrow().as_any().is::<InputPracticeState>());
+                if !practising && opens_input_practice_pad(&self.ctx, *button) {
+                    self.ctx.push_state(InputPracticeState::new());
+                    self.ctx.run_deferred();
+                    return;
+                }
+            }
             if let Some(state) = self.ctx.state() {
                 state.borrow_mut().handle_controller(&mut self.ctx, event);
                 self.ctx.run_deferred();
@@ -790,8 +806,18 @@ impl App {
         let Some(state) = self.ctx.state() else {
             return;
         };
-        if event.key_down().is_some() {
+        if let Some((key, mods, _)) = event.key_down() {
             self.ctx.controller.note_keyboard();
+            // Shift F1 opens key and button practice over any screen; inside
+            // practice it is one more key to name.
+            if opens_input_practice(key, mods)
+                && !event.key_repeat()
+                && !state.borrow().as_any().is::<InputPracticeState>()
+            {
+                self.ctx.push_state(InputPracticeState::new());
+                self.ctx.run_deferred();
+                return;
+            }
             let consumed = state
                 .borrow_mut()
                 .handle_message_review(&mut self.ctx, event);
@@ -1015,6 +1041,16 @@ impl App {
         }
         // Reconnect speech if the player's screen reader changed.
         self.ctx.speech.poll(dt);
+        if let Some(name) = self.ctx.controller.take_connect() {
+            // SDL can leave a pad unnamed; the manager then calls it
+            // "controller", which would only repeat the opening word.
+            let line = if name == "controller" {
+                "Controller connected.".to_string()
+            } else {
+                format!("Controller connected: {name}.")
+            };
+            self.ctx.say(&line);
+        }
         if self.ctx.controller.take_disconnect() {
             self.ctx.say(
                 "Controller disconnected. You can keep playing with the \
