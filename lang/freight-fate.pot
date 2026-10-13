@@ -10172,16 +10172,6 @@ msgstr ""
 msgid "Reputation {number} out of 100."
 msgstr ""
 
-#. one sentence of a longer line
-#: crates/ff-core/src/models/enforcement.rs
-msgid "Dispatch trust."
-msgstr ""
-
-#. placeholders: {number}
-#: crates/ff-core/src/models/enforcement.rs
-msgid "Dispatch trust. Reputation {number} out of 100."
-msgstr ""
-
 #. placeholders: {band}
 #: crates/ff-core/src/models/enforcement.rs
 msgid "Dispatch trust: {band}."

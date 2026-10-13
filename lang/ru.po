@@ -8044,14 +8044,6 @@ msgstr ""
 msgid "Reputation {number} out of 100."
 msgstr ""
 
-#. one sentence of a longer line
-msgid "Dispatch trust."
-msgstr ""
-
-#. placeholders: {number}
-msgid "Dispatch trust. Reputation {number} out of 100."
-msgstr ""
-
 #. placeholders: {band}
 msgid "Dispatch trust: {band}."
 msgstr ""

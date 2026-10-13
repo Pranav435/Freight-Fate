@@ -631,9 +631,12 @@ pub fn trust_text_with_display(reputation: f64, mode: ScoreDisplay) -> String {
 fn trust_score_head(reputation: f64, mode: ScoreDisplay) -> String {
     let band = trust_band(reputation);
     let number = round_py_int(reputation.clamp(0.0, 100.0));
+    // Percentage-only drops reputation's band word elsewhere; trust has no
+    // number of its own, so the trust band stays in Percent too.
     match mode {
-        ScoreDisplay::Both => format!("Dispatch trust: {band}. Reputation {number} out of 100."),
-        ScoreDisplay::Percent => format!("Dispatch trust. Reputation {number} out of 100."),
+        ScoreDisplay::Both | ScoreDisplay::Percent => {
+            format!("Dispatch trust: {band}. Reputation {number} out of 100.")
+        }
         ScoreDisplay::Description => format!("Dispatch trust: {band}."),
     }
 }

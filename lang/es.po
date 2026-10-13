@@ -9771,14 +9771,6 @@ msgstr "Confianza de despacho: {band}. Reputación {number} de 100."
 msgid "Reputation {number} out of 100."
 msgstr "Reputación {number} de 100."
 
-#. one sentence of a longer line
-msgid "Dispatch trust."
-msgstr "Confianza de despacho."
-
-#. placeholders: {number}
-msgid "Dispatch trust. Reputation {number} out of 100."
-msgstr "Confianza de despacho. Reputación {number} de 100."
-
 #. placeholders: {band}
 msgid "Dispatch trust: {band}."
 msgstr "Confianza de despacho: {band}."
@@ -42647,6 +42639,12 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "Dispatch trust."
+#~ msgstr "Confianza de despacho."
+
+#~ msgid "Dispatch trust. Reputation {number} out of 100."
+#~ msgstr "Confianza de despacho. Reputación {number} de 100."
 
 #~ msgid "from {origin_offer_text}"
 #~ msgstr "desde {origin_offer_text}"
