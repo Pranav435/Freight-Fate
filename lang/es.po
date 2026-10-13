@@ -7145,16 +7145,16 @@ msgid "the Up arrow"
 msgstr "la flecha arriba"
 
 msgid "the right trigger"
-msgstr "el right trigger"
+msgstr "el gatillo derecho"
 
 msgid "the Down arrow"
 msgstr "la flecha abajo"
 
 msgid "the left trigger"
-msgstr "el left trigger"
+msgstr "el gatillo izquierdo"
 
 msgid "the left trigger fully"
-msgstr "el left trigger a fondo"
+msgstr "el gatillo izquierdo a fondo"
 
 msgid "Left Shift"
 msgstr "Left Shift"
@@ -7163,7 +7163,7 @@ msgid "clutch"
 msgstr "embrague"
 
 msgid "the left bumper"
-msgstr "el left bumper"
+msgstr "el botón superior izquierdo"
 
 msgid "the A button"
 msgstr "el botón A"
@@ -7187,10 +7187,10 @@ msgid "neutral"
 msgstr "punto muerto"
 
 msgid "right bumper plus A"
-msgstr "right bumper más A"
+msgstr "botón superior derecho más A"
 
 msgid "right bumper plus Y"
-msgstr "right bumper más Y"
+msgstr "botón superior derecho más Y"
 
 msgid "Enter"
 msgstr "Enter"
@@ -7199,13 +7199,13 @@ msgid "controller A"
 msgstr "A del mando"
 
 msgid "D-pad down"
-msgstr "D-pad abajo"
+msgstr "cruceta abajo"
 
 msgid "rest"
 msgstr "descanso"
 
 msgid "right bumper plus D-pad down"
-msgstr "right bumper más D-pad abajo"
+msgstr "botón superior derecho más cruceta abajo"
 
 msgid "the Y button"
 msgstr "el botón Y"
@@ -7214,7 +7214,7 @@ msgid "plus and minus"
 msgstr "más y menos"
 
 msgid "right bumper plus D-pad left or right"
-msgstr "right bumper más D-pad izquierda o derecha"
+msgstr "botón superior derecho más cruceta izquierda o derecha"
 
 msgid "Space"
 msgstr "Space"
@@ -7229,25 +7229,25 @@ msgid "Tab"
 msgstr "Tab"
 
 msgid "right bumper plus Start"
-msgstr "right bumper más Start"
+msgstr "botón superior derecho más Start"
 
 msgid "right bumper plus B"
-msgstr "right bumper más B"
+msgstr "botón superior derecho más B"
 
 msgid "D-pad right"
-msgstr "D-pad derecha"
+msgstr "cruceta derecha"
 
 msgid "clock"
 msgstr "reloj"
 
 msgid "D-pad up"
-msgstr "D-pad arriba"
+msgstr "cruceta arriba"
 
 msgid "route"
 msgstr "ruta"
 
 msgid "D-pad left"
-msgstr "D-pad izquierda"
+msgstr "cruceta izquierda"
 
 msgid "weather"
 msgstr "clima"
@@ -7256,13 +7256,13 @@ msgid "lane"
 msgstr "carril"
 
 msgid "the left stick"
-msgstr "el left stick"
+msgstr "el stick izquierdo"
 
 msgid "the left stick click"
-msgstr "pulsar el left stick"
+msgstr "pulsar el stick izquierdo"
 
 msgid "the right stick click"
-msgstr "pulsar el right stick"
+msgstr "pulsar el stick derecho"
 
 msgid "Escape"
 msgstr "Escape"
@@ -17014,7 +17014,7 @@ msgstr "Shift "
 
 #. placeholders: {short}
 msgid "right bumper plus {short}"
-msgstr "right bumper más {short}"
+msgstr "botón superior derecho más {short}"
 
 #. placeholders: {short}
 msgid "the {short} button"
@@ -17231,10 +17231,10 @@ msgid "Control C copies the message in review"
 msgstr "Control C copia el mensaje en repaso"
 
 msgid "the left bumper is the clutch"
-msgstr "el left bumper es el embrague"
+msgstr "el botón superior izquierdo es el embrague"
 
 msgid "the right bumper is the second layer"
-msgstr "el right bumper es la segunda capa"
+msgstr "el botón superior derecho es la segunda capa"
 
 msgid "the guide button belongs to the system"
 msgstr "el botón guide pertenece al sistema"
@@ -17410,10 +17410,10 @@ msgid "guide"
 msgstr "guide"
 
 msgid "the guide button"
-msgstr "el botón guide"
+msgstr "el botón guía"
 
 msgid "the right bumper"
-msgstr "el right bumper"
+msgstr "el botón superior derecho"
 
 msgid "misc"
 msgstr "misc"
@@ -17422,34 +17422,34 @@ msgid "the extra button"
 msgstr "el botón extra"
 
 msgid "paddle 1"
-msgstr "paddle 1"
+msgstr "palanca trasera 1"
 
 msgid "paddle 2"
-msgstr "paddle 2"
+msgstr "palanca trasera 2"
 
 msgid "paddle 3"
-msgstr "paddle 3"
+msgstr "palanca trasera 3"
 
 msgid "paddle 4"
-msgstr "paddle 4"
+msgstr "palanca trasera 4"
 
 msgid "the touchpad"
-msgstr "el touchpad"
+msgstr "el panel táctil"
 
 msgid "touchpad"
-msgstr "touchpad"
+msgstr "panel táctil"
 
 msgid "right stick up"
-msgstr "right stick arriba"
+msgstr "stick derecho arriba"
 
 msgid "right stick down"
-msgstr "right stick abajo"
+msgstr "stick derecho abajo"
 
 msgid "right stick left"
-msgstr "right stick izquierda"
+msgstr "stick derecho izquierda"
 
 msgid "right stick right"
-msgstr "right stick derecha"
+msgstr "stick derecho derecha"
 
 msgid "an unnamed button"
 msgstr "un botón sin nombre"
@@ -17936,16 +17936,16 @@ msgid "Y button"
 msgstr "botón Y"
 
 msgid "left bumper"
-msgstr "left bumper"
+msgstr "botón superior izquierdo"
 
 msgid "right bumper"
-msgstr "right bumper"
+msgstr "botón superior derecho"
 
 msgid "left stick click"
-msgstr "pulsar el left stick"
+msgstr "pulsar el stick izquierdo"
 
 msgid "right stick click"
-msgstr "pulsar el right stick"
+msgstr "pulsar el stick derecho"
 
 msgid "Back button"
 msgstr "botón Back"
@@ -20184,21 +20184,21 @@ msgstr ""
 #. placeholders: {name}, {the_city}, {city_state}, {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}, {first_day}
 msgid ""
 "Parked at {name} in {the_city} service area, {city_state}. {py_capitalize} "
-"with level {level}, {title}.{cdl}{record} You have {grouped} dollars. "
-"{first_day}"
+"with level {level}, {title}.{cdl}{record} You have {grouped} "
+"dollars.{first_day}"
 msgstr ""
 "Aparcado en {name}, en la zona de servicio de {the_city}, {city_state}. "
 "{py_capitalize} de nivel {level}, {title}.{cdl}{record} Tienes {grouped} "
-"dólares. {first_day}"
+"dólares.{first_day}"
 
-#. placeholders: {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}
+#. placeholders: {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}, {first_day}
 #. one sentence of a longer line
 msgid ""
 "{py_capitalize} with level {level}, {title}.{cdl}{record} You have "
-"{grouped} dollars."
+"{grouped} dollars.{first_day}"
 msgstr ""
 "{py_capitalize} de nivel {level}, {title}.{cdl}{record} Tienes {grouped} "
-"dólares."
+"dólares.{first_day}"
 
 msgid ""
 "Loads from local freight facilities. New company hires get an assigned "
@@ -24168,8 +24168,8 @@ msgid ""
 "The left stick steers; with lane keeping on full, pushing it left or right "
 "changes one lane."
 msgstr ""
-"El Left stick gira; con el mantenimiento de carril en completo, empujarlo a "
-"la izquierda o a la derecha cambia un carril."
+"El stick izquierdo gira; con el mantenimiento de carril en completo, "
+"empujarlo a la izquierda o a la derecha cambia un carril."
 
 #. placeholders: {shift_up}, {shift_down}
 msgid ""
@@ -30378,9 +30378,9 @@ msgstr ""
 "Carga: {f} toneladas de {label}, peso bruto {f2} toneladas, carga "
 "{cargo_status_clause}"
 
-#. placeholders: {clock_text}, {clock_zone_label}, {deadline_text}
-msgid "Time: {clock_text} {clock_zone_label}, {deadline_text}"
-msgstr "Hora: {clock_text} {clock_zone_label}, {deadline_text}"
+#. placeholders: {clock}, {deadline_text}
+msgid "Time: {clock}, {deadline_text}"
+msgstr "Hora: {clock}, {deadline_text}"
 
 #. placeholders: {driver_name}
 msgid "Driver: {driver_name}"
@@ -35593,20 +35593,22 @@ msgid "Back plus Start: key and button practice."
 msgstr "Back más Start: práctica de teclas y botones."
 
 msgid "Right trigger: Accelerate, as far as you press it."
-msgstr "Right trigger: Acelerar, tanto como lo pulses."
+msgstr "Gatillo derecho: Acelerar, tanto como lo pulses."
 
 msgid ""
 "Left trigger: Brake, as far as you press it. All the way down: Emergency "
 "brake."
 msgstr ""
-"Left trigger: Frenar, tanto como lo pulses. A fondo: Freno de emergencia."
+"Gatillo izquierdo: Frenar, tanto como lo pulses. A fondo: Freno de "
+"emergencia."
 
 msgid "Left stick: push left or right to change one lane."
 msgstr ""
-"Left stick: empuja a la izquierda o a la derecha para cambiar un carril."
+"Stick izquierdo: empuja a la izquierda o a la derecha para cambiar un "
+"carril."
 
 msgid "Left stick: steer."
-msgstr "Left stick: girar."
+msgstr "Stick izquierdo: girar."
 
 msgid "Change one lane left"
 msgstr "Cambiar un carril a la izquierda"
@@ -36746,7 +36748,7 @@ msgid ""
 "bumper held."
 msgstr ""
 "Mueve cualquier control de conducción a otro botón del mando, solo o con el "
-"right bumper pulsado."
+"botón superior derecho pulsado."
 
 msgid "Where the game log is saved"
 msgstr "Dónde se guarda el registro del juego"
@@ -37159,16 +37161,16 @@ msgid ""
 "Press the new button for {label}, with the right bumper held for the second "
 "layer."
 msgstr ""
-"Pulsa el nuevo botón para {label}, con el right bumper pulsado para la "
-"segunda capa."
+"Pulsa el nuevo botón para {label}, con el botón superior derecho pulsado "
+"para la segunda capa."
 
 #. placeholders: {label}, {current}
 msgid ""
 "Press the new button for {label}, with the right bumper held for the second "
 "layer. Press {current} again to keep it."
 msgstr ""
-"Pulsa el nuevo botón para {label}, con el right bumper pulsado para la "
-"segunda capa. Pulsa {current} otra vez para mantenerlo."
+"Pulsa el nuevo botón para {label}, con el botón superior derecho pulsado "
+"para la segunda capa. Pulsa {current} otra vez para mantenerlo."
 
 #. placeholders: {current}
 #. one sentence of a longer line
@@ -37221,8 +37223,8 @@ msgid ""
 "Enter, then press the button you want for this control, with the right "
 "bumper held for the second layer."
 msgstr ""
-"Enter, y luego pulsa el botón que quieras para este control, con el right "
-"bumper pulsado para la segunda capa."
+"Enter, y luego pulsa el botón que quieras para este control, con el botón "
+"superior derecho pulsado para la segunda capa."
 
 msgid "Reset every keyboard shortcut to its default"
 msgstr "Restablecer todos los atajos de teclado a su valor predeterminado"
@@ -37888,7 +37890,7 @@ msgid ""
 "controller."
 msgstr ""
 "Para el embrague manual, mantén cualquiera de las teclas Shift en el "
-"teclado o el left bumper en el mando."
+"teclado o el botón superior izquierdo en el mando."
 
 #. placeholders: {control_shift_up}, {control_shift_down}, {control_neutral}, {control_reverse}
 msgid ""
@@ -37897,9 +37899,9 @@ msgid ""
 "{control_neutral} selects neutral, and {control_reverse} selects reverse."
 msgstr ""
 "Para el embrague manual, mantén cualquiera de las teclas Shift en el "
-"teclado o el left bumper en el mando. Luego {control_shift_up} sube de "
-"marcha, {control_shift_down} baja, {control_neutral} pone punto muerto y "
-"{control_reverse} pone marcha atrás."
+"teclado o el botón superior izquierdo en el mando. Luego {control_shift_up} "
+"sube de marcha, {control_shift_down} baja, {control_neutral} pone punto "
+"muerto y {control_reverse} pone marcha atrás."
 
 #. placeholders: {control_shift_up}, {control_shift_down}, {control_neutral}, {control_reverse}
 #. one sentence of a longer line
@@ -39841,7 +39843,7 @@ msgid ""
 "In menus, D-pad moves, A confirms, B returns, and Back reads help. During "
 "driving speech, Back stops the voice; otherwise it reads help. Start pauses."
 msgstr ""
-"En los menús, el D-pad mueve, A confirma, B vuelve y Back lee la ayuda. "
+"En los menús, la cruceta mueve, A confirma, B vuelve y Back lee la ayuda. "
 "Mientras habla la voz de conducción, Back detiene la voz; si no, lee la "
 "ayuda. Start pone en pausa."
 
@@ -39850,10 +39852,10 @@ msgid ""
 "trigger gives emergency braking. The left stick steers; with lane keeping "
 "on full, push it left or right to change one lane."
 msgstr ""
-"El Right trigger acelera, el Left trigger frena, y pisar el Left trigger a "
-"fondo da frenado de emergencia. El Left stick gira; con el mantenimiento de "
-"carril en completo, empújalo a la izquierda o a la derecha para cambiar un "
-"carril."
+"El gatillo derecho acelera, el gatillo izquierdo frena, y apretar el "
+"gatillo izquierdo a fondo da frenado de emergencia. El stick izquierdo "
+"gira; con el mantenimiento de carril en completo, empújalo a la izquierda o "
+"a la derecha para cambiar un carril."
 
 msgid ""
 "To reverse in automatic, stop, release the left trigger, then press and "
@@ -39865,7 +39867,7 @@ msgstr ""
 
 #. one sentence of a longer line
 msgid "Hold left bumper for manual clutch."
-msgstr "Mantén el left bumper para el embrague manual."
+msgstr "Mantén el botón superior izquierdo para el embrague manual."
 
 #. placeholders: {pad_shift_up}, {pad_shift_down}, {pad_cruise}, {pad_speed}
 msgid ""
@@ -39873,9 +39875,10 @@ msgid ""
 "{pad_shift_down} down, past first into neutral and then reverse. "
 "{pad_cruise} starts speed control; {pad_speed} reads speed."
 msgstr ""
-"Mantén el left bumper como embrague manual. {pad_shift_up} sube de marcha y "
-"{pad_shift_down} baja, pasando de primera a punto muerto y luego a reverse. "
-"{pad_cruise} activa el control de velocidad; {pad_speed} lee la velocidad."
+"Mantén el botón superior izquierdo como embrague manual. {pad_shift_up} "
+"sube de marcha y {pad_shift_down} baja, pasando de primera a punto muerto y "
+"luego a marcha atrás. {pad_cruise} activa el control de velocidad; "
+"{pad_speed} lee la velocidad."
 
 #. placeholders: {pad_cruise}, {pad_speed}
 #. one sentence of a longer line
@@ -39920,15 +39923,16 @@ msgstr ""
 
 #. one sentence of a longer line
 msgid "Right bumper accesses the second layer."
-msgstr "El right bumper da acceso a la segunda capa."
+msgstr "El botón superior derecho da acceso a la segunda capa."
 
 #. placeholders: {pad_engine}, {pad_fuel}, {pad_speed_limit}
 msgid ""
 "Right bumper accesses the second layer. {pad_engine} controls the engine, "
 "{pad_fuel} reads fuel, and {pad_speed_limit} reads the limit."
 msgstr ""
-"El right bumper da acceso a la segunda capa. {pad_engine} controla el "
-"motor, {pad_fuel} lee el combustible y {pad_speed_limit} lee el límite."
+"El botón superior derecho da acceso a la segunda capa. {pad_engine} "
+"controla el motor, {pad_fuel} lee el combustible y {pad_speed_limit} lee el "
+"límite."
 
 #. placeholders: {pad_engine}, {pad_fuel}, {pad_speed_limit}
 #. one sentence of a longer line
@@ -40043,9 +40047,9 @@ msgid ""
 "D-pad Left and Right change pages, Up and Down let you read a little at a "
 "time. A reads the whole page, Back stops speech, and B goes back."
 msgstr ""
-"Izquierda y derecha en el D-pad cambian de página, arriba y abajo te dejan "
-"leer poco a poco. A lee la página entera, Back detiene la voz y B vuelve "
-"atrás."
+"Izquierda y derecha en la cruceta cambian de página, arriba y abajo te "
+"dejan leer poco a poco. A lee la página entera, Back detiene la voz y B "
+"vuelve atrás."
 
 msgid ""
 "Left and Right arrows or Page Up and Page Down change pages. Up and Down "
@@ -42227,6 +42231,47 @@ msgstr "Luego, curva cerrada en horquilla a la derecha."
 
 msgid "Then hairpin left."
 msgstr "Luego, curva cerrada en horquilla a la izquierda."
+
+#. A clock reading with its time zone, as the Driver screen says it.
+msgid "{clock} Eastern Time"
+msgstr "{clock} hora del Este"
+
+msgid "{clock} Central Time"
+msgstr "{clock} hora del Centro"
+
+msgid "{clock} Mountain Time"
+msgstr "{clock} hora de la Montaña"
+
+msgid "{clock} Pacific Time"
+msgstr "{clock} hora del Pacífico"
+
+msgid "{clock} Alaska Time"
+msgstr "{clock} hora de Alaska"
+
+msgid "{clock} Hawaii Time"
+msgstr "{clock} hora de Hawái"
+
+msgid "{clock} local game time"
+msgstr "{clock} hora local del juego"
+
+#~ msgid ""
+#~ "Parked at {name} in {the_city} service area, {city_state}. {py_capitalize} "
+#~ "with level {level}, {title}.{cdl}{record} You have {grouped} dollars. "
+#~ "{first_day}"
+#~ msgstr ""
+#~ "Aparcado en {name}, en la zona de servicio de {the_city}, {city_state}. "
+#~ "{py_capitalize} de nivel {level}, {title}.{cdl}{record} Tienes {grouped} "
+#~ "dólares. {first_day}"
+
+#~ msgid ""
+#~ "{py_capitalize} with level {level}, {title}.{cdl}{record} You have "
+#~ "{grouped} dollars."
+#~ msgstr ""
+#~ "{py_capitalize} de nivel {level}, {title}.{cdl}{record} Tienes {grouped} "
+#~ "dólares."
+
+#~ msgid "Time: {clock_text} {clock_zone_label}, {deadline_text}"
+#~ msgstr "Hora: {clock_text} {clock_zone_label}, {deadline_text}"
 
 #~ msgid "Hours: {trim_end_matches}"
 #~ msgstr "Horas: {trim_end_matches}"

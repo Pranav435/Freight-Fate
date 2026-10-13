@@ -709,3 +709,26 @@ fn help_sentences_after_a_key_name_translate_whole() {
         "Toca el freno para retenerlo. La flecha abajo una vez lo suelta."
     );
 }
+
+#[test]
+fn a_clock_and_its_zone_translate_as_one_reading() {
+    let po = r#"
+msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "Time: {clock}, {deadline_text}"
+msgstr "Hora: {clock}, {deadline_text}"
+
+msgid "{clock} Central Time"
+msgstr "{clock} hora del Centro"
+
+msgid "due tomorrow"
+msgstr "vence mañana"
+"#;
+    let tr = Translator::new(Catalog::from_po("es", po).expect("parses"));
+    assert_eq!(
+        tr.translate("Time: 8:02 AM Central Time, due tomorrow."),
+        "Hora: 8:02 AM hora del Centro, vence mañana."
+    );
+}

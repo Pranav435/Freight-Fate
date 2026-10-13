@@ -17303,15 +17303,15 @@ msgstr ""
 #. placeholders: {name}, {the_city}, {city_state}, {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}, {first_day}
 msgid ""
 "Parked at {name} in {the_city} service area, {city_state}. {py_capitalize} "
-"with level {level}, {title}.{cdl}{record} You have {grouped} dollars. "
-"{first_day}"
+"with level {level}, {title}.{cdl}{record} You have {grouped} "
+"dollars.{first_day}"
 msgstr ""
 
-#. placeholders: {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}
+#. placeholders: {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}, {first_day}
 #. one sentence of a longer line
 msgid ""
 "{py_capitalize} with level {level}, {title}.{cdl}{record} You have "
-"{grouped} dollars."
+"{grouped} dollars.{first_day}"
 msgstr ""
 
 msgid ""
@@ -26239,8 +26239,8 @@ msgid ""
 "Load: {f} tons of {label}, gross {f2} tons, freight {cargo_status_clause}"
 msgstr ""
 
-#. placeholders: {clock_text}, {clock_zone_label}, {deadline_text}
-msgid "Time: {clock_text} {clock_zone_label}, {deadline_text}"
+#. placeholders: {clock}, {deadline_text}
+msgid "Time: {clock}, {deadline_text}"
 msgstr ""
 
 #. placeholders: {driver_name}
@@ -35988,4 +35988,26 @@ msgid "Then hairpin right."
 msgstr ""
 
 msgid "Then hairpin left."
+msgstr ""
+
+#. A clock reading with its time zone, as the Driver screen says it.
+msgid "{clock} Eastern Time"
+msgstr ""
+
+msgid "{clock} Central Time"
+msgstr ""
+
+msgid "{clock} Mountain Time"
+msgstr ""
+
+msgid "{clock} Pacific Time"
+msgstr ""
+
+msgid "{clock} Alaska Time"
+msgstr ""
+
+msgid "{clock} Hawaii Time"
+msgstr ""
+
+msgid "{clock} local game time"
 msgstr ""

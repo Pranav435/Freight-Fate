@@ -21879,16 +21879,16 @@ msgstr ""
 #: crates/freight-fate/src/states/city/terminal.rs
 msgid ""
 "Parked at {name} in {the_city} service area, {city_state}. {py_capitalize} "
-"with level {level}, {title}.{cdl}{record} You have {grouped} dollars. "
-"{first_day}"
+"with level {level}, {title}.{cdl}{record} You have {grouped} "
+"dollars.{first_day}"
 msgstr ""
 
-#. placeholders: {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}
+#. placeholders: {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}, {first_day}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/city/terminal.rs
 msgid ""
 "{py_capitalize} with level {level}, {title}.{cdl}{record} You have "
-"{grouped} dollars."
+"{grouped} dollars.{first_day}"
 msgstr ""
 
 #: crates/freight-fate/src/states/city/terminal.rs
@@ -32976,9 +32976,9 @@ msgid ""
 "Load: {f} tons of {label}, gross {f2} tons, freight {cargo_status_clause}"
 msgstr ""
 
-#. placeholders: {clock_text}, {clock_zone_label}, {deadline_text}
+#. placeholders: {clock}, {deadline_text}
 #: crates/freight-fate/src/states/driving_menu_states/status.rs
-msgid "Time: {clock_text} {clock_zone_label}, {deadline_text}"
+msgid "Time: {clock}, {deadline_text}"
 msgstr ""
 
 #. placeholders: {driver_name}
@@ -44960,4 +44960,33 @@ msgstr ""
 
 #: lang/extra.pot
 msgid "Then hairpin left."
+msgstr ""
+
+#. A clock reading with its time zone, as the Driver screen says it.
+#: lang/extra.pot
+msgid "{clock} Eastern Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Central Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Mountain Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Pacific Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Alaska Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Hawaii Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} local game time"
 msgstr ""

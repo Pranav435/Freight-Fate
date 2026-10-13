@@ -102,6 +102,8 @@
 
 ### Fixed
 
+- **Controller button names are translated, and the Driver screen's clock reads its time zone in your language.** The terminal greeting also loses a stray double space.
+
 - **Translated speech no longer mixes English into lines the language file covers.** Settings values, the drive start, the terminal, How to play, the F1 help, the Driver screen and the ELD app now speak whole sentences in your language.
 
 - **The Hours and ELD status lines now have named placeholders in the translation files.** Translators can see that the slot holds the hours summary; English is unchanged.

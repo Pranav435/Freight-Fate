@@ -123,3 +123,25 @@ msgstr ""
 #. Español."
 msgid "automatic, {name}"
 msgstr ""
+
+#. A clock reading with its time zone, as the Driver screen says it.
+msgid "{clock} Eastern Time"
+msgstr ""
+
+msgid "{clock} Central Time"
+msgstr ""
+
+msgid "{clock} Mountain Time"
+msgstr ""
+
+msgid "{clock} Pacific Time"
+msgstr ""
+
+msgid "{clock} Alaska Time"
+msgstr ""
+
+msgid "{clock} Hawaii Time"
+msgstr ""
+
+msgid "{clock} local game time"
+msgstr ""
