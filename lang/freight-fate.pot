@@ -33195,6 +33195,18 @@ msgid "Receivable stations:"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_menu_states/status.rs
+msgid "Favorites saved:"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_menu_states/status.rs crates/freight-fate/src/states/driving_radio_app.rs
+msgid "favorites"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_menu_states/status.rs crates/freight-fate/src/states/driving_radio_app.rs
+msgid "Your saved stations. Enter on one tunes it."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_menu_states/status.rs
 msgid "Back to the status screens."
 msgstr ""
 
@@ -33810,14 +33822,6 @@ msgstr ""
 #. placeholders: {favorites}
 #: crates/freight-fate/src/states/driving_radio_app.rs
 msgid "Favorites: {favorites} saved"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_radio_app.rs
-msgid "favorites"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_radio_app.rs
-msgid "Your saved stations. Enter on one tunes it."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_radio_app.rs

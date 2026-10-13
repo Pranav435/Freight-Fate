@@ -26414,6 +26414,15 @@ msgstr ""
 msgid "Receivable stations:"
 msgstr ""
 
+msgid "Favorites saved:"
+msgstr ""
+
+msgid "favorites"
+msgstr ""
+
+msgid "Your saved stations. Enter on one tunes it."
+msgstr ""
+
 msgid "Back to the status screens."
 msgstr ""
 
@@ -26906,12 +26915,6 @@ msgstr ""
 
 #. placeholders: {favorites}
 msgid "Favorites: {favorites} saved"
-msgstr ""
-
-msgid "favorites"
-msgstr ""
-
-msgid "Your saved stations. Enter on one tunes it."
 msgstr ""
 
 msgid "Search stations"
