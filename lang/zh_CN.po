@@ -14395,6 +14395,13 @@ msgstr "volumes and voice"
 msgid "Lane keeping is on full. Flick left or right to change lanes."
 msgstr "车道保持为完全。向左或向右轻扫来换道。"
 
+msgid "Controller connected."
+msgstr "手柄已连接。"
+
+#. placeholders: {name}
+msgid "Controller connected: {name}."
+msgstr "手柄已连接：{name}。"
+
 msgid ""
 "Controller disconnected. You can keep playing with the keyboard, or "
 "reconnect your controller."
@@ -21036,6 +21043,9 @@ msgstr "Escape 暂停菜单。"
 msgid "F2 lists every driving command by name."
 msgstr "F2 按名称列出所有驾驶命令。"
 
+msgid "Shift F1 names what each key does."
+msgstr "Shift F1 说出每个键的作用。"
+
 #. placeholders: {shift_up}, {shift_down}, {reverse}, {neutral}
 msgid ""
 "Hold Left Shift for clutch, then {shift_up} to shift up or {shift_down} to "
@@ -21054,8 +21064,10 @@ msgid ""
 "is the hardest stop."
 msgstr "右扳机是油门，左扳机是刹车；左扳机按到底是最猛的停车。"
 
-msgid "The left stick steers unless lane keeping is on full."
-msgstr "除非车道保持为完全，左摇杆用于转向。"
+msgid ""
+"The left stick steers; with lane keeping on full, pushing it left or right "
+"changes one lane."
+msgstr "Left stick 控制转向；车道保持为完全时，向左或向右推一下会变换一条车道。"
 
 #. placeholders: {shift_up}, {shift_down}
 msgid ""
@@ -21140,8 +21152,12 @@ msgid ""
 msgstr "在远离路线点的地方完全停下时，它会打开路肩紧急睡眠。"
 
 #. placeholders: {status}
-msgid "{status} opens the status menu."
-msgstr "{status} 打开状态菜单。"
+msgid ""
+"{status} opens the status menu, which also lists every driving command."
+msgstr "{status} 打开状态菜单，其中也列出所有驾驶命令。"
+
+msgid "Hold Back and press Start to hear what each button does."
+msgstr "按住 Back 再按 Start，可听到每个按钮的作用。"
 
 #. placeholders: {tune_prev}, {tune_next}
 msgid ""
@@ -26617,6 +26633,10 @@ msgstr "驾驶状态"
 msgid "Open the {label} status screen."
 msgstr "打开{label}状态界面。"
 
+msgid ""
+"Every driving command by name. Choose one to run it and return to driving."
+msgstr "按名称列出所有驾驶命令。选择一个即可执行并返回驾驶。"
+
 msgid "Close status and resume driving."
 msgstr "关闭状态，继续驾驶。"
 
@@ -26895,6 +26915,12 @@ msgstr "学习游戏声音"
 
 msgid "Plays any sound the road uses and says what it means."
 msgstr "播放道路上用到的任何声音，并说明它的含义。"
+
+msgid "Practice keys and buttons"
+msgstr "练习按键和按钮"
+
+msgid "Names what each key or controller button does while driving."
+msgstr "说出驾驶时每个按键或手柄按钮的作用。"
 
 msgid ""
 "A mobile mechanic patches the truck up enough to drive on. Far dearer than "
@@ -31243,6 +31269,138 @@ msgid ""
 "backup on the Online menu can remove them later."
 msgstr "无法连接网站，所以云备份还在；以后可以用“在线”菜单上的“云备份”删除它们。"
 
+msgid "Leaving key and button practice."
+msgstr "正在退出按键和按钮练习。"
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}: pause menu."
+msgstr "{name}：暂停菜单。"
+
+#. placeholders: {name}
+msgid "{name}: pause menu. Again to leave practice."
+msgstr "{name}：暂停菜单。再按一次退出练习。"
+
+msgid "Back plus Start: key and button practice."
+msgstr "Back 加 Start：按键和按钮练习。"
+
+msgid "Right trigger: Accelerate, as far as you press it."
+msgstr "Right trigger：加速，按多深就加多少。"
+
+msgid ""
+"Left trigger: Brake, as far as you press it. All the way down: Emergency "
+"brake."
+msgstr "Left trigger：刹车，按多深就刹多少。按到底：紧急制动。"
+
+msgid "Left stick: push left or right to change one lane."
+msgstr "Left stick：向左或向右推，变换一条车道。"
+
+msgid "Left stick: steer."
+msgstr "Left stick：转向。"
+
+msgid "Change one lane left"
+msgstr "向左变换一条车道"
+
+msgid "Change one lane right"
+msgstr "向右变换一条车道"
+
+#. placeholders: {label}
+msgid "{label}, in a manual truck"
+msgstr "{label}，手动挡卡车"
+
+msgid "Control: stop the driving voice."
+msgstr "Control：停止驾驶语音。"
+
+msgid "Shift: hold as the clutch in a manual truck."
+msgstr "Shift：手动挡卡车中按住作为离合器。"
+
+msgid "Alt: hold with another key."
+msgstr "Alt：与另一个键一起按住。"
+
+msgid "key and button practice"
+msgstr "按键和按钮练习"
+
+msgid "driving commands"
+msgstr "驾驶命令"
+
+msgid "oldest message"
+msgstr "最早的消息"
+
+msgid "newest message"
+msgstr "最新的消息"
+
+msgid "previous message"
+msgstr "上一条消息"
+
+msgid "next message"
+msgstr "下一条消息"
+
+msgid "previous message category"
+msgstr "上一个消息类别"
+
+msgid "next message category"
+msgstr "下一个消息类别"
+
+msgid "copy the message in review"
+msgstr "复制正在查看的消息"
+
+msgid "cruise target up by 1"
+msgstr "巡航目标加 1"
+
+msgid "cruise target up to the next 5"
+msgstr "巡航目标升到下一个 5 的倍数"
+
+msgid "cruise target down by 1"
+msgstr "巡航目标减 1"
+
+msgid "cruise target down to the next 5"
+msgstr "巡航目标降到下一个 5 的倍数"
+
+msgid "choose, or confirm an arrival"
+msgstr "选择，或确认到达"
+
+msgid "previous radio category"
+msgstr "上一个电台类别"
+
+msgid "raise radio volume"
+msgstr "调高电台音量"
+
+msgid "tune to the previous radio station"
+msgstr "调到上一个电台"
+
+msgid "next radio category"
+msgstr "下一个电台类别"
+
+msgid "lower radio volume"
+msgstr "调低电台音量"
+
+msgid "tune to the next radio station"
+msgstr "调到下一个电台"
+
+msgid "no command"
+msgstr "无命令"
+
+msgid "hold for the second layer of buttons"
+msgstr "按住使用第二层按钮"
+
+msgid "hold as the clutch in a manual truck"
+msgstr "手动挡卡车中按住作为离合器"
+
+msgid "help, or stop the driving voice while it speaks"
+msgstr "帮助，或在驾驶语音说话时停止它"
+
+msgid "confirm an arrival when one is ready"
+msgstr "有到达可确认时确认到达"
+
+#. placeholders: {text}
+msgid "{text}, or confirm an arrival when one is ready"
+msgstr "{text}，或有到达可确认时确认到达"
+
+msgid ""
+"Key and button practice. Press a key or button to hear what it does while "
+"driving. Escape twice, or Start twice, to leave."
+msgstr "按键和按钮练习。按一个键或按钮，可听到它在驾驶时的作用。按两次 Escape 或两次 Start 退出。"
+
 msgid "Gameplay"
 msgstr "游戏玩法"
 
@@ -31525,6 +31683,16 @@ msgid ""
 "Only NVDA and JAWS can send the game to a braille display. Speech stays on "
 "until one of them is running."
 msgstr "只有NVDA和JAWS能把游戏内容发送到盲文显示器。在它们之一运行之前，语音会保持开启。"
+
+msgid "Controller: disabled"
+msgstr "手柄：已禁用"
+
+#. placeholders: {name}
+msgid "Controller: enabled, {name} connected"
+msgstr "手柄：已启用，已连接 {name}"
+
+msgid "Controller: enabled, none connected"
+msgstr "手柄：已启用，未连接"
 
 msgid "a soft tone leans"
 msgstr "轻柔的提示音会"
@@ -32060,16 +32228,6 @@ msgid ""
 "and press everywhere. Automatic transmission only."
 msgstr "两种方式都是在停稳时重新按一下来换向；停车时一直踩着的刹车只是把卡车停住。“谨慎”要求在任何情况下都先松开再按。仅限自动变速箱。"
 
-#. placeholders: {else}
-msgid "Controller: {else}"
-msgstr "手柄：{else}"
-
-msgid "enabled"
-msgstr "已启用"
-
-msgid "disabled"
-msgstr "已禁用"
-
 msgid ""
 "Game-controller input alongside the keyboard, which always stays active. "
 "The first connected controller is used."
@@ -32078,6 +32236,12 @@ msgstr "在键盘之外使用游戏手柄输入，键盘始终有效。使用第
 #. placeholders: {else}
 msgid "Haptics: {else}"
 msgstr "震动反馈：{else}"
+
+msgid "enabled"
+msgstr "已启用"
+
+msgid "disabled"
+msgstr "已禁用"
 
 msgid ""
 "Controller rumble for hazards, hard braking, the rumble strip, and road "
@@ -32911,6 +33075,15 @@ msgid ""
 "Learn game sounds plays road cues and explains their meaning. It is "
 "available on the main and pause menus."
 msgstr "“学习游戏声音”播放道路提示音并解释它们的含义。主菜单和暂停菜单上都有。"
+
+msgid ""
+"Practice keys and buttons names what each key or controller button does "
+"while driving, without moving the truck. Shift F1 opens it from any screen, "
+"as does holding Back and pressing Start on a controller. It is also on the "
+"main and pause menus. Press Escape or Start twice to leave."
+msgstr ""
+"练习按键和按钮会说出驾驶时每个按键或手柄按钮的作用，而不会移动卡车。在任何界面按 Shift F1 即可打开，在手柄上按住 Back 再按 Start "
+"也可以。主菜单和暂停菜单中也有此项。按两次 Escape 或 Start 退出。"
 
 msgid "Starting and stopping the truck"
 msgstr "启动和停下卡车"
@@ -34501,8 +34674,11 @@ msgstr "在菜单中，D-pad移动，A确认，B返回，Back读出帮助。驾�
 
 msgid ""
 "Right trigger accelerates, left trigger brakes, and fully pressing the left "
-"trigger gives emergency braking. The left stick steers."
-msgstr "右扳机加速，左扳机刹车，把左扳机完全按下就是紧急制动。左摇杆转向。"
+"trigger gives emergency braking. The left stick steers; with lane keeping "
+"on full, push it left or right to change one lane."
+msgstr ""
+"Right trigger 加速，Left trigger 刹车，将 Left trigger 按到底则紧急制动。Left stick "
+"控制转向；车道保持为完全时，向左或向右推一下即可变换一条车道。"
 
 msgid ""
 "To reverse in automatic, stop, release the left trigger, then press and "
@@ -34516,12 +34692,11 @@ msgstr "按住left bumper使用手动离合。"
 #. placeholders: {pad_shift_up}, {pad_shift_down}, {pad_cruise}, {pad_speed}
 msgid ""
 "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
-"{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
-"speed."
+"{pad_shift_down} down, past first into neutral and then reverse. "
+"{pad_cruise} starts speed control; {pad_speed} reads speed."
 msgstr ""
-"按住left "
-"bumper使用手动离合。{pad_shift_up}升挡，{pad_shift_down}降挡。{pad_cruise}启动速度控制；{pad_spe"
-"ed}读出车速。"
+"按住 left bumper 作为手动离合器。{pad_shift_up} 升挡，{pad_shift_down} "
+"降挡，降过一挡进入空挡，再到倒挡。{pad_cruise} 启动速度控制；{pad_speed} 报出车速。"
 
 #. placeholders: {pad_cruise}, {pad_speed}
 #. one sentence of a longer line
@@ -34530,8 +34705,10 @@ msgstr "{pad_cruise}启动速度控制；{pad_speed}读出车速。"
 
 #. placeholders: {pad_shift_up}, {pad_shift_down}
 #. one sentence of a longer line
-msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
-msgstr "{pad_shift_up}升挡，{pad_shift_down}降挡。"
+msgid ""
+"{pad_shift_up} shifts up and {pad_shift_down} down, past first into neutral "
+"and then reverse."
+msgstr "{pad_shift_up} 升挡，{pad_shift_down} 降挡，降过一挡进入空挡，再到倒挡。"
 
 #. placeholders: {pad_horn}, {pad_engine_brake}
 #. one sentence of a longer line
@@ -34602,19 +34779,55 @@ msgstr "{pad_cruise_down}和{pad_cruise_up}更改巡航目标速度。"
 #. placeholders: {pad_cruise_down}, {pad_cruise_up}, {pad_status}
 msgid ""
 "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
-"{pad_status} opens driving status."
-msgstr "{pad_cruise_down}和{pad_cruise_up}更改巡航目标速度。{pad_status}打开驾驶状态。"
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
+msgstr ""
+"{pad_cruise_down} 和 {pad_cruise_up} 调整巡航目标。{pad_status} "
+"打开驾驶状态，其中的驾驶命令列出所有命令，包括没有按钮的命令。"
 
 #. placeholders: {pad_status}
 #. one sentence of a longer line
-msgid "{pad_status} opens driving status."
-msgstr "{pad_status}打开驾驶状态。"
+msgid ""
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
+msgstr "{pad_status} 打开驾驶状态，其中的驾驶命令列出所有命令，包括没有按钮的命令。"
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}
+#. one sentence of a longer line
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume."
+msgstr ""
+"{pad_radio_tune_prev} 和 {pad_radio_tune_next} 调换电台，{pad_radio_volume_down} "
+"和 {pad_radio_volume_up} 调节音量。"
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}, {pad_radio}
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume. "
+"{pad_radio} turns it on or off."
+msgstr ""
+"{pad_radio_tune_prev} 和 {pad_radio_tune_next} 调换电台，{pad_radio_volume_down} "
+"和 {pad_radio_volume_up} 调节音量。{pad_radio} 打开或关闭电台。"
+
+#. placeholders: {pad_radio}
+#. one sentence of a longer line
+msgid "{pad_radio} turns it on or off."
+msgstr "{pad_radio} 打开或关闭电台。"
+
+msgid ""
+"To learn the buttons, hold Back and press Start on any screen. Each button "
+"you press says what it does; Start twice leaves."
+msgstr "要学习按钮，可在任何界面按住 Back 再按 Start。按下的每个按钮都会说出它的作用；按两次 Start 退出。"
 
 msgid ""
 "If the controller does nothing, check that Controller is enabled under "
 "Settings, Gameplay, Controls. The game uses the first controller it finds, "
-"so unplug other controllers and close Steam."
-msgstr "如果手柄没有反应，请检查 设置、游戏玩法、操作 中是否启用了 手柄。游戏会使用找到的第一个手柄，所以请拔掉其他手柄并关闭 Steam。"
+"so unplug other controllers and close Steam. If the Xbox button opens Steam "
+"Big Picture, press B to close it."
+msgstr ""
+"如果手柄没有反应，请检查 设置、游戏玩法、操作 中的手柄是否已启用。游戏使用找到的第一个手柄，所以请拔掉其他手柄并关闭 Steam。如果 Xbox "
+"按钮打开了 Steam Big Picture，按 B 将其关闭。"
 
 msgid "pad"
 msgstr "pad"
@@ -36501,6 +36714,46 @@ msgstr "然后右转急弯掉头。"
 
 msgid "Then hairpin left."
 msgstr "然后左转急弯掉头。"
+
+#~ msgid "The left stick steers unless lane keeping is on full."
+#~ msgstr "除非车道保持为完全，左摇杆用于转向。"
+
+#~ msgid "{status} opens the status menu."
+#~ msgstr "{status} 打开状态菜单。"
+
+#~ msgid "Controller: {else}"
+#~ msgstr "手柄：{else}"
+
+#~ msgid ""
+#~ "Right trigger accelerates, left trigger brakes, and fully pressing the left "
+#~ "trigger gives emergency braking. The left stick steers."
+#~ msgstr "右扳机加速，左扳机刹车，把左扳机完全按下就是紧急制动。左摇杆转向。"
+
+#~ msgid ""
+#~ "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
+#~ "{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
+#~ "speed."
+#~ msgstr ""
+#~ "按住left "
+#~ "bumper使用手动离合。{pad_shift_up}升挡，{pad_shift_down}降挡。{pad_cruise}启动速度控制；{pad_spe"
+#~ "ed}读出车速。"
+
+#~ msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
+#~ msgstr "{pad_shift_up}升挡，{pad_shift_down}降挡。"
+
+#~ msgid ""
+#~ "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
+#~ "{pad_status} opens driving status."
+#~ msgstr "{pad_cruise_down}和{pad_cruise_up}更改巡航目标速度。{pad_status}打开驾驶状态。"
+
+#~ msgid "{pad_status} opens driving status."
+#~ msgstr "{pad_status}打开驾驶状态。"
+
+#~ msgid ""
+#~ "If the controller does nothing, check that Controller is enabled under "
+#~ "Settings, Gameplay, Controls. The game uses the first controller it finds, "
+#~ "so unplug other controllers and close Steam."
+#~ msgstr "如果手柄没有反应，请检查 设置、游戏玩法、操作 中是否启用了 手柄。游戏会使用找到的第一个手柄，所以请拔掉其他手柄并关闭 Steam。"
 
 #~ msgid "ELD status {status}."
 #~ msgstr "ELD状态{status}。"

@@ -6,6 +6,8 @@
 
 - **The game can speak Simplified Chinese.** Choose 简体中文 under Settings, Speech, Language; the radio stays in English.
 
+- **Key and button practice says what each key or button does at the wheel.** Shift F1 or Back plus Start opens it anywhere.
+
 - **A Language setting lets the game speak other languages.** It is the first row of Settings, Speech; Automatic follows your system language, and the radio stays English.
 
 - **Translated speech now uses whole sentences, so lines are never half translated.** A sentence the language file lacks is spoken whole in English.
@@ -70,7 +72,7 @@
 
 - **88.3 Life FM now plays on the FM band around Bakersfield, California.** It used to be a web station heard everywhere.
 
-- **Controller help now covers newer Xbox controllers and what to check when a controller does nothing.** The manual also lists the default buttons.
+- **A controller now reaches every driving command, and its left stick changes lanes.** Settings names the controller; help and the manual cover every button.
 
 - **The player manual has contents links for jumping straight to a chapter.**
 

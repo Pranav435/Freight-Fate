@@ -24,7 +24,9 @@ use crate::states::driving_dispatch_call::DispatchCallState;
 use crate::states::driving_menu_states::{keep_rows, push_over_drive, DriveRef};
 use crate::states::driving_rest_states::ShoulderSleepConfirmationState;
 use crate::states::learn_sounds::LearnSoundsState;
-use crate::states::main_menu::{controls_help_page, HelpState, MainMenuState, SettingsState};
+use crate::states::main_menu::{
+    controls_help_page, HelpState, InputPracticeState, MainMenuState, SettingsState,
+};
 use crate::states::online_states::DriversOnlineState;
 
 /// Discard unsaved driver state before returning to the title.
@@ -122,6 +124,10 @@ impl PauseMenuState {
                 ctx.push_state(state);
             })
             .help("Plays any sound the road uses and says what it means."),
+            MenuItem::new("Practice keys and buttons", |_s: &mut Self, ctx: &mut GameContext| {
+                ctx.push_state(InputPracticeState::new());
+            })
+            .help("Names what each key or controller button does while driving."),
             MenuItem::new(mechanic_label(d), |s: &mut Self, ctx| s.mechanic(ctx)).help(
                 "A mobile mechanic patches the truck up enough to drive on. Far dearer than a \
                  garage, an hour and a half, and billed even into debt.",

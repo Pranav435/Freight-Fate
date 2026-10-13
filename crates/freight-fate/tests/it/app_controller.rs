@@ -290,6 +290,53 @@ fn test_reconnect_reopens_after_removed() {
 }
 
 #[test]
+fn a_plugged_in_pad_is_named_once_but_the_startup_pad_is_not() {
+    let log = Rc::new(RefCell::new(FakeSdlLog::default()));
+    let mut m = ControllerManager::new(
+        true,
+        true,
+        Some(fake_factory(
+            vec![("Xbox Series X Controller".to_string(), 7)],
+            Rc::clone(&log),
+        )),
+    );
+    // SDL repeats an added event for the pad bound at startup.
+    m.process_event(&InputEvent::ControllerAdded { device_index: 0 });
+    assert_eq!(m.take_connect(), None);
+    m.process_event(&InputEvent::ControllerRemoved { instance_id: 7 });
+    m.process_event(&InputEvent::ControllerAdded { device_index: 0 });
+    assert_eq!(
+        m.take_connect().as_deref(),
+        Some("Xbox Series X Controller")
+    );
+    assert_eq!(m.take_connect(), None); // consumed
+    m.shutdown();
+}
+
+/// A reconnect says which controller the game is now listening to.
+#[test]
+fn reconnect_speaks_the_controller_name() {
+    let mut app = TestApp::new();
+    let log = Rc::new(RefCell::new(FakeSdlLog::default()));
+    app.ctx.controller = ControllerManager::new(
+        true,
+        true,
+        Some(fake_factory(
+            vec![("Xbox Wireless Controller".to_string(), 4)],
+            log,
+        )),
+    );
+    app.dispatch_controller(&InputEvent::ControllerRemoved { instance_id: 4 });
+    app.dispatch_controller(&InputEvent::ControllerAdded { device_index: 0 });
+    app.tick(1.0 / 60.0);
+    assert!(app
+        .main_lines()
+        .iter()
+        .any(|line| line == "Controller connected: Xbox Wireless Controller."));
+    app.shutdown();
+}
+
+#[test]
 fn test_reopen_does_not_cycle_subsystem() {
     // reopen must drop the old pad and rebind WITHOUT quitting/re-initializing
     // the SDL subsystem -- cycling it re-registers the event watch and
