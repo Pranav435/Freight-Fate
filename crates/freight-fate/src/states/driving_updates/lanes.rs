@@ -36,6 +36,9 @@ impl DrivingState {
             0.0
         };
         self.lane.steer_input(key_dir, stick);
+        if ctx.settings.lane_is_automated() {
+            self.update_stick_lane_change(ctx, stick);
+        }
         self.lane.straighten = ctx.bindings.pressed(&ctx.input, Action::Straighten);
         // The exit ramp is a single lane; the mainline keeps its leg count.
         self.lane_before_narrow = Some(self.lane.lane);

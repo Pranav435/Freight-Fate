@@ -1247,3 +1247,33 @@ fn test_a_row_notice_is_heard_when_that_row_is_the_one_you_land_on() {
         .iter()
         .any(|line| line.contains("used to offer Realistic")));
 }
+
+/// The Controller row says which controller the game is listening to, so a
+/// player can tell whether a new pad was found.
+#[test]
+fn the_controller_row_names_the_connected_controller() {
+    use freight_fate::controller::fakes::FakePad;
+    let controller_row = |app: &mut TestApp| {
+        cat_rows(app, "controls")
+            .into_iter()
+            .map(|(label, _)| label)
+            .find(|label| label.starts_with("Controller:"))
+            .expect("a Controller row")
+    };
+    let mut app = TestApp::new();
+    app.ctx.settings.controller_enabled = true;
+    app.ctx.controller.set_enabled(true);
+    assert_eq!(
+        controller_row(&mut app),
+        "Controller: enabled, none connected"
+    );
+    app.ctx
+        .controller
+        .bind_device(Box::new(FakePad::new(0)), "Xbox Series X Controller");
+    assert_eq!(
+        controller_row(&mut app),
+        "Controller: enabled, Xbox Series X Controller connected"
+    );
+    app.ctx.settings.controller_enabled = false;
+    assert_eq!(controller_row(&mut app), "Controller: disabled");
+}

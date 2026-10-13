@@ -7,6 +7,11 @@ use crate::controller::ControllerButton;
 use crate::states::base::InputEvent;
 use crate::states::driving::DrivingState;
 
+/// How far the left stick goes over to ask for a lane change with lane
+/// keeping on full, and how near the center it must return before the next.
+const STICK_LANE_PUSH: f64 = 0.5;
+const STICK_LANE_RESET: f64 = 0.25;
+
 impl DrivingState {
     /// `handle_controller(event, manager)`.
     ///
@@ -169,6 +174,24 @@ impl DrivingState {
             | Action::SteerRight
             | Action::Straighten => {}
         }
+    }
+
+    /// Lane keeping on full holds the lane, so the left stick does not steer;
+    /// pushing it past halfway asks for one lane change that way, as a tap
+    /// of an arrow key does. It has to come back near the center before it
+    /// asks again, so a stick held over changes one lane, not every lane.
+    pub fn update_stick_lane_change(&mut self, ctx: &mut GameContext, stick: f64) {
+        if stick.abs() < STICK_LANE_RESET {
+            self.stick_lane_request = 0;
+            return;
+        }
+        if stick.abs() < STICK_LANE_PUSH || self.stick_lane_request != 0 {
+            return;
+        }
+        let side: i8 = if stick < 0.0 { -1 } else { 1 };
+        self.stick_lane_request = side;
+        // +1 moves left, the way the Left arrow asks.
+        self.tap_lane_change(ctx, -i64::from(side));
     }
 
     /// `on_controller_disconnect()`.
