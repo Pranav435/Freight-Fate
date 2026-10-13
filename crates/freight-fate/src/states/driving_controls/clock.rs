@@ -223,9 +223,12 @@ impl DrivingState {
     ///
     /// Muscle memory says C, so the pointer has to ride C itself. Three
     /// presses is enough to learn it and few enough not to become noise.
+    ///
+    /// The three keys are keyboard only, and a pad's clock button already
+    /// reads all three limits, so the pointer waits for the keyboard.
     pub fn hos_key_notice(&self, ctx: &mut GameContext) -> String {
         let left = profile_of(ctx).hos_key_notice_left;
-        if left <= 0 {
+        if left <= 0 || ctx.controller.device() != ff_core::input_hints::KEYBOARD {
             return String::new();
         }
         profile_mut_of(ctx).hos_key_notice_left = left - 1;

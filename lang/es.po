@@ -16635,6 +16635,13 @@ msgstr ""
 "El mantenimiento de carril está en completo. Desliza a la izquierda o a la "
 "derecha para cambiar de carril."
 
+msgid "Controller connected."
+msgstr "Mando conectado."
+
+#. placeholders: {name}
+msgid "Controller connected: {name}."
+msgstr "Mando conectado: {name}."
+
 msgid ""
 "Controller disconnected. You can keep playing with the keyboard, or "
 "reconnect your controller."
@@ -24095,6 +24102,9 @@ msgstr "Escape, menú de pausa."
 msgid "F2 lists every driving command by name."
 msgstr "F2 enumera todos los comandos de conducción por nombre."
 
+msgid "Shift F1 names what each key does."
+msgstr "Shift F1 dice qué hace cada tecla."
+
 #. placeholders: {shift_up}, {shift_down}, {reverse}, {neutral}
 msgid ""
 "Hold Left Shift for clutch, then {shift_up} to shift up or {shift_down} to "
@@ -24118,10 +24128,12 @@ msgstr ""
 "El gatillo derecho es el acelerador y el izquierdo el freno; el gatillo "
 "izquierdo a fondo es la parada más fuerte."
 
-msgid "The left stick steers unless lane keeping is on full."
+msgid ""
+"The left stick steers; with lane keeping on full, pushing it left or right "
+"changes one lane."
 msgstr ""
-"El stick izquierdo gira salvo que el mantenimiento de carril esté en "
-"completo."
+"El Left stick gira; con el mantenimiento de carril en completo, empujarlo a "
+"la izquierda o a la derecha cambia un carril."
 
 #. placeholders: {shift_up}, {shift_down}
 msgid ""
@@ -24234,8 +24246,14 @@ msgstr ""
 "emergencia en el arcén."
 
 #. placeholders: {status}
-msgid "{status} opens the status menu."
-msgstr "{status} abre el menú de estado."
+msgid ""
+"{status} opens the status menu, which also lists every driving command."
+msgstr ""
+"{status} abre el menú de estado, que también lista todas las órdenes de "
+"conducción."
+
+msgid "Hold Back and press Start to hear what each button does."
+msgstr "Mantén Back y pulsa Start para oír qué hace cada botón."
 
 #. placeholders: {tune_prev}, {tune_next}
 msgid ""
@@ -30280,6 +30298,12 @@ msgstr "Estado de conducción"
 msgid "Open the {label} status screen."
 msgstr "Abre la pantalla de estado {label}."
 
+msgid ""
+"Every driving command by name. Choose one to run it and return to driving."
+msgstr ""
+"Todas las órdenes de conducción por su nombre. Elige una para ejecutarla y "
+"volver a conducir."
+
 msgid "Close status and resume driving."
 msgstr "Cierra el estado y sigue conduciendo."
 
@@ -30588,6 +30612,12 @@ msgstr "Aprender los sonidos del juego"
 msgid "Plays any sound the road uses and says what it means."
 msgstr ""
 "Reproduce cualquier sonido que use la carretera y dice qué significa."
+
+msgid "Practice keys and buttons"
+msgstr "Practicar teclas y botones"
+
+msgid "Names what each key or controller button does while driving."
+msgstr "Dice qué hace cada tecla o botón del mando mientras conduces."
 
 msgid ""
 "A mobile mechanic patches the truck up enough to drive on. Far dearer than "
@@ -35499,6 +35529,142 @@ msgstr ""
 "nube siguen ahí; Copia de seguridad en la nube, en el menú En línea, puede "
 "borrarlas más tarde."
 
+msgid "Leaving key and button practice."
+msgstr "Saliendo de la práctica de teclas y botones."
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}: pause menu."
+msgstr "{name}: menú de pausa."
+
+#. placeholders: {name}
+msgid "{name}: pause menu. Again to leave practice."
+msgstr "{name}: menú de pausa. Otra vez para salir de la práctica."
+
+msgid "Back plus Start: key and button practice."
+msgstr "Back más Start: práctica de teclas y botones."
+
+msgid "Right trigger: Accelerate, as far as you press it."
+msgstr "Right trigger: Acelerar, tanto como lo pulses."
+
+msgid ""
+"Left trigger: Brake, as far as you press it. All the way down: Emergency "
+"brake."
+msgstr ""
+"Left trigger: Frenar, tanto como lo pulses. A fondo: Freno de emergencia."
+
+msgid "Left stick: push left or right to change one lane."
+msgstr ""
+"Left stick: empuja a la izquierda o a la derecha para cambiar un carril."
+
+msgid "Left stick: steer."
+msgstr "Left stick: girar."
+
+msgid "Change one lane left"
+msgstr "Cambiar un carril a la izquierda"
+
+msgid "Change one lane right"
+msgstr "Cambiar un carril a la derecha"
+
+#. placeholders: {label}
+msgid "{label}, in a manual truck"
+msgstr "{label}, en un camión manual"
+
+msgid "Control: stop the driving voice."
+msgstr "Control: calla la voz de conducción."
+
+msgid "Shift: hold as the clutch in a manual truck."
+msgstr "Shift: mantener como embrague en un camión manual."
+
+msgid "Alt: hold with another key."
+msgstr "Alt: mantener junto con otra tecla."
+
+msgid "key and button practice"
+msgstr "práctica de teclas y botones"
+
+msgid "driving commands"
+msgstr "órdenes de conducción"
+
+msgid "oldest message"
+msgstr "mensaje más antiguo"
+
+msgid "newest message"
+msgstr "mensaje más reciente"
+
+msgid "previous message"
+msgstr "mensaje anterior"
+
+msgid "next message"
+msgstr "mensaje siguiente"
+
+msgid "previous message category"
+msgstr "categoría de mensajes anterior"
+
+msgid "next message category"
+msgstr "categoría de mensajes siguiente"
+
+msgid "copy the message in review"
+msgstr "copiar el mensaje en revisión"
+
+msgid "cruise target up by 1"
+msgstr "subir la velocidad de crucero 1"
+
+msgid "cruise target up to the next 5"
+msgstr "subir la velocidad de crucero al siguiente múltiplo de 5"
+
+msgid "cruise target down by 1"
+msgstr "bajar la velocidad de crucero 1"
+
+msgid "cruise target down to the next 5"
+msgstr "bajar la velocidad de crucero al siguiente múltiplo de 5"
+
+msgid "choose, or confirm an arrival"
+msgstr "elegir, o confirmar una llegada"
+
+msgid "previous radio category"
+msgstr "categoría de radio anterior"
+
+msgid "raise radio volume"
+msgstr "subir el volumen de la radio"
+
+msgid "tune to the previous radio station"
+msgstr "sintonizar la emisora anterior"
+
+msgid "next radio category"
+msgstr "categoría de radio siguiente"
+
+msgid "lower radio volume"
+msgstr "bajar el volumen de la radio"
+
+msgid "tune to the next radio station"
+msgstr "sintonizar la emisora siguiente"
+
+msgid "no command"
+msgstr "ninguna orden"
+
+msgid "hold for the second layer of buttons"
+msgstr "mantener para la segunda capa de botones"
+
+msgid "hold as the clutch in a manual truck"
+msgstr "mantener como embrague en un camión manual"
+
+msgid "help, or stop the driving voice while it speaks"
+msgstr "ayuda, o callar la voz de conducción mientras habla"
+
+msgid "confirm an arrival when one is ready"
+msgstr "confirmar una llegada cuando haya una lista"
+
+#. placeholders: {text}
+msgid "{text}, or confirm an arrival when one is ready"
+msgstr "{text}, o confirmar una llegada cuando haya una lista"
+
+msgid ""
+"Key and button practice. Press a key or button to hear what it does while "
+"driving. Escape twice, or Start twice, to leave."
+msgstr ""
+"Práctica de teclas y botones. Pulsa una tecla o un botón para oír qué hace "
+"mientras conduces. Escape dos veces, o Start dos veces, para salir."
+
 msgid "Gameplay"
 msgstr "Jugabilidad"
 
@@ -35819,6 +35985,16 @@ msgid ""
 msgstr ""
 "Solo NVDA y JAWS pueden enviar el juego a una línea braille. La voz sigue "
 "activa hasta que uno de ellos esté en marcha."
+
+msgid "Controller: disabled"
+msgstr "Mando: desactivado"
+
+#. placeholders: {name}
+msgid "Controller: enabled, {name} connected"
+msgstr "Mando: activado, {name} conectado"
+
+msgid "Controller: enabled, none connected"
+msgstr "Mando: activado, ninguno conectado"
 
 msgid "a soft tone leans"
 msgstr "un tono suave se inclina"
@@ -36480,16 +36656,6 @@ msgstr ""
 "un freno mantenido durante una parada solo sujeta el camión. Deliberado "
 "exige soltar y pulsar en todas partes. Solo con transmisión automática."
 
-#. placeholders: {else}
-msgid "Controller: {else}"
-msgstr "Mando: {else}"
-
-msgid "enabled"
-msgstr "activado"
-
-msgid "disabled"
-msgstr "desactivado"
-
 msgid ""
 "Game-controller input alongside the keyboard, which always stays active. "
 "The first connected controller is used."
@@ -36500,6 +36666,12 @@ msgstr ""
 #. placeholders: {else}
 msgid "Haptics: {else}"
 msgstr "Vibración: {else}"
+
+msgid "enabled"
+msgstr "activado"
+
+msgid "disabled"
+msgstr "desactivado"
 
 msgid ""
 "Controller rumble for hazards, hard braking, the rumble strip, and road "
@@ -37497,6 +37669,18 @@ msgid ""
 msgstr ""
 "Aprender los sonidos del juego reproduce avisos de la carretera y explica "
 "lo que significan. Está disponible en el menú principal y en el de pausa."
+
+msgid ""
+"Practice keys and buttons names what each key or controller button does "
+"while driving, without moving the truck. Shift F1 opens it from any screen, "
+"as does holding Back and pressing Start on a controller. It is also on the "
+"main and pause menus. Press Escape or Start twice to leave."
+msgstr ""
+"Practicar teclas y botones dice qué hace cada tecla o botón del mando "
+"mientras conduces, sin mover el camión. Shift F1 lo abre desde cualquier "
+"pantalla, igual que mantener Back y pulsar Start en un mando. También está "
+"en el menú principal y en el de pausa. Pulsa Escape o Start dos veces para "
+"salir."
 
 msgid "Starting and stopping the truck"
 msgstr "Arrancar y parar el camión"
@@ -39611,10 +39795,13 @@ msgstr ""
 
 msgid ""
 "Right trigger accelerates, left trigger brakes, and fully pressing the left "
-"trigger gives emergency braking. The left stick steers."
+"trigger gives emergency braking. The left stick steers; with lane keeping "
+"on full, push it left or right to change one lane."
 msgstr ""
-"El gatillo derecho acelera, el gatillo izquierdo frena, y apretar del todo "
-"el gatillo izquierdo da el frenado de emergencia. El stick izquierdo dirige."
+"El Right trigger acelera, el Left trigger frena, y pisar el Left trigger a "
+"fondo da frenado de emergencia. El Left stick gira; con el mantenimiento de "
+"carril en completo, empújalo a la izquierda o a la derecha para cambiar un "
+"carril."
 
 msgid ""
 "To reverse in automatic, stop, release the left trigger, then press and "
@@ -39631,12 +39818,12 @@ msgstr "Mantén el left bumper para el embrague manual."
 #. placeholders: {pad_shift_up}, {pad_shift_down}, {pad_cruise}, {pad_speed}
 msgid ""
 "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
-"{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
-"speed."
+"{pad_shift_down} down, past first into neutral and then reverse. "
+"{pad_cruise} starts speed control; {pad_speed} reads speed."
 msgstr ""
-"Mantén el left bumper para el embrague manual. {pad_shift_up} sube de "
-"marcha y {pad_shift_down} baja. {pad_cruise} activa el control de "
-"velocidad; {pad_speed} lee la velocidad."
+"Mantén el left bumper como embrague manual. {pad_shift_up} sube de marcha y "
+"{pad_shift_down} baja, pasando de primera a punto muerto y luego a reverse. "
+"{pad_cruise} activa el control de velocidad; {pad_speed} lee la velocidad."
 
 #. placeholders: {pad_cruise}, {pad_speed}
 #. one sentence of a longer line
@@ -39646,8 +39833,12 @@ msgstr ""
 
 #. placeholders: {pad_shift_up}, {pad_shift_down}
 #. one sentence of a longer line
-msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
-msgstr "{pad_shift_up} sube de marcha y {pad_shift_down} baja."
+msgid ""
+"{pad_shift_up} shifts up and {pad_shift_down} down, past first into neutral "
+"and then reverse."
+msgstr ""
+"{pad_shift_up} sube de marcha y {pad_shift_down} baja, pasando de primera a "
+"punto muerto y luego a reverse."
 
 #. placeholders: {pad_horn}, {pad_engine_brake}
 #. one sentence of a longer line
@@ -39731,24 +39922,63 @@ msgstr ""
 #. placeholders: {pad_cruise_down}, {pad_cruise_up}, {pad_status}
 msgid ""
 "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
-"{pad_status} opens driving status."
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
 msgstr ""
-"{pad_cruise_down} y {pad_cruise_up} cambian el objetivo del crucero. "
-"{pad_status} abre el estado de conducción."
+"{pad_cruise_down} y {pad_cruise_up} cambian la velocidad de crucero. "
+"{pad_status} abre el estado de conducción, donde Órdenes de conducción "
+"lista todas las órdenes, incluidas las que no tienen botón."
 
 #. placeholders: {pad_status}
 #. one sentence of a longer line
-msgid "{pad_status} opens driving status."
-msgstr "{pad_status} abre el estado de conducción."
+msgid ""
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
+msgstr ""
+"{pad_status} abre el estado de conducción, donde Órdenes de conducción "
+"lista todas las órdenes, incluidas las que no tienen botón."
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}
+#. one sentence of a longer line
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume."
+msgstr ""
+"{pad_radio_tune_prev} y {pad_radio_tune_next} sintonizan la radio, y "
+"{pad_radio_volume_down} y {pad_radio_volume_up} cambian su volumen."
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}, {pad_radio}
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume. "
+"{pad_radio} turns it on or off."
+msgstr ""
+"{pad_radio_tune_prev} y {pad_radio_tune_next} sintonizan la radio, y "
+"{pad_radio_volume_down} y {pad_radio_volume_up} cambian su volumen. "
+"{pad_radio} la enciende o la apaga."
+
+#. placeholders: {pad_radio}
+#. one sentence of a longer line
+msgid "{pad_radio} turns it on or off."
+msgstr "{pad_radio} la enciende o la apaga."
+
+msgid ""
+"To learn the buttons, hold Back and press Start on any screen. Each button "
+"you press says what it does; Start twice leaves."
+msgstr ""
+"Para aprender los botones, mantén Back y pulsa Start en cualquier pantalla. "
+"Cada botón que pulses dice qué hace; Start dos veces sale."
 
 msgid ""
 "If the controller does nothing, check that Controller is enabled under "
 "Settings, Gameplay, Controls. The game uses the first controller it finds, "
-"so unplug other controllers and close Steam."
+"so unplug other controllers and close Steam. If the Xbox button opens Steam "
+"Big Picture, press B to close it."
 msgstr ""
-"Si el mando no hace nada, comprueba que Mando esté activado en Ajustes, "
+"Si el mando no hace nada, comprueba que Mando está activado en Ajustes, "
 "Jugabilidad, Controles. El juego usa el primer mando que encuentra, así que "
-"desconecta los demás mandos y cierra Steam."
+"desconecta los demás mandos y cierra Steam. Si el botón Xbox abre Steam Big "
+"Picture, pulsa B para cerrarlo."
 
 msgid "pad"
 msgstr "pad"
@@ -41941,6 +42171,55 @@ msgstr "Luego, curva cerrada en horquilla a la derecha."
 
 msgid "Then hairpin left."
 msgstr "Luego, curva cerrada en horquilla a la izquierda."
+
+#~ msgid "The left stick steers unless lane keeping is on full."
+#~ msgstr ""
+#~ "El stick izquierdo gira salvo que el mantenimiento de carril esté en "
+#~ "completo."
+
+#~ msgid "{status} opens the status menu."
+#~ msgstr "{status} abre el menú de estado."
+
+#~ msgid "Controller: {else}"
+#~ msgstr "Mando: {else}"
+
+#~ msgid ""
+#~ "Right trigger accelerates, left trigger brakes, and fully pressing the left "
+#~ "trigger gives emergency braking. The left stick steers."
+#~ msgstr ""
+#~ "El gatillo derecho acelera, el gatillo izquierdo frena, y apretar del todo "
+#~ "el gatillo izquierdo da el frenado de emergencia. El stick izquierdo dirige."
+
+#~ msgid ""
+#~ "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
+#~ "{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
+#~ "speed."
+#~ msgstr ""
+#~ "Mantén el left bumper para el embrague manual. {pad_shift_up} sube de "
+#~ "marcha y {pad_shift_down} baja. {pad_cruise} activa el control de "
+#~ "velocidad; {pad_speed} lee la velocidad."
+
+#~ msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
+#~ msgstr "{pad_shift_up} sube de marcha y {pad_shift_down} baja."
+
+#~ msgid ""
+#~ "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
+#~ "{pad_status} opens driving status."
+#~ msgstr ""
+#~ "{pad_cruise_down} y {pad_cruise_up} cambian el objetivo del crucero. "
+#~ "{pad_status} abre el estado de conducción."
+
+#~ msgid "{pad_status} opens driving status."
+#~ msgstr "{pad_status} abre el estado de conducción."
+
+#~ msgid ""
+#~ "If the controller does nothing, check that Controller is enabled under "
+#~ "Settings, Gameplay, Controls. The game uses the first controller it finds, "
+#~ "so unplug other controllers and close Steam."
+#~ msgstr ""
+#~ "Si el mando no hace nada, comprueba que Mando esté activado en Ajustes, "
+#~ "Jugabilidad, Controles. El juego usa el primer mando que encuentra, así que "
+#~ "desconecta los demás mandos y cierra Steam."
 
 #~ msgid "ELD status {status}."
 #~ msgstr "Estado del ELD: {status}."
