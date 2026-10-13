@@ -8,6 +8,7 @@
 
 ### Changed
 
+- **Dispatch calls read cargo damage, hours and distance cleanly.** The load call says the damage once, as "with 12 percent cargo damage", and no longer calls a sound load damaged. Whole hours drop the ".0", and the distance left follows your metric setting.
 - With no carrier, choosing Stay a company driver on the Business status screen now says "Staying on the company-driver path." instead of "Staying a company driver.", since there is no seat to stay in.
 - **A debt firing or repossession is said before the terminal, not after.** Walking into the terminal with the balance past the ceiling used to read the old hub line and the Dispatch board row first, for the seat or truck that was about to go. The notice now speaks first, and leaving it reads the rebuilt hub.
 - **A suspended or disqualified CDL is no longer sent to the dispatch board.** The terminal's objective now says to wait out the suspension or disqualification, with the days remaining, and to choose the terminal row that skips ahead, instead of telling you to accept a load the board refuses; a lifetime disqualification gets no driving objective. That row is named for your status: Wait out the CDL disqualification, or Wait out the CDL suspension. An owner-operator's Bobtail to a nearby city is refused, not even bobtail, with the day the disqualification or suspension ends and where to wait it out.
