@@ -145,3 +145,9 @@ msgstr ""
 
 msgid "{clock} local game time"
 msgstr ""
+
+msgid "Dropping and hooking took {f} minutes."
+msgstr ""
+
+msgid "dry van {unit}"
+msgstr ""

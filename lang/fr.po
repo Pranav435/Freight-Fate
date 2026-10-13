@@ -11973,15 +11973,8 @@ msgstr ""
 msgid "{remaining} remaining of {f}"
 msgstr ""
 
-#. placeholders: {highway}, {toward_text}, {lane_part}, {terrain_text}
-#. one sentence of a longer line
-msgid "On {highway} toward {toward_text}.{lane_part} {terrain_text}."
-msgstr ""
-
-#. placeholders: {dist}, {highway}, {toward_text}, {lane_part}, {terrain_text}, {next_context}
-msgid ""
-"{dist}. On {highway} toward {toward_text}.{lane_part} {terrain_text}. "
-"{next_context}"
+#. placeholders: {highway}, {toward_text}
+msgid "On {highway} toward {toward_text}."
 msgstr ""
 
 #. placeholders: {lane_word}, {s_ending}
@@ -12184,12 +12177,12 @@ msgstr ""
 msgid "interchange"
 msgstr ""
 
-#. placeholders: {exit_label}
-msgid " at {exit_label}"
+#. placeholders: {label}
+msgid "{label} ahead"
 msgstr ""
 
-#. placeholders: {label}, {at_part}
-msgid "{label} ahead{at_part}"
+#. placeholders: {label}, {interchange}
+msgid "{label} ahead at {interchange}"
 msgstr ""
 
 #. placeholders: {text}
@@ -13942,6 +13935,10 @@ msgid "Parking not verified."
 msgstr ""
 
 msgid "No truck parking."
+msgstr ""
+
+#. placeholders: {exit_label}
+msgid " at {exit_label}"
 msgstr ""
 
 #. placeholders: {planned_prefix}, {typed_name}, {exit_part}, {distance}
@@ -36009,4 +36006,10 @@ msgid "{clock} Hawaii Time"
 msgstr ""
 
 msgid "{clock} local game time"
+msgstr ""
+
+msgid "Dropping and hooking took {f} minutes."
+msgstr ""
+
+msgid "dry van {unit}"
 msgstr ""

@@ -14134,18 +14134,9 @@ msgstr "Parada planificada, "
 msgid "{remaining} remaining of {f}"
 msgstr "quedan {remaining} de {f}"
 
-#. placeholders: {highway}, {toward_text}, {lane_part}, {terrain_text}
-#. one sentence of a longer line
-msgid "On {highway} toward {toward_text}.{lane_part} {terrain_text}."
-msgstr "En {highway} hacia {toward_text}.{lane_part} {terrain_text}."
-
-#. placeholders: {dist}, {highway}, {toward_text}, {lane_part}, {terrain_text}, {next_context}
-msgid ""
-"{dist}. On {highway} toward {toward_text}.{lane_part} {terrain_text}. "
-"{next_context}"
-msgstr ""
-"{dist}. En {highway} hacia {toward_text}.{lane_part} {terrain_text}. "
-"{next_context}"
+#. placeholders: {highway}, {toward_text}
+msgid "On {highway} toward {toward_text}."
+msgstr "En {highway} hacia {toward_text}."
 
 #. placeholders: {lane_word}, {s_ending}
 msgid "divided, {lane_word} lane{s_ending} your side"
@@ -14350,13 +14341,13 @@ msgstr "restriction"
 msgid "interchange"
 msgstr "interchange"
 
-#. placeholders: {exit_label}
-msgid " at {exit_label}"
-msgstr " en {exit_label}"
+#. placeholders: {label}
+msgid "{label} ahead"
+msgstr "{label} más adelante"
 
-#. placeholders: {label}, {at_part}
-msgid "{label} ahead{at_part}"
-msgstr "{label} más adelante{at_part}"
+#. placeholders: {label}, {interchange}
+msgid "{label} ahead at {interchange}"
+msgstr "{label} más adelante en la {interchange}"
 
 #. placeholders: {text}
 msgid "Billboard: {text}"
@@ -16388,6 +16379,10 @@ msgstr "Aparcamiento sin verificar."
 
 msgid "No truck parking."
 msgstr "Sin aparcamiento para camiones."
+
+#. placeholders: {exit_label}
+msgid " at {exit_label}"
+msgstr " en {exit_label}"
 
 #. placeholders: {planned_prefix}, {typed_name}, {exit_part}, {distance}
 msgid "{planned_prefix}{typed_name}{exit_part} in {distance}."
@@ -42253,6 +42248,28 @@ msgstr "{clock} hora de Hawái"
 
 msgid "{clock} local game time"
 msgstr "{clock} hora local del juego"
+
+msgid "Dropping and hooking took {f} minutes."
+msgstr "El intercambio de remolque llevó {f} minutos."
+
+msgid "dry van {unit}"
+msgstr "furgón seco {unit}"
+
+#~ msgid "{label} ahead at {exit_label}"
+#~ msgstr "{label} más adelante en la {exit_label}"
+
+#~ msgid "On {highway} toward {toward_text}.{lane_part} {terrain_text}."
+#~ msgstr "En {highway} hacia {toward_text}.{lane_part} {terrain_text}."
+
+#~ msgid ""
+#~ "{dist}. On {highway} toward {toward_text}.{lane_part} {terrain_text}. "
+#~ "{next_context}"
+#~ msgstr ""
+#~ "{dist}. En {highway} hacia {toward_text}.{lane_part} {terrain_text}. "
+#~ "{next_context}"
+
+#~ msgid "{label} ahead{at_part}"
+#~ msgstr "{label} más adelante{at_part}"
 
 #~ msgid ""
 #~ "Parked at {name} in {the_city} service area, {city_state}. {py_capitalize} "

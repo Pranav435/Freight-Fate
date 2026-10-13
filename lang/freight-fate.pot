@@ -15156,17 +15156,9 @@ msgstr ""
 msgid "{remaining} remaining of {f}"
 msgstr ""
 
-#. placeholders: {highway}, {toward_text}, {lane_part}, {terrain_text}
-#. one sentence of a longer line
+#. placeholders: {highway}, {toward_text}
 #: crates/ff-core/src/sim/trip/lookups.rs
-msgid "On {highway} toward {toward_text}.{lane_part} {terrain_text}."
-msgstr ""
-
-#. placeholders: {dist}, {highway}, {toward_text}, {lane_part}, {terrain_text}, {next_context}
-#: crates/ff-core/src/sim/trip/lookups.rs
-msgid ""
-"{dist}. On {highway} toward {toward_text}.{lane_part} {terrain_text}. "
-"{next_context}"
+msgid "On {highway} toward {toward_text}."
 msgstr ""
 
 #. placeholders: {lane_word}, {s_ending}
@@ -15422,14 +15414,14 @@ msgstr ""
 msgid "interchange"
 msgstr ""
 
-#. placeholders: {exit_label}
-#: crates/ff-core/src/sim/trip/placement.rs crates/ff-core/src/speech_text.rs crates/freight-fate/src/states/driving_events/stops.rs
-msgid " at {exit_label}"
+#. placeholders: {label}
+#: crates/ff-core/src/sim/trip/placement.rs
+msgid "{label} ahead"
 msgstr ""
 
-#. placeholders: {label}, {at_part}
+#. placeholders: {label}, {interchange}
 #: crates/ff-core/src/sim/trip/placement.rs
-msgid "{label} ahead{at_part}"
+msgid "{label} ahead at {interchange}"
 msgstr ""
 
 #. placeholders: {text}
@@ -17646,6 +17638,11 @@ msgstr ""
 
 #: crates/ff-core/src/speech_text.rs
 msgid "No truck parking."
+msgstr ""
+
+#. placeholders: {exit_label}
+#: crates/ff-core/src/speech_text.rs crates/freight-fate/src/states/driving_events/stops.rs
+msgid " at {exit_label}"
 msgstr ""
 
 #. placeholders: {planned_prefix}, {typed_name}, {exit_part}, {distance}
@@ -44989,4 +44986,12 @@ msgstr ""
 
 #: lang/extra.pot
 msgid "{clock} local game time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Dropping and hooking took {f} minutes."
+msgstr ""
+
+#: lang/extra.pot
+msgid "dry van {unit}"
 msgstr ""

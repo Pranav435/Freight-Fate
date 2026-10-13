@@ -491,6 +491,7 @@ impl Translator {
             })
             .unwrap_or_else(|| line.to_string()),
         };
+        let out = contract_articles(&catalog.language, out);
         if let Some(log) = &self.misses {
             log.lock().record(&missed);
         }
@@ -807,11 +808,15 @@ impl Pass<'_, '_> {
             }
             // A name never holds a lead-in: "{carrier} is looking for ..."
             // must not take "Career objective: Northstar Freight Lines" as
-            // the carrier and leave the label English.
-            if caps
-                .iter()
-                .any(|(name, value)| is_proper_name_hole(name) && value.contains(": "))
-            {
+            // the carrier and leave the label English; nor does a hole that
+            // opens a template: "{name} Company Yard" must not take
+            // "company yard: Chicago" and say the label twice.
+            if caps.iter().any(|(name, value)| {
+                value.contains(": ")
+                    && (is_proper_name_hole(name)
+                        || (matches!(template.segs.first(), Some(Seg::Hole(first)) if first == name)
+                            && !template.filled.contains(':')))
+            }) {
                 return false;
             }
             // Only a hole that ends the template or opens a sentence of it
@@ -993,6 +998,24 @@ fn is_measure(text: &str) -> bool {
 
 fn has_words(text: &str) -> bool {
     text.chars().filter(|c| c.is_alphabetic()).take(2).count() >= 2
+}
+
+/// Spanish joins a preposition to the article after it, which
+/// two catalog pieces put side by side do not: "por debajo de" + "el
+/// límite" is "por debajo del límite". A capital "El" is a name (El Paso)
+/// and stays apart.
+fn contract_articles(language: &str, out: String) -> String {
+    let pairs: &[(&str, &str)] = match language.split('_').next().unwrap_or_default() {
+        "es" => &[(" de el ", " del "), (" a el ", " al ")],
+        _ => return out,
+    };
+    let mut out = out;
+    for (apart, joined) in pairs {
+        if out.contains(apart) {
+            out = out.replace(apart, joined);
+        }
+    }
+    out
 }
 
 /// The hole may hold whole sentences: it is the template's last part, or

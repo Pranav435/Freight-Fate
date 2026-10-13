@@ -806,3 +806,34 @@ fn shipped_spanish_finds_the_sentence_after_a_lead_in_hole() {
          cita. Despacho recomendado: recomendado por el instructor."
     );
 }
+
+#[test]
+fn shipped_spanish_says_a_yard_once_and_joins_de_el() {
+    let tr = shipped_spanish();
+    assert_eq!(
+        tr.translate(
+            "Parked at company yard: Chicago Company Yard in the Chicago service area, Illinois."
+        ),
+        "Aparcado en patio de la empresa: Patio de la empresa Chicago, en la zona de servicio \
+         de Chicago, Illinois."
+    );
+    assert_eq!(
+        tr.translate("Load weight: 13,677 pounds under the gross-weight limit with current fuel."),
+        "Peso de la carga: 13.677 libras por debajo del límite de peso bruto con el combustible \
+         actual."
+    );
+    assert_eq!(
+        tr.translate(
+            "Dropping and hooking took 25 minutes. Hooked to dry van 3890, in good shape."
+        ),
+        "El intercambio de remolque llevó 25 minutos. Enganchado a furgón seco 3890, en buen \
+         estado."
+    );
+    assert_eq!(
+        tr.translate(
+            "On I-94 toward Kenosha, Wisconsin. Next stop in 1 mile: travel center ahead at exit 50B."
+        ),
+        "En I-94 hacia Kenosha, Wisconsin. Próxima parada en 1 milla: área de servicio más \
+         adelante en la salida 50B."
+    );
+}
