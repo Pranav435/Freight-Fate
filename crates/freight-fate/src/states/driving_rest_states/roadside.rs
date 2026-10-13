@@ -1,8 +1,8 @@
-//! The three roadside outcomes: a speeding stop, a non-speeding enforcement
-//! stop, and the felony stop that ends a run.
+//! The roadside outcomes: a speeding stop, a non-speeding enforcement stop,
+//! a CDL pulled at speed with no stop, and the felony stop that ends a run.
 //!
 //! [`RoadsideExit`] is Python's `_RoadsideExitMixin`: a trait with provided
-//! methods, no state of its own, shared by the first two screens.
+//! methods, no state of its own, shared by the first three screens.
 
 use ff_core::models::enforcement;
 use ff_core::pyfmt::{fmt_f, fmt_grouped};
@@ -102,6 +102,18 @@ pub trait RoadsideExit: Menu {
             enforcement::status_noun(record),
             enforcement::clears_text(profile)
         )
+    }
+
+    /// Escape never drives off on a pulled licence: it closes out the run
+    /// the way the exit row does. Escape used to pop back onto the highway
+    /// and the drive carried on with the CDL suspended. Returns whether it
+    /// closed the run out.
+    fn end_run_if_licence_pulled(&mut self, ctx: &mut GameContext) -> bool {
+        if !self.licence_pulled(ctx) {
+            return false;
+        }
+        self.end_run_suspended(ctx);
+        true
     }
 
     /// Close out the run from the shoulder; the hub opens in the city the
@@ -234,7 +246,10 @@ impl TrafficStopState {
         {
             let p = profile_mut_of(ctx);
             p.spend(fine);
-            p.career.reputation = (rep - hit).max(0.0);
+            // The hit comes off the delivery ledger. `rep` is the shown
+            // standing, ledger minus the record; writing it back subtracted
+            // the record from the ledger for good (2026-09-28).
+            p.career.reputation = (p.career.reputation - hit).max(0.0);
         }
         ctx.audio.play("ui/error");
         let serious = enforcement::is_serious_speed(self.over) || self.warned;
@@ -301,8 +316,22 @@ impl Menu for TrafficStopState {
     }
 
     fn go_back(&mut self, ctx: &mut GameContext) {
+        if self.end_run_if_licence_pulled(ctx) {
+            return;
+        }
+        let driving = self.driving.clone();
+        let border_clearance_pending = driving
+            .read(|d| d.pending_border_clearance.is_some())
+            .unwrap_or(false);
         ctx.pop_state();
         ctx.say_with("Back on the highway. Watch your speed.", Say::new());
+        if border_clearance_pending {
+            driving.with(ctx, |d, ctx| {
+                if let Some(booth) = d.pending_border_clearance.take() {
+                    d.open_border_clearance(ctx, booth);
+                }
+            });
+        }
     }
 }
 
@@ -353,12 +382,16 @@ impl EnforcementStopState {
         // Repeat offenders pay more for the same stop and nothing caps it, and
         // a construction zone doubles whatever that came to -- one schedule
         // for every citation in the game, priced in models/enforcement.
-        let fine = citation_fine(
-            params.fine,
-            career_citations(profile_of(ctx)),
-            params.construction_zone,
-            None,
-        );
+        let fine = if params.fine_is_final {
+            params.fine
+        } else {
+            citation_fine(
+                params.fine,
+                career_citations(profile_of(ctx)),
+                params.construction_zone,
+                None,
+            )
+        };
         let mut state = EnforcementStopState {
             menu: MenuCore::new(&params.title).with_intro_help(ENFORCEMENT_STOP_INTRO_HELP),
             driving: DriveRef::active(ctx),
@@ -558,9 +591,23 @@ impl Menu for EnforcementStopState {
     }
 
     fn go_back(&mut self, ctx: &mut GameContext) {
+        if self.end_run_if_licence_pulled(ctx) {
+            return;
+        }
+        let driving = self.driving.clone();
+        let border_clearance_pending = driving
+            .read(|d| d.pending_border_clearance.is_some())
+            .unwrap_or(false);
         ctx.pop_state();
         let message = self.return_message.clone();
         ctx.say_with(message, Say::new());
+        if border_clearance_pending {
+            driving.with(ctx, |d, ctx| {
+                if let Some(booth) = d.pending_border_clearance.take() {
+                    d.open_border_clearance(ctx, booth);
+                }
+            });
+        }
     }
 }
 
@@ -639,10 +686,7 @@ impl Menu for LicencePulledState {
     }
 
     fn go_back(&mut self, ctx: &mut GameContext) {
-        // Escape never drives off on a pulled licence.
-        if self.licence_pulled(ctx) {
-            self.end_run_suspended(ctx);
-        } else {
+        if !self.end_run_if_licence_pulled(ctx) {
             ctx.pop_state();
         }
     }
