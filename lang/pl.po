@@ -25098,6 +25098,14 @@ msgstr ""
 msgid "Changing to the {name} lane for the exit."
 msgstr ""
 
+#. placeholders: {lane_count_words}
+msgid "The road narrows to {lane_count_words}."
+msgstr ""
+
+#. placeholders: {here}
+msgid "Staying in the {here} lane."
+msgstr ""
+
 #. placeholders: {name}
 msgid "{name} lane closed for construction."
 msgstr ""
@@ -29796,11 +29804,6 @@ msgstr ""
 
 #. placeholders: {lane_label}
 msgid "You are moved to the {lane_label} lane."
-msgstr ""
-
-#. placeholders: {lane_count_words}
-#. one sentence of a longer line
-msgid "The road narrows to {lane_count_words}."
 msgstr ""
 
 #. placeholders: {lane_count_words}, {moved}

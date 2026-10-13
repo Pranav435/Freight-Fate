@@ -29107,6 +29107,14 @@ msgstr "Has dejado atrás el {vehicle}. Carril de la {capitalized} libre."
 msgid "Changing to the {name} lane for the exit."
 msgstr "Cambiando al carril de la {name} para la salida."
 
+#. placeholders: {lane_count_words}
+msgid "The road narrows to {lane_count_words}."
+msgstr "La carretera se estrecha a {lane_count_words}."
+
+#. placeholders: {here}
+msgid "Staying in the {here} lane."
+msgstr ""
+
 #. placeholders: {name}
 msgid "{name} lane closed for construction."
 msgstr "Carril de la {name} cerrado por obras."
@@ -34450,11 +34458,6 @@ msgstr "Te han cambiado de carril."
 #. placeholders: {lane_label}
 msgid "You are moved to the {lane_label} lane."
 msgstr "Te han pasado al carril de la {lane_label}."
-
-#. placeholders: {lane_count_words}
-#. one sentence of a longer line
-msgid "The road narrows to {lane_count_words}."
-msgstr "La carretera se estrecha a {lane_count_words}."
 
 #. placeholders: {lane_count_words}, {moved}
 msgid "The road narrows to {lane_count_words}. {moved}"
