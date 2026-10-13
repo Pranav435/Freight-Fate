@@ -14689,6 +14689,13 @@ msgstr "音量と声"
 msgid "Lane keeping is on full. Flick left or right to change lanes."
 msgstr "レーンキープはフルです。左右にフリックすると車線を変えます。"
 
+msgid "Controller connected."
+msgstr "コントローラーが接続されました。"
+
+#. placeholders: {name}
+msgid "Controller connected: {name}."
+msgstr "コントローラーが接続されました: {name}。"
+
 msgid ""
 "Controller disconnected. You can keep playing with the keyboard, or "
 "reconnect your controller."
@@ -21425,6 +21432,9 @@ msgstr "Escape ポーズメニュー。"
 msgid "F2 lists every driving command by name."
 msgstr "F2 ですべての運転コマンドを名前で一覧にします。"
 
+msgid "Shift F1 names what each key does."
+msgstr "Shift F1 で各キーの役割を読み上げます。"
+
 #. placeholders: {shift_up}, {shift_down}, {reverse}, {neutral}
 msgid ""
 "Hold Left Shift for clutch, then {shift_up} to shift up or {shift_down} to "
@@ -21443,8 +21453,10 @@ msgid ""
 "is the hardest stop."
 msgstr "右トリガーがアクセル、左トリガーがブレーキです。左トリガーを奥まで引くと最も強い停止です。"
 
-msgid "The left stick steers unless lane keeping is on full."
-msgstr "レーンキープがフルでなければ左スティックでハンドルを切ります。"
+msgid ""
+"The left stick steers; with lane keeping on full, pushing it left or right "
+"changes one lane."
+msgstr "Left stick でハンドルを切ります。レーンキープがフルのときは、左右に倒すと1車線変更します。"
 
 #. placeholders: {shift_up}, {shift_down}
 msgid ""
@@ -21529,8 +21541,12 @@ msgid ""
 msgstr "ルートの地点から離れて完全に止まっていると、路肩での緊急睡眠を開きます。"
 
 #. placeholders: {status}
-msgid "{status} opens the status menu."
-msgstr "{status} でステータスメニューを開きます。"
+msgid ""
+"{status} opens the status menu, which also lists every driving command."
+msgstr "{status} でステータスメニューを開きます。運転の操作もすべてそこに並んでいます。"
+
+msgid "Hold Back and press Start to hear what each button does."
+msgstr "Back を押したまま Start を押すと、各ボタンの役割が聞けます。"
 
 #. placeholders: {tune_prev}, {tune_next}
 msgid ""
@@ -27057,6 +27073,10 @@ msgstr "運転の状況"
 msgid "Open the {label} status screen."
 msgstr "{label}のステータス画面を開きます。"
 
+msgid ""
+"Every driving command by name. Choose one to run it and return to driving."
+msgstr "運転の操作を名前ですべて並べます。選ぶと実行して運転に戻ります。"
+
 msgid "Close status and resume driving."
 msgstr "ステータスを閉じて運転に戻ります。"
 
@@ -27337,6 +27357,12 @@ msgstr "ゲームの音を覚える"
 
 msgid "Plays any sound the road uses and says what it means."
 msgstr "道路で使われる音を鳴らして、その意味を伝えます。"
+
+msgid "Practice keys and buttons"
+msgstr "キーとボタンの練習"
+
+msgid "Names what each key or controller button does while driving."
+msgstr "運転中に各キーやコントローラーのボタンが何をするかを読み上げます。"
 
 msgid ""
 "A mobile mechanic patches the truck up enough to drive on. Far dearer than "
@@ -31749,6 +31775,138 @@ msgid ""
 "backup on the Online menu can remove them later."
 msgstr "サイトにつながらなかったため、クラウドバックアップはまだ残っています。後でオンラインメニューのクラウドバックアップから削除できます。"
 
+msgid "Leaving key and button practice."
+msgstr "キーとボタンの練習を終了します。"
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}: pause menu."
+msgstr "{name}: 一時停止メニュー。"
+
+#. placeholders: {name}
+msgid "{name}: pause menu. Again to leave practice."
+msgstr "{name}: 一時停止メニュー。もう一度で練習を終了。"
+
+msgid "Back plus Start: key and button practice."
+msgstr "Back と Start: キーとボタンの練習。"
+
+msgid "Right trigger: Accelerate, as far as you press it."
+msgstr "Right trigger: アクセル。押した分だけ加速。"
+
+msgid ""
+"Left trigger: Brake, as far as you press it. All the way down: Emergency "
+"brake."
+msgstr "Left trigger: ブレーキ。押した分だけ減速。奥まで押すと非常ブレーキ。"
+
+msgid "Left stick: push left or right to change one lane."
+msgstr "Left stick: 左右に倒すと1車線変更。"
+
+msgid "Left stick: steer."
+msgstr "Left stick: ハンドル。"
+
+msgid "Change one lane left"
+msgstr "左へ1車線変更"
+
+msgid "Change one lane right"
+msgstr "右へ1車線変更"
+
+#. placeholders: {label}
+msgid "{label}, in a manual truck"
+msgstr "{label}（マニュアル車）"
+
+msgid "Control: stop the driving voice."
+msgstr "Control: 運転音声を止める。"
+
+msgid "Shift: hold as the clutch in a manual truck."
+msgstr "Shift: マニュアル車ではクラッチとして押したまま。"
+
+msgid "Alt: hold with another key."
+msgstr "Alt: 他のキーと一緒に押したまま。"
+
+msgid "key and button practice"
+msgstr "キーとボタンの練習"
+
+msgid "driving commands"
+msgstr "運転の操作"
+
+msgid "oldest message"
+msgstr "いちばん古いメッセージ"
+
+msgid "newest message"
+msgstr "いちばん新しいメッセージ"
+
+msgid "previous message"
+msgstr "前のメッセージ"
+
+msgid "next message"
+msgstr "次のメッセージ"
+
+msgid "previous message category"
+msgstr "前のメッセージのカテゴリー"
+
+msgid "next message category"
+msgstr "次のメッセージのカテゴリー"
+
+msgid "copy the message in review"
+msgstr "表示中のメッセージをコピー"
+
+msgid "cruise target up by 1"
+msgstr "クルーズ目標を1上げる"
+
+msgid "cruise target up to the next 5"
+msgstr "クルーズ目標を次の5の倍数まで上げる"
+
+msgid "cruise target down by 1"
+msgstr "クルーズ目標を1下げる"
+
+msgid "cruise target down to the next 5"
+msgstr "クルーズ目標を次の5の倍数まで下げる"
+
+msgid "choose, or confirm an arrival"
+msgstr "選択、または到着の確認"
+
+msgid "previous radio category"
+msgstr "前のラジオのカテゴリー"
+
+msgid "raise radio volume"
+msgstr "ラジオの音量を上げる"
+
+msgid "tune to the previous radio station"
+msgstr "前のラジオ局に合わせる"
+
+msgid "next radio category"
+msgstr "次のラジオのカテゴリー"
+
+msgid "lower radio volume"
+msgstr "ラジオの音量を下げる"
+
+msgid "tune to the next radio station"
+msgstr "次のラジオ局に合わせる"
+
+msgid "no command"
+msgstr "操作なし"
+
+msgid "hold for the second layer of buttons"
+msgstr "押したままで2段目のボタン"
+
+msgid "hold as the clutch in a manual truck"
+msgstr "マニュアル車ではクラッチとして押したまま"
+
+msgid "help, or stop the driving voice while it speaks"
+msgstr "ヘルプ、または話している運転音声を止める"
+
+msgid "confirm an arrival when one is ready"
+msgstr "到着の準備ができたら確認"
+
+#. placeholders: {text}
+msgid "{text}, or confirm an arrival when one is ready"
+msgstr "{text}、または到着の準備ができたら確認"
+
+msgid ""
+"Key and button practice. Press a key or button to hear what it does while "
+"driving. Escape twice, or Start twice, to leave."
+msgstr "キーとボタンの練習。キーかボタンを押すと、運転中の役割が聞けます。Escape を2回、または Start を2回で終了します。"
+
 msgid "Gameplay"
 msgstr "ゲームプレイ"
 
@@ -32034,6 +32192,16 @@ msgid ""
 "Only NVDA and JAWS can send the game to a braille display. Speech stays on "
 "until one of them is running."
 msgstr "ゲームを点字ディスプレイに送れるのは NVDA と JAWS だけです。どちらかが動くまでは読み上げはオンのままです。"
+
+msgid "Controller: disabled"
+msgstr "コントローラー: 無効"
+
+#. placeholders: {name}
+msgid "Controller: enabled, {name} connected"
+msgstr "コントローラー: 有効、{name} が接続済み"
+
+msgid "Controller: enabled, none connected"
+msgstr "コントローラー: 有効、未接続"
 
 msgid "a soft tone leans"
 msgstr "柔らかいトーンが"
@@ -32590,16 +32758,6 @@ msgstr ""
 "どちらの方式でも、停止中に新たに押すと進行方向が変わります。停止までブレーキを押し続けても、トラックが止まったままになるだけです。確実では、どこでも一度"
 "離して押し直す必要があります。オートマ限定です。"
 
-#. placeholders: {else}
-msgid "Controller: {else}"
-msgstr "コントローラー：{else}"
-
-msgid "enabled"
-msgstr "有効"
-
-msgid "disabled"
-msgstr "無効"
-
 msgid ""
 "Game-controller input alongside the keyboard, which always stays active. "
 "The first connected controller is used."
@@ -32608,6 +32766,12 @@ msgstr "キーボードに加えて、ゲームコントローラーで入力し
 #. placeholders: {else}
 msgid "Haptics: {else}"
 msgstr "振動：{else}"
+
+msgid "enabled"
+msgstr "有効"
+
+msgid "disabled"
+msgstr "無効"
 
 msgid ""
 "Controller rumble for hazards, hard braking, the rumble strip, and road "
@@ -33461,6 +33625,16 @@ msgid ""
 "Learn game sounds plays road cues and explains their meaning. It is "
 "available on the main and pause menus."
 msgstr "ゲームの音を覚えるでは、道路の合図を鳴らして意味を説明します。メインメニューと一時停止メニューから使えます。"
+
+msgid ""
+"Practice keys and buttons names what each key or controller button does "
+"while driving, without moving the truck. Shift F1 opens it from any screen, "
+"as does holding Back and pressing Start on a controller. It is also on the "
+"main and pause menus. Press Escape or Start twice to leave."
+msgstr ""
+"キーとボタンの練習では、トラックを動かさずに、運転中に各キーやコントローラーのボタンが何をするかを読み上げます。どの画面でも Shift F1 "
+"で開け、コントローラーで Back を押したまま Start を押しても開けます。メインメニューと一時停止メニューにもあります。Escape か "
+"Start を2回押すと終了します。"
 
 msgid "Starting and stopping the truck"
 msgstr "トラックの発進と停止"
@@ -35196,10 +35370,11 @@ msgstr ""
 
 msgid ""
 "Right trigger accelerates, left trigger brakes, and fully pressing the left "
-"trigger gives emergency braking. The left stick steers."
+"trigger gives emergency braking. The left stick steers; with lane keeping "
+"on full, push it left or right to change one lane."
 msgstr ""
-"right trigger で加速、left trigger でブレーキ、left trigger を奥まで押すと非常ブレーキです。left "
-"stick で操舵します。"
+"Right trigger でアクセル、Left trigger でブレーキ、Left trigger を奥まで押すと非常ブレーキです。Left "
+"stick でハンドルを切ります。レーンキープがフルのときは、左右に倒すと1車線変更します。"
 
 msgid ""
 "To reverse in automatic, stop, release the left trigger, then press and "
@@ -35215,12 +35390,12 @@ msgstr "マニュアルのクラッチは left bumper を押し続けます。"
 #. placeholders: {pad_shift_up}, {pad_shift_down}, {pad_cruise}, {pad_speed}
 msgid ""
 "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
-"{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
-"speed."
+"{pad_shift_down} down, past first into neutral and then reverse. "
+"{pad_cruise} starts speed control; {pad_speed} reads speed."
 msgstr ""
-"マニュアルのクラッチは left bumper "
-"を押し続けます。{pad_shift_up}でシフトアップ、{pad_shift_down}でシフトダウンします。{pad_cruise}で速度制御を始"
-"め、{pad_speed}で速度を読み上げます。"
+"left bumper を押したままでマニュアルのクラッチです。{pad_shift_up} でシフトアップ、{pad_shift_down} "
+"でシフトダウンし、1速より下はニュートラル、次にリバースです。{pad_cruise} で速度制御を開始し、{pad_speed} "
+"で速度を読み上げます。"
 
 #. placeholders: {pad_cruise}, {pad_speed}
 #. one sentence of a longer line
@@ -35229,8 +35404,11 @@ msgstr "{pad_cruise}で速度制御を始め、{pad_speed}で速度を読み上�
 
 #. placeholders: {pad_shift_up}, {pad_shift_down}
 #. one sentence of a longer line
-msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
-msgstr "{pad_shift_up}でシフトアップ、{pad_shift_down}でシフトダウンします。"
+msgid ""
+"{pad_shift_up} shifts up and {pad_shift_down} down, past first into neutral "
+"and then reverse."
+msgstr ""
+"{pad_shift_up} でシフトアップ、{pad_shift_down} でシフトダウンし、1速より下はニュートラル、次にリバースです。"
 
 #. placeholders: {pad_horn}, {pad_engine_brake}
 #. one sentence of a longer line
@@ -35304,22 +35482,58 @@ msgstr "{pad_cruise_down}と{pad_cruise_up}でクルーズの目標を変えま�
 #. placeholders: {pad_cruise_down}, {pad_cruise_up}, {pad_status}
 msgid ""
 "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
-"{pad_status} opens driving status."
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
 msgstr ""
-"{pad_cruise_down}と{pad_cruise_up}でクルーズの目標を変えます。{pad_status}で運転のステータスを開きます。"
+"{pad_cruise_down} と {pad_cruise_up} でクルーズ目標を変えます。{pad_status} "
+"で運転の状況を開くと、運転の操作にボタンのないものも含めすべての操作が並んでいます。"
 
 #. placeholders: {pad_status}
 #. one sentence of a longer line
-msgid "{pad_status} opens driving status."
-msgstr "{pad_status}で運転のステータスを開きます。"
+msgid ""
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
+msgstr "{pad_status} で運転の状況を開くと、運転の操作にボタンのないものも含めすべての操作が並んでいます。"
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}
+#. one sentence of a longer line
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume."
+msgstr ""
+"{pad_radio_tune_prev} と {pad_radio_tune_next} "
+"でラジオ局を変え、{pad_radio_volume_down} と {pad_radio_volume_up} で音量を変えます。"
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}, {pad_radio}
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume. "
+"{pad_radio} turns it on or off."
+msgstr ""
+"{pad_radio_tune_prev} と {pad_radio_tune_next} "
+"でラジオ局を変え、{pad_radio_volume_down} と {pad_radio_volume_up} "
+"で音量を変えます。{pad_radio} でラジオのオンとオフを切り替えます。"
+
+#. placeholders: {pad_radio}
+#. one sentence of a longer line
+msgid "{pad_radio} turns it on or off."
+msgstr "{pad_radio} でラジオのオンとオフを切り替えます。"
+
+msgid ""
+"To learn the buttons, hold Back and press Start on any screen. Each button "
+"you press says what it does; Start twice leaves."
+msgstr ""
+"ボタンを覚えるには、どの画面でも Back を押したまま Start を押します。押したボタンが役割を読み上げます。Start を2回で終了します。"
 
 msgid ""
 "If the controller does nothing, check that Controller is enabled under "
 "Settings, Gameplay, Controls. The game uses the first controller it finds, "
-"so unplug other controllers and close Steam."
+"so unplug other controllers and close Steam. If the Xbox button opens Steam "
+"Big Picture, press B to close it."
 msgstr ""
-"コントローラーが反応しない場合は、設定、ゲームプレイ、操作で コントローラー "
-"がオンになっているか確認してください。ゲームは最初に見つけたコントローラーを使うので、ほかのコントローラーを外して Steam を閉じてください。"
+"コントローラーが反応しない場合は、設定、ゲームプレイ、操作 "
+"でコントローラーが有効になっているか確認してください。ゲームは最初に見つけたコントローラーを使うので、他のコントローラーを外し、Steam "
+"を閉じてください。Xbox ボタンで Steam Big Picture が開いたら、B を押して閉じます。"
 
 msgid "pad"
 msgstr "pad"
@@ -37268,6 +37482,51 @@ msgstr "続いて、ヘアピンカーブを右です。"
 
 msgid "Then hairpin left."
 msgstr "続いて、ヘアピンカーブを左です。"
+
+#~ msgid "The left stick steers unless lane keeping is on full."
+#~ msgstr "レーンキープがフルでなければ左スティックでハンドルを切ります。"
+
+#~ msgid "{status} opens the status menu."
+#~ msgstr "{status} でステータスメニューを開きます。"
+
+#~ msgid "Controller: {else}"
+#~ msgstr "コントローラー：{else}"
+
+#~ msgid ""
+#~ "Right trigger accelerates, left trigger brakes, and fully pressing the left "
+#~ "trigger gives emergency braking. The left stick steers."
+#~ msgstr ""
+#~ "right trigger で加速、left trigger でブレーキ、left trigger を奥まで押すと非常ブレーキです。left "
+#~ "stick で操舵します。"
+
+#~ msgid ""
+#~ "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
+#~ "{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
+#~ "speed."
+#~ msgstr ""
+#~ "マニュアルのクラッチは left bumper "
+#~ "を押し続けます。{pad_shift_up}でシフトアップ、{pad_shift_down}でシフトダウンします。{pad_cruise}で速度制御を始"
+#~ "め、{pad_speed}で速度を読み上げます。"
+
+#~ msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
+#~ msgstr "{pad_shift_up}でシフトアップ、{pad_shift_down}でシフトダウンします。"
+
+#~ msgid ""
+#~ "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
+#~ "{pad_status} opens driving status."
+#~ msgstr ""
+#~ "{pad_cruise_down}と{pad_cruise_up}でクルーズの目標を変えます。{pad_status}で運転のステータスを開きます。"
+
+#~ msgid "{pad_status} opens driving status."
+#~ msgstr "{pad_status}で運転のステータスを開きます。"
+
+#~ msgid ""
+#~ "If the controller does nothing, check that Controller is enabled under "
+#~ "Settings, Gameplay, Controls. The game uses the first controller it finds, "
+#~ "so unplug other controllers and close Steam."
+#~ msgstr ""
+#~ "コントローラーが反応しない場合は、設定、ゲームプレイ、操作で コントローラー "
+#~ "がオンになっているか確認してください。ゲームは最初に見つけたコントローラーを使うので、ほかのコントローラーを外して Steam を閉じてください。"
 
 #~ msgid "ELD status {status}."
 #~ msgstr "ELDの状態は{status}。"
