@@ -713,29 +713,36 @@ impl HosClock {
             return "Hours of service: past your limit. Sleep 10 hours at a rest stop to reset."
                 .to_string();
         }
-        let status = self.status.replace('_', " ");
-        let suffix = match self.split_pending_summary() {
-            Some(pending) => format!(" {pending}"),
-            None => String::new(),
+        // The status is its own whole sentence per status, so a catalog
+        // translates "on duty not driving" with the sentence around it rather
+        // than as a loose fragment.
+        let status = match self.status.as_str() {
+            "driving" => "ELD status driving.".to_string(),
+            "on_duty_not_driving" => "ELD status on duty not driving.".to_string(),
+            "off_duty" => "ELD status off duty.".to_string(),
+            "sleeper_berth" => "ELD status sleeper berth.".to_string(),
+            other => format!("ELD status {}.", other.replace('_', " ")),
         };
-        if duty_left <= break_left {
-            return format!(
-                "ELD status {status}. Hours of service: \
-                 {} of driving left, \
-                 {} of duty window left.{suffix}",
+        let hours = if duty_left <= break_left {
+            format!(
+                "Hours of service: {} of driving left, {} of duty window left.",
                 duration_text(drive_left),
                 duration_text(duty_left),
-            );
+            )
+        } else {
+            format!(
+                "Hours of service: {} of driving left, break due in {}, \
+                 duty window closes in {}.",
+                duration_text(drive_left),
+                duration_text(break_left),
+                duration_text(duty_left),
+            )
+        };
+        let mut sentences = vec![status, hours];
+        if let Some(pending) = self.split_pending_summary() {
+            sentences.push(pending.to_string());
         }
-        format!(
-            "ELD status {status}. Hours of service: \
-             {} of driving left, \
-             break due in {}, \
-             duty window closes in {}.{suffix}",
-            duration_text(drive_left),
-            duration_text(break_left),
-            duration_text(duty_left),
-        )
+        sentences.join(" ")
     }
 
     // -- the one-answer readouts ------------------------------------------------

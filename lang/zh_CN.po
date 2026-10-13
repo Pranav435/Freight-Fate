@@ -2384,9 +2384,6 @@ msgstr "Pilot"
 msgid "Big Buck's"
 msgstr "Big Buck's"
 
-msgid "landmark"
-msgstr "landmark"
-
 msgid "big buck"
 msgstr "big buck"
 
@@ -8056,9 +8053,19 @@ msgstr "{grouped}美元"
 msgid ", background check clears in about {wait_days} days"
 msgstr "，背景调查大约{wait_days}天后通过"
 
+#. placeholders: {wait_days}
+#. one clause of a longer line
+msgid "background check clears in about {wait_days} days"
+msgstr "背景调查大约 {wait_days} 天后完成"
+
 #. placeholders: {level}
 msgid ", carrier-sponsored free at level {level}"
 msgstr "，{level}级时承运商免费资助"
+
+#. placeholders: {level}
+#. one clause of a longer line
+msgid "carrier-sponsored free at level {level}"
+msgstr "由承运商赞助，在 {level} 级免费"
 
 msgid "Pay advance already taken for this load. Deliver it first."
 msgstr "这单货物已经预支过工资了。先把它送达。"
@@ -8185,8 +8192,16 @@ msgstr "过去一年{join}"
 msgid ", next year"
 msgstr "，明年"
 
+#. one clause of a longer line
+msgid "next year"
+msgstr "明年"
+
 msgid ", the year after next"
 msgstr "，后年"
+
+#. one clause of a longer line
+msgid "the year after next"
+msgstr "后年"
 
 #. placeholders: {record_clears_text}
 #. one sentence of a longer line
@@ -8665,6 +8680,10 @@ msgstr "报酬"
 msgid ", planned around the 10-hour rest your hours will force. "
 msgstr "，已按驾驶工时将强制的10小时休息做好规划。 "
 
+#. one clause of a longer line
+msgid "planned around the 10-hour rest your hours will force."
+msgstr "已按你的工时将强制的 10 小时休息来安排。"
+
 #. placeholders: {f2}, {rest}, {equipment_text}, {trailer}, {preview}, {market}, {endorsement}
 #. one sentence of a longer line
 msgid ""
@@ -9043,6 +9062,9 @@ msgstr "最后一个可到达的{action}停靠点：{name}，前方{distance}。
 msgid ""
 "Last reachable {action} stop: {name}, {distance} ahead. Plan to stop here."
 msgstr "最后一个可到达的{action}停靠点：{name}，前方{distance}。计划在这里停车。"
+
+msgid "landmark"
+msgstr "landmark"
 
 msgid "generic"
 msgstr "generic"
@@ -10227,9 +10249,6 @@ msgstr "ff-safety-satellite"
 msgid "afn-humphreys"
 msgstr "afn-humphreys"
 
-msgid "local"
-msgstr "local"
-
 msgid "streaming"
 msgstr "网络播放"
 
@@ -10260,6 +10279,9 @@ msgstr "电台目录中有重复的电台ID"
 
 msgid "imported stations collide with curated station ids"
 msgstr "导入的电台与精选电台的ID冲突"
+
+msgid "local"
+msgstr "local"
 
 msgid "codec"
 msgstr "codec"
@@ -10352,6 +10374,11 @@ msgstr "收藏"
 #. placeholders: {spoken}
 msgid ", {spoken} away"
 msgstr "，距离{spoken}"
+
+#. placeholders: {spoken}
+#. one clause of a longer line
+msgid "{spoken} away"
+msgstr "{spoken}外"
 
 #. placeholders: {source}
 #. one sentence of a longer line
@@ -10762,14 +10789,8 @@ msgstr "驾驶中"
 msgid "you must take a 30 minute break at a rest stop"
 msgstr "你必须在停靠点进行30分钟中途休息"
 
-msgid "drive"
-msgstr "drive"
-
 msgid "your driving time for this shift ends. You need 10 hours of sleep"
 msgstr "你本班次的驾驶时间就结束了。你需要睡10小时"
-
-msgid "duty"
-msgstr "duty"
 
 msgid "your duty window closes. You need 10 hours of sleep"
 msgstr "你的当班时段就结束了。你需要睡10小时"
@@ -10810,42 +10831,34 @@ msgid ""
 "Hours of service: past your limit. Sleep 10 hours at a rest stop to reset."
 msgstr "驾驶工时：已超出上限。在停靠点睡满10小时来重置。"
 
-#. placeholders: {status}
-#. one sentence of a longer line
-msgid "ELD status {status}."
-msgstr "ELD状态{status}。"
+msgid "ELD status driving."
+msgstr "ELD 状态：驾驶中。"
 
-#. placeholders: {status}, {duration_text}, {duration_text2}, {suffix}
-msgid ""
-"ELD status {status}. Hours of service: {duration_text} of driving left, "
-"{duration_text2} of duty window left.{suffix}"
-msgstr ""
-"ELD状态{status}。驾驶工时：剩余驾驶时间{duration_text}，当班时段剩余{duration_text2}。{suffix}"
+msgid "ELD status on duty not driving."
+msgstr "ELD 状态：当班，未驾驶。"
 
-#. placeholders: {duration_text}, {duration_text2}, {suffix}
-#. one sentence of a longer line
+msgid "ELD status off duty."
+msgstr "ELD 状态：下班。"
+
+msgid "ELD status sleeper berth."
+msgstr "ELD 状态：卧铺。"
+
+#. placeholders: {replace}
+msgid "ELD status {replace}."
+msgstr "ELD 状态：{replace}。"
+
+#. placeholders: {duration_text}, {duration_text2}
 msgid ""
 "Hours of service: {duration_text} of driving left, {duration_text2} of duty "
-"window left.{suffix}"
-msgstr "驾驶工时：剩余驾驶时间{duration_text}，当班时段剩余{duration_text2}。{suffix}"
+"window left."
+msgstr "工时：还剩 {duration_text} 驾驶时间，当班时段还剩 {duration_text2}。"
 
-#. placeholders: {status}, {duration_text}, {duration_text2}, {duration_text3}, {suffix}
-msgid ""
-"ELD status {status}. Hours of service: {duration_text} of driving left, "
-"break due in {duration_text2}, duty window closes in "
-"{duration_text3}.{suffix}"
-msgstr ""
-"ELD状态{status}。驾驶工时：剩余驾驶时间{duration_text}，{duration_text2}后需要中途休息，当班时段{durati"
-"on_text3}后结束。{suffix}"
-
-#. placeholders: {duration_text}, {duration_text2}, {duration_text3}, {suffix}
-#. one sentence of a longer line
+#. placeholders: {duration_text}, {duration_text2}, {duration_text3}
 msgid ""
 "Hours of service: {duration_text} of driving left, break due in "
-"{duration_text2}, duty window closes in {duration_text3}.{suffix}"
+"{duration_text2}, duty window closes in {duration_text3}."
 msgstr ""
-"驾驶工时：剩余驾驶时间{duration_text}，{duration_text2}后需要中途休息，当班时段{duration_text3}后结束。{"
-"suffix}"
+"工时：还剩 {duration_text} 驾驶时间，{duration_text2} 后该休息，当班时段 {duration_text3} 后结束。"
 
 #. placeholders: {duration_text}
 msgid "Driving left: {duration_text}."
@@ -10862,6 +10875,12 @@ msgstr "{duration_text}后需要中途休息。"
 #. placeholders: {duration_text}
 msgid "Duty window closes in {duration_text}."
 msgstr "当班时段{duration_text}后结束。"
+
+msgid "drive"
+msgstr "drive"
+
+msgid "duty"
+msgstr "duty"
 
 msgid "At the wheel: no driving yet"
 msgstr "已驾驶时间：还没开车"
@@ -10913,8 +10932,17 @@ msgid ", duty window {duration_text}"
 msgstr "，当班时段{duration_text}"
 
 #. placeholders: {duration_text}
+#. one clause of a longer line
+msgid "duty window {duration_text}"
+msgstr "当班时段 {duration_text}"
+
+#. placeholders: {duration_text}
 msgid ", but your duty window closes first, in {duration_text}"
 msgstr "，但你的当班时段会先结束，还有{duration_text}"
+
+#. one clause of a longer line
+msgid "but your duty window closes first"
+msgstr "但你的当班时段会先结束"
 
 #. placeholders: {answer}, {shift_over}
 #. one sentence of a longer line
@@ -10931,6 +10959,10 @@ msgstr "剩余驾驶时间：不限{else}"
 
 msgid ", and no duty window"
 msgstr "，也没有当班时段限制"
+
+#. one clause of a longer line
+msgid "and no duty window"
+msgstr "且没有当班时段"
 
 #. placeholders: {duration_text}
 msgid "Driving time left: {duration_text}"
@@ -10959,6 +10991,10 @@ msgstr "{duty_text}，会早于你的驾驶时间用完。{drive_text}"
 
 msgid ", break overdue"
 msgstr "，中途休息已逾期"
+
+#. one clause of a longer line
+msgid "break overdue"
+msgstr "休息已逾期"
 
 msgid ". Your 30-minute break is overdue and comes first"
 msgstr "。你的30分钟中途休息已逾期，要先休息"
@@ -11358,6 +11394,11 @@ msgstr "{near_city}附近的{event}"
 #. placeholders: {minutes}
 msgid ", about {minutes} minutes slower"
 msgstr "，大约慢{minutes}分钟"
+
+#. placeholders: {minutes}
+#. one clause of a longer line
+msgid "about {minutes} minutes slower"
+msgstr "慢大约 {minutes} 分钟"
 
 #. placeholders: {join}
 msgid "Weather alerts on the way: {join}."
@@ -12131,6 +12172,11 @@ msgstr "下坡"
 msgid ", terrain {terrain}"
 msgstr "，地形{terrain}"
 
+#. placeholders: {terrain}
+#. one clause of a longer line
+msgid "terrain {terrain}"
+msgstr "地形 {terrain}"
+
 #. placeholders: {f}, {direction}, {terrain_text}
 msgid "Current grade {f} percent {direction}{terrain_text}"
 msgstr "当前{direction}坡度百分之{f}{terrain_text}"
@@ -12212,6 +12258,11 @@ msgstr "缩减为你这侧{lane_word}条车道。"
 #. placeholders: {distance}
 msgid ", then {distance} on it"
 msgstr "，然后在上面行驶{distance}"
+
+#. placeholders: {distance}
+#. one clause of a longer line
+msgid "then {distance} on it"
+msgstr "然后在这条路上走 {distance}"
 
 msgid "500 meters"
 msgstr "500米"
@@ -13083,9 +13134,6 @@ msgstr "unsupported"
 msgid "empty"
 msgstr "empty"
 
-msgid "dry"
-msgstr "dry"
-
 msgid "schema"
 msgstr "schema"
 
@@ -13282,6 +13330,9 @@ msgstr "多云"
 
 msgid "high winds"
 msgstr "大风"
+
+msgid "dry"
+msgstr "dry"
 
 msgid "wet"
 msgstr "潮湿"
@@ -14421,9 +14472,19 @@ msgstr "smoke checks"
 msgid ", {spacing} ms after the last press"
 msgstr "，距上一次按下{spacing}毫秒"
 
+#. placeholders: {spacing}
+#. one clause of a longer line
+msgid "{spacing} ms after the last press"
+msgstr "上次按下后 {spacing} 毫秒"
+
 #. placeholders: {gap}
 msgid ", {gap} ms after its press"
 msgstr "，距它按下{gap}毫秒"
+
+#. placeholders: {gap}
+#. one clause of a longer line
+msgid "{gap} ms after its press"
+msgstr "按下后 {gap} 毫秒"
 
 #. placeholders: {saturating_sub}, {else}, {name}, {detail}, {else2}, {else3}, {else4}, {else5}, {frame_ms}
 msgid ""
@@ -15049,6 +15110,7 @@ msgstr "Right Alt"
 msgid "an unnamed key"
 msgstr "一个没有名字的键"
 
+msgctxt "controller button"
 msgid "Back"
 msgstr "Back"
 
@@ -16218,6 +16280,9 @@ msgstr " 此筛选之外还有{hidden}条较新的{plural}。"
 msgid "Ready in {remaining} seconds."
 msgstr "{remaining}秒后就绪。"
 
+msgid "Back"
+msgstr "Back"
+
 msgid "Enter selects, Escape goes back. Control stops the current speech."
 msgstr "Enter选择，Escape返回。Control停止当前语音。"
 
@@ -16227,9 +16292,11 @@ msgstr "菜单"
 msgid "No options available."
 msgstr "没有可用的选项。"
 
-#. placeholders: {label}, {index}, {items}
-msgid "{label} {index} of {items}."
-msgstr "{label}，第{index}项，共{items}项。"
+#. placeholders: {position}, {count}
+#. A menu row's position, spoken after the row: "4 of 8." The game
+#. translates it apart from the row, so keep both {position} and {count}.
+msgid "{position} of {count}."
+msgstr "第 {position} 项，共 {count} 项。"
 
 msgid "Repeat this line."
 msgstr "重复这一行。"
@@ -16300,8 +16367,17 @@ msgstr "{gate_label}背景调查进行中，大约还剩{f}天"
 msgid ", {grouped} to level {level}"
 msgstr "，距{level}级还差{grouped}"
 
+#. placeholders: {grouped}, {level}
+#. one clause of a longer line
+msgid "{grouped} to level {level}"
+msgstr "{grouped}，升到 {level} 级"
+
 msgid ", top level"
 msgstr "，已是最高等级"
+
+#. one clause of a longer line
+msgid "top level"
+msgstr "最高等级"
 
 #. placeholders: {level}, {f}, {next}
 msgid "Level {level} driver, {f} experience{next}"
@@ -17361,6 +17437,10 @@ msgstr "从这里到不了附近任何城市。"
 msgid ", this week's price"
 msgstr "，本周价格"
 
+#. one clause of a longer line
+msgid "this week's price"
+msgstr "本周价格"
+
 #. placeholders: {f}, {live}
 msgid "Garage: fuel {f} per gallon{live}"
 msgstr "修理厂：燃油每加仑{f}{live}"
@@ -18138,6 +18218,11 @@ msgstr "升级在车主司机买断后解锁，从18级起在经营状况里办�
 msgid ", tier {owned} of {max_tier}"
 msgstr "，第{owned}级，共{max_tier}级"
 
+#. placeholders: {owned}, {max_tier}
+#. one clause of a longer line
+msgid "tier {owned} of {max_tier}"
+msgstr "等级 {owned}，共 {max_tier} 级"
+
 #. placeholders: {label}, {tiers}
 msgid "{label}: owned{tiers}"
 msgstr "{label}：已拥有{tiers}"
@@ -18145,6 +18230,11 @@ msgstr "{label}：已拥有{tiers}"
 #. placeholders: {owned}
 msgid ", tier {owned} owned"
 msgstr "，已拥有第{owned}级"
+
+#. placeholders: {owned}
+#. one clause of a longer line
+msgid "tier {owned} owned"
+msgstr "已拥有等级 {owned}"
 
 #. placeholders: {label}, {owned}, {max_tier}, {grouped}, {owned_part}
 msgid "{label}, tier {owned} of {max_tier}: {grouped} dollars{owned_part}"
@@ -20600,699 +20690,487 @@ msgstr "提货：开到{pickup_facility_text}，在大门停车，报到并装�
 msgid "At your destination, stop, then dock and deliver. "
 msgstr "到达目的地后，停车，然后靠上装卸口卸货。 "
 
-#. one sentence of a longer line
-msgid "A quick tap just brakes."
-msgstr "轻按一下只是刹车。"
+#. placeholders: {up}, {down}
+msgid "Hold {up} to accelerate, {down} to brake."
+msgstr "按住 {up} 加速，按住 {down} 刹车。"
 
-#. placeholders: {down}
-#. one sentence of a longer line
-msgid ""
-"In automatic with deliberate direction changes, stop, release {down}, then "
-"press and hold it again to reverse."
-msgstr "在自动档、刻意换向模式下，停车，松开{down}，然后再按住它就是倒车。"
-
-#. placeholders: {down}, {up}
-msgid ""
-"In automatic with deliberate direction changes, stop, release {down}, then "
-"press and hold it again to reverse. While reversing, stop with {up}, "
-"release, then press and hold again for forward. A quick tap just brakes. "
-msgstr ""
-"在自动档、刻意换向模式下，停车，松开{down}，然后再按住它就是倒车。倒车时，用{up}停车，松开，再按住就是前进。轻按一下只是刹车。 "
-
-#. placeholders: {up}
-#. one sentence of a longer line
-msgid ""
-"While reversing, stop with {up}, release, then press and hold again for "
-"forward."
-msgstr "倒车时，用{up}停车，松开，再按住就是前进。"
-
-#. one sentence of a longer line
-msgid "A brake held through a stop just holds the truck."
-msgstr "停车时一直踩着刹车，只会让卡车保持不动。"
-
-#. placeholders: {down}
-#. one sentence of a longer line
-msgid ""
-"In automatic with simple direction changes, stop, release {down}, then "
-"press and hold it again to reverse."
-msgstr "在自动档、简单换向模式下，停车，松开{down}，然后再按住它就是倒车。"
-
-#. placeholders: {down}, {up}
-msgid ""
-"In automatic with simple direction changes, stop, release {down}, then "
-"press and hold it again to reverse. While reversing, stop with {up}, "
-"release, then hold it again for forward. A brake held through a stop just "
-"holds the truck. "
-msgstr ""
-"在自动档、简单换向模式下，停车，松开{down}，然后再按住它就是倒车。倒车时，用{up}停车，松开，然后再按住就是前进。停车时一直踩着刹车，只会让卡车"
-"保持不动。 "
-
-#. placeholders: {up}
-#. one sentence of a longer line
-msgid ""
-"While reversing, stop with {up}, release, then hold it again for forward."
-msgstr "倒车时，用{up}停车，松开，然后再按住就是前进。"
-
-#. one sentence of a longer line
 msgid ""
 "Tap the brake, then press again and hold half a second to latch it "
 "hands-free; a click and a spoken confirmation mark the catch."
 msgstr "轻按一下刹车，然后再按住半秒，就能把它锁定，不用一直按着；一声咔哒和一句语音确认表示已经锁住。"
 
 #. placeholders: {down}
-msgid ""
-"Tap the brake, then press again and hold half a second to latch it "
-"hands-free; a click and a spoken confirmation mark the catch. {down} once "
-"releases it; the accelerator releases it instantly. The throttle key never "
-"latches. "
-msgstr ""
-"轻按一下刹车，然后再按住半秒，就能把它锁定，不用一直按着；一声咔哒和一句语音确认表示已经锁住。按一下{down}就会松开；踩油门会立刻松开。油门键永远不"
-"会锁定。 "
+msgid "{down} once releases it; the accelerator releases it instantly."
+msgstr "按一下{down}就会松开；踩油门会立刻松开。"
 
-#. one sentence of a longer line
 msgid "The throttle key never latches."
 msgstr "油门键永远不会锁定。"
 
 #. placeholders: {down}
-#. one sentence of a longer line
-msgid "{down} once releases it; the accelerator releases it instantly."
-msgstr "按一下{down}就会松开；踩油门会立刻松开。"
+msgid ""
+"In automatic with deliberate direction changes, stop, release {down}, then "
+"press and hold it again to reverse."
+msgstr "在自动档、刻意换向模式下，停车，松开{down}，然后再按住它就是倒车。"
 
-#. placeholders: {up}, {down}
-msgid "Hold {up} to accelerate, {down} to brake. "
-msgstr "按住{up}加速，按住{down}刹车。 "
+#. placeholders: {up}
+msgid ""
+"While reversing, stop with {up}, release, then press and hold again for "
+"forward."
+msgstr "倒车时，用{up}停车，松开，再按住就是前进。"
 
-#. placeholders: {n}
-msgid "Hold {n} for the emergency brake, the hardest possible stop. "
-msgstr "按住{n}是紧急制动，最猛烈的停车方式。 "
+msgid "A quick tap just brakes."
+msgstr "轻按一下只是刹车。"
 
-#. placeholders: {n}
-msgid "{n} starts automatic speed control: adaptive cruise on open roads, "
-msgstr "{n}启动自动速度控制：开阔道路上是自适应巡航， "
+#. placeholders: {down}
+msgid ""
+"In automatic with simple direction changes, stop, release {down}, then "
+"press and hold it again to reverse."
+msgstr "在自动档、简单换向模式下，停车，松开{down}，然后再按住它就是倒车。"
 
-msgid "the speed keeper in low-speed zones. Weather widens the gap. "
-msgstr "低速区域里是限速保持。天气不好时跟车间隔会加大。 "
+#. placeholders: {up}
+msgid ""
+"While reversing, stop with {up}, release, then hold it again for forward."
+msgstr "倒车时，用{up}停车，松开，然后再按住就是前进。"
 
-msgid "Cruise eases early for a sharp posted-limit drop, the keeper for "
-msgstr "遇到标示限速大幅下降时，巡航会提前减速；限速保持则会为 "
+msgid "A brake held through a stop just holds the truck."
+msgstr "停车时一直踩着刹车，只会让卡车保持不动。"
 
-msgid "the next turn or the next lower limit. "
-msgstr "下一个转弯或下一个更低的限速提前减速。 "
+#. placeholders: {emergency_brake}
+msgid ""
+"Hold {emergency_brake} for the emergency brake, the hardest possible stop."
+msgstr "按住 {emergency_brake} 紧急制动，这是最猛的停车方式。"
 
-msgid "Braking cancels the session. At the planned pickup it pauses and "
-msgstr "踩刹车会取消它。到了计划的提货点它会暂停， "
+#. placeholders: {cruise}
+msgid ""
+"{cruise} starts automatic speed control: adaptive cruise on open roads, the "
+"speed keeper in low-speed zones."
+msgstr "{cruise} 开启自动速度控制：开阔道路上是自适应巡航，低速区是限速保持。"
 
-msgid "resumes once you depart. "
-msgstr "出发后恢复。 "
-
-msgid "Plus and minus, including the keypad keys, change the open-road "
-msgstr "加号和减号，包括小键盘上的，会把开阔道路 "
+msgid "Weather widens the gap."
+msgstr "天气会拉大车距。"
 
 msgid ""
-"target by five; it never holds more than five over the posted limit. "
-"Control "
-msgstr "目标速度每次调五；它永远不会比标示限速高出五以上。按住Control "
+"Cruise eases early for a sharp posted-limit drop, the keeper for the next "
+"turn or the next lower limit."
+msgstr "标示限速大幅下降前巡航会提早减速，限速保持则在下一个弯道或下一个更低限速前减速。"
 
-msgid "with plus or minus, by one. "
-msgstr "再按加号或减号，每次调一。 "
+msgid "Braking cancels the session."
+msgstr "刹车会取消这次保持。"
 
-#. placeholders: {n}
-msgid "{n} resumes the last cruise speed. "
-msgstr "{n}恢复上次的巡航速度。 "
-
-#. placeholders: {n}
-msgid "Parked with the brake set, {n} latches a high idle; plus and minus "
-msgstr "停车并拉上驻车制动时，{n}锁定高怠速；加号和减号 "
-
-msgid "adjust it, and releasing the parking brake drops it. "
-msgstr "调节它，松开驻车制动就会取消。 "
-
-#. placeholders: {exit}
-msgid "{exit} signals for the next announced route exit, by number when "
-msgstr "{exit}为下一个播报过的路线出口打转向灯，知道编号时 "
-
-msgid "known, or cancels that signal. Unless lane keeping is on full, move "
-msgstr "会按编号播报，再按一次则取消转向灯。除非车道保持为完全，否则先 "
-
-msgid "to the right lane, then steer right into the exit lane where it "
-msgstr "并到右侧车道，然后在出口车道 "
+msgid "At the planned pickup it pauses and resumes once you depart."
+msgstr "到达计划的提货点时它会暂停，你出发后恢复。"
 
 msgid ""
-"opens, just before the gore. Keep road speed to there, then brake to "
-msgstr "出现的地方、就在分流角之前向右转进去。一直保持道路车速到那里，然后在匝道弯之前 "
+"Plus and minus, including the keypad keys, change the open-road target by "
+"five; it never holds more than five over the posted limit."
+msgstr "加号和减号，包括小键盘上的，以五为单位调整开阔道路的目标速度；它绝不会超过标示限速五以上。"
 
-msgid "the exit speed before the ramp curve. Ramps usually end "
-msgstr "刹车降到出口速度。匝道通常在 "
+msgid "Control with plus or minus, by one."
+msgstr "Control 加上加号或减号，以一为单位调整。"
 
-#. one sentence of a longer line
-msgid "at a traffic light or stop sign, called out on the way down."
-msgstr "红绿灯或停车标志处结束，下匝道时会播报。"
+#. placeholders: {cruise_resume}
+msgid "{cruise_resume} resumes the last cruise speed."
+msgstr "{cruise_resume} 恢复上次的巡航速度。"
+
+#. placeholders: {cruise}
+msgid ""
+"Parked with the brake set, {cruise} latches a high idle; plus and minus "
+"adjust it, and releasing the parking brake drops it."
+msgstr "停车并拉上刹车时，{cruise} 锁定高怠速；加号和减号调整它，松开驻车制动即取消。"
 
 #. placeholders: {exit}
-msgid "at a traffic light or stop sign, called out on the way down. {exit} "
-msgstr "红绿灯或停车标志处结束，下匝道时会播报。{exit} "
+msgid ""
+"{exit} signals for the next announced route exit, by number when known, or "
+"cancels that signal."
+msgstr "{exit} 为路线上下一个播报的出口打转向灯，已知时按出口编号，或取消该转向灯。"
 
-msgid "also signals a pull-over when a trooper lights you up for speeding, "
-msgstr "在警察因超速、 "
+msgid ""
+"Unless lane keeping is on full, move to the right lane, then steer right "
+"into the exit lane where it opens, just before the gore."
+msgstr "除非车道保持为完全，先并入右侧车道，然后在出口车道开口处、分流三角区之前向右转进出口车道。"
 
-msgid "a scale bypass, or unsafe equipment: signal, then brake to a stop. "
-msgstr "绕过称重站或设备不安全而对你亮灯时，也用来示意靠边停车：打转向灯，然后刹车停下。 "
+msgid ""
+"Keep road speed to there, then brake to the exit speed before the ramp "
+"curve."
+msgstr "到那里之前保持道路车速，然后在匝道弯道前刹到出口车速。"
 
-msgid "Ignoring the lights brings failure-to-stop "
-msgstr "无视警灯会先收到拒不停车 "
+msgid ""
+"Ramps usually end at a traffic light or stop sign, called out on the way "
+"down."
+msgstr "匝道通常止于红绿灯或停车标志，下匝道时会播报。"
 
-msgid "warnings, then a stop that cancels the load: a major offense. "
-msgstr "警告，然后被拦停并取消货物：这是重大违法。 "
+#. placeholders: {exit}
+msgid ""
+"{exit} also signals a pull-over when a trooper lights you up for speeding, "
+"a scale bypass, or unsafe equipment: signal, then brake to a stop."
+msgstr "当警察因超速、绕过地磅或设备不安全对你亮灯时，{exit} 也表示靠边停车：打转向灯，然后刹车停下。"
 
-#. placeholders: {n}
-msgid "{n} also speaks the date and season. "
-msgstr "{n}还会说出日期和季节。 "
+msgid ""
+"Ignoring the lights brings failure-to-stop warnings, then a stop that "
+"cancels the load: a major offense."
+msgstr "无视警灯会先收到拒不停车的警告，然后被拦停并取消货物：属于重大违规。"
 
-#. one sentence of a longer line
-msgid "Page Down tunes to the next station,"
-msgstr "Page Down调到下一个电台，"
+#. placeholders: {clock}
+msgid "{clock} also speaks the date and season."
+msgstr "{clock} 也会说出日期和季节。"
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} toggles the in-cab radio."
-msgstr "{n}开关车内收音机。"
+#. placeholders: {radio}
+msgid "{radio} toggles the in-cab radio."
+msgstr "{radio} 打开或关闭驾驶室收音机。"
 
-#. placeholders: {n}
-msgid "{n} toggles the in-cab radio. Page Down tunes to the next station, "
-msgstr "{n}开关车内收音机。Page Down调到下一个电台， "
+msgid ""
+"Page Down tunes to the next station, Page Up to the previous; semicolon and "
+"apostrophe do the same."
+msgstr "Page Down 调到下一个电台，Page Up 调到上一个；分号和撇号作用相同。"
 
-msgid "Page Up to the previous; semicolon and apostrophe do the same. "
-msgstr "Page Up调到上一个；分号键和单引号键作用相同。 "
+msgid ""
+"Control with the tuning keys jumps a category; Shift changes the radio "
+"volume in 10 percent steps, on or off."
+msgstr "Control 加上调台键会跳到另一个分类；Shift 以 10% 为单位调整收音机音量，或开关收音机。"
 
-msgid "Control with the tuning keys jumps a category; Shift changes the "
-msgstr "按住Control再按调台键会跳一个类别；按住Shift则以 "
+#. placeholders: {favorite}
+msgid "{favorite} saves or unsaves the station as a favorite."
+msgstr "{favorite} 将电台加入或移出收藏。"
 
-msgid "radio volume in 10 percent steps, on or off. "
-msgstr "百分之10为一档调节收音机音量，收音机开着关着都可以。 "
+#. placeholders: {radio_status}, {now_playing}
+msgid ""
+"{radio_status} speaks station, volume, and streamer-safe status; "
+"{now_playing} speaks the song when the station says."
+msgstr "{radio_status} 说出电台、音量和直播安全状态；{now_playing} 在电台提供时说出歌曲。"
 
-#. placeholders: {n}
-msgid "{n} saves or unsaves the station as a favorite. "
-msgstr "{n}把电台加入或移出收藏。 "
+#. placeholders: {status}
+msgid ""
+"The Driver apps tablet has a Radio app to search the dial, tune by name, "
+"and keep favorites; the {status} status menu has a radio screen of "
+"receivable stations."
+msgstr "司机应用平板上有收音机应用，可以搜索频段、按名称调台和保存收藏；{status} 状态菜单有一个可接收电台的收音机界面。"
 
-#. placeholders: {n}, {n2}
-msgid "{n} speaks station, volume, and streamer-safe status; {n2} speaks "
-msgstr "{n}说出电台、音量和直播安全状态；{n2}在电台提供歌曲信息时 "
+#. placeholders: {engine}
+msgid ""
+"{engine} starts the engine, and stops it only below 5 miles per hour."
+msgstr "{engine} 启动发动机，只有在时速低于 5 英里时才熄火。"
 
-msgid "the song when the station says. The Driver apps tablet has a "
-msgstr "说出歌曲。司机应用平板上有一个 "
+msgid "Air pressure must build before the truck can move."
+msgstr "卡车起步前必须先建立气压。"
 
-msgid "Radio app to search the dial, tune by name, and keep favorites; "
-msgstr "收音机应用，可以搜索频段、按名称调台和管理收藏； "
+#. placeholders: {parking_brake}
+msgid "{parking_brake} sets or releases the parking brake."
+msgstr "{parking_brake} 拉上或松开驻车制动。"
 
-#. placeholders: {n}
-msgid "the {n} status menu has a radio screen of receivable stations. "
-msgstr "{n}状态菜单里有一个列出可接收电台的收音机界面。 "
-
-#. placeholders: {n}
-msgid "{n} starts the engine, and stops it only below 5 miles per hour. "
-msgstr "{n}启动发动机，只有车速低于每小时5英里时才能关闭。 "
-
-msgid "Air pressure must build before the truck can move. "
-msgstr "卡车要等气压升起来才能移动。 "
-
-#. one sentence of a longer line
 msgid "It needs 100 psi of air."
 msgstr "需要100 psi的气压。"
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} sets or releases the parking brake."
-msgstr "{n}拉上或松开驻车制动。"
-
-#. placeholders: {n}
-msgid "{n} sets or releases the parking brake. It needs 100 psi of air. "
-msgstr "{n}拉上或松开驻车制动。需要100 psi的气压。 "
-
-#. placeholders: {n}
+#. placeholders: {speed}
 msgid ""
-"{n} speed, active speed-control mode, and target, and with the signal set, "
-"how far to the exit. "
-msgstr "{n}：车速、当前速度控制模式和目标速度；打了转向灯时，还有到出口的距离。 "
+"{speed} speed, active speed-control mode, and target, and with the signal "
+"set, how far to the exit."
+msgstr "{speed} 车速、当前的速度控制模式和目标速度，打了转向灯时还有到出口的距离。"
 
-#. placeholders: {n2}
-#. one sentence of a longer line
-msgid "{n2} the grade under the wheels, whether the"
-msgstr "{n2}：车轮下的坡道，"
+#. placeholders: {speed_limit}
+msgid "{speed_limit} posted speed limit."
+msgstr "{speed_limit} 标示限速。"
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} posted speed limit."
-msgstr "{n}：标示限速。"
-
-#. placeholders: {n}, {n2}
+#. placeholders: {grade}
 msgid ""
-"{n} posted speed limit. {n2} the grade under the wheels, whether the "
-msgstr "{n}：标示限速。{n2}：车轮下的坡道， "
+"{grade} the grade under the wheels, whether the truck is holding it, and "
+"the next grade ahead."
+msgstr "{grade} 车轮下的坡度、卡车是否稳住，以及前方的下一个坡。"
 
-#. one sentence of a longer line
-msgid "truck is holding it, and the next grade ahead."
-msgstr "卡车是否保持得住，以及前方的下一个坡道。"
+#. placeholders: {status}
+msgid "{status} status menu."
+msgstr "{status} 状态菜单。"
 
-#. placeholders: {n}, {n2}
+#. placeholders: {clock}
+msgid "{clock} clock, deadline, and the hours limit that comes first."
+msgstr "{clock} 时间、期限，以及最先到达的工时限制。"
+
+#. placeholders: {hos_wheel}, {hos_break}, {hos_drive}
 msgid ""
-"truck is holding it, and the next grade ahead. {n} status menu. {n2} fuel. "
-msgstr "卡车是否保持得住，以及前方的下一个坡道。{n}：状态菜单。{n2}：燃油。 "
+"{hos_wheel} time at the wheel so far, {hos_break} when your 30 minute break "
+"is due, {hos_drive} what ends this shift and where you can legally stop "
+"before it."
+msgstr ""
+"{hos_wheel} 目前为止的驾驶时间，{hos_break} 30 分钟休息何时到期，{hos_drive} "
+"什么会结束本班次以及之前在哪里可以合法停车。"
 
-#. placeholders: {n2}
-#. one sentence of a longer line
-msgid "{n2} fuel."
-msgstr "{n2}：燃油。"
+#. placeholders: {route}
+msgid "{route} progress, distance left, and where you are."
+msgstr "{route} 进度、剩余距离和你的位置。"
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} status menu."
-msgstr "{n}：状态菜单。"
+#. placeholders: {place_state}, {place_road}, {place_town}, {place_direction}
+msgid ""
+"{place_state} the state, {place_road} the road, {place_town} the town or "
+"the nearest one, {place_direction} the direction."
+msgstr ""
+"{place_state} 州，{place_road} 道路，{place_town} 城镇或最近的城镇，{place_direction} 方向。"
 
-#. placeholders: {n}
-msgid "{n} clock, deadline, and the hours limit that comes first. "
-msgstr "{n}：时钟、截止时间，以及最先到的工时限制。 "
-
-#. placeholders: {n}, {n2}
-msgid "{n} time at the wheel so far, {n2} when your 30 minute break "
-msgstr "{n}：到目前为止的已驾驶时间，{n2}：你的30分钟中途休息 "
-
-#. placeholders: {n}
-msgid "is due, {n} what ends this shift and where you can legally stop "
-msgstr "何时到期，{n}：什么会结束这个班次，以及在那之前 "
-
-msgid "before it. "
-msgstr "你能合法停车的地方。 "
-
-#. placeholders: {n}
-msgid "{n} progress, distance left, and where you are. "
-msgstr "{n}：进度、剩余距离和你所在的位置。 "
-
-#. placeholders: {n}, {n2}, {n3}
-msgid "{n} the state, {n2} the road, {n3} the town or the nearest "
-msgstr "{n}：所在州，{n2}：所在道路，{n3}：所在城镇或最近的 "
-
-#. one sentence of a longer line
 msgid "The keypad numbers work the same way."
 msgstr "小键盘数字键也一样。"
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "one, {n} the direction."
-msgstr "城镇，{n}：行驶方向。"
+#. placeholders: {lane}
+msgid "{lane} lane position and whether the lane beside you is open."
+msgstr "{lane} 车道内的位置，以及旁边的车道是否空着。"
 
-#. placeholders: {n}
-msgid "one, {n} the direction. The keypad numbers work the same way. "
-msgstr "城镇，{n}：行驶方向。小键盘数字键也一样。 "
+#. placeholders: {lane_locator}
+msgid ""
+"{lane_locator} turns the lane locator on and off: a soft tock once a beat, "
+"panned to where you sit in your lane, on lane keeping partial or off."
+msgstr "{lane_locator} 开关车道定位器：每拍一声轻柔的嗒声，声像对应你在车道中的位置，在车道保持为部分或关闭时使用。"
 
-#. placeholders: {n2}
-#. one sentence of a longer line
-msgid "{n2} lane position and whether the lane beside you is"
-msgstr "{n2}：车道位置，以及旁边车道是否"
+#. placeholders: {last_announcement}
+msgid "{last_announcement} repeats the last driving announcement."
+msgstr "{last_announcement} 重复上一条驾驶播报。"
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} weather."
-msgstr "{n}：天气。"
-
-#. placeholders: {n}, {n2}
-msgid "{n} weather. {n2} lane position and whether the lane beside you is "
-msgstr "{n}：天气。{n2}：车道位置，以及旁边车道是否 "
-
-#. one sentence of a longer line
-msgid "open."
-msgstr "畅通。"
-
-#. placeholders: {n}
-msgid "open. {n} turns the lane locator on and off: a soft tock once a "
-msgstr "畅通。{n}开关车道定位器：每拍一声轻柔的嗒声， "
-
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} turns the lane locator on and off: a soft tock once a"
-msgstr "{n}开关车道定位器：每拍一声轻柔的嗒声，"
-
-msgid "beat, panned to where you sit in your lane, on lane keeping "
-msgstr "声像位于你在车道里的位置，在车道保持为 "
-
-msgid "partial or off. "
-msgstr "部分或关闭时可用。 "
-
-#. placeholders: {n}
-msgid "{n} repeats the last driving announcement. "
-msgstr "{n}重复上一条驾驶播报。 "
-
-#. placeholders: {n}
-msgid "{n} repeats the last CB chatter, with the distance as it is now. "
-msgstr "{n}重复上一条CB电台闲聊，距离按现在的位置计算。 "
+#. placeholders: {cb}
+msgid "{cb} repeats the last CB chatter, with the distance as it is now."
+msgstr "{cb} 重复上一条 CB 对讲，并给出当前距离。"
 
 msgid ""
 "Comma repeats what was just said and keeps stepping back; Period moves "
-"forward again. "
-msgstr "逗号键重复刚才说的话，并继续往回翻；句号键再往前翻。 "
+"forward again."
+msgstr "逗号重复刚才说的话并继续往回翻；句号再往前翻。"
 
-msgid "Control with Comma or Period jumps to the oldest or newest message. "
-msgstr "按住Control再按逗号键或句号键，跳到最旧或最新的消息。 "
+msgid "Control with Comma or Period jumps to the oldest or newest message."
+msgstr "Control 加上逗号或句号跳到最早或最新的消息。"
 
 msgid ""
 "The bracket keys switch between all messages, general messages, and driving "
-"events. "
-msgstr "方括号键在全部消息、一般消息和驾驶事件之间切换。 "
+"events."
+msgstr "方括号键在全部消息、一般消息和驾驶事件之间切换。"
 
-msgid "Control C copies the message you are on. "
-msgstr "Control C复制你当前所在的消息。 "
+msgid "Control C copies the message you are on."
+msgstr "Control C 复制你所在的消息。"
 
-#. placeholders: {n}
-msgid "{n} copies the last thing the game said. "
-msgstr "{n}复制游戏最后说的一句话。 "
+#. placeholders: {copy_last}
+msgid "{copy_last} copies the last thing the game said."
+msgstr "{copy_last} 复制游戏说的最后一句话。"
 
-#. placeholders: {n}
+#. placeholders: {upcoming}
 msgid ""
-"{n} reads the road ahead that no other key answers: the exit your signal is "
-"on for, the ramp "
-msgstr "{n}读出其他键都不回答的前方道路信息：你打转向灯要去的出口、即将到来的匝道 "
+"{upcoming} reads the road ahead that no other key answers: the exit your "
+"signal is on for, the ramp control coming up, the next imposed limit, the "
+"next stop, and the next bend that demands slowing."
+msgstr ""
+"{upcoming} 读出其他按键不会告诉你的前方路况：你打转向灯要去的出口、即将到来的匝道管制、下一个强制限速、下一站，以及下一个需要减速的弯道。"
 
-msgid "control coming up, the next imposed limit, the next stop, and "
-msgstr "管制、下一个强制限制、下一个停靠点，以及 "
+#. placeholders: {safe_speed}
+msgid ""
+"Bends that demand slowing are called before they arrive, like Sharp left, "
+"half a mile, advise 35; {safe_speed} gives one safe-speed number with the "
+"bend in it."
+msgstr "需要减速的弯道会提前播报，比如：左急弯，半英里，建议 35；{safe_speed} 给出一个已考虑弯道的安全车速。"
 
-msgid "the next bend that demands slowing. "
-msgstr "下一个需要减速的弯道。 "
+#. placeholders: {status}
+msgid ""
+"The {status} status menu includes a Driver apps tablet for navigation, "
+"weather, traffic, truck stops, road chatter, and ELD."
+msgstr "{status} 状态菜单包含司机应用平板，提供导航、天气、交通、卡车休息站、道路闲聊和 ELD。"
 
-msgid "Bends that demand slowing are called before they arrive, like "
-msgstr "需要减速的弯道会在到达之前播报，比如 "
-
-#. placeholders: {n}
-msgid "Sharp left, half a mile, advise 35; {n} gives one safe-speed number "
-msgstr "“左急弯，半英里，建议35”；{n}给出一个安全车速数字， "
-
-msgid "with the bend in it. "
-msgstr "其中已经考虑了弯道。 "
-
-#. placeholders: {n}
-msgid "The {n} status menu includes a Driver apps tablet for navigation, "
-msgstr "{n}状态菜单里有一个司机应用平板，用于导航、 "
-
-msgid "weather, traffic, truck stops, road chatter, and ELD. "
-msgstr "天气、车流、卡车服务站、沿途见闻和ELD。 "
-
-msgid "Left or Right Control stops the driving event voice. "
-msgstr "Left Control或Right Control停止驾驶事件播报。 "
+msgid "Left or Right Control stops the driving event voice."
+msgstr "左或右 Control 键停止驾驶事件语音。"
 
 #. placeholders: {left}, {right}
-msgid "{left} and {right} steer unless lane keeping is on full; steer "
-msgstr "除非车道保持为完全，否则{left}和{right}用来转向；转向 "
+msgid ""
+"{left} and {right} steer unless lane keeping is on full; steer across the "
+"lane line to change lanes."
+msgstr "除非车道保持为完全，{left} 和 {right} 用于转向；越过车道线即可变道。"
 
 #. placeholders: {left}, {right}
-#. one sentence of a longer line
 msgid "On full, tap {left} or {right}."
 msgstr "车道保持为完全时，轻按{left}或{right}。"
 
-#. one sentence of a longer line
-msgid "across the lane line to change lanes."
-msgstr "越过车道线就能换道。"
-
-#. placeholders: {left}, {right}
+#. placeholders: {straighten}
 msgid ""
-"across the lane line to change lanes. On full, tap {left} or {right}. "
-msgstr "越过车道线就能换道。车道保持为完全时，轻按{left}或{right}。 "
+"Hold {straighten} to point the truck straight down the road; where it sits "
+"in the lane stays yours to fix."
+msgstr "按住 {straighten} 让卡车对准道路方向；在车道里的位置仍需你自己调整。"
 
-#. placeholders: {n}
+msgid "Exits leave from the right lane."
+msgstr "出口从右侧车道驶出。"
+
 msgid ""
-"Hold {n} to point the truck straight down the road; where it sits in the "
-"lane stays yours to fix. "
-msgstr "按住{n}让卡车车头对正道路方向；它在车道里的位置仍然要你自己调整。 "
-
-msgid "Exits leave from the right lane. Change lanes or brake means a "
-msgstr "出口从右侧车道驶出。“换道或刹车”表示 "
-
-msgid "fixed object in your lane: take the open lane it names, or brake "
-msgstr "你的车道上有固定障碍物：换到它说的畅通车道，或者刹车 "
-
-msgid "nearly to a stop and ease around. "
-msgstr "到几乎停下，再慢慢绕过去。 "
+"Change lanes or brake means a fixed object in your lane: take the open lane "
+"it names, or brake nearly to a stop and ease around."
+msgstr "变道或刹车表示你的车道上有固定障碍物：驶入提示的空闲车道，或刹到几乎停下再慢慢绕过。"
 
 #. placeholders: {rest}
-#. one sentence of a longer line
 msgid ""
 "{rest} plans the recommended break or sleep stop when hours of service "
 "planning hints are on; otherwise it plans the next sleep-capable stop while "
 "rolling."
 msgstr "开启驾驶工时规划提示时，{rest}规划推荐的中途休息或睡觉停靠点；否则在行驶中规划下一个可以睡觉的停靠点。"
 
-#. placeholders: {rest}, {exit}
-msgid ""
-"{rest} plans the recommended break or sleep stop when hours of service "
-"planning hints are on; otherwise it plans the next sleep-capable stop while "
-"rolling. {exit} "
-msgstr "开启驾驶工时规划提示时，{rest}规划推荐的中途休息或睡觉停靠点；否则在行驶中规划下一个可以睡觉的停靠点。{exit} "
-
-#. placeholders: {rest}
-#. one sentence of a longer line
-msgid "Stopped at a route stop, {rest} opens its menu:"
-msgstr "停在路线停靠点时，{rest}打开它的菜单："
-
-#. one sentence of a longer line
-msgid "signals for its exit."
-msgstr "为它的出口打转向灯。"
+#. placeholders: {exit}
+msgid "{exit} signals for its exit."
+msgstr "{exit} 为它的出口打转向灯。"
 
 #. placeholders: {rest}
 msgid ""
-"signals for its exit. Stopped at a route stop, {rest} opens its menu: "
-msgstr "为它的出口打转向灯。停在路线停靠点时，{rest}打开它的菜单： "
-
-msgid "fuel, break, sleep, inspect, roadside assistance, or save where "
-msgstr "加油、中途休息、睡觉、检查、路边援助，或者在 "
+"Stopped at a route stop, {rest} opens its menu: fuel, break, sleep, "
+"inspect, roadside assistance, or save where available."
+msgstr "停在路线站点时，{rest} 打开该站的菜单：加油、休息、睡觉、检查、道路救援，或在可用处存档。"
 
 #. placeholders: {rest}
-#. one sentence of a longer line
-msgid "Fully stopped away from route points, {rest} opens the"
-msgstr "在远离路线地点的地方完全停下时，{rest}则会打开"
-
-#. one sentence of a longer line
-msgid "available."
-msgstr "可用时存档。"
-
-#. placeholders: {rest}
-msgid "available. Fully stopped away from route points, {rest} opens the "
-msgstr "可用时存档。在远离路线地点的地方完全停下时，{rest}则会打开 "
-
-#. one sentence of a longer line
-msgid "emergency shoulder-sleep warning instead."
-msgstr "紧急路肩睡觉警告。"
-
-#. placeholders: {n}
-msgid "emergency shoulder-sleep warning instead. {n} horn. "
-msgstr "紧急路肩睡觉警告。{n}：喇叭。 "
-
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} horn."
-msgstr "{n}：喇叭。"
-
-#. placeholders: {n}, {n2}
 msgid ""
-"{n} engine brake; on an automatic it manages its own stage, and {n2}, "
-msgstr "{n}：发动机制动；自动档时它自己管理档位，而{n2}、 "
+"Fully stopped away from route points, {rest} opens the emergency "
+"shoulder-sleep warning instead."
+msgstr "在远离路线点的地方完全停下时，{rest} 改为打开路肩紧急睡眠警告。"
 
-#. placeholders: {n3}, {n4}
-#. one sentence of a longer line
-msgid "{n3} chooses whether {n4} runs the"
-msgstr "{n3}选择{n4}是否运行"
-
-#. placeholders: {n}, {n2}
-#. one sentence of a longer line
-msgid "{n}, {n2} take manual control."
-msgstr "{n}、{n2}用来手动控制。"
-
-#. placeholders: {n}, {n2}, {n3}, {n4}
-msgid "{n}, {n2} take manual control. {n3} chooses whether {n4} runs the "
-msgstr "{n}、{n2}用来手动控制。{n3}选择{n4}是否运行 "
-
-#. one sentence of a longer line
-msgid "automatic mode."
-msgstr "自动模式。"
-
-#. placeholders: {n}
-msgid "automatic mode. {n} switches between automatic and manual "
-msgstr "自动模式。{n}在自动和手动 "
-
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} switches between automatic and manual"
-msgstr "{n}在自动和手动"
-
+#. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
 msgid ""
-"shifting. Escape pause menu. F2 lists every driving command by name. "
-msgstr "换档之间切换。Escape：暂停菜单。F2按名称列出所有驾驶命令。 "
+"{engine_brake} engine brake; on an automatic it manages its own stage, and "
+"{jake1}, {jake2}, {jake3} take manual control."
+msgstr "{engine_brake} 发动机制动；自动模式下它自行管理档位，{jake1}、{jake2}、{jake3} 切换为手动控制。"
 
-#. placeholders: {n}, {n2}, {n3}, {n4}
+#. placeholders: {auto_jake}, {engine_brake}
+msgid "{auto_jake} chooses whether {engine_brake} runs the automatic mode."
+msgstr "{auto_jake} 选择 {engine_brake} 是否使用自动模式。"
+
+#. placeholders: {transmission_mode}
+msgid "{transmission_mode} switches between automatic and manual shifting."
+msgstr "{transmission_mode} 在自动和手动换挡之间切换。"
+
+msgid "Escape pause menu."
+msgstr "Escape 暂停菜单。"
+
+msgid "F2 lists every driving command by name."
+msgstr "F2 按名称列出所有驾驶命令。"
+
+#. placeholders: {shift_up}, {shift_down}, {reverse}, {neutral}
 msgid ""
-"Hold Left Shift for clutch, then {n} to shift up or {n2} to shift down, "
-"{n3} for reverse, {n4} for neutral. "
-msgstr "按住Left Shift踩离合，然后按{n}升档，按{n2}降档，{n3}是倒档，{n4}是空档。 "
+"Hold Left Shift for clutch, then {shift_up} to shift up or {shift_down} to "
+"shift down, {reverse} for reverse, {neutral} for neutral."
+msgstr ""
+"按住左 Shift 作为离合器，然后按 {shift_up} 升挡或 {shift_down} 降挡，{reverse} 倒挡，{neutral} "
+"空挡。"
 
 msgid ""
 "Any of these keys can be moved under Settings, Gameplay, Controls, Keyboard "
 "shortcuts."
 msgstr "这些键都可以在设置、游戏玩法、操作、快捷键里更改。"
 
-#. placeholders: {n}, {n2}
 msgid ""
-"Hold the left bumper for the clutch; {n} shifts up a gear, {n2} shifts "
-"down. "
-msgstr "按住left bumper踩离合；{n}升一档，{n2}降一档。 "
+"Right trigger is the gas, left trigger the brake; the left trigger fully in "
+"is the hardest stop."
+msgstr "右扳机是油门，左扳机是刹车；左扳机按到底是最猛的停车。"
+
+msgid "The left stick steers unless lane keeping is on full."
+msgstr "除非车道保持为完全，左摇杆用于转向。"
+
+#. placeholders: {shift_up}, {shift_down}
+msgid ""
+"Hold the left bumper for the clutch; {shift_up} shifts up a gear, "
+"{shift_down} shifts down."
+msgstr "按住左肩键作为离合器；{shift_up} 升一挡，{shift_down} 降一挡。"
 
 msgid ""
 "In automatic with deliberate direction changes, stop, let the left trigger "
-"return to neutral, then press and hold it again to reverse. While "
-"reversing, stop with the right trigger, let it return to neutral, then "
-"press and hold again for forward. A quick tap just brakes. "
-msgstr ""
-"在自动档、刻意换向模式下，停车，让left trigger回到空位，然后再按住它就是倒车。倒车时，用right "
-"trigger停车，让它回到空位，再按住就是前进。轻按一下只是刹车。 "
+"return to neutral, then press and hold it again to reverse."
+msgstr "自动挡且换向需刻意操作时，先停车，让左扳机回到空位，然后再次按住它即可倒车。"
+
+msgid ""
+"While reversing, stop with the right trigger, let it return to neutral, "
+"then press and hold again for forward."
+msgstr "倒车时，用右扳机停下，让它回到空位，然后再次按住即可前进。"
 
 msgid ""
 "In automatic with simple direction changes, stop, let the left trigger "
-"return to neutral, then press and hold it again to reverse. While "
-"reversing, stop with the right trigger, release, then press it again for "
-"forward. A brake held through a stop just holds the truck. "
+"return to neutral, then press and hold it again to reverse."
+msgstr "自动挡且换向为简单模式时，先停车，让左扳机回到空位，然后再次按住它即可倒车。"
+
+msgid ""
+"While reversing, stop with the right trigger, release, then press it again "
+"for forward."
+msgstr "倒车时，用右扳机停下，松开，然后再按一次即可前进。"
+
+#. placeholders: {cruise_cap}
+msgid ""
+"{cruise_cap} starts automatic speed control: adaptive cruise on open roads, "
+"the speed keeper in low-speed zones."
+msgstr "{cruise_cap} 开启自动速度控制：开阔道路上是自适应巡航，低速区是限速保持。"
+
+#. placeholders: {cruise_down}, {cruise_up}
+msgid "{cruise_down} or {cruise_up} change the open-road target by five."
+msgstr "{cruise_down} 或 {cruise_up} 以五为单位调整开阔道路的目标速度。"
+
+msgid ""
+"It pauses through the planned pickup and resumes once the loaded truck is "
+"rolling."
+msgstr "计划提货期间它会暂停，满载的卡车开动后恢复。"
+
+#. placeholders: {cruise}
+msgid "Parked with the brake set, {cruise} latches a high idle."
+msgstr "停车并拉上刹车时，{cruise} 锁定高怠速。"
+
+#. placeholders: {take_exit}
+msgid ""
+"{take_exit} signals for the next announced exit, or a pull-over when a "
+"trooper lights you up."
+msgstr "{take_exit} 为下一个播报的出口打转向灯，或在警察对你亮灯时靠边停车。"
+
+#. placeholders: {route}, {weather}, {clock}
+msgid ""
+"{route} reads your route and current location, {weather} the weather, "
+"{clock} the clock with your full hours of service."
+msgstr "{route} 读出你的路线和当前位置，{weather} 读出天气，{clock} 读出时间和完整工时。"
+
+#. placeholders: {speed}
+msgid "{speed} speaks your speed."
+msgstr "{speed} 说出你的车速。"
+
+#. placeholders: {horn}, {engine_brake}
+msgid "{horn} sounds the horn, {engine_brake} the engine brake."
+msgstr "{horn} 鸣喇叭，{engine_brake} 发动机制动。"
+
+#. placeholders: {engine}, {fuel}, {speed_limit}, {parking_brake}, {rest}
+msgid ""
+"{engine} starts or stops the engine, {fuel} reads fuel, {speed_limit} reads "
+"the posted speed limit here and how far over you are, {parking_brake} sets "
+"or releases the parking brake, {rest} plans a recommended break or sleep "
+"stop when hours of service planning hints are on, or the next sleep stop "
+"otherwise; stopped at a stop, it opens its actions."
 msgstr ""
-"在自动档、简单换向模式下，停车，让left trigger回到空位，然后再按住它就是倒车。倒车时，用right "
-"trigger停车，松开，再按下就是前进。停车时一直踩着刹车，只会让卡车保持不动。 "
+"{engine} 启动或关闭发动机，{fuel} 读出油量，{speed_limit} "
+"读出这里的标示限速以及你超出多少，{parking_brake} 拉上或松开驻车制动，{rest} "
+"在工时规划提示开启时规划推荐的休息或睡眠停靠，否则规划下一个睡眠停靠；停在站点时，打开该站的操作。"
 
-msgid "Right trigger is the gas, left trigger the brake; the left trigger "
-msgstr "right trigger是油门，left trigger是刹车；left trigger "
-
-msgid "fully in is the hardest stop. The left stick steers unless lane "
-msgstr "按到底是最猛烈的停车。除非车道保持为 "
-
-msgid "keeping is on full. "
-msgstr "完全，否则用left stick转向。 "
-
-#. placeholders: {capitalized}
-msgid "{capitalized} starts automatic speed control: adaptive cruise on "
-msgstr "{capitalized}启动自动速度控制： "
-
-#. one sentence of a longer line
-msgid "open roads, the speed keeper in low-speed zones."
-msgstr "开阔道路上是自适应巡航，低速区域里是限速保持。"
-
-#. placeholders: {capitalized}, {n}
 msgid ""
-"open roads, the speed keeper in low-speed zones. {capitalized} or {n} "
-"change the open-road "
-msgstr "开阔道路上是自适应巡航，低速区域里是限速保持。{capitalized}或{n}把开阔道路 "
+"Away from route points while fully stopped, it opens emergency shoulder "
+"sleep."
+msgstr "在远离路线点的地方完全停下时，它会打开路肩紧急睡眠。"
 
-#. placeholders: {capitalized}, {n}
-#. one sentence of a longer line
-msgid "{capitalized} or {n} change the open-road"
-msgstr "{capitalized}或{n}把开阔道路"
+#. placeholders: {status}
+msgid "{status} opens the status menu."
+msgstr "{status} 打开状态菜单。"
 
-msgid "target by five. It pauses through the planned pickup and resumes "
-msgstr "目标速度每次调五。它在计划的提货期间暂停， "
-
-msgid "once the loaded truck is rolling. Parked with the brake set, "
-msgstr "装好货的卡车开起来后恢复。停车并拉上驻车制动时， "
-
-#. placeholders: {n}
-msgid "{n} latches a high idle. "
-msgstr "{n}锁定高怠速。 "
-
-#. placeholders: {capitalized}
-msgid "{capitalized} signals for the next announced exit, or a pull-over "
-msgstr "{capitalized}为下一个播报过的出口打转向灯，或者在警察对你亮灯时 "
-
-msgid "when a trooper lights you up. "
-msgstr "示意靠边停车。 "
-
-#. placeholders: {capitalized}, {n}
-msgid "{capitalized} reads your route and current location, {n} the "
-msgstr "{capitalized}读出你的路线和当前位置，{n}读出 "
-
-#. placeholders: {n}
-msgid "weather, {n} the clock with your full hours of service. "
-msgstr "天气，{n}读出时钟和你完整的驾驶工时。 "
-
-#. placeholders: {capitalized}
-msgid "{capitalized} speaks your speed. "
-msgstr "{capitalized}说出你的车速。 "
-
-#. placeholders: {capitalized}, {n}
-msgid "{capitalized} sounds the horn, {n} the engine brake. "
-msgstr "{capitalized}按喇叭，{n}是发动机制动。 "
-
-#. placeholders: {capitalized}, {n}, {n2}
+#. placeholders: {tune_prev}, {tune_next}
 msgid ""
-"{capitalized} starts or stops the engine, {n} reads fuel, {n2} reads the "
-"posted "
-msgstr "{capitalized}启动或关闭发动机，{n}读出燃油，{n2}读出这里的标示 "
+"{tune_prev} tunes to the previous station and {tune_next} to the next."
+msgstr "{tune_prev} 调到上一个电台，{tune_next} 调到下一个。"
 
-#. placeholders: {n}
+#. placeholders: {volume_down}, {volume_up}
+msgid "{volume_down} and {volume_up} lower and raise the radio volume."
+msgstr "{volume_down} 和 {volume_up} 降低和提高收音机音量。"
+
+#. placeholders: {category_prev}, {category_next}
+msgid "{category_prev} or {category_next} changes the radio category."
+msgstr "{category_prev} 或 {category_next} 切换收音机分类。"
+
+#. placeholders: {radio}, {favorite}, {radio_status}, {now_playing}
 msgid ""
-"speed limit here and how far over you are, {n} sets or releases the parking "
-msgstr "限速以及你超速多少，{n}拉上或松开驻车 "
-
-#. placeholders: {n}
-msgid ""
-"brake, {n} plans a recommended break or sleep stop when hours of service "
-"planning hints are on, or the next sleep stop otherwise; stopped at a stop, "
-"it opens its actions. "
-msgstr "制动，开启驾驶工时规划提示时{n}规划推荐的中途休息或睡觉停靠点，否则规划下一个睡觉停靠点；停在停靠点时，它会打开那里的操作。 "
-
-msgid "Away from route points while fully stopped, it opens "
-msgstr "在远离路线地点的地方完全停下时，它会打开 "
-
-#. one sentence of a longer line
-msgid "emergency shoulder sleep."
-msgstr "紧急路肩睡觉。"
-
-#. placeholders: {capitalized}
-msgid "emergency shoulder sleep. {capitalized} opens the status menu. "
-msgstr "紧急路肩睡觉。{capitalized}打开状态菜单。 "
-
-#. placeholders: {capitalized}
-#. one sentence of a longer line
-msgid "{capitalized} opens the status menu."
-msgstr "{capitalized}打开状态菜单。"
-
-#. placeholders: {capitalized2}, {n2}
-#. one sentence of a longer line
-msgid "{capitalized2} and {n2} lower and raise the radio volume."
-msgstr "{capitalized2}和{n2}调低和调高收音机音量。"
-
-#. placeholders: {capitalized3}, {n3}
-#. one sentence of a longer line
-msgid "{capitalized3} or {n3} changes the radio category."
-msgstr "{capitalized3}或{n3}切换电台类别。"
-
-#. placeholders: {capitalized4}, {n4}, {n5}, {n6}
-#. one sentence of a longer line
-msgid ""
-"{capitalized4} turns the radio on or off, {n4} saves a favorite, {n5} reads "
-"radio status, and {n6} says what is playing."
-msgstr "{capitalized4}开关收音机，{n4}保存收藏，{n5}读出收音机状态，{n6}说出正在播放什么。"
-
-#. placeholders: {capitalized}, {n}
-#. one sentence of a longer line
-msgid "{capitalized} tunes to the previous station and {n} to the next."
-msgstr "{capitalized}调到上一个电台，{n}调到下一个。"
-
-#. placeholders: {capitalized}, {n}, {capitalized2}, {n2}, {capitalized3}, {n3}, {capitalized4}, {n4}, {n5}, {n6}
-msgid ""
-"{capitalized} tunes to the previous station and {n} to the next. "
-"{capitalized2} and {n2} lower and raise the radio volume. {capitalized3} or "
-"{n3} changes the radio category. {capitalized4} turns the radio on or off, "
-"{n4} saves a favorite, {n5} reads radio status, and {n6} says what is "
-"playing. "
+"{radio} turns the radio on or off, {favorite} saves a favorite, "
+"{radio_status} reads radio status, and {now_playing} says what is playing."
 msgstr ""
-"{capitalized}调到上一个电台，{n}调到下一个。{capitalized2}和{n2}调低和调高收音机音量。{capitalized3}或{"
-"n3}切换电台类别。{capitalized4}开关收音机，{n4}保存收藏，{n5}读出收音机状态，{n6}说出正在播放什么。 "
+"{radio} 开关收音机，{favorite} 保存收藏，{radio_status} 读出收音机状态，{now_playing} "
+"说出正在播放的内容。"
 
-msgid "Start pauses and unpauses. The Back button stops the driving voice "
-msgstr "Start暂停和继续。Back键在驾驶播报说话时 "
+msgid "Start pauses and unpauses."
+msgstr "Start 暂停和继续。"
 
 msgid ""
-"while it is speaking; when nothing is being said, it repeats this help. "
-msgstr "停止它；没有在说话时，它会重复这段帮助。 "
+"The Back button stops the driving voice while it is speaking; when nothing "
+"is being said, it repeats this help."
+msgstr "Back 键在驾驶语音说话时将其停止；没有在说话时，它会重复这段帮助。"
 
 msgid ""
 "Any of these buttons can be moved under Settings, Gameplay, Controls, "
@@ -21383,12 +21261,25 @@ msgstr "自适应巡航设定为{speed_text}"
 msgid ", open-road target {speed_text}"
 msgstr "，开阔道路目标速度{speed_text}"
 
+#. placeholders: {speed_text}
+#. one clause of a longer line
+msgid "open-road target {speed_text}"
+msgstr "开阔道路目标速度 {speed_text}"
+
 msgid ", open-road target will use the posted limit"
 msgstr "，开阔道路目标速度将采用标示限速"
+
+#. one clause of a longer line
+msgid "open-road target will use the posted limit"
+msgstr "开阔道路目标速度将使用标示限速"
 
 #. placeholders: {cruise_holding_text}
 msgid ", automatic speed control, {cruise_holding_text}"
 msgstr "，自动速度控制，{cruise_holding_text}"
+
+#. one clause of a longer line
+msgid "automatic speed control"
+msgstr "自动速度控制"
 
 #. placeholders: {keeper_holding_text}, {keeper_target}
 msgid ", automatic speed control, {keeper_holding_text}{keeper_target}"
@@ -21397,6 +21288,10 @@ msgstr "，自动速度控制，{keeper_holding_text}{keeper_target}"
 #. placeholders: {keeper_target}
 msgid ", automatic speed control paused{keeper_target}"
 msgstr "，自动速度控制已暂停{keeper_target}"
+
+#. one clause of a longer line
+msgid "automatic speed control paused"
+msgstr "自动速度控制已暂停"
 
 #. placeholders: {signal_verb}, {armed_exit_name}, {distance_text}
 msgid " Signal {signal_verb} for {armed_exit_name}, {distance_text}."
@@ -21420,6 +21315,11 @@ msgstr "{name}的目的地出口"
 #. placeholders: {reason}
 msgid ", in a {reason} zone"
 msgstr "，在{reason}区域"
+
+#. placeholders: {reason}
+#. one clause of a longer line
+msgid "in a {reason} zone"
+msgstr "在{reason}区域"
 
 #. placeholders: {speed_text}
 msgid " About {speed_text} over."
@@ -21447,6 +21347,10 @@ msgstr " ，因为弯道"
 
 msgid ", the exit speed"
 msgstr "，即出口速度"
+
+#. one clause of a longer line
+msgid "the exit speed"
+msgstr "出口车速"
 
 #. placeholders: {spoken}, {context}
 msgid "Safe speed {spoken}{context}."
@@ -21614,14 +21518,30 @@ msgstr "即将到来：{join}。"
 msgid ", where the ramp ends at a traffic light"
 msgstr "，匝道尽头是红绿灯"
 
+#. one clause of a longer line
+msgid "where the ramp ends at a traffic light"
+msgstr "匝道止于红绿灯处"
+
 msgid ", where the ramp ends at a stop sign"
 msgstr "，匝道尽头是停车标志"
+
+#. one clause of a longer line
+msgid "where the ramp ends at a stop sign"
+msgstr "匝道止于停车标志处"
 
 msgid ", where the ramp ends at a yield"
 msgstr "，匝道尽头要让行"
 
+#. one clause of a longer line
+msgid "where the ramp ends at a yield"
+msgstr "匝道止于让行标志处"
+
 msgid ", where the ramp ends at a roundabout"
 msgstr "，匝道尽头是环岛"
+
+#. one clause of a longer line
+msgid "where the ramp ends at a roundabout"
+msgstr "匝道止于环岛处"
 
 #. placeholders: {fraction}, {gallons}
 #. one sentence of a longer line
@@ -24791,6 +24711,11 @@ msgstr "到了停止线。停车标志。"
 msgid ", speed limit {limit_text}"
 msgstr "，限速{limit_text}"
 
+#. placeholders: {limit_text}
+#. one clause of a longer line
+msgid "speed limit {limit_text}"
+msgstr "限速 {limit_text}"
+
 #. placeholders: {short_distance_text}, {limit_clause}
 msgid ""
 "Stop sign, about {short_distance_text} to the stop bar{limit_clause}."
@@ -25157,6 +25082,14 @@ msgstr "，承运商。"
 
 msgid ", your settlement."
 msgstr "，你的结算。"
+
+#. one clause of a longer line
+msgid "carrier."
+msgstr "承运商。"
+
+#. one clause of a longer line
+msgid "your settlement."
+msgstr "你的结算。"
 
 msgid "Automatic speed control paused."
 msgstr "自动速度控制已暂停。"
@@ -26915,6 +26848,11 @@ msgstr " 建议{speed_text}。"
 msgid ", advise {speed_text}"
 msgstr "，建议{speed_text}"
 
+#. placeholders: {speed_text}
+#. one clause of a longer line
+msgid "advise {speed_text}"
+msgstr "建议 {speed_text}"
+
 #. placeholders: {tail}
 msgid " Then {tail}."
 msgstr " 然后{tail}。"
@@ -26922,6 +26860,11 @@ msgstr " 然后{tail}。"
 #. placeholders: {direction_word}
 msgid ", then {direction_word}"
 msgstr "，然后{direction_word}"
+
+#. placeholders: {direction_word}
+#. one clause of a longer line
+msgid "then {direction_word}"
+msgstr "然后{direction_word}"
 
 msgid "Paused"
 msgstr "已暂停"
@@ -27425,9 +27368,6 @@ msgstr "范围内的电台"
 msgid "Stations matching {query}"
 msgstr "匹配{query}的电台"
 
-msgid "browse"
-msgstr "浏览"
-
 msgid "search"
 msgstr "search"
 
@@ -27481,20 +27421,28 @@ msgstr "这个列表上没有可调的电台。"
 msgid "Go back."
 msgstr "返回。"
 
-#. placeholders: {page_text}
+#. placeholders: {count}
 #. one sentence of a longer line
-msgid "{page_text} PageDown for the next page."
-msgstr "{page_text} 按 PageDown 翻到下一页。"
+msgid "{count} stations."
+msgstr "{count} 个电台。"
 
-#. placeholders: {title}, {hit_count}, {else}, {page_text}
-msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
-msgstr "{title}。{hit_count} 个{else}。{page_text} 按 PageDown 翻到下一页。"
+#. placeholders: {page}
+#. one sentence of a longer line
+msgid "{page} PageDown for the next page."
+msgstr "{page} 按 PageDown 翻到下一页。"
 
-msgid "stations"
-msgstr "电台"
+#. placeholders: {title}, {count}, {page}
+msgid "{title}. {count} stations. {page} PageDown for the next page."
+msgstr "{title}。{count} 个电台。{page} 按 PageDown 翻到下一页。"
 
-msgid "matches"
-msgstr "结果"
+#. placeholders: {count}
+#. one sentence of a longer line
+msgid "{count} matches."
+msgstr "{count} 个结果。"
+
+#. placeholders: {title}, {count}, {page}
+msgid "{title}. {count} matches. {page} PageDown for the next page."
+msgstr "{title}。{count} 个结果。{page} 按 PageDown 翻到下一页。"
 
 #. one sentence of a longer line
 msgid "Nothing here yet."
@@ -31451,6 +31399,13 @@ msgstr "两个文件都留在这台电脑上；游戏绝不会把它们发送到
 msgid "English"
 msgstr "English"
 
+#. placeholders: {name}
+#. The Language row's value when it follows the system: {name} is the
+#. language's own name ("Español"). The row reads "Language: automatic,
+#. Español."
+msgid "automatic, {name}"
+msgstr "自动，{name}"
+
 msgid "Realistic"
 msgstr "写实"
 
@@ -31728,10 +31683,6 @@ msgstr "无论哪种情况，按{control_upcoming}都能列出接下来的几个
 
 msgid "Speed keeper"
 msgstr "限速保持"
-
-#. one sentence of a longer line
-msgid "Braking cancels the session."
-msgstr "刹车会取消这次保持。"
 
 #. placeholders: {control_cruise}
 #. one sentence of a longer line
@@ -34536,6 +34487,14 @@ msgid ""
 msgstr "手柄和键盘可以一起用。按键名称采用Xbox布局。在设置、游戏玩法、操作里可以更改可调整的按键分配。"
 
 msgid ""
+"On newer Xbox controllers, Back is the View button, left of the Xbox "
+"button, and Start is the Menu button on its right. On Windows, the Xbox "
+"button opens the Game Bar; press it again to return."
+msgstr ""
+"在较新的 Xbox 手柄上，Back 是 Xbox 键左边的视图键，Start 是它右边的菜单键。在 Windows 上，Xbox 键会打开 Game "
+"Bar；再按一次即可返回。"
+
+msgid ""
 "In menus, D-pad moves, A confirms, B returns, and Back reads help. During "
 "driving speech, Back stops the voice; otherwise it reads help. Start pauses."
 msgstr "在菜单中，D-pad移动，A确认，B返回，Back读出帮助。驾驶播报说话时，Back停止语音；其他时候它读出帮助。Start暂停。"
@@ -34650,6 +34609,12 @@ msgstr "{pad_cruise_down}和{pad_cruise_up}更改巡航目标速度。{pad_statu
 #. one sentence of a longer line
 msgid "{pad_status} opens driving status."
 msgstr "{pad_status}打开驾驶状态。"
+
+msgid ""
+"If the controller does nothing, check that Controller is enabled under "
+"Settings, Gameplay, Controls. The game uses the first controller it finds, "
+"so unplug other controllers and close Steam."
+msgstr "如果手柄没有反应，请检查 设置、游戏玩法、操作 中是否启用了 手柄。游戏会使用找到的第一个手柄，所以请拔掉其他手柄并关闭 Steam。"
 
 msgid "pad"
 msgstr "pad"
@@ -36174,6 +36139,11 @@ msgstr "下载停止了。已经{STALL_TIMEOUT_S}秒没有收到任何数据。"
 msgid ", {mb} megabytes"
 msgstr "，{mb}兆字节"
 
+#. placeholders: {mb}
+#. one clause of a longer line
+msgid "{mb} megabytes"
+msgstr "{mb} MB"
+
 #. placeholders: {title}, {size}
 #. one sentence of a longer line
 msgid "Downloading {title}{size}."
@@ -36531,6 +36501,557 @@ msgstr "然后右转急弯掉头。"
 
 msgid "Then hairpin left."
 msgstr "然后左转急弯掉头。"
+
+#~ msgid "ELD status {status}."
+#~ msgstr "ELD状态{status}。"
+
+#~ msgid ""
+#~ "ELD status {status}. Hours of service: {duration_text} of driving left, "
+#~ "{duration_text2} of duty window left.{suffix}"
+#~ msgstr ""
+#~ "ELD状态{status}。驾驶工时：剩余驾驶时间{duration_text}，当班时段剩余{duration_text2}。{suffix}"
+
+#~ msgid ""
+#~ "Hours of service: {duration_text} of driving left, {duration_text2} of duty "
+#~ "window left.{suffix}"
+#~ msgstr "驾驶工时：剩余驾驶时间{duration_text}，当班时段剩余{duration_text2}。{suffix}"
+
+#~ msgid ""
+#~ "ELD status {status}. Hours of service: {duration_text} of driving left, "
+#~ "break due in {duration_text2}, duty window closes in "
+#~ "{duration_text3}.{suffix}"
+#~ msgstr ""
+#~ "ELD状态{status}。驾驶工时：剩余驾驶时间{duration_text}，{duration_text2}后需要中途休息，当班时段{durati"
+#~ "on_text3}后结束。{suffix}"
+
+#~ msgid ""
+#~ "Hours of service: {duration_text} of driving left, break due in "
+#~ "{duration_text2}, duty window closes in {duration_text3}.{suffix}"
+#~ msgstr ""
+#~ "驾驶工时：剩余驾驶时间{duration_text}，{duration_text2}后需要中途休息，当班时段{duration_text3}后结束。{"
+#~ "suffix}"
+
+#~ msgid "{label} {index} of {items}."
+#~ msgstr "{label}，第{index}项，共{items}项。"
+
+#~ msgid ""
+#~ "In automatic with deliberate direction changes, stop, release {down}, then "
+#~ "press and hold it again to reverse. While reversing, stop with {up}, "
+#~ "release, then press and hold again for forward. A quick tap just brakes. "
+#~ msgstr ""
+#~ "在自动档、刻意换向模式下，停车，松开{down}，然后再按住它就是倒车。倒车时，用{up}停车，松开，再按住就是前进。轻按一下只是刹车。 "
+
+#~ msgid ""
+#~ "In automatic with simple direction changes, stop, release {down}, then "
+#~ "press and hold it again to reverse. While reversing, stop with {up}, "
+#~ "release, then hold it again for forward. A brake held through a stop just "
+#~ "holds the truck. "
+#~ msgstr ""
+#~ "在自动档、简单换向模式下，停车，松开{down}，然后再按住它就是倒车。倒车时，用{up}停车，松开，然后再按住就是前进。停车时一直踩着刹车，只会让卡车"
+#~ "保持不动。 "
+
+#~ msgid ""
+#~ "Tap the brake, then press again and hold half a second to latch it "
+#~ "hands-free; a click and a spoken confirmation mark the catch. {down} once "
+#~ "releases it; the accelerator releases it instantly. The throttle key never "
+#~ "latches. "
+#~ msgstr ""
+#~ "轻按一下刹车，然后再按住半秒，就能把它锁定，不用一直按着；一声咔哒和一句语音确认表示已经锁住。按一下{down}就会松开；踩油门会立刻松开。油门键永远不"
+#~ "会锁定。 "
+
+#~ msgid "Hold {up} to accelerate, {down} to brake. "
+#~ msgstr "按住{up}加速，按住{down}刹车。 "
+
+#~ msgid "Hold {n} for the emergency brake, the hardest possible stop. "
+#~ msgstr "按住{n}是紧急制动，最猛烈的停车方式。 "
+
+#~ msgid "{n} starts automatic speed control: adaptive cruise on open roads, "
+#~ msgstr "{n}启动自动速度控制：开阔道路上是自适应巡航， "
+
+#~ msgid "the speed keeper in low-speed zones. Weather widens the gap. "
+#~ msgstr "低速区域里是限速保持。天气不好时跟车间隔会加大。 "
+
+#~ msgid "Cruise eases early for a sharp posted-limit drop, the keeper for "
+#~ msgstr "遇到标示限速大幅下降时，巡航会提前减速；限速保持则会为 "
+
+#~ msgid "the next turn or the next lower limit. "
+#~ msgstr "下一个转弯或下一个更低的限速提前减速。 "
+
+#~ msgid "Braking cancels the session. At the planned pickup it pauses and "
+#~ msgstr "踩刹车会取消它。到了计划的提货点它会暂停， "
+
+#~ msgid "resumes once you depart. "
+#~ msgstr "出发后恢复。 "
+
+#~ msgid "Plus and minus, including the keypad keys, change the open-road "
+#~ msgstr "加号和减号，包括小键盘上的，会把开阔道路 "
+
+#~ msgid ""
+#~ "target by five; it never holds more than five over the posted limit. "
+#~ "Control "
+#~ msgstr "目标速度每次调五；它永远不会比标示限速高出五以上。按住Control "
+
+#~ msgid "with plus or minus, by one. "
+#~ msgstr "再按加号或减号，每次调一。 "
+
+#~ msgid "{n} resumes the last cruise speed. "
+#~ msgstr "{n}恢复上次的巡航速度。 "
+
+#~ msgid "Parked with the brake set, {n} latches a high idle; plus and minus "
+#~ msgstr "停车并拉上驻车制动时，{n}锁定高怠速；加号和减号 "
+
+#~ msgid "adjust it, and releasing the parking brake drops it. "
+#~ msgstr "调节它，松开驻车制动就会取消。 "
+
+#~ msgid "{exit} signals for the next announced route exit, by number when "
+#~ msgstr "{exit}为下一个播报过的路线出口打转向灯，知道编号时 "
+
+#~ msgid "known, or cancels that signal. Unless lane keeping is on full, move "
+#~ msgstr "会按编号播报，再按一次则取消转向灯。除非车道保持为完全，否则先 "
+
+#~ msgid "to the right lane, then steer right into the exit lane where it "
+#~ msgstr "并到右侧车道，然后在出口车道 "
+
+#~ msgid ""
+#~ "opens, just before the gore. Keep road speed to there, then brake to "
+#~ msgstr "出现的地方、就在分流角之前向右转进去。一直保持道路车速到那里，然后在匝道弯之前 "
+
+#~ msgid "the exit speed before the ramp curve. Ramps usually end "
+#~ msgstr "刹车降到出口速度。匝道通常在 "
+
+#~ msgid "at a traffic light or stop sign, called out on the way down."
+#~ msgstr "红绿灯或停车标志处结束，下匝道时会播报。"
+
+#~ msgid "at a traffic light or stop sign, called out on the way down. {exit} "
+#~ msgstr "红绿灯或停车标志处结束，下匝道时会播报。{exit} "
+
+#~ msgid "also signals a pull-over when a trooper lights you up for speeding, "
+#~ msgstr "在警察因超速、 "
+
+#~ msgid "a scale bypass, or unsafe equipment: signal, then brake to a stop. "
+#~ msgstr "绕过称重站或设备不安全而对你亮灯时，也用来示意靠边停车：打转向灯，然后刹车停下。 "
+
+#~ msgid "Ignoring the lights brings failure-to-stop "
+#~ msgstr "无视警灯会先收到拒不停车 "
+
+#~ msgid "warnings, then a stop that cancels the load: a major offense. "
+#~ msgstr "警告，然后被拦停并取消货物：这是重大违法。 "
+
+#~ msgid "{n} also speaks the date and season. "
+#~ msgstr "{n}还会说出日期和季节。 "
+
+#~ msgid "Page Down tunes to the next station,"
+#~ msgstr "Page Down调到下一个电台，"
+
+#~ msgid "{n} toggles the in-cab radio."
+#~ msgstr "{n}开关车内收音机。"
+
+#~ msgid "{n} toggles the in-cab radio. Page Down tunes to the next station, "
+#~ msgstr "{n}开关车内收音机。Page Down调到下一个电台， "
+
+#~ msgid "Page Up to the previous; semicolon and apostrophe do the same. "
+#~ msgstr "Page Up调到上一个；分号键和单引号键作用相同。 "
+
+#~ msgid "Control with the tuning keys jumps a category; Shift changes the "
+#~ msgstr "按住Control再按调台键会跳一个类别；按住Shift则以 "
+
+#~ msgid "radio volume in 10 percent steps, on or off. "
+#~ msgstr "百分之10为一档调节收音机音量，收音机开着关着都可以。 "
+
+#~ msgid "{n} saves or unsaves the station as a favorite. "
+#~ msgstr "{n}把电台加入或移出收藏。 "
+
+#~ msgid "{n} speaks station, volume, and streamer-safe status; {n2} speaks "
+#~ msgstr "{n}说出电台、音量和直播安全状态；{n2}在电台提供歌曲信息时 "
+
+#~ msgid "the song when the station says. The Driver apps tablet has a "
+#~ msgstr "说出歌曲。司机应用平板上有一个 "
+
+#~ msgid "Radio app to search the dial, tune by name, and keep favorites; "
+#~ msgstr "收音机应用，可以搜索频段、按名称调台和管理收藏； "
+
+#~ msgid "the {n} status menu has a radio screen of receivable stations. "
+#~ msgstr "{n}状态菜单里有一个列出可接收电台的收音机界面。 "
+
+#~ msgid "{n} starts the engine, and stops it only below 5 miles per hour. "
+#~ msgstr "{n}启动发动机，只有车速低于每小时5英里时才能关闭。 "
+
+#~ msgid "Air pressure must build before the truck can move. "
+#~ msgstr "卡车要等气压升起来才能移动。 "
+
+#~ msgid "{n} sets or releases the parking brake."
+#~ msgstr "{n}拉上或松开驻车制动。"
+
+#~ msgid "{n} sets or releases the parking brake. It needs 100 psi of air. "
+#~ msgstr "{n}拉上或松开驻车制动。需要100 psi的气压。 "
+
+#~ msgid ""
+#~ "{n} speed, active speed-control mode, and target, and with the signal set, "
+#~ "how far to the exit. "
+#~ msgstr "{n}：车速、当前速度控制模式和目标速度；打了转向灯时，还有到出口的距离。 "
+
+#~ msgid "{n2} the grade under the wheels, whether the"
+#~ msgstr "{n2}：车轮下的坡道，"
+
+#~ msgid "{n} posted speed limit."
+#~ msgstr "{n}：标示限速。"
+
+#~ msgid ""
+#~ "{n} posted speed limit. {n2} the grade under the wheels, whether the "
+#~ msgstr "{n}：标示限速。{n2}：车轮下的坡道， "
+
+#~ msgid "truck is holding it, and the next grade ahead."
+#~ msgstr "卡车是否保持得住，以及前方的下一个坡道。"
+
+#~ msgid ""
+#~ "truck is holding it, and the next grade ahead. {n} status menu. {n2} fuel. "
+#~ msgstr "卡车是否保持得住，以及前方的下一个坡道。{n}：状态菜单。{n2}：燃油。 "
+
+#~ msgid "{n2} fuel."
+#~ msgstr "{n2}：燃油。"
+
+#~ msgid "{n} status menu."
+#~ msgstr "{n}：状态菜单。"
+
+#~ msgid "{n} clock, deadline, and the hours limit that comes first. "
+#~ msgstr "{n}：时钟、截止时间，以及最先到的工时限制。 "
+
+#~ msgid "{n} time at the wheel so far, {n2} when your 30 minute break "
+#~ msgstr "{n}：到目前为止的已驾驶时间，{n2}：你的30分钟中途休息 "
+
+#~ msgid "is due, {n} what ends this shift and where you can legally stop "
+#~ msgstr "何时到期，{n}：什么会结束这个班次，以及在那之前 "
+
+#~ msgid "before it. "
+#~ msgstr "你能合法停车的地方。 "
+
+#~ msgid "{n} progress, distance left, and where you are. "
+#~ msgstr "{n}：进度、剩余距离和你所在的位置。 "
+
+#~ msgid "{n} the state, {n2} the road, {n3} the town or the nearest "
+#~ msgstr "{n}：所在州，{n2}：所在道路，{n3}：所在城镇或最近的 "
+
+#~ msgid "one, {n} the direction."
+#~ msgstr "城镇，{n}：行驶方向。"
+
+#~ msgid "one, {n} the direction. The keypad numbers work the same way. "
+#~ msgstr "城镇，{n}：行驶方向。小键盘数字键也一样。 "
+
+#~ msgid "{n2} lane position and whether the lane beside you is"
+#~ msgstr "{n2}：车道位置，以及旁边车道是否"
+
+#~ msgid "{n} weather."
+#~ msgstr "{n}：天气。"
+
+#~ msgid "{n} weather. {n2} lane position and whether the lane beside you is "
+#~ msgstr "{n}：天气。{n2}：车道位置，以及旁边车道是否 "
+
+#~ msgid "open."
+#~ msgstr "畅通。"
+
+#~ msgid "open. {n} turns the lane locator on and off: a soft tock once a "
+#~ msgstr "畅通。{n}开关车道定位器：每拍一声轻柔的嗒声， "
+
+#~ msgid "{n} turns the lane locator on and off: a soft tock once a"
+#~ msgstr "{n}开关车道定位器：每拍一声轻柔的嗒声，"
+
+#~ msgid "beat, panned to where you sit in your lane, on lane keeping "
+#~ msgstr "声像位于你在车道里的位置，在车道保持为 "
+
+#~ msgid "partial or off. "
+#~ msgstr "部分或关闭时可用。 "
+
+#~ msgid "{n} repeats the last driving announcement. "
+#~ msgstr "{n}重复上一条驾驶播报。 "
+
+#~ msgid "{n} repeats the last CB chatter, with the distance as it is now. "
+#~ msgstr "{n}重复上一条CB电台闲聊，距离按现在的位置计算。 "
+
+#~ msgid ""
+#~ "Comma repeats what was just said and keeps stepping back; Period moves "
+#~ "forward again. "
+#~ msgstr "逗号键重复刚才说的话，并继续往回翻；句号键再往前翻。 "
+
+#~ msgid "Control with Comma or Period jumps to the oldest or newest message. "
+#~ msgstr "按住Control再按逗号键或句号键，跳到最旧或最新的消息。 "
+
+#~ msgid ""
+#~ "The bracket keys switch between all messages, general messages, and driving "
+#~ "events. "
+#~ msgstr "方括号键在全部消息、一般消息和驾驶事件之间切换。 "
+
+#~ msgid "Control C copies the message you are on. "
+#~ msgstr "Control C复制你当前所在的消息。 "
+
+#~ msgid "{n} copies the last thing the game said. "
+#~ msgstr "{n}复制游戏最后说的一句话。 "
+
+#~ msgid ""
+#~ "{n} reads the road ahead that no other key answers: the exit your signal is "
+#~ "on for, the ramp "
+#~ msgstr "{n}读出其他键都不回答的前方道路信息：你打转向灯要去的出口、即将到来的匝道 "
+
+#~ msgid "control coming up, the next imposed limit, the next stop, and "
+#~ msgstr "管制、下一个强制限制、下一个停靠点，以及 "
+
+#~ msgid "the next bend that demands slowing. "
+#~ msgstr "下一个需要减速的弯道。 "
+
+#~ msgid "Bends that demand slowing are called before they arrive, like "
+#~ msgstr "需要减速的弯道会在到达之前播报，比如 "
+
+#~ msgid "Sharp left, half a mile, advise 35; {n} gives one safe-speed number "
+#~ msgstr "“左急弯，半英里，建议35”；{n}给出一个安全车速数字， "
+
+#~ msgid "with the bend in it. "
+#~ msgstr "其中已经考虑了弯道。 "
+
+#~ msgid "The {n} status menu includes a Driver apps tablet for navigation, "
+#~ msgstr "{n}状态菜单里有一个司机应用平板，用于导航、 "
+
+#~ msgid "weather, traffic, truck stops, road chatter, and ELD. "
+#~ msgstr "天气、车流、卡车服务站、沿途见闻和ELD。 "
+
+#~ msgid "Left or Right Control stops the driving event voice. "
+#~ msgstr "Left Control或Right Control停止驾驶事件播报。 "
+
+#~ msgid "{left} and {right} steer unless lane keeping is on full; steer "
+#~ msgstr "除非车道保持为完全，否则{left}和{right}用来转向；转向 "
+
+#~ msgid "across the lane line to change lanes."
+#~ msgstr "越过车道线就能换道。"
+
+#~ msgid ""
+#~ "across the lane line to change lanes. On full, tap {left} or {right}. "
+#~ msgstr "越过车道线就能换道。车道保持为完全时，轻按{left}或{right}。 "
+
+#~ msgid ""
+#~ "Hold {n} to point the truck straight down the road; where it sits in the "
+#~ "lane stays yours to fix. "
+#~ msgstr "按住{n}让卡车车头对正道路方向；它在车道里的位置仍然要你自己调整。 "
+
+#~ msgid "Exits leave from the right lane. Change lanes or brake means a "
+#~ msgstr "出口从右侧车道驶出。“换道或刹车”表示 "
+
+#~ msgid "fixed object in your lane: take the open lane it names, or brake "
+#~ msgstr "你的车道上有固定障碍物：换到它说的畅通车道，或者刹车 "
+
+#~ msgid "nearly to a stop and ease around. "
+#~ msgstr "到几乎停下，再慢慢绕过去。 "
+
+#~ msgid ""
+#~ "{rest} plans the recommended break or sleep stop when hours of service "
+#~ "planning hints are on; otherwise it plans the next sleep-capable stop while "
+#~ "rolling. {exit} "
+#~ msgstr "开启驾驶工时规划提示时，{rest}规划推荐的中途休息或睡觉停靠点；否则在行驶中规划下一个可以睡觉的停靠点。{exit} "
+
+#~ msgid "Stopped at a route stop, {rest} opens its menu:"
+#~ msgstr "停在路线停靠点时，{rest}打开它的菜单："
+
+#~ msgid "signals for its exit."
+#~ msgstr "为它的出口打转向灯。"
+
+#~ msgid ""
+#~ "signals for its exit. Stopped at a route stop, {rest} opens its menu: "
+#~ msgstr "为它的出口打转向灯。停在路线停靠点时，{rest}打开它的菜单： "
+
+#~ msgid "fuel, break, sleep, inspect, roadside assistance, or save where "
+#~ msgstr "加油、中途休息、睡觉、检查、路边援助，或者在 "
+
+#~ msgid "Fully stopped away from route points, {rest} opens the"
+#~ msgstr "在远离路线地点的地方完全停下时，{rest}则会打开"
+
+#~ msgid "available."
+#~ msgstr "可用时存档。"
+
+#~ msgid "available. Fully stopped away from route points, {rest} opens the "
+#~ msgstr "可用时存档。在远离路线地点的地方完全停下时，{rest}则会打开 "
+
+#~ msgid "emergency shoulder-sleep warning instead."
+#~ msgstr "紧急路肩睡觉警告。"
+
+#~ msgid "emergency shoulder-sleep warning instead. {n} horn. "
+#~ msgstr "紧急路肩睡觉警告。{n}：喇叭。 "
+
+#~ msgid "{n} horn."
+#~ msgstr "{n}：喇叭。"
+
+#~ msgid ""
+#~ "{n} engine brake; on an automatic it manages its own stage, and {n2}, "
+#~ msgstr "{n}：发动机制动；自动档时它自己管理档位，而{n2}、 "
+
+#~ msgid "{n3} chooses whether {n4} runs the"
+#~ msgstr "{n3}选择{n4}是否运行"
+
+#~ msgid "{n}, {n2} take manual control."
+#~ msgstr "{n}、{n2}用来手动控制。"
+
+#~ msgid "{n}, {n2} take manual control. {n3} chooses whether {n4} runs the "
+#~ msgstr "{n}、{n2}用来手动控制。{n3}选择{n4}是否运行 "
+
+#~ msgid "automatic mode."
+#~ msgstr "自动模式。"
+
+#~ msgid "automatic mode. {n} switches between automatic and manual "
+#~ msgstr "自动模式。{n}在自动和手动 "
+
+#~ msgid "{n} switches between automatic and manual"
+#~ msgstr "{n}在自动和手动"
+
+#~ msgid ""
+#~ "shifting. Escape pause menu. F2 lists every driving command by name. "
+#~ msgstr "换档之间切换。Escape：暂停菜单。F2按名称列出所有驾驶命令。 "
+
+#~ msgid ""
+#~ "Hold Left Shift for clutch, then {n} to shift up or {n2} to shift down, "
+#~ "{n3} for reverse, {n4} for neutral. "
+#~ msgstr "按住Left Shift踩离合，然后按{n}升档，按{n2}降档，{n3}是倒档，{n4}是空档。 "
+
+#~ msgid ""
+#~ "Hold the left bumper for the clutch; {n} shifts up a gear, {n2} shifts "
+#~ "down. "
+#~ msgstr "按住left bumper踩离合；{n}升一档，{n2}降一档。 "
+
+#~ msgid ""
+#~ "In automatic with deliberate direction changes, stop, let the left trigger "
+#~ "return to neutral, then press and hold it again to reverse. While "
+#~ "reversing, stop with the right trigger, let it return to neutral, then "
+#~ "press and hold again for forward. A quick tap just brakes. "
+#~ msgstr ""
+#~ "在自动档、刻意换向模式下，停车，让left trigger回到空位，然后再按住它就是倒车。倒车时，用right "
+#~ "trigger停车，让它回到空位，再按住就是前进。轻按一下只是刹车。 "
+
+#~ msgid ""
+#~ "In automatic with simple direction changes, stop, let the left trigger "
+#~ "return to neutral, then press and hold it again to reverse. While "
+#~ "reversing, stop with the right trigger, release, then press it again for "
+#~ "forward. A brake held through a stop just holds the truck. "
+#~ msgstr ""
+#~ "在自动档、简单换向模式下，停车，让left trigger回到空位，然后再按住它就是倒车。倒车时，用right "
+#~ "trigger停车，松开，再按下就是前进。停车时一直踩着刹车，只会让卡车保持不动。 "
+
+#~ msgid "Right trigger is the gas, left trigger the brake; the left trigger "
+#~ msgstr "right trigger是油门，left trigger是刹车；left trigger "
+
+#~ msgid "fully in is the hardest stop. The left stick steers unless lane "
+#~ msgstr "按到底是最猛烈的停车。除非车道保持为 "
+
+#~ msgid "keeping is on full. "
+#~ msgstr "完全，否则用left stick转向。 "
+
+#~ msgid "{capitalized} starts automatic speed control: adaptive cruise on "
+#~ msgstr "{capitalized}启动自动速度控制： "
+
+#~ msgid "open roads, the speed keeper in low-speed zones."
+#~ msgstr "开阔道路上是自适应巡航，低速区域里是限速保持。"
+
+#~ msgid ""
+#~ "open roads, the speed keeper in low-speed zones. {capitalized} or {n} "
+#~ "change the open-road "
+#~ msgstr "开阔道路上是自适应巡航，低速区域里是限速保持。{capitalized}或{n}把开阔道路 "
+
+#~ msgid "{capitalized} or {n} change the open-road"
+#~ msgstr "{capitalized}或{n}把开阔道路"
+
+#~ msgid "target by five. It pauses through the planned pickup and resumes "
+#~ msgstr "目标速度每次调五。它在计划的提货期间暂停， "
+
+#~ msgid "once the loaded truck is rolling. Parked with the brake set, "
+#~ msgstr "装好货的卡车开起来后恢复。停车并拉上驻车制动时， "
+
+#~ msgid "{n} latches a high idle. "
+#~ msgstr "{n}锁定高怠速。 "
+
+#~ msgid "{capitalized} signals for the next announced exit, or a pull-over "
+#~ msgstr "{capitalized}为下一个播报过的出口打转向灯，或者在警察对你亮灯时 "
+
+#~ msgid "when a trooper lights you up. "
+#~ msgstr "示意靠边停车。 "
+
+#~ msgid "{capitalized} reads your route and current location, {n} the "
+#~ msgstr "{capitalized}读出你的路线和当前位置，{n}读出 "
+
+#~ msgid "weather, {n} the clock with your full hours of service. "
+#~ msgstr "天气，{n}读出时钟和你完整的驾驶工时。 "
+
+#~ msgid "{capitalized} speaks your speed. "
+#~ msgstr "{capitalized}说出你的车速。 "
+
+#~ msgid "{capitalized} sounds the horn, {n} the engine brake. "
+#~ msgstr "{capitalized}按喇叭，{n}是发动机制动。 "
+
+#~ msgid ""
+#~ "{capitalized} starts or stops the engine, {n} reads fuel, {n2} reads the "
+#~ "posted "
+#~ msgstr "{capitalized}启动或关闭发动机，{n}读出燃油，{n2}读出这里的标示 "
+
+#~ msgid ""
+#~ "speed limit here and how far over you are, {n} sets or releases the parking "
+#~ msgstr "限速以及你超速多少，{n}拉上或松开驻车 "
+
+#~ msgid ""
+#~ "brake, {n} plans a recommended break or sleep stop when hours of service "
+#~ "planning hints are on, or the next sleep stop otherwise; stopped at a stop, "
+#~ "it opens its actions. "
+#~ msgstr "制动，开启驾驶工时规划提示时{n}规划推荐的中途休息或睡觉停靠点，否则规划下一个睡觉停靠点；停在停靠点时，它会打开那里的操作。 "
+
+#~ msgid "Away from route points while fully stopped, it opens "
+#~ msgstr "在远离路线地点的地方完全停下时，它会打开 "
+
+#~ msgid "emergency shoulder sleep."
+#~ msgstr "紧急路肩睡觉。"
+
+#~ msgid "emergency shoulder sleep. {capitalized} opens the status menu. "
+#~ msgstr "紧急路肩睡觉。{capitalized}打开状态菜单。 "
+
+#~ msgid "{capitalized} opens the status menu."
+#~ msgstr "{capitalized}打开状态菜单。"
+
+#~ msgid "{capitalized2} and {n2} lower and raise the radio volume."
+#~ msgstr "{capitalized2}和{n2}调低和调高收音机音量。"
+
+#~ msgid "{capitalized3} or {n3} changes the radio category."
+#~ msgstr "{capitalized3}或{n3}切换电台类别。"
+
+#~ msgid ""
+#~ "{capitalized4} turns the radio on or off, {n4} saves a favorite, {n5} reads "
+#~ "radio status, and {n6} says what is playing."
+#~ msgstr "{capitalized4}开关收音机，{n4}保存收藏，{n5}读出收音机状态，{n6}说出正在播放什么。"
+
+#~ msgid "{capitalized} tunes to the previous station and {n} to the next."
+#~ msgstr "{capitalized}调到上一个电台，{n}调到下一个。"
+
+#~ msgid ""
+#~ "{capitalized} tunes to the previous station and {n} to the next. "
+#~ "{capitalized2} and {n2} lower and raise the radio volume. {capitalized3} or "
+#~ "{n3} changes the radio category. {capitalized4} turns the radio on or off, "
+#~ "{n4} saves a favorite, {n5} reads radio status, and {n6} says what is "
+#~ "playing. "
+#~ msgstr ""
+#~ "{capitalized}调到上一个电台，{n}调到下一个。{capitalized2}和{n2}调低和调高收音机音量。{capitalized3}或{"
+#~ "n3}切换电台类别。{capitalized4}开关收音机，{n4}保存收藏，{n5}读出收音机状态，{n6}说出正在播放什么。 "
+
+#~ msgid "Start pauses and unpauses. The Back button stops the driving voice "
+#~ msgstr "Start暂停和继续。Back键在驾驶播报说话时 "
+
+#~ msgid ""
+#~ "while it is speaking; when nothing is being said, it repeats this help. "
+#~ msgstr "停止它；没有在说话时，它会重复这段帮助。 "
+
+#~ msgid "browse"
+#~ msgstr "浏览"
+
+#~ msgid "{page_text} PageDown for the next page."
+#~ msgstr "{page_text} 按 PageDown 翻到下一页。"
+
+#~ msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
+#~ msgstr "{title}。{hit_count} 个{else}。{page_text} 按 PageDown 翻到下一页。"
+
+#~ msgid "stations"
+#~ msgstr "电台"
+
+#~ msgid "matches"
+#~ msgstr "结果"
 
 #~ msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 #~ msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"

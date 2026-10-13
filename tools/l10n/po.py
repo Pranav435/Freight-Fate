@@ -17,12 +17,18 @@ WRAP = 76
 class Entry:
     msgid: str
     msgstr: str = ""
+    # gettext's ``msgctxt``: tells apart two entries with the same English.
+    msgctxt: str | None = None
     refs: list[str] = field(default_factory=list)
     comments: list[str] = field(default_factory=list)
     translator_comments: list[str] = field(default_factory=list)
     flags: list[str] = field(default_factory=list)
     obsolete: bool = False
     line: int = 0
+
+    @property
+    def key(self) -> tuple[str | None, str]:
+        return (self.msgctxt, self.msgid)
 
     @property
     def fuzzy(self) -> bool:
@@ -106,7 +112,11 @@ def parse_po(text: str) -> list[Entry]:
             else:
                 pending.translator_comments.append(line[1:].strip())
             continue
-        if line.startswith("msgctxt"):
+        if line.startswith("msgctxt "):
+            if cur is not None:
+                finish()
+            pending.msgctxt = _unquote(line[8:], number)
+            field_name = "msgctxt"
             continue
         if line.startswith("msgid "):
             if cur is not None:
@@ -124,6 +134,9 @@ def parse_po(text: str) -> list[Entry]:
             field_name = "msgstr"
             continue
         if line.startswith('"'):
+            if field_name == "msgctxt":
+                pending.msgctxt = (pending.msgctxt or "") + _unquote(line, number)
+                continue
             if cur is None or field_name is None:
                 raise PoError(f"line {number}: a string continues nothing")
             value = _unquote(line, number)
@@ -166,6 +179,8 @@ def write_po(entries: list[Entry], refs: bool) -> str:
         if entry.flags:
             lines.append("#, " + ", ".join(entry.flags))
         prefix = "#~ " if entry.obsolete else ""
+        if entry.msgctxt is not None:
+            lines += _string_lines("msgctxt", entry.msgctxt, prefix)
         lines += _string_lines("msgid", entry.msgid, prefix)
         lines += _string_lines("msgstr", entry.msgstr, prefix)
         blocks.append("\n".join(lines))
