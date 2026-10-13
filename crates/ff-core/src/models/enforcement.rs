@@ -587,6 +587,24 @@ pub fn trust_band_text(band: &str) -> &'static str {
      and the carrier is deciding whether to keep you."
 }
 
+/// What a trust band means, after its label: the sentences that follow
+/// "Dispatch trust: full." Each is a whole literal, so a translation finds
+/// it when a reputation number stands between the label and the meaning.
+pub fn trust_band_meaning(band: &str) -> &'static str {
+    if band == TRUST_FULL {
+        return "You get the whole board.";
+    }
+    if band == TRUST_GUARDED {
+        return "Dispatch is holding back some of the freight and allows fewer refusals.";
+    }
+    if band == TRUST_POOR {
+        return "You are back to assigned loads whatever your level, the board is down \
+                to two, and the good freight is going to other drivers.";
+    }
+    "One assigned load at a time, no refusals, and the carrier is deciding whether \
+     to keep you."
+}
+
 /// Where the driver stands with dispatch on service alone, in one line.
 pub fn trust_text(reputation: f64) -> String {
     let band = trust_band(reputation);
@@ -599,11 +617,13 @@ pub fn trust_text(reputation: f64) -> String {
 /// [`trust_text`] in the player's preferred score-display mode.
 pub fn trust_text_with_display(reputation: f64, mode: ScoreDisplay) -> String {
     let band = trust_band(reputation);
-    let text = trust_text(reputation);
-    let suffix = text
-        .strip_prefix(&format!("Dispatch trust: {band}."))
-        .unwrap_or("");
-    format!("{}{suffix}", trust_score_head(reputation, mode))
+    let meaning = trust_band_meaning(band);
+    let rebuild = if band == TRUST_FULL {
+        ""
+    } else {
+        " Clean on-time runs rebuild it."
+    };
+    format!("{} {meaning}{rebuild}", trust_score_head(reputation, mode))
 }
 
 /// The opening of a trust line. The number is always labelled as reputation

@@ -733,10 +733,11 @@ impl Trip {
                 .unwrap_or("");
             format!("{toward_name}, {state}")
         };
-        format!(
-            "{dist}. On {} toward {toward_text}.{lane_part} {terrain_text}. {next_context}",
-            leg.highway
-        )
+        // Its own sentence, so a catalog has it whole when the lane and
+        // grade around it change.
+        let highway = &leg.highway;
+        let on_road = format!("On {highway} toward {toward_text}.");
+        format!("{dist}. {on_road}{lane_part} {terrain_text}. {next_context}")
     }
 
     /// Lane count in plain words for the road-status readout, or empty where

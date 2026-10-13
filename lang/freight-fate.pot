@@ -10131,14 +10131,34 @@ msgid ""
 "the carrier is deciding whether to keep you."
 msgstr ""
 
+#: crates/ff-core/src/models/enforcement.rs
+msgid "You get the whole board."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid ""
+"Dispatch is holding back some of the freight and allows fewer refusals."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid ""
+"You are back to assigned loads whatever your level, the board is down to "
+"two, and the good freight is going to other drivers."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid ""
+"One assigned load at a time, no refusals, and the carrier is deciding "
+"whether to keep you."
+msgstr ""
+
 #. placeholders: {trust_band_text}
 #: crates/ff-core/src/models/enforcement.rs
 msgid "{trust_band_text} Clean on-time runs rebuild it."
 msgstr ""
 
-#. placeholders: {band}
 #: crates/ff-core/src/models/enforcement.rs
-msgid "Dispatch trust: {band}."
+msgid " Clean on-time runs rebuild it."
 msgstr ""
 
 #. placeholders: {band}, {number}
@@ -10160,6 +10180,11 @@ msgstr ""
 #. placeholders: {number}
 #: crates/ff-core/src/models/enforcement.rs
 msgid "Dispatch trust. Reputation {number} out of 100."
+msgstr ""
+
+#. placeholders: {band}
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: {band}."
 msgstr ""
 
 #: crates/ff-core/src/models/enforcement.rs
@@ -15131,17 +15156,9 @@ msgstr ""
 msgid "{remaining} remaining of {f}"
 msgstr ""
 
-#. placeholders: {highway}, {toward_text}, {lane_part}, {terrain_text}
-#. one sentence of a longer line
+#. placeholders: {highway}, {toward_text}
 #: crates/ff-core/src/sim/trip/lookups.rs
-msgid "On {highway} toward {toward_text}.{lane_part} {terrain_text}."
-msgstr ""
-
-#. placeholders: {dist}, {highway}, {toward_text}, {lane_part}, {terrain_text}, {next_context}
-#: crates/ff-core/src/sim/trip/lookups.rs
-msgid ""
-"{dist}. On {highway} toward {toward_text}.{lane_part} {terrain_text}. "
-"{next_context}"
+msgid "On {highway} toward {toward_text}."
 msgstr ""
 
 #. placeholders: {lane_word}, {s_ending}
@@ -15397,14 +15414,14 @@ msgstr ""
 msgid "interchange"
 msgstr ""
 
-#. placeholders: {exit_label}
-#: crates/ff-core/src/sim/trip/placement.rs crates/ff-core/src/speech_text.rs crates/freight-fate/src/states/driving_events/stops.rs
-msgid " at {exit_label}"
+#. placeholders: {label}
+#: crates/ff-core/src/sim/trip/placement.rs
+msgid "{label} ahead"
 msgstr ""
 
-#. placeholders: {label}, {at_part}
+#. placeholders: {label}, {interchange}
 #: crates/ff-core/src/sim/trip/placement.rs
-msgid "{label} ahead{at_part}"
+msgid "{label} ahead at {interchange}"
 msgstr ""
 
 #. placeholders: {text}
@@ -17621,6 +17638,11 @@ msgstr ""
 
 #: crates/ff-core/src/speech_text.rs
 msgid "No truck parking."
+msgstr ""
+
+#. placeholders: {exit_label}
+#: crates/ff-core/src/speech_text.rs crates/freight-fate/src/states/driving_events/stops.rs
+msgid " at {exit_label}"
 msgstr ""
 
 #. placeholders: {planned_prefix}, {typed_name}, {exit_part}, {distance}
@@ -20393,9 +20415,9 @@ msgstr ""
 msgid "Rest: {rest}"
 msgstr ""
 
-#. placeholders: {trim_end_matches}
+#. placeholders: {summary}
 #: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/driving_menu_states/status.rs
-msgid "Hours: {trim_end_matches}"
+msgid "Hours: {summary}"
 msgstr ""
 
 #: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/driving_menu_states/status.rs
@@ -21854,16 +21876,16 @@ msgstr ""
 #: crates/freight-fate/src/states/city/terminal.rs
 msgid ""
 "Parked at {name} in {the_city} service area, {city_state}. {py_capitalize} "
-"with level {level}, {title}.{cdl}{record} You have {grouped} dollars. "
-"{first_day}"
+"with level {level}, {title}.{cdl}{record} You have {grouped} "
+"dollars.{first_day}"
 msgstr ""
 
-#. placeholders: {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}
+#. placeholders: {py_capitalize}, {level}, {title}, {cdl}, {record}, {grouped}, {first_day}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/city/terminal.rs
 msgid ""
 "{py_capitalize} with level {level}, {title}.{cdl}{record} You have "
-"{grouped} dollars."
+"{grouped} dollars.{first_day}"
 msgstr ""
 
 #: crates/freight-fate/src/states/city/terminal.rs
@@ -25860,6 +25882,11 @@ msgstr ""
 msgid "{status} status menu."
 msgstr ""
 
+#. placeholders: {fuel}
+#: crates/freight-fate/src/states/driving_controls/help.rs
+msgid "{fuel} fuel."
+msgstr ""
+
 #. placeholders: {clock}
 #: crates/freight-fate/src/states/driving_controls/help.rs
 msgid "{clock} clock, deadline, and the hours limit that comes first."
@@ -25887,6 +25914,11 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_controls/help.rs
 msgid "The keypad numbers work the same way."
+msgstr ""
+
+#. placeholders: {weather}
+#: crates/freight-fate/src/states/driving_controls/help.rs
+msgid "{weather} weather."
 msgstr ""
 
 #. placeholders: {lane}
@@ -26017,6 +26049,11 @@ msgstr ""
 msgid ""
 "Fully stopped away from route points, {rest} opens the emergency "
 "shoulder-sleep warning instead."
+msgstr ""
+
+#. placeholders: {horn}
+#: crates/freight-fate/src/states/driving_controls/help.rs
+msgid "{horn} horn."
 msgstr ""
 
 #. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
@@ -26560,6 +26597,11 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_controls/info.rs
 msgid "Nothing steep"
+msgstr ""
+
+#. placeholders: {nothing}
+#: crates/freight-fate/src/states/driving_controls/info.rs
+msgid "{nothing} ahead."
 msgstr ""
 
 #. placeholders: {nothing}, {distance_text}
@@ -31850,6 +31892,11 @@ msgstr ""
 msgid "Road chatter: reports are informal and may be stale."
 msgstr ""
 
+#. placeholders: {summary}
+#: crates/freight-fate/src/states/driving_menu_states/apps.rs
+msgid "ELD: {summary}"
+msgstr ""
+
 #: crates/freight-fate/src/states/driving_menu_states/apps.rs
 msgid "ELD route note: no legal stop warning."
 msgstr ""
@@ -32926,14 +32973,14 @@ msgid ""
 "Load: {f} tons of {label}, gross {f2} tons, freight {cargo_status_clause}"
 msgstr ""
 
-#. placeholders: {clock_text}, {clock_zone_label}, {deadline_text}
+#. placeholders: {clock}, {deadline_text}
 #: crates/freight-fate/src/states/driving_menu_states/status.rs
-msgid "Time: {clock_text} {clock_zone_label}, {deadline_text}"
+msgid "Time: {clock}, {deadline_text}"
 msgstr ""
 
-#. placeholders: {name}
+#. placeholders: {driver_name}
 #: crates/freight-fate/src/states/driving_menu_states/status.rs
-msgid "Driver: {name}"
+msgid "Driver: {driver_name}"
 msgstr ""
 
 #. placeholders: {grouped}
@@ -38421,6 +38468,11 @@ msgid "{name} could not be deleted. The save is still on this computer."
 msgstr ""
 
 #. placeholders: {name}
+#: crates/freight-fate/src/states/main_menu/careers.rs
+msgid "{name} deleted."
+msgstr ""
+
+#. placeholders: {name}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/main_menu/careers.rs
 msgid "{name} deleted from this computer."
@@ -40508,6 +40560,11 @@ msgstr ""
 #. placeholders: {name}
 #: crates/freight-fate/src/states/main_menu_career.rs
 msgid "Loaded over existing driver named {name}. "
+msgstr ""
+
+#. placeholders: {region}
+#: crates/freight-fate/src/states/main_menu_career.rs
+msgid "{region} terminals."
 msgstr ""
 
 #. placeholders: {terminal_name}, {place}
@@ -44270,6 +44327,11 @@ msgstr ""
 msgid "The next update will still be offered."
 msgstr ""
 
+#. placeholders: {mb}
+#: crates/freight-fate/src/states/update.rs
+msgid " {mb} megabytes."
+msgstr ""
+
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/update.rs
 msgid "Update available."
@@ -44895,4 +44957,41 @@ msgstr ""
 
 #: lang/extra.pot
 msgid "Then hairpin left."
+msgstr ""
+
+#. A clock reading with its time zone, as the Driver screen says it.
+#: lang/extra.pot
+msgid "{clock} Eastern Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Central Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Mountain Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Pacific Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Alaska Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} Hawaii Time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "{clock} local game time"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Dropping and hooking took {f} minutes."
+msgstr ""
+
+#: lang/extra.pot
+msgid "dry van {unit}"
 msgstr ""

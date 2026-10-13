@@ -196,11 +196,14 @@ impl DrivingStatusScreenState {
                 // is answerable here, on demand, rather than only at pickup.
                 // Empty for other freight.
                 let tank_line = d.liquid_status_clause();
-                let time_line = format!(
-                    "Time: {} {}, {deadline_text}",
+                // The clock and its zone are one reading ("8:02 AM Central
+                // Time"), so a translation finds the zone as a whole.
+                let clock = format!(
+                    "{} {}",
                     clock_text(d.trip.local_hour()),
                     d.clock_zone_label(ctx)
                 );
+                let time_line = format!("Time: {clock}, {deadline_text}");
                 let band =
                     crate::states::driving_damage::damage_band_clause(&ctx.settings, &d.trip.truck);
                 let damage_band_suffix = if band.is_empty() {
@@ -227,8 +230,10 @@ impl DrivingStatusScreenState {
                 } else {
                     String::new()
                 };
+                // Named as the driver's own: a player name is kept as it is.
+                let driver_name = &profile.name;
                 let mut lines = vec![
-                    format!("Driver: {}", profile.name),
+                    format!("Driver: {driver_name}"),
                     format!("Money: {} dollars", fmt_grouped(profile.money(), 0)),
                     format!(
                         "Reputation: {}",
@@ -269,7 +274,8 @@ impl DrivingStatusScreenState {
                 if !trust.is_empty() {
                     lines.push(trust);
                 }
-                lines.push(format!("Hours: {}", hours.trim_end_matches('.')));
+                let summary = hours.trim_end_matches('.');
+                lines.push(format!("Hours: {summary}"));
                 lines.push(time_line);
                 lines
             })

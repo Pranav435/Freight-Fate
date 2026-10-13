@@ -553,3 +553,287 @@ msgstr "Mantén {up} para acelerar y {down} para frenar."
         "Mantén Up arrow para acelerar y Down arrow para frenar. The throttle key never latches."
     );
 }
+
+/// Lines a Spanish listen heard mixed although the catalog had every
+/// sentence: the matcher, not the catalog, left them English.
+const LISTEN_PO: &str = r#"
+msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "Place callouts: {place_callouts}"
+msgstr "Avisos de lugares: {place_callouts}"
+
+msgid "sparse"
+msgstr "pocos"
+
+msgid "Driving speech: {replace}"
+msgstr "Avisos de conducción: {replace}"
+
+msgid "standard"
+msgstr "estándar"
+
+msgid "Open-road target: {open_road_target}"
+msgstr "Objetivo en carretera abierta: {open_road_target}"
+
+msgid "posted limit when the open road begins"
+msgstr "límite señalizado cuando empiece la carretera abierta"
+
+msgid "How to play. {controls} {page_title}"
+msgstr "Cómo jugar. {controls} {page_title}"
+
+msgid "Left and Right arrows change pages. Escape goes back."
+msgstr "Las flechas izquierda y derecha cambian de página. Escape vuelve atrás."
+
+msgid "Left"
+msgstr "Izquierda"
+
+msgid "Page {page} of {total}: {title}."
+msgstr "Página {page} de {total}: {title}."
+
+msgid "Main menu"
+msgstr "Menú principal"
+
+msgid "It is {tod}."
+msgstr "Son las {tod}."
+
+msgid "{remaining} remaining of {f}"
+msgstr "quedan {remaining} de {f}"
+
+msgid "{place}{state} on {highway}"
+msgstr "{place}{state} en {highway}"
+
+msgid "Next place in {ahead_text}: {text}."
+msgstr "Próximo lugar en {ahead_text}: {text}."
+
+msgid "{carrier} is looking for steady service."
+msgstr "{carrier} busca un servicio constante."
+
+msgid " Career objective: {terminal_text}"
+msgstr " Objetivo de carrera: {terminal_text}"
+
+msgid "You have {grouped} dollars."
+msgstr "Tienes {grouped} dólares."
+
+msgid "ELD: {summary}"
+msgstr "{summary}"
+
+msgid "ELD status on duty not driving."
+msgstr "Estado del ELD: en servicio sin conducir."
+
+msgid "Driver: {driver_name}"
+msgstr "Conductor: {driver_name}"
+
+msgid "Tap the brake to latch it."
+msgstr "Toca el freno para retenerlo."
+
+msgid "the Down arrow"
+msgstr "la flecha abajo"
+
+msgid "{down} once releases it."
+msgstr "{down} una vez lo suelta."
+"#;
+
+fn listen() -> Translator {
+    Translator::new(Catalog::from_po("es", LISTEN_PO).expect("listen catalog parses"))
+}
+
+#[test]
+fn a_value_hole_named_like_a_place_is_still_translated() {
+    let tr = listen();
+    // "place_callouts", "replace" and "open_road_target" hold values, not
+    // names: they were matched as names because "place" and "road" sit
+    // inside them.
+    assert_eq!(
+        tr.translate("Place callouts: sparse."),
+        "Avisos de lugares: pocos."
+    );
+    assert_eq!(
+        tr.translate("Driving speech: standard."),
+        "Avisos de conducción: estándar."
+    );
+    assert_eq!(
+        tr.translate("Open-road target: posted limit when the open road begins."),
+        "Objetivo en carretera abierta: límite señalizado cuando empiece la carretera abierta."
+    );
+}
+
+#[test]
+fn two_holes_split_by_a_space_split_where_a_sentence_ends() {
+    assert_eq!(
+        listen().translate(
+            "How to play. Left and Right arrows change pages. Escape goes back. Page 1 of 19: Main menu."
+        ),
+        "Cómo jugar. Las flechas izquierda y derecha cambian de página. Escape vuelve atrás. \
+         Página 1 de 19: Menú principal."
+    );
+}
+
+#[test]
+fn a_sentence_opens_with_a_capital_and_names_need_few_letters_of_frame() {
+    let tr = listen();
+    assert_eq!(
+        tr.translate("It is 8 AM. 451 miles remaining of 451."),
+        "Son las 8 AM. Quedan 451 miles de 451."
+    );
+    assert_eq!(
+        tr.translate("Next place in 20 miles: Groton, South Dakota on US-12."),
+        "Próximo lugar en 20 miles: Groton, South Dakota en US-12."
+    );
+}
+
+#[test]
+fn a_joined_piece_and_a_name_with_a_label_still_translate() {
+    assert_eq!(
+        listen().translate(
+            "You have 5,000 dollars.  Career objective: Northstar Freight Lines is looking for steady service."
+        ),
+        "Tienes 5.000 dólares.  Objetivo de carrera: Northstar Freight Lines busca un servicio constante."
+    );
+}
+
+#[test]
+fn a_summary_without_its_full_stop_finds_its_sentence() {
+    let tr = listen();
+    assert_eq!(
+        tr.translate("ELD: ELD status on duty not driving."),
+        "Estado del ELD: en servicio sin conducir."
+    );
+    assert_eq!(tr.translate("Driver: Playtest."), "Conductor: Playtest.");
+}
+
+#[test]
+fn help_sentences_after_a_key_name_translate_whole() {
+    assert_eq!(
+        listen().translate("Tap the brake to latch it. The Down arrow once releases it."),
+        "Toca el freno para retenerlo. La flecha abajo una vez lo suelta."
+    );
+}
+
+#[test]
+fn a_clock_and_its_zone_translate_as_one_reading() {
+    let po = r#"
+msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "Time: {clock}, {deadline_text}"
+msgstr "Hora: {clock}, {deadline_text}"
+
+msgid "{clock} Central Time"
+msgstr "{clock} hora del Centro"
+
+msgid "due tomorrow"
+msgstr "vence mañana"
+"#;
+    let tr = Translator::new(Catalog::from_po("es", po).expect("parses"));
+    assert_eq!(
+        tr.translate("Time: 8:02 AM Central Time, due tomorrow."),
+        "Hora: 8:02 AM hora del Centro, vence mañana."
+    );
+}
+
+/// The shipped Spanish catalog, as a player gets it.
+fn shipped_spanish() -> Translator {
+    let po = include_str!("../../../../lang/es.po");
+    Translator::new(Catalog::from_po("es", po).expect("lang/es.po parses"))
+}
+
+#[test]
+fn shipped_spanish_says_every_eld_status_whole() {
+    // The ELD app speaks the summary after "ELD: " and the Driver Hours
+    // row after "Hours: "; both wrappers drop the summary's last stop. A
+    // loose "{driven} driving" once took the stopped line and left
+    // "ELD status en duty not de conducción".
+    let tr = shipped_spanish();
+    let hours = "Hours of service: 11 hours of driving left, break due in 8 hours, \
+                 duty window closes in 14 hours";
+    let spanish_hours = "Horas de servicio: quedan 11 horas de conducción, la pausa toca \
+                         en 8 horas y la ventana de servicio se cierra en 14 horas";
+    for (status, spoken) in [
+        ("driving", "conduciendo"),
+        ("on duty not driving", "en servicio sin conducir"),
+        ("off duty", "fuera de servicio"),
+        ("sleeper berth", "litera"),
+    ] {
+        assert_eq!(
+            tr.translate(&format!("ELD: ELD status {status}. {hours}. 1 of 4.")),
+            format!("Estado del ELD: {spoken}. {spanish_hours}. 1 de 4."),
+            "{status}"
+        );
+        assert_eq!(
+            tr.translate(&format!("Hours: ELD status {status}. {hours}. 10 of 12.")),
+            format!("Horas: Estado del ELD: {spoken}. {spanish_hours}. 10 de 12."),
+            "{status}"
+        );
+    }
+}
+
+#[test]
+fn shipped_spanish_keeps_a_template_hole_to_one_sentence() {
+    // "{pct} percent {direction} ahead{length}. {advice}" once took most of
+    // the F1 help as its percent and left two help sentences English.
+    let tr = shipped_spanish();
+    assert_eq!(
+        tr.translate(
+            "Page Down tunes to the next station, Page Up to the previous; semicolon and \
+             apostrophe do the same. Control with the tuning keys jumps a category; Shift \
+             changes the radio volume in 10 percent steps, on or off. S posted speed limit. \
+             G the grade under the wheels, whether the truck is holding it, and the next \
+             grade ahead. Tab status menu."
+        ),
+        "Page Down sintoniza la emisora siguiente y Page Up la anterior; punto y coma y \
+         apóstrofo hacen lo mismo. Control con las teclas de sintonía salta de categoría; \
+         Mayúsculas cambia el volumen de la radio de 10 en 10 por ciento, o la enciende o \
+         apaga. S el límite de velocidad señalizado. G la pendiente bajo las ruedas, si el \
+         camión la está aguantando, y la próxima pendiente. Tab el menú de estado."
+    );
+}
+
+#[test]
+fn shipped_spanish_finds_the_sentence_after_a_lead_in_hole() {
+    // "{flavor} Dispatch starts you on ..." reaches the board split into
+    // sentences, the flavor sentence apart from the rest.
+    let tr = shipped_spanish();
+    assert_eq!(
+        tr.translate(
+            "Career objective: First dispatch. Northstar Freight Lines keeps the first week \
+             balanced. Dispatch starts you on a short standard load with room on the \
+             appointment. Recommended dispatch: trainer-recommended."
+        ),
+        "Objetivo de carrera: Primer despacho. Northstar Freight Lines mantiene equilibrada \
+         la primera semana. Despacho te empieza con una carga estándar corta y margen en la \
+         cita. Despacho recomendado: recomendado por el instructor."
+    );
+}
+
+#[test]
+fn shipped_spanish_says_a_yard_once_and_joins_de_el() {
+    let tr = shipped_spanish();
+    assert_eq!(
+        tr.translate(
+            "Parked at company yard: Chicago Company Yard in the Chicago service area, Illinois."
+        ),
+        "Aparcado en patio de la empresa: Patio de la empresa Chicago, en la zona de servicio \
+         de Chicago, Illinois."
+    );
+    assert_eq!(
+        tr.translate("Load weight: 13,677 pounds under the gross-weight limit with current fuel."),
+        "Peso de la carga: 13.677 libras por debajo del límite de peso bruto con el combustible \
+         actual."
+    );
+    assert_eq!(
+        tr.translate(
+            "Dropping and hooking took 25 minutes. Hooked to dry van 3890, in good shape."
+        ),
+        "El intercambio de remolque llevó 25 minutos. Enganchado a furgón seco 3890, en buen \
+         estado."
+    );
+    assert_eq!(
+        tr.translate(
+            "On I-94 toward Kenosha, Wisconsin. Next stop in 1 mile: travel center ahead at exit 50B."
+        ),
+        "En I-94 hacia Kenosha, Wisconsin. Próxima parada en 1 milla: área de servicio más \
+         adelante en la salida 50B."
+    );
+}

@@ -377,17 +377,21 @@ impl Trip {
                     continue;
                 }
                 let offset = stop_offset_for_direction(stop.at_mi, leg.miles, forward);
-                let exit_label = stop_exit_label(leg, stop, 2.0);
-                let at_part = if exit_label.is_empty() {
-                    String::new()
+                // Whole phrases, so a catalog has the exit with its words
+                // ("travel center ahead at exit 50B"); the exit is words to
+                // translate ("exit 50B"), not a name.
+                let interchange = stop_exit_label(leg, stop, 2.0);
+                let label = stop.label();
+                let text = if interchange.is_empty() {
+                    format!("{label} ahead")
                 } else {
-                    format!(" at {exit_label}")
+                    format!("{label} ahead at {interchange}")
                 };
                 cues.push(NavigationCue::new(
                     &format!("rest_stop:{i}:{}:{}", py_str_float(stop.at_mi), stop.name),
                     "rest_stop",
                     start + offset,
-                    &format!("{} ahead{at_part}", stop.label()),
+                    &text,
                     "",
                 ));
             }
