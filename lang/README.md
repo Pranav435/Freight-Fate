@@ -139,8 +139,22 @@ msgstr "{breaks} {breaks:pausa|pausas} de 30 minutos"
 
 Some lines are assembled from smaller pieces at run time, so the whole
 sentence is not in the file. The game translates each sentence it can
-match, then each clause, and leaves the rest in English. If you hear a line
-that stays English, report it with the correction issue and we will add it.
+match whole. A sentence it cannot match whole is split into clauses only if
+every clause (other than a name or a number) is in the file; otherwise the
+sentence stays in English, so a player never hears one sentence in two
+languages. Entries marked "one clause of a longer line" are those clauses.
+If you hear a line that stays English, report it with the correction issue
+and we will add it.
+
+A menu row's position ("4 of 8.") is its own entry, `{position} of
+{count}.`, spoken after whichever row has focus.
+
+### Two entries with the same English
+
+An entry with a `msgctxt` line is a second use of the same English: the
+`controller button` "Back" is the name of the controller's Back button,
+which stays as the controller prints it. The plain "Back" is the menu row
+that leaves a screen; translate that one.
 
 ## For maintainers
 

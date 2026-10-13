@@ -515,6 +515,15 @@ Everything found before 2026-09-25 moved to
       asking what the fleets meant and when he could get or buy a truck,
       plus questions from the #FreightFate tag, AppleVis and GitHub). The
       Weather app now lists active live weather alerts.
+- [x] Controller help (owner, 2026-10-12, from a player with a new Xbox
+      controller): How to play and the manual name the View and Menu
+      buttons, warn that the Xbox button opens the Game Bar, list the
+      default buttons, and say what to check when a controller does nothing.
+- [ ] With several controllers connected (a second pad, or Steam's virtual
+      one), the game listens only to the first it found, and the other's
+      buttons do nothing. It could switch to whichever controller the
+      player presses, once a duplicate pad can be told apart from a second
+      one.
 - [ ] States visited is readable only on the online profile; a player
       asked where to hear it in the game (Mastodon, 2026-07-05).
 - [ ] The exit-call truth test (`test_the_exit_calls_name_the_road_that_is_really_left`)

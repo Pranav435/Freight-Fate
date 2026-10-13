@@ -2845,9 +2845,6 @@ msgstr "Pilot"
 msgid "Big Buck's"
 msgstr "Big Buck's"
 
-msgid "landmark"
-msgstr "landmark"
-
 msgid "big buck"
 msgstr "big buck"
 
@@ -9447,9 +9444,19 @@ msgid ", background check clears in about {wait_days} days"
 msgstr ""
 ", проверка биографии займёт около {wait_days} {wait_days:дня|дней|дней}"
 
+#. placeholders: {wait_days}
+#. one clause of a longer line
+msgid "background check clears in about {wait_days} days"
+msgstr "проверка биографии завершится примерно через {wait_days} дн."
+
 #. placeholders: {level}
 msgid ", carrier-sponsored free at level {level}"
 msgstr ", бесплатно за счёт перевозчика на уровне {level}"
+
+#. placeholders: {level}
+#. one clause of a longer line
+msgid "carrier-sponsored free at level {level}"
+msgstr "бесплатно за счёт перевозчика на уровне {level}"
 
 msgid "Pay advance already taken for this load. Deliver it first."
 msgstr "Аванс за этот груз уже взят. Сначала доставьте его."
@@ -9585,8 +9592,16 @@ msgstr "{join} за последний год"
 msgid ", next year"
 msgstr ", в следующем году"
 
+#. one clause of a longer line
+msgid "next year"
+msgstr "в следующем году"
+
 msgid ", the year after next"
 msgstr ", через год"
+
+#. one clause of a longer line
+msgid "the year after next"
+msgstr "через год"
 
 #. placeholders: {record_clears_text}
 #. one sentence of a longer line
@@ -10113,6 +10128,10 @@ msgid ", planned around the 10-hour rest your hours will force. "
 msgstr ""
 ", с учётом 10-часового отдыха, которого потребует ваш режим труда и отдыха."
 
+#. one clause of a longer line
+msgid "planned around the 10-hour rest your hours will force."
+msgstr "с учётом 10-часового отдыха, который потребуют ваши часы."
+
 #. placeholders: {f2}, {rest}, {equipment_text}, {trailer}, {preview}, {market}, {endorsement}
 #. one sentence of a longer line
 msgid ""
@@ -10555,6 +10574,9 @@ msgid ""
 msgstr ""
 "Последняя достижимая остановка на {action}: {name}, через {distance}. "
 "Планируйте остановиться здесь."
+
+msgid "landmark"
+msgstr "landmark"
 
 msgid "generic"
 msgstr "generic"
@@ -11955,9 +11977,6 @@ msgstr "ff-safety-satellite"
 msgid "afn-humphreys"
 msgstr "afn-humphreys"
 
-msgid "local"
-msgstr "местная"
-
 msgid "streaming"
 msgstr "через интернет"
 
@@ -11989,6 +12008,9 @@ msgstr "в каталоге радиостанций есть повторяющ
 msgid "imported stations collide with curated station ids"
 msgstr ""
 "импортированные станции совпадают с идентификаторами отобранных станций"
+
+msgid "local"
+msgstr "местная"
 
 msgid "codec"
 msgstr "codec"
@@ -12081,6 +12103,11 @@ msgstr "в избранном"
 #. placeholders: {spoken}
 msgid ", {spoken} away"
 msgstr ", на расстоянии {spoken}"
+
+#. placeholders: {spoken}
+#. one clause of a longer line
+msgid "{spoken} away"
+msgstr "в {spoken}"
 
 #. placeholders: {source}
 #. one sentence of a longer line
@@ -12497,14 +12524,8 @@ msgstr "вождение"
 msgid "you must take a 30 minute break at a rest stop"
 msgstr "вы должны сделать 30-минутный перерыв на остановке для отдыха"
 
-msgid "drive"
-msgstr "вождение"
-
 msgid "your driving time for this shift ends. You need 10 hours of sleep"
 msgstr "закончится ваше время вождения на эту смену. Вам нужно 10 часов сна"
-
-msgid "duty"
-msgstr "смена"
 
 msgid "your duty window closes. You need 10 hours of sleep"
 msgstr "закроется ваше окно смены. Вам нужно 10 часов сна"
@@ -12551,46 +12572,37 @@ msgstr ""
 "Режим труда и отдыха: вы превысили предел. Поспите 10 часов на остановке "
 "для отдыха, чтобы сбросить счётчик."
 
-#. placeholders: {status}
-#. one sentence of a longer line
-msgid "ELD status {status}."
-msgstr "Статус в бортовом журнале: {status}."
+msgid "ELD status driving."
+msgstr "Статус ELD: за рулём."
 
-#. placeholders: {status}, {duration_text}, {duration_text2}, {suffix}
-msgid ""
-"ELD status {status}. Hours of service: {duration_text} of driving left, "
-"{duration_text2} of duty window left.{suffix}"
-msgstr ""
-"Статус в бортовом журнале: {status}. Режим труда и отдыха: вождения "
-"осталось {duration_text}, окна смены осталось {duration_text2}.{suffix}"
+msgid "ELD status on duty not driving."
+msgstr "Статус ELD: на смене, не за рулём."
 
-#. placeholders: {duration_text}, {duration_text2}, {suffix}
-#. one sentence of a longer line
+msgid "ELD status off duty."
+msgstr "Статус ELD: вне смены."
+
+msgid "ELD status sleeper berth."
+msgstr "Статус ELD: спальное место."
+
+#. placeholders: {replace}
+msgid "ELD status {replace}."
+msgstr "Статус ELD: {replace}."
+
+#. placeholders: {duration_text}, {duration_text2}
 msgid ""
 "Hours of service: {duration_text} of driving left, {duration_text2} of duty "
-"window left.{suffix}"
+"window left."
 msgstr ""
-"Режим труда и отдыха: вождения осталось {duration_text}, окна смены "
-"осталось {duration_text2}.{suffix}"
+"Часы работы: осталось {duration_text} вождения и {duration_text2} окна "
+"смены."
 
-#. placeholders: {status}, {duration_text}, {duration_text2}, {duration_text3}, {suffix}
-msgid ""
-"ELD status {status}. Hours of service: {duration_text} of driving left, "
-"break due in {duration_text2}, duty window closes in "
-"{duration_text3}.{suffix}"
-msgstr ""
-"Статус в бортовом журнале: {status}. Режим труда и отдыха: вождения "
-"осталось {duration_text}, перерыв через {duration_text2}, окно смены "
-"закроется через {duration_text3}.{suffix}"
-
-#. placeholders: {duration_text}, {duration_text2}, {duration_text3}, {suffix}
-#. one sentence of a longer line
+#. placeholders: {duration_text}, {duration_text2}, {duration_text3}
 msgid ""
 "Hours of service: {duration_text} of driving left, break due in "
-"{duration_text2}, duty window closes in {duration_text3}.{suffix}"
+"{duration_text2}, duty window closes in {duration_text3}."
 msgstr ""
-"Режим труда и отдыха: вождения осталось {duration_text}, перерыв через "
-"{duration_text2}, окно смены закроется через {duration_text3}.{suffix}"
+"Часы работы: осталось {duration_text} вождения, перерыв через "
+"{duration_text2}, окно смены закроется через {duration_text3}."
 
 #. placeholders: {duration_text}
 msgid "Driving left: {duration_text}."
@@ -12607,6 +12619,12 @@ msgstr "Перерыв через {duration_text}."
 #. placeholders: {duration_text}
 msgid "Duty window closes in {duration_text}."
 msgstr "Окно смены закроется через {duration_text}."
+
+msgid "drive"
+msgstr "вождение"
+
+msgid "duty"
+msgstr "смена"
 
 msgid "At the wheel: no driving yet"
 msgstr "За рулём: ещё не ездили"
@@ -12658,8 +12676,17 @@ msgid ", duty window {duration_text}"
 msgstr ", окно смены {duration_text}"
 
 #. placeholders: {duration_text}
+#. one clause of a longer line
+msgid "duty window {duration_text}"
+msgstr "окно смены {duration_text}"
+
+#. placeholders: {duration_text}
 msgid ", but your duty window closes first, in {duration_text}"
 msgstr ", но окно смены закроется раньше, через {duration_text}"
+
+#. one clause of a longer line
+msgid "but your duty window closes first"
+msgstr "но ваше окно смены закроется раньше"
 
 #. placeholders: {answer}, {shift_over}
 #. one sentence of a longer line
@@ -12676,6 +12703,10 @@ msgstr "Оставшееся время вождения: без огранич�
 
 msgid ", and no duty window"
 msgstr ", и окна смены нет"
+
+#. one clause of a longer line
+msgid "and no duty window"
+msgstr "и нет окна смены"
 
 #. placeholders: {duration_text}
 msgid "Driving time left: {duration_text}"
@@ -12704,6 +12735,10 @@ msgstr "{duty_text}, раньше, чем закончится время вож
 
 msgid ", break overdue"
 msgstr ", перерыв просрочен"
+
+#. one clause of a longer line
+msgid "break overdue"
+msgstr "перерыв просрочен"
 
 msgid ". Your 30-minute break is overdue and comes first"
 msgstr ". Ваш 30-минутный перерыв просрочен, и он идёт первым"
@@ -13110,6 +13145,11 @@ msgstr "{event} рядом с {near_city}"
 #. placeholders: {minutes}
 msgid ", about {minutes} minutes slower"
 msgstr ", примерно на {minutes} {minutes:минуту|минуты|минут} медленнее"
+
+#. placeholders: {minutes}
+#. one clause of a longer line
+msgid "about {minutes} minutes slower"
+msgstr "примерно на {minutes} мин. медленнее"
 
 #. placeholders: {join}
 msgid "Weather alerts on the way: {join}."
@@ -13899,6 +13939,11 @@ msgstr "спуск"
 msgid ", terrain {terrain}"
 msgstr ", рельеф: {terrain}"
 
+#. placeholders: {terrain}
+#. one clause of a longer line
+msgid "terrain {terrain}"
+msgstr "рельеф {terrain}"
+
 #. placeholders: {f}, {direction}, {terrain_text}
 msgid "Current grade {f} percent {direction}{terrain_text}"
 msgstr ""
@@ -13981,6 +14026,11 @@ msgstr "Дорога сужается, полос в вашем направле
 #. placeholders: {distance}
 msgid ", then {distance} on it"
 msgstr ", затем {distance} по ней"
+
+#. placeholders: {distance}
+#. one clause of a longer line
+msgid "then {distance} on it"
+msgstr "затем {distance} по ней"
 
 msgid "500 meters"
 msgstr "500 метров"
@@ -14889,9 +14939,6 @@ msgstr "unsupported"
 msgid "empty"
 msgstr "пусто"
 
-msgid "dry"
-msgstr "сухо"
-
 msgid "schema"
 msgstr "schema"
 
@@ -15099,6 +15146,9 @@ msgstr "облачно"
 
 msgid "high winds"
 msgstr "сильный ветер"
+
+msgid "dry"
+msgstr "сухо"
 
 msgid "wet"
 msgstr "мокро"
@@ -16453,9 +16503,19 @@ msgstr "smoke-проверки"
 msgid ", {spacing} ms after the last press"
 msgstr ", через {spacing} мс после последнего нажатия"
 
+#. placeholders: {spacing}
+#. one clause of a longer line
+msgid "{spacing} ms after the last press"
+msgstr "{spacing} мс после последнего нажатия"
+
 #. placeholders: {gap}
 msgid ", {gap} ms after its press"
 msgstr ", через {gap} мс после её нажатия"
+
+#. placeholders: {gap}
+#. one clause of a longer line
+msgid "{gap} ms after its press"
+msgstr "{gap} мс после его нажатия"
 
 #. placeholders: {saturating_sub}, {else}, {name}, {detail}, {else2}, {else3}, {else4}, {else5}, {frame_ms}
 msgid ""
@@ -17105,6 +17165,7 @@ msgstr "Right Alt"
 msgid "an unnamed key"
 msgstr "безымянная клавиша"
 
+msgctxt "controller button"
 msgid "Back"
 msgstr "Back"
 
@@ -18364,6 +18425,9 @@ msgstr ""
 msgid "Ready in {remaining} seconds."
 msgstr "Готово через {remaining} {remaining:секунду|секунды|секунд}."
 
+msgid "Back"
+msgstr "Back"
+
 msgid "Enter selects, Escape goes back. Control stops the current speech."
 msgstr ""
 "Enter выбирает, Escape возвращает назад. Control останавливает текущую речь."
@@ -18374,9 +18438,11 @@ msgstr "Меню"
 msgid "No options available."
 msgstr "Нет доступных вариантов."
 
-#. placeholders: {label}, {index}, {items}
-msgid "{label} {index} of {items}."
-msgstr "{label} {index} из {items}."
+#. placeholders: {position}, {count}
+#. A menu row's position, spoken after the row: "4 of 8." The game
+#. translates it apart from the row, so keep both {position} and {count}.
+msgid "{position} of {count}."
+msgstr "{position} из {count}."
 
 msgid "Repeat this line."
 msgstr "Повторить эту строку."
@@ -18454,8 +18520,17 @@ msgstr ""
 msgid ", {grouped} to level {level}"
 msgstr ", ещё {grouped} до уровня {level}"
 
+#. placeholders: {grouped}, {level}
+#. one clause of a longer line
+msgid "{grouped} to level {level}"
+msgstr "{grouped} до уровня {level}"
+
 msgid ", top level"
 msgstr ", высший уровень"
+
+#. one clause of a longer line
+msgid "top level"
+msgstr "высший уровень"
 
 #. placeholders: {level}, {f}, {next}
 msgid "Level {level} driver, {f} experience{next}"
@@ -19678,6 +19753,10 @@ msgstr "Отсюда не доехать ни до одного соседнег
 msgid ", this week's price"
 msgstr ", цена этой недели"
 
+#. one clause of a longer line
+msgid "this week's price"
+msgstr "цена этой недели"
+
 #. placeholders: {f}, {live}
 msgid "Garage: fuel {f} per gallon{live}"
 msgstr "Гараж: топливо {f} за галлон{live}"
@@ -20593,6 +20672,11 @@ msgstr ""
 msgid ", tier {owned} of {max_tier}"
 msgstr ", ступень {owned} из {max_tier}"
 
+#. placeholders: {owned}, {max_tier}
+#. one clause of a longer line
+msgid "tier {owned} of {max_tier}"
+msgstr "уровень {owned} из {max_tier}"
+
 #. placeholders: {label}, {tiers}
 msgid "{label}: owned{tiers}"
 msgstr "{label}: куплено{tiers}"
@@ -20600,6 +20684,11 @@ msgstr "{label}: куплено{tiers}"
 #. placeholders: {owned}
 msgid ", tier {owned} owned"
 msgstr ", куплена ступень {owned}"
+
+#. placeholders: {owned}
+#. one clause of a longer line
+msgid "tier {owned} owned"
+msgstr "уровень {owned} куплен"
 
 #. placeholders: {label}, {owned}, {max_tier}, {grouped}, {owned_part}
 msgid "{label}, tier {owned} of {max_tier}: {grouped} dollars{owned_part}"
@@ -23490,75 +23579,10 @@ msgid "At your destination, stop, then dock and deliver. "
 msgstr ""
 "В пункте назначения остановитесь, затем встаньте к доку и сдайте груз. "
 
-#. one sentence of a longer line
-msgid "A quick tap just brakes."
-msgstr "Короткое нажатие просто тормозит."
+#. placeholders: {up}, {down}
+msgid "Hold {up} to accelerate, {down} to brake."
+msgstr "Удерживайте {up}, чтобы ускоряться, {down}, чтобы тормозить."
 
-#. placeholders: {down}
-#. one sentence of a longer line
-msgid ""
-"In automatic with deliberate direction changes, stop, release {down}, then "
-"press and hold it again to reverse."
-msgstr ""
-"В автоматическом режиме с намеренной сменой направления остановитесь, "
-"отпустите {down}, затем снова нажмите и удерживайте, чтобы ехать назад."
-
-#. placeholders: {down}, {up}
-msgid ""
-"In automatic with deliberate direction changes, stop, release {down}, then "
-"press and hold it again to reverse. While reversing, stop with {up}, "
-"release, then press and hold again for forward. A quick tap just brakes. "
-msgstr ""
-"В автоматическом режиме с намеренной сменой направления остановитесь, "
-"отпустите {down}, затем снова нажмите и удерживайте, чтобы ехать назад. "
-"Двигаясь назад, остановитесь клавишей {up}, отпустите, затем снова нажмите "
-"и удерживайте, чтобы ехать вперёд. Короткое нажатие просто тормозит. "
-
-#. placeholders: {up}
-#. one sentence of a longer line
-msgid ""
-"While reversing, stop with {up}, release, then press and hold again for "
-"forward."
-msgstr ""
-"Двигаясь назад, остановитесь клавишей {up}, отпустите, затем снова нажмите "
-"и удерживайте, чтобы ехать вперёд."
-
-#. one sentence of a longer line
-msgid "A brake held through a stop just holds the truck."
-msgstr ""
-"Тормоз, удержанный после остановки, просто держит грузовик на месте."
-
-#. placeholders: {down}
-#. one sentence of a longer line
-msgid ""
-"In automatic with simple direction changes, stop, release {down}, then "
-"press and hold it again to reverse."
-msgstr ""
-"В автоматическом режиме с простой сменой направления остановитесь, "
-"отпустите {down}, затем снова нажмите и удерживайте, чтобы ехать назад."
-
-#. placeholders: {down}, {up}
-msgid ""
-"In automatic with simple direction changes, stop, release {down}, then "
-"press and hold it again to reverse. While reversing, stop with {up}, "
-"release, then hold it again for forward. A brake held through a stop just "
-"holds the truck. "
-msgstr ""
-"В автоматическом режиме с простой сменой направления остановитесь, "
-"отпустите {down}, затем снова нажмите и удерживайте, чтобы ехать назад. "
-"Двигаясь назад, остановитесь клавишей {up}, отпустите, затем снова "
-"удерживайте, чтобы ехать вперёд. Тормоз, удержанный после остановки, просто "
-"держит грузовик на месте. "
-
-#. placeholders: {up}
-#. one sentence of a longer line
-msgid ""
-"While reversing, stop with {up}, release, then hold it again for forward."
-msgstr ""
-"Двигаясь назад, остановитесь клавишей {up}, отпустите, затем снова "
-"удерживайте, чтобы ехать вперёд."
-
-#. one sentence of a longer line
 msgid ""
 "Tap the brake, then press again and hold half a second to latch it "
 "hands-free; a click and a spoken confirmation mark the catch."
@@ -23568,449 +23592,381 @@ msgstr ""
 "фиксацию."
 
 #. placeholders: {down}
-msgid ""
-"Tap the brake, then press again and hold half a second to latch it "
-"hands-free; a click and a spoken confirmation mark the catch. {down} once "
-"releases it; the accelerator releases it instantly. The throttle key never "
-"latches. "
-msgstr ""
-"Коснитесь тормоза, затем нажмите снова и подержите полсекунды, чтобы "
-"зафиксировать его без рук; щелчок и голосовое подтверждение отмечают "
-"фиксацию. Одно нажатие {down} снимает фиксацию; газ снимает её мгновенно. "
-"Клавиша газа никогда не фиксируется. "
+msgid "{down} once releases it; the accelerator releases it instantly."
+msgstr "Одно нажатие {down} снимает фиксацию; газ снимает её мгновенно."
 
-#. one sentence of a longer line
 msgid "The throttle key never latches."
 msgstr "Клавиша газа никогда не фиксируется."
 
 #. placeholders: {down}
-#. one sentence of a longer line
-msgid "{down} once releases it; the accelerator releases it instantly."
-msgstr "Одно нажатие {down} снимает фиксацию; газ снимает её мгновенно."
-
-#. placeholders: {up}, {down}
-msgid "Hold {up} to accelerate, {down} to brake. "
-msgstr "Удерживайте {up}, чтобы ускоряться, {down}, чтобы тормозить. "
-
-#. placeholders: {n}
-msgid "Hold {n} for the emergency brake, the hardest possible stop. "
+msgid ""
+"In automatic with deliberate direction changes, stop, release {down}, then "
+"press and hold it again to reverse."
 msgstr ""
-"Удерживайте {n} для экстренного торможения, самой резкой остановки. "
+"В автоматическом режиме с намеренной сменой направления остановитесь, "
+"отпустите {down}, затем снова нажмите и удерживайте, чтобы ехать назад."
 
-#. placeholders: {n}
-msgid "{n} starts automatic speed control: adaptive cruise on open roads, "
+#. placeholders: {up}
+msgid ""
+"While reversing, stop with {up}, release, then press and hold again for "
+"forward."
 msgstr ""
-"{n} включает автоматическое управление скоростью: адаптивный круиз-контроль "
-"на открытой дороге, "
+"Двигаясь назад, остановитесь клавишей {up}, отпустите, затем снова нажмите "
+"и удерживайте, чтобы ехать вперёд."
 
-msgid "the speed keeper in low-speed zones. Weather widens the gap. "
+msgid "A quick tap just brakes."
+msgstr "Короткое нажатие просто тормозит."
+
+#. placeholders: {down}
+msgid ""
+"In automatic with simple direction changes, stop, release {down}, then "
+"press and hold it again to reverse."
 msgstr ""
-"поддержание скорости в зонах низкой скорости. Погода увеличивает дистанцию. "
+"В автоматическом режиме с простой сменой направления остановитесь, "
+"отпустите {down}, затем снова нажмите и удерживайте, чтобы ехать назад."
 
-msgid "Cruise eases early for a sharp posted-limit drop, the keeper for "
+#. placeholders: {up}
+msgid ""
+"While reversing, stop with {up}, release, then hold it again for forward."
+msgstr ""
+"Двигаясь назад, остановитесь клавишей {up}, отпустите, затем снова "
+"удерживайте, чтобы ехать вперёд."
+
+msgid "A brake held through a stop just holds the truck."
+msgstr ""
+"Тормоз, удержанный после остановки, просто держит грузовик на месте."
+
+#. placeholders: {emergency_brake}
+msgid ""
+"Hold {emergency_brake} for the emergency brake, the hardest possible stop."
+msgstr ""
+"Удерживайте {emergency_brake} для экстренного торможения, самой жёсткой "
+"остановки."
+
+#. placeholders: {cruise}
+msgid ""
+"{cruise} starts automatic speed control: adaptive cruise on open roads, the "
+"speed keeper in low-speed zones."
+msgstr ""
+"{cruise} включает автоматическое управление скоростью: адаптивный "
+"круиз-контроль на открытой дороге, поддержание скорости в зонах низкой "
+"скорости."
+
+msgid "Weather widens the gap."
+msgstr "Погода увеличивает дистанцию."
+
+msgid ""
+"Cruise eases early for a sharp posted-limit drop, the keeper for the next "
+"turn or the next lower limit."
 msgstr ""
 "Круиз-контроль заранее сбрасывает скорость перед резким снижением "
-"ограничения, поддержание скорости — "
+"ограничения, поддержание скорости — перед следующим поворотом или следующим "
+"более низким ограничением."
 
-msgid "the next turn or the next lower limit. "
+msgid "Braking cancels the session."
+msgstr "Торможение отменяет поддержание."
+
+msgid "At the planned pickup it pauses and resumes once you depart."
 msgstr ""
-"перед следующим поворотом или следующим, более низким ограничением. "
-
-msgid "Braking cancels the session. At the planned pickup it pauses and "
-msgstr ""
-"Торможение отменяет режим. У запланированного места погрузки он встаёт на "
-"паузу и "
-
-msgid "resumes once you depart. "
-msgstr "возобновляется, когда вы отправитесь. "
-
-msgid "Plus and minus, including the keypad keys, change the open-road "
-msgstr ""
-"Плюс и минус, включая клавиши цифровой клавиатуры, меняют цель на открытой "
-"дороге "
+"На запланированной погрузке он встаёт на паузу и продолжает, как только вы "
+"трогаетесь."
 
 msgid ""
-"target by five; it never holds more than five over the posted limit. "
-"Control "
+"Plus and minus, including the keypad keys, change the open-road target by "
+"five; it never holds more than five over the posted limit."
 msgstr ""
-"на пять; она никогда не превышает ограничение больше чем на пять. Control "
+"Плюс и минус, в том числе на цифровой клавиатуре, меняют цель на открытой "
+"дороге на пять; она никогда не превышает ограничение больше чем на пять."
 
-msgid "with plus or minus, by one. "
-msgstr "с плюсом или минусом меняет на один. "
+msgid "Control with plus or minus, by one."
+msgstr "Control с плюсом или минусом меняет её на один."
 
-#. placeholders: {n}
-msgid "{n} resumes the last cruise speed. "
-msgstr "{n} возвращает последнюю скорость круиз-контроля. "
+#. placeholders: {cruise_resume}
+msgid "{cruise_resume} resumes the last cruise speed."
+msgstr "{cruise_resume} возвращает последнюю скорость круиза."
 
-#. placeholders: {n}
-msgid "Parked with the brake set, {n} latches a high idle; plus and minus "
+#. placeholders: {cruise}
+msgid ""
+"Parked with the brake set, {cruise} latches a high idle; plus and minus "
+"adjust it, and releasing the parking brake drops it."
 msgstr ""
-"На стоянке с включённым тормозом {n} фиксирует повышенные холостые обороты; "
-"плюс и минус "
-
-msgid "adjust it, and releasing the parking brake drops it. "
-msgstr "регулируют их, а отпускание стояночного тормоза их сбрасывает. "
+"На стоянке с затянутым тормозом {cruise} фиксирует повышенные холостые "
+"обороты; плюс и минус их настраивают, а отпускание стояночного тормоза их "
+"сбрасывает."
 
 #. placeholders: {exit}
-msgid "{exit} signals for the next announced route exit, by number when "
+msgid ""
+"{exit} signals for the next announced route exit, by number when known, or "
+"cancels that signal."
 msgstr ""
-"{exit} включает сигнал для следующего объявленного съезда с маршрута, с "
-"номером, если "
-
-msgid "known, or cancels that signal. Unless lane keeping is on full, move "
-msgstr ""
-"он известен, или отменяет этот сигнал. Если удержание полосы не полное, "
-"перестройтесь "
-
-msgid "to the right lane, then steer right into the exit lane where it "
-msgstr "в правую полосу, затем рулите вправо на полосу съезда там, где она "
+"{exit} включает поворотник на следующий объявленный съезд маршрута, по "
+"номеру, если он известен, или отменяет этот поворотник."
 
 msgid ""
-"opens, just before the gore. Keep road speed to there, then brake to "
+"Unless lane keeping is on full, move to the right lane, then steer right "
+"into the exit lane where it opens, just before the gore."
 msgstr ""
-"открывается, прямо перед разделительным клином. До него держите скорость "
-"дороги, затем тормозите до "
+"Если удержание полосы не полное, перестройтесь в правую полосу, затем "
+"рулите вправо на полосу съезда там, где она открывается, прямо перед "
+"разделительным клином."
 
-msgid "the exit speed before the ramp curve. Ramps usually end "
+msgid ""
+"Keep road speed to there, then brake to the exit speed before the ramp "
+"curve."
 msgstr ""
-"скорости съезда перед поворотом съезда. Съезды обычно заканчиваются "
+"До этого места держите скорость дороги, затем тормозите до скорости съезда "
+"перед поворотом рампы."
 
-#. one sentence of a longer line
-msgid "at a traffic light or stop sign, called out on the way down."
-msgstr "светофором или знаком «Стоп», о которых объявят по пути вниз."
+msgid ""
+"Ramps usually end at a traffic light or stop sign, called out on the way "
+"down."
+msgstr ""
+"Рампы обычно заканчиваются светофором или знаком «Стоп», о которых сообщают "
+"по пути вниз."
 
 #. placeholders: {exit}
-msgid "at a traffic light or stop sign, called out on the way down. {exit} "
+msgid ""
+"{exit} also signals a pull-over when a trooper lights you up for speeding, "
+"a scale bypass, or unsafe equipment: signal, then brake to a stop."
 msgstr ""
-"светофором или знаком «Стоп», о которых объявят по пути вниз. {exit} "
+"{exit} также сигналит остановку у обочины, когда полицейский включает вам "
+"мигалки за превышение скорости, объезд весов или неисправное оборудование: "
+"включите поворотник, затем тормозите до остановки."
 
-msgid "also signals a pull-over when a trooper lights you up for speeding, "
+msgid ""
+"Ignoring the lights brings failure-to-stop warnings, then a stop that "
+"cancels the load: a major offense."
 msgstr ""
-"также включает сигнал остановки на обочине, когда патруль включает мигалки "
-"за превышение скорости, "
+"Если игнорировать мигалки, будут предупреждения о неподчинении, затем "
+"остановка, которая отменяет груз: серьёзное нарушение."
 
-msgid "a scale bypass, or unsafe equipment: signal, then brake to a stop. "
+#. placeholders: {clock}
+msgid "{clock} also speaks the date and season."
+msgstr "{clock} также называет дату и время года."
+
+#. placeholders: {radio}
+msgid "{radio} toggles the in-cab radio."
+msgstr "{radio} включает или выключает радио в кабине."
+
+msgid ""
+"Page Down tunes to the next station, Page Up to the previous; semicolon and "
+"apostrophe do the same."
 msgstr ""
-"объезд весов или неисправное оборудование: включите сигнал, затем "
-"затормозите до остановки. "
+"Page Down настраивает следующую станцию, Page Up — предыдущую; точка с "
+"запятой и апостроф делают то же самое."
 
-msgid "Ignoring the lights brings failure-to-stop "
-msgstr "Если игнорировать мигалки, последуют предупреждения о неостановке, "
-
-msgid "warnings, then a stop that cancels the load: a major offense. "
-msgstr "а затем остановка, которая отменяет груз: это грубое нарушение. "
-
-#. placeholders: {n}
-msgid "{n} also speaks the date and season. "
-msgstr "{n} также называет дату и время года. "
-
-#. one sentence of a longer line
-msgid "Page Down tunes to the next station,"
-msgstr "Page Down переключает на следующую станцию,"
-
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} toggles the in-cab radio."
-msgstr "{n} включает и выключает радио в кабине."
-
-#. placeholders: {n}
-msgid "{n} toggles the in-cab radio. Page Down tunes to the next station, "
+msgid ""
+"Control with the tuning keys jumps a category; Shift changes the radio "
+"volume in 10 percent steps, on or off."
 msgstr ""
-"{n} включает и выключает радио в кабине. Page Down переключает на следующую "
-"станцию, "
+"Control с клавишами настройки переходит на категорию; Shift меняет "
+"громкость радио шагами по 10 процентов, включает или выключает."
 
-msgid "Page Up to the previous; semicolon and apostrophe do the same. "
+#. placeholders: {favorite}
+msgid "{favorite} saves or unsaves the station as a favorite."
+msgstr "{favorite} добавляет станцию в избранное или убирает её."
+
+#. placeholders: {radio_status}, {now_playing}
+msgid ""
+"{radio_status} speaks station, volume, and streamer-safe status; "
+"{now_playing} speaks the song when the station says."
 msgstr ""
-"Page Up на предыдущую; точка с запятой и апостроф делают то же самое. "
+"{radio_status} называет станцию, громкость и безопасный для стрима статус; "
+"{now_playing} называет песню, если станция её сообщает."
 
-msgid "Control with the tuning keys jumps a category; Shift changes the "
+#. placeholders: {status}
+msgid ""
+"The Driver apps tablet has a Radio app to search the dial, tune by name, "
+"and keep favorites; the {status} status menu has a radio screen of "
+"receivable stations."
 msgstr ""
-"Control с клавишами настройки переходит к другой категории; Shift меняет "
+"На планшете «Приложения водителя» есть приложение «Радио», чтобы искать по "
+"шкале, настраивать по названию и хранить избранное; в меню статуса {status} "
+"есть экран радио с принимаемыми станциями."
 
-msgid "radio volume in 10 percent steps, on or off. "
+#. placeholders: {engine}
+msgid ""
+"{engine} starts the engine, and stops it only below 5 miles per hour."
 msgstr ""
-"громкость радио шагами по 10 процентов, вплоть до включения и выключения. "
+"{engine} запускает двигатель и глушит его только на скорости ниже 5 миль в "
+"час."
 
-#. placeholders: {n}
-msgid "{n} saves or unsaves the station as a favorite. "
-msgstr "{n} добавляет станцию в избранное или убирает её оттуда. "
-
-#. placeholders: {n}, {n2}
-msgid "{n} speaks station, volume, and streamer-safe status; {n2} speaks "
+msgid "Air pressure must build before the truck can move."
 msgstr ""
-"{n} называет станцию, громкость и безопасность для стриминга; {n2} называет "
+"Прежде чем грузовик сможет тронуться, должно подняться давление воздуха."
 
-msgid "the song when the station says. The Driver apps tablet has a "
-msgstr ""
-"песню, если станция её сообщает. На планшете «Приложения водителя» есть "
+#. placeholders: {parking_brake}
+msgid "{parking_brake} sets or releases the parking brake."
+msgstr "{parking_brake} затягивает или отпускает стояночный тормоз."
 
-msgid "Radio app to search the dial, tune by name, and keep favorites; "
-msgstr ""
-"приложение «Радио»: поиск по шкале, настройка по названию и избранное; "
-
-#. placeholders: {n}
-msgid "the {n} status menu has a radio screen of receivable stations. "
-msgstr ""
-"в меню состояния на {n} есть экран радио со станциями, которые ловятся. "
-
-#. placeholders: {n}
-msgid "{n} starts the engine, and stops it only below 5 miles per hour. "
-msgstr ""
-"{n} заводит двигатель, а глушит его только на скорости ниже 5 миль в час. "
-
-msgid "Air pressure must build before the truck can move. "
-msgstr ""
-"Прежде чем грузовик сможет тронуться, должно подняться давление воздуха. "
-
-#. one sentence of a longer line
 msgid "It needs 100 psi of air."
 msgstr "Нужно 100 фунтов на квадратный дюйм давления воздуха."
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} sets or releases the parking brake."
-msgstr "{n} включает или отпускает стояночный тормоз."
-
-#. placeholders: {n}
-msgid "{n} sets or releases the parking brake. It needs 100 psi of air. "
-msgstr ""
-"{n} включает или отпускает стояночный тормоз. Нужно 100 фунтов на "
-"квадратный дюйм давления воздуха. "
-
-#. placeholders: {n}
+#. placeholders: {speed}
 msgid ""
-"{n} speed, active speed-control mode, and target, and with the signal set, "
-"how far to the exit. "
+"{speed} speed, active speed-control mode, and target, and with the signal "
+"set, how far to the exit."
 msgstr ""
-"{n}: скорость, активный режим управления скоростью и цель, а при включённом "
-"сигнале — расстояние до съезда. "
+"{speed} скорость, активный режим управления скоростью и цель, а с "
+"включённым поворотником — расстояние до съезда."
 
-#. placeholders: {n2}
-#. one sentence of a longer line
-msgid "{n2} the grade under the wheels, whether the"
-msgstr "{n2}: уклон под колёсами, держит ли его"
+#. placeholders: {speed_limit}
+msgid "{speed_limit} posted speed limit."
+msgstr "{speed_limit} установленное ограничение скорости."
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} posted speed limit."
-msgstr "{n}: ограничение скорости."
-
-#. placeholders: {n}, {n2}
+#. placeholders: {grade}
 msgid ""
-"{n} posted speed limit. {n2} the grade under the wheels, whether the "
-msgstr "{n}: ограничение скорости. {n2}: уклон под колёсами, держит ли его "
+"{grade} the grade under the wheels, whether the truck is holding it, and "
+"the next grade ahead."
+msgstr ""
+"{grade} уклон под колёсами, держит ли его грузовик, и следующий уклон "
+"впереди."
 
-#. one sentence of a longer line
-msgid "truck is holding it, and the next grade ahead."
-msgstr "грузовик, и следующий уклон впереди."
+#. placeholders: {status}
+msgid "{status} status menu."
+msgstr "{status} меню статуса."
 
-#. placeholders: {n}, {n2}
+#. placeholders: {clock}
+msgid "{clock} clock, deadline, and the hours limit that comes first."
+msgstr "{clock} время, срок и ограничение часов, которое наступит первым."
+
+#. placeholders: {hos_wheel}, {hos_break}, {hos_drive}
 msgid ""
-"truck is holding it, and the next grade ahead. {n} status menu. {n2} fuel. "
+"{hos_wheel} time at the wheel so far, {hos_break} when your 30 minute break "
+"is due, {hos_drive} what ends this shift and where you can legally stop "
+"before it."
 msgstr ""
-"грузовик, и следующий уклон впереди. {n}: меню состояния. {n2}: топливо. "
+"{hos_wheel} время за рулём на данный момент, {hos_break} когда положен ваш "
+"30-минутный перерыв, {hos_drive} что закончит эту смену и где до этого "
+"можно законно остановиться."
 
-#. placeholders: {n2}
-#. one sentence of a longer line
-msgid "{n2} fuel."
-msgstr "{n2}: топливо."
+#. placeholders: {route}
+msgid "{route} progress, distance left, and where you are."
+msgstr "{route} прогресс, оставшееся расстояние и где вы находитесь."
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} status menu."
-msgstr "{n}: меню состояния."
-
-#. placeholders: {n}
-msgid "{n} clock, deadline, and the hours limit that comes first. "
-msgstr "{n}: часы, срок доставки и предел часов, который наступит первым. "
-
-#. placeholders: {n}, {n2}
-msgid "{n} time at the wheel so far, {n2} when your 30 minute break "
+#. placeholders: {place_state}, {place_road}, {place_town}, {place_direction}
+msgid ""
+"{place_state} the state, {place_road} the road, {place_town} the town or "
+"the nearest one, {place_direction} the direction."
 msgstr ""
-"{n}: сколько вы уже за рулём, {n2}: когда нужен 30-минутный перерыв, "
+"{place_state} штат, {place_road} дорога, {place_town} город или ближайший к "
+"вам, {place_direction} направление."
 
-#. placeholders: {n}
-msgid "is due, {n} what ends this shift and where you can legally stop "
-msgstr "{n}: что завершит эту смену и где можно законно остановиться "
-
-msgid "before it. "
-msgstr "до этого. "
-
-#. placeholders: {n}
-msgid "{n} progress, distance left, and where you are. "
-msgstr "{n}: прогресс, оставшееся расстояние и где вы находитесь. "
-
-#. placeholders: {n}, {n2}, {n3}
-msgid "{n} the state, {n2} the road, {n3} the town or the nearest "
-msgstr "{n}: штат, {n2}: дорога, {n3}: город или ближайший "
-
-#. one sentence of a longer line
 msgid "The keypad numbers work the same way."
 msgstr "Цифры на цифровой клавиатуре работают так же."
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "one, {n} the direction."
-msgstr "населённый пункт, {n}: направление."
+#. placeholders: {lane}
+msgid "{lane} lane position and whether the lane beside you is open."
+msgstr "{lane} положение в полосе и свободна ли соседняя полоса."
 
-#. placeholders: {n}
-msgid "one, {n} the direction. The keypad numbers work the same way. "
+#. placeholders: {lane_locator}
+msgid ""
+"{lane_locator} turns the lane locator on and off: a soft tock once a beat, "
+"panned to where you sit in your lane, on lane keeping partial or off."
 msgstr ""
-"населённый пункт, {n}: направление. Цифры на цифровой клавиатуре работают "
-"так же. "
+"{lane_locator} включает и выключает локатор полосы: мягкий стук на каждый "
+"такт, панорамированный туда, где вы находитесь в полосе, при частичном или "
+"выключенном удержании полосы."
 
-#. placeholders: {n2}
-#. one sentence of a longer line
-msgid "{n2} lane position and whether the lane beside you is"
-msgstr "{n2}: положение в полосе и то, свободна ли"
+#. placeholders: {last_announcement}
+msgid "{last_announcement} repeats the last driving announcement."
+msgstr "{last_announcement} повторяет последнее объявление о вождении."
 
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} weather."
-msgstr "{n}: погода."
-
-#. placeholders: {n}, {n2}
-msgid "{n} weather. {n2} lane position and whether the lane beside you is "
-msgstr "{n}: погода. {n2}: положение в полосе и то, свободна ли "
-
-#. one sentence of a longer line
-msgid "open."
-msgstr "соседняя полоса."
-
-#. placeholders: {n}
-msgid "open. {n} turns the lane locator on and off: a soft tock once a "
+#. placeholders: {cb}
+msgid "{cb} repeats the last CB chatter, with the distance as it is now."
 msgstr ""
-"соседняя полоса. {n} включает и выключает локатор полосы: мягкий стук раз в "
-
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} turns the lane locator on and off: a soft tock once a"
-msgstr "{n} включает и выключает локатор полосы: мягкий стук раз в"
-
-msgid "beat, panned to where you sit in your lane, on lane keeping "
-msgstr "такт, там, где вы находитесь в полосе, при частичном "
-
-msgid "partial or off. "
-msgstr "или выключенном удержании полосы. "
-
-#. placeholders: {n}
-msgid "{n} repeats the last driving announcement. "
-msgstr "{n} повторяет последнее объявление в пути. "
-
-#. placeholders: {n}
-msgid "{n} repeats the last CB chatter, with the distance as it is now. "
-msgstr ""
-"{n} повторяет последний разговор по рации, с расстоянием на текущий момент. "
+"{cb} повторяет последние переговоры по рации, с текущим расстоянием."
 
 msgid ""
 "Comma repeats what was just said and keeps stepping back; Period moves "
-"forward again. "
+"forward again."
 msgstr ""
-"Запятая повторяет только что сказанное и продолжает шагать назад; точка "
-"снова идёт вперёд. "
+"Запятая повторяет только что сказанное и продолжает отступать назад; точка "
+"снова идёт вперёд."
 
-msgid "Control with Comma or Period jumps to the oldest or newest message. "
+msgid "Control with Comma or Period jumps to the oldest or newest message."
 msgstr ""
 "Control с запятой или точкой переходит к самому старому или самому новому "
-"сообщению. "
+"сообщению."
 
 msgid ""
 "The bracket keys switch between all messages, general messages, and driving "
-"events. "
+"events."
 msgstr ""
 "Клавиши квадратных скобок переключают между всеми сообщениями, общими "
-"сообщениями и событиями в пути. "
+"сообщениями и событиями вождения."
 
-msgid "Control C copies the message you are on. "
-msgstr "Control C копирует сообщение, на котором вы находитесь. "
+msgid "Control C copies the message you are on."
+msgstr "Control C копирует сообщение, на котором вы находитесь."
 
-#. placeholders: {n}
-msgid "{n} copies the last thing the game said. "
-msgstr "{n} копирует последнее, что сказала игра. "
+#. placeholders: {copy_last}
+msgid "{copy_last} copies the last thing the game said."
+msgstr "{copy_last} копирует последнее, что сказала игра."
 
-#. placeholders: {n}
+#. placeholders: {upcoming}
 msgid ""
-"{n} reads the road ahead that no other key answers: the exit your signal is "
-"on for, the ramp "
+"{upcoming} reads the road ahead that no other key answers: the exit your "
+"signal is on for, the ramp control coming up, the next imposed limit, the "
+"next stop, and the next bend that demands slowing."
 msgstr ""
-"{n} рассказывает о дороге впереди то, на что не отвечает другая клавиша: "
-"съезд, для которого включён сигнал, управление движением "
+"{upcoming} читает дорогу впереди, о которой не говорит ни одна другая "
+"клавиша: съезд, на который включён поворотник, ближайшее управление на "
+"рампе, следующее введённое ограничение, следующую остановку и следующий "
+"поворот, требующий сбросить скорость."
 
-msgid "control coming up, the next imposed limit, the next stop, and "
+#. placeholders: {safe_speed}
+msgid ""
+"Bends that demand slowing are called before they arrive, like Sharp left, "
+"half a mile, advise 35; {safe_speed} gives one safe-speed number with the "
+"bend in it."
 msgstr ""
-"в конце съезда, следующее введённое ограничение, следующую остановку и "
+"О поворотах, требующих сбросить скорость, сообщают заранее, например: "
+"Крутой поворот налево, полмили, рекомендовано 35; {safe_speed} даёт одну "
+"безопасную скорость с учётом поворота."
 
-msgid "the next bend that demands slowing. "
-msgstr "следующий поворот, перед которым нужно сбросить скорость. "
-
-msgid "Bends that demand slowing are called before they arrive, like "
+#. placeholders: {status}
+msgid ""
+"The {status} status menu includes a Driver apps tablet for navigation, "
+"weather, traffic, truck stops, road chatter, and ELD."
 msgstr ""
-"Повороты, где нужно сбросить скорость, объявляются заранее, например "
+"В меню статуса {status} есть планшет «Приложения водителя» с навигацией, "
+"погодой, трафиком, стоянками, разговорами на дороге и ELD."
 
-#. placeholders: {n}
-msgid "Sharp left, half a mile, advise 35; {n} gives one safe-speed number "
-msgstr ""
-"«Резко налево, полмили, рекомендуемая скорость 35»; {n} называет одну "
-"безопасную скорость "
-
-msgid "with the bend in it. "
-msgstr "с учётом поворота. "
-
-#. placeholders: {n}
-msgid "The {n} status menu includes a Driver apps tablet for navigation, "
-msgstr ""
-"В меню состояния на {n} есть планшет «Приложения водителя» с навигацией, "
-
-msgid "weather, traffic, truck stops, road chatter, and ELD. "
-msgstr ""
-"погодой, движением, стоянками для грузовиков, рассказами о дороге и "
-"электронным журналом. "
-
-msgid "Left or Right Control stops the driving event voice. "
-msgstr "Left или Right Control останавливает голос событий в пути. "
+msgid "Left or Right Control stops the driving event voice."
+msgstr "Левый или правый Control останавливает голос событий вождения."
 
 #. placeholders: {left}, {right}
-msgid "{left} and {right} steer unless lane keeping is on full; steer "
-msgstr "{left} и {right} рулят, если удержание полосы не полное; рулите "
+msgid ""
+"{left} and {right} steer unless lane keeping is on full; steer across the "
+"lane line to change lanes."
+msgstr ""
+"{left} и {right} рулят, если удержание полосы не полное; пересеките линию "
+"разметки, чтобы сменить полосу."
 
 #. placeholders: {left}, {right}
-#. one sentence of a longer line
 msgid "On full, tap {left} or {right}."
 msgstr "При полном удержании коротко нажмите {left} или {right}."
 
-#. one sentence of a longer line
-msgid "across the lane line to change lanes."
-msgstr "через линию разметки, чтобы сменить полосу."
-
-#. placeholders: {left}, {right}
+#. placeholders: {straighten}
 msgid ""
-"across the lane line to change lanes. On full, tap {left} or {right}. "
+"Hold {straighten} to point the truck straight down the road; where it sits "
+"in the lane stays yours to fix."
 msgstr ""
-"через линию разметки, чтобы сменить полосу. При полном удержании коротко "
-"нажмите {left} или {right}. "
+"Удерживайте {straighten}, чтобы выровнять грузовик вдоль дороги; положение "
+"в полосе исправляете вы сами."
 
-#. placeholders: {n}
+msgid "Exits leave from the right lane."
+msgstr "Съезды отходят от правой полосы."
+
 msgid ""
-"Hold {n} to point the truck straight down the road; where it sits in the "
-"lane stays yours to fix. "
+"Change lanes or brake means a fixed object in your lane: take the open lane "
+"it names, or brake nearly to a stop and ease around."
 msgstr ""
-"Удерживайте {n}, чтобы направить грузовик прямо вдоль дороги; положение в "
-"полосе исправлять по-прежнему вам. "
-
-msgid "Exits leave from the right lane. Change lanes or brake means a "
-msgstr ""
-"Съезды уходят из правой полосы. «Смените полосу» или «Тормозите» означает "
-
-msgid "fixed object in your lane: take the open lane it names, or brake "
-msgstr ""
-"неподвижное препятствие в вашей полосе: перейдите в названную свободную "
-"полосу или затормозите "
-
-msgid "nearly to a stop and ease around. "
-msgstr "почти до остановки и аккуратно объедьте. "
+"Смените полосу или тормозите означает неподвижное препятствие в вашей "
+"полосе: займите названную свободную полосу или затормозите почти до "
+"остановки и осторожно объезжайте."
 
 #. placeholders: {rest}
-#. one sentence of a longer line
 msgid ""
 "{rest} plans the recommended break or sleep stop when hours of service "
 "planning hints are on; otherwise it plans the next sleep-capable stop while "
@@ -24020,114 +23976,59 @@ msgstr ""
 "включены подсказки по планированию режима труда и отдыха; иначе на ходу "
 "планирует следующую остановку, где можно поспать."
 
-#. placeholders: {rest}, {exit}
-msgid ""
-"{rest} plans the recommended break or sleep stop when hours of service "
-"planning hints are on; otherwise it plans the next sleep-capable stop while "
-"rolling. {exit} "
-msgstr ""
-"{rest} планирует рекомендуемую остановку для перерыва или сна, когда "
-"включены подсказки по планированию режима труда и отдыха; иначе на ходу "
-"планирует следующую остановку, где можно поспать. {exit} "
-
-#. placeholders: {rest}
-#. one sentence of a longer line
-msgid "Stopped at a route stop, {rest} opens its menu:"
-msgstr "Когда вы стоите на остановке маршрута, {rest} открывает её меню:"
-
-#. one sentence of a longer line
-msgid "signals for its exit."
-msgstr "включает сигнал для её съезда."
+#. placeholders: {exit}
+msgid "{exit} signals for its exit."
+msgstr "{exit} включает поворотник на её съезд."
 
 #. placeholders: {rest}
 msgid ""
-"signals for its exit. Stopped at a route stop, {rest} opens its menu: "
+"Stopped at a route stop, {rest} opens its menu: fuel, break, sleep, "
+"inspect, roadside assistance, or save where available."
 msgstr ""
-"включает сигнал для её съезда. Когда вы стоите на остановке маршрута, "
-"{rest} открывает её меню: "
-
-msgid "fuel, break, sleep, inspect, roadside assistance, or save where "
-msgstr ""
-"топливо, перерыв, сон, осмотр, техпомощь на дороге или сохранение, где "
+"При остановке на точке маршрута {rest} открывает её меню: заправка, "
+"перерыв, сон, осмотр, помощь на дороге или сохранение, где доступно."
 
 #. placeholders: {rest}
-#. one sentence of a longer line
-msgid "Fully stopped away from route points, {rest} opens the"
-msgstr ""
-"Если вы полностью остановились вдали от точек маршрута, {rest} вместо этого "
-"открывает"
-
-#. one sentence of a longer line
-msgid "available."
-msgstr "это доступно."
-
-#. placeholders: {rest}
-msgid "available. Fully stopped away from route points, {rest} opens the "
-msgstr ""
-"это доступно. Если вы полностью остановились вдали от точек маршрута, "
-"{rest} вместо этого открывает "
-
-#. one sentence of a longer line
-msgid "emergency shoulder-sleep warning instead."
-msgstr "предупреждение об экстренном сне на обочине."
-
-#. placeholders: {n}
-msgid "emergency shoulder-sleep warning instead. {n} horn. "
-msgstr "предупреждение об экстренном сне на обочине. {n}: гудок. "
-
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} horn."
-msgstr "{n}: гудок."
-
-#. placeholders: {n}, {n2}
 msgid ""
-"{n} engine brake; on an automatic it manages its own stage, and {n2}, "
-msgstr "{n}: моторный тормоз; на автомате он сам выбирает ступень, а {n2}, "
-
-#. placeholders: {n3}, {n4}
-#. one sentence of a longer line
-msgid "{n3} chooses whether {n4} runs the"
-msgstr "{n3} выбирает, будет ли {n4} работать в"
-
-#. placeholders: {n}, {n2}
-#. one sentence of a longer line
-msgid "{n}, {n2} take manual control."
-msgstr "{n}, {n2} переключают на ручное управление."
-
-#. placeholders: {n}, {n2}, {n3}, {n4}
-msgid "{n}, {n2} take manual control. {n3} chooses whether {n4} runs the "
+"Fully stopped away from route points, {rest} opens the emergency "
+"shoulder-sleep warning instead."
 msgstr ""
-"{n}, {n2} переключают на ручное управление. {n3} выбирает, будет ли {n4} "
-"работать в "
+"При полной остановке вдали от точек маршрута {rest} вместо этого открывает "
+"предупреждение об экстренном сне на обочине."
 
-#. one sentence of a longer line
-msgid "automatic mode."
-msgstr "автоматическом режиме."
-
-#. placeholders: {n}
-msgid "automatic mode. {n} switches between automatic and manual "
-msgstr ""
-"автоматическом режиме. {n} переключает между автоматическим и ручным "
-
-#. placeholders: {n}
-#. one sentence of a longer line
-msgid "{n} switches between automatic and manual"
-msgstr "{n} переключает между автоматическим и ручным"
-
+#. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
 msgid ""
-"shifting. Escape pause menu. F2 lists every driving command by name. "
+"{engine_brake} engine brake; on an automatic it manages its own stage, and "
+"{jake1}, {jake2}, {jake3} take manual control."
 msgstr ""
-"переключением передач. Escape: меню паузы. F2 перечисляет все команды "
-"вождения по названию. "
+"{engine_brake} моторный тормоз; в автоматическом режиме он сам выбирает "
+"ступень, а {jake1}, {jake2}, {jake3} переводят его в ручной режим."
 
-#. placeholders: {n}, {n2}, {n3}, {n4}
-msgid ""
-"Hold Left Shift for clutch, then {n} to shift up or {n2} to shift down, "
-"{n3} for reverse, {n4} for neutral. "
+#. placeholders: {auto_jake}, {engine_brake}
+msgid "{auto_jake} chooses whether {engine_brake} runs the automatic mode."
 msgstr ""
-"Удерживайте Left Shift для сцепления, затем {n}, чтобы повысить передачу, "
-"или {n2}, чтобы понизить, {n3} для заднего хода, {n4} для нейтрали. "
+"{auto_jake} выбирает, работает ли {engine_brake} в автоматическом режиме."
+
+#. placeholders: {transmission_mode}
+msgid "{transmission_mode} switches between automatic and manual shifting."
+msgstr ""
+"{transmission_mode} переключает между автоматическим и ручным переключением "
+"передач."
+
+msgid "Escape pause menu."
+msgstr "Escape — меню паузы."
+
+msgid "F2 lists every driving command by name."
+msgstr "F2 перечисляет все команды вождения по названиям."
+
+#. placeholders: {shift_up}, {shift_down}, {reverse}, {neutral}
+msgid ""
+"Hold Left Shift for clutch, then {shift_up} to shift up or {shift_down} to "
+"shift down, {reverse} for reverse, {neutral} for neutral."
+msgstr ""
+"Удерживайте левый Shift для сцепления, затем {shift_up}, чтобы повысить "
+"передачу, или {shift_down}, чтобы понизить, {reverse} — задний ход, "
+"{neutral} — нейтраль."
 
 msgid ""
 "Any of these keys can be moved under Settings, Gameplay, Controls, Keyboard "
@@ -24136,199 +24037,163 @@ msgstr ""
 "Любую из этих клавиш можно переназначить в разделе «Настройки», «Игровой "
 "процесс», «Управление», «Клавиши управления»."
 
-#. placeholders: {n}, {n2}
 msgid ""
-"Hold the left bumper for the clutch; {n} shifts up a gear, {n2} shifts "
-"down. "
+"Right trigger is the gas, left trigger the brake; the left trigger fully in "
+"is the hardest stop."
 msgstr ""
-"Удерживайте left bumper для сцепления; {n} повышает передачу, {n2} "
-"понижает. "
+"Правый курок — газ, левый — тормоз; левый курок до упора — самая жёсткая "
+"остановка."
+
+msgid "The left stick steers unless lane keeping is on full."
+msgstr "Левый стик рулит, если удержание полосы не полное."
+
+#. placeholders: {shift_up}, {shift_down}
+msgid ""
+"Hold the left bumper for the clutch; {shift_up} shifts up a gear, "
+"{shift_down} shifts down."
+msgstr ""
+"Удерживайте левый бампер для сцепления; {shift_up} повышает передачу, "
+"{shift_down} понижает."
 
 msgid ""
 "In automatic with deliberate direction changes, stop, let the left trigger "
-"return to neutral, then press and hold it again to reverse. While "
-"reversing, stop with the right trigger, let it return to neutral, then "
-"press and hold again for forward. A quick tap just brakes. "
+"return to neutral, then press and hold it again to reverse."
 msgstr ""
-"В автоматическом режиме с намеренной сменой направления остановитесь, дайте "
-"левому курку вернуться в нейтраль, затем снова нажмите и удерживайте его, "
-"чтобы ехать назад. Двигаясь назад, остановитесь правым курком, дайте ему "
-"вернуться в нейтраль, затем снова нажмите и удерживайте, чтобы ехать "
-"вперёд. Короткое нажатие просто тормозит. "
+"В автомате с намеренной сменой направления остановитесь, дайте левому курку "
+"вернуться в нейтраль, затем снова нажмите и удерживайте его для заднего "
+"хода."
+
+msgid ""
+"While reversing, stop with the right trigger, let it return to neutral, "
+"then press and hold again for forward."
+msgstr ""
+"Двигаясь задним ходом, остановитесь правым курком, дайте ему вернуться в "
+"нейтраль, затем снова нажмите и удерживайте для движения вперёд."
 
 msgid ""
 "In automatic with simple direction changes, stop, let the left trigger "
-"return to neutral, then press and hold it again to reverse. While "
-"reversing, stop with the right trigger, release, then press it again for "
-"forward. A brake held through a stop just holds the truck. "
+"return to neutral, then press and hold it again to reverse."
 msgstr ""
-"В автоматическом режиме с простой сменой направления остановитесь, дайте "
-"левому курку вернуться в нейтраль, затем снова нажмите и удерживайте его, "
-"чтобы ехать назад. Двигаясь назад, остановитесь правым курком, отпустите, "
-"затем нажмите снова, чтобы ехать вперёд. Тормоз, удержанный после "
-"остановки, просто держит грузовик на месте. "
-
-msgid "Right trigger is the gas, left trigger the brake; the left trigger "
-msgstr "Правый курок — газ, левый курок — тормоз; левый курок, "
-
-msgid "fully in is the hardest stop. The left stick steers unless lane "
-msgstr ""
-"нажатый до упора, даёт самую резкую остановку. Левый стик рулит, если "
-"удержание "
-
-msgid "keeping is on full. "
-msgstr "полосы не полное. "
-
-#. placeholders: {capitalized}
-msgid "{capitalized} starts automatic speed control: adaptive cruise on "
-msgstr ""
-"{capitalized} включает автоматическое управление скоростью: адаптивный "
-"круиз-контроль на "
-
-#. one sentence of a longer line
-msgid "open roads, the speed keeper in low-speed zones."
-msgstr "открытой дороге, поддержание скорости в зонах низкой скорости."
-
-#. placeholders: {capitalized}, {n}
-msgid ""
-"open roads, the speed keeper in low-speed zones. {capitalized} or {n} "
-"change the open-road "
-msgstr ""
-"открытой дороге, поддержание скорости в зонах низкой скорости. "
-"{capitalized} или {n} меняют цель на открытой дороге "
-
-#. placeholders: {capitalized}, {n}
-#. one sentence of a longer line
-msgid "{capitalized} or {n} change the open-road"
-msgstr "{capitalized} или {n} меняют цель на открытой дороге"
-
-msgid "target by five. It pauses through the planned pickup and resumes "
-msgstr ""
-"на пять. Оно встаёт на паузу на время запланированной погрузки и "
-"возобновляется, "
-
-msgid "once the loaded truck is rolling. Parked with the brake set, "
-msgstr ""
-"когда загруженный грузовик поедет. На стоянке с включённым тормозом "
-
-#. placeholders: {n}
-msgid "{n} latches a high idle. "
-msgstr "{n} фиксирует повышенные холостые обороты. "
-
-#. placeholders: {capitalized}
-msgid "{capitalized} signals for the next announced exit, or a pull-over "
-msgstr ""
-"{capitalized} включает сигнал для следующего объявленного съезда или "
-"остановки на обочине, "
-
-msgid "when a trooper lights you up. "
-msgstr "когда патруль включает вам мигалки. "
-
-#. placeholders: {capitalized}, {n}
-msgid "{capitalized} reads your route and current location, {n} the "
-msgstr "{capitalized} зачитывает маршрут и текущее местоположение, {n} — "
-
-#. placeholders: {n}
-msgid "weather, {n} the clock with your full hours of service. "
-msgstr "погоду, {n} — часы с полным режимом труда и отдыха. "
-
-#. placeholders: {capitalized}
-msgid "{capitalized} speaks your speed. "
-msgstr "{capitalized} называет вашу скорость. "
-
-#. placeholders: {capitalized}, {n}
-msgid "{capitalized} sounds the horn, {n} the engine brake. "
-msgstr "{capitalized} подаёт гудок, {n} — моторный тормоз. "
-
-#. placeholders: {capitalized}, {n}, {n2}
-msgid ""
-"{capitalized} starts or stops the engine, {n} reads fuel, {n2} reads the "
-"posted "
-msgstr ""
-"{capitalized} заводит или глушит двигатель, {n} зачитывает топливо, {n2} "
-"зачитывает "
-
-#. placeholders: {n}
-msgid ""
-"speed limit here and how far over you are, {n} sets or releases the parking "
-msgstr ""
-"ограничение скорости здесь и насколько вы его превышаете, {n} включает или "
-"отпускает стояночный "
-
-#. placeholders: {n}
-msgid ""
-"brake, {n} plans a recommended break or sleep stop when hours of service "
-"planning hints are on, or the next sleep stop otherwise; stopped at a stop, "
-"it opens its actions. "
-msgstr ""
-"тормоз, {n} планирует рекомендуемую остановку для перерыва или сна, когда "
-"включены подсказки по планированию режима труда и отдыха, а иначе следующую "
-"остановку для сна; на остановке открывает её действия. "
-
-msgid "Away from route points while fully stopped, it opens "
-msgstr "Вдали от точек маршрута при полной остановке он открывает "
-
-#. one sentence of a longer line
-msgid "emergency shoulder sleep."
-msgstr "экстренный сон на обочине."
-
-#. placeholders: {capitalized}
-msgid "emergency shoulder sleep. {capitalized} opens the status menu. "
-msgstr "экстренный сон на обочине. {capitalized} открывает меню состояния. "
-
-#. placeholders: {capitalized}
-#. one sentence of a longer line
-msgid "{capitalized} opens the status menu."
-msgstr "{capitalized} открывает меню состояния."
-
-#. placeholders: {capitalized2}, {n2}
-#. one sentence of a longer line
-msgid "{capitalized2} and {n2} lower and raise the radio volume."
-msgstr "{capitalized2} и {n2} убавляют и прибавляют громкость радио."
-
-#. placeholders: {capitalized3}, {n3}
-#. one sentence of a longer line
-msgid "{capitalized3} or {n3} changes the radio category."
-msgstr "{capitalized3} или {n3} меняет категорию радио."
-
-#. placeholders: {capitalized4}, {n4}, {n5}, {n6}
-#. one sentence of a longer line
-msgid ""
-"{capitalized4} turns the radio on or off, {n4} saves a favorite, {n5} reads "
-"radio status, and {n6} says what is playing."
-msgstr ""
-"{capitalized4} включает или выключает радио, {n4} добавляет в избранное, "
-"{n5} зачитывает состояние радио, а {n6} говорит, что играет."
-
-#. placeholders: {capitalized}, {n}
-#. one sentence of a longer line
-msgid "{capitalized} tunes to the previous station and {n} to the next."
-msgstr ""
-"{capitalized} переключает на предыдущую станцию, а {n} — на следующую."
-
-#. placeholders: {capitalized}, {n}, {capitalized2}, {n2}, {capitalized3}, {n3}, {capitalized4}, {n4}, {n5}, {n6}
-msgid ""
-"{capitalized} tunes to the previous station and {n} to the next. "
-"{capitalized2} and {n2} lower and raise the radio volume. {capitalized3} or "
-"{n3} changes the radio category. {capitalized4} turns the radio on or off, "
-"{n4} saves a favorite, {n5} reads radio status, and {n6} says what is "
-"playing. "
-msgstr ""
-"{capitalized} переключает на предыдущую станцию, а {n} — на следующую. "
-"{capitalized2} и {n2} убавляют и прибавляют громкость радио. {capitalized3} "
-"или {n3} меняет категорию радио. {capitalized4} включает или выключает "
-"радио, {n4} добавляет в избранное, {n5} зачитывает состояние радио, а {n6} "
-"говорит, что играет. "
-
-msgid "Start pauses and unpauses. The Back button stops the driving voice "
-msgstr ""
-"Start ставит на паузу и снимает с паузы. Кнопка Back останавливает голос в "
-"пути, "
+"В автомате с простой сменой направления остановитесь, дайте левому курку "
+"вернуться в нейтраль, затем снова нажмите и удерживайте его для заднего "
+"хода."
 
 msgid ""
-"while it is speaking; when nothing is being said, it repeats this help. "
+"While reversing, stop with the right trigger, release, then press it again "
+"for forward."
 msgstr ""
-"пока он говорит; когда ничего не звучит, она повторяет эту справку. "
+"Двигаясь задним ходом, остановитесь правым курком, отпустите, затем снова "
+"нажмите его для движения вперёд."
+
+#. placeholders: {cruise_cap}
+msgid ""
+"{cruise_cap} starts automatic speed control: adaptive cruise on open roads, "
+"the speed keeper in low-speed zones."
+msgstr ""
+"{cruise_cap} включает автоматическое управление скоростью: адаптивный "
+"круиз-контроль на открытой дороге, поддержание скорости в зонах низкой "
+"скорости."
+
+#. placeholders: {cruise_down}, {cruise_up}
+msgid "{cruise_down} or {cruise_up} change the open-road target by five."
+msgstr ""
+"{cruise_down} или {cruise_up} меняют цель на открытой дороге на пять."
+
+msgid ""
+"It pauses through the planned pickup and resumes once the loaded truck is "
+"rolling."
+msgstr ""
+"Он встаёт на паузу на запланированной погрузке и продолжает, как только "
+"гружёный грузовик тронется."
+
+#. placeholders: {cruise}
+msgid "Parked with the brake set, {cruise} latches a high idle."
+msgstr ""
+"На стоянке с затянутым тормозом {cruise} фиксирует повышенные холостые "
+"обороты."
+
+#. placeholders: {take_exit}
+msgid ""
+"{take_exit} signals for the next announced exit, or a pull-over when a "
+"trooper lights you up."
+msgstr ""
+"{take_exit} включает поворотник на следующий объявленный съезд или для "
+"остановки у обочины, когда полицейский включает вам мигалки."
+
+#. placeholders: {route}, {weather}, {clock}
+msgid ""
+"{route} reads your route and current location, {weather} the weather, "
+"{clock} the clock with your full hours of service."
+msgstr ""
+"{route} читает ваш маршрут и текущее местоположение, {weather} — погоду, "
+"{clock} — время со всеми вашими часами работы."
+
+#. placeholders: {speed}
+msgid "{speed} speaks your speed."
+msgstr "{speed} называет вашу скорость."
+
+#. placeholders: {horn}, {engine_brake}
+msgid "{horn} sounds the horn, {engine_brake} the engine brake."
+msgstr "{horn} подаёт сигнал, {engine_brake} — моторный тормоз."
+
+#. placeholders: {engine}, {fuel}, {speed_limit}, {parking_brake}, {rest}
+msgid ""
+"{engine} starts or stops the engine, {fuel} reads fuel, {speed_limit} reads "
+"the posted speed limit here and how far over you are, {parking_brake} sets "
+"or releases the parking brake, {rest} plans a recommended break or sleep "
+"stop when hours of service planning hints are on, or the next sleep stop "
+"otherwise; stopped at a stop, it opens its actions."
+msgstr ""
+"{engine} запускает или глушит двигатель, {fuel} читает топливо, "
+"{speed_limit} читает здешнее ограничение скорости и насколько вы его "
+"превышаете, {parking_brake} затягивает или отпускает стояночный тормоз, "
+"{rest} планирует рекомендуемый перерыв или остановку для сна, когда "
+"включены подсказки по планированию часов работы, а иначе следующую "
+"остановку для сна; на остановке открывает её действия."
+
+msgid ""
+"Away from route points while fully stopped, it opens emergency shoulder "
+"sleep."
+msgstr ""
+"Вдали от точек маршрута при полной остановке открывает экстренный сон на "
+"обочине."
+
+#. placeholders: {status}
+msgid "{status} opens the status menu."
+msgstr "{status} открывает меню статуса."
+
+#. placeholders: {tune_prev}, {tune_next}
+msgid ""
+"{tune_prev} tunes to the previous station and {tune_next} to the next."
+msgstr ""
+"{tune_prev} настраивает предыдущую станцию, а {tune_next} — следующую."
+
+#. placeholders: {volume_down}, {volume_up}
+msgid "{volume_down} and {volume_up} lower and raise the radio volume."
+msgstr ""
+"{volume_down} и {volume_up} уменьшают и увеличивают громкость радио."
+
+#. placeholders: {category_prev}, {category_next}
+msgid "{category_prev} or {category_next} changes the radio category."
+msgstr "{category_prev} или {category_next} меняет категорию радио."
+
+#. placeholders: {radio}, {favorite}, {radio_status}, {now_playing}
+msgid ""
+"{radio} turns the radio on or off, {favorite} saves a favorite, "
+"{radio_status} reads radio status, and {now_playing} says what is playing."
+msgstr ""
+"{radio} включает или выключает радио, {favorite} сохраняет избранное, "
+"{radio_status} читает статус радио, а {now_playing} говорит, что играет."
+
+msgid "Start pauses and unpauses."
+msgstr "Start ставит на паузу и снимает с паузы."
+
+msgid ""
+"The Back button stops the driving voice while it is speaking; when nothing "
+"is being said, it repeats this help."
+msgstr ""
+"Кнопка Back останавливает голос вождения, пока он говорит; когда ничего не "
+"говорится, она повторяет эту справку."
 
 msgid ""
 "Any of these buttons can be moved under Settings, Gameplay, Controls, "
@@ -24445,12 +24310,25 @@ msgstr "адаптивный круиз-контроль задан на {speed_
 msgid ", open-road target {speed_text}"
 msgstr ", цель на открытой дороге {speed_text}"
 
+#. placeholders: {speed_text}
+#. one clause of a longer line
+msgid "open-road target {speed_text}"
+msgstr "цель на открытой дороге {speed_text}"
+
 msgid ", open-road target will use the posted limit"
 msgstr ", цель на открытой дороге будет равна ограничению скорости"
+
+#. one clause of a longer line
+msgid "open-road target will use the posted limit"
+msgstr "цель на открытой дороге будет равна установленному ограничению"
 
 #. placeholders: {cruise_holding_text}
 msgid ", automatic speed control, {cruise_holding_text}"
 msgstr ", автоматическое управление скоростью, {cruise_holding_text}"
+
+#. one clause of a longer line
+msgid "automatic speed control"
+msgstr "автоматическое управление скоростью"
 
 #. placeholders: {keeper_holding_text}, {keeper_target}
 msgid ", automatic speed control, {keeper_holding_text}{keeper_target}"
@@ -24460,6 +24338,10 @@ msgstr ""
 #. placeholders: {keeper_target}
 msgid ", automatic speed control paused{keeper_target}"
 msgstr ", автоматическое управление скоростью на паузе{keeper_target}"
+
+#. one clause of a longer line
+msgid "automatic speed control paused"
+msgstr "автоматическое управление скоростью на паузе"
 
 #. placeholders: {signal_verb}, {armed_exit_name}, {distance_text}
 msgid " Signal {signal_verb} for {armed_exit_name}, {distance_text}."
@@ -24485,6 +24367,11 @@ msgstr "съезд к месту доставки, {name}"
 #. placeholders: {reason}
 msgid ", in a {reason} zone"
 msgstr ", зона: {reason}"
+
+#. placeholders: {reason}
+#. one clause of a longer line
+msgid "in a {reason} zone"
+msgstr "в зоне: {reason}"
 
 #. placeholders: {speed_text}
 msgid " About {speed_text} over."
@@ -24512,6 +24399,10 @@ msgstr " из-за поворота"
 
 msgid ", the exit speed"
 msgstr ", скорость съезда"
+
+#. one clause of a longer line
+msgid "the exit speed"
+msgstr "скорость съезда"
 
 #. placeholders: {spoken}, {context}
 msgid "Safe speed {spoken}{context}."
@@ -24689,14 +24580,30 @@ msgstr "Впереди: {join}."
 msgid ", where the ramp ends at a traffic light"
 msgstr ", съезд заканчивается светофором"
 
+#. one clause of a longer line
+msgid "where the ramp ends at a traffic light"
+msgstr "где рампа заканчивается светофором"
+
 msgid ", where the ramp ends at a stop sign"
 msgstr ", съезд заканчивается знаком «Стоп»"
+
+#. one clause of a longer line
+msgid "where the ramp ends at a stop sign"
+msgstr "где рампа заканчивается знаком «Стоп»"
 
 msgid ", where the ramp ends at a yield"
 msgstr ", съезд заканчивается знаком «Уступите дорогу»"
 
+#. one clause of a longer line
+msgid "where the ramp ends at a yield"
+msgstr "где рампа заканчивается знаком «Уступи дорогу»"
+
 msgid ", where the ramp ends at a roundabout"
 msgstr ", съезд заканчивается круговым движением"
+
+#. one clause of a longer line
+msgid "where the ramp ends at a roundabout"
+msgstr "где рампа заканчивается круговым движением"
 
 #. placeholders: {fraction}, {gallons}
 #. one sentence of a longer line
@@ -28301,6 +28208,11 @@ msgstr "У стоп-линии. Знак «Стоп»."
 msgid ", speed limit {limit_text}"
 msgstr ", ограничение скорости {limit_text}"
 
+#. placeholders: {limit_text}
+#. one clause of a longer line
+msgid "speed limit {limit_text}"
+msgstr "ограничение скорости {limit_text}"
+
 #. placeholders: {short_distance_text}, {limit_clause}
 msgid ""
 "Stop sign, about {short_distance_text} to the stop bar{limit_clause}."
@@ -28714,6 +28626,14 @@ msgstr ", перевозчик."
 
 msgid ", your settlement."
 msgstr ", ваш расчёт."
+
+#. one clause of a longer line
+msgid "carrier."
+msgstr "перевозчик."
+
+#. one clause of a longer line
+msgid "your settlement."
+msgstr "ваш расчёт."
 
 msgid "Automatic speed control paused."
 msgstr "Автоматическое управление скоростью на паузе."
@@ -30689,6 +30609,11 @@ msgstr " Рекомендуемая скорость {speed_text}."
 msgid ", advise {speed_text}"
 msgstr ", рекомендуемая скорость {speed_text}"
 
+#. placeholders: {speed_text}
+#. one clause of a longer line
+msgid "advise {speed_text}"
+msgstr "рекомендовано {speed_text}"
+
 #. placeholders: {tail}
 msgid " Then {tail}."
 msgstr " Затем {tail}."
@@ -30696,6 +30621,11 @@ msgstr " Затем {tail}."
 #. placeholders: {direction_word}
 msgid ", then {direction_word}"
 msgstr ", затем {direction_word}"
+
+#. placeholders: {direction_word}
+#. one clause of a longer line
+msgid "then {direction_word}"
+msgstr "затем {direction_word}"
 
 msgid "Paused"
 msgstr "Пауза"
@@ -31260,9 +31190,6 @@ msgstr "Станции в зоне приёма"
 msgid "Stations matching {query}"
 msgstr "Станции по запросу {query}"
 
-msgid "browse"
-msgstr "обзор"
-
 msgid "search"
 msgstr "search"
 
@@ -31318,21 +31245,28 @@ msgstr "В этом списке нечего настраивать."
 msgid "Go back."
 msgstr "Назад."
 
-#. placeholders: {page_text}
+#. placeholders: {count}
 #. one sentence of a longer line
-msgid "{page_text} PageDown for the next page."
-msgstr "{page_text} PageDown — следующая страница."
+msgid "{count} stations."
+msgstr "Станций: {count}."
 
-#. placeholders: {title}, {hit_count}, {else}, {page_text}
-msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
-msgstr ""
-"{title}. {else}: {hit_count}. {page_text} PageDown — следующая страница."
+#. placeholders: {page}
+#. one sentence of a longer line
+msgid "{page} PageDown for the next page."
+msgstr "{page} PageDown — следующая страница."
 
-msgid "stations"
-msgstr "Станций"
+#. placeholders: {title}, {count}, {page}
+msgid "{title}. {count} stations. {page} PageDown for the next page."
+msgstr "{title}. Станций: {count}. {page} PageDown — следующая страница."
 
-msgid "matches"
-msgstr "Совпадений"
+#. placeholders: {count}
+#. one sentence of a longer line
+msgid "{count} matches."
+msgstr "Совпадений: {count}."
+
+#. placeholders: {title}, {count}, {page}
+msgid "{title}. {count} matches. {page} PageDown for the next page."
+msgstr "{title}. Совпадений: {count}. {page} PageDown — следующая страница."
 
 #. one sentence of a longer line
 msgid "Nothing here yet."
@@ -35859,6 +35793,13 @@ msgstr ""
 msgid "English"
 msgstr "English"
 
+#. placeholders: {name}
+#. The Language row's value when it follows the system: {name} is the
+#. language's own name ("Español"). The row reads "Language: automatic,
+#. Español."
+msgid "automatic, {name}"
+msgstr "автоматически, {name}"
+
 msgid "Realistic"
 msgstr "Реалистичный"
 
@@ -36180,10 +36121,6 @@ msgstr ""
 
 msgid "Speed keeper"
 msgstr "Поддержание скорости"
-
-#. one sentence of a longer line
-msgid "Braking cancels the session."
-msgstr "Торможение отменяет поддержание."
 
 #. placeholders: {control_cruise}
 #. one sentence of a longer line
@@ -39732,6 +39669,15 @@ msgstr ""
 "доступные назначения."
 
 msgid ""
+"On newer Xbox controllers, Back is the View button, left of the Xbox "
+"button, and Start is the Menu button on its right. On Windows, the Xbox "
+"button opens the Game Bar; press it again to return."
+msgstr ""
+"На новых геймпадах Xbox кнопка Back — это кнопка «Просмотр» слева от кнопки "
+"Xbox, а Start — кнопка «Меню» справа от неё. В Windows кнопка Xbox "
+"открывает Game Bar; нажмите её снова, чтобы вернуться."
+
+msgid ""
 "In menus, D-pad moves, A confirms, B returns, and Back reads help. During "
 "driving speech, Back stops the voice; otherwise it reads help. Start pauses."
 msgstr ""
@@ -39868,6 +39814,15 @@ msgstr ""
 #. one sentence of a longer line
 msgid "{pad_status} opens driving status."
 msgstr "{pad_status} открывает состояние в пути."
+
+msgid ""
+"If the controller does nothing, check that Controller is enabled under "
+"Settings, Gameplay, Controls. The game uses the first controller it finds, "
+"so unplug other controllers and close Steam."
+msgstr ""
+"Если геймпад ничего не делает, проверьте, что Геймпад включён в разделе "
+"Настройки, Игровой процесс, Управление. Игра использует первый найденный "
+"геймпад, поэтому отключите другие геймпады и закройте Steam."
 
 msgid "pad"
 msgstr "pad"
@@ -41614,6 +41569,11 @@ msgstr ""
 msgid ", {mb} megabytes"
 msgstr ", {mb} {mb:мегабайт|мегабайта|мегабайт}"
 
+#. placeholders: {mb}
+#. one clause of a longer line
+msgid "{mb} megabytes"
+msgstr "{mb} МБ"
+
 #. placeholders: {title}, {size}
 #. one sentence of a longer line
 msgid "Downloading {title}{size}."
@@ -42026,6 +41986,691 @@ msgstr "Затем крутой разворот направо."
 
 msgid "Then hairpin left."
 msgstr "Затем крутой разворот налево."
+
+#~ msgid "ELD status {status}."
+#~ msgstr "Статус в бортовом журнале: {status}."
+
+#~ msgid ""
+#~ "ELD status {status}. Hours of service: {duration_text} of driving left, "
+#~ "{duration_text2} of duty window left.{suffix}"
+#~ msgstr ""
+#~ "Статус в бортовом журнале: {status}. Режим труда и отдыха: вождения "
+#~ "осталось {duration_text}, окна смены осталось {duration_text2}.{suffix}"
+
+#~ msgid ""
+#~ "Hours of service: {duration_text} of driving left, {duration_text2} of duty "
+#~ "window left.{suffix}"
+#~ msgstr ""
+#~ "Режим труда и отдыха: вождения осталось {duration_text}, окна смены "
+#~ "осталось {duration_text2}.{suffix}"
+
+#~ msgid ""
+#~ "ELD status {status}. Hours of service: {duration_text} of driving left, "
+#~ "break due in {duration_text2}, duty window closes in "
+#~ "{duration_text3}.{suffix}"
+#~ msgstr ""
+#~ "Статус в бортовом журнале: {status}. Режим труда и отдыха: вождения "
+#~ "осталось {duration_text}, перерыв через {duration_text2}, окно смены "
+#~ "закроется через {duration_text3}.{suffix}"
+
+#~ msgid ""
+#~ "Hours of service: {duration_text} of driving left, break due in "
+#~ "{duration_text2}, duty window closes in {duration_text3}.{suffix}"
+#~ msgstr ""
+#~ "Режим труда и отдыха: вождения осталось {duration_text}, перерыв через "
+#~ "{duration_text2}, окно смены закроется через {duration_text3}.{suffix}"
+
+#~ msgid "{label} {index} of {items}."
+#~ msgstr "{label} {index} из {items}."
+
+#~ msgid ""
+#~ "In automatic with deliberate direction changes, stop, release {down}, then "
+#~ "press and hold it again to reverse. While reversing, stop with {up}, "
+#~ "release, then press and hold again for forward. A quick tap just brakes. "
+#~ msgstr ""
+#~ "В автоматическом режиме с намеренной сменой направления остановитесь, "
+#~ "отпустите {down}, затем снова нажмите и удерживайте, чтобы ехать назад. "
+#~ "Двигаясь назад, остановитесь клавишей {up}, отпустите, затем снова нажмите "
+#~ "и удерживайте, чтобы ехать вперёд. Короткое нажатие просто тормозит. "
+
+#~ msgid ""
+#~ "In automatic with simple direction changes, stop, release {down}, then "
+#~ "press and hold it again to reverse. While reversing, stop with {up}, "
+#~ "release, then hold it again for forward. A brake held through a stop just "
+#~ "holds the truck. "
+#~ msgstr ""
+#~ "В автоматическом режиме с простой сменой направления остановитесь, "
+#~ "отпустите {down}, затем снова нажмите и удерживайте, чтобы ехать назад. "
+#~ "Двигаясь назад, остановитесь клавишей {up}, отпустите, затем снова "
+#~ "удерживайте, чтобы ехать вперёд. Тормоз, удержанный после остановки, просто "
+#~ "держит грузовик на месте. "
+
+#~ msgid ""
+#~ "Tap the brake, then press again and hold half a second to latch it "
+#~ "hands-free; a click and a spoken confirmation mark the catch. {down} once "
+#~ "releases it; the accelerator releases it instantly. The throttle key never "
+#~ "latches. "
+#~ msgstr ""
+#~ "Коснитесь тормоза, затем нажмите снова и подержите полсекунды, чтобы "
+#~ "зафиксировать его без рук; щелчок и голосовое подтверждение отмечают "
+#~ "фиксацию. Одно нажатие {down} снимает фиксацию; газ снимает её мгновенно. "
+#~ "Клавиша газа никогда не фиксируется. "
+
+#~ msgid "Hold {up} to accelerate, {down} to brake. "
+#~ msgstr "Удерживайте {up}, чтобы ускоряться, {down}, чтобы тормозить. "
+
+#~ msgid "Hold {n} for the emergency brake, the hardest possible stop. "
+#~ msgstr ""
+#~ "Удерживайте {n} для экстренного торможения, самой резкой остановки. "
+
+#~ msgid "{n} starts automatic speed control: adaptive cruise on open roads, "
+#~ msgstr ""
+#~ "{n} включает автоматическое управление скоростью: адаптивный круиз-контроль "
+#~ "на открытой дороге, "
+
+#~ msgid "the speed keeper in low-speed zones. Weather widens the gap. "
+#~ msgstr ""
+#~ "поддержание скорости в зонах низкой скорости. Погода увеличивает дистанцию. "
+
+#~ msgid "Cruise eases early for a sharp posted-limit drop, the keeper for "
+#~ msgstr ""
+#~ "Круиз-контроль заранее сбрасывает скорость перед резким снижением "
+#~ "ограничения, поддержание скорости — "
+
+#~ msgid "the next turn or the next lower limit. "
+#~ msgstr ""
+#~ "перед следующим поворотом или следующим, более низким ограничением. "
+
+#~ msgid "Braking cancels the session. At the planned pickup it pauses and "
+#~ msgstr ""
+#~ "Торможение отменяет режим. У запланированного места погрузки он встаёт на "
+#~ "паузу и "
+
+#~ msgid "resumes once you depart. "
+#~ msgstr "возобновляется, когда вы отправитесь. "
+
+#~ msgid "Plus and minus, including the keypad keys, change the open-road "
+#~ msgstr ""
+#~ "Плюс и минус, включая клавиши цифровой клавиатуры, меняют цель на открытой "
+#~ "дороге "
+
+#~ msgid ""
+#~ "target by five; it never holds more than five over the posted limit. "
+#~ "Control "
+#~ msgstr ""
+#~ "на пять; она никогда не превышает ограничение больше чем на пять. Control "
+
+#~ msgid "with plus or minus, by one. "
+#~ msgstr "с плюсом или минусом меняет на один. "
+
+#~ msgid "{n} resumes the last cruise speed. "
+#~ msgstr "{n} возвращает последнюю скорость круиз-контроля. "
+
+#~ msgid "Parked with the brake set, {n} latches a high idle; plus and minus "
+#~ msgstr ""
+#~ "На стоянке с включённым тормозом {n} фиксирует повышенные холостые обороты; "
+#~ "плюс и минус "
+
+#~ msgid "adjust it, and releasing the parking brake drops it. "
+#~ msgstr "регулируют их, а отпускание стояночного тормоза их сбрасывает. "
+
+#~ msgid "{exit} signals for the next announced route exit, by number when "
+#~ msgstr ""
+#~ "{exit} включает сигнал для следующего объявленного съезда с маршрута, с "
+#~ "номером, если "
+
+#~ msgid "known, or cancels that signal. Unless lane keeping is on full, move "
+#~ msgstr ""
+#~ "он известен, или отменяет этот сигнал. Если удержание полосы не полное, "
+#~ "перестройтесь "
+
+#~ msgid "to the right lane, then steer right into the exit lane where it "
+#~ msgstr "в правую полосу, затем рулите вправо на полосу съезда там, где она "
+
+#~ msgid ""
+#~ "opens, just before the gore. Keep road speed to there, then brake to "
+#~ msgstr ""
+#~ "открывается, прямо перед разделительным клином. До него держите скорость "
+#~ "дороги, затем тормозите до "
+
+#~ msgid "the exit speed before the ramp curve. Ramps usually end "
+#~ msgstr ""
+#~ "скорости съезда перед поворотом съезда. Съезды обычно заканчиваются "
+
+#~ msgid "at a traffic light or stop sign, called out on the way down."
+#~ msgstr "светофором или знаком «Стоп», о которых объявят по пути вниз."
+
+#~ msgid "at a traffic light or stop sign, called out on the way down. {exit} "
+#~ msgstr ""
+#~ "светофором или знаком «Стоп», о которых объявят по пути вниз. {exit} "
+
+#~ msgid "also signals a pull-over when a trooper lights you up for speeding, "
+#~ msgstr ""
+#~ "также включает сигнал остановки на обочине, когда патруль включает мигалки "
+#~ "за превышение скорости, "
+
+#~ msgid "a scale bypass, or unsafe equipment: signal, then brake to a stop. "
+#~ msgstr ""
+#~ "объезд весов или неисправное оборудование: включите сигнал, затем "
+#~ "затормозите до остановки. "
+
+#~ msgid "Ignoring the lights brings failure-to-stop "
+#~ msgstr "Если игнорировать мигалки, последуют предупреждения о неостановке, "
+
+#~ msgid "warnings, then a stop that cancels the load: a major offense. "
+#~ msgstr "а затем остановка, которая отменяет груз: это грубое нарушение. "
+
+#~ msgid "{n} also speaks the date and season. "
+#~ msgstr "{n} также называет дату и время года. "
+
+#~ msgid "Page Down tunes to the next station,"
+#~ msgstr "Page Down переключает на следующую станцию,"
+
+#~ msgid "{n} toggles the in-cab radio."
+#~ msgstr "{n} включает и выключает радио в кабине."
+
+#~ msgid "{n} toggles the in-cab radio. Page Down tunes to the next station, "
+#~ msgstr ""
+#~ "{n} включает и выключает радио в кабине. Page Down переключает на следующую "
+#~ "станцию, "
+
+#~ msgid "Page Up to the previous; semicolon and apostrophe do the same. "
+#~ msgstr ""
+#~ "Page Up на предыдущую; точка с запятой и апостроф делают то же самое. "
+
+#~ msgid "Control with the tuning keys jumps a category; Shift changes the "
+#~ msgstr ""
+#~ "Control с клавишами настройки переходит к другой категории; Shift меняет "
+
+#~ msgid "radio volume in 10 percent steps, on or off. "
+#~ msgstr ""
+#~ "громкость радио шагами по 10 процентов, вплоть до включения и выключения. "
+
+#~ msgid "{n} saves or unsaves the station as a favorite. "
+#~ msgstr "{n} добавляет станцию в избранное или убирает её оттуда. "
+
+#~ msgid "{n} speaks station, volume, and streamer-safe status; {n2} speaks "
+#~ msgstr ""
+#~ "{n} называет станцию, громкость и безопасность для стриминга; {n2} называет "
+
+#~ msgid "the song when the station says. The Driver apps tablet has a "
+#~ msgstr ""
+#~ "песню, если станция её сообщает. На планшете «Приложения водителя» есть "
+
+#~ msgid "Radio app to search the dial, tune by name, and keep favorites; "
+#~ msgstr ""
+#~ "приложение «Радио»: поиск по шкале, настройка по названию и избранное; "
+
+#~ msgid "the {n} status menu has a radio screen of receivable stations. "
+#~ msgstr ""
+#~ "в меню состояния на {n} есть экран радио со станциями, которые ловятся. "
+
+#~ msgid "{n} starts the engine, and stops it only below 5 miles per hour. "
+#~ msgstr ""
+#~ "{n} заводит двигатель, а глушит его только на скорости ниже 5 миль в час. "
+
+#~ msgid "Air pressure must build before the truck can move. "
+#~ msgstr ""
+#~ "Прежде чем грузовик сможет тронуться, должно подняться давление воздуха. "
+
+#~ msgid "{n} sets or releases the parking brake."
+#~ msgstr "{n} включает или отпускает стояночный тормоз."
+
+#~ msgid "{n} sets or releases the parking brake. It needs 100 psi of air. "
+#~ msgstr ""
+#~ "{n} включает или отпускает стояночный тормоз. Нужно 100 фунтов на "
+#~ "квадратный дюйм давления воздуха. "
+
+#~ msgid ""
+#~ "{n} speed, active speed-control mode, and target, and with the signal set, "
+#~ "how far to the exit. "
+#~ msgstr ""
+#~ "{n}: скорость, активный режим управления скоростью и цель, а при включённом "
+#~ "сигнале — расстояние до съезда. "
+
+#~ msgid "{n2} the grade under the wheels, whether the"
+#~ msgstr "{n2}: уклон под колёсами, держит ли его"
+
+#~ msgid "{n} posted speed limit."
+#~ msgstr "{n}: ограничение скорости."
+
+#~ msgid ""
+#~ "{n} posted speed limit. {n2} the grade under the wheels, whether the "
+#~ msgstr "{n}: ограничение скорости. {n2}: уклон под колёсами, держит ли его "
+
+#~ msgid "truck is holding it, and the next grade ahead."
+#~ msgstr "грузовик, и следующий уклон впереди."
+
+#~ msgid ""
+#~ "truck is holding it, and the next grade ahead. {n} status menu. {n2} fuel. "
+#~ msgstr ""
+#~ "грузовик, и следующий уклон впереди. {n}: меню состояния. {n2}: топливо. "
+
+#~ msgid "{n2} fuel."
+#~ msgstr "{n2}: топливо."
+
+#~ msgid "{n} status menu."
+#~ msgstr "{n}: меню состояния."
+
+#~ msgid "{n} clock, deadline, and the hours limit that comes first. "
+#~ msgstr "{n}: часы, срок доставки и предел часов, который наступит первым. "
+
+#~ msgid "{n} time at the wheel so far, {n2} when your 30 minute break "
+#~ msgstr ""
+#~ "{n}: сколько вы уже за рулём, {n2}: когда нужен 30-минутный перерыв, "
+
+#~ msgid "is due, {n} what ends this shift and where you can legally stop "
+#~ msgstr "{n}: что завершит эту смену и где можно законно остановиться "
+
+#~ msgid "before it. "
+#~ msgstr "до этого. "
+
+#~ msgid "{n} progress, distance left, and where you are. "
+#~ msgstr "{n}: прогресс, оставшееся расстояние и где вы находитесь. "
+
+#~ msgid "{n} the state, {n2} the road, {n3} the town or the nearest "
+#~ msgstr "{n}: штат, {n2}: дорога, {n3}: город или ближайший "
+
+#~ msgid "one, {n} the direction."
+#~ msgstr "населённый пункт, {n}: направление."
+
+#~ msgid "one, {n} the direction. The keypad numbers work the same way. "
+#~ msgstr ""
+#~ "населённый пункт, {n}: направление. Цифры на цифровой клавиатуре работают "
+#~ "так же. "
+
+#~ msgid "{n2} lane position and whether the lane beside you is"
+#~ msgstr "{n2}: положение в полосе и то, свободна ли"
+
+#~ msgid "{n} weather."
+#~ msgstr "{n}: погода."
+
+#~ msgid "{n} weather. {n2} lane position and whether the lane beside you is "
+#~ msgstr "{n}: погода. {n2}: положение в полосе и то, свободна ли "
+
+#~ msgid "open."
+#~ msgstr "соседняя полоса."
+
+#~ msgid "open. {n} turns the lane locator on and off: a soft tock once a "
+#~ msgstr ""
+#~ "соседняя полоса. {n} включает и выключает локатор полосы: мягкий стук раз в "
+
+#~ msgid "{n} turns the lane locator on and off: a soft tock once a"
+#~ msgstr "{n} включает и выключает локатор полосы: мягкий стук раз в"
+
+#~ msgid "beat, panned to where you sit in your lane, on lane keeping "
+#~ msgstr "такт, там, где вы находитесь в полосе, при частичном "
+
+#~ msgid "partial or off. "
+#~ msgstr "или выключенном удержании полосы. "
+
+#~ msgid "{n} repeats the last driving announcement. "
+#~ msgstr "{n} повторяет последнее объявление в пути. "
+
+#~ msgid "{n} repeats the last CB chatter, with the distance as it is now. "
+#~ msgstr ""
+#~ "{n} повторяет последний разговор по рации, с расстоянием на текущий момент. "
+
+#~ msgid ""
+#~ "Comma repeats what was just said and keeps stepping back; Period moves "
+#~ "forward again. "
+#~ msgstr ""
+#~ "Запятая повторяет только что сказанное и продолжает шагать назад; точка "
+#~ "снова идёт вперёд. "
+
+#~ msgid "Control with Comma or Period jumps to the oldest or newest message. "
+#~ msgstr ""
+#~ "Control с запятой или точкой переходит к самому старому или самому новому "
+#~ "сообщению. "
+
+#~ msgid ""
+#~ "The bracket keys switch between all messages, general messages, and driving "
+#~ "events. "
+#~ msgstr ""
+#~ "Клавиши квадратных скобок переключают между всеми сообщениями, общими "
+#~ "сообщениями и событиями в пути. "
+
+#~ msgid "Control C copies the message you are on. "
+#~ msgstr "Control C копирует сообщение, на котором вы находитесь. "
+
+#~ msgid "{n} copies the last thing the game said. "
+#~ msgstr "{n} копирует последнее, что сказала игра. "
+
+#~ msgid ""
+#~ "{n} reads the road ahead that no other key answers: the exit your signal is "
+#~ "on for, the ramp "
+#~ msgstr ""
+#~ "{n} рассказывает о дороге впереди то, на что не отвечает другая клавиша: "
+#~ "съезд, для которого включён сигнал, управление движением "
+
+#~ msgid "control coming up, the next imposed limit, the next stop, and "
+#~ msgstr ""
+#~ "в конце съезда, следующее введённое ограничение, следующую остановку и "
+
+#~ msgid "the next bend that demands slowing. "
+#~ msgstr "следующий поворот, перед которым нужно сбросить скорость. "
+
+#~ msgid "Bends that demand slowing are called before they arrive, like "
+#~ msgstr ""
+#~ "Повороты, где нужно сбросить скорость, объявляются заранее, например "
+
+#~ msgid "Sharp left, half a mile, advise 35; {n} gives one safe-speed number "
+#~ msgstr ""
+#~ "«Резко налево, полмили, рекомендуемая скорость 35»; {n} называет одну "
+#~ "безопасную скорость "
+
+#~ msgid "with the bend in it. "
+#~ msgstr "с учётом поворота. "
+
+#~ msgid "The {n} status menu includes a Driver apps tablet for navigation, "
+#~ msgstr ""
+#~ "В меню состояния на {n} есть планшет «Приложения водителя» с навигацией, "
+
+#~ msgid "weather, traffic, truck stops, road chatter, and ELD. "
+#~ msgstr ""
+#~ "погодой, движением, стоянками для грузовиков, рассказами о дороге и "
+#~ "электронным журналом. "
+
+#~ msgid "Left or Right Control stops the driving event voice. "
+#~ msgstr "Left или Right Control останавливает голос событий в пути. "
+
+#~ msgid "{left} and {right} steer unless lane keeping is on full; steer "
+#~ msgstr "{left} и {right} рулят, если удержание полосы не полное; рулите "
+
+#~ msgid "across the lane line to change lanes."
+#~ msgstr "через линию разметки, чтобы сменить полосу."
+
+#~ msgid ""
+#~ "across the lane line to change lanes. On full, tap {left} or {right}. "
+#~ msgstr ""
+#~ "через линию разметки, чтобы сменить полосу. При полном удержании коротко "
+#~ "нажмите {left} или {right}. "
+
+#~ msgid ""
+#~ "Hold {n} to point the truck straight down the road; where it sits in the "
+#~ "lane stays yours to fix. "
+#~ msgstr ""
+#~ "Удерживайте {n}, чтобы направить грузовик прямо вдоль дороги; положение в "
+#~ "полосе исправлять по-прежнему вам. "
+
+#~ msgid "Exits leave from the right lane. Change lanes or brake means a "
+#~ msgstr ""
+#~ "Съезды уходят из правой полосы. «Смените полосу» или «Тормозите» означает "
+
+#~ msgid "fixed object in your lane: take the open lane it names, or brake "
+#~ msgstr ""
+#~ "неподвижное препятствие в вашей полосе: перейдите в названную свободную "
+#~ "полосу или затормозите "
+
+#~ msgid "nearly to a stop and ease around. "
+#~ msgstr "почти до остановки и аккуратно объедьте. "
+
+#~ msgid ""
+#~ "{rest} plans the recommended break or sleep stop when hours of service "
+#~ "planning hints are on; otherwise it plans the next sleep-capable stop while "
+#~ "rolling. {exit} "
+#~ msgstr ""
+#~ "{rest} планирует рекомендуемую остановку для перерыва или сна, когда "
+#~ "включены подсказки по планированию режима труда и отдыха; иначе на ходу "
+#~ "планирует следующую остановку, где можно поспать. {exit} "
+
+#~ msgid "Stopped at a route stop, {rest} opens its menu:"
+#~ msgstr "Когда вы стоите на остановке маршрута, {rest} открывает её меню:"
+
+#~ msgid "signals for its exit."
+#~ msgstr "включает сигнал для её съезда."
+
+#~ msgid ""
+#~ "signals for its exit. Stopped at a route stop, {rest} opens its menu: "
+#~ msgstr ""
+#~ "включает сигнал для её съезда. Когда вы стоите на остановке маршрута, "
+#~ "{rest} открывает её меню: "
+
+#~ msgid "fuel, break, sleep, inspect, roadside assistance, or save where "
+#~ msgstr ""
+#~ "топливо, перерыв, сон, осмотр, техпомощь на дороге или сохранение, где "
+
+#~ msgid "Fully stopped away from route points, {rest} opens the"
+#~ msgstr ""
+#~ "Если вы полностью остановились вдали от точек маршрута, {rest} вместо этого "
+#~ "открывает"
+
+#~ msgid "available."
+#~ msgstr "это доступно."
+
+#~ msgid "available. Fully stopped away from route points, {rest} opens the "
+#~ msgstr ""
+#~ "это доступно. Если вы полностью остановились вдали от точек маршрута, "
+#~ "{rest} вместо этого открывает "
+
+#~ msgid "emergency shoulder-sleep warning instead."
+#~ msgstr "предупреждение об экстренном сне на обочине."
+
+#~ msgid "emergency shoulder-sleep warning instead. {n} horn. "
+#~ msgstr "предупреждение об экстренном сне на обочине. {n}: гудок. "
+
+#~ msgid "{n} horn."
+#~ msgstr "{n}: гудок."
+
+#~ msgid ""
+#~ "{n} engine brake; on an automatic it manages its own stage, and {n2}, "
+#~ msgstr "{n}: моторный тормоз; на автомате он сам выбирает ступень, а {n2}, "
+
+#~ msgid "{n3} chooses whether {n4} runs the"
+#~ msgstr "{n3} выбирает, будет ли {n4} работать в"
+
+#~ msgid "{n}, {n2} take manual control."
+#~ msgstr "{n}, {n2} переключают на ручное управление."
+
+#~ msgid "{n}, {n2} take manual control. {n3} chooses whether {n4} runs the "
+#~ msgstr ""
+#~ "{n}, {n2} переключают на ручное управление. {n3} выбирает, будет ли {n4} "
+#~ "работать в "
+
+#~ msgid "automatic mode."
+#~ msgstr "автоматическом режиме."
+
+#~ msgid "automatic mode. {n} switches between automatic and manual "
+#~ msgstr ""
+#~ "автоматическом режиме. {n} переключает между автоматическим и ручным "
+
+#~ msgid "{n} switches between automatic and manual"
+#~ msgstr "{n} переключает между автоматическим и ручным"
+
+#~ msgid ""
+#~ "shifting. Escape pause menu. F2 lists every driving command by name. "
+#~ msgstr ""
+#~ "переключением передач. Escape: меню паузы. F2 перечисляет все команды "
+#~ "вождения по названию. "
+
+#~ msgid ""
+#~ "Hold Left Shift for clutch, then {n} to shift up or {n2} to shift down, "
+#~ "{n3} for reverse, {n4} for neutral. "
+#~ msgstr ""
+#~ "Удерживайте Left Shift для сцепления, затем {n}, чтобы повысить передачу, "
+#~ "или {n2}, чтобы понизить, {n3} для заднего хода, {n4} для нейтрали. "
+
+#~ msgid ""
+#~ "Hold the left bumper for the clutch; {n} shifts up a gear, {n2} shifts "
+#~ "down. "
+#~ msgstr ""
+#~ "Удерживайте left bumper для сцепления; {n} повышает передачу, {n2} "
+#~ "понижает. "
+
+#~ msgid ""
+#~ "In automatic with deliberate direction changes, stop, let the left trigger "
+#~ "return to neutral, then press and hold it again to reverse. While "
+#~ "reversing, stop with the right trigger, let it return to neutral, then "
+#~ "press and hold again for forward. A quick tap just brakes. "
+#~ msgstr ""
+#~ "В автоматическом режиме с намеренной сменой направления остановитесь, дайте "
+#~ "левому курку вернуться в нейтраль, затем снова нажмите и удерживайте его, "
+#~ "чтобы ехать назад. Двигаясь назад, остановитесь правым курком, дайте ему "
+#~ "вернуться в нейтраль, затем снова нажмите и удерживайте, чтобы ехать "
+#~ "вперёд. Короткое нажатие просто тормозит. "
+
+#~ msgid ""
+#~ "In automatic with simple direction changes, stop, let the left trigger "
+#~ "return to neutral, then press and hold it again to reverse. While "
+#~ "reversing, stop with the right trigger, release, then press it again for "
+#~ "forward. A brake held through a stop just holds the truck. "
+#~ msgstr ""
+#~ "В автоматическом режиме с простой сменой направления остановитесь, дайте "
+#~ "левому курку вернуться в нейтраль, затем снова нажмите и удерживайте его, "
+#~ "чтобы ехать назад. Двигаясь назад, остановитесь правым курком, отпустите, "
+#~ "затем нажмите снова, чтобы ехать вперёд. Тормоз, удержанный после "
+#~ "остановки, просто держит грузовик на месте. "
+
+#~ msgid "Right trigger is the gas, left trigger the brake; the left trigger "
+#~ msgstr "Правый курок — газ, левый курок — тормоз; левый курок, "
+
+#~ msgid "fully in is the hardest stop. The left stick steers unless lane "
+#~ msgstr ""
+#~ "нажатый до упора, даёт самую резкую остановку. Левый стик рулит, если "
+#~ "удержание "
+
+#~ msgid "keeping is on full. "
+#~ msgstr "полосы не полное. "
+
+#~ msgid "{capitalized} starts automatic speed control: adaptive cruise on "
+#~ msgstr ""
+#~ "{capitalized} включает автоматическое управление скоростью: адаптивный "
+#~ "круиз-контроль на "
+
+#~ msgid "open roads, the speed keeper in low-speed zones."
+#~ msgstr "открытой дороге, поддержание скорости в зонах низкой скорости."
+
+#~ msgid ""
+#~ "open roads, the speed keeper in low-speed zones. {capitalized} or {n} "
+#~ "change the open-road "
+#~ msgstr ""
+#~ "открытой дороге, поддержание скорости в зонах низкой скорости. "
+#~ "{capitalized} или {n} меняют цель на открытой дороге "
+
+#~ msgid "{capitalized} or {n} change the open-road"
+#~ msgstr "{capitalized} или {n} меняют цель на открытой дороге"
+
+#~ msgid "target by five. It pauses through the planned pickup and resumes "
+#~ msgstr ""
+#~ "на пять. Оно встаёт на паузу на время запланированной погрузки и "
+#~ "возобновляется, "
+
+#~ msgid "once the loaded truck is rolling. Parked with the brake set, "
+#~ msgstr ""
+#~ "когда загруженный грузовик поедет. На стоянке с включённым тормозом "
+
+#~ msgid "{n} latches a high idle. "
+#~ msgstr "{n} фиксирует повышенные холостые обороты. "
+
+#~ msgid "{capitalized} signals for the next announced exit, or a pull-over "
+#~ msgstr ""
+#~ "{capitalized} включает сигнал для следующего объявленного съезда или "
+#~ "остановки на обочине, "
+
+#~ msgid "when a trooper lights you up. "
+#~ msgstr "когда патруль включает вам мигалки. "
+
+#~ msgid "{capitalized} reads your route and current location, {n} the "
+#~ msgstr "{capitalized} зачитывает маршрут и текущее местоположение, {n} — "
+
+#~ msgid "weather, {n} the clock with your full hours of service. "
+#~ msgstr "погоду, {n} — часы с полным режимом труда и отдыха. "
+
+#~ msgid "{capitalized} speaks your speed. "
+#~ msgstr "{capitalized} называет вашу скорость. "
+
+#~ msgid "{capitalized} sounds the horn, {n} the engine brake. "
+#~ msgstr "{capitalized} подаёт гудок, {n} — моторный тормоз. "
+
+#~ msgid ""
+#~ "{capitalized} starts or stops the engine, {n} reads fuel, {n2} reads the "
+#~ "posted "
+#~ msgstr ""
+#~ "{capitalized} заводит или глушит двигатель, {n} зачитывает топливо, {n2} "
+#~ "зачитывает "
+
+#~ msgid ""
+#~ "speed limit here and how far over you are, {n} sets or releases the parking "
+#~ msgstr ""
+#~ "ограничение скорости здесь и насколько вы его превышаете, {n} включает или "
+#~ "отпускает стояночный "
+
+#~ msgid ""
+#~ "brake, {n} plans a recommended break or sleep stop when hours of service "
+#~ "planning hints are on, or the next sleep stop otherwise; stopped at a stop, "
+#~ "it opens its actions. "
+#~ msgstr ""
+#~ "тормоз, {n} планирует рекомендуемую остановку для перерыва или сна, когда "
+#~ "включены подсказки по планированию режима труда и отдыха, а иначе следующую "
+#~ "остановку для сна; на остановке открывает её действия. "
+
+#~ msgid "Away from route points while fully stopped, it opens "
+#~ msgstr "Вдали от точек маршрута при полной остановке он открывает "
+
+#~ msgid "emergency shoulder sleep."
+#~ msgstr "экстренный сон на обочине."
+
+#~ msgid "emergency shoulder sleep. {capitalized} opens the status menu. "
+#~ msgstr "экстренный сон на обочине. {capitalized} открывает меню состояния. "
+
+#~ msgid "{capitalized} opens the status menu."
+#~ msgstr "{capitalized} открывает меню состояния."
+
+#~ msgid "{capitalized2} and {n2} lower and raise the radio volume."
+#~ msgstr "{capitalized2} и {n2} убавляют и прибавляют громкость радио."
+
+#~ msgid "{capitalized3} or {n3} changes the radio category."
+#~ msgstr "{capitalized3} или {n3} меняет категорию радио."
+
+#~ msgid ""
+#~ "{capitalized4} turns the radio on or off, {n4} saves a favorite, {n5} reads "
+#~ "radio status, and {n6} says what is playing."
+#~ msgstr ""
+#~ "{capitalized4} включает или выключает радио, {n4} добавляет в избранное, "
+#~ "{n5} зачитывает состояние радио, а {n6} говорит, что играет."
+
+#~ msgid "{capitalized} tunes to the previous station and {n} to the next."
+#~ msgstr ""
+#~ "{capitalized} переключает на предыдущую станцию, а {n} — на следующую."
+
+#~ msgid ""
+#~ "{capitalized} tunes to the previous station and {n} to the next. "
+#~ "{capitalized2} and {n2} lower and raise the radio volume. {capitalized3} or "
+#~ "{n3} changes the radio category. {capitalized4} turns the radio on or off, "
+#~ "{n4} saves a favorite, {n5} reads radio status, and {n6} says what is "
+#~ "playing. "
+#~ msgstr ""
+#~ "{capitalized} переключает на предыдущую станцию, а {n} — на следующую. "
+#~ "{capitalized2} и {n2} убавляют и прибавляют громкость радио. {capitalized3} "
+#~ "или {n3} меняет категорию радио. {capitalized4} включает или выключает "
+#~ "радио, {n4} добавляет в избранное, {n5} зачитывает состояние радио, а {n6} "
+#~ "говорит, что играет. "
+
+#~ msgid "Start pauses and unpauses. The Back button stops the driving voice "
+#~ msgstr ""
+#~ "Start ставит на паузу и снимает с паузы. Кнопка Back останавливает голос в "
+#~ "пути, "
+
+#~ msgid ""
+#~ "while it is speaking; when nothing is being said, it repeats this help. "
+#~ msgstr ""
+#~ "пока он говорит; когда ничего не звучит, она повторяет эту справку. "
+
+#~ msgid "browse"
+#~ msgstr "обзор"
+
+#~ msgid "{page_text} PageDown for the next page."
+#~ msgstr "{page_text} PageDown — следующая страница."
+
+#~ msgid "{title}. {hit_count} {else}. {page_text} PageDown for the next page."
+#~ msgstr ""
+#~ "{title}. {else}: {hit_count}. {page_text} PageDown — следующая страница."
+
+#~ msgid "stations"
+#~ msgstr "Станций"
+
+#~ msgid "matches"
+#~ msgstr "Совпадений"
 
 #~ msgid "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
 #~ msgstr "Portrait PortraitUpsideDown LandscapeLeft LandscapeRight"
