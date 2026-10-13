@@ -52,7 +52,8 @@ bookmarks usable.
       `.po` file alone, built in or dropped into `saves/lang/`, is offered
       by its `X-Language-Autonym` header with no code change; it gets two
       plural forms and English number separators until a maintainer adds
-      its rules to `l10n::plural`.
+      its rules to `l10n::plural`. Every download carries `lang/` as a
+      `translations` folder (template, language files, glossaries, guide).
 - [ ] (Found along the way) Lines the game assembles from pieces the
       extractor cannot see (turn-by-turn street instructions, some stop
       announcements) stay partly English until each shape is added to
@@ -140,6 +141,10 @@ bookmarks usable.
       a daypart schedule by the truck's local hour, from its own
       `channel3000.pak`, opened on first tune-in; off the dial without the
       pack, and in no changelog or manual (`ff_core::channel3000`).
+- [x] Channel 3000 moved to the end of the Freight Fate stations (owner,
+      2026-10-13): with no call sign it sorted ahead of FFN and FFR, so the
+      category jump landed on it. Stations without a call sign now follow
+      the lettered ones in their dial group.
 - [x] Channel 3000 levelled to the other stations (owner, 2026-10-09, a
       player found it hard to hear): its shows had one static gain to -18
       LUFS integrated, which the loud themes and stings set, so the talk

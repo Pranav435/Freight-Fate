@@ -5,6 +5,7 @@
 ### Added
 
 - **The game can speak French.** Choose Français under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Spanish.** Choose Español under Settings, Speech, Language; the radio stays in English.
 
 - **Key and button practice says what each key or button does at the wheel.** Shift F1 or Back plus Start opens it anywhere.
 
@@ -15,6 +16,8 @@
 - **Anyone can correct a translation with the Translation correction form on GitHub.** It asks what the game said and what it should say.
 
 - **A translator can add a new language with its translation file alone.** The game offers it in Settings by the name the file gives.
+
+- **Every download has a translations folder.** It holds the template for a new language, each language file, and the translator's guide.
 
 - **The main menu now has background sound under the music, picked by your career.** A truck stop at night, your rig in the yard, or the dispatch office.
 
@@ -104,6 +107,7 @@
 
 
 - **Switching screen readers is now silent, and ZDSR no longer repeats "Speech is now using ZDSR" on every key press.**
+- **The jump to Freight Fate stations now lands on the Night Line, not Channel 3000.** Channel 3000 sits at the end of the category.
 - **Channel 3000's shows are now as loud as the other stations, and their theme music no longer jumps out over the talk.**
 - **Been Everywhere, For Real now needs all sixteen regions on the map, not fourteen.**
 

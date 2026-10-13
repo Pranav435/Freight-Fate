@@ -231,7 +231,7 @@ impl RadioState {
             let (gb, sb, cb) = self.reception_sort_key(b);
             ga.cmp(&gb)
                 .then(sa.partial_cmp(&sb).unwrap_or(std::cmp::Ordering::Equal))
-                .then_with(|| ca.cmp(cb))
+                .then_with(|| ca.cmp(&cb))
         });
         if receivable.is_empty() {
             vec![self.fallback_reception()]
@@ -1195,18 +1195,21 @@ impl RadioState {
         format!("Saved {} to favorites.", station.display_name())
     }
 
-    fn reception_sort_key<'a>(&self, reception: &'a RadioReception) -> (i32, f64, &'a str) {
+    fn reception_sort_key<'a>(&self, reception: &'a RadioReception) -> (i32, f64, (bool, &'a str)) {
         let station = &reception.station;
         let group = self.group(station);
         // Terrestrial runs strongest-first; every other group keeps call-sign
         // order (web radio relies on the sort staying stable -- its call
         // signs are empty and its catalog order is listener-vote order).
+        // A station with no call sign follows the lettered ones, so Channel
+        // 3000 does not head the Freight Fate stations (owner, 2026-10-13).
         let signal = if group == TERRESTRIAL_GROUP {
             -reception.signal
         } else {
             0.0
         };
-        (group, signal, station.call_sign.as_str())
+        let call_sign = station.call_sign.as_str();
+        (group, signal, (call_sign.is_empty(), call_sign))
     }
 
     fn stop(backend: Option<&mut dyn RadioPlaybackBackend>) {
