@@ -1696,6 +1696,7 @@ fn ordinary_reefer_cargo_keeps_catalog_label() {
     assert_eq!(job.spoken_cargo_label(), "refrigerated goods");
 }
 
+#[test]
 fn doubles_loads_stay_under_their_route_cap_with_both_trailers_and_the_dolly() {
     // FIX 5: the board prices a set of doubles with both trailers and the
     // converter dolly in the tare, against the gross cap of the route the
