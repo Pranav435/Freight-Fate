@@ -122,7 +122,9 @@ fn test_load_call_reports_cargo_damage_not_condition() {
         assert_eq!(request.summary, "Cargo damage is 12 percent.");
         let response = local_dispatch_response(&request, driving, ctx);
         assert!(
-            response.message.contains(", 12 percent damaged."),
+            response
+                .message
+                .starts_with("I have the freight report as damaged, with 12 percent cargo damage."),
             "{}",
             response.message
         );
@@ -143,14 +145,85 @@ fn test_request_summaries_round_hours_miles_and_damage() {
         driving.job.deadline_game_h = 7.0;
         driving.trip.truck.damage_pct = 33.333;
         let delay = dispatch_request(driving, ctx, CALL_DELAY).summary;
-        assert_eq!(delay, "1.7 hours used of a 7.0 hour delivery window.");
+        assert_eq!(delay, "1.7 hours used of a 7 hour delivery window.");
 
         let road = dispatch_request(driving, ctx, CALL_ROAD).summary;
         let miles = road.strip_suffix(" miles remain.").expect(&road);
-        let (_, decimals) = miles.split_once('.').expect(&road);
-        assert_eq!(decimals.len(), 1, "{road}");
+        assert!(!miles.contains('.'), "{road}");
 
         let truck = dispatch_request(driving, ctx, CALL_TRUCK).summary;
         assert_eq!(truck, "Truck damage is 33 percent.");
+    });
+}
+
+#[test]
+fn test_delay_summary_drops_a_trailing_zero_from_whole_hours() {
+    let mut app = TestApp::new();
+    let drive = a_drive(&mut app);
+    drive_and_ctx(&drive, &mut app, |driving, ctx| {
+        for (minutes, window, want) in [
+            (60.0, 14.0, "1 hour used of a 14 hour delivery window."),
+            (120.0, 14.5, "2 hours used of a 14.5 hour delivery window."),
+            (0.0, 13.96, "0 hours used of a 14 hour delivery window."),
+            (45.0, 9.25, "0.8 hours used of a 9.3 hour delivery window."),
+        ] {
+            driving.trip.game_minutes = minutes;
+            driving.job.deadline_game_h = window;
+            assert_eq!(dispatch_request(driving, ctx, CALL_DELAY).summary, want);
+        }
+    });
+}
+
+#[test]
+fn test_road_summary_follows_the_distance_unit() {
+    let mut app = TestApp::new();
+    let drive = a_drive(&mut app);
+    drive_and_ctx(&drive, &mut app, |driving, ctx| {
+        ctx.settings.imperial_units = false;
+        let road = dispatch_request(driving, ctx, CALL_ROAD).summary;
+        assert!(road.ends_with(" kilometers remain."), "{road}");
+        assert!(!road.contains("mile"), "{road}");
+        ctx.settings.imperial_units = true;
+        let road = dispatch_request(driving, ctx, CALL_ROAD).summary;
+        assert!(road.ends_with(" miles remain."), "{road}");
+    });
+}
+
+#[test]
+fn test_load_call_never_contradicts_its_condition_word() {
+    // "as shifted but sound, 3 percent damaged" said the load was sound and
+    // damaged in one breath, and "as damaged, 12 percent damaged" said it
+    // twice.
+    let mut app = TestApp::new();
+    let drive = a_drive(&mut app);
+    drive_and_ctx(&drive, &mut app, |driving, ctx| {
+        driving.trip.truck.cargo_damage_pct = 0.0;
+        let request = dispatch_request(driving, ctx, CALL_LOAD);
+        let secure = local_dispatch_response(&request, driving, ctx).message;
+        assert!(secure.starts_with("The freight is secure."), "{secure}");
+        assert!(!secure.contains("damage"), "{secure}");
+        driving.trip.truck.cargo_damage_pct = 3.0;
+        let request = dispatch_request(driving, ctx, CALL_LOAD);
+        let low = local_dispatch_response(&request, driving, ctx).message;
+        assert!(
+            low.starts_with(
+                "I have the freight report as shifted but sound, with only 3 percent cargo damage."
+            ),
+            "{low}"
+        );
+        for damage in [3.0, 12.0, 40.0, 80.0] {
+            driving.trip.truck.cargo_damage_pct = damage;
+            let request = dispatch_request(driving, ctx, CALL_LOAD);
+            let message = local_dispatch_response(&request, driving, ctx).message;
+            assert!(message.matches("damaged").count() <= 1, "{message}");
+            assert!(!message.contains("percent damaged"), "{message}");
+            assert!(
+                message.contains(&format!("{damage:.0} percent cargo damage.")),
+                "{message}"
+            );
+            if message.contains("sound") {
+                assert!(message.contains("with only"), "{message}");
+            }
+        }
     });
 }
