@@ -167,3 +167,20 @@ fn back_plus_start_opens_practice_over_the_pause_menu() {
     button(&mut harness, ControllerButton::Start);
     assert!(harness.state_is::<InputPracticeState>());
 }
+
+/// A pad that reports the closing Start twice, 16 ms apart, must not pause
+/// the drive with the echo (seen on an Xbox One pad, 2026-10-13).
+#[test]
+fn a_bounced_start_leaving_practice_does_not_pause_the_drive() {
+    let mut harness = a_drive("Practice Bounce");
+    pad(&mut harness);
+    open_practice(&mut harness);
+    button(&mut harness, ControllerButton::Start);
+    button_up(&mut harness, ControllerButton::Start);
+    button(&mut harness, ControllerButton::Start);
+    button_up(&mut harness, ControllerButton::Start);
+    assert!(harness.state_is::<DrivingState>());
+    button(&mut harness, ControllerButton::Start);
+    button_up(&mut harness, ControllerButton::Start);
+    assert!(harness.state_is::<DrivingState>());
+}

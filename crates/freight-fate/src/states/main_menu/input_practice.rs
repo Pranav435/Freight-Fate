@@ -17,6 +17,9 @@ const ANALOG_REST: f64 = 0.2;
 const STICK_REPEAT: Duration = Duration::from_millis(1500);
 /// The second Escape, or Start, must come this soon after the first.
 const LEAVE_WINDOW: Duration = Duration::from_secs(2);
+/// A pad can report the Start that leaves practice twice, 16 ms apart; the
+/// echo must not pause the drive underneath.
+const START_BOUNCE: Duration = Duration::from_millis(150);
 
 /// The global key that opens practice.
 pub fn opens_input_practice(key: Key, mods: Mods) -> bool {
@@ -52,6 +55,10 @@ impl InputPracticeState {
             .is_some_and(|then| now.duration_since(then) <= LEAVE_WINDOW)
         {
             ctx.say("Leaving key and button practice.");
+            if name == "Start" {
+                ctx.controller
+                    .swallow_press(ControllerButton::Start, START_BOUNCE);
+            }
             ctx.pop_state();
         } else {
             self.last_leave = Some(now);
