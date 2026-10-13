@@ -33,8 +33,9 @@ use crate::states::driving_updates::pending::EnforcementStopParams;
 /// offering the highway would be the game inviting them to break the rule it
 /// just enforced, and there would be no way off the shoulder at all. In that
 /// case the run ends here the way the felony stop already ends -- the load
-/// goes back to dispatch and the driver is released to the terminal, where
-/// "Wait out the CDL suspension" (or disqualification) is waiting for them.
+/// goes back to dispatch and a relief driver takes the truck back to the
+/// city the run left from, where the terminal menu's wait-out row is
+/// waiting for them.
 pub trait RoadsideExit: Menu {
     fn drive(&self) -> &DriveRef;
 
@@ -48,10 +49,14 @@ pub trait RoadsideExit: Menu {
 
     fn roadside_exit_item(&self, ctx: &GameContext, highway_help: &str) -> MenuItem<Self> {
         if self.licence_pulled(ctx) {
-            return MenuItem::new("Return to terminal", |s: &mut Self, ctx| {
-                s.end_run_suspended(ctx)
-            })
-            .help("Licence pulled, so the truck stays put. Dispatch takes the load back.");
+            return MenuItem::new(
+                "Hand the truck to the relief driver",
+                |s: &mut Self, ctx| s.end_run_suspended(ctx),
+            )
+            .help(
+                "License pulled, so you cannot drive on. A relief driver takes the truck back \
+                 to the city this run left from, and dispatch takes the load back.",
+            );
         }
         MenuItem::new("Pull back onto the highway", |s: &mut Self, ctx| {
             s.go_back(ctx)
@@ -77,20 +82,25 @@ pub trait RoadsideExit: Menu {
         } else {
             "There is no loaded trailer to hand back, and the assignment is canceled".to_string()
         };
-        let terminal = profile
-            .carrier_home_terminal(ctx.world)
-            .map(|t| t.spoken_name())
-            .unwrap_or_else(|| "the terminal".to_string());
-        if profile.driving_record.lifetime_disqualified {
+        // The run closes out in the city the drive left from: that is where
+        // the relief driver takes the truck and where the hub opens, with
+        // current_city unchanged. Not the home terminal, which the truck
+        // never reaches.
+        let city = ctx.world.spoken_city(&profile.current_city, None);
+        let record = &profile.driving_record;
+        if record.lifetime_disqualified {
             return format!(
-                " The licence is gone for good, so the truck stays here. {load}, and a relief \
-                 driver takes the truck in. You are released to {terminal}."
+                " The license is gone for good, so you cannot drive the truck another mile. \
+                 {load}, and a relief driver takes the truck back to {city}, where you are \
+                 released."
             );
         }
         format!(
-            " The licence is pulled as of now, so the truck stays here. {load}, and a relief \
-             driver takes the truck in. You are released to {terminal} to wait the suspension \
-             out."
+            " The license is pulled as of now, so you cannot drive the truck another mile. \
+             {load}, and a relief driver takes the truck back to {city}. You wait out the {} \
+             there; it ends {}.",
+            enforcement::status_noun(record),
+            enforcement::clears_text(profile)
         )
     }
 
@@ -106,7 +116,8 @@ pub trait RoadsideExit: Menu {
         true
     }
 
-    /// Close out the run from the shoulder and release to the terminal.
+    /// Close out the run from the shoulder; the hub opens in the city the
+    /// run left from.
     fn end_run_suspended(&mut self, ctx: &mut GameContext) {
         self.drive().clone().with(ctx, |d, ctx| {
             profile_mut_of(ctx).store_truck_condition(&d.trip.truck);
@@ -604,7 +615,8 @@ impl_state_for_menu!(EnforcementStopState);
 
 // -- LicencePulledState -------------------------------------------------------------------
 
-const LICENCE_PULLED_INTRO_HELP: &str = "Enter or Escape returns to the terminal.";
+const LICENCE_PULLED_INTRO_HELP: &str =
+    "Enter or Escape hands the truck to the relief driver and ends the run.";
 
 /// A CDL pulled mid-drive with no officer on the shoulder: a second run off
 /// the road asleep, or the barrels, on top of a serious violation already on

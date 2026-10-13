@@ -53,7 +53,7 @@ use crate::states::main_menu::MainMenuState;
 pub const PICKUP_CHECK_IN_MIN: f64 = 15.0;
 pub const PICKUP_LOADING_MIN: f64 = 60.0;
 pub const SEASONAL_WEIGHT_REROUTE_NOTE: &str =
-    "Routes where spring weight limits would put this load over are not offered.";
+    "Routes where spring weight limits would make this load overweight are not offered.";
 pub const PICKUP_LOADING_WAIT_S: f64 = 1.5;
 
 /// Whether this job's pickup facility is still in the world data.
@@ -212,6 +212,14 @@ pub struct LoadedDriveOptions {
 /// dispatch-assigned route path so air-brake, engine, and speed-control
 /// snapshots carry over identically on both.
 pub fn start_loaded_drive(ctx: &mut GameContext, job: Job, route: Route, opts: LoadedDriveOptions) {
+    // Backstop: a CDL pulled since the load was accepted keeps the truck at
+    // the dock. The drive that pulled it already ends on the shoulder, so
+    // this only catches a career that reached the dock some other way.
+    if let Some(line) = crate::states::city::cdl_drive_refusal(ctx) {
+        ctx.audio.play("ui/error");
+        ctx.say(&line);
+        return;
+    }
     let mut launch = DrivingLaunch::new(
         job,
         route,

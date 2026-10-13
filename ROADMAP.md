@@ -3420,6 +3420,12 @@ here 2026-09-25. Details stay in the linked dated sections.
 - [x] **Offline call dispatch groundwork.** A stopped driver can send a
       structured delay, hours, road, truck or load request and receive an
       immediate trip-specific local answer.
+- [ ] (Found along the way) **Call Dispatch timing is lower-48 timing
+      everywhere.** The delay answer assumes 50 mph to the destination, and
+      an authorized roadside repair always takes the 1.5-hour mobile-mechanic
+      wait. Neither holds on the Dalton Highway or other remote Alaska and
+      Canadian roads, where a callout takes far longer; scale both by road
+      and remoteness.
 - [x] **Route Call Dispatch to an opted-in remote dispatcher.** If nobody
       picks up, the office answers instead.
 - [ ] **Partial: reopen and finish driving school.** The sandboxed
