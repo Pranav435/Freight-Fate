@@ -45,6 +45,19 @@ fn dyn_label(f: impl Fn(&Settings) -> String + 'static) -> Label<SettingsCategor
     Label::dynamic(move |_s, ctx| f(&ctx.settings))
 }
 
+/// The Controller row: the setting, and while it is on, the pad the game
+/// is listening to, so a player can tell whether their controller was found.
+fn controller_label(ctx: &GameContext) -> String {
+    if !ctx.settings.controller_enabled {
+        return "Controller: disabled".to_string();
+    }
+    if ctx.controller.connected() {
+        format!("Controller: enabled, {} connected", ctx.controller.name())
+    } else {
+        "Controller: enabled, none connected".to_string()
+    }
+}
+
 fn adjust(f: impl Fn(&mut SettingsCategoryState, &mut GameContext, i64) + 'static) -> Adjust {
     Rc::new(f)
 }
@@ -657,16 +670,7 @@ impl SettingsCategoryState {
                      everywhere. Automatic transmission only.",
                 ),
                 row(
-                    dyn_label(|s| {
-                        format!(
-                            "Controller: {}",
-                            if s.controller_enabled {
-                                "enabled"
-                            } else {
-                                "disabled"
-                            }
-                        )
-                    }),
+                    Label::dynamic(|_s, ctx| controller_label(ctx)),
                     adjust(|s, ctx, d| s.toggle_controller(ctx, d)),
                     "Game-controller input alongside the keyboard, which \
                      always stays active. The first connected controller is \
