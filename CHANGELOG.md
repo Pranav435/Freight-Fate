@@ -98,6 +98,8 @@
 
 ### Fixed
 
+- **The Hours and ELD status lines now have named placeholders in the translation files.** Translators can see that the slot holds the hours summary; English is unchanged.
+
 - **Resume speed control now brings back the speed keeper's speed after you brake out of it.**
 
 

@@ -20418,9 +20418,9 @@ msgstr ""
 msgid "Rest: {rest}"
 msgstr ""
 
-#. placeholders: {trim_end_matches}
+#. placeholders: {summary}
 #: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/driving_menu_states/status.rs
-msgid "Hours: {trim_end_matches}"
+msgid "Hours: {summary}"
 msgstr ""
 
 #: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/driving_menu_states/status.rs

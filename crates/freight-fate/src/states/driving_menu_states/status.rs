@@ -271,7 +271,8 @@ impl DrivingStatusScreenState {
                 if !trust.is_empty() {
                     lines.push(trust);
                 }
-                lines.push(format!("Hours: {}", hours.trim_end_matches('.')));
+                let summary = hours.trim_end_matches('.');
+                lines.push(format!("Hours: {summary}"));
                 lines.push(time_line);
                 lines
             })
