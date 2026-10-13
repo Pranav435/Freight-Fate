@@ -140,6 +140,10 @@ bookmarks usable.
       a daypart schedule by the truck's local hour, from its own
       `channel3000.pak`, opened on first tune-in; off the dial without the
       pack, and in no changelog or manual (`ff_core::channel3000`).
+- [x] Channel 3000 moved to the end of the Freight Fate stations (owner,
+      2026-10-13): with no call sign it sorted ahead of FFN and FFR, so the
+      category jump landed on it. Stations without a call sign now follow
+      the lettered ones in their dial group.
 - [x] Channel 3000 levelled to the other stations (owner, 2026-10-09, a
       player found it hard to hear): its shows had one static gain to -18
       LUFS integrated, which the loud themes and stings set, so the talk

@@ -102,6 +102,7 @@
 
 
 - **Switching screen readers is now silent, and ZDSR no longer repeats "Speech is now using ZDSR" on every key press.**
+- **The jump to Freight Fate stations now lands on the Night Line, not Channel 3000.** Channel 3000 sits at the end of the category.
 - **Channel 3000's shows are now as loud as the other stations, and their theme music no longer jumps out over the talk.**
 - **Been Everywhere, For Real now needs all sixteen regions on the map, not fourteen.**
 
