@@ -30586,6 +30586,15 @@ msgstr "Posición aproximada de la radio del camión: {f}, {f2}."
 msgid "Receivable stations:"
 msgstr "Emisoras que se reciben:"
 
+msgid "Favorites saved:"
+msgstr "Favoritas guardadas:"
+
+msgid "favorites"
+msgstr "favorites"
+
+msgid "Your saved stations. Enter on one tunes it."
+msgstr "Tus emisoras guardadas. Enter en una la sintoniza."
+
 msgid "Back to the status screens."
 msgstr "De vuelta a las pantallas de estado."
 
@@ -31136,12 +31145,6 @@ msgstr "Guarda o quita la emisora sintonizada de favoritas."
 #. placeholders: {favorites}
 msgid "Favorites: {favorites} saved"
 msgstr "Favoritas: {favorites} guardadas"
-
-msgid "favorites"
-msgstr "favorites"
-
-msgid "Your saved stations. Enter on one tunes it."
-msgstr "Tus emisoras guardadas. Enter en una la sintoniza."
 
 msgid "Search stations"
 msgstr "Buscar emisoras"
