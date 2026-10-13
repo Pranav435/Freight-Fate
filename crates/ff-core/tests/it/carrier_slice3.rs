@@ -132,6 +132,13 @@ fn test_regional_and_local_hires_stay_in_country_and_radius() {
 fn test_alaska_is_served_by_alaska_carriers_only() {
     let world = world();
     for city in alaska_cities(world) {
+        if world.cities[&city].no_freight {
+            assert!(
+                !is_offerable_home_city(world, &city),
+                "{city} has no freight"
+            );
+            continue;
+        }
         assert!(
             is_offerable_home_city(world, &city) || city == "deadhorse_ak_us",
             "{city} not offered"
