@@ -278,7 +278,8 @@ impl DriverAppScreenState {
             .with(ctx, |d, ctx| {
                 let summary =
                     crate::states::driving_core::hos_of(ctx).summary(&ctx.settings.hos_mode);
-                let mut lines = vec![format!("ELD: {}", summary.trim_end_matches('.'))];
+                let summary = summary.trim_end_matches('.');
+                let mut lines = vec![format!("ELD: {summary}")];
                 let context = d.hos_route_context(ctx);
                 if context.is_empty() {
                     lines.push("ELD route note: no legal stop warning.".to_string());

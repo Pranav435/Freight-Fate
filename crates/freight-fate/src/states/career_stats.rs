@@ -158,10 +158,9 @@ impl CareerStatsState {
             fmt_grouped(career.total_earnings, 0)
         ));
         lines.push(format!("Rest: {rest}"));
-        lines.push(format!(
-            "Hours: {}",
-            p.hos.summary(&ctx.settings.hos_mode).trim_end_matches('.')
-        ));
+        let hos = p.hos.summary(&ctx.settings.hos_mode);
+        let summary = hos.trim_end_matches('.');
+        lines.push(format!("Hours: {summary}"));
         lines
     }
 }

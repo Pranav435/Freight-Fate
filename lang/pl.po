@@ -16088,8 +16088,8 @@ msgstr ""
 msgid "Rest: {rest}"
 msgstr ""
 
-#. placeholders: {trim_end_matches}
-msgid "Hours: {trim_end_matches}"
+#. placeholders: {summary}
+msgid "Hours: {summary}"
 msgstr ""
 
 msgid "Repeat this status line."
