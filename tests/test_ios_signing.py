@@ -289,3 +289,88 @@ def test_workflow_leaves_export_compliance_to_info_plist() -> None:
     assert not any("uses-non-exempt-encryption" in ln for ln in active)
     build_ios = (ROOT / "tools" / "build_ios.py").read_text(encoding="utf-8")
     assert '"ITSAppUsesNonExemptEncryption": False' in build_ios
+
+
+class FakeTestFlight:
+    """App Store Connect as seen by distribute: one app, its groups and builds."""
+
+    def __init__(self, states=("VALID",), submitted=False):
+        self.calls: list[tuple[str, str, dict | None]] = []
+        self.states = list(states)
+        self.submitted = submitted
+        self.groups = [
+            {"id": "G-int", "attributes": {"name": "Friends", "isInternalGroup": True}},
+            {"id": "G-ext", "attributes": {"name": "Friends", "isInternalGroup": False}},
+        ]
+
+    def __call__(self, token, method, path, body=None):
+        bare = path.split("?")[0]
+        self.calls.append((method, bare, body))
+        if bare == "/v1/apps":
+            return {"data": [{"id": "APP"}]}
+        if bare == "/v1/apps/APP/betaGroups":
+            return {"data": self.groups}
+        if bare == "/v1/builds":
+            assert "filter%5Bversion%5D=10" in path
+            state = self.states.pop(0) if len(self.states) > 1 else self.states[0]
+            return {"data": [{"id": "BUILD", "attributes": {"processingState": state}}]}
+        if bare == "/v1/builds/BUILD/betaAppReviewSubmission":
+            return {"data": {"id": "S"} if self.submitted else None}
+        return {}
+
+
+@pytest.fixture
+def testflight(monkeypatch):
+    fake = FakeTestFlight()
+    monkeypatch.setattr(ios_signing, "api_request", fake)
+    monkeypatch.setattr(ios_signing, "_token", lambda: "tok")
+    monkeypatch.setattr(ios_signing.time, "sleep", lambda seconds: None)
+    return fake
+
+
+def _writes(fake) -> list[tuple[str, str, dict | None]]:
+    return [c for c in fake.calls if c[0] != "GET"]
+
+
+def test_distribute_adds_to_the_external_group_and_submits(testflight, capsys) -> None:
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 0
+    added, submitted = _writes(testflight)
+    assert added[1] == "/v1/betaGroups/G-ext/relationships/builds"
+    assert added[2] == {"data": [{"type": "builds", "id": "BUILD"}]}
+    assert submitted[1] == "/v1/betaAppReviewSubmissions"
+    assert submitted[2]["data"]["relationships"]["build"]["data"]["id"] == "BUILD"
+    assert "submitted for beta review" in capsys.readouterr().out
+
+
+def test_distribute_waits_for_processing(testflight) -> None:
+    testflight.states = ["PROCESSING", "PROCESSING", "VALID"]
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 0
+    assert sum(1 for c in testflight.calls if c[1] == "/v1/builds") == 3
+
+
+def test_distribute_does_not_resubmit(testflight, capsys) -> None:
+    testflight.submitted = True
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 0
+    assert [c[1] for c in _writes(testflight)] == ["/v1/betaGroups/G-ext/relationships/builds"]
+    assert "already submitted" in capsys.readouterr().out
+
+
+def test_distribute_stops_on_a_failed_build(testflight, capsys) -> None:
+    testflight.states = ["INVALID"]
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 1
+    assert _writes(testflight) == []
+    assert "INVALID" in capsys.readouterr().out
+
+
+def test_distribute_needs_an_external_group(testflight, capsys) -> None:
+    testflight.groups = testflight.groups[:1]
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 1
+    assert _writes(testflight) == []
+    assert "no external TestFlight group named 'Friends'" in capsys.readouterr().out
+
+
+def test_workflow_sends_real_uploads_to_friends_by_default() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "ios-testflight.yml").read_text(encoding="utf-8")
+    assert "inputs.upload == true && inputs.testers == 'friends'" in workflow
+    assert "tools/ios_signing.py distribute" in workflow
+    assert "default: friends" in workflow
