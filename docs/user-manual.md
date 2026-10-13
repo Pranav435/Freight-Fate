@@ -62,6 +62,12 @@ Open How to play for the built-in guide. You can read a whole page or read a lit
 
 Use Learn game sounds when you want to get familiar with a road cue before hearing it during a drive. Select a sound to hear it and read its explanation. You can also open this screen from the pause menu.
 
+### Practice keys and buttons
+
+Practice keys and buttons tells you what each key or controller button does while driving, without sending it to the game. Press a key, a button, a trigger or a stick and you'll hear its name and its command, such as "E: Engine on or off" or "Right bumper plus X: Posted speed limit." The answers follow your own assignments from Settings, Gameplay, Controls.
+
+Shift F1 opens practice from any screen, including during a drive. The drive waits while you practice. On a controller, open it from the main menu or the pause menu. Press Escape twice, or Start twice, to leave.
+
 ### Settings
 
 Settings lets you adjust gameplay, audio, and speech, as well as access update and problem-report settings. If you want to change how much assistance the game provides or make a sound easier to hear, start here.
@@ -166,7 +172,7 @@ On a controller, D-pad down signals for the exit, and the left stick steers into
 
 Read the settlement before looking for the next job. It shows your earnings, cargo condition, and career changes, including anything that cost you money.
 
-If you need a moment to check something, Escape pauses the drive; on a controller, Start does. Learn game sounds is available on the main and pause menus, so you can hear a cue and learn what it means before meeting it on the road. Lower music, radio, or ambience if it makes the driving sounds hard to hear.
+If you need a moment to check something, Escape pauses the drive; on a controller, Start does. Learn game sounds is available on the main and pause menus, so you can hear a cue and learn what it means before meeting it on the road. Practice keys and buttons, on the same menus, names what each key or button does. Lower music, radio, or ambience if it makes the driving sounds hard to hear.
 
 ## Menu controls
 
@@ -361,6 +367,8 @@ Once loading is finished, a company driver takes dispatch's route. As an owner, 
 
 These are the default keyboard controls, with the default controller button beside each. You can change eligible assignments under Settings, Gameplay, Controls, and in-game help will use your new shortcuts. Menu navigation, message review, and certain fixed controls stay reserved.
 
+To hear what a key does without pressing it on the road, press Shift F1 for [key and button practice](#practice-keys-and-buttons).
+
 A control marked Driving commands has no controller button. Hold the right bumper and press Start to open Driving status, then choose Driving commands and pick it from the list. The list runs it and returns you to the road.
 
 | Key | Controller | Action |
@@ -433,6 +441,8 @@ You can use the keyboard alongside a controller. The button names here follow an
 Drive with the right trigger for acceleration and the left trigger for braking. Full left-trigger travel applies emergency braking. The left stick steers; with lane keeping on full, push it left or right to change one lane, and let it come back to the center before the next. To change automatic direction, stop fully and use a fresh hold. Left bumper is the clutch, and right bumper opens the second control layer. Controller help names your current button assignments.
 
 Most driving commands have a button. For the rest, such as the grade, the lane check, and the road ahead, hold the right bumper and press Start, then choose Driving commands. The list names every command; choosing one runs it and returns you to the road.
+
+To check what a button does, press Start and choose Practice keys and buttons. Each button, trigger and stick you press says its command; Start twice returns to the drive.
 
 Inside How to play, D-pad Left and Right change pages, while Up and Down let you read a little at a time. A reads the whole page, Back stops speech, and B returns.
 

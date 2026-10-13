@@ -7515,11 +7515,11 @@ msgstr ""
 msgid "the right stick click"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/main_menu/input_practice.rs
 msgid "Escape"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/text_entry.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/main_menu/input_practice.rs crates/freight-fate/src/states/text_entry.rs
 msgid "Start"
 msgstr ""
 
@@ -26151,7 +26151,8 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_controls/help.rs
 msgid ""
-"shifting. Escape pause menu. F2 lists every driving command by name. "
+"shifting. Escape pause menu. F2 lists every driving command by name. Shift "
+"F1 names what each key does. "
 msgstr ""
 
 #. placeholders: {n}, {n2}, {n3}, {n4}
@@ -26294,6 +26295,12 @@ msgstr ""
 
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_controls/help.rs
+msgid ""
+"Practice keys and buttons, on the pause menu, names what each button does."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_controls/help.rs
 msgid "emergency shoulder sleep."
 msgstr ""
 
@@ -26301,7 +26308,8 @@ msgstr ""
 #: crates/freight-fate/src/states/driving_controls/help.rs
 msgid ""
 "emergency shoulder sleep. {capitalized} opens the status menu, which also "
-"lists every driving command. "
+"lists every driving command. Practice keys and buttons, on the pause menu, "
+"names what each button does. "
 msgstr ""
 
 #. placeholders: {capitalized}
@@ -33304,6 +33312,14 @@ msgstr ""
 msgid "Plays any sound the road uses and says what it means."
 msgstr ""
 
+#: crates/freight-fate/src/states/driving_pause_states.rs crates/freight-fate/src/states/main_menu.rs
+msgid "Practice keys and buttons"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_pause_states.rs crates/freight-fate/src/states/main_menu.rs
+msgid "Names what each key or controller button does while driving."
+msgstr ""
+
 #: crates/freight-fate/src/states/driving_pause_states.rs
 msgid ""
 "A mobile mechanic patches the truck up enough to drive on. Far dearer than "
@@ -38569,6 +38585,175 @@ msgid ""
 "backup on the Online menu can remove them later."
 msgstr ""
 
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Leaving key and button practice."
+msgstr ""
+
+#. placeholders: {name}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "{name}: pause menu."
+msgstr ""
+
+#. placeholders: {name}
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "{name}: pause menu. Again to leave practice."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Right trigger: Accelerate, as far as you press it."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid ""
+"Left trigger: Brake, as far as you press it. All the way down: Emergency "
+"brake."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Left stick: push left or right to change one lane."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Left stick: steer."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Change one lane left"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Change one lane right"
+msgstr ""
+
+#. placeholders: {label}
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "{label}, in a manual truck"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Control: stop the driving voice."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Shift: hold as the clutch in a manual truck."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "Alt: hold with another key."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "key and button practice"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "driving commands"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "oldest message"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "newest message"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "previous message"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "next message"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "previous message category"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "next message category"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "copy the message in review"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "cruise target up by 1"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "cruise target up to the next 5"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "cruise target down by 1"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "cruise target down to the next 5"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "choose, or confirm an arrival"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "previous radio category"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "raise radio volume"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "tune to the previous radio station"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "next radio category"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "lower radio volume"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "tune to the next radio station"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "no command"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "hold for the second layer of buttons"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "hold as the clutch in a manual truck"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "help, or stop the driving voice while it speaks"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "confirm an arrival when one is ready"
+msgstr ""
+
+#. placeholders: {text}
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid "{text}, or confirm an arrival when one is ready"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/input_practice.rs
+msgid ""
+"Key and button practice. Press a key or button to hear what it does while "
+"driving. Escape twice, or Start twice, to leave."
+msgstr ""
+
 #: crates/freight-fate/src/states/main_menu/settings.rs
 msgid "Gameplay"
 msgstr ""
@@ -40539,6 +40724,13 @@ msgid ""
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
+msgid ""
+"Practice keys and buttons names what each key or controller button does "
+"while driving, without moving the truck. Shift F1 opens it from any screen, "
+"and it is on the main and pause menus. Press Escape or Start twice to leave."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu_help.rs
 msgid "Starting and stopping the truck"
 msgstr ""
 
@@ -42470,6 +42662,12 @@ msgstr ""
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid "{pad_radio} turns it on or off."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu_help.rs
+msgid ""
+"To learn the buttons, choose Practice keys and buttons from the main or "
+"pause menu. Each button you press says what it does; Start twice leaves."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs

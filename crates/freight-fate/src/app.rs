@@ -32,7 +32,9 @@ use crate::online_presence::{IdentityStore, OnlinePresence, OnlinePresenceOption
 use crate::speech::{NullSpeech, SpeechSink};
 use crate::states::base::{InputEvent, Key, Mods, State};
 use crate::states::driving::DrivingState;
-use crate::states::main_menu::{ConfirmQuitState, TouchPracticeState};
+use crate::states::main_menu::{
+    opens_input_practice, ConfirmQuitState, InputPracticeState, TouchPracticeState,
+};
 use crate::touch::Gesture;
 
 pub mod boot_timing;
@@ -790,8 +792,18 @@ impl App {
         let Some(state) = self.ctx.state() else {
             return;
         };
-        if event.key_down().is_some() {
+        if let Some((key, mods, _)) = event.key_down() {
             self.ctx.controller.note_keyboard();
+            // Shift F1 opens key and button practice over any screen; inside
+            // practice it is one more key to name.
+            if opens_input_practice(key, mods)
+                && !event.key_repeat()
+                && !state.borrow().as_any().is::<InputPracticeState>()
+            {
+                self.ctx.push_state(InputPracticeState::new());
+                self.ctx.run_deferred();
+                return;
+            }
             let consumed = state
                 .borrow_mut()
                 .handle_message_review(&mut self.ctx, event);

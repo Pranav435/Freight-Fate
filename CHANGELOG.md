@@ -8,6 +8,8 @@
 
 - **Driving status now lists every driving command, so a controller can run the ones with no button.**
 
+- **Key and button practice says what each key or controller button does while driving.** Shift F1 opens it anywhere; it is also on the main and pause menus.
+
 - **A Language setting lets the game speak other languages.** It is the first row of Settings, Speech; Automatic follows your system language, and the radio stays English.
 
 - **Anyone can correct a translation with the Translation correction form on GitHub.** It asks what the game said and what it should say.

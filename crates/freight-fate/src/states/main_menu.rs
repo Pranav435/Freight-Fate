@@ -40,6 +40,7 @@ use crate::{impl_state_for_menu, impl_state_for_text_entry};
 
 mod achievements;
 mod careers;
+mod input_practice;
 mod settings;
 mod settings_actions;
 mod settings_items;
@@ -51,6 +52,7 @@ pub use achievements::{AchievementCareerState, AchievementCategoryState, Achieve
 pub use careers::{
     CareerAction, CareerActionsState, ConfirmCareerActionState, LoadDriverState, ManageCareersState,
 };
+pub use input_practice::{describe_button, describe_key, opens_input_practice, InputPracticeState};
 pub use settings::{
     GameplaySettingsState, SettingsCategoryState, SettingsState, SETTINGS_LAYOUT_NOTICES,
 };
@@ -897,6 +899,12 @@ impl Menu for MainMenuState {
                 ctx.push_state(LearnSoundsState::new())
             })
             .help("Any sound the road uses, and what it means."),
+        );
+        items.push(
+            MenuItem::new("Practice keys and buttons", |_s: &mut Self, ctx| {
+                ctx.push_state(InputPracticeState::new())
+            })
+            .help("Names what each key or controller button does while driving."),
         );
         items.push(
             MenuItem::new("Settings", |_s: &mut Self, ctx| {

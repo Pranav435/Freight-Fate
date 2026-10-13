@@ -293,7 +293,7 @@ impl DrivingState {
             "automatic mode. {} switches between automatic and manual ",
             n(Action::TransmissionMode)
         ));
-        text.push_str("shifting. Escape pause menu. F2 lists every driving command by name. ");
+        text.push_str("shifting. Escape pause menu. F2 lists every driving command by name. Shift F1 names what each key does. ");
         if !self.trip.truck.transmission.automatic {
             text.push_str(&format!(
                 "Hold Left Shift for clutch, then {} to shift up or {} to shift down, \
@@ -395,7 +395,7 @@ impl DrivingState {
         ));
         text.push_str("Away from route points while fully stopped, it opens ");
         text.push_str(&format!(
-            "emergency shoulder sleep. {} opens the status menu, which also lists every driving command. ",
+            "emergency shoulder sleep. {} opens the status menu, which also lists every driving command. Practice keys and buttons, on the pause menu, names what each button does. ",
             capitalized(&n(Action::Status))
         ));
         text.push_str(&format!(
