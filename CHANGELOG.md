@@ -102,7 +102,7 @@
 
 ### Fixed
 
-- **Translated speech now says facility types, the dispatch board's market and job rows, and region city counts in your language.** Facility and town names stay as they are.
+- **Translated speech now says facility types, the dispatch board's market and job rows, and region city counts in your language.** Facility and town names stay as they are, and Spanish lane counts say carril.
 
 - **Controller button names are translated, and the Driver screen's clock reads its time zone in your language.** The terminal greeting also loses a stray double space.
 

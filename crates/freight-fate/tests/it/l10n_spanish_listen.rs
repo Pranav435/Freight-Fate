@@ -77,6 +77,7 @@ fn the_chicago_start_and_kenosha_drive_are_whole_spanish() {
         let said = lines.join(" ");
         assert!(said.contains("Chicago Company Yard"), "{said}");
         assert!(said.contains("toward Kenosha"), "{said}");
+        assert!(said.contains("to pickup at"), "{said}");
         let mut leaks = Vec::new();
         // The board's market and offer rows and the facility phrases
         // ("retail distribution hub ... in Kenosha") included.
@@ -90,6 +91,8 @@ fn the_chicago_start_and_kenosha_drive_are_whole_spanish() {
                 "Deadline",
                 "distribution hub",
                 " in Kenosha",
+                " in Chicago",
+                " in ",
                 "trainer-recommended",
                 "de recomendado",
                 " tight",

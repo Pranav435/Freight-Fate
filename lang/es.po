@@ -6993,22 +6993,22 @@ msgstr "colinas onduladas"
 #. placeholders: {lane_word}, {lane_word2}
 msgid "mostly divided, {lane_word} to {lane_word2} lanes your side"
 msgstr ""
-"en su mayoría con calzadas separadas, de {lane_word} a {lane_word2} vías en "
-"tu sentido"
+"en su mayoría con calzadas separadas, de {lane_word} a {lane_word2} "
+"carriles en tu sentido"
 
 #. placeholders: {lane_word}, {lane_word2}
 msgid "{lane_word} to {lane_word2} lanes your side"
-msgstr "de {lane_word} a {lane_word2} vías en tu sentido"
+msgstr "de {lane_word} a {lane_word2} carriles en tu sentido"
 
 #. placeholders: {lane_word}, {s_ending}
 msgid "mostly divided, {lane_word} lane{s_ending} your side"
 msgstr ""
-"en su mayoría con calzadas separadas, {lane_word} vía{s_ending} en tu "
+"en su mayoría con calzadas separadas, {lane_word} carril{s_ending} en tu "
 "sentido"
 
 #. placeholders: {lane_word}, {s_ending}
 msgid "{lane_word} lane{s_ending} your side"
-msgstr "{lane_word} vía{s_ending} en tu sentido"
+msgstr "{lane_word} carril{s_ending} en tu sentido"
 
 #. placeholders: {f}
 msgid "{f} miles"
@@ -14143,7 +14143,7 @@ msgstr "En {highway} hacia {toward_text}."
 
 #. placeholders: {lane_word}, {s_ending}
 msgid "divided, {lane_word} lane{s_ending} your side"
-msgstr "con calzadas separadas, {lane_word} vía{s_ending} en tu sentido"
+msgstr "con calzadas separadas, {lane_word} carril{s_ending} en tu sentido"
 
 msgid "Current grade 0.0 percent, level"
 msgstr "Pendiente actual 0,0 por ciento, llano"
@@ -14235,11 +14235,11 @@ msgstr "entrada de la instalación"
 
 #. placeholders: {lane_word}
 msgid "Road widens to {lane_word} lanes your side."
-msgstr "La carretera se ensancha a {lane_word} vías en tu sentido."
+msgstr "La carretera se ensancha a {lane_word} carriles en tu sentido."
 
 #. placeholders: {lane_word}, {s_ending}
 msgid "Down to {lane_word} lane{s_ending} your side."
-msgstr "Se reduce a {lane_word} vía{s_ending} en tu sentido."
+msgstr "Se reduce a {lane_word} carril{s_ending} en tu sentido."
 
 #. placeholders: {distance}
 msgid ", then {distance} on it"
@@ -42581,6 +42581,46 @@ msgstr ""
 msgid "First-day objective: pick a trainer-recommended load."
 msgstr ""
 "Objetivo del primer día: elige una carga que recomiende el instructor."
+
+msgid "{place_name} in {city}"
+msgstr "{place_name} en {city}"
+
+msgid "{place_name} near {town} in {city}"
+msgstr "{place_name} cerca de {town} en {city}"
+
+msgid "one lane your side"
+msgstr "un carril en tu sentido"
+
+msgid "divided, one lane your side"
+msgstr "con calzadas separadas, un carril en tu sentido"
+
+msgid "Down to one lane your side."
+msgstr "Se reduce a un carril en tu sentido."
+
+msgid "{lane_word} lanes your side"
+msgstr "{lane_word} carriles en tu sentido"
+
+msgid "divided, {lane_word} lanes your side"
+msgstr "con calzadas separadas, {lane_word} carriles en tu sentido"
+
+msgid "Down to {lane_word} lanes your side."
+msgstr "Se reduce a {lane_word} carriles en tu sentido."
+
+msgid "mostly divided, one lane your side"
+msgstr "en su mayoría con calzadas separadas, un carril en tu sentido"
+
+msgid "mostly divided, {lane_word} lanes your side"
+msgstr ""
+"en su mayoría con calzadas separadas, {lane_word} carriles en tu sentido"
+
+msgid "One lane your side."
+msgstr "Un carril en tu sentido."
+
+msgid "Divided, one lane your side."
+msgstr "Con calzadas separadas, un carril en tu sentido."
+
+msgid "Mostly divided, one lane your side."
+msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
 
 #~ msgid "from {origin_offer_text}"
 #~ msgstr "desde {origin_offer_text}"

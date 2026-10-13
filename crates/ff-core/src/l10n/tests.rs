@@ -851,6 +851,30 @@ fn shipped_spanish_says_places_board_rows_and_regions_whole() {
         ("Market watch: automotive tight, farm inputs tight, lumber paper loose, steel loose.", "Vistazo al mercado: automoción al alza, insumos agrícolas al alza, madera y papel a la baja, acero a la baja."),
         ("16 tons of general freight from Chicago Parcel Hub in Chicago, Illinois to the Fargo metro freight market. 62 miles. Carrier gross 332 dollars. Deadline 3 hours. Equipment: dry van trailer.", "16 toneladas de carga general desde Chicago Parcel Hub en Chicago, Illinois hasta el mercado de carga metropolitano de Fargo. 62 millas. Ingreso bruto de la empresa de transporte: 332 dólares. Plazo de entrega: 3 horas. Equipo: remolque de furgón seco."),
         ("16 tons of general freight from Chicago Parcel Hub in Chicago, Illinois to Amazon Fulfillment Center KRB1 in Kenosha, Wisconsin. 62 miles. Gross revenue 332 dollars. Deadline 12 hours, planned around the 10-hour rest your hours will force. Equipment: dry van trailer.", "16 toneladas de carga general desde Chicago Parcel Hub en Chicago, Illinois hasta Amazon Fulfillment Center KRB1 en Kenosha, Wisconsin. 62 millas. Ingresos brutos: 332 dólares. Plazo de entrega: 12 horas, contando el descanso de 10 horas que te impondrán tus horas de servicio. Equipo: remolque de furgón seco."),
+        (
+            "Dispatch accepted from Chicago Company Yard. Deadhead 1.1 miles on South Canal Street to pickup at Chicago Parcel Hub in Chicago, Illinois.",
+            "Despacho aceptado desde Patio de la empresa Chicago. Trayecto en vacío de 1,1 millas por South Canal Street hasta la recogida en Chicago Parcel Hub en Chicago, Illinois.",
+        ),
+        (
+            "Pulling into port Port of Tacoma in Tacoma, Washington.",
+            "Entrando en puerto Port of Tacoma en Tacoma, Washington.",
+        ),
+        (
+            "Loaded for warehouse Acme Storage in Reno, Nevada.",
+            "Cargado para almacén Acme Storage en Reno, Nevada.",
+        ),
+        (
+            "On I-5 toward Portland, Oregon. One lane your side. Current grade 0.1 percent downhill, terrain hills.",
+            "En I-5 hacia Portland, Oregon. Un carril en tu sentido. Pendiente actual 0,1 por ciento de bajada, terreno de colinas.",
+        ),
+        (
+            "On I-5 toward Portland, Oregon. Divided, one lane your side.",
+            "En I-5 hacia Portland, Oregon. Con calzadas separadas, un carril en tu sentido.",
+        ),
+        (
+            "Down to two lanes your side. Road widens to three lanes your side.",
+            "Se reduce a dos carriles en tu sentido. La carretera se ensancha a tres carriles en tu sentido.",
+        ),
         ("Great Lakes (29 cities). 8 of 16.", "Great Lakes (29 ciudades). 8 de 16."),
         ("Current grade 2.0 percent downhill, terrain hills.", "Pendiente actual 2,0 por ciento de bajada, terreno de colinas."),
         ("You have 5,000 dollars. First-day objective: open the dispatch board and accept your assigned trainer-recommended load.", "Tienes 5.000 dólares. Objetivo del primer día: abre el tablón de trabajos y acepta la carga asignada que recomienda el instructor."),

@@ -798,8 +798,9 @@ impl Pass<'_, '_> {
             return None;
         }
         let (template, captures) = self.catalog.templates.best_match(raw, |template, caps| {
-            !template.numbers_only()
-                && template.segs.iter().any(|seg| {
+            // "{place_name} in {city}" has few letters of its own, but here
+            // every hole is a name, so it is a frame around names.
+            template.segs.iter().any(|seg| {
                     matches!(seg, Seg::Lit(text) if text.ends_with(" in ") || text.contains(" near "))
                 })
                 && caps.iter().all(|(name, value)| {
