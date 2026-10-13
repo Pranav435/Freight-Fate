@@ -14164,6 +14164,13 @@ msgstr ""
 msgid "Lane keeping is on full. Flick left or right to change lanes."
 msgstr ""
 
+msgid "Controller connected."
+msgstr ""
+
+#. placeholders: {name}
+msgid "Controller connected: {name}."
+msgstr ""
+
 msgid ""
 "Controller disconnected. You can keep playing with the keyboard, or "
 "reconnect your controller."
@@ -20649,6 +20656,9 @@ msgstr ""
 msgid "F2 lists every driving command by name."
 msgstr ""
 
+msgid "Shift F1 names what each key does."
+msgstr ""
+
 #. placeholders: {shift_up}, {shift_down}, {reverse}, {neutral}
 msgid ""
 "Hold Left Shift for clutch, then {shift_up} to shift up or {shift_down} to "
@@ -20665,7 +20675,9 @@ msgid ""
 "is the hardest stop."
 msgstr ""
 
-msgid "The left stick steers unless lane keeping is on full."
+msgid ""
+"The left stick steers; with lane keeping on full, pushing it left or right "
+"changes one lane."
 msgstr ""
 
 #. placeholders: {shift_up}, {shift_down}
@@ -20748,7 +20760,11 @@ msgid ""
 msgstr ""
 
 #. placeholders: {status}
-msgid "{status} opens the status menu."
+msgid ""
+"{status} opens the status menu, which also lists every driving command."
+msgstr ""
+
+msgid "Hold Back and press Start to hear what each button does."
 msgstr ""
 
 #. placeholders: {tune_prev}, {tune_next}
@@ -26155,6 +26171,10 @@ msgstr ""
 msgid "Open the {label} status screen."
 msgstr ""
 
+msgid ""
+"Every driving command by name. Choose one to run it and return to driving."
+msgstr ""
+
 msgid "Close status and resume driving."
 msgstr ""
 
@@ -26427,6 +26447,12 @@ msgid "Learn game sounds"
 msgstr ""
 
 msgid "Plays any sound the road uses and says what it means."
+msgstr ""
+
+msgid "Practice keys and buttons"
+msgstr ""
+
+msgid "Names what each key or controller button does while driving."
 msgstr ""
 
 msgid ""
@@ -30694,6 +30720,138 @@ msgid ""
 "backup on the Online menu can remove them later."
 msgstr ""
 
+msgid "Leaving key and button practice."
+msgstr ""
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}: pause menu."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name}: pause menu. Again to leave practice."
+msgstr ""
+
+msgid "Back plus Start: key and button practice."
+msgstr ""
+
+msgid "Right trigger: Accelerate, as far as you press it."
+msgstr ""
+
+msgid ""
+"Left trigger: Brake, as far as you press it. All the way down: Emergency "
+"brake."
+msgstr ""
+
+msgid "Left stick: push left or right to change one lane."
+msgstr ""
+
+msgid "Left stick: steer."
+msgstr ""
+
+msgid "Change one lane left"
+msgstr ""
+
+msgid "Change one lane right"
+msgstr ""
+
+#. placeholders: {label}
+msgid "{label}, in a manual truck"
+msgstr ""
+
+msgid "Control: stop the driving voice."
+msgstr ""
+
+msgid "Shift: hold as the clutch in a manual truck."
+msgstr ""
+
+msgid "Alt: hold with another key."
+msgstr ""
+
+msgid "key and button practice"
+msgstr ""
+
+msgid "driving commands"
+msgstr ""
+
+msgid "oldest message"
+msgstr ""
+
+msgid "newest message"
+msgstr ""
+
+msgid "previous message"
+msgstr ""
+
+msgid "next message"
+msgstr ""
+
+msgid "previous message category"
+msgstr ""
+
+msgid "next message category"
+msgstr ""
+
+msgid "copy the message in review"
+msgstr ""
+
+msgid "cruise target up by 1"
+msgstr ""
+
+msgid "cruise target up to the next 5"
+msgstr ""
+
+msgid "cruise target down by 1"
+msgstr ""
+
+msgid "cruise target down to the next 5"
+msgstr ""
+
+msgid "choose, or confirm an arrival"
+msgstr ""
+
+msgid "previous radio category"
+msgstr ""
+
+msgid "raise radio volume"
+msgstr ""
+
+msgid "tune to the previous radio station"
+msgstr ""
+
+msgid "next radio category"
+msgstr ""
+
+msgid "lower radio volume"
+msgstr ""
+
+msgid "tune to the next radio station"
+msgstr ""
+
+msgid "no command"
+msgstr ""
+
+msgid "hold for the second layer of buttons"
+msgstr ""
+
+msgid "hold as the clutch in a manual truck"
+msgstr ""
+
+msgid "help, or stop the driving voice while it speaks"
+msgstr ""
+
+msgid "confirm an arrival when one is ready"
+msgstr ""
+
+#. placeholders: {text}
+msgid "{text}, or confirm an arrival when one is ready"
+msgstr ""
+
+msgid ""
+"Key and button practice. Press a key or button to hear what it does while "
+"driving. Escape twice, or Start twice, to leave."
+msgstr ""
+
 msgid "Gameplay"
 msgstr ""
 
@@ -30967,6 +31125,16 @@ msgstr ""
 msgid ""
 "Only NVDA and JAWS can send the game to a braille display. Speech stays on "
 "until one of them is running."
+msgstr ""
+
+msgid "Controller: disabled"
+msgstr ""
+
+#. placeholders: {name}
+msgid "Controller: enabled, {name} connected"
+msgstr ""
+
+msgid "Controller: enabled, none connected"
 msgstr ""
 
 msgid "a soft tone leans"
@@ -31464,16 +31632,6 @@ msgid ""
 "and press everywhere. Automatic transmission only."
 msgstr ""
 
-#. placeholders: {else}
-msgid "Controller: {else}"
-msgstr ""
-
-msgid "enabled"
-msgstr ""
-
-msgid "disabled"
-msgstr ""
-
 msgid ""
 "Game-controller input alongside the keyboard, which always stays active. "
 "The first connected controller is used."
@@ -31481,6 +31639,12 @@ msgstr ""
 
 #. placeholders: {else}
 msgid "Haptics: {else}"
+msgstr ""
+
+msgid "enabled"
+msgstr ""
+
+msgid "disabled"
 msgstr ""
 
 msgid ""
@@ -32284,6 +32448,13 @@ msgstr ""
 msgid ""
 "Learn game sounds plays road cues and explains their meaning. It is "
 "available on the main and pause menus."
+msgstr ""
+
+msgid ""
+"Practice keys and buttons names what each key or controller button does "
+"while driving, without moving the truck. Shift F1 opens it from any screen, "
+"as does holding Back and pressing Start on a controller. It is also on the "
+"main and pause menus. Press Escape or Start twice to leave."
 msgstr ""
 
 msgid "Starting and stopping the truck"
@@ -33797,7 +33968,8 @@ msgstr ""
 
 msgid ""
 "Right trigger accelerates, left trigger brakes, and fully pressing the left "
-"trigger gives emergency braking. The left stick steers."
+"trigger gives emergency braking. The left stick steers; with lane keeping "
+"on full, push it left or right to change one lane."
 msgstr ""
 
 msgid ""
@@ -33812,8 +33984,8 @@ msgstr ""
 #. placeholders: {pad_shift_up}, {pad_shift_down}, {pad_cruise}, {pad_speed}
 msgid ""
 "Hold left bumper for manual clutch. {pad_shift_up} shifts up and "
-"{pad_shift_down} down. {pad_cruise} starts speed control; {pad_speed} reads "
-"speed."
+"{pad_shift_down} down, past first into neutral and then reverse. "
+"{pad_cruise} starts speed control; {pad_speed} reads speed."
 msgstr ""
 
 #. placeholders: {pad_cruise}, {pad_speed}
@@ -33823,7 +33995,9 @@ msgstr ""
 
 #. placeholders: {pad_shift_up}, {pad_shift_down}
 #. one sentence of a longer line
-msgid "{pad_shift_up} shifts up and {pad_shift_down} down."
+msgid ""
+"{pad_shift_up} shifts up and {pad_shift_down} down, past first into neutral "
+"and then reverse."
 msgstr ""
 
 #. placeholders: {pad_horn}, {pad_engine_brake}
@@ -33890,18 +34064,46 @@ msgstr ""
 #. placeholders: {pad_cruise_down}, {pad_cruise_up}, {pad_status}
 msgid ""
 "{pad_cruise_down} and {pad_cruise_up} change the cruise target. "
-"{pad_status} opens driving status."
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
 msgstr ""
 
 #. placeholders: {pad_status}
 #. one sentence of a longer line
-msgid "{pad_status} opens driving status."
+msgid ""
+"{pad_status} opens driving status, where Driving commands lists every "
+"command, including those with no button."
+msgstr ""
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}
+#. one sentence of a longer line
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume."
+msgstr ""
+
+#. placeholders: {pad_radio_tune_prev}, {pad_radio_tune_next}, {pad_radio_volume_down}, {pad_radio_volume_up}, {pad_radio}
+msgid ""
+"{pad_radio_tune_prev} and {pad_radio_tune_next} tune the radio, and "
+"{pad_radio_volume_down} and {pad_radio_volume_up} change its volume. "
+"{pad_radio} turns it on or off."
+msgstr ""
+
+#. placeholders: {pad_radio}
+#. one sentence of a longer line
+msgid "{pad_radio} turns it on or off."
+msgstr ""
+
+msgid ""
+"To learn the buttons, hold Back and press Start on any screen. Each button "
+"you press says what it does; Start twice leaves."
 msgstr ""
 
 msgid ""
 "If the controller does nothing, check that Controller is enabled under "
 "Settings, Gameplay, Controls. The game uses the first controller it finds, "
-"so unplug other controllers and close Steam."
+"so unplug other controllers and close Steam. If the Xbox button opens Steam "
+"Big Picture, press B to close it."
 msgstr ""
 
 msgid "pad"

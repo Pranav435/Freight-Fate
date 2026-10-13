@@ -319,6 +319,7 @@ impl DrivingState {
         ));
         lines.push("Escape pause menu.".to_string());
         lines.push("F2 lists every driving command by name.".to_string());
+        lines.push("Shift F1 names what each key does.".to_string());
         if !self.trip.truck.transmission.automatic {
             let shift_up = n(Action::ShiftUp);
             let shift_down = n(Action::ShiftDown);
@@ -349,7 +350,7 @@ impl DrivingState {
             "Right trigger is the gas, left trigger the brake; the left trigger fully in \
              is the hardest stop."
                 .to_string(),
-            "The left stick steers unless lane keeping is on full.".to_string(),
+            "The left stick steers; with lane keeping on full, pushing it left or right changes one lane.".to_string(),
         ];
         if manual {
             let shift_up = n(Action::ShiftUp);
@@ -448,7 +449,10 @@ impl DrivingState {
             "Away from route points while fully stopped, it opens emergency shoulder sleep."
                 .to_string(),
         );
-        lines.push(format!("{status} opens the status menu."));
+        lines.push(format!(
+            "{status} opens the status menu, which also lists every driving command."
+        ));
+        lines.push("Hold Back and press Start to hear what each button does.".to_string());
         lines.push(format!(
             "{tune_prev} tunes to the previous station and {tune_next} to the next."
         ));
