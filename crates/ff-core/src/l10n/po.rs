@@ -6,13 +6,15 @@
 //! format of its own. Supported: `msgid`/`msgstr` pairs with multi-line
 //! strings and C escapes, comments, the `fuzzy` flag (a fuzzy entry is a
 //! guess a translator has not confirmed, so it is skipped, as gettext does),
-//! and `msgctxt` (read, then ignored: the game matches finished lines, not
-//! call sites). Plural entries (`msgid_plural`) are skipped; plurals live
+//! and `msgctxt` (kept on the entry; the game matches finished lines, not
+//! call sites, so a catalog skips entries that carry one). Plural entries (`msgid_plural`) are skipped; plurals live
 //! inside a translation as `{count:one|many}` instead (see `plural`).
 
 /// One translated entry.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct PoEntry {
+    /// The `msgctxt`, when the entry has one.
+    pub msgctxt: Option<String>,
     pub msgid: String,
     pub msgstr: String,
     /// The `#,` flags, e.g. `fuzzy`.
@@ -47,6 +49,7 @@ enum Field {
 
 #[derive(Default)]
 struct Pending {
+    msgctxt: Option<String>,
     msgid: Option<String>,
     msgstr: Option<String>,
     flags: Vec<String>,
@@ -59,6 +62,7 @@ fn flush(pending: &mut Pending, entries: &mut Vec<PoEntry>) {
     if let (Some(msgid), Some(msgstr)) = (done.msgid, done.msgstr) {
         if !done.plural {
             entries.push(PoEntry {
+                msgctxt: done.msgctxt,
                 msgid,
                 msgstr,
                 flags: done.flags,
@@ -115,6 +119,7 @@ pub fn parse(text: &str) -> Result<Vec<PoEntry>, PoError> {
                     pending.line = line_no;
                     field = Field::Id;
                 } else {
+                    pending.msgctxt = Some(value);
                     field = Field::Ctxt;
                 }
             }
@@ -149,7 +154,11 @@ pub fn parse(text: &str) -> Result<Vec<PoEntry>, PoError> {
                         .msgstr
                         .get_or_insert_with(String::new)
                         .push_str(&value),
-                    Field::Ctxt | Field::IdPlural | Field::Ignored => {}
+                    Field::Ctxt => pending
+                        .msgctxt
+                        .get_or_insert_with(String::new)
+                        .push_str(&value),
+                    Field::IdPlural | Field::Ignored => {}
                     Field::None => {
                         return Err(PoError {
                             line: line_no,

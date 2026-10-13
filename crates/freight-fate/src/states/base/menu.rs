@@ -367,7 +367,14 @@ pub trait Menu: Sized + 'static {
         if !ctx.settings.announce_menu_position {
             return label;
         }
-        format!("{label} {} of {}.", core.index + 1, core.items.len())
+        // The cue is its own catalog line (`ff_core::l10n::POSITION_CUE`),
+        // translated apart from the row so it never depends on the row.
+        let cue = format!(
+            "{position} of {count}.",
+            position = core.index + 1,
+            count = core.items.len()
+        );
+        format!("{label} {cue}")
     }
 
     fn speak_current(&mut self, ctx: &mut GameContext) {
