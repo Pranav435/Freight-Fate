@@ -299,7 +299,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "{{pad:cruise_down}} and {{pad:cruise_up}} change the cruise target. {{pad:status}} opens driving status, where Driving commands lists every command, including those with no button.",
             "{{pad:radio_tune_prev}} and {{pad:radio_tune_next}} tune the radio, and {{pad:radio_volume_down}} and {{pad:radio_volume_up}} change its volume. {{pad:radio}} turns it on or off.",
             "To learn the buttons, hold Back and press Start on any screen. Each button you press says what it does; Start twice leaves.",
-            "If the controller does nothing, check that Controller is enabled under Settings, Gameplay, Controls. The game uses the first controller it finds, so unplug other controllers and close Steam.",
+            "If the controller does nothing, check that Controller is enabled under Settings, Gameplay, Controls. The game uses the first controller it finds, so unplug other controllers and close Steam. If the Xbox button opens Steam Big Picture, press B to close it.",
         ],
     ),
 

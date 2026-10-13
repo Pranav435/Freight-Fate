@@ -481,6 +481,7 @@ Start and Back on their own, both bumpers, both triggers, and the left stick alw
 - Connect it with a USB cable, an Xbox Wireless Adapter, or Bluetooth. Over Bluetooth, a newer Xbox controller may need a firmware update first: install the Xbox Accessories app from the Microsoft Store, connect the controller by cable, and update it there.
 - Check Controller in Settings, Gameplay, Controls. It should say enabled and name your controller; if it says none connected, the game hasn't found it. The game also says the controller's name when you plug one in or reconnect it.
 - The game uses the first controller it finds. That can be a second controller, or a virtual one from Steam or a remapping tool, instead of yours. Turn off or unplug the others, and close Steam, or turn off Steam Input for Freight Fate, if it is running.
+- If pressing the Xbox button opens Steam Big Picture, press B to close it and return to the game window. To stop it happening, turn off the Guide button's Big Picture shortcut in Steam's controller settings.
 - The game responds to the controller only while its window has focus. If buttons stop working after you switched programs, switch back with Alt+Tab.
 - If some buttons work but the triggers or bumpers don't, include the game log in your report; it names your controller and notes any controls that weren't mapped. From a command prompt in the game folder, `FreightFate.exe --controller-diagnostics` also records every button you press to `controller-diagnostics.log`.
 
