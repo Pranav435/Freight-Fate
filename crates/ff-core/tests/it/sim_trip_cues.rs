@@ -4,6 +4,7 @@
 use std::collections::HashMap;
 
 use crate::sim_support::*;
+use chrono::NaiveDate;
 use ff_core::data::state_welcome::welcome_sign;
 use ff_core::data::world_models::Route;
 use ff_core::pyrandom::PyRandom;
@@ -26,6 +27,83 @@ fn pool(
     eligible_hazards(region, weather, terrain, hour)
         .into_iter()
         .collect()
+}
+
+#[test]
+fn whittier_tunnel_gate_runs_in_the_trip_and_toll_is_one_way() {
+    let world = world();
+    let leg = world
+        .legs
+        .iter()
+        .find(|leg| leg.a == "bear_valley_ak_us" && leg.b == "whittier_ak_us")
+        .expect("Whittier tunnel leg")
+        .as_ref()
+        .clone();
+    let route = Route::from_legs(
+        vec!["bear_valley_ak_us".into(), "whittier_ak_us".into()],
+        vec![leg.clone()],
+    );
+    let mut truck = TruckState::default();
+    truck.start_engine();
+    truck.velocity_mps = 25.0 * 1609.344 / 3600.0;
+    let may = ff_core::sim::season::real_clock_game_hours(Some(
+        NaiveDate::from_ymd_opt(2026, 5, 1)
+            .unwrap()
+            .and_hms_opt(5, 35, 0)
+            .unwrap(),
+    ));
+    let mut trip = Trip::new(
+        route,
+        truck,
+        default_weather(),
+        TripOptions {
+            world: Some(world),
+            career_hours: Some(may),
+            start_hour: 5.0 + 35.0 / 60.0,
+            ..TripOptions::seeded(91)
+        },
+    );
+    let events = trip.update(1.0);
+    assert!(events.iter().any(|event| event.text() == "Anton Anderson Memorial Tunnel. One lane shared with the railroad. Gates run on a published schedule."));
+    assert!(
+        trip.game_minutes > 0.0,
+        "the physical tunnel drive advances game time"
+    );
+    trip.position_mi = trip.total_miles();
+    trip.check_tolls();
+    assert_eq!(trip.toll_charges.len(), 1);
+    let return_route = Route::from_legs(
+        vec!["whittier_ak_us".into(), "bear_valley_ak_us".into()],
+        vec![leg],
+    );
+    let mut return_trip = Trip::new(
+        return_route,
+        TruckState::default(),
+        default_weather(),
+        TripOptions {
+            world: Some(world),
+            ..TripOptions::seeded(92)
+        },
+    );
+    return_trip.position_mi = return_trip.total_miles();
+    return_trip.check_tolls();
+    assert!(return_trip.toll_charges.is_empty(), "return is toll-free");
+    let spoken_tolls = |trip: &Trip| {
+        trip.build_navigation_cues()
+            .iter()
+            .filter(|cue| cue.kind == "toll")
+            .count()
+    };
+    assert_eq!(
+        spoken_tolls(&return_trip),
+        0,
+        "no toll cue where none is charged"
+    );
+    assert_eq!(
+        spoken_tolls(&trip),
+        1,
+        "the toll cue is spoken toward Whittier"
+    );
 }
 
 #[test]
@@ -301,24 +379,24 @@ fn test_gps_state_crossing_and_rest_stop_cues_deduplicate() {
     trip.traffic_manager.rolling_bubble = false;
     trip.traffic_manager.vehicles = Vec::new();
 
-    // State crossings speak once, at the line -- the old 10-mile advance
-    // warning was cut in the reduce-repeated-alerts player-feedback round.
-    trip.position_mi = 23.0;
-    let advance = trip.update(0.0);
-    let repeat = trip.update(0.0);
-    assert!(gps_events(&advance).is_empty());
-    assert!(gps_events(&repeat).is_empty());
-
-    trip.position_mi = 31.5;
-    let near = trip.update(0.0);
-    assert!(gps_events(&near).is_empty());
-
     // Read the line's position rather than pinning a number to it. Correcting
     // Chicago-Indianapolis from 183 to the 185 miles its baked route runs moved
     // every along-route position, and a hardcoded probe then lands somewhere
     // else entirely -- next to an interchange, in one case, whose exit cue
     // joined the assertion.
+    // State crossings speak once, at the line -- the old 10-mile advance
+    // warning was cut in the reduce-repeated-alerts player-feedback round.
     let line_mi = trip.route.legs[0].state_crossings()[0].at_mi;
+    trip.position_mi = (line_mi - 10.0).max(0.0);
+    let advance = trip.update(0.0);
+    let repeat = trip.update(0.0);
+    assert!(gps_events(&advance).is_empty());
+    assert!(gps_events(&repeat).is_empty());
+
+    trip.position_mi = (line_mi - 1.0).max(0.0);
+    let near = trip.update(0.0);
+    assert!(gps_events(&near).is_empty());
+
     trip.position_mi = line_mi;
     let crossing = trip.update(0.0);
     assert_eq!(
@@ -491,10 +569,12 @@ fn test_traffic_context_and_warning_are_grounded_in_lead_vehicle() {
     // Pinned whole, call included: this stretch of I-65 out of Chicago has
     // three lanes and no closure, so the lane change is a move the driver can
     // actually make and the dodge call is the right one. A bare "Brake!" here
-    // would mean the open-lane test had stopped seeing the road.
+    // would mean the open-lane test had stopped seeing the road. From the
+    // right lane of three, the lane a tap lands in is the middle lane, and
+    // the call names it the way the L key does.
     assert_eq!(
         hazards[0].text(),
-        "Change lanes or brake! Brake lights right ahead. Left lane open."
+        "Change lanes or brake! Brake lights right ahead. Middle lane open."
     );
     assert_eq!(hazards[0].data.dodgeable, Some(true));
     assert!(hazards[0].data.traffic.is_some());
@@ -782,6 +862,23 @@ fn test_brake_lights_name_the_cause_when_the_road_knows_it() {
     assert_eq!(mgr.braking_reason_at(12.0), "construction");
     assert_eq!(mgr.braking_reason_at(22.0), "heavy traffic");
     assert_eq!(mgr.braking_reason_at(50.0), "");
+}
+
+/// Rush hour is a local thing. Denver is two hours behind the trip's Eastern
+/// clock, so 10 AM Eastern is 8 AM there, the middle of the morning rush. The
+/// traffic manager already reads the local hour; the trip's own rush-hour
+/// judgements read the Eastern one, and so put Denver's rush at 4:30 AM.
+#[test]
+fn test_rush_hour_follows_the_local_clock() {
+    let opts = TripOptions {
+        start_hour: 10.0,
+        ..TripOptions::seeded(7)
+    };
+    let trip = make_trip_with(world(), "Denver", "Cheyenne", opts);
+    assert!((trip.local_hour() - 8.0).abs() < 1e-9);
+    assert_eq!(trip.congestion_phrase(), "rush hour congestion");
+    let leg = trip.route.legs[0].clone();
+    assert!(trip.rush_hour_traffic_bias(&leg) > 0.0);
 }
 
 #[test]

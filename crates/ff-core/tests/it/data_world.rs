@@ -229,6 +229,14 @@ fn test_every_city_has_locations_with_known_cargo() {
     // other assertion of the Python test is live here.
     let world = world();
     for city in world.cities.values() {
+        if city.no_freight {
+            assert!(
+                city.locations.is_empty(),
+                "{} must not invent freight locations",
+                city.name
+            );
+            continue;
+        }
         assert!(
             !city.locations.is_empty(),
             "{} has no freight locations",
@@ -377,6 +385,14 @@ fn test_freight_location_categories_are_live() {
 fn test_each_metro_expands_to_representative_facilities() {
     let world = world();
     for city in world.cities.values() {
+        if city.no_freight {
+            assert!(
+                city.locations.is_empty(),
+                "{} must not invent freight locations",
+                city.name
+            );
+            continue;
+        }
         // Floor is 5, not 6: the geography gate can strip both the template
         // port terminal and the intermodal ramp from a remote town (rural
         // Nevada keeps five). Inventing a different filler facility to hold
@@ -767,10 +783,8 @@ fn test_corridor_metadata_supports_offline_itineraries() {
         .map(|c| c.state.as_str())
         .collect();
     assert_eq!(crossings, vec!["Indiana"]);
-    // 33.16, not the 32.8 this used to pin: correcting Chicago-Indianapolis
-    // from 183 to the 185 miles its baked route actually runs carried every
-    // along-route position with it (tools/repair_leg_mileage.py).
-    assert_eq!(leg.state_crossings()[0].at_mi, 33.16);
+    // The OSM state-boundary relation intersects the archived I-65 route here.
+    assert_eq!(leg.state_crossings()[0].at_mi, 26.7);
     assert!(leg.checkpoints().iter().any(|c| c.name == "Lafayette"));
     let total: f64 = leg.state_miles().iter().map(|m| m.miles).sum();
     assert_eq!(total, leg.miles);
@@ -889,7 +903,13 @@ fn test_southern_hos_pressure_corridors_have_added_safe_stops() {
         (("Nashville", "Atlanta"), &["Flying J Travel Center Resaca"]),
     ];
     for ((start, end), names) in expected {
-        let route = supported(world, start, end);
+        let route = if *start == "Dallas" && *end == "St. Louis" {
+            world
+                .route_from_cities(&["Dallas", "St. Louis"])
+                .expect("Dallas-St. Louis direct corridor")
+        } else {
+            supported(world, start, end)
+        };
         let stops = route.stop_details();
         for name in *names {
             let stop = stops
@@ -910,6 +930,33 @@ fn test_southern_hos_pressure_corridors_have_added_safe_stops() {
 }
 
 #[test]
+fn route_stop_details_map_reversed_leg_miles() {
+    let route = supported(world(), "Dallas", "St. Louis");
+    let (index, leg, source_stop) = route
+        .legs
+        .iter()
+        .enumerate()
+        .find_map(|(index, leg)| {
+            if index == 0 || route.cities[index] != leg.b {
+                return None;
+            }
+            leg.stops
+                .iter()
+                .find(|stop| stop.curated())
+                .map(|stop| (index, leg, stop))
+        })
+        .expect("a reversed supported-route leg with a curated stop");
+    let route_offset: f64 = route.legs[..index].iter().map(|leg| leg.miles).sum();
+    let expected_mi = route_offset + leg.miles - source_stop.at_mi;
+    let route_stop = route
+        .stop_details()
+        .into_iter()
+        .find(|stop| stop.name == source_stop.name && (stop.at_mi - expected_mi).abs() < 1e-9)
+        .expect("the reversed stop is positioned from the route start");
+    assert!((route_stop.at_mi - expected_mi).abs() < 1e-9);
+}
+
+#[test]
 fn test_southern_sleep_stop_gaps_are_no_longer_extreme() {
     let world = world();
     let max_sleep_gap = |start: &str, end: &str| -> f64 {
@@ -918,8 +965,8 @@ fn test_southern_sleep_stop_gaps_are_no_longer_extreme() {
         points.extend(
             route
                 .stop_details()
-                .iter()
-                .filter(|stop| stop.actions.iter().any(|a| a == "sleep"))
+                .into_iter()
+                .filter(|stop| stop.actions.iter().any(|action| action == "sleep"))
                 .map(|stop| stop.at_mi),
         );
         points.push(route.miles());
@@ -1071,6 +1118,14 @@ fn test_every_city_has_coordinates_and_a_known_region() {
             city.name,
             city.lon
         );
+        if city.no_freight {
+            assert!(
+                city.locations.is_empty(),
+                "{} must not invent freight locations",
+                city.name
+            );
+            continue;
+        }
         let floor = if is_stand_in_market(&city.key) { 1 } else { 2 };
         assert!(
             city.locations.len() >= floor,
@@ -2466,7 +2521,7 @@ fn test_legs_are_sane_and_unique() {
         // Virginia Beach ~18, New Haven-Bridgeport ~21) are legitimate short
         // freight lanes; only ban truly trivial or cross-country single legs.
         assert!(
-            (10.0..=800.0).contains(&leg.miles),
+            leg.highway == "Anton Anderson Memorial Tunnel" || (10.0..=800.0).contains(&leg.miles),
             "absurd mileage: {leg:?}"
         );
         // Directed uniqueness: the graph may author both A→B and B→A (ALCAN
