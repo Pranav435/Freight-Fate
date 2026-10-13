@@ -64,6 +64,7 @@ mod cloud_backup_review;
 mod cloud_saves;
 mod discord_presence;
 mod duty_watch;
+mod l10n_spanish_listen;
 mod net;
 mod network_guard;
 mod online_activation;

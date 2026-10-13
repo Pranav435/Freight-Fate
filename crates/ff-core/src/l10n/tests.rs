@@ -732,3 +732,77 @@ msgstr "vence mañana"
         "Hora: 8:02 AM hora del Centro, vence mañana."
     );
 }
+
+/// The shipped Spanish catalog, as a player gets it.
+fn shipped_spanish() -> Translator {
+    let po = include_str!("../../../../lang/es.po");
+    Translator::new(Catalog::from_po("es", po).expect("lang/es.po parses"))
+}
+
+#[test]
+fn shipped_spanish_says_every_eld_status_whole() {
+    // The ELD app speaks the summary after "ELD: " and the Driver Hours
+    // row after "Hours: "; both wrappers drop the summary's last stop. A
+    // loose "{driven} driving" once took the stopped line and left
+    // "ELD status en duty not de conducción".
+    let tr = shipped_spanish();
+    let hours = "Hours of service: 11 hours of driving left, break due in 8 hours, \
+                 duty window closes in 14 hours";
+    let spanish_hours = "Horas de servicio: quedan 11 horas de conducción, la pausa toca \
+                         en 8 horas y la ventana de servicio se cierra en 14 horas";
+    for (status, spoken) in [
+        ("driving", "conduciendo"),
+        ("on duty not driving", "en servicio sin conducir"),
+        ("off duty", "fuera de servicio"),
+        ("sleeper berth", "litera"),
+    ] {
+        assert_eq!(
+            tr.translate(&format!("ELD: ELD status {status}. {hours}. 1 of 4.")),
+            format!("Estado del ELD: {spoken}. {spanish_hours}. 1 de 4."),
+            "{status}"
+        );
+        assert_eq!(
+            tr.translate(&format!("Hours: ELD status {status}. {hours}. 10 of 12.")),
+            format!("Horas: Estado del ELD: {spoken}. {spanish_hours}. 10 de 12."),
+            "{status}"
+        );
+    }
+}
+
+#[test]
+fn shipped_spanish_keeps_a_template_hole_to_one_sentence() {
+    // "{pct} percent {direction} ahead{length}. {advice}" once took most of
+    // the F1 help as its percent and left two help sentences English.
+    let tr = shipped_spanish();
+    assert_eq!(
+        tr.translate(
+            "Page Down tunes to the next station, Page Up to the previous; semicolon and \
+             apostrophe do the same. Control with the tuning keys jumps a category; Shift \
+             changes the radio volume in 10 percent steps, on or off. S posted speed limit. \
+             G the grade under the wheels, whether the truck is holding it, and the next \
+             grade ahead. Tab status menu."
+        ),
+        "Page Down sintoniza la emisora siguiente y Page Up la anterior; punto y coma y \
+         apóstrofo hacen lo mismo. Control con las teclas de sintonía salta de categoría; \
+         Mayúsculas cambia el volumen de la radio de 10 en 10 por ciento, o la enciende o \
+         apaga. S el límite de velocidad señalizado. G la pendiente bajo las ruedas, si el \
+         camión la está aguantando, y la próxima pendiente. Tab el menú de estado."
+    );
+}
+
+#[test]
+fn shipped_spanish_finds_the_sentence_after_a_lead_in_hole() {
+    // "{flavor} Dispatch starts you on ..." reaches the board split into
+    // sentences, the flavor sentence apart from the rest.
+    let tr = shipped_spanish();
+    assert_eq!(
+        tr.translate(
+            "Career objective: First dispatch. Northstar Freight Lines keeps the first week \
+             balanced. Dispatch starts you on a short standard load with room on the \
+             appointment. Recommended dispatch: trainer-recommended."
+        ),
+        "Objetivo de carrera: Primer despacho. Northstar Freight Lines mantiene equilibrada \
+         la primera semana. Despacho te empieza con una carga estándar corta y margen en la \
+         cita. Despacho recomendado: recomendado por el instructor."
+    );
+}

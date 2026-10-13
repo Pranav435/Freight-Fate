@@ -266,6 +266,7 @@ impl Catalog {
         let mut templates = Vec::new();
         let mut problems = Vec::new();
         let mut position_cue = None;
+        let mut tails = Vec::new();
         for entry in entries {
             // An entry with a msgctxt tells a translator apart a second use
             // of the same English (the controller's Back button beside the
@@ -316,12 +317,29 @@ impl Catalog {
                 ));
                 continue;
             }
+            // "{flavor} Dispatch starts you on a short standard load." is
+            // also the sentence after the lead-in: a line split into
+            // sentences reaches it without its hole.
+            if let ([Seg::Hole(a), Seg::Lit(tail)], [Part::Hole(b), Part::Lit(out)]) =
+                (segs.as_slice(), translation.as_slice())
+            {
+                if a == b
+                    && tail.starts_with(' ')
+                    && out.starts_with(' ')
+                    && tail.trim_start().starts_with(char::is_uppercase)
+                {
+                    tails.push((tail.trim().to_string(), out.trim().to_string()));
+                }
+            }
             match Template::new(segs, translation) {
                 Ok(template) => templates.push(template),
                 // A joiner like "{a}, {b}" is not an error; the splitter
                 // already handles what it would.
                 Err(_) => continue,
             }
+        }
+        for (key, value) in tails {
+            exact.entry(key).or_insert(value);
         }
         // A fragment like "Billboard: " is also found by its bare words,
         // the way a piece reaches it after trimming.
@@ -540,6 +558,18 @@ impl Pass<'_, '_> {
         let wrap = |inner: String| format!("{lead}{inner}{trail}");
         if let Some(hit) = self.catalog.exact.get(core) {
             return Some(wrap(hit.clone()));
+        }
+        // "ELD status on duty not driving" inside "ELD: {summary}" is the
+        // catalog's whole sentence without its full stop. A whole sentence
+        // beats any template a loose fragment of it fills ("{driven} driving").
+        if !core.ends_with(['.', '!', '?', ':', ';', ',']) {
+            if let Some(hit) = self.catalog.exact.get(&format!("{core}.")) {
+                let out = hit
+                    .strip_suffix(['.', '\u{3002}'])
+                    .map(str::to_string)
+                    .unwrap_or_else(|| hit.clone());
+                return Some(wrap(out));
+            }
         }
         // "In the right lane." is the catalog's exact "In the right lane"
         // with a full stop: that beats any template the stopped line also
@@ -765,11 +795,13 @@ impl Pass<'_, '_> {
         // which the sentence splitter translates whole.
         let (template, captures) = self.catalog.templates.best_match(core, |template, caps| {
             // "{place}{state} on {highway}" has few letters of its own, but
-            // its holes are names, never words a loose match would swallow.
+            // its holes are names: it matches when what fills them reads as
+            // names ("Groton", ", South Dakota", "US-12"), never words a loose
+            // match would swallow ("ELD status on duty not driving").
             if template.numbers_only()
-                && !caps
-                    .iter()
-                    .all(|(name, value)| is_number(value) || is_proper_name_hole(name))
+                && !caps.iter().all(|(name, value)| {
+                    is_number(value) || (is_proper_name_hole(name) && reads_as_name(value))
+                })
             {
                 return false;
             }
@@ -782,8 +814,15 @@ impl Pass<'_, '_> {
             {
                 return false;
             }
-            has_sentence_break(&template.filled)
-                || !caps.values().any(|value| has_sentence_break(value))
+            // Only a hole that ends the template or opens a sentence of it
+            // may hold sentences of its own ("ELD: {summary}", "How to play.
+            // {controls} {page_title}"): "{pct} percent {direction}
+            // ahead{length}. {advice}" must not take a whole help text as
+            // its percent and leave it English.
+            let multi = has_sentence_break(&template.filled);
+            !caps.iter().any(|(name, value)| {
+                has_sentence_break(value) && !(multi && holds_sentences(&template.segs, name))
+            })
         })?;
         let mut out = String::new();
         // English words the holes would keep, untranslated, inside the
@@ -935,6 +974,17 @@ fn is_name_like(text: &str) -> bool {
     capitalized && (text.split_whitespace().count() > 1 || text.chars().any(|c| c.is_ascii_digit()))
 }
 
+/// What fills a name hole reads as a name: empty, or every word opens with a
+/// capital, a digit or a mark ("Groton", ", South Dakota", "US-12").
+fn reads_as_name(text: &str) -> bool {
+    text.split_whitespace().all(|word| {
+        !word
+            .chars()
+            .find(|c| c.is_alphanumeric())
+            .is_some_and(char::is_lowercase)
+    })
+}
+
 /// A number and its unit, as a readout says one: "2 miles", "3:15 PM".
 fn is_measure(text: &str) -> bool {
     text.trim_start().starts_with(|c: char| c.is_ascii_digit())
@@ -943,6 +993,35 @@ fn is_measure(text: &str) -> bool {
 
 fn has_words(text: &str) -> bool {
     text.chars().filter(|c| c.is_alphabetic()).take(2).count() >= 2
+}
+
+/// The hole may hold whole sentences: it is the template's last part, or
+/// a sentence of the template ends before it or opens after it.
+fn holds_sentences(segs: &[Seg], hole: &str) -> bool {
+    let Some(at) = segs
+        .iter()
+        .position(|seg| matches!(seg, Seg::Hole(name) if name == hole))
+    else {
+        return false;
+    };
+    if at + 1 == segs.len() {
+        return true;
+    }
+    // "{flavor} Dispatch starts you on ...": a sentence of the template
+    // opens right after it.
+    if let Some(Seg::Lit(text)) = segs.get(at + 1) {
+        if text.starts_with(char::is_whitespace)
+            && text.trim_start().starts_with(char::is_uppercase)
+        {
+            return true;
+        }
+    }
+    match at.checked_sub(1).map(|before| &segs[before]) {
+        Some(Seg::Lit(text)) => text
+            .trim_end()
+            .ends_with(['.', '!', '?', '\u{3002}', '\u{FF01}', '\u{FF1F}']),
+        _ => false,
+    }
 }
 
 fn has_sentence_break(text: &str) -> bool {
