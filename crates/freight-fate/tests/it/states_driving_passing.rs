@@ -264,3 +264,255 @@ fn lane_keeping_never_passes_into_a_passing_lane_that_may_be_oncoming() {
         }
     }
 }
+
+/// Frames until lane keeping has started moving the truck to `target`.
+fn until_moving_to(harness: &mut PlaytestHarness, target: i64, limit_s: f64) {
+    let mut elapsed = 0.0;
+    while harness.read_drive(|d| d.lane_change_target) != Some(target) {
+        assert!(
+            elapsed < limit_s,
+            "never started for lane {target}: {:#?}",
+            spoken(harness)
+        );
+        frame(harness, DT);
+        elapsed += DT;
+    }
+}
+
+#[test]
+fn a_vehicle_merging_in_while_the_truck_moves_back_calls_the_move_off() {
+    // The right lane was clear when the move back began, and a box truck off
+    // the ramp took it in the seconds the move takes. Lane keeping used to
+    // finish the move anyway, into the side of it (player report,
+    // 2026-10-13: "it crashed my truck into a box truck that entered the
+    // right lane").
+    let mut harness = meet_a_slow_car("Merge On Return", "full", 2, 0, &[], false);
+    until_moving_to(&mut harness, 1, 5.0);
+    while harness.read_drive(|d| d.lane.lane) != 1 {
+        frame(&mut harness, DT);
+    }
+    until_moving_to(&mut harness, 0, 180.0);
+    harness.with_drive(|d, _| {
+        // Beside the trailer, on the ramp.
+        let at = d.trip.position_mi - 0.01;
+        let mut vehicles = d.trip.traffic_manager.vehicles.clone();
+        vehicles.push(
+            TrafficVehicle::new("bench:merger", at, 66.0, 66.0, 2, "merging", "box truck")
+                .with_lane(-1),
+        );
+        d.trip.set_npc_vehicles(vehicles);
+    });
+    for _ in 0..(6.0 / DT) as usize {
+        frame(&mut harness, DT);
+    }
+    assert!(!said_any(&harness, "sideswiped"), "{:#?}", spoken(&harness));
+    assert!(
+        said_any(&harness, "Staying in the left lane."),
+        "{:#?}",
+        spoken(&harness)
+    );
+    // Still passing: it moves back once the box truck is clear.
+    assert_eq!(
+        harness.read_drive(|d| (d.lane.lane, d.passing)),
+        (1, Some((0, 1)))
+    );
+}
+
+#[test]
+fn a_passing_lane_that_ends_mid_move_leaves_the_truck_where_it_was() {
+    // Two lanes became one while lane keeping was pulling out to pass. The
+    // move landed in the only lane left, the one the slow car is in, and was
+    // billed as a sideswipe of the car being passed (player report,
+    // 2026-10-13: "it happens when two lanes become a single lane").
+    let mut harness = meet_a_slow_car("Lane Ends Mid Pass", "full", 2, 0, &[], false);
+    until_moving_to(&mut harness, 1, 5.0);
+    harness.with_drive(|d, _| {
+        let vehicles = d.trip.traffic_manager.vehicles.clone();
+        crate::states_driving_traffic_rate::lane_bench(d, 65.0, 1);
+        d.trip.set_npc_vehicles(vehicles);
+    });
+    for _ in 0..(4.0 / DT) as usize {
+        frame(&mut harness, DT);
+    }
+    assert!(!said_any(&harness, "sideswiped"), "{:#?}", spoken(&harness));
+    assert!(
+        said_any(&harness, "The road narrows to one lane."),
+        "{:#?}",
+        spoken(&harness)
+    );
+    assert_eq!(
+        harness.read_drive(|d| (d.lane.lane, d.lane_change_target, d.passing)),
+        (0, None, None)
+    );
+}
+
+/// The box truck from the merge-on-return report, off the ramp at 66 mph
+/// `behind_mi` back from the cab while lane keeping is moving the truck back.
+fn merge_a_box_truck_on_the_return(behind_mi: f64) -> PlaytestHarness {
+    let mut harness = meet_a_slow_car("Pacer On Return", "full", 2, 0, &[], false);
+    until_moving_to(&mut harness, 1, 5.0);
+    while harness.read_drive(|d| d.lane.lane) != 1 {
+        frame(&mut harness, DT);
+    }
+    until_moving_to(&mut harness, 0, 180.0);
+    harness.with_drive(move |d, _| {
+        let at = d.trip.position_mi - behind_mi;
+        let mut vehicles = d.trip.traffic_manager.vehicles.clone();
+        vehicles.push(
+            TrafficVehicle::new("bench:merger", at, 66.0, 66.0, 2, "merging", "box truck")
+                .with_lane(-1),
+        );
+        d.trip.set_npc_vehicles(vehicles);
+    });
+    harness
+}
+
+const KEEP_RIGHT_LINES: [&str; 2] = [
+    "Keep right except to pass.",
+    "Traffic is stacking up and passing you on the right.",
+];
+
+/// Frames until the truck is back in the right lane, at most `limit_s`,
+/// failing on any keep-right CB line on the way. Returns the seconds taken
+/// and whether the truck was ever held under 58 mph.
+fn back_to_the_right_lane(harness: &mut PlaytestHarness, limit_s: f64) -> (f64, bool) {
+    let mut eased = false;
+    let mut elapsed = 0.0;
+    while harness.read_drive(|d| d.lane.lane) != 0 {
+        assert!(
+            elapsed < limit_s,
+            "not back in the right lane after {limit_s} s\n{}",
+            harness.transcript_text()
+        );
+        frame(harness, DT);
+        elapsed += DT;
+        eased |= harness.read_drive(|d| d.trip.truck.speed_mph() < 58.0);
+        for line in KEEP_RIGHT_LINES {
+            assert!(!said_any(harness, line), "{:#?}", spoken(harness));
+        }
+    }
+    (elapsed, eased)
+}
+
+fn box_truck_ahead_by(harness: &PlaytestHarness) -> f64 {
+    harness.read_drive(|d| {
+        d.trip
+            .traffic_manager
+            .vehicles
+            .iter()
+            .find(|v| v.key == "bench:merger")
+            .map_or(f64::INFINITY, |v| v.position_mi - d.trip.position_mi)
+    })
+}
+
+#[test]
+fn a_box_truck_merging_far_back_does_not_hold_the_move_back() {
+    // The QA repro: the box truck merges at 66 mph a third of a mile back
+    // while the truck moves back at 65. Read at the quarter-mile footprint
+    // every traffic vehicle carries it was alongside, and the truck waited
+    // 260 s in the left lane. At its own length it is a third of a mile
+    // back and closing at 1 mph, and the move back carries on.
+    let mut harness = merge_a_box_truck_on_the_return(0.34);
+    let (took, _) = back_to_the_right_lane(&mut harness, 60.0);
+    assert!(took < 60.0);
+    for _ in 0..(20.0 / DT) as usize {
+        frame(&mut harness, DT);
+    }
+    let said = spoken(&harness);
+    assert!(said_any(&harness, "In the right lane."), "{said:#?}");
+    assert!(!said_any(&harness, "sideswiped"), "{said:#?}");
+    for line in KEEP_RIGHT_LINES {
+        assert!(!said_any(&harness, line), "{said:#?}");
+    }
+}
+
+#[test]
+fn a_box_truck_pacing_the_held_move_back_is_let_by_and_followed_in() {
+    // A box truck alongside at 66 held the move back of a truck cruising
+    // at 65, and lane keeping waited in the left lane while the CB told the
+    // driver off (QA drive, 2026-10-13). Lane keeping now says it is easing
+    // off, lets the box truck by and drops in three seconds behind it,
+    // inside a minute, and the left lane is excused while it waits.
+    let mut harness = merge_a_box_truck_on_the_return(0.01);
+    let (took, eased) = back_to_the_right_lane(&mut harness, 60.0);
+    assert!(took < 60.0, "{took}");
+    assert!(eased, "held the left lane at speed beside the box truck");
+    assert!(
+        box_truck_ahead_by(&harness) > 0.0,
+        "moved back in ahead of it"
+    );
+    assert_eq!(harness.read_drive(|d| d.passing), None);
+    for _ in 0..(20.0 / DT) as usize {
+        frame(&mut harness, DT);
+    }
+    let said = spoken(&harness);
+    for line in [
+        "Staying in the left lane.",
+        "Easing off to let the box truck by.",
+    ] {
+        assert_eq!(said.iter().filter(|l| *l == line).count(), 1, "{said:#?}");
+    }
+    assert!(said_any(&harness, "In the right lane."), "{said:#?}");
+    assert!(!said_any(&harness, "sideswiped"), "{said:#?}");
+    for line in KEEP_RIGHT_LINES {
+        assert!(!said_any(&harness, line), "{said:#?}");
+    }
+    // Back at the set speed once it is in behind.
+    assert!(harness.read_drive(|d| d.pass_return_ease_mph.is_none()));
+}
+
+#[test]
+fn the_left_lane_is_excused_only_for_a_while_after_a_called_off_move() {
+    // The excuse covers lane keeping's own hold, not the driver who takes
+    // over and stays out there: with lane keeping off after the call, the
+    // CB is back once the window and the usual nag time have run.
+    let mut harness = merge_a_box_truck_on_the_return(0.01);
+    while !said_any(&harness, "Staying in the left lane.") {
+        frame(&mut harness, DT);
+    }
+    assert!(harness.read_drive(|d| d.keep_right_excused_s > 0.0));
+    harness.app.ctx.settings.lane_keeping = "off".to_string();
+    harness.with_drive(|d, _| {
+        d.passing = None;
+        let vehicles: Vec<TrafficVehicle> = Vec::new();
+        d.trip.set_npc_vehicles(vehicles);
+    });
+    for _ in 0..(150.0 / DT) as usize {
+        frame(&mut harness, DT);
+    }
+    assert!(
+        said_any(&harness, KEEP_RIGHT_LINES[0]),
+        "{:#?}",
+        spoken(&harness)
+    );
+}
+#[test]
+fn a_passing_lane_ending_mid_move_is_announced_once() {
+    // Three lanes became two while lane keeping was pulling out to pass.
+    // The narrowing was said, cut by the automatic braking that answered the
+    // slow car, and handed back to be said again (QA drive, 2026-10-13:
+    // "The road narrows to two lanes." twice, about eight seconds apart).
+    let mut harness = meet_a_slow_car("Three To Two", "full", 3, 1, &[], false);
+    until_moving_to(&mut harness, 2, 5.0);
+    harness.with_drive(|d, _| {
+        let vehicles = d.trip.traffic_manager.vehicles.clone();
+        crate::states_driving_traffic_rate::lane_bench(d, 65.0, 2);
+        d.trip.set_npc_vehicles(vehicles);
+    });
+    for _ in 0..(30.0 / DT) as usize {
+        frame(&mut harness, DT);
+    }
+    let said = spoken(&harness);
+    assert_eq!(
+        said.iter()
+            .filter(|l| *l == "The road narrows to two lanes.")
+            .count(),
+        1,
+        "{said:#?}"
+    );
+    assert!(!said_any(&harness, "sideswiped"), "{said:#?}");
+    assert_eq!(
+        harness.read_drive(|d| (d.lane.lane, d.lane_change_target)),
+        (1, None)
+    );
+}

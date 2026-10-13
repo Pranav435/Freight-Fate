@@ -14678,7 +14678,7 @@ msgstr ""
 msgid "your lane"
 msgstr ""
 
-#: crates/ff-core/src/sim/traffic_manager/vehicle.rs crates/ff-core/src/sim/traffic_manager.rs crates/freight-fate/src/states/driving_core.rs crates/freight-fate/src/states/driving_traffic_sounds.rs
+#: crates/ff-core/src/sim/traffic_manager/vehicle.rs crates/ff-core/src/sim/traffic_manager.rs crates/freight-fate/src/states/driving_core.rs crates/freight-fate/src/states/driving_lane_gap.rs
 msgid "state trooper"
 msgstr ""
 
@@ -31530,6 +31530,26 @@ msgstr ""
 msgid "Missed the facility gate. Use the next safe turnaround."
 msgstr ""
 
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let the car by."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let the box truck by."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let the semi by."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let the state trooper by."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let traffic by."
+msgstr ""
+
 #. placeholders: {capitalized}
 #: crates/freight-fate/src/states/driving_lane_gap.rs
 msgid "{capitalized} lane open."
@@ -31549,6 +31569,23 @@ msgstr ""
 #. placeholders: {name}
 #: crates/freight-fate/src/states/driving_lane_gap.rs
 msgid "Changing to the {name} lane for the exit."
+msgstr ""
+
+#. placeholders: {lane_count_words}
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "The road narrows to {lane_count_words}."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Staying in the left lane."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Staying in the right lane."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Staying in the middle lane."
 msgstr ""
 
 #. placeholders: {name}
@@ -37376,12 +37413,6 @@ msgstr ""
 #. placeholders: {lane_label}
 #: crates/freight-fate/src/states/driving_updates/lanes.rs
 msgid "You are moved to the {lane_label} lane."
-msgstr ""
-
-#. placeholders: {lane_count_words}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_updates/lanes.rs
-msgid "The road narrows to {lane_count_words}."
 msgstr ""
 
 #. placeholders: {lane_count_words}, {moved}

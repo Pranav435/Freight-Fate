@@ -690,6 +690,25 @@ impl EventSpeechPacer {
         }
     }
 
+    /// `track` for a line delivered queued behind whatever is already in the
+    /// voice. A confirmation neither takes the slot nor empties it: it plays
+    /// after the protected line rather than replacing it, so a turn call or
+    /// a warning still speaking ahead of it is rescued if an interrupt cuts
+    /// it, as it was before the category reached this path. Emptying it
+    /// lost "Exit 50B in half a mile, keep right." to the automatic braking
+    /// that cut it, because a cruise confirmation had queued behind it.
+    fn track_queued(
+        &mut self,
+        text: &str,
+        priority: EventPriority,
+        category: Option<SpeechCategory>,
+        valid: Option<Valid>,
+    ) {
+        if category != Some(SpeechCategory::Confirmation) {
+            self.track(text, priority, category, valid);
+        }
+    }
+
     /// The line a stale flush cut off mid-sentence, once, for requeueing.
     ///
     /// `note_interrupt` returns its cut directly; `should_flush` cannot,
@@ -952,12 +971,15 @@ impl EventSpeechPacer {
     /// announcement gives a backlog of chatter under a second before it goes
     /// in front of it.
     ///
-    /// (As in the Python, the slot is re-armed here WITHOUT a category: a
-    /// confirmation delivered queued still takes it.)
+    /// A confirmation delivered queued does not take the slot
+    /// (`track_queued`). Without that, lane keeping's "The road narrows to
+    /// two lanes." was handed back after the automatic braking that cut it
+    /// and heard twice, eight seconds apart (QA drive, 2026-10-13).
     pub fn should_flush(
         &mut self,
         text: &str,
         priority: EventPriority,
+        category: Option<SpeechCategory>,
         valid: Option<Valid>,
     ) -> bool {
         let now = self.now();
@@ -971,7 +993,7 @@ impl EventSpeechPacer {
             self.interrupt_deliveries();
             self.restart_projection(now, text, priority);
             self.protected = None;
-            self.track(text, priority, None, valid);
+            self.track_queued(text, priority, category, valid);
             return true;
         }
         let start = now.max(self.clear_at);
@@ -988,7 +1010,7 @@ impl EventSpeechPacer {
             // under "Entering ... zone", and every burst logged twice as a
             // requeue (live drive into Abilene, 2026-09-24). It queues.
             self.extend_projection(now, text, priority);
-            self.track(text, priority, None, valid);
+            self.track_queued(text, priority, category, valid);
             return false;
         }
         if start - now > budget && self.only_a_live_line_ahead(now, text) {
@@ -1000,7 +1022,7 @@ impl EventSpeechPacer {
             // dropped its tail ("Light red." cutting the take line). Waiting
             // it out is shorter than the replay, and it is heard once.
             self.extend_projection(now, text, priority);
-            self.track(text, priority, None, valid);
+            self.track_queued(text, priority, category, valid);
             return false;
         }
         if start - now > budget {
@@ -1057,11 +1079,11 @@ impl EventSpeechPacer {
             }
             self.interrupt_deliveries();
             self.restart_projection(now, text, priority);
-            self.track(text, priority, None, valid);
+            self.track_queued(text, priority, category, valid);
             return true;
         }
         self.extend_projection(now, text, priority);
-        self.track(text, priority, None, valid);
+        self.track_queued(text, priority, category, valid);
         false
     }
 

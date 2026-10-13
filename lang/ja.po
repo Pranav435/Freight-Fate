@@ -25080,6 +25080,21 @@ msgstr ""
 msgid "Missed the facility gate. Use the next safe turnaround."
 msgstr ""
 
+msgid "Easing off to let the car by."
+msgstr ""
+
+msgid "Easing off to let the box truck by."
+msgstr ""
+
+msgid "Easing off to let the semi by."
+msgstr ""
+
+msgid "Easing off to let the state trooper by."
+msgstr ""
+
+msgid "Easing off to let traffic by."
+msgstr ""
+
 #. placeholders: {capitalized}
 msgid "{capitalized} lane open."
 msgstr ""
@@ -25095,6 +25110,19 @@ msgstr ""
 
 #. placeholders: {name}
 msgid "Changing to the {name} lane for the exit."
+msgstr ""
+
+#. placeholders: {lane_count_words}
+msgid "The road narrows to {lane_count_words}."
+msgstr ""
+
+msgid "Staying in the left lane."
+msgstr ""
+
+msgid "Staying in the right lane."
+msgstr ""
+
+msgid "Staying in the middle lane."
 msgstr ""
 
 #. placeholders: {name}
@@ -29795,11 +29823,6 @@ msgstr ""
 
 #. placeholders: {lane_label}
 msgid "You are moved to the {lane_label} lane."
-msgstr ""
-
-#. placeholders: {lane_count_words}
-#. one sentence of a longer line
-msgid "The road narrows to {lane_count_words}."
 msgstr ""
 
 #. placeholders: {lane_count_words}, {moved}

@@ -29090,6 +29090,21 @@ msgid "Missed the facility gate. Use the next safe turnaround."
 msgstr ""
 "Te pasaste la entrada de la instalación. Usa el próximo retorno seguro."
 
+msgid "Easing off to let the car by."
+msgstr "Reduciendo la velocidad para dejar pasar al auto."
+
+msgid "Easing off to let the box truck by."
+msgstr "Reduciendo la velocidad para dejar pasar al camión de caja."
+
+msgid "Easing off to let the semi by."
+msgstr "Reduciendo la velocidad para dejar pasar al camión articulado."
+
+msgid "Easing off to let the state trooper by."
+msgstr "Reduciendo la velocidad para dejar pasar a la policía estatal."
+
+msgid "Easing off to let traffic by."
+msgstr "Reduciendo la velocidad para dejar pasar el tráfico."
+
 #. placeholders: {capitalized}
 msgid "{capitalized} lane open."
 msgstr "Carril de la {capitalized} libre."
@@ -29106,6 +29121,19 @@ msgstr "Has dejado atrás el {vehicle}. Carril de la {capitalized} libre."
 #. placeholders: {name}
 msgid "Changing to the {name} lane for the exit."
 msgstr "Cambiando al carril de la {name} para la salida."
+
+#. placeholders: {lane_count_words}
+msgid "The road narrows to {lane_count_words}."
+msgstr "La carretera se estrecha a {lane_count_words}."
+
+msgid "Staying in the left lane."
+msgstr "Sigues en el carril izquierdo."
+
+msgid "Staying in the right lane."
+msgstr "Sigues en el carril derecho."
+
+msgid "Staying in the middle lane."
+msgstr "Sigues en el carril central."
 
 #. placeholders: {name}
 msgid "{name} lane closed for construction."
@@ -34450,11 +34478,6 @@ msgstr "Te han cambiado de carril."
 #. placeholders: {lane_label}
 msgid "You are moved to the {lane_label} lane."
 msgstr "Te han pasado al carril de la {lane_label}."
-
-#. placeholders: {lane_count_words}
-#. one sentence of a longer line
-msgid "The road narrows to {lane_count_words}."
-msgstr "La carretera se estrecha a {lane_count_words}."
 
 #. placeholders: {lane_count_words}, {moved}
 msgid "The road narrows to {lane_count_words}. {moved}"
