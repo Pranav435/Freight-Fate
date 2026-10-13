@@ -56,21 +56,44 @@ LANGUAGES = {
 CRATES = ["ff-core", "freight-fate"]
 SENTENCE_BREAK = re.compile(r"(?<=[.!?])\s+(?=[A-Z0-9{\"])")
 PLACEHOLDER = re.compile(r"\{[A-Za-z_][A-Za-z0-9_]*\}")
+# A placeholder written straight after a word: another piece of the line.
+GLUED_TAIL = re.compile(r"(?<=[A-Za-z.])\{[A-Za-z_][A-Za-z0-9_]*\}$")
 BUFF_FIELDS = ("label", "help", "purchased", "worn_off")
+
+# Lines that one file says with a meaning of their own: (file, English) to
+# the msgctxt that tells them apart. The game never looks up an entry with
+# a context (it matches finished lines), so the plain entry is the one
+# spoken; the context entry exists so a translator sees the two uses apart.
+CONTEXTS = {
+    # The controller's Back button, named as the controller prints it; the
+    # plain "Back" is the menu row that leaves a screen.
+    ("crates/freight-fate/src/bindings/names.rs", "Back"): "controller button",
+}
 
 
 def template_entries() -> list[Entry]:
     found = extract(ROOT, CRATES)
     entries: dict[str, Entry] = {}
+    contextual: list[Entry] = []
     for template in found.values():
         comments = []
         if template.placeholders:
             comments.append(
                 "placeholders: " + ", ".join("{" + p + "}" for p in template.placeholders)
             )
+        refs = list(template.refs)
+        for ref in list(refs):
+            ctxt = CONTEXTS.get((ref, template.msgid))
+            if ctxt is not None:
+                refs.remove(ref)
+                contextual.append(
+                    Entry(msgid=template.msgid, msgctxt=ctxt, refs=[ref], line=template.line)
+                )
+        if not refs:
+            continue
         entries[template.msgid] = Entry(
             msgid=template.msgid,
-            refs=template.refs[:4],
+            refs=refs[:4],
             comments=comments,
             line=template.line,
         )
@@ -97,6 +120,29 @@ def template_entries() -> list[Entry]:
                 )
                 + ["one sentence of a longer line"],
             )
+    # A piece the game appends to a longer line (", automatic speed control
+    # paused{keeper_target}") reaches the player inside that line, where
+    # the game translates it clause by clause. Each of its clauses is a
+    # template, without the joining comma or a piece glued on after it.
+    for template in list(entries.values()):
+        if not template.msgid.startswith(", "):
+            continue
+        body = GLUED_TAIL.sub("", template.msgid[2:].strip())
+        for clause in body.split(", "):
+            clause = clause.strip()
+            literal = PLACEHOLDER.sub("", clause)
+            if clause in entries or sum(c.isalpha() for c in literal) < 3:
+                continue
+            names = [m.group(0)[1:-1] for m in PLACEHOLDER.finditer(clause)]
+            entries[clause] = Entry(
+                msgid=clause,
+                refs=template.refs[:1],
+                line=template.line,
+                comments=(
+                    ["placeholders: " + ", ".join("{" + p + "}" for p in names)] if names else []
+                )
+                + ["one clause of a longer line"],
+            )
     buffs = json.loads((ROOT / "data" / "buffs.json").read_text(encoding="utf-8"))
     for buff in buffs.values():
         for field in BUFF_FIELDS:
@@ -121,7 +167,7 @@ def template_entries() -> list[Entry]:
                     comments=extra.comments,
                     line=extra.line,
                 )
-    return sorted(entries.values(), key=_order)
+    return sorted(list(entries.values()) + contextual, key=_order)
 
 
 def _order(entry: Entry) -> tuple[str, int, str]:
@@ -155,13 +201,14 @@ def language_header(code: str, existing: list[Entry]) -> str:
 
 def merge(code: str, template: list[Entry], existing: list[Entry]) -> list[Entry]:
     """The language file for ``template``, keeping ``existing`` translations."""
-    known = {e.msgid: e for e in existing if e.msgid and not e.obsolete}
-    obsolete = {e.msgid: e for e in existing if e.msgid and e.obsolete}
+    known = {e.key: e for e in existing if e.msgid and not e.obsolete}
+    obsolete = {e.key: e for e in existing if e.msgid and e.obsolete}
     out = [Entry(msgid="", msgstr=language_header(code, existing))]
     for entry in template:
-        old = known.pop(entry.msgid, None) or obsolete.pop(entry.msgid, None)
+        old = known.pop(entry.key, None) or obsolete.pop(entry.key, None)
         merged = Entry(
             msgid=entry.msgid,
+            msgctxt=entry.msgctxt,
             msgstr=old.msgstr if old else "",
             # The template's notes come first; a translator's own `#` notes
             # on the entry survive the merge.

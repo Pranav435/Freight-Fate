@@ -287,6 +287,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
         "Controller",
         &[
             "Controllers work alongside the keyboard. Button names use the Xbox layout. Settings, Gameplay, Controls lets you change eligible assignments.",
+            "On newer Xbox controllers, Back is the View button, left of the Xbox button, and Start is the Menu button on its right. On Windows, the Xbox button opens the Game Bar; press it again to return.",
             "In menus, D-pad moves, A confirms, B returns, and Back reads help. During driving speech, Back stops the voice; otherwise it reads help. Start pauses.",
             "Right trigger accelerates, left trigger brakes, and fully pressing the left trigger gives emergency braking. The left stick steers.",
             "To reverse in automatic, stop, release the left trigger, then press and hold it again. Use a fresh right-trigger hold at a standstill for forward.",
@@ -295,6 +296,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "Right bumper accesses the second layer. {{pad:engine}} controls the engine, {{pad:fuel}} reads fuel, and {{pad:speed_limit}} reads the limit.",
             "{{pad:parking_brake}} controls the parking brake. {{pad:take_exit}} signals for an exit; {{pad:rest}} opens route-stop actions or emergency shoulder sleep when fully stopped.",
             "{{pad:cruise_down}} and {{pad:cruise_up}} change the cruise target. {{pad:status}} opens driving status.",
+            "If the controller does nothing, check that Controller is enabled under Settings, Gameplay, Controls. The game uses the first controller it finds, so unplug other controllers and close Steam.",
         ],
     ),
 
