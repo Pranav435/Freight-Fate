@@ -102,6 +102,8 @@
 
 ### Fixed
 
+- **Lane keeping no longer pulls out to pass into the oncoming lane on two-lane roads.** Where a passing lane serves only the other direction, the truck stays in its own lane.
+
 - **Translated speech now says facility types, the dispatch board's market and job rows, and region city counts in your language.** Facility and town names stay as they are, and Spanish lane counts say carril.
 
 - **The favorites count on the Tab Radio screen now opens your favorite stations.** Press Enter on it, then Enter on a station to tune it.
