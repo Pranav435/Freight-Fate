@@ -747,10 +747,13 @@ impl FelonyStopState {
             d,
             ctx,
             FAILURE_TO_STOP_PROCESSING_MIN,
-            Some("on_duty_not_driving"),
-            "felony failure-to-stop enforcement",
+            Some("off_duty"),
+            "felony failure-to-stop booking and bond",
         );
-        hos_mut_of(ctx).on_duty(FAILURE_TO_STOP_PROCESSING_MIN);
+        // Booking and bond are custody, not work: off duty. Twelve
+        // consecutive hours off is more than the 10 hours that reset the
+        // 11- and 14-hour limits, so the clock resets as the rules would.
+        hos_mut_of(ctx).off_duty(FAILURE_TO_STOP_PROCESSING_MIN);
         profile_mut_of(ctx).store_truck_condition(&d.trip.truck);
         let hours = d.trip.game_minutes / 60.0;
         let market_day = {
@@ -773,14 +776,17 @@ impl FelonyStopState {
         let load_text = felony_load_text(profile_of(ctx), self.load_lost, d);
         let booking_min = FAILURE_TO_STOP_PROCESSING_MIN;
         let booking = if booking_min > 0.0 {
-            format!(", and booking took {} hours", fmt_f(booking_min / 60.0, 0))
+            format!(
+                ", and booking and bond took {} hours",
+                fmt_f(booking_min / 60.0, 0)
+            )
         } else {
             String::new()
         };
         self.summary = format!(
             "Troopers laid spike strips across the lane after you kept driving with lights and \
-             siren behind you. Felony failure-to-stop fine: {} dollars, paid on the spot, with a \
-             major reputation hit.{} Spike strips added {} percent truck damage{booking}. \
+             siren behind you. Bond: {} dollars, posted to get out, with a major \
+             reputation hit.{} Spike strips added {} percent truck damage{booking}. \
              {load_text} You are released after booking. The truck was towed to {towed_to}.",
             fmt_grouped(fine, 0),
             construction_zone_fine_clause(zone),

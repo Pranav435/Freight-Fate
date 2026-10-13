@@ -473,6 +473,46 @@ fn test_a_felony_stop_leaves_an_own_authority_load_to_the_shipper() {
     assert!(!summary.contains("Dispatch"), "{summary}");
 }
 
+/// Booking and bond hold the driver 12 hours, logged off duty: more than
+/// the 10 consecutive hours off that reset the 11- and 14-hour limits.
+#[test]
+fn test_a_felony_stop_books_twelve_hours_off_duty_and_posts_bond() {
+    let mut app = TestApp::new();
+    let mut drive = a_drive(&mut app, "Company");
+    {
+        let hos = &mut app.ctx.profile.as_mut().expect("a career").hos;
+        hos.driving_min = 300.0;
+        hos.duty_min = 420.0;
+        hos.shift_on_duty_min = 420.0;
+    }
+    let summary = felony_summary(&mut app, &mut drive);
+    assert!(summary.contains("Bond: "), "{summary}");
+    assert!(summary.contains(" dollars, posted to get out"), "{summary}");
+    assert!(!summary.contains("fine"), "{summary}");
+    assert!(
+        summary.contains("and booking and bond took 12 hours."),
+        "{summary}"
+    );
+    let p = app.ctx.profile.as_ref().expect("a career");
+    assert!(
+        p.duty_log
+            .segments
+            .iter()
+            .any(|seg| seg.status == "off_duty"
+                && seg.note == "felony failure-to-stop booking and bond"),
+        "{:?}",
+        p.duty_log.segments
+    );
+    assert!(!p
+        .duty_log
+        .segments
+        .iter()
+        .any(|seg| seg.note.contains("felony") && seg.status != "off_duty"));
+    assert_eq!(p.hos.driving_min, 0.0, "the 11-hour limit did not reset");
+    assert_eq!(p.hos.duty_min, 0.0, "the 14-hour window did not reset");
+    assert_eq!(p.hos.shift_on_duty_min, 0.0);
+}
+
 #[test]
 fn test_a_felony_stop_with_nothing_loaded_leaves_nothing_to_the_shipper() {
     let mut app = TestApp::new();
