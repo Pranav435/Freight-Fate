@@ -1337,3 +1337,34 @@ fn test_snapshot_round_trips_the_lane_index() {
     let snap = d.snapshot(&app.ctx);
     assert_eq!(snap["lane_index"], serde_json::json!(1));
 }
+
+/// Lane keeping on full holds the lane, so the left stick cannot steer; a
+/// push past halfway asks for one lane change, and only one until the stick
+/// comes back near the center. A controller driver had no way to change
+/// lanes on full at all.
+#[test]
+fn test_a_stick_push_on_full_lane_keeping_changes_one_lane() {
+    let mut app = TestApp::new();
+    app.ctx.settings.lane_keeping = "full".to_string();
+    let mut d = a_drive(&mut app);
+    rolling(&mut d, 55.0);
+    d.trip.position_mi = 6.0;
+    d.lane.lane = 0;
+
+    d.update_stick_lane_change(&mut app.ctx, -0.3); // not far enough yet
+    assert_eq!(d.lane_change_target, None);
+    d.update_stick_lane_change(&mut app.ctx, -0.8);
+    assert_eq!(d.lane_change_target, Some(1)); // left, as the Left arrow asks
+    for _ in 0..40 {
+        d.update_tap_lane_change(&mut app.ctx, 0.1);
+    }
+    assert_eq!(d.lane.lane, 1);
+
+    // Still held over: no second change.
+    d.update_stick_lane_change(&mut app.ctx, -0.9);
+    assert_eq!(d.lane_change_target, None);
+    // Back to the center, then right.
+    d.update_stick_lane_change(&mut app.ctx, 0.0);
+    d.update_stick_lane_change(&mut app.ctx, 0.7);
+    assert_eq!(d.lane_change_target, Some(0));
+}

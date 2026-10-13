@@ -33,6 +33,7 @@
 use std::cell::RefCell;
 use std::collections::{HashSet, VecDeque};
 use std::rc::Rc;
+use std::time::{Duration, Instant};
 
 use ff_core::input_hints::{control_hint, CONTROLLER, KEYBOARD, TOUCH};
 
@@ -351,6 +352,9 @@ pub struct ControllerManager {
     instance_id: Option<u32>,
     name: String,
     disconnected: bool, // latched until the app consumes it
+    // Set when a hot-plug binds a pad, so the app can say which one the
+    // game is now listening to; latched until the app consumes it.
+    connected_notice: bool,
     // A freshly opened pad reports a device id that a hot-plug can leave
     // stale (the events then arrive under a different id). We treat the
     // opened id as provisional and adopt the id of the first real event we
@@ -383,6 +387,9 @@ pub struct ControllerManager {
     stick_buttons_down: HashSet<ControllerButton>,
     generated_events: VecDeque<InputEvent>,
     stick_click_guard: f64,
+    // A press to drop if it lands before the deadline: a pad that bounces
+    // the press which closed a screen must not reach the screen beneath.
+    swallowed: Option<(ControllerButton, Instant)>,
     // Defer touching the SDL controller subsystem until support is on, so a
     // player with controllers disabled never enumerates or binds a pad. It
     // comes up lazily on the first enable (see set_enabled/init_subsystem).
@@ -407,6 +414,7 @@ impl ControllerManager {
             instance_id: None,
             name: String::new(),
             disconnected: false,
+            connected_notice: false,
             id_pending: false,
             buttons_down: HashSet::new(),
             logged_mismatch_id: None,
@@ -424,6 +432,7 @@ impl ControllerManager {
             stick_buttons_down: HashSet::new(),
             generated_events: VecDeque::new(),
             stick_click_guard: 0.0,
+            swallowed: None,
             subsystem: None,
             factory,
         };
@@ -477,6 +486,18 @@ impl ControllerManager {
     /// Whether the subsystem is up (`_sdl is not None`).
     pub fn subsystem_up(&self) -> bool {
         self.subsystem.is_some()
+    }
+
+    /// Drop further presses of `button` for `window`. A screen that closes
+    /// on a press calls this, because some pads report one press twice a
+    /// frame apart and the second would land on the screen underneath.
+    pub fn swallow_press(&mut self, button: ControllerButton, window: Duration) {
+        self.swallowed = Some((button, Instant::now() + window));
+    }
+
+    /// Whether the bound pad is holding `button` down right now.
+    pub fn is_down(&self, button: ControllerButton) -> bool {
+        self.buttons_down.contains(&button)
     }
 
     pub fn connected(&self) -> bool {
@@ -646,6 +667,16 @@ impl ControllerManager {
         false
     }
 
+    /// Return and clear the hot-plug connect notice: the name of the pad a
+    /// plug-in or reconnect just bound, `None` when nothing new was bound.
+    pub fn take_connect(&mut self) -> Option<String> {
+        if self.connected_notice {
+            self.connected_notice = false;
+            return Some(self.name.clone());
+        }
+        None
+    }
+
     fn reset_analog(&mut self) {
         self.steer_target = 0.0;
         self.throttle_target = 0.0;
@@ -723,6 +754,9 @@ impl ControllerManager {
                 // deliberately do not cycle the SDL subsystem, which would
                 // double every controller event.
                 self.reopen();
+                if self.connected() {
+                    self.connected_notice = true;
+                }
                 return false;
             }
             InputEvent::ControllerRemoved { instance_id } => {
@@ -792,6 +826,14 @@ impl ControllerManager {
                 }
                 self.buttons_down.insert(*button);
                 self.active_device = CONTROLLER;
+                if let Some((held, until)) = self.swallowed {
+                    if Instant::now() >= until {
+                        self.swallowed = None;
+                    } else if held == *button {
+                        log::debug!("Swallowing bounced {button:?} (instance {instance_id})");
+                        return false;
+                    }
+                }
                 log::debug!("Button down {button:?} (instance {instance_id})");
                 self.on_button_down(*button);
                 true
