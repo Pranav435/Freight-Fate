@@ -14678,7 +14678,7 @@ msgstr ""
 msgid "your lane"
 msgstr ""
 
-#: crates/ff-core/src/sim/traffic_manager/vehicle.rs crates/ff-core/src/sim/traffic_manager.rs crates/freight-fate/src/states/driving_core.rs crates/freight-fate/src/states/driving_traffic_sounds.rs
+#: crates/ff-core/src/sim/traffic_manager/vehicle.rs crates/ff-core/src/sim/traffic_manager.rs crates/freight-fate/src/states/driving_core.rs crates/freight-fate/src/states/driving_lane_gap.rs
 msgid "state trooper"
 msgstr ""
 
@@ -31528,6 +31528,26 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_facility_gate.rs
 msgid "Missed the facility gate. Use the next safe turnaround."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let the car by."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let the box truck by."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let the semi by."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let the state trooper by."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_lane_gap.rs
+msgid "Easing off to let traffic by."
 msgstr ""
 
 #. placeholders: {capitalized}

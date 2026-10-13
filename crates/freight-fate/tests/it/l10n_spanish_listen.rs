@@ -137,6 +137,14 @@ fn a_called_off_lane_keeping_move_is_whole_spanish() {
             "Sigues en el carril central.",
         ),
         (
+            "Easing off to let the box truck by.",
+            "Reduciendo la velocidad para dejar pasar al camión de caja.",
+        ),
+        (
+            "Easing off to let traffic by.",
+            "Reduciendo la velocidad para dejar pasar el tráfico.",
+        ),
+        (
             "The road narrows to two lanes.",
             "La carretera se estrecha a dos carriles.",
         ),

@@ -29090,6 +29090,21 @@ msgid "Missed the facility gate. Use the next safe turnaround."
 msgstr ""
 "Te pasaste la entrada de la instalación. Usa el próximo retorno seguro."
 
+msgid "Easing off to let the car by."
+msgstr "Reduciendo la velocidad para dejar pasar al auto."
+
+msgid "Easing off to let the box truck by."
+msgstr "Reduciendo la velocidad para dejar pasar al camión de caja."
+
+msgid "Easing off to let the semi by."
+msgstr "Reduciendo la velocidad para dejar pasar al camión articulado."
+
+msgid "Easing off to let the state trooper by."
+msgstr "Reduciendo la velocidad para dejar pasar a la policía estatal."
+
+msgid "Easing off to let traffic by."
+msgstr "Reduciendo la velocidad para dejar pasar el tráfico."
+
 #. placeholders: {capitalized}
 msgid "{capitalized} lane open."
 msgstr "Carril de la {capitalized} libre."

@@ -104,7 +104,7 @@
 
 - **Lane keeping no longer pulls out to pass into the oncoming lane on two-lane roads.** Where a passing lane serves only the other direction, the truck stays in its own lane.
 
-- **Lane keeping now calls off a lane change if the lane fills or ends before the truck is across.** You hear "Staying in the left lane" instead of a sideswipe. If a vehicle then paces the truck in the right lane, lane keeping eases off, lets it by and moves back in behind it, and the CB no longer tells you off for the wait. A narrowing lane is announced once, not again after automatic braking.
+- **Lane keeping now calls off a lane change if the lane fills or ends before the truck is across.** You hear "Staying in the left lane" instead of a sideswipe. If a vehicle then paces the truck in the right lane, lane keeping says it is easing off, lets it by and moves back in three seconds behind it, and the CB no longer tells you off for the wait. A narrowing lane is announced once, not again after automatic braking.
 
 - **Translated speech now says facility types, the dispatch board's market and job rows, and region city counts in your language.** Facility and town names stay as they are, and Spanish lane counts say carril.
 
