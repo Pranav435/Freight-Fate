@@ -13,6 +13,7 @@ use ff_core::data::national_network::{
     filter_staa_doubles_routes, route_outside_lower_48, STAA_DOUBLES_CORRIDOR_REFUSAL,
     STAA_DOUBLES_REROUTE_NOTE, STAA_DOUBLES_ROUTE_REFUSAL,
 };
+use ff_core::data::seasonal_weight::{seasonal_gvw_cap_kg, strictest_on_route};
 use ff_core::data::world::World;
 use ff_core::data::world_models::Route;
 use ff_core::models::business_constants::is_owner_operator;
@@ -33,7 +34,7 @@ use ff_core::sim::route_roadwork::{
 use ff_core::sim::season::{adjust_for_calendar, real_clock_game_hours, temperature_c};
 use ff_core::sim::surge::{liquid_load_for, LiquidCargo};
 use ff_core::sim::trip_traffic::TrafficProvider;
-use ff_core::sim::vehicle::{TrailerSet, TruckState};
+use ff_core::sim::vehicle::{TrailerSet, TruckState, KG_PER_TON};
 use ff_core::sim::weather::WeatherSystem;
 
 use crate::app::GameContext;
@@ -43,13 +44,16 @@ use crate::impl_state_for_menu;
 use crate::meaningful_play::MeaningfulPlayReason;
 use crate::states::base::{InputEvent, Key, Menu, MenuCore, MenuItem, TimedMessageState};
 use crate::states::city::{
-    base_menu_enter, base_menu_handle_event, launch_driving, profile, profile_mut, CityMenuState,
-    DrivingLaunch, LaunchAnnouncement, LoadedDepartureResume, DRIVE_PHASE_DELIVERY,
+    base_menu_enter, base_menu_handle_event, dispatch_calendar_hours, launch_driving, profile,
+    profile_mut, CityMenuState, DrivingLaunch, LaunchAnnouncement, LoadedDepartureResume,
+    DRIVE_PHASE_DELIVERY,
 };
 use crate::states::main_menu::MainMenuState;
 
 pub const PICKUP_CHECK_IN_MIN: f64 = 15.0;
 pub const PICKUP_LOADING_MIN: f64 = 60.0;
+pub const SEASONAL_WEIGHT_REROUTE_NOTE: &str =
+    "Routes where spring weight limits would put this load over are not offered.";
 pub const PICKUP_LOADING_WAIT_S: f64 = 1.5;
 
 /// Whether this job's pickup facility is still in the world data.
@@ -257,6 +261,20 @@ pub fn set_engine_running(ctx: &mut GameContext, truck: &mut TruckState, running
         ctx.audio.engine_stop();
     }
     true
+}
+
+/// Bring a running engine's idle back under a facility menu.
+///
+/// Arriving at a shipper or receiver replaces the drive, and leaving the
+/// drive silences the world, engine loop included. A running engine then
+/// idled in silence, and "Shut down the engine" had no loop to stop, so it
+/// made no sound at all (tester report, 2026-09-28). No ignition crank: the
+/// engine never stopped.
+pub fn sync_facility_engine_audio(ctx: &mut GameContext, truck: &TruckState) {
+    if truck.engine_on && !ctx.audio.engine_running() {
+        ctx.audio.engine_start_with(false);
+        ctx.audio.set_engine_rpm_with(truck.specs.idle_rpm, 0.0);
+    }
 }
 
 /// The engine kill switch, offered where a facility menu has taken over.
@@ -832,6 +850,46 @@ impl PickupFacilityState {
         } else {
             (routes, None)
         };
+        let mut seasonal_routes_removed = false;
+        let routes = if self.job.bobtail {
+            routes
+        } else {
+            let before = routes.len();
+            let hours = dispatch_calendar_hours(ctx);
+            let filtered: Vec<Route> = routes
+                .iter()
+                .filter(|route| {
+                    let Some(restriction) = strictest_on_route(route, hours) else {
+                        return true;
+                    };
+                    let mut truck = self.truck.clone();
+                    truck.trailer_set = TrailerSet::legacy_trip_on_route(
+                        self.job.cargo.key,
+                        ctx.world,
+                        Some(route),
+                    );
+                    truck.cargo_kg = self.job.weight_tons * KG_PER_TON;
+                    truck.gross_mass_kg() <= seasonal_gvw_cap_kg(&truck, restriction.percent)
+                })
+                .cloned()
+                .collect();
+            if filtered.is_empty() {
+                routes
+            } else {
+                seasonal_routes_removed = filtered.len() < before;
+                filtered
+            }
+        };
+        let mut reroute_note = staa_note.map(str::to_string);
+        if seasonal_routes_removed {
+            match &mut reroute_note {
+                Some(note) => {
+                    note.push(' ');
+                    note.push_str(SEASONAL_WEIGHT_REROUTE_NOTE);
+                }
+                None => reroute_note = Some(SEASONAL_WEIGHT_REROUTE_NOTE.to_string()),
+            }
+        }
         // The world ranks the options by distance; dispatch re-ranks them by
         // the construction the state 511 feeds report on each, the way a
         // dispatcher checks 511 before naming the lane.
@@ -842,7 +900,7 @@ impl PickupFacilityState {
             let construction = dispatch_route_line(&routes, &routing, ctx.world, &ctx.settings);
             let route = routes[routing.pick()].clone();
             let mut lead = String::new();
-            if let Some(note) = staa_note {
+            if let Some(note) = reroute_note.as_deref() {
                 lead.push_str(note);
                 lead.push(' ');
             }
@@ -870,7 +928,7 @@ impl PickupFacilityState {
             return;
         }
         let mut planning = String::new();
-        if let Some(note) = staa_note {
+        if let Some(note) = reroute_note.as_deref() {
             planning.push_str(note);
             planning.push(' ');
         }
@@ -974,6 +1032,8 @@ impl PickupFacilityState {
             if at_shipper && !self.job.bobtail {
                 p.parked_facility = self.job.origin_location.clone();
             }
+            // Every other way a run ends frees the advance for the next load.
+            p.pay_advance_used_for_load = false;
         }
         ctx.save_profile();
         let parked = crate::states::city::parked_at(ctx);
@@ -1034,6 +1094,7 @@ impl Menu for PickupFacilityState {
             select_menu_music_sequence(ctx.profile.as_ref().map(|p| p as &dyn MenuMusicProfile));
         let refs: Vec<&str> = sequence.iter().map(String::as_str).collect();
         ctx.play_music_sequence("menu", &refs);
+        sync_facility_engine_audio(ctx, &self.truck);
         base_menu_enter(self, ctx);
     }
 
@@ -1077,9 +1138,17 @@ impl Menu for PickupFacilityState {
                 }
                 // Rounded to a tenth, so the smallest number that can be
                 // spoken is one worth hearing rather than "0.0 gallons".
+                // Off now means every idle gallon came before the shutdown;
+                // a bare "burned idling" after the load read as the engine
+                // having run through it (tester report, 2026-09-28).
                 if round_py_n(self.idle_gallons, 1) > 0.0 {
+                    let when = if self.truck.engine_on {
+                        ""
+                    } else {
+                        " before you shut down"
+                    };
                     lead.push_str(&format!(
-                        " {} gallons burned idling.",
+                        " {} gallons burned idling{when}.",
                         fmt_f(self.idle_gallons, 1)
                     ));
                 }
@@ -1114,6 +1183,9 @@ impl Menu for PickupFacilityState {
 
     fn exit(&mut self, ctx: &mut GameContext) {
         ctx.audio.set_ambient(None);
+        // Save and quit, or cancel: the idle must not follow the driver to
+        // the title or the terminal. A departing drive brings its own back.
+        ctx.audio.engine_stop_with(false);
     }
 
     fn build_items(&mut self, ctx: &mut GameContext) -> Vec<MenuItem<Self>> {
