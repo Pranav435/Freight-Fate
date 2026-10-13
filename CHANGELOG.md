@@ -69,6 +69,8 @@
 
 ### Fixed
 
+- **Dispatch calls read cargo damage, hours and distance cleanly.** The load call says the damage once, as "with 12 percent cargo damage", and no longer calls a sound load damaged. Whole hours drop the ".0", and the distance left follows your metric setting.
+
 - **The Alaska Highway border crossing now has its real name, the Alcan port.** Heading into Canada, you pass the Beaver Creek border post instead.
 - **Yukon and northern British Columbia roads now follow their posted speed limits.**
 
