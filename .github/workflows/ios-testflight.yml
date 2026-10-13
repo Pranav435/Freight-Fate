@@ -1,4 +1,4 @@
-# Build, sign and upload Freight Fate to TestFlight (internal testers).
+# Build, sign and upload Freight Fate to TestFlight.
 #
 # Manual only. Dispatch it from dev, after the changes you want to test have
 # merged, with
@@ -8,6 +8,12 @@
 # By default a run is a verification run: it proves the key, certificate,
 # bundle id, profile, build and signing, and uploads nothing to TestFlight.
 # Add -f upload=true for a real upload.
+#
+# Testers: the Internal group gets every uploaded build by itself. With
+# testers=friends (the default) a real upload is also added to the external
+# Friends group and submitted to Apple's beta review; Friends get it once Apple
+# approves it. testers=internal stops at the Internal group. whats_new is the
+# "What to Test" note testers read; leave it empty for the branch and commit.
 #
 # The log and the TestFlight build notes show the exact commit that was built.
 # Any other branch needs allow_other_ref set, so a build from unmerged work is
@@ -54,6 +60,18 @@ on:
         required: false
         type: boolean
         default: false
+      testers:
+        description: "Who gets an uploaded build: friends (Internal plus the external Friends group, after Apple's beta review) or internal only"
+        required: false
+        type: choice
+        options:
+          - friends
+          - internal
+        default: friends
+      whats_new:
+        description: "What to Test note for testers (default: the branch and commit)"
+        required: false
+        type: string
 
 concurrency:
   group: ios-testflight
@@ -287,7 +305,18 @@ jobs:
           # set a value that is already set and fail with HTTP 409.
           wait-for-processing: "true"
           # Shown to testers as "What to Test".
-          release-notes: "Built from ${{ github.ref_name }} at ${{ github.sha }}"
+          release-notes: ${{ inputs.whats_new != '' && inputs.whats_new || format('Built from {0} at {1}', github.ref_name, github.sha) }}
+
+      - name: Send the build to the Friends group
+        if: ${{ inputs.upload == true && inputs.testers == 'friends' }}
+        shell: bash
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -euo pipefail
+          python3 tools/ios_signing.py distribute --bundle-id "$BUNDLE_ID" \
+            --build-number "$BUILD_NUMBER" --group Friends | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Remove the signing material
         # Runs even after a failure: delete the keychain and every key file

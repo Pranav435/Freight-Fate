@@ -15,6 +15,9 @@ Sub-commands (the API key comes from the environment, never the command line):
                when none is active) and write it under --out
     check-app  check that the App Store Connect app record exists
     next-build print the next build number for TestFlight
+    distribute add an uploaded build to an external tester group (Friends)
+               and submit it to Apple's beta review; internal testers get
+               every build without this
     cleanup    delete the local profile and certificate files; nothing in
                App Store Connect is touched
 
@@ -374,6 +377,88 @@ def next_build_number(
     return max(highest, run_number) + 1, highest
 
 
+# --- External testers ---------------------------------------------------------
+
+
+def find_build(
+    token: str, app_id: str, number: str, attempts: int = 30, pause: float = 20.0
+) -> dict:
+    """The uploaded build with this build number, once Apple has processed it."""
+    query = urllib.parse.urlencode(
+        {"filter[app]": app_id, "filter[version]": number, "limit": "10"}
+    )
+    state = "not listed yet"
+    for attempt in range(attempts):
+        builds = api_request(token, "GET", f"/v1/builds?{query}").get("data", [])
+        if builds:
+            state = builds[0].get("attributes", {}).get("processingState", "")
+            if state == "VALID":
+                return builds[0]
+            if state in ("FAILED", "INVALID"):
+                break
+        if attempt + 1 < attempts:
+            time.sleep(pause)
+    raise SigningError(
+        f"Build {number} is {state} in App Store Connect, so it was not sent to external "
+        "testers. Internal testers still get it once Apple finishes processing."
+    )
+
+
+def find_external_group(token: str, app_id: str, name: str) -> dict:
+    query = urllib.parse.urlencode({"limit": "200"})
+    for group in api_request(token, "GET", f"/v1/apps/{app_id}/betaGroups?{query}").get("data", []):
+        attributes = group.get("attributes", {})
+        if attributes.get("name") == name and not attributes.get("isInternalGroup"):
+            return group
+    raise SigningError(
+        f"There is no external TestFlight group named {name!r} for this app (App Store "
+        "Connect, the app, TestFlight, External Testing). The build was uploaded for "
+        "internal testers only."
+    )
+
+
+def review_submitted(token: str, build_id: str) -> bool:
+    try:
+        reply = api_request(token, "GET", f"/v1/builds/{build_id}/betaAppReviewSubmission")
+    except ApiError as error:
+        if error.status == 404:
+            return False
+        raise
+    return bool(reply.get("data"))
+
+
+def distribute(token: str, bundle_id: str, number: str, group_name: str) -> str:
+    """Add build ``number`` to the external group and submit it; returns a summary."""
+    app_id = find_app_id(token, bundle_id)
+    if app_id is None:
+        raise SigningError(MISSING_APP_HELP.format(bundle=bundle_id))
+    group = find_external_group(token, app_id, group_name)
+    build = find_build(token, app_id, number)
+    api_request(
+        token,
+        "POST",
+        f"/v1/betaGroups/{group['id']}/relationships/builds",
+        {"data": [{"type": "builds", "id": build["id"]}]},
+    )
+    if review_submitted(token, build["id"]):
+        return f"Build {number} added to {group_name}; it was already submitted for beta review."
+    api_request(
+        token,
+        "POST",
+        "/v1/betaAppReviewSubmissions",
+        {
+            "data": {
+                "type": "betaAppReviewSubmissions",
+                "relationships": {"build": {"data": {"type": "builds", "id": build["id"]}}},
+            }
+        },
+    )
+    return (
+        f"Build {number} added to {group_name} and submitted for beta review. Its testers "
+        "get it once Apple approves it."
+    )
+
+
 MISSING_APP_HELP = (
     "There is no App Store Connect app record for bundle id {bundle}, the id "
     "tools/build_ios.py stamps into the app. The bundle id in App Store Connect must match "
@@ -479,6 +564,17 @@ def cmd_next_build(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_distribute(args: argparse.Namespace) -> int:
+    if not args.build_number:
+        raise SigningError("distribute needs --build-number.")
+    token = _token()
+    try:
+        print(distribute(token, args.bundle_id, args.build_number, args.group))
+    except ApiError as error:
+        raise explain(error) from None
+    return 0
+
+
 def cmd_cleanup(args: argparse.Namespace) -> int:
     out = Path(args.out)
     for name in (CERT_FILE, PROFILE_FILE, P12_FILE):
@@ -493,6 +589,7 @@ def main(argv: list[str] | None = None) -> int:
         ("prepare", cmd_prepare),
         ("check-app", cmd_check_app),
         ("next-build", cmd_next_build),
+        ("distribute", cmd_distribute),
         ("cleanup", cmd_cleanup),
     ):
         p = sub.add_parser(name)
@@ -501,6 +598,8 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--label", default="manual", help="run label for names (no secrets)")
         p.add_argument("--run-number", type=int, default=0, help="lowest build number to allow")
         p.add_argument("--cert", default="", help="PEM of the stored certificate (prepare)")
+        p.add_argument("--build-number", default="", help="uploaded build (distribute)")
+        p.add_argument("--group", default="Friends", help="external tester group (distribute)")
         p.set_defaults(func=func)
     args = parser.parse_args(argv)
     try:
