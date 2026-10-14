@@ -545,6 +545,10 @@ Everything found before 2026-09-25 moved to
 - [x] A way out of the training fleet (player report, 2026-10-10): a
       company driver at Great Lakes Training Transport can move to another
       carrier at level 4 with full dispatch trust.
+- [x] Engine brake on the driver's terms (player report, 2026-10-14): a
+      full brake stop with the engine brake on no longer damages the load, a
+      stage the driver picks is no longer dropped by cruise or the bend
+      assist, and automatic engine brake off with Alt J lasts between drives.
 - [x] Plainer career and equipment wording, and a Common questions page
       in How to play and the manual (owner, 2026-10-11, from a livestreamer
       asking what the fleets meant and when he could get or buy a truck,
