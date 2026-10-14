@@ -809,18 +809,16 @@ pub struct DrivingState {
     pub lane_gap_cue_s: f64,
 
     // ---- driving_turns.py: `_reset_turn_state_for_trip` -------------------------------
-    // Street corners: how many corners this run has cost, which escalates
-    // the spoken help. The per-corner latches are rebuilt whenever the
+    // Street corners: how many corners this run has missed. The per-corner
+    // latches are rebuilt whenever the
     // trip's route changes (`turn_trip_id` vs `trip_generation`).
     pub turn_miss_count: i64,
     pub turn_trip_id: u64,
     pub turn_advised: HashSet<String>,
-    pub turn_missed: HashSet<String>,
     pub turn_resolved: HashSet<String>,
-    /// Corners whose call actually reached the voice. The turn earcon is
-    /// played off this at the moment the corner is taken, so a driver who
-    /// was told nothing about a corner is not chimed at for it either
-    /// (owner, 2026-09-20).
+    /// Corners whose chime has sounded. It goes out once, with the first
+    /// words that name the corner, so a driver who was told nothing about a
+    /// corner is not chimed at for it either (owner, 2026-09-20).
     pub turn_announced: HashSet<String>,
     /// Corners whose own call already said "now": the route's call at the
     /// corner would only say the turn again.
