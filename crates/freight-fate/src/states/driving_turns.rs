@@ -471,7 +471,7 @@ impl DrivingState {
             if ahead <= 0.0 && self.trip.truck.speed_mph() <= self.turn_speed_mph(&cue) {
                 // A cold arrival already under the corner's speed: there is
                 // nothing left to call and nothing to fail.
-                self.resolve_turn(&cue);
+                self.resolve_turn(ctx, &cue);
                 return;
             }
             // Every corner is called, at its speed, whether or not the truck
@@ -522,15 +522,15 @@ impl DrivingState {
             } else {
                 full
             };
-            // The side's chime goes out with the words that name the turn,
-            // and only when those words are spoken: a rung that silences the
-            // call silences its chime too (owner, 2026-09-20). It used to
-            // wait for the corner itself, so the chime for the turn just
-            // taken landed next to the call for the next one, and a driver
-            // heard a right chime beside "Left turn" (player report,
-            // 2026-10-13).
+            // The earcon waits for the corner itself. It used to sound
+            // here, on the approach, whether or not the words that go with
+            // it were ever spoken -- so a rung that silenced the lead left a
+            // turn chime with nothing attached to it, and the owner heard
+            // corners announced by sound alone (2026-09-20). It marks the
+            // moment the truck turns now, his own preference, and only for a
+            // corner he was actually told about.
             if ctx.settings.speaks(Some(SpeechCategory::Navigation)) || !ctx.ladder_applies() {
-                self.chime_corner(ctx, &cue);
+                self.turn_announced.insert(cue.key.clone());
             }
             // A LEAD is deliberately left on the droppable ambient default,
             // unlike the act-now navigation calls raised to ROUTE alongside
@@ -581,14 +581,14 @@ impl DrivingState {
             // the truck drove through the next two corners, whose calls came
             // late and whose tones all sounded together at the end of it
             // (live drive into Ardmore, 2026-09-24).
-            self.resolve_turn(&cue);
+            self.resolve_turn(ctx, &cue);
             return;
         }
         if self.turn_grace_s > 0.0 {
             return; // the corner's own cue is still speaking
         }
         if self.turn_miss_suspended() {
-            self.resolve_turn(&cue);
+            self.resolve_turn(ctx, &cue);
             return;
         }
         self.handle_missed_turn(ctx, &cue);
@@ -596,26 +596,21 @@ impl DrivingState {
 
     /// `_resolve_turn(cue)`: this corner is settled; the clock goes back to
     /// trip pacing.
-    pub fn resolve_turn(&mut self, cue: &NavigationCue) {
+    pub fn resolve_turn(&mut self, ctx: &mut GameContext, cue: &NavigationCue) {
         self.turn_resolved.insert(cue.key.clone());
         self.turn_grace_s = 0.0;
         self.trip.controlled_turn = false;
-    }
-
-    /// The turn's chime, panned to its side: once per corner, with the
-    /// first words that name it, whichever line that is (this call, the
-    /// route's own lead, or the street chain's briefing).
-    pub fn chime_corner(&mut self, ctx: &mut GameContext, cue: &NavigationCue) {
-        if !self.turn_announced.insert(cue.key.clone()) {
-            return;
-        }
-        if let Some(sound) = local_turn_sound(Some(&cue.direction)) {
-            let pan = if cue.direction.trim().eq_ignore_ascii_case("left") {
-                -TURN_CUE_PAN
-            } else {
-                TURN_CUE_PAN
-            };
-            ctx.audio.play_with(sound, 1.0, pan);
+        // Taken, by the driver or by the assists: the corner is behind the
+        // truck and this is the sound of it, panned to the side it went.
+        if self.turn_announced.remove(&cue.key) {
+            if let Some(sound) = local_turn_sound(Some(&cue.direction)) {
+                let pan = if cue.direction == "left" {
+                    -TURN_CUE_PAN
+                } else {
+                    TURN_CUE_PAN
+                };
+                ctx.audio.play_with(sound, 1.0, pan);
+            }
         }
     }
 
@@ -636,7 +631,7 @@ impl DrivingState {
         // ruling, 2026-09-01).
         self.cancel_cruise(ctx, true);
         self.cancel_keeper(ctx, true);
-        self.resolve_turn(cue);
+        self.resolve_turn(ctx, cue);
         self.trip.position_mi = self.trip.position_mi.max(cue.at_mi + TURN_COMMIT_TAIL_MI);
         let message = if self.terse_speech(ctx) {
             "Missed the turn. Going around the block.".to_string()

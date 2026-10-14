@@ -601,7 +601,7 @@ At a ramp light, you'll hear each change in its steady cycle. Stop for red. At y
 
 When the way is clear, pull ahead as directed. Facility stopping assistance can manage the pedals on the way to the gate, while speed keeper handles any city streets between. Pressing your brake cancels that pedal assistance.
 
-Local streets have their own limits and corner calls. Each corner is called with its distance and the speed to take it at, and the turn's chime plays with the call, on the side you turn. Take a corner faster than about three miles per hour over that speed and you miss it: the truck goes around the block and comes out on the street you missed, a few minutes later. Traffic controls aren't modeled throughout the street network. A driveway takes you into a yard at fifteen miles per hour; where there isn't a driveway, the gate may be on the street.
+Local streets have their own limits and corner calls. Each corner is called with its distance and the speed to take it at. Take a corner faster than about three miles per hour over that speed and you miss it: the truck goes around the block and comes out on the street you missed, a few minutes later. Traffic controls aren't modeled throughout the street network. A driveway takes you into a yard at fifteen miles per hour; where there isn't a driveway, the gate may be on the street.
 
 ### Stop services
 

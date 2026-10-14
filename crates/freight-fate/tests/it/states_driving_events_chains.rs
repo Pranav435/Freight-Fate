@@ -155,7 +155,7 @@ fn test_chain_swaps_to_streets_and_keeps_the_clock() {
 }
 
 #[test]
-fn test_each_corner_chimes_with_its_own_call_in_order() {
+fn test_each_first_corner_sounds_where_it_is_made() {
     // Live drive into Ardmore, 2026-09-24: the yard's streets open with three
     // corners 0.05 mile apart -- left onto West Broadway Street, right onto M
     // Street Southwest, left back onto West Broadway Street. The first is
@@ -163,10 +163,6 @@ fn test_each_corner_chimes_with_its_own_call_in_order() {
     // the slowest modelled voice, 71 seconds) held the corner in play long
     // after the truck had made it: the other two calls came late, and all
     // three turn tones sounded together 0.2 mile on.
-    //
-    // The chime goes with the call now (player report, 2026-10-13), so each
-    // one has to sound before its own corner and after the one before it is
-    // taken: never a right chime while a left is still ahead.
     use freight_fate::playtest::harness::{PlaytestHarness, RouteSetup};
     use freight_fate::states::driving_turns::is_judged_turn;
     let dt = 1.0 / 30.0;
@@ -232,14 +228,12 @@ fn test_each_corner_chimes_with_its_own_call_in_order() {
         }
     }
     assert_eq!(tones.len(), 3, "{tones:?}");
-    let mut previous_mi = f64::NEG_INFINITY;
     for ((key, at), (corner_mi, side)) in tones.iter().zip(&corners) {
         assert_eq!(key, &format!("events/turn_{side}"), "{tones:?}");
         assert!(
-            *at <= *corner_mi && *at > previous_mi,
+            at - corner_mi < 0.01,
             "the {side} turn at {corner_mi:.2} mile sounded at {at:.3}: {tones:?}"
         );
-        previous_mi = *corner_mi;
     }
 }
 

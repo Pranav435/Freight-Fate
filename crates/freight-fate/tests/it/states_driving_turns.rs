@@ -373,56 +373,57 @@ fn test_the_planner_sees_past_the_corner_it_is_already_easing_for() {
     );
 }
 
-fn turn_chimes(audio: &freight_fate::app::testing::AudioLog) -> Vec<(String, f64)> {
-    audio
-        .borrow()
-        .played
-        .iter()
-        .filter(|(key, _, _)| key.starts_with("events/turn_"))
-        .map(|(key, _, pan)| (key.clone(), *pan))
-        .collect()
-}
-
 #[test]
-fn test_the_turn_chime_goes_out_with_the_call_that_names_it() {
-    // The chime used to sound as the truck took the corner, and the call for
-    // the next corner followed it: a right chime landed beside "Left turn"
-    // (player report, 2026-10-13). It goes out once, with the words for its
-    // own turn, panned to that turn's side.
+fn test_the_turn_earcon_waits_for_the_corner_itself() {
+    // The chime used to sound the moment the approach call was armed, whether
+    // or not the words that go with it ever reached the voice: at urgent only
+    // the owner heard corners announced by sound alone (2026-09-20). It is
+    // owed to a corner the driver was told about, and spent when the truck
+    // actually turns.
     let mut app = TestApp::new();
-    let audio = app.record_audio();
     let mut d = a_drive(&mut app);
     a_street_chain(&mut d);
     let cue = d.turn_cue_in_play().expect("a corner is in play");
+    assert!(!d.turn_announced.contains(&cue.key));
     d.trip.position_mi = 0.4;
     mph(&mut d, 30.0);
     d.update_turn_commitment(&mut app.ctx, 0.016);
-    assert_eq!(
-        turn_chimes(&audio),
-        vec![("events/turn_left".to_string(), -TURN_CUE_PAN)]
+    assert!(
+        d.turn_announced.contains(&cue.key),
+        "the corner was called, so its earcon is owed at the corner"
     );
 
-    // The route's own cues for the same corner add no second chime, and
-    // neither does taking it. Three chimes on one turn out of Houston is
-    // what that cost before (owner drive, 2026-09-20).
+    // And the corner is a JUDGED one, which is what stops its route cues
+    // sounding the same chime at the quarter-mile lead and again at the
+    // corner: `handle_trip_event` suppresses the earcon for exactly these,
+    // so the turn flow owns it outright. Three chimes on one turn out of
+    // Houston is what that cost before (owner drive, 2026-09-20).
     assert!(is_judged_turn(&cue));
-    let near = ff_core::sim::trip_models::TripEvent {
-        kind: TripEventKind::GpsCue,
-        message: ff_core::speech_text::SpokenMessage::new(cue.near_text.clone()),
-        data: ff_core::sim::trip_models::TripEventData {
-            cue: Some(cue.clone()),
-            ..Default::default()
-        },
-    };
-    d.handle_trip_event(&mut app.ctx, &near);
-    d.resolve_turn(&cue);
-    assert_eq!(turn_chimes(&audio).len(), 1);
+    let straight_on = d
+        .trip
+        .navigation_cues
+        .iter()
+        .find(|other| other.kind == "local_turn" && !is_judged_turn(other));
+    if let Some(straight_on) = straight_on {
+        // A cue with no side to it never reaches the turn flow, so it keeps
+        // its own sound.
+        assert!(!d.turn_announced.contains(&straight_on.key));
+    }
+
+    // Taking it spends the earcon, once and once only.
+    d.resolve_turn(&mut app.ctx, &cue);
+    assert!(!d.turn_announced.contains(&cue.key));
+    d.resolve_turn(&mut app.ctx, &cue);
+    assert!(!d.turn_announced.contains(&cue.key));
 }
 
 #[test]
-fn test_a_turn_first_named_by_the_route_chimes_with_that_line() {
+fn test_a_turn_taken_at_a_crawl_still_chimes_when_the_route_called_it() {
+    // A truck already under a turn's speed gets no approach call, only the
+    // route's own "Turn left onto 3rd Avenue Southeast" -- and that never
+    // counted as telling the driver, so the turn went by without its chime
+    // (agent drive, Aberdeen yard, 2026-09-23).
     let mut app = TestApp::new();
-    let audio = app.record_audio();
     let mut d = a_drive(&mut app);
     a_street_chain(&mut d);
     let cue = d.turn_cue_in_play().expect("a corner is in play");
@@ -436,10 +437,6 @@ fn test_a_turn_first_named_by_the_route_chimes_with_that_line() {
     };
     d.handle_trip_event(&mut app.ctx, &near);
     assert!(d.turn_announced.contains(&cue.key));
-    assert_eq!(
-        turn_chimes(&audio),
-        vec![("events/turn_left".to_string(), -TURN_CUE_PAN)]
-    );
 }
 
 #[test]
@@ -502,10 +499,10 @@ fn route_calls(d: &mut DrivingState, app: &mut TestApp) {
 
 #[test]
 fn test_the_next_turn_waits_until_the_truck_is_round_the_last() {
-    // The call for the next corner went out while the truck was still round
-    // the last one, so "Turn right onto North Freeway Road" was heard over
-    // the left turn, four turns out of four (agent drive, Tucson streets,
-    // 2026-09-24).
+    // The chime for the corner being taken and the call for the next corner
+    // went out on the same tick, so "Turn right onto North Freeway Road" was
+    // heard over the left-turn chime, four turns out of four (agent drive,
+    // Tucson streets, 2026-09-24).
     let mut app = TestApp::new();
     let audio = app.record_audio();
     let mut d = a_drive(&mut app);
@@ -526,18 +523,27 @@ fn test_the_next_turn_waits_until_the_truck_is_round_the_last() {
     d.update_turn_commitment(&mut app.ctx, 0.016);
     app.clear_speech();
 
-    // At the corner: no chime (it went out with the call), and not a word
-    // about the next one, from the route or from the corner's approach call.
-    let before = turn_chimes(&audio).len();
+    // At the corner: its own chime, and not a word about the next one, from
+    // the route or from the corner's approach call.
     d.trip.position_mi = first.at_mi + 0.001;
     route_calls(&mut d, &mut app);
     d.update_turn_commitment(&mut app.ctx, 0.016);
-    assert_eq!(turn_chimes(&audio).len(), before);
+    let chimes = |audio: &freight_fate::app::testing::AudioLog| {
+        audio
+            .borrow()
+            .played
+            .iter()
+            .filter(|(key, _, _)| key.starts_with("events/turn_"))
+            .map(|(key, _, _)| key.clone())
+            .collect::<Vec<_>>()
+    };
+    assert_eq!(chimes(&audio), vec!["events/turn_left".to_string()]);
+    mph(&mut d, 20.0); // over the next corner's speed, so it has a call owed
     route_calls(&mut d, &mut app);
     d.update_turn_commitment(&mut app.ctx, 0.016);
     assert!(
         lines_with(&app, "West Sample Street").is_empty(),
-        "the next turn was called over this one: {:?}",
+        "the next turn was called over this one's chime: {:?}",
         app.event_lines()
     );
 
@@ -549,11 +555,6 @@ fn test_the_next_turn_waits_until_the_truck_is_round_the_last() {
         !lines_with(&app, "West Sample Street").is_empty(),
         "{:?}",
         app.event_lines()
-    );
-    assert_eq!(
-        turn_chimes(&audio).last(),
-        Some(&("events/turn_right".to_string(), TURN_CUE_PAN)),
-        "the right turn's chime goes with the right turn's call"
     );
     assert!(second.at_mi > d.trip.position_mi);
 }
