@@ -5261,6 +5261,20 @@
             "estimated": false,
             "source": "NJTA 2026 class 5, entry 15E Newark to exit 18E George Washington Bridge approach, peak rate; researched 2026-07-19 (tools/toll_rates.py nj_western_spur_newark_ny): https://www.njta.gov/toll-calculator/",
             "amount_plate": 16.55
+          },
+          {
+            "name": "George Washington Bridge toll",
+            "at_mi": 28.3,
+            "road": "I-95 George Washington Bridge upper level",
+            "authority": "Port Authority of New York and New Jersey",
+            "method": "open_road",
+            "amount": 120.85,
+            "estimated": false,
+            "source": "Port Authority of New York and New Jersey commercial toll rates effective July 2026, 5 axles, E-ZPass peak 120.85 (off-peak 108.35, overnight 100.85), Tolls by Mail 128.35; collected entering New York only; read 2026-10-14: https://www.panynj.gov/bridges-tunnels/en/tolls.html",
+            "amount_plate": 128.35,
+            "directions": [
+              "forward"
+            ]
           }
         ]
       },

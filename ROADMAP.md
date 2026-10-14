@@ -2707,6 +2707,25 @@ remain planned or explicitly deferred.
       labels; deployment and acceptance by the site have not been verified
       by this repository audit. Keep this gate open until that check passes.
 
+- [ ] **A felony in a commercial vehicle carries its full 49 CFR 383.51
+      weight.** Modelled today: running from a stop is a major offense
+      (383.51 Table 1), a one-year CDL disqualification, and a second
+      major offense is lifetime. Not modelled: the lifetime
+      disqualification for a felony involving a controlled substance (the
+      game has no such offense yet), and termination -- a company driver
+      keeps the job after a felony stop, where a carrier would let the
+      driver go. It should land as a carrier termination notice at the
+      terminal, like the record-review termination.
+
+- [ ] **Pin real tow and impound yards per city.** A police tow after a
+      felony stop goes to a generic impound lot in the stop city, because
+      the map has no tow or storage yards. Real rotation-wrecker impound
+      yards, sourced per city, would let the tow name the actual yard.
+- [ ] **Tow and storage fees after a police tow.** Nothing charges for the
+      tow or the impound storage today. Model both: the carrier pays for
+      company drivers and leased owner-operators, and the driver pays under
+      own authority.
+
 <a id="career-carriers-slices-24"></a>
 
 ### Career carriers (slices 1–3 built; slice 4 planned)
@@ -2910,8 +2929,9 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       a truck that still reaches one is re-planned from that city.
 - [x] **Tunnels with truck rules across the map.** Eisenhower-Johnson, Fort
       McHenry, the Boston tunnels, Hampton Roads and Chesapeake Bay
-      bridge-tunnels, the Pennsylvania Turnpike tunnels and the I-90 Lake
-      Washington tunnels carry their published cargo rules (see
+      bridge-tunnels and the Pennsylvania Turnpike tunnels carry their
+      published cargo rules, and refused loads take real legal detour legs
+      into Boston, around Baltimore on I-695 and over Loveland Pass (see
       docs/road-crossings.md).
 - [x] **Bridges with truck rules.** The San Francisco-Oakland Bay Bridge
       hazmat rule, the Mackinac Bridge toll and the published Chesapeake Bay
@@ -2929,17 +2949,20 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       first; Mackinac oversize escorts wait for oversize loads.
 - [x] **Chesapeake Bay Bridge (US 50) toll.** Charged eastbound at the
       published 24 dollars E-ZPass, 36 video toll.
-- [x] **Published toll rates.** 62 of 67 toll events read from
+- [x] **Published toll rates.** 74 of 79 toll events read from
       the authorities' five-axle schedules, with plate rates and one-way
       collection (see docs/road-crossings.md).
 - [ ] **Last estimated tolls.** 5 events still estimated: Aurora to
-      Rockford, Syracuse to Utica, the Mass Pike stretch into Boston, and the
-      New Jersey Turnpike and Delaware River bridge on New York to Philadelphia.
+      Rockford, Syracuse to Utica, the Mass Pike stretches into Boston (New
+      York to Boston, and the Worcester to Boston detour), and the
+      Delaware River bridge on New York to Philadelphia.
+- [x] **George Washington, Bay and Golden Gate bridge tolls.** Charged one
+      way, into New York or San Francisco, on every leg that crosses them;
+      the New Jersey Turnpike on New York to Philadelphia is priced.
 - [x] **Missing toll facilities, first pass.** 14 tolls added on legs that
       drove a priced toll road for free (see docs/road-crossings.md).
-- [ ] **Missing toll facilities, still unpriced.** The San Francisco-Oakland
-      Bay Bridge (westbound), the George Washington Bridge and Holland Tunnel
-      into New York, the Tri-State and Edens Spur on Milwaukee to Chicago, the
+- [ ] **Missing toll facilities, still unpriced.** The Tri-State and Edens
+      Spur on Milwaukee to Chicago, the
       Chicago to Indianapolis toll stretch, the Muskogee Turnpike, and the
       partial Cimarron runs on Stillwater and Enid to Tulsa. Then sweep every
       leg with tools/toll_evidence.py.
@@ -2951,9 +2974,17 @@ branch. The older Phase A/B plan checklists are not a live completion list.
 - [ ] **Hazard classes on freight.** The catalog does not name hazard
       classes, so a placarded packaged load is refused wherever any class is
       banned. Naming classes would let some loads through.
-- [ ] **Loveland Pass for placarded loads.** The Eisenhower tunnel's
-      required detour over US 6 is not on the map, so placarded loads are
-      planned off I-70 entirely.
+- [x] **Loveland Pass for placarded loads.** A Silverthorne to Denver leg
+      over US 6 carries the Eisenhower tunnel's required detour.
+- [ ] **Loveland Pass closures.** The pass is treated as always open to
+      placarded loads; CDOT closes it in storms.
+- [ ] **I-90 Lake Washington flammable-cargo rule.** Left out: the only
+      source is a WSDOT closure notice. Model it if WSDOT publishes a
+      standing rule.
+- [ ] **Curve classes on the detour legs.** Their curves mark interchange
+      ramps only near each end, by position. The OSM curve-class reading the
+      rest of the map has needs `curve_osm.jsonl`, whose builder is not in
+      the repo.
 - [ ] **Board estimates on detoured loads.** The board's hours and route
       readouts still use the open road; departure uses the legal one.
 - [ ] **Whittier tunnel cold-weather and train disruption rules.** The
@@ -3476,6 +3507,12 @@ here 2026-09-25. Details stay in the linked dated sections.
 - [x] **Offline call dispatch groundwork.** A stopped driver can send a
       structured delay, hours, road, truck or load request and receive an
       immediate trip-specific local answer.
+- [ ] (Found along the way) **Call Dispatch timing is lower-48 timing
+      everywhere.** The delay answer assumes 50 mph to the destination, and
+      an authorized roadside repair always takes the 1.5-hour mobile-mechanic
+      wait. Neither holds on the Dalton Highway or other remote Alaska and
+      Canadian roads, where a callout takes far longer; scale both by road
+      and remoteness.
 - [ ] **Route calls to a remote dispatcher when one is available.** Deliver
       the same structured request asynchronously, with a short wait and the
       local dispatcher as the automatic fallback.
