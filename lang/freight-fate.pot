@@ -36533,7 +36533,7 @@ msgstr ""
 
 #. placeholders: {street}
 #: crates/freight-fate/src/states/driving_turns.rs
-msgid "Missed the turn onto {street}."
+msgid "You missed the turn onto {street}."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_turns.rs
@@ -36542,18 +36542,20 @@ msgstr ""
 
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_turns.rs
-msgid "The turn was made for you."
-msgstr ""
-
-#. placeholders: {street}
-#: crates/freight-fate/src/states/driving_turns.rs
-msgid "The turn was made for you. You're on {street}."
+msgid "The clock is still running."
 msgstr ""
 
 #. placeholders: {street}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_turns.rs
-msgid "You're on {street}."
+msgid "The turn is made for you and you are on {street}."
+msgstr ""
+
+#. placeholders: {street}
+#: crates/freight-fate/src/states/driving_turns.rs
+msgid ""
+"The turn is made for you and you are on {street}. The clock is still "
+"running."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_turns.rs
@@ -36561,20 +36563,21 @@ msgid "Turn missed again. The turn was made for you."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_turns.rs
-msgid "Turn ahead again."
+msgid "Safe turnaround. Turn ahead again."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_turns.rs
-msgid "You turned around, and the turn is ahead again."
+msgid ""
+"Next safe turnaround, back onto the approach. The turn is ahead again."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_turns.rs
 msgid "Missed the turn. Use the next safe turnaround."
 msgstr ""
 
-#. placeholders: {target}
+#. placeholders: {target}, {control_hint}
 #: crates/freight-fate/src/states/driving_turns.rs
-msgid " Slow to {target} before the turn."
+msgid " Brake to {target} with {control_hint} on the approach."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_updates.rs

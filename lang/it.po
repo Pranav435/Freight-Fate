@@ -29109,39 +29109,42 @@ msgid "Missed the turn."
 msgstr ""
 
 #. placeholders: {street}
-msgid "Missed the turn onto {street}."
+msgid "You missed the turn onto {street}."
 msgstr ""
 
 msgid "Turn made for you."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "The turn was made for you."
-msgstr ""
-
-#. placeholders: {street}
-msgid "The turn was made for you. You're on {street}."
+msgid "The clock is still running."
 msgstr ""
 
 #. placeholders: {street}
 #. one sentence of a longer line
-msgid "You're on {street}."
+msgid "The turn is made for you and you are on {street}."
+msgstr ""
+
+#. placeholders: {street}
+msgid ""
+"The turn is made for you and you are on {street}. The clock is still "
+"running."
 msgstr ""
 
 msgid "Turn missed again. The turn was made for you."
 msgstr ""
 
-msgid "Turn ahead again."
+msgid "Safe turnaround. Turn ahead again."
 msgstr ""
 
-msgid "You turned around, and the turn is ahead again."
+msgid ""
+"Next safe turnaround, back onto the approach. The turn is ahead again."
 msgstr ""
 
 msgid "Missed the turn. Use the next safe turnaround."
 msgstr ""
 
-#. placeholders: {target}
-msgid " Slow to {target} before the turn."
+#. placeholders: {target}, {control_hint}
+msgid " Brake to {target} with {control_hint} on the approach."
 msgstr ""
 
 msgid "one lane"

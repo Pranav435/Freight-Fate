@@ -68,7 +68,7 @@ bookmarks usable.
       is three short sentences (gauges, speed control, air) and leaves out
       normal air and brake states and the default open-road target. The
       cruise and keeper "losing the grade" lines, descent control's and the
-      keeper's brake calls, and the missed turn, exit and gate loop-backs say
+      keeper's brake calls, and the missed exit and gate loop-backs say
       the same facts in fewer words. The downhill grade call's engine brake
       advice retires once J has been used three times (`spoken_advice`); the
       uphill call lost "Expect to lose speed." Spanish carries the new lines.
