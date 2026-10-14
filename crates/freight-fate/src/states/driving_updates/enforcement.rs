@@ -196,11 +196,19 @@ impl DrivingState {
         self.reset_pull_over_tracker();
         self.pull_over_compliance = PULL_OVER_START_COMPLIANCE;
         self.pull_over_prev_mph = self.trip.truck.speed_mph();
-        let message = format!(
-            "Lights and siren behind you. {} in a {} zone. Signal and stop on the shoulder.",
-            ctx.settings.speed_text(self.trip.truck.speed_mph()),
-            ctx.settings.speed_text(limit)
-        );
+        // The signal key is named until the exit signal has been used a few
+        // times (the same counter the stop callouts retire on).
+        let speed = ctx.settings.speed_text(self.trip.truck.speed_mph());
+        let zone = ctx.settings.speed_text(limit);
+        let message = if self.instruction_retired(ctx, "take_exit") {
+            format!("Lights and siren behind you. {speed} in a {zone} zone. Signal and stop on the shoulder.")
+        } else {
+            format!(
+                "Lights and siren behind you. {speed} in a {zone} zone. Signal with {} and stop on \
+                 the shoulder.",
+                ctx.control_hint("take_exit")
+            )
+        };
         self.arm_pull_over(ctx, &message);
         ctx.controller.rumble.alert();
     }

@@ -22177,6 +22177,27 @@ msgstr "{control_hint} enumera los controles."
 msgid "Automatic speed control paused. "
 msgstr "Control automático de velocidad en pausa. "
 
+#. placeholders: {control_hint}
+msgid "Automatic speed control paused. {control_hint} cancels it. "
+msgstr ""
+"Control automático de velocidad en pausa. {control_hint} lo cancela. "
+
+#. placeholders: {control_hint}
+#. one sentence of a longer line
+msgid "{control_hint} cancels it."
+msgstr "{control_hint} lo cancela."
+
+#. placeholders: {control_hint}
+msgid "At air ready, {control_hint} releases the parking brake."
+msgstr ""
+"Con el aire listo, {control_hint} suelta el freno de estacionamiento."
+
+msgid "Automatic transmission."
+msgstr "Cambio automático."
+
+msgid "Manual transmission."
+msgstr "Cambio manual."
+
 msgid "Engine idling"
 msgstr "Motor al ralentí"
 
@@ -22223,15 +22244,15 @@ msgid ""
 msgstr ""
 "Retomando {drive_name}: {weight_tons} toneladas de {label} a {destination}."
 
-#. placeholders: {drive_name}, {weight_tons}, {label}, {destination}, {progress}, {hours_used}, {deadline_game_h}, {now}, {mode}, {report_lead}, {speed_control}, {engine}
+#. placeholders: {drive_name}, {weight_tons}, {label}, {destination}, {progress}, {hours_used}, {deadline_game_h}, {now}, {transmission}, {report_lead}, {speed_control}, {engine}, {brake}
 msgid ""
 "Resuming {drive_name}: {weight_tons} tons of {label} to {destination}. "
-"{progress} {hours_used} of {deadline_game_h} hours. {now}. {mode}. "
-"{report_lead}. {speed_control}{engine}"
+"{progress} {hours_used} of {deadline_game_h} hours. {now}. {transmission} "
+"{report_lead}. {speed_control}{engine} {brake}"
 msgstr ""
 "Retomando {drive_name}: {weight_tons} toneladas de {label} a {destination}. "
-"{progress} {hours_used} de {deadline_game_h} horas. {now}. {mode}. "
-"{report_lead}. {speed_control}{engine}"
+"{progress} {hours_used} de {deadline_game_h} horas. {now}. {transmission} "
+"{report_lead}. {speed_control}{engine} {brake}"
 
 #. placeholders: {progress}, {hours_used}, {deadline_game_h}
 #. one sentence of a longer line
@@ -22258,11 +22279,13 @@ msgstr "Cargado para {destination_facility_text}. {progress_summary} "
 msgid "At the wheel."
 msgstr "Al volante."
 
-#. placeholders: {objective}, {now}, {mode}, {report_lead}, {engine}
+#. placeholders: {objective}, {now}, {transmission}, {report_lead}, {engine}, {help}
 msgid ""
-"At the wheel. {objective}It is {now}. {mode}. {report_lead}. {engine}"
+"At the wheel. {objective}It is {now}. {transmission} {report_lead}. "
+"{engine} {help}"
 msgstr ""
-"Al volante. {objective}Son las {now}. {mode}. {report_lead}. {engine}"
+"Al volante. {objective}Son las {now}. {transmission} {report_lead}. "
+"{engine} {help}"
 
 #. placeholders: {objective}, {now}
 #. one sentence of a longer line
@@ -23671,6 +23694,23 @@ msgstr "Apagado del motor bloqueado: primero reduce la velocidad."
 msgid "Too fast to shut down."
 msgstr "Vas demasiado rápido para apagar."
 
+#. one sentence of a longer line
+msgid "Brake below 5 miles per hour first."
+msgstr "Primero frena por debajo de 5 millas por hora."
+
+#. placeholders: {speed}
+#. one sentence of a longer line
+msgid "Unsafe to shut the engine off at {speed}."
+msgstr "No es seguro apagar el motor a {speed}."
+
+#. placeholders: {speed}
+msgid ""
+"Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour "
+"first."
+msgstr ""
+"No es seguro apagar el motor a {speed}. Primero frena por debajo de 5 "
+"millas por hora."
+
 msgid "Engine running."
 msgstr "Motor en marcha."
 
@@ -23681,9 +23721,37 @@ msgstr "Motor en marcha. {instruction}"
 msgid "Air ready."
 msgstr "Aire listo."
 
-#. placeholders: {air_pressure_psi}
-msgid "Air {air_pressure_psi} psi."
-msgstr "Aire a {air_pressure_psi} psi."
+#. placeholders: {psi}
+msgid "Air {psi} psi."
+msgstr "Aire a {psi} psi."
+
+#. placeholders: {brake_hint}
+msgid "Air ready. {brake_hint} releases the parking brake."
+msgstr "Aire listo. {brake_hint} suelta el freno de estacionamiento."
+
+#. placeholders: {brake_hint}
+#. one sentence of a longer line
+msgid "{brake_hint} releases the parking brake."
+msgstr "{brake_hint} suelta el freno de estacionamiento."
+
+#. placeholders: {psi}, {brake_hint}
+msgid "Air {psi} psi. At 100 psi, {brake_hint} releases the parking brake."
+msgstr ""
+"Aire: {psi} psi. A 100 psi, {brake_hint} suelta el freno de estacionamiento."
+
+#. placeholders: {brake_hint}
+#. one sentence of a longer line
+msgid "At 100 psi, {brake_hint} releases the parking brake."
+msgstr "A 100 psi, {brake_hint} suelta el freno de estacionamiento."
+
+#. placeholders: {control_hint}
+msgid "Air ready. Hold {control_hint} to drive."
+msgstr "Aire listo. Mantén {control_hint} para conducir."
+
+#. placeholders: {control_hint}
+#. one sentence of a longer line
+msgid "Hold {control_hint} to drive."
+msgstr "Mantén {control_hint} para conducir."
 
 msgid "Parking brake released."
 msgstr "Freno de estacionamiento quitado."
@@ -23699,11 +23767,6 @@ msgstr ""
 #. placeholders: {psi}
 msgid "Parking brake set. Air pressure {psi} psi."
 msgstr "Freno de estacionamiento puesto. Presión de aire: {psi} psi."
-
-#. placeholders: {psi}
-#. one sentence of a longer line
-msgid "Air {psi} psi."
-msgstr "Aire a {psi} psi."
 
 #. placeholders: {psi}
 msgid "Parking brake set. Air {psi} psi."
@@ -31678,22 +31741,30 @@ msgstr "armed"
 msgid "no zone"
 msgstr "no zone"
 
-#. placeholders: {speed_text}, {speed_text2}
+#. placeholders: {speed}, {zone}
 msgid ""
-"Lights and siren behind you. {speed_text} in a {speed_text2} zone. Signal "
-"and stop on the shoulder."
+"Lights and siren behind you. {speed} in a {zone} zone. Signal and stop on "
+"the shoulder."
 msgstr ""
-"Luces y sirena detrás de ti. {speed_text} en una zona de {speed_text2}. Pon "
-"el intermitente y para en el arcén."
+"Luces y sirena detrás de ti. {speed} en una zona de {zone}. Pon el "
+"intermitente y para en el arcén."
 
 #. one sentence of a longer line
 msgid "Signal and stop on the shoulder."
 msgstr "Pon el intermitente y para en el arcén."
 
-#. placeholders: {speed_text}, {speed_text2}
+#. placeholders: {speed}, {zone}
 #. one sentence of a longer line
-msgid "{speed_text} in a {speed_text2} zone."
-msgstr "{speed_text} en una zona de {speed_text2}."
+msgid "{speed} in a {zone} zone."
+msgstr "{speed} en una zona de {zone}."
+
+#. placeholders: {speed}, {zone}, {control_hint}
+msgid ""
+"Lights and siren behind you. {speed} in a {zone} zone. Signal with "
+"{control_hint} and stop on the shoulder."
+msgstr ""
+"Luces y sirena detrás de ti. {speed} en una zona de {zone}. Pon el "
+"intermitente con {control_hint} y para en el arcén."
 
 msgid "Exit approach canceled; plan it again after the stop."
 msgstr ""
@@ -40247,6 +40318,33 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
 
+#~ msgid ""
+#~ "Resuming {drive_name}: {weight_tons} tons of {label} to {destination}. "
+#~ "{progress} {hours_used} of {deadline_game_h} hours. {now}. {mode}. "
+#~ "{report_lead}. {speed_control}{engine}"
+#~ msgstr ""
+#~ "Retomando {drive_name}: {weight_tons} toneladas de {label} a {destination}. "
+#~ "{progress} {hours_used} de {deadline_game_h} horas. {now}. {mode}. "
+#~ "{report_lead}. {speed_control}{engine}"
+
+#~ msgid ""
+#~ "At the wheel. {objective}It is {now}. {mode}. {report_lead}. {engine}"
+#~ msgstr ""
+#~ "Al volante. {objective}Son las {now}. {mode}. {report_lead}. {engine}"
+
+#~ msgid "Air {air_pressure_psi} psi."
+#~ msgstr "Aire a {air_pressure_psi} psi."
+
+#~ msgid ""
+#~ "Lights and siren behind you. {speed_text} in a {speed_text2} zone. Signal "
+#~ "and stop on the shoulder."
+#~ msgstr ""
+#~ "Luces y sirena detrás de ti. {speed_text} en una zona de {speed_text2}. Pon "
+#~ "el intermitente y para en el arcén."
+
+#~ msgid "{speed_text} in a {speed_text2} zone."
+#~ msgstr "{speed_text} en una zona de {speed_text2}."
+
 #~ msgid "At the wheel. {objective}{now}. {mode}. {report_lead}. {engine}"
 #~ msgstr "Al volante. {objective}{now}. {mode}. {report_lead}. {engine}"
 
@@ -42806,19 +42904,6 @@ msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
 #~ msgid "Speed in hand."
 #~ msgstr "Velocidad controlada."
 
-#~ msgid "Brake below 5 miles per hour first."
-#~ msgstr "Primero frena por debajo de 5 millas por hora."
-
-#~ msgid "Unsafe to shut the engine off at {speed}."
-#~ msgstr "No es seguro apagar el motor a {speed}."
-
-#~ msgid ""
-#~ "Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour "
-#~ "first."
-#~ msgstr ""
-#~ "No es seguro apagar el motor a {speed}. Primero frena por debajo de 5 "
-#~ "millas por hora."
-
 #~ msgid "Air pressure ready."
 #~ msgstr "Presión de aire lista."
 
@@ -42833,14 +42918,8 @@ msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
 #~ "Presión de aire: {psi} psi. A 100 psi, {brake_hint} suelta el freno de "
 #~ "estacionamiento."
 
-#~ msgid "At 100 psi, {brake_hint} releases the parking brake."
-#~ msgstr "A 100 psi, {brake_hint} suelta el freno de estacionamiento."
-
 #~ msgid "Air pressure ready. Hold {control_hint} to drive."
 #~ msgstr "Presión de aire lista. Mantén {control_hint} para conducir."
-
-#~ msgid "Hold {control_hint} to drive."
-#~ msgstr "Mantén {control_hint} para conducir."
 
 #~ msgid "It releases at 100 psi with the engine running."
 #~ msgstr "Se suelta a 100 psi con el motor en marcha."

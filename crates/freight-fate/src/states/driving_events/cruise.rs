@@ -19,6 +19,8 @@ use super::pending::{
 impl DrivingState {
     /// `_toggle_cruise()`: the cruise control, or the fast-idle switch.
     pub fn toggle_cruise(&mut self, ctx: &mut GameContext) {
+        // Any press teaches the key: retires the resume line's cancel hint.
+        self.note_instruction_demonstrated(ctx, "cruise_set");
         // Parked with the brake set, the cruise button is the fast-idle
         // switch, exactly like a real electronic truck: latch a high idle
         // (warm-up, faster air build), press again to drop it. It also

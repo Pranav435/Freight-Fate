@@ -64,7 +64,10 @@ fn test_engine_shutdown_is_blocked_at_highway_speed() {
 
     assert!(harness.read_drive(|d| d.truck().engine_on));
     let said = last_main(&harness);
-    assert!(said.contains("Too fast to shut down."), "{said}");
+    assert!(
+        said.contains("Brake below 5 miles per hour first."),
+        "{said}"
+    );
     let status = harness.read_drive(|d| d.status_text.clone());
     assert!(status.contains("shutdown blocked"), "{status}");
 }

@@ -19185,6 +19185,25 @@ msgstr ""
 msgid "Automatic speed control paused. "
 msgstr ""
 
+#. placeholders: {control_hint}
+msgid "Automatic speed control paused. {control_hint} cancels it. "
+msgstr ""
+
+#. placeholders: {control_hint}
+#. one sentence of a longer line
+msgid "{control_hint} cancels it."
+msgstr ""
+
+#. placeholders: {control_hint}
+msgid "At air ready, {control_hint} releases the parking brake."
+msgstr ""
+
+msgid "Automatic transmission."
+msgstr ""
+
+msgid "Manual transmission."
+msgstr ""
+
 msgid "Engine idling"
 msgstr ""
 
@@ -19227,11 +19246,11 @@ msgid ""
 "Resuming {drive_name}: {weight_tons} tons of {label} to {destination}."
 msgstr ""
 
-#. placeholders: {drive_name}, {weight_tons}, {label}, {destination}, {progress}, {hours_used}, {deadline_game_h}, {now}, {mode}, {report_lead}, {speed_control}, {engine}
+#. placeholders: {drive_name}, {weight_tons}, {label}, {destination}, {progress}, {hours_used}, {deadline_game_h}, {now}, {transmission}, {report_lead}, {speed_control}, {engine}, {brake}
 msgid ""
 "Resuming {drive_name}: {weight_tons} tons of {label} to {destination}. "
-"{progress} {hours_used} of {deadline_game_h} hours. {now}. {mode}. "
-"{report_lead}. {speed_control}{engine}"
+"{progress} {hours_used} of {deadline_game_h} hours. {now}. {transmission} "
+"{report_lead}. {speed_control}{engine} {brake}"
 msgstr ""
 
 #. placeholders: {progress}, {hours_used}, {deadline_game_h}
@@ -19257,9 +19276,10 @@ msgstr ""
 msgid "At the wheel."
 msgstr ""
 
-#. placeholders: {objective}, {now}, {mode}, {report_lead}, {engine}
+#. placeholders: {objective}, {now}, {transmission}, {report_lead}, {engine}, {help}
 msgid ""
-"At the wheel. {objective}It is {now}. {mode}. {report_lead}. {engine}"
+"At the wheel. {objective}It is {now}. {transmission} {report_lead}. "
+"{engine} {help}"
 msgstr ""
 
 #. placeholders: {objective}, {now}
@@ -20473,6 +20493,21 @@ msgstr ""
 msgid "Too fast to shut down."
 msgstr ""
 
+#. one sentence of a longer line
+msgid "Brake below 5 miles per hour first."
+msgstr ""
+
+#. placeholders: {speed}
+#. one sentence of a longer line
+msgid "Unsafe to shut the engine off at {speed}."
+msgstr ""
+
+#. placeholders: {speed}
+msgid ""
+"Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour "
+"first."
+msgstr ""
+
 msgid "Engine running."
 msgstr ""
 
@@ -20483,8 +20518,35 @@ msgstr ""
 msgid "Air ready."
 msgstr ""
 
-#. placeholders: {air_pressure_psi}
-msgid "Air {air_pressure_psi} psi."
+#. placeholders: {psi}
+msgid "Air {psi} psi."
+msgstr ""
+
+#. placeholders: {brake_hint}
+msgid "Air ready. {brake_hint} releases the parking brake."
+msgstr ""
+
+#. placeholders: {brake_hint}
+#. one sentence of a longer line
+msgid "{brake_hint} releases the parking brake."
+msgstr ""
+
+#. placeholders: {psi}, {brake_hint}
+msgid "Air {psi} psi. At 100 psi, {brake_hint} releases the parking brake."
+msgstr ""
+
+#. placeholders: {brake_hint}
+#. one sentence of a longer line
+msgid "At 100 psi, {brake_hint} releases the parking brake."
+msgstr ""
+
+#. placeholders: {control_hint}
+msgid "Air ready. Hold {control_hint} to drive."
+msgstr ""
+
+#. placeholders: {control_hint}
+#. one sentence of a longer line
+msgid "Hold {control_hint} to drive."
 msgstr ""
 
 msgid "Parking brake released."
@@ -20499,11 +20561,6 @@ msgstr ""
 
 #. placeholders: {psi}
 msgid "Parking brake set. Air pressure {psi} psi."
-msgstr ""
-
-#. placeholders: {psi}
-#. one sentence of a longer line
-msgid "Air {psi} psi."
 msgstr ""
 
 #. placeholders: {psi}
@@ -27639,19 +27696,25 @@ msgstr ""
 msgid "no zone"
 msgstr ""
 
-#. placeholders: {speed_text}, {speed_text2}
+#. placeholders: {speed}, {zone}
 msgid ""
-"Lights and siren behind you. {speed_text} in a {speed_text2} zone. Signal "
-"and stop on the shoulder."
+"Lights and siren behind you. {speed} in a {zone} zone. Signal and stop on "
+"the shoulder."
 msgstr ""
 
 #. one sentence of a longer line
 msgid "Signal and stop on the shoulder."
 msgstr ""
 
-#. placeholders: {speed_text}, {speed_text2}
+#. placeholders: {speed}, {zone}
 #. one sentence of a longer line
-msgid "{speed_text} in a {speed_text2} zone."
+msgid "{speed} in a {zone} zone."
+msgstr ""
+
+#. placeholders: {speed}, {zone}, {control_hint}
+msgid ""
+"Lights and siren behind you. {speed} in a {zone} zone. Signal with "
+"{control_hint} and stop on the shoulder."
 msgstr ""
 
 msgid "Exit approach canceled; plan it again after the stop."

@@ -110,14 +110,40 @@ impl DrivingState {
 
     /// `_resumed_speed_control_status()`.
     ///
-    /// Just the state. It used to add the open-road target, when it would
-    /// resume and the key that cancels it; the target is on Space and Tab,
-    /// and the key is in the help.
-    pub fn resumed_speed_control_status(&self) -> String {
+    /// The state, and the key that cancels it until the player has pressed
+    /// that key a few times. The open-road target is on Space and Tab.
+    pub fn resumed_speed_control_status(&self, ctx: &mut GameContext) -> String {
         if !self.speed_control_armed {
             return String::new();
         }
-        "Automatic speed control paused. ".to_string()
+        if self.instruction_retired(ctx, "cruise_set") {
+            return "Automatic speed control paused. ".to_string();
+        }
+        format!(
+            "Automatic speed control paused. {} cancels it. ",
+            ctx.control_hint("cruise_set")
+        )
+    }
+
+    /// The parking-brake pointer at the end of the resume line, retired once
+    /// the player has released the brake a few times.
+    pub fn parking_brake_hint_tail(&self, ctx: &mut GameContext) -> String {
+        if self.instruction_retired(ctx, "parking_brake") {
+            return String::new();
+        }
+        format!(
+            "At air ready, {} releases the parking brake.",
+            ctx.control_hint("parking_brake")
+        )
+    }
+
+    /// The transmission as a whole sentence.
+    pub fn transmission_sentence(&self) -> &'static str {
+        if self.trip.truck.transmission.automatic {
+            "Automatic transmission."
+        } else {
+            "Manual transmission."
+        }
     }
 
     /// `_parked_entry_status()`.
@@ -211,7 +237,7 @@ impl DrivingState {
             } else {
                 self.trip.progress_summary(imperial)
             };
-            let speed_control = self.resumed_speed_control_status();
+            let speed_control = self.resumed_speed_control_status(ctx);
             let report_lead = self.trip.weather.report_lead(imperial);
             if self.terse_speech(ctx) {
                 let parked = self.parked_entry_status();
@@ -223,10 +249,12 @@ impl DrivingState {
                 ctx.say_with(text, Say::queued());
             } else {
                 let engine = self.engine_entry_instruction(ctx);
+                let transmission = self.transmission_sentence();
+                let brake = self.parking_brake_hint_tail(ctx);
                 let text = format!(
                     "Resuming {drive_name}: {:.0} tons of {} to {destination}. {progress} \
-                     {hours_used:.1} of {:.0} hours. {now}. {mode}. {report_lead}. \
-                     {speed_control}{engine}",
+                     {hours_used:.1} of {:.0} hours. {now}. {transmission} {report_lead}. \
+                     {speed_control}{engine} {brake}",
                     self.job.weight_tons, self.job.cargo.label, self.job.deadline_game_h,
                 );
                 let text = text.trim_end().to_string();
@@ -252,8 +280,11 @@ impl DrivingState {
                 ctx.say_with(text, Say::queued());
             } else {
                 let engine = self.engine_entry_instruction(ctx);
+                let transmission = self.transmission_sentence();
+                let help = self.help_hint_tail(ctx);
                 let text = format!(
-                    "At the wheel. {objective}It is {now}. {mode}. {report_lead}. {engine}"
+                    "At the wheel. {objective}It is {now}. {transmission} {report_lead}. {engine} \
+                     {help}"
                 );
                 ctx.say_with(text.trim_end().to_string(), Say::queued());
             }

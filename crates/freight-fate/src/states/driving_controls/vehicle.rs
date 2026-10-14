@@ -140,7 +140,17 @@ impl DrivingState {
             if self.trip.truck.speed_mph() > ENGINE_SHUTDOWN_SAFE_MPH {
                 ctx.audio.play("ui/error");
                 self.set_status("Engine shutdown blocked: slow down first.");
-                ctx.say("Too fast to shut down.");
+                // Retired with the engine key: a driver who has started it a
+                // few times hears the short form.
+                if self.instruction_retired(ctx, "engine") {
+                    ctx.say("Too fast to shut down.");
+                } else {
+                    let speed = ctx.settings.speed_text(self.trip.truck.speed_mph());
+                    ctx.say(&format!(
+                        "Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour \
+                         first."
+                    ));
+                }
                 return;
             }
             self.trip.truck.stop_engine();
@@ -167,7 +177,7 @@ impl DrivingState {
                 self.low_air_said = true;
             }
             self.set_status("Engine running.");
-            let instruction = self.air_start_instruction();
+            let instruction = self.air_start_instruction(ctx);
             ctx.say_with(
                 format!("Engine running. {instruction}"),
                 Say::new().category(SpeechCategory::Confirmation),
@@ -187,11 +197,30 @@ impl DrivingState {
     }
 
     /// `_air_start_instruction()`.
-    pub fn air_start_instruction(&self) -> String {
-        if self.trip.truck.air_ready() {
-            return "Air ready.".to_string();
+    ///
+    /// Names the parking brake key (and, with the brake off, the accelerator)
+    /// until the player has released the brake a few times; then just the air.
+    pub fn air_start_instruction(&self, ctx: &mut GameContext) -> String {
+        let psi = self.trip.truck.air_pressure_psi();
+        if self.terse_speech(ctx) || self.instruction_retired(ctx, "parking_brake") {
+            if self.trip.truck.air_ready() {
+                return "Air ready.".to_string();
+            }
+            return format!("Air {psi:.0} psi.");
         }
-        format!("Air {:.0} psi.", self.trip.truck.air_pressure_psi())
+        let brake_hint = ctx.control_hint("parking_brake");
+        if self.trip.truck.parking_brake {
+            if self.trip.truck.air_ready() {
+                return format!("Air ready. {brake_hint} releases the parking brake.");
+            }
+            return format!(
+                "Air {psi:.0} psi. At 100 psi, {brake_hint} releases the parking brake."
+            );
+        }
+        format!(
+            "Air ready. Hold {} to drive.",
+            ctx.control_hint("accelerate")
+        )
     }
 
     /// `_toggle_parking_brake()`: P.
@@ -202,6 +231,7 @@ impl DrivingState {
             self.trip.waiting = false;
             if self.trip.truck.release_parking_brake() {
                 ctx.audio.play_with("vehicle/brake_release", 0.65, 0.0);
+                self.note_instruction_demonstrated(ctx, "parking_brake");
                 self.set_status("Parking brake released.");
                 let psi = self.trip.truck.air_pressure_psi();
                 ctx.say_with(
