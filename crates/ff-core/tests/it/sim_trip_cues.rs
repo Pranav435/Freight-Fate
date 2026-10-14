@@ -742,37 +742,33 @@ fn test_gps_traffic_cue_deduplicates() {
 fn test_toll_cues_and_charges_deduplicate() {
     let mut trip = make_trip(world(), "New York", "Philadelphia", 2);
 
-    // No advance state-crossing chatter -- the line itself will speak when
-    // the truck reaches it.
-    trip.position_mi = 6.1;
-    let crossing = trip.update(0.0);
-    assert!(gps_events(&crossing).is_empty());
+    // The Turnpike settles where the truck leaves it, at interchange 6.
+    trip.position_mi = 73.6;
+    let quiet = trip.update(0.0);
+    assert!(gps_events(&quiet).is_empty());
 
-    trip.position_mi = 7.2;
+    trip.position_mi = 74.7;
     let advance = trip.update(0.0);
     let repeat = trip.update(0.0);
 
     assert_eq!(
         gps_messages(&advance),
         vec![
-            "ticket system toll point ahead, New Jersey Turnpike ticket entry. \
-             Estimated toll 18 dollars, billed to carrier settlement."
+            "E-ZPass toll point ahead, New Jersey Turnpike settlement. \
+             Toll 63 dollars, billed to carrier settlement."
         ]
     );
     assert!(gps_events(&repeat).is_empty());
 
-    trip.position_mi = 9.0;
+    trip.position_mi = 76.5;
     let charged = trip.update(0.0);
     let charged_again = trip.update(0.0);
 
     assert_eq!(
         messages_of(&charged, TripEventKind::TollCharged),
-        vec![
-            "ticket system toll at New Jersey Turnpike ticket entry, \
-             estimated 18 dollars, billed to carrier settlement."
-        ]
+        vec!["E-ZPass toll at New Jersey Turnpike settlement, 63 dollars, billed to carrier settlement."]
     );
-    assert_eq!(trip.toll_expense(), 18.0);
+    assert_eq!(trip.toll_expense(), 62.51);
     assert!(messages_of(&charged_again, TripEventKind::TollCharged).is_empty());
 }
 
