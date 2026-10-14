@@ -16138,6 +16138,14 @@ msgstr ""
 msgid "Lifetime {distance_unit_text}: {distance_value}"
 msgstr ""
 
+#. placeholders: {states}
+msgid "States visited: {states}"
+msgstr ""
+
+#. placeholders: {cities}
+msgid "Cities visited: {cities}"
+msgstr ""
+
 #. placeholders: {grouped}
 msgid "Lifetime earnings: {grouped} dollars"
 msgstr ""
@@ -16153,12 +16161,21 @@ msgstr ""
 msgid "Repeat this status line."
 msgstr ""
 
+msgid "Places visited"
+msgstr ""
+
+msgid "Open the list of states you have delivered to, each with its cities."
+msgstr ""
+
 msgid "Citations and violations"
 msgstr ""
 
 msgid ""
 "Open the list, newest first: what it was, why, what it cost, when, and "
 "where."
+msgstr ""
+
+msgid "No deliveries yet."
 msgstr ""
 
 msgid "Serious violation"
@@ -35275,6 +35292,10 @@ msgid "The profile could not be reached"
 msgstr ""
 
 msgid "Checking the profile"
+msgstr ""
+
+msgid ""
+"Open the list of states this driver has delivered to, each with its cities."
 msgstr ""
 
 msgid "Save file changed outside the game"

@@ -5094,7 +5094,7 @@ msgstr ""
 msgid "interstate"
 msgstr ""
 
-#: crates/ff-core/src/data/grades.rs crates/ff-core/src/sim/truck_parking.rs crates/freight-fate/src/community_stations.rs
+#: crates/ff-core/src/data/grades.rs crates/ff-core/src/sim/truck_parking.rs crates/freight-fate/src/community_stations.rs crates/freight-fate/src/states/online_states/profile.rs
 msgid "state"
 msgstr ""
 
@@ -20449,6 +20449,16 @@ msgstr ""
 msgid "Lifetime {distance_unit_text}: {distance_value}"
 msgstr ""
 
+#. placeholders: {states}
+#: crates/freight-fate/src/states/career_stats.rs
+msgid "States visited: {states}"
+msgstr ""
+
+#. placeholders: {cities}
+#: crates/freight-fate/src/states/career_stats.rs
+msgid "Cities visited: {cities}"
+msgstr ""
+
 #. placeholders: {grouped}
 #: crates/freight-fate/src/states/career_stats.rs
 msgid "Lifetime earnings: {grouped} dollars"
@@ -20468,6 +20478,14 @@ msgstr ""
 msgid "Repeat this status line."
 msgstr ""
 
+#: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/online_states/profile.rs
+msgid "Places visited"
+msgstr ""
+
+#: crates/freight-fate/src/states/career_stats.rs
+msgid "Open the list of states you have delivered to, each with its cities."
+msgstr ""
+
 #: crates/freight-fate/src/states/career_stats.rs
 msgid "Citations and violations"
 msgstr ""
@@ -20476,6 +20494,10 @@ msgstr ""
 msgid ""
 "Open the list, newest first: what it was, why, what it cost, when, and "
 "where."
+msgstr ""
+
+#: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/online_states/profile.rs
+msgid "No deliveries yet."
 msgstr ""
 
 #: crates/freight-fate/src/states/career_stats.rs
@@ -44080,6 +44102,11 @@ msgstr ""
 
 #: crates/freight-fate/src/states/online_states/profile.rs
 msgid "Checking the profile"
+msgstr ""
+
+#: crates/freight-fate/src/states/online_states/profile.rs
+msgid ""
+"Open the list of states this driver has delivered to, each with its cities."
 msgstr ""
 
 #: crates/freight-fate/src/states/save_notice.rs
