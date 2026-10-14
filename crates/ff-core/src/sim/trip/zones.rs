@@ -384,23 +384,18 @@ impl Trip {
             }
             self.announced_chain_law.insert(key);
             let rule = if level >= 2 {
-                "Level 2: chains required on all commercial vehicles"
+                "level 2: chains required"
             } else {
-                "Level 1: winter-rated tires or chains required on commercial vehicles"
+                "level 1: winter tires or chains required"
             };
             let (where_, pullout) = if inside {
-                ("on this grade", "")
+                ("", "")
             } else {
-                (
-                    "on the grade ahead",
-                    " Chain-up area on the right shoulder.",
-                )
+                (" ahead", " Chain-up area on the right.")
             };
             self.emit(
                 TripEventKind::GpsCue,
-                SpokenMessage::new(format!(
-                    "Flashing sign: chain law in effect {where_}. {rule}.{pullout}"
-                )),
+                SpokenMessage::new(format!("Chain law{where_}, {rule}.{pullout}")),
                 TripEventData {
                     chain_law: Some(level),
                     chain_law_area: Some(i),

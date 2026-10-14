@@ -619,7 +619,6 @@ pub struct DrivingState {
     pub cruise_jake_last_step: i32, // +1 raised, -1 lowered, 0 released
     pub cruise_snubbing: bool,  // a service-brake snub is in progress
     pub pcc_phase: String,      // what the grade preview is doing, for the cue
-    pub pcc_cue_s: f64,         // quiet time between preview cues
     pub climb_cue_said: bool,   // cruise has already owned up to this pull
     pub climb_cue_s: f64,       // quiet time between hand-back cues
     pub climb_beaten_s: f64,    // how long the grade has genuinely been winning
@@ -706,13 +705,6 @@ pub struct DrivingState {
     pub descent_beaten_s: f64,
     pub descent_capture_active: bool,
     pub assist_exit_slowing_said: bool,
-    // Lane keeping on full grants the exit lane and takes the destination
-    // exit without the driver touching anything. That is coherent, but
-    // unattributed it reads as the exit taking itself -- which is exactly
-    // what got reported. Name the automation at the point of confusion,
-    // once each per run, then go back to the plain wording.
-    pub lane_keeping_grant_said: bool,
-    pub lane_keeping_takes_exit_said: bool,
     pub curve_assist_active: bool,
     pub curve_assist_cue_s: f64,
     // Whether the SLOWING cue was actually spoken for the run in progress.
@@ -866,8 +858,6 @@ pub struct DrivingState {
     /// was called off or held by traffic, so the CB does not blame the
     /// driver for a hold the assist made.
     pub keep_right_excused_s: f64,
-    /// The easing-off line has been said for the current held move back.
-    pub pass_return_ease_said: bool,
     pub merge_deadline: Option<f64>,
     // Miles of acceleration lane still ahead after pulling out of a
     // facility. None once the lane is behind the truck (or when the run

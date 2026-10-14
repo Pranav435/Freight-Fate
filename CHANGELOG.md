@@ -58,6 +58,24 @@
 
 ### Changed
 
+- **Hours of service, rest stop, settlement and dispatch lines are shorter.** The hours readout names the 30-minute break and the 14-hour window, stop planning gives each stop, its distance and minutes, delivery and dock paperwork read the money as plain figures, and sleep previews end with "Select again to sleep." The open weigh station notice says to pull in; the reminder nearer the scale says to signal.
+
+- **Player text uses US spelling.** License, canceled, signaled, traveled, recognize and windshield replace the British forms.
+
+- **Space now says only what is on the dash and needs you.** RPM comes with a manual transmission, and air or brakes only when they need attention.
+
+- **Missed exit and gate lines are shorter, and so are the warnings when cruise or the speed keeper loses speed on a grade.**
+
+- **Exit and rest stop calls name the exit and stop there.** What lane keeping, cruise and stopping assistance will do is left to the manual.
+
+- **Spoken weather no longer says how old the live observation is.** The Weather app still lists it.
+
+- **Spoken lines across the game are shorter.** Driving, the terminal, dispatch and pickup drop assist explanations and facts you just heard, and key reminders stop after a few uses; menu help keeps the explanations.
+
+- **Cruise no longer narrates how it drives.** It eases off and builds for hills in silence, and its traffic and weather lines are a few words.
+
+- **Downhill grade calls stop naming the engine brake key once you have used it a few times.** Uphill grade calls no longer add "Expect to lose speed."
+
 - **Radio stations now see Freight Fate as the player when you tune in.** Their listener statistics used to show only the sound library's name.
 
 - **Every street corner is now called with its distance and the speed to take it at.** The turn's chime plays with that call, on the side you turn.

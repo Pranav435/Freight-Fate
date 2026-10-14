@@ -430,8 +430,8 @@ fn a_box_truck_merging_far_back_does_not_hold_the_move_back() {
 fn a_box_truck_pacing_the_held_move_back_is_let_by_and_followed_in() {
     // A box truck alongside at 66 held the move back of a truck cruising
     // at 65, and lane keeping waited in the left lane while the CB told the
-    // driver off (QA drive, 2026-10-13). Lane keeping now says it is easing
-    // off, lets the box truck by and drops in three seconds behind it,
+    // driver off (QA drive, 2026-10-13). Lane keeping now eases off
+    // without a word, lets the box truck by and drops in three seconds behind it,
     // inside a minute, and the left lane is excused while it waits.
     let mut harness = merge_a_box_truck_on_the_return(0.01);
     let (took, eased) = back_to_the_right_lane(&mut harness, 60.0);
@@ -446,12 +446,14 @@ fn a_box_truck_pacing_the_held_move_back_is_let_by_and_followed_in() {
         frame(&mut harness, DT);
     }
     let said = spoken(&harness);
-    for line in [
-        "Staying in the left lane.",
-        "Easing off to let the box truck by.",
-    ] {
-        assert_eq!(said.iter().filter(|l| *l == line).count(), 1, "{said:#?}");
-    }
+    assert_eq!(
+        said.iter()
+            .filter(|l| *l == "Staying in the left lane.")
+            .count(),
+        1,
+        "{said:#?}"
+    );
+    assert!(!said_any(&harness, "Easing off"), "{said:#?}");
     assert!(said_any(&harness, "In the right lane."), "{said:#?}");
     assert!(!said_any(&harness, "sideswiped"), "{said:#?}");
     for line in KEEP_RIGHT_LINES {

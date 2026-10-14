@@ -150,7 +150,7 @@ def test_the_template_keeps_the_back_row_and_the_button_apart():
     msgids = {e.msgid for e in entries}
     assert "{position} of {count}." in msgids
     assert "automatic, {name}" in msgids
-    assert "automatic speed control paused" in msgids
+    assert "Automatic speed control paused." in msgids
     for gone in ("browse", "stations", "matches"):
         assert gone not in msgids
     assert not any("PageDown" in m and "{else}" in m for m in msgids)

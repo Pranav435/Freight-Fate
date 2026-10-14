@@ -142,13 +142,13 @@ fn test_chain_law_sign_speaks_on_approach_and_escalates() {
     let signs = |trip: &Trip| -> Vec<String> {
         trip.events
             .iter()
-            .filter(|e| e.text().contains("chain law in effect"))
+            .filter(|e| e.text().starts_with("Chain law"))
             .map(|e| e.text().to_string())
             .collect()
     };
     let spoken = signs(&trip);
     assert_eq!(spoken.len(), 1, "{spoken:?}");
-    assert!(spoken[0].contains("Level 1"), "{}", spoken[0]);
+    assert!(spoken[0].contains("level 1"), "{}", spoken[0]);
     assert!(spoken[0].contains("Chain-up area"), "{}", spoken[0]);
     // The same sign does not repeat, but an escalation to ice speaks again.
     trip.check_chain_law();
@@ -156,7 +156,7 @@ fn test_chain_law_sign_speaks_on_approach_and_escalates() {
     trip.check_chain_law();
     let spoken = signs(&trip);
     assert_eq!(spoken.len(), 2, "{spoken:?}");
-    assert!(spoken[1].contains("Level 2"), "{}", spoken[1]);
+    assert!(spoken[1].contains("level 2"), "{}", spoken[1]);
 
     // No law, no sign: the areas are silent infrastructure in clear weather.
     let mut trip2 = trip_clear();

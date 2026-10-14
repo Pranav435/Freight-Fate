@@ -64,6 +64,45 @@ bookmarks usable.
       default voice; a player hearing a translation through it may need to
       pick a voice in that language under Settings, Speech.
 
+- [x] Plainer driving speech (player report, bscross32, 2026-10-14): Space
+      is three short sentences (gauges, speed control, air) and leaves out
+      normal air and brake states and the default open-road target. The
+      cruise and keeper "losing the grade" lines, descent control's and the
+      keeper's brake calls, and the missed exit and gate loop-backs say
+      the same facts in fewer words. The downhill grade call's engine brake
+      advice retires once J has been used three times (`spoken_advice`); the
+      uphill call lost "Expect to lose speed." Exit calls no longer narrate
+      how cruise takes the ramp, and spoken weather leaves out the live
+      observation's age, which stays on the Weather app (owner, same day).
+      Exit, destination and rest stop calls name the stop and the driver's
+      own job only; what lane keeping and stopping assistance do is the
+      manual's. Space gives RPM only with a manual transmission and air or
+      brakes only when they need attention; Tab keeps the full reading.
+      Then a whole-game pass (owner, same day): driving, the terminal,
+      dispatch board, pickup and career lines drop key reminders, assist
+      explanations, restated facts and coaching prose; explanations a
+      player may still need moved to the screen's F1 help. Cruise eases and
+      builds for hills in silence. Spanish carries the new lines.
+- [ ] (Found along the way) The advise-only follow-up to a turn the route
+      already named ("Advise 11 miles per hour.") is queued on the droppable
+      default, so busy street speech can drop it; a player heard the advise
+      speed only sometimes. Same report.
+- [ ] (Found along the way) The turn chime sounds at the corner, panned to
+      the side just taken, and the next corner's call can follow within a
+      second, so the chime reads as a cue for the next turn on the other
+      side. Same report.
+- [ ] (Found along the way) The same player asks for turn calls with enough
+      lead to brake by ear at street speeds, a speed-dependent countdown into
+      steep grades instead of a distance, and automatic gear choice that
+      skips gears when lightly loaded. Design calls for the owner.
+- [ ] (Found along the way) Context-sensitive help on F1: what the assist,
+      control or call in front of the driver does, now that the spoken
+      calls no longer explain it (owner, 2026-10-14, "should implement that
+      one later").
+- [ ] (Found along the way) Layered readout keys in the style of Talking
+      Flight Monitor or MSFS Blind Assist, so the dash is split across a
+      key layer instead of one long Space readout (owner, 2026-10-14).
+
 - [x] Main menu ambience (owner, 2026-10-12): an ElevenLabs bed under the
       main menu and the screens opened from it, picked like the music by
       the career it would load. After dark it is a truck stop lot. By day an

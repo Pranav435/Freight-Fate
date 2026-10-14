@@ -87,11 +87,7 @@ impl DrivingState {
         {
             message.normal = message
                 .normal
-                .replace("billed to carrier settlement", "charged to your settlement")
-                .replace(
-                    "recorded for carrier settlement",
-                    "recorded for your settlement",
-                );
+                .replace("billed to carrier settlement", "charged to your settlement");
             if let Some(terse) = message.terse.as_mut() {
                 *terse = terse.replace(", carrier.", ", your settlement.");
             }
@@ -892,7 +888,7 @@ impl DrivingState {
     /// corridor thick with truck stops narrated the traffic at exit after
     /// exit the driver had no intention of using (owner, 2026-08-15). The
     /// advisory earns its words only for somebody about to move right, so it
-    /// speaks for a signalled exit and for one lane keeping is taking on the
+    /// speaks for a signaled exit and for one lane keeping is taking on the
     /// driver's behalf, and stays silent for the rest of them.
     ///
     /// The trip marks the pressure announced whether or not it is spoken, so
@@ -1207,11 +1203,7 @@ impl DrivingState {
         // cruise canceled". As a zone entry (STATUS) urgent only dropped it
         // whole, and the cruise let go without a word; quiet now says it
         // short.
-        let message = if self.terse_speech(ctx) {
-            message.plus("Cruise off.")
-        } else {
-            message.plus("Adaptive cruise disabled; take manual speed control.")
-        };
+        let message = message.plus("Cruise off.");
         let mut opts = SayEvent::queued().priority(EventPriority::Route);
         opts.category = Some(SpeechCategory::Safety);
         ctx.say_event_with(message, opts);

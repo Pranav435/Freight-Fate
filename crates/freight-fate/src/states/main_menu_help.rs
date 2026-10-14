@@ -85,7 +85,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
     (
         "Driving information keys",
         &[
-            "{{speed}} speaks your speed, gear, RPM, active speed-control mode, open-road target, air pressure, and brake state. With an exit signal set, it adds distance to that exit.",
+            "{{speed}} speaks your speed, gear, and speed-control mode. It adds RPM with a manual transmission, air or brakes when they need attention, and the distance to an exit you signaled for.",
             "{{speed_limit}} speaks the posted speed limit, zone, and how far over you are. {{safe_speed}} gives the current safe speed; {{grade}} reads the current and next relevant grade.",
             "{{fuel}} reads fuel and range. {{clock}} reads the clock, deadline, and nearest hours limit.",
             "{{hos_wheel}} speaks time at the wheel and on duty. {{hos_break}} reads when the break is due. {{hos_drive}} reads what ends the shift and reachable legal rest.",

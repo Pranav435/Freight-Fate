@@ -236,7 +236,7 @@ impl Job {
         };
         let condition = market_condition(self.market_mult);
         let market = if condition != "steady" {
-            format!(" Lane note: Market is {condition}.")
+            format!(" Market {condition}.")
         } else {
             String::new()
         };
@@ -277,9 +277,7 @@ impl Job {
         };
         let hours = fmt_f(self.deadline_game_h, 0);
         let deadline = if self.deadline_covers_rest {
-            format!(
-                "Deadline {hours} hours, planned around the 10-hour rest your hours will force."
-            )
+            format!("Deadline {hours} hours, includes a 10-hour rest.")
         } else {
             format!("Deadline {hours} hours.")
         };

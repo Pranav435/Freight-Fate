@@ -572,7 +572,7 @@ fn arrive_with(
         gate_grade_pct,
         assist_spoke: heard
             .iter()
-            .any(|line| line.contains("Facility stopping assistance taking the pedals")),
+            .any(|line| line.contains("Slowing for the entrance.")),
         speed_mph,
         short_by_ft,
         on_chain,
@@ -629,7 +629,7 @@ pub fn what_went_wrong(destination: &Destination, arrival: &Arrival) -> Option<S
     for lie in [
         "Drove past",
         "You never stopped",
-        "missed the destination exit",
+        "Missed the destination exit",
     ] {
         if arrival.said(lie) {
             return fault("was told it had blown the arrival it made");
@@ -645,11 +645,7 @@ pub fn what_went_wrong(destination: &Destination, arrival: &Arrival) -> Option<S
     // 5. And it ended on an instruction the driver can act on: either the dock
     //    menu opened by itself, or the assist is holding and said which key
     //    opens it.
-    if !arrival.docked
-        && !arrival.said(
-            "Facility stopping assistance is holding at the entrance. Press Enter to continue into the facility.",
-        )
-    {
+    if !arrival.docked && !arrival.said("Holding at the entrance. Press Enter to continue.") {
         return fault("stopped without telling the driver how to pull in");
     }
     if destination.chain {
@@ -659,7 +655,7 @@ pub fn what_went_wrong(destination: &Destination, arrival: &Arrival) -> Option<S
         if !arrival.on_chain {
             return fault("never drove the facility's own streets");
         }
-        if !arrival.said("Off the ramp and onto city streets") {
+        if !arrival.said("to the facility gate.") {
             return fault("was handed city streets without being told");
         }
         if arrival.said("Come to a stop.") && !arrival.docked {
@@ -878,8 +874,8 @@ fn test_great_falls_signal_stop_does_not_become_a_two_mph_destination_crawl() {
         "the final two-mph creep lasted {two_mph_crawl_ft:.0} feet"
     );
     harness.result().assert_ordered(&[
-        "Route-transition assistance braking for the light.",
-        "Stopped at the red light. Assistance is holding the brakes for green.",
+        "Braking for the light.",
+        "Red light.",
         "Light green.",
         "Pulling into construction materials yard Great Falls Materials Yard",
         "At construction materials yard Great Falls Materials Yard in Great Falls.",
@@ -1114,7 +1110,7 @@ fn test_the_assist_drives_from_the_clear_sign_to_the_entrance_hold_hands_off() {
     println!("{}", release.report(destination));
     assert!(release.stopped_at_sign, "{}", release.report(destination));
     assert!(
-        release.said("Stopped at the sign. Clear. Facility stopping assistance is taking you onto the streets."),
+        release.said("Stopped at the sign. Clear."),
         "{}",
         release.report(destination)
     );
@@ -1140,9 +1136,7 @@ fn test_the_assist_drives_from_the_clear_sign_to_the_entrance_hold_hands_off() {
     );
     assert!(release.held_at_entrance, "{}", release.report(destination));
     assert!(
-        release.said(
-            "Facility stopping assistance is holding at the entrance. Press Enter to continue into the facility."
-        ),
+        release.said("Holding at the entrance. Press Enter to continue."),
         "{}",
         release.report(destination)
     );
@@ -1222,9 +1216,9 @@ fn test_the_drivers_brake_cancels_the_automatic_pull_ahead() {
         assert!(release.moved_off_alone, "{}", release.report(destination));
         assert!(
             release.said(if destination.chain {
-                "Facility stopping assistance released; pull ahead onto the streets."
+                "Pull ahead onto the streets."
             } else {
-                "Facility stopping assistance released; pull ahead to the entrance."
+                "Pull ahead to the entrance."
             }),
             "{}",
             release.report(destination)
@@ -1296,18 +1290,17 @@ fn test_shelby_cross_dock_approach_assist_reaches_the_arrival_gate() {
             arrival.report(&destination)
         );
         assert!(
-            arrival.said("Facility stopping assistance taking the pedals"),
+            arrival.said("Slowing for the entrance."),
             "level {level}: {}",
             arrival.report(&destination)
         );
         assert!(
-            arrival.said("Pulling into freight terminal Shelby Cross-Dock")
-                && arrival.said("dock menu opening in a moment."),
+            arrival.said("Pulling into freight terminal Shelby Cross-Dock"),
             "level {level}: {}",
             arrival.report(&destination)
         );
         assert!(
-            !arrival.said("Facility stopping assistance is holding at the entrance."),
+            !arrival.said("Holding at the entrance."),
             "level {level}: {}",
             arrival.report(&destination)
         );

@@ -447,60 +447,20 @@ where
     best
 }
 
-/// Why dispatch put the driver in this particular truck, in plain words.
+/// The truck dispatch put the driver in for this run.
 ///
-/// With a profile, a truck the yard is holding back says so here rather than
-/// leaving the driver to wonder why their level stopped buying them anything.
-pub fn assignment_reason_text<P, J>(
-    key: &str,
-    job: Option<&J>,
-    profile: Option<&P>,
-    terse: bool,
-) -> String
+/// With a profile, a truck the yard is holding back says so here, in the
+/// short form, rather than leaving the driver to wonder why their level
+/// stopped buying them anything; what gives it back is on Career stats.
+pub fn assignment_reason_text<P>(key: &str, profile: Option<&P>) -> String
 where
     P: CareerProfile + ?Sized,
-    J: JobView + ?Sized,
 {
     let model = truck_model_or_panic(key);
-    if let Some(profile) = profile {
-        if equipment_held_back(profile) {
-            let hold = equipment_hold_text(profile, terse);
-            if terse {
-                return format!("{}. {hold}", capitalize(model.label));
-            }
-            return format!(
-                "Dispatch has you in the {} for this run. {hold}",
-                model.label
-            );
-        }
-    }
-    let (needs_sleeper, needs_heavy, is_turn) = job_equipment_needs(job);
-    let reason = if needs_sleeper && model.cab == CAB_SLEEPER {
-        "this one is too far to finish in a shift, so you need the bunk"
-    } else if needs_heavy && model.spec == SPEC_HEAVY {
-        "it is a heavy load and this one has the driveline for it"
-    } else if is_turn && model.cab == CAB_DAY {
-        "it is a turn, so you are in a day cab and back tonight"
-    } else if model.spec == SPEC_LIGHT {
-        "the load is light, so you may as well have the economical one"
-    } else {
-        "it is what the yard has free"
-    };
-    format!(
-        "Dispatch put you in the {} for this run: {reason}.",
-        model.label
-    )
-}
-
-/// Python `str.capitalize()`: first character upper, the rest lower.
-fn capitalize(text: &str) -> String {
-    let mut chars = text.chars();
-    match chars.next() {
-        Some(first) => first
-            .to_uppercase()
-            .chain(chars.flat_map(char::to_lowercase))
-            .collect(),
-        None => String::new(),
+    let line = format!("Truck for this run: {}.", model.label);
+    match profile.filter(|profile| equipment_held_back(*profile)) {
+        Some(profile) => format!("{line} {}", equipment_hold_text(profile, true)),
+        None => line,
     }
 }
 
@@ -530,7 +490,7 @@ pub fn fleet_upgrade_announcement<P: CareerProfile + ?Sized>(profile: &P) -> Str
     let model = truck_model_or_panic(key);
     format!(
         "Dispatch upgraded your assigned tractor. Now running a \
-         {}: {} Handed over fueled, serviced, and washed.",
+         {}: {}",
         model.label, model.description
     )
 }

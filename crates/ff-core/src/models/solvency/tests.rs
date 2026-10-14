@@ -189,8 +189,8 @@ fn test_crossing_the_ceiling_ends_a_company_driver_s_employment() {
     assert!(joined.contains(&former));
     assert!(joined.contains("ended your employment"));
     assert!(joined.contains("keep your career level"));
-    // Never a dead end, and never these words.
-    assert!(joined.to_lowercase().contains("dispatch board"));
+    // Never a dead end -- a payroll to drive on -- and never these words.
+    assert!(joined.contains("on the payroll at"));
     for banned in BANNED_ENDINGS {
         assert!(!joined.to_lowercase().contains(banned));
     }
@@ -316,9 +316,7 @@ fn test_no_advance_while_a_balance_is_already_being_collected() {
     p.fines_owed = 3_000.0;
     let reason = advance_refused_reason(&p);
     assert!(collection_active(&p));
-    assert!(reason.contains("will not front you cash"));
-    assert!(reason.contains("3,000 dollars"));
-    assert!(reason.contains("three quarters")); // and what they do still get
+    assert_eq!(reason, "No advance while you owe 3,000 dollars.");
 }
 
 // `test_the_terminal_stops_offering_an_advance_under_collection` is live in `crates/freight-fate/tests/states_city.rs`.
@@ -468,14 +466,14 @@ fn test_pay_out_of_pocket_clamps_and_clears() {
     assert_eq!(pay_out_of_pocket(&mut p, 0.0), 0.0); // no-op stays a no-op
 }
 
-// --- debt lines point at cash payoff -------------------------------------------
+// --- the reviewable debt line points at cash payoff; the warnings do not ----------
 
 const POINTER: &str = "You can also pay it down from cash at any terminal or truck stop.";
 
 #[test]
 fn test_debt_lines_point_at_out_of_pocket_payoff() {
     let p = payer(500.0, 1_000.0); // rung 1 for a fresh company driver
-    assert!(debt_warning_line(&p, false).contains(POINTER));
+    assert!(!debt_warning_line(&p, false).contains(POINTER));
     assert!(!debt_warning_line(&p, true).contains(POINTER));
     assert!(debt_line(&p).contains(POINTER));
 }
@@ -483,12 +481,12 @@ fn test_debt_lines_point_at_out_of_pocket_payoff() {
 #[test]
 fn test_debt_lines_point_at_out_of_pocket_payoff_when_hard_capped() {
     // A hard-capped driver has nowhere further down to fall, but the cash
-    // payoff pointer is still true for them and must still be spoken.
+    // payoff pointer is still true for them and stays on the debt line.
     let mut p = payer(500.0, 40_000.0);
     p.carrier_key = LAST_CHANCE_CARRIER_KEY.to_string();
     assert!(hard_capped(&p));
 
-    assert!(debt_warning_line(&p, false).contains(POINTER));
+    assert!(!debt_warning_line(&p, false).contains(POINTER));
     assert!(!debt_warning_line(&p, true).contains(POINTER));
     assert!(debt_line(&p).contains(POINTER));
 }

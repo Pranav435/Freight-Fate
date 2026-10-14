@@ -145,7 +145,7 @@ fn test_chain_checkpoint_is_seeded_and_fines_past_the_midpoint() {
     );
     assert!((money(&app) - (1000.0 - CHAIN_LAW_FINE)).abs() < 0.01);
     assert!((with_drive(&drive, |d| d.ticket_fines_paid) - CHAIN_LAW_FINE).abs() < 0.01);
-    // Booked on the licence file like every other citation: charged and
+    // Booked on the license file like every other citation: charged and
     // spoken but never recorded, a career of these still read as a clean
     // safety record (owner report, 2026-09-12).
     assert_eq!(citations(&app), 1);

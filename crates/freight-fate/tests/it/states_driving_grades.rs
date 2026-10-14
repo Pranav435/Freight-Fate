@@ -165,7 +165,7 @@ fn test_a_steep_downgrade_is_called_out_before_the_truck_is_on_it() {
     );
     assert!(spoken.iter().any(|l| l.contains("at least")), "{spoken:#?}");
     assert!(
-        spoken.iter().any(|l| l.contains("engine brake")),
+        spoken.iter().any(|l| l.contains("Set the jake")),
         "{spoken:#?}"
     );
 
@@ -275,8 +275,9 @@ fn test_an_upgrade_is_called_out_too() {
             .any(|l| l.contains("4.5 percent uphill grade ahead")),
         "{spoken:#?}"
     );
+    // Losing speed on a climb is expected; the line no longer says so.
     assert!(
-        spoken.iter().any(|l| l.contains("lose speed")),
+        spoken.iter().all(|l| !l.contains("lose speed")),
         "{spoken:#?}"
     );
 }

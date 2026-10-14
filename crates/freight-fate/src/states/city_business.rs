@@ -106,11 +106,7 @@ impl BusinessStatusState {
             p.dispatch_board_cache = None;
         }
         save_business_change(ctx);
-        let carrier = ff_core::models::career::carrier_name_of(profile(ctx));
-        ctx.say(&format!(
-            "Staying a company driver with {carrier}. The career plan stops pointing you at \
-             the buy-in. It stays open here under Business status if you change your mind."
-        ));
+        ctx.say("Staying a company driver.");
         self.refresh(ctx, true);
     }
 
@@ -207,9 +203,7 @@ impl BusinessStatusState {
         ctx.audio.play("ui/cash");
         ctx.say(&format!(
             "Leased-on owner-operator status unlocked. Paid {} dollars toward your first \
-             tractor, {} dollars working capital left. Loads pay higher gross, and your \
-             business pays fuel, repairs, maintenance reserve, insurance, trailer program, \
-             truck payment reserve, and settlement fees.",
+             tractor, {} dollars working capital left.",
             fmt_grouped(OWNER_OPERATOR_BUY_IN, 0),
             fmt_grouped(money, 0)
         ));
@@ -264,9 +258,7 @@ impl BusinessStatusState {
         save_business_change(ctx);
         ctx.audio.play("ui/cash");
         ctx.say(&format!(
-            "Weigh station transponder active. Paid {} dollars, {} dollars left. A clean \
-             truck gets a weigh-in-motion check at most open scales instead of pulling in, \
-             for a small per-mile settlement reserve.",
+            "Weigh station transponder active. Paid {} dollars, {} dollars left.",
             fmt_grouped(WEIGH_STATION_TRANSPONDER_SIGNUP_FEE, 0),
             fmt_grouped(money, 0)
         ));
@@ -952,8 +944,7 @@ impl TrailerProgramState {
         save_equipment_change(ctx);
         ctx.audio.play("ui/cash");
         ctx.say(&format!(
-            "{} trailer program active for {} dollars. You have {} dollars left. Matching \
-             cargo now appears on the dispatch board.",
+            "{} trailer program active for {} dollars. You have {} dollars left.",
             trailer.label,
             fmt_grouped(trailer.lease_deposit, 0),
             fmt_grouped(money, 0)
@@ -1239,10 +1230,7 @@ impl Menu for EndorsementCourseState {
         let money = profile(ctx).money();
         let current = self.current_text(ctx);
         ctx.say(&format!(
-            "Licenses and training. Certificates are carrier training, free at their listed \
-             levels or paid early. Endorsements and cards take a written test, a course fee, \
-             and for hazmat and the port card a background check wait. You have {} dollars. \
-             {current}",
+            "Licenses and training. You have {} dollars. {current}",
             fmt_grouped(money, 0)
         ));
     }

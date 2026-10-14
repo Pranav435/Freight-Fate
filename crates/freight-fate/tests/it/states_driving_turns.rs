@@ -1638,7 +1638,7 @@ fn test_the_curve_pause_resumes_at_the_remembered_target_past_the_bend() {
     assert!(
         lines
             .iter()
-            .any(|line| line.contains("Adaptive cruise resuming at 60 miles per hour")),
+            .any(|line| line.contains("Cruise resuming, 60")),
         "{lines:#?}"
     );
 }
@@ -2199,9 +2199,7 @@ fn test_a_manual_driver_off_the_pedals_is_braked_to_the_advisory() {
     // The reactive line inside the bend is the bare sentence; the servo owns
     // this bend, so it never fires on top of the approach clause.
     assert!(
-        !run.lines
-            .iter()
-            .any(|line| line == "Curve assistance slowing."),
+        !run.lines.iter().any(|line| line == "Slowing for the bend."),
         "the reactive line must not double the approach line: {:#?}",
         run.lines
     );
@@ -2268,7 +2266,7 @@ fn test_a_bend_under_cruises_floor_is_braked_down_and_cruise_comes_back() {
     assert!(
         lines
             .iter()
-            .any(|line| line.contains("Adaptive cruise resuming at 60 miles per hour")),
+            .any(|line| line.contains("Cruise resuming, 60")),
         "{lines:#?}"
     );
 }

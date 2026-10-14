@@ -531,7 +531,7 @@ fn test_standing_is_said_plainly_and_names_the_next_consequence() {
     assert!(text.contains("one serious violation"));
     assert!(text.contains("60 days"));
     assert!(!text.to_lowercase().contains("strike")); // that noun belongs to the per-trip counter
-                                                      // The licence half is unchanged; the carrier's review now speaks after it.
+                                                      // The license half is unchanged; the carrier's review now speaks after it.
     assert!(
         text.starts_with(
             "Record: one serious violation. One more before your CDL is suspended for 60 days. "
@@ -590,10 +590,7 @@ fn the_spoken_standing_lines_match_the_python_f_strings() {
     );
     assert_eq!(
         suspension_refusal_line(&p),
-        format!(
-            "You cannot take this job while your CDL is disqualified. It clears {clears}. \
-             Escape goes back to the board."
-        )
+        format!("You cannot take this job while your CDL is disqualified. It clears {clears}.")
     );
     // A calendar offset moves the spoken date.
     p.calendar_offset_days = 3.0;
@@ -613,8 +610,7 @@ fn the_spoken_standing_lines_match_the_python_f_strings() {
     );
     assert_eq!(
         suspension_refusal_line(&p),
-        "You cannot take driving work with a lifetime CDL disqualification. Escape goes \
-         back to the terminal."
+        "You cannot take driving work with a lifetime CDL disqualification."
     );
 
     let mut clean = profile();
@@ -633,7 +629,7 @@ fn the_spoken_standing_lines_match_the_python_f_strings() {
         "{text}"
     );
     // Two serious violations in the window is also the carrier's termination
-    // floor, and the line says so after the licence half.
+    // floor, and the line says so after the license half.
     assert!(
         text.ends_with("The carrier ends your employment at the next terminal."),
         "{text}"
@@ -707,7 +703,7 @@ fn test_a_suspended_licence_holds_the_seat_but_an_old_violation_does_not() {
     // The LICENCE band only moves on a suspension. A lone serious violation
     // reaches the band another way now -- the carrier's record review, which
     // holds at guarded and names its own end date (owner, 2026-09-12) -- and
-    // the licence band stays out of it until the second one suspends the CDL.
+    // the license band stays out of it until the second one suspends the CDL.
     let mut p = profile();
     let hours = p.game_hours;
     p.record_mut().record_serious_violation(hours);
@@ -750,7 +746,7 @@ fn test_the_way_back_names_the_cause_rather_than_promising_clean_runs() {
     // The whole line, with the trust clause and the slower-experience clause.
     let line = dispatch_trust_line(&both);
     assert!(line.starts_with(trust_band_text(standing_band(&both))));
-    assert!(line.contains("career experience comes in more slowly"));
+    assert!(line.contains("While dispatch trust is"));
     assert_eq!(
         dispatch_trust_line(&profile()),
         "Dispatch trust: full. Reputation 50 out of 100. You get the whole board."
@@ -760,7 +756,7 @@ fn test_the_way_back_names_the_cause_rather_than_promising_clean_runs() {
     held.money = -5_000.0;
     held.hold_clause = "The yard is holding your truck.".to_string();
     assert!(dispatch_trust_line(&held)
-        .contains("The yard is holding your truck. While your dispatch trust is"));
+        .contains("The yard is holding your truck. While dispatch trust is"));
 }
 
 #[test]
@@ -870,7 +866,7 @@ fn test_the_slowdown_is_said_in_words_and_never_as_a_number() {
     for band in ["guarded", "poor", "last chance"] {
         let sentence = xp_rate_clause(band);
         let clause = xp_rate_settlement_clause(band);
-        assert!(sentence.contains(band) && sentence.contains("more slowly"));
+        assert!(sentence.contains(band) && sentence.contains("comes slower"));
         assert!(clause.contains(band) && clause.contains("slower rate"));
         for text in [&sentence, &clause] {
             let scrubbed = text.replace("experience", "e");
@@ -1093,10 +1089,9 @@ fn the_record_review_is_a_company_driver_matter_and_the_surcharge_an_owner_opera
     assert_eq!(record_insurance_surcharge(&owner), 1.75);
     let said = record_consequence_text(&owner);
     assert!(
-        said.contains("insurance reserve is up 75 percent"),
+        said.starts_with("Insurance surcharge: 75 percent until "),
         "{said}"
     );
-    assert!(said.contains("ages out"), "{said}");
     owner.business_status = INDEPENDENT_AUTHORITY.to_string();
     assert_eq!(record_insurance_surcharge(&owner), 1.75);
 
@@ -1114,7 +1109,7 @@ fn the_insurance_surcharge_never_passes_double() {
     owner.game_hours = 400.0 * DAY;
     cite(&mut owner, 14, 380.0 * DAY);
     assert_eq!(record_insurance_surcharge(&owner), INSURANCE_SURCHARGE_MAX);
-    assert!(record_consequence_text(&owner).contains("up 100 percent"));
+    assert!(record_consequence_text(&owner).contains(": 100 percent"));
 }
 
 #[test]
@@ -1152,7 +1147,7 @@ fn a_career_saved_before_the_review_existed_starts_it_from_the_first_load() {
     // Staging, 2026-09-12: two testers carry serious violations inside the
     // window, one of them six. Under the review as first written, both were
     // due for termination on their first terminal visit of the new build,
-    // over offenses they served through the licence ladder at the time.
+    // over offenses they served through the license ladder at the time.
     use crate::models::profile::Profile;
     // The round trip reads the save directory for the signing key; pin a
     // throwaway one for this thread, the way the profile tests do.
@@ -1173,7 +1168,7 @@ fn a_career_saved_before_the_review_existed_starts_it_from_the_first_load() {
 
     let loaded = Profile::from_dict(&saved);
     assert_eq!(loaded.driving_record.review_started_h, 400.0 * DAY);
-    // The licence ladder still sees both: the CDL is suspended as before.
+    // The license ladder still sees both: the CDL is suspended as before.
     assert_eq!(
         loaded.driving_record.serious_in_window(loaded.game_hours),
         2

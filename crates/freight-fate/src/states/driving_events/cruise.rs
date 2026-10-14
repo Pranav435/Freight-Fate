@@ -19,6 +19,8 @@ use super::pending::{
 impl DrivingState {
     /// `_toggle_cruise()`: the cruise control, or the fast-idle switch.
     pub fn toggle_cruise(&mut self, ctx: &mut GameContext) {
+        // Any press teaches the key: retires the resume line's cancel hint.
+        self.note_instruction_demonstrated(ctx, "cruise_set");
         // Parked with the brake set, the cruise button is the fast-idle
         // switch, exactly like a real electronic truck: latch a high idle
         // (warm-up, faster air build), press again to drop it. It also
@@ -27,13 +29,7 @@ impl DrivingState {
             if self.trip.truck.high_idle_rpm.is_none() {
                 self.trip.truck.high_idle_rpm = Some(HIGH_IDLE_DEFAULT_RPM);
                 let rpm = HIGH_IDLE_DEFAULT_RPM;
-                self.say_plain(
-                    ctx,
-                    format!(
-                        "High idle, {rpm:.0} RPM. Plus and minus adjust it; releasing the parking \
-                         brake cancels."
-                    ),
-                );
+                self.say_plain(ctx, format!("High idle, {rpm:.0} RPM."));
             } else {
                 self.trip.truck.high_idle_rpm = None;
                 self.say_plain(ctx, "High idle off.");
@@ -126,7 +122,6 @@ impl DrivingState {
         self.acc_limit_cap_said = None;
         self.acc_limit_hold = None;
         self.acc_weather_cap_said = None;
-        let gap = self.acc_gap_seconds(ctx);
         let mut effective_mph = match self.cruise_exit_mph {
             Some(exit) => set.min(exit),
             None => set,
@@ -179,7 +174,7 @@ impl DrivingState {
             ctx.audio.play_with("ui/notify", 0.5, 0.0);
         }
         let message = format!(
-            "Adaptive cruise {} at {}{exit_note}. Following gap {gap:.0} seconds.",
+            "Adaptive cruise {} at {}{exit_note}.",
             if transition_label.is_some() {
                 "resuming"
             } else {
@@ -187,19 +182,16 @@ impl DrivingState {
             },
             ctx.settings.speed_text(effective_mph)
         );
-        if let Some(label) = transition_label {
+        if transition_label.is_some() {
             // ROUTE: automation retaking the pedals after a zone, the same
             // handoff as the keeper's resume line (driving_speed_control 291,
             // already ROUTE). The quiet rung still silences it by category;
             // ROUTE only stops a busy channel eating it at standard.
             self.say_route_confirmation(
                 ctx,
-                SpokenMessage::with_terse(
-                    format!("{label}. {message}"),
-                    format!(
-                        "Cruise resuming, {}.",
-                        ctx.settings.speed_value(effective_mph)
-                    ),
+                format!(
+                    "Cruise resuming, {}{exit_note}.",
+                    ctx.settings.speed_value(effective_mph)
                 ),
             );
         } else {
@@ -232,8 +224,7 @@ impl DrivingState {
         // below. Telling a paused driver to press K sent them to the key that
         // switches it off (2026-09-28).
         if self.cruise_mph.is_none() && self.keeper_mph.is_none() && !self.speed_control_armed {
-            let key = ctx.control_name(crate::bindings::Action::Cruise);
-            self.say_plain(ctx, format!("Adaptive cruise off. Press {key} to set it."));
+            self.say_plain(ctx, "Adaptive cruise off.");
             return;
         }
         let base = match self.speed_control_target_mph {
@@ -315,22 +306,15 @@ impl DrivingState {
         announce: bool,
     ) {
         if !ctx.settings.speed_keeper {
-            // Naming the way out matters more than the refusal: the keeper is
-            // exactly the thing that holds speed here, and a driver who has
-            // never turned it on hears only that cruise "is not available"
-            // and concludes the ramp kills speed control (Shane, 2026-08-15).
+            // Where the cruise is refused, not how to get the keeper: that
+            // lives in the settings help and the manual (owner rule,
+            // 2026-09-21: silence over redundant speech).
             let place = if ff_core::sim::trip::is_street_zone_reason(zone_reason) {
                 "on city streets".to_string()
             } else {
                 format!("in a {zone_reason} zone")
             };
-            self.say_plain(
-                ctx,
-                format!(
-                    "No adaptive cruise {place}. The speed keeper holds speed here; turn it on \
-                     in Settings, Controls."
-                ),
-            );
+            self.say_plain(ctx, format!("No cruise {place}."));
             return;
         }
         let speed = self.trip.truck.speed_mph();
@@ -377,7 +361,7 @@ impl DrivingState {
             // throttle, and a driver who assumed it still held speed needs to
             // hear that (automation-handoff sweep, 2026-08-20, the deferred
             // 2026-08-15 audit).
-            self.say_route_confirmation(ctx, "Speed keeper canceled; automatic speed control off.");
+            self.say_route_confirmation(ctx, "Speed keeper off.");
             return;
         }
         let position = self.trip.position_mi;
@@ -634,7 +618,7 @@ impl DrivingState {
             }
         }
         self.trip.truck.throttle = applied;
-        self.say_keeper_out_of_truck(ctx, dt, error, applied, target_mph);
+        self.say_keeper_out_of_truck(ctx, dt, error, applied);
         self.keeper_snub_brakes(ctx, dt, -error, target_mph);
     }
 
@@ -646,7 +630,7 @@ impl DrivingState {
     /// a blind driver has the engine note and the downshifts, which say the
     /// truck is working, not that it is losing -- and losing is the part that
     /// decides whether to take it over by hand. Adaptive cruise has said this
-    /// for a while ("Cruise is flat out and still losing the grade"); this is
+    /// for a while ("Cruise down to 38 on this grade"); this is
     /// the same sentence for the other controller.
     ///
     /// Only once the pedal is genuinely on the floor and the truck is still
@@ -658,7 +642,6 @@ impl DrivingState {
         dt: f64,
         error: f64,
         applied: f64,
-        target_mph: f64,
     ) {
         self.keeper_droop_cue_s = 0.0f64.max(self.keeper_droop_cue_s - dt);
         let beaten = applied >= CRUISE_FLOORED_THROTTLE
@@ -683,16 +666,10 @@ impl DrivingState {
         }
         self.keeper_droop_said = true;
         self.keeper_droop_cue_s = CLIMB_CUE_COOLDOWN_S;
-        let wanted = ctx.settings.speed_text(target_mph);
         let held = ctx.settings.speed_text(self.trip.truck.speed_mph());
         let mut opts = SayEvent::queued();
         opts.category = Some(SpeechCategory::Status);
-        ctx.say_event_with(
-            format!(
-                "Speed keeper is flat out and cannot make {wanted} on this grade. Holding {held}."
-            ),
-            opts,
-        );
+        ctx.say_event_with(format!("Speed keeper down to {held} on this grade."), opts);
     }
 
     /// Hand the keeper back up to street speed when the street changes.
@@ -813,7 +790,7 @@ impl DrivingState {
             let held = ctx.settings.speed_text(target_mph);
             self.say_safety_interrupt(
                 ctx,
-                &format!("Speed keeper cannot hold {held}{because}. Apply service brakes."),
+                &format!("Speed keeper can't hold {held}{because}. Brake."),
             );
         }
     }

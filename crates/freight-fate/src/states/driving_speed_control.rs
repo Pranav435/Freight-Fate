@@ -14,7 +14,6 @@
 use ff_core::sim::trip_route_helpers::zone_key;
 use ff_core::sim::vehicle::MIN_STOPPING_DECEL_MPS2;
 use ff_core::speech_pacing::SpeechCategory;
-use ff_core::speech_text::SpokenMessage;
 
 use crate::app::{GameContext, Say, SayEvent};
 use crate::states::driving::DrivingState;
@@ -399,15 +398,9 @@ impl DrivingState {
             // 2026-08-15 audit).
             let held = ctx.settings.speed_text(self.keeper_mph.unwrap_or(0.0));
             let resuming = if zone_reason == "acceleration lane" {
-                format!(
-                    "Automatic speed control resuming. Speed keeper building to {held} for the \
-                     merge."
-                )
+                format!("Speed keeper building to {held} for the merge.")
             } else {
-                format!(
-                    "Automatic speed control resuming. {}",
-                    crate::states::driving_events::cruise::keeper_holding_line(&held, &zone_reason)
-                )
+                crate::states::driving_events::cruise::keeper_holding_line(&held, &zone_reason)
             };
             ctx.say_event_with(
                 resuming,
@@ -434,10 +427,7 @@ impl DrivingState {
                     self.speed_control_floor_said = true;
                     let floor = ctx.settings.speed_text(CRUISE_MIN_MPH);
                     ctx.say_event_with(
-                        format!(
-                            "Automatic speed control resumes at {floor}. You have the pedals \
-                             until then."
-                        ),
+                        format!("Cruise resumes at {floor}. Pedals are yours."),
                         SayEvent::queued()
                             .priority(EventPriority::Route)
                             .category(SpeechCategory::Confirmation),
@@ -446,15 +436,8 @@ impl DrivingState {
                 return;
             }
             self.engage_keeper(ctx, limit, KEEPER_OPEN_ROAD_BRIDGE, Some(limit), false);
-            let floor = ctx.settings.speed_text(CRUISE_MIN_MPH);
             ctx.say_event_with(
-                SpokenMessage::with_terse(
-                    format!(
-                        "Automatic speed control resuming. Speed keeper building speed; \
-                         adaptive cruise takes over at {floor}."
-                    ),
-                    "Speed control resuming.",
-                ),
+                "Speed control resuming.",
                 SayEvent::queued()
                     .priority(EventPriority::Route)
                     .category(SpeechCategory::Confirmation),

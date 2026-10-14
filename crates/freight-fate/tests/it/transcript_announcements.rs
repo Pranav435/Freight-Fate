@@ -693,9 +693,8 @@ fn test_the_construction_warning_does_not_shout_brake_now_from_eight_miles() {
     let message = d.trip.zone_warning_message(&zone, 8.0);
 
     assert!(!message.contains("Brake now"), "{message}");
-    assert!(message.starts_with("In "), "{message}");
-    // The information all survives: how far, what, and both limits.
-    assert!(message.contains("construction ahead"), "{message}");
+    // The information all survives: what, how far, and both limits.
+    assert!(message.starts_with("Construction, 8 miles."), "{message}");
     assert!(
         message.contains("45") && message.contains("55"),
         "{message}"
