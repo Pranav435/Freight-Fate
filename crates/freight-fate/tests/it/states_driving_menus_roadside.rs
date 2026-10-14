@@ -412,7 +412,7 @@ fn test_a_scale_bypass_is_inspected_on_the_shoulder_instead() {
 // -- the felony stop -------------------------------------------------------------------------
 
 #[test]
-fn test_the_felony_stop_cancels_the_load_and_releases_to_the_terminal() {
+fn test_the_felony_stop_cancels_the_load_and_releases_the_driver() {
     let mut app = TestApp::new();
     let drive = a_drive(&mut app);
     let money_before = app.ctx.profile.as_ref().expect("a career").money();
@@ -425,7 +425,7 @@ fn test_the_felony_stop_cancels_the_load_and_releases_to_the_terminal() {
         state.summary()
     );
     assert!(
-        state.summary().contains("You are released back to"),
+        state.summary().contains("You are released after booking."),
         "{}",
         state.summary()
     );
@@ -445,7 +445,7 @@ fn test_the_felony_stop_cancels_the_load_and_releases_to_the_terminal() {
     assert_eq!(with_drive(&drive, |d| d.failure_to_stop_count), 1);
 
     let rows = build_labels(&mut state, &mut app.ctx);
-    assert_eq!(rows, vec!["Return to terminal"]);
+    assert_eq!(rows, vec!["Continue"]);
 }
 
 #[test]
