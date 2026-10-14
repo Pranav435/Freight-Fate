@@ -563,7 +563,7 @@ pub const CRUISE_CLOSE_FEATHER_FROM_MPH: f64 = 1.0;
 // When has a hill BEATEN the descent control, as opposed to merely being held?
 //
 // The descent twin of CRUISE_GRADE_BEATEN_*, and it did not exist until
-// 2026-08-25. "Descent control cannot hold this grade. Apply service brakes."
+// 2026-08-25. "Descent control can't hold this grade. Brake."
 // was said on the first frame the truck was this far over the ceiling
 // interactive mode had just imposed -- which on a 75 mph road with cruise set
 // at 80 is the instant a dip starts, before the control has done anything at

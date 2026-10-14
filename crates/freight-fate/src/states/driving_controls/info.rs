@@ -97,30 +97,38 @@ impl DrivingState {
     }
 
     /// `_speak_speed()`: Space.
+    ///
+    /// Three short sentences rather than one run-on: the gauges, then the
+    /// controller, then the air. The run-on named "automatic speed control"
+    /// ahead of the controller that already names itself, spoke the default
+    /// open-road target nobody set, and listed four normal air states every
+    /// time (bscross32, 2026-10: "why did I need all of that in one
+    /// message?"). What is normal goes unsaid; Tab still lists all of it.
     pub fn speak_speed(&mut self, ctx: &mut GameContext) {
         let gear = self.gear_text();
+        // The open-road target only when one was set, and not when it is the
+        // number the keeper was just said to be set at.
         let keeper_target = match self.speed_control_target_mph {
-            Some(mph) => format!(", open-road target {}", ctx.settings.speed_text(mph)),
-            None => ", open-road target will use the posted limit".to_string(),
+            Some(mph) if self.keeper_mph.is_none_or(|set| (set - mph).abs() >= 0.5) => {
+                format!(" Open-road target {}.", ctx.settings.speed_text(mph))
+            }
+            _ => String::new(),
         };
-        let cruise = if self.cruise_mph.is_some() {
-            format!(
-                ", automatic speed control, {}",
-                self.cruise_holding_text(ctx)
-            )
+        let control = if self.cruise_mph.is_some() {
+            format!(" {}.", capitalize_first(&self.cruise_holding_text(ctx)))
         } else if self.keeper_mph.is_some() {
             format!(
-                ", automatic speed control, {}{keeper_target}",
-                self.keeper_holding_text(ctx)
+                " {}.{keeper_target}",
+                capitalize_first(&self.keeper_holding_text(ctx))
             )
         } else if self.speed_control_armed {
-            format!(", automatic speed control paused{keeper_target}")
+            format!(" Automatic speed control paused.{keeper_target}")
         } else {
             String::new()
         };
         let speed = ctx.settings.speed_text(self.trip.truck.speed_mph());
         let rpm = self.trip.truck.rpm;
-        let air = self.air_status_text(false);
+        let air = capitalize_first(&self.air_brief_text());
         // With the signal on, how far to the exit is the number the driver is
         // waiting on, and until now only the countdown anchors said it (owner,
         // driving, 2026-09-24: "I should be able to see how far away from the
@@ -137,7 +145,7 @@ impl DrivingState {
             None => String::new(),
         };
         ctx.say(&format!(
-            "{speed}, {gear}, {rpm:.0} RPM{cruise}, {air}.{armed}"
+            "{speed}, {gear}, {rpm:.0} RPM.{control} {air}.{armed}"
         ));
     }
 
@@ -840,5 +848,14 @@ impl DrivingState {
         }
         parts.push(format!("It is {tod}."));
         ctx.say(&parts.join(" "));
+    }
+}
+
+/// "speed keeper holding ..." as the start of its own sentence.
+fn capitalize_first(text: &str) -> String {
+    let mut chars = text.chars();
+    match chars.next() {
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+        None => String::new(),
     }
 }

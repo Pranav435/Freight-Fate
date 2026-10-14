@@ -194,6 +194,26 @@ impl DrivingState {
         }
     }
 
+    /// The air for the Space readout: the pressure, and only what is not
+    /// normal. Ready air, a released parking brake and an idle compressor are
+    /// the state of every moving truck, so saying them on each press buried
+    /// the speed under them. The full set stays on Tab and the pause menu.
+    pub fn air_brief_text(&self) -> String {
+        let t = &self.trip.truck;
+        let mut text = format!("air {:.0} psi", t.air_pressure_psi());
+        if t.air_low_warning() {
+            text.push_str(", low air");
+        } else if !t.air_ready() {
+            text.push_str(", air building");
+        }
+        if t.spring_brakes_active() {
+            text.push_str(", spring brakes active");
+        } else if t.parking_brake {
+            text.push_str(", parking brake set");
+        }
+        text
+    }
+
     /// `_air_status_text(detailed=False)`.
     pub fn air_status_text(&self, detailed: bool) -> String {
         let t = &self.trip.truck;

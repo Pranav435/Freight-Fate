@@ -681,7 +681,7 @@ impl DrivingState {
         let core = if terse {
             "Missed the turn.".to_string()
         } else {
-            format!("You missed the turn onto {street}.")
+            format!("Missed the turn onto {street}.")
         };
         let (tail, status): (String, &str) = if completed {
             self.resolve_turn(ctx, cue);
@@ -689,29 +689,29 @@ impl DrivingState {
             let tail = if terse {
                 "Turn made for you.".to_string()
             } else {
-                format!(
-                    "The turn is made for you and you are on {street}. The clock is still running."
-                )
+                format!("The turn was made for you. You're on {street}.")
             };
             (tail, "Turn missed again. The turn was made for you.")
         } else {
             self.turn_missed.insert(cue.key.clone());
             self.reposition_for_turn(cue);
+            // Said as what happened, in one plain sentence: the truck turned
+            // around and the corner is coming up again. The old line read as
+            // three instructions (bscross32, 2026-10).
             let tail = if terse {
-                "Safe turnaround. Turn ahead again.".to_string()
+                "Turn ahead again.".to_string()
             } else {
-                "Next safe turnaround, back onto the approach. The turn is ahead again.".to_string()
+                "You turned around, and the turn is ahead again.".to_string()
             };
             (tail, "Missed the turn. Use the next safe turnaround.")
         };
         let mut message = format!("{core} {tail}");
-        if self.turn_miss_count >= 2 {
+        if self.turn_miss_count >= 2 && !completed {
             // The identical core line keeps the flow predictable by ear; a
-            // repeat miss earns help, not scolding.
-            message += &format!(
-                " Brake to {target} with {} on the approach.",
-                ctx.control_hint("brake")
-            );
+            // repeat miss earns help, not scolding: the number to slow to.
+            // Not after the turn was made for you, with no turn left to slow
+            // for.
+            message += &format!(" Slow to {target} before the turn.");
         }
         ctx.audio.play("ui/warning");
         self.set_status(status);

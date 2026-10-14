@@ -705,14 +705,11 @@ impl DrivingState {
         self.cancel_keeper(ctx, false);
         let place = stop.name.clone();
         let mut message = if self.terse_speech(ctx) {
-            format!(
-                "Drove past {place}; you never stopped. Safe turnaround. {place} ahead again; \
-                 stop this time."
-            )
+            format!("Drove past {place}. It is ahead again.")
         } else {
             format!(
-                "Drove past {place} without stopping. You loop back through the next safe \
-                 turnaround. {place} is ahead again, stop this time. The clock is still running."
+                "Drove past {place} without stopping. You turned around, and {place} is ahead \
+                 again."
             )
         };
         if self.ramp_terminal_miss_count >= 2 {

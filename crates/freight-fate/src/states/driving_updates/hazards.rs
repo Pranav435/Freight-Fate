@@ -286,7 +286,16 @@ impl DrivingState {
     /// with J" told the driver to switch off the thing the hill needs (agent
     /// drive, Silverthorne to Edwards, 2026-09-24). Then the jake clause
     /// goes, and on an automatic nothing is left to advise.
-    pub fn descend_advice(&self, ctx: &GameContext) -> String {
+    ///
+    /// And only while it is still teaching. A driver who has switched the
+    /// engine brake on a few times knows the hill wants it, and hearing how on
+    /// every downgrade got old (bscross32, 2026-10: "I'll decide how to handle
+    /// it"). Once the J key is retired the call is just the grade and its
+    /// length. A remapped key or a new transmission teaches it again.
+    pub fn descend_advice(&self, ctx: &mut GameContext) -> String {
+        if self.instruction_retired(ctx, "engine_brake") {
+            return String::new();
+        }
         let jake_set = self.trip.truck.engine_brake() || self.auto_jake;
         let automatic = self.trip.truck.transmission.automatic;
         if jake_set {
@@ -421,10 +430,12 @@ impl DrivingState {
             "downhill grade"
         };
         ctx.audio.play_with("ui/notify", 0.55, 0.0);
+        // An uphill grade needs no advice: the truck slowing on it is the
+        // expected thing, and saying so was one more sentence to sit through.
         let advice = if sign < 0 {
             self.descend_advice(ctx)
         } else {
-            "Expect to lose speed.".to_string()
+            String::new()
         };
         ctx.say_event_with(
             format!(

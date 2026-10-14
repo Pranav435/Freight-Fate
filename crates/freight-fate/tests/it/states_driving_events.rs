@@ -1448,7 +1448,7 @@ fn test_the_keeper_owns_up_when_it_cannot_hold_the_number() {
 
     assert!(d.keeper_overrun_said);
     let spoken = app.event_lines().join(" ");
-    assert!(spoken.contains("Speed keeper cannot hold"), "{spoken}");
+    assert!(spoken.contains("Speed keeper can't hold"), "{spoken}");
     assert!(spoken.contains("on this grade"), "{spoken}");
 }
 

@@ -646,7 +646,7 @@ impl DrivingState {
     /// a blind driver has the engine note and the downshifts, which say the
     /// truck is working, not that it is losing -- and losing is the part that
     /// decides whether to take it over by hand. Adaptive cruise has said this
-    /// for a while ("Cruise is flat out and still losing the grade"); this is
+    /// for a while ("Cruise can't hold speed on this grade"); this is
     /// the same sentence for the other controller.
     ///
     /// Only once the pedal is genuinely on the floor and the truck is still
@@ -688,9 +688,7 @@ impl DrivingState {
         let mut opts = SayEvent::queued();
         opts.category = Some(SpeechCategory::Status);
         ctx.say_event_with(
-            format!(
-                "Speed keeper is flat out and cannot make {wanted} on this grade. Holding {held}."
-            ),
+            format!("Speed keeper can't make {wanted} on this grade. Down to {held}."),
             opts,
         );
     }
@@ -813,7 +811,7 @@ impl DrivingState {
             let held = ctx.settings.speed_text(target_mph);
             self.say_safety_interrupt(
                 ctx,
-                &format!("Speed keeper cannot hold {held}{because}. Apply service brakes."),
+                &format!("Speed keeper can't hold {held}{because}. Brake."),
             );
         }
     }

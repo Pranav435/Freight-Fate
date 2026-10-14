@@ -19,8 +19,10 @@ fn test_speed_key_includes_cruise_set_speed_when_active() {
     app.clear_speech();
     d.handle_key_event(&mut app.ctx, &key(Key::Space));
     let said = last(&app);
-    assert!(said.contains("automatic speed control"), "{said}");
-    assert!(said.contains("cruise set at 55 miles per hour"), "{said}");
+    assert!(
+        said.contains("Adaptive cruise set at 55 miles per hour."),
+        "{said}"
+    );
 }
 
 #[test]
@@ -32,13 +34,12 @@ fn test_speed_key_includes_speed_keeper_target_when_active() {
     app.clear_speech();
     d.handle_key_event(&mut app.ctx, &key(Key::Space));
     let said = last(&app);
-    assert!(said.contains("automatic speed control"), "{said}");
     assert!(
-        said.contains("speed keeper holding 15 miles per hour"),
+        said.contains("Speed keeper holding 15 miles per hour."),
         "{said}"
     );
     assert!(
-        said.contains("open-road target 55 miles per hour"),
+        said.contains("Open-road target 55 miles per hour."),
         "{said}"
     );
 }

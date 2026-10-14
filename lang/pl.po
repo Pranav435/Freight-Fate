@@ -20938,47 +20938,19 @@ msgid "adaptive cruise set at {speed_text}"
 msgstr ""
 
 #. placeholders: {speed_text}
-msgid ", open-road target {speed_text}"
-msgstr ""
-
-#. placeholders: {speed_text}
-#. one clause of a longer line
-msgid "open-road target {speed_text}"
-msgstr ""
-
-msgid ", open-road target will use the posted limit"
-msgstr ""
-
-#. one clause of a longer line
-msgid "open-road target will use the posted limit"
-msgstr ""
-
-#. placeholders: {cruise_holding_text}
-msgid ", automatic speed control, {cruise_holding_text}"
-msgstr ""
-
-#. one clause of a longer line
-msgid "automatic speed control"
-msgstr ""
-
-#. placeholders: {keeper_holding_text}, {keeper_target}
-msgid ", automatic speed control, {keeper_holding_text}{keeper_target}"
+msgid " Open-road target {speed_text}."
 msgstr ""
 
 #. placeholders: {keeper_target}
-msgid ", automatic speed control paused{keeper_target}"
-msgstr ""
-
-#. one clause of a longer line
-msgid "automatic speed control paused"
+msgid " Automatic speed control paused.{keeper_target}"
 msgstr ""
 
 #. placeholders: {signal_verb}, {armed_exit_name}, {distance_text}
 msgid " Signal {signal_verb} for {armed_exit_name}, {distance_text}."
 msgstr ""
 
-#. placeholders: {speed}, {gear}, {rpm}, {cruise}, {air}, {armed}
-msgid "{speed}, {gear}, {rpm} RPM{cruise}, {air}.{armed}"
+#. placeholders: {speed}, {gear}, {rpm}, {control}, {air}, {armed}
+msgid "{speed}, {gear}, {rpm} RPM.{control} {air}.{armed}"
 msgstr ""
 
 msgid "set"
@@ -21405,6 +21377,18 @@ msgstr ""
 
 #. placeholders: {context}
 msgid "HOS route: {context}"
+msgstr ""
+
+msgid ", low air"
+msgstr ""
+
+msgid ", air building"
+msgstr ""
+
+msgid ", spring brakes active"
+msgstr ""
+
+msgid ", parking brake set"
 msgstr ""
 
 msgid "spring brakes active"
@@ -22214,13 +22198,11 @@ msgstr ""
 
 #. placeholders: {speed_text}
 #. one sentence of a longer line
-msgid "Cruise cannot hold {speed_text}; the truck is in limp mode."
+msgid "Cruise can't hold {speed_text} in limp mode."
 msgstr ""
 
 #. placeholders: {speed_text}, {speed_text2}
-msgid ""
-"Cruise cannot hold {speed_text}; the truck is in limp mode. Holding "
-"{speed_text2}."
+msgid "Cruise can't hold {speed_text} in limp mode. Holding {speed_text2}."
 msgstr ""
 
 #. placeholders: {speed_text2}
@@ -23673,18 +23655,16 @@ msgstr ""
 
 #. placeholders: {held}
 #. one sentence of a longer line
-msgid "Holding {held}."
+msgid "Down to {held}."
 msgstr ""
 
 #. placeholders: {wanted}
 #. one sentence of a longer line
-msgid "Speed keeper is flat out and cannot make {wanted} on this grade."
+msgid "Speed keeper can't make {wanted} on this grade."
 msgstr ""
 
 #. placeholders: {wanted}, {held}
-msgid ""
-"Speed keeper is flat out and cannot make {wanted} on this grade. Holding "
-"{held}."
+msgid "Speed keeper can't make {wanted} on this grade. Down to {held}."
 msgstr ""
 
 #. placeholders: {held}
@@ -23699,16 +23679,16 @@ msgid " on this grade"
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Apply service brakes."
+msgid "Brake."
 msgstr ""
 
 #. placeholders: {held}, {because}
 #. one sentence of a longer line
-msgid "Speed keeper cannot hold {held}{because}."
+msgid "Speed keeper can't hold {held}{because}."
 msgstr ""
 
 #. placeholders: {held}, {because}
-msgid "Speed keeper cannot hold {held}{because}. Apply service brakes."
+msgid "Speed keeper can't hold {held}{because}. Brake."
 msgstr ""
 
 #. placeholders: {held}, {zone}
@@ -23744,11 +23724,11 @@ msgid "building-capped"
 msgstr ""
 
 #. placeholders: {climb_ahead}
-msgid "Building speed for a {climb_ahead} percent uphill grade ahead."
+msgid "Building speed for a {climb_ahead} percent uphill grade."
 msgstr ""
 
 #. placeholders: {descent_pct}
-msgid "Easing off for a {descent_pct} percent downhill grade ahead."
+msgid "Easing off for a {descent_pct} percent downhill grade."
 msgstr ""
 
 msgid "Adaptive cruise canceled; automatic speed control off."
@@ -23799,11 +23779,11 @@ msgid "for the grade"
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Cruise is flat out and still losing the grade."
+msgid "Cruise can't hold speed on this grade."
 msgstr ""
 
 #. placeholders: {held}
-msgid "Cruise is flat out and still losing the grade. Holding {held}."
+msgid "Cruise can't hold speed on this grade. Down to {held}."
 msgstr ""
 
 msgid "Exit speed assistance"
@@ -23842,7 +23822,7 @@ msgstr ""
 msgid "Low traction limits descent control."
 msgstr ""
 
-msgid "Descent control cannot hold this grade. Apply service brakes."
+msgid "Descent control can't hold this grade. Brake."
 msgstr ""
 
 msgid "deliver"
@@ -24972,18 +24952,15 @@ msgstr ""
 
 #. placeholders: {place}
 #. one sentence of a longer line
-msgid "Drove past {place}; you never stopped."
+msgid "Drove past {place}."
 msgstr ""
 
 #. placeholders: {place}
-msgid ""
-"Drove past {place}; you never stopped. Safe turnaround. {place} ahead "
-"again; stop this time."
+msgid "Drove past {place}. It is ahead again."
 msgstr ""
 
-#. placeholders: {place}
 #. one sentence of a longer line
-msgid "{place} ahead again; stop this time."
+msgid "It is ahead again."
 msgstr ""
 
 #. placeholders: {place}
@@ -24993,27 +24970,17 @@ msgstr ""
 
 #. placeholders: {place}
 msgid ""
-"Drove past {place} without stopping. You loop back through the next safe "
-"turnaround. {place} is ahead again, stop this time. The clock is still "
-"running."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "The clock is still running."
+"Drove past {place} without stopping. You turned around, and {place} is "
+"ahead again."
 msgstr ""
 
 #. placeholders: {place}
 #. one sentence of a longer line
-msgid "{place} is ahead again, stop this time."
+msgid "You turned around, and {place} is ahead again."
 msgstr ""
 
 #. placeholders: {control_hint}
 msgid " Brake with {control_hint} well before it."
-msgstr ""
-
-#. placeholders: {place}
-#. one sentence of a longer line
-msgid "Drove past {place}."
 msgstr ""
 
 #. placeholders: {place}
@@ -25065,38 +25032,28 @@ msgid ""
 "The gate at {facility} is {closing_text} ahead. Stop there to check in."
 msgstr ""
 
-#. placeholders: {target}
 #. one sentence of a longer line
-msgid "Gate ahead again; slow to {target}."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Missed the gate: too fast."
+msgid "Missed the gate, too fast."
 msgstr ""
 
 #. placeholders: {target}
-msgid ""
-"Missed the gate: too fast. Safe turnaround. Gate ahead again; slow to "
-"{target}."
-msgstr ""
-
-#. placeholders: {target}
-#. one sentence of a longer line
-msgid "The gate is ahead again; slow to {target} this time."
+msgid "Missed the gate, too fast. Slow to {target}."
 msgstr ""
 
 #. placeholders: {destination_facility_text}
 #. one sentence of a longer line
 msgid ""
-"You carried past the gate at {destination_facility_text}, too fast for the "
-"entrance."
+"Missed the gate at {destination_facility_text}, too fast for the entrance."
 msgstr ""
 
 #. placeholders: {destination_facility_text}, {target}
 msgid ""
-"You carried past the gate at {destination_facility_text}, too fast for the "
-"entrance. You loop back through the next safe turnaround. The gate is ahead "
-"again; slow to {target} this time. The clock is still running."
+"Missed the gate at {destination_facility_text}, too fast for the entrance. "
+"You turned around, and the gate is ahead again. Slow to {target}."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "You turned around, and the gate is ahead again."
 msgstr ""
 
 #. placeholders: {control_hint}
@@ -29153,38 +29110,39 @@ msgid "Missed the turn."
 msgstr ""
 
 #. placeholders: {street}
-msgid "You missed the turn onto {street}."
+msgid "Missed the turn onto {street}."
 msgstr ""
 
 msgid "Turn made for you."
 msgstr ""
 
-#. placeholders: {street}
 #. one sentence of a longer line
-msgid "The turn is made for you and you are on {street}."
+msgid "The turn was made for you."
 msgstr ""
 
 #. placeholders: {street}
-msgid ""
-"The turn is made for you and you are on {street}. The clock is still "
-"running."
+msgid "The turn was made for you. You're on {street}."
+msgstr ""
+
+#. placeholders: {street}
+#. one sentence of a longer line
+msgid "You're on {street}."
 msgstr ""
 
 msgid "Turn missed again. The turn was made for you."
 msgstr ""
 
-msgid "Safe turnaround. Turn ahead again."
+msgid "Turn ahead again."
 msgstr ""
 
-msgid ""
-"Next safe turnaround, back onto the approach. The turn is ahead again."
+msgid "You turned around, and the turn is ahead again."
 msgstr ""
 
 msgid "Missed the turn. Use the next safe turnaround."
 msgstr ""
 
-#. placeholders: {target}, {control_hint}
-msgid " Brake to {target} with {control_hint} on the approach."
+#. placeholders: {target}
+msgid " Slow to {target} before the turn."
 msgstr ""
 
 msgid "one lane"
@@ -29661,9 +29619,6 @@ msgstr ""
 
 #. placeholders: {about}, {distance_text}
 msgid " for {about}{distance_text}"
-msgstr ""
-
-msgid "Expect to lose speed."
 msgstr ""
 
 #. placeholders: {pct}, {direction}, {length}

@@ -64,6 +64,27 @@ bookmarks usable.
       default voice; a player hearing a translation through it may need to
       pick a voice in that language under Settings, Speech.
 
+- [x] Plainer driving speech (player report, bscross32, 2026-10-14): Space
+      is three short sentences (gauges, speed control, air) and leaves out
+      normal air and brake states and the default open-road target. The
+      cruise and keeper "losing the grade" lines, descent control's and the
+      keeper's brake calls, and the missed turn, exit and gate loop-backs say
+      the same facts in fewer words. The downhill grade call's engine brake
+      advice retires once J has been used three times (`spoken_advice`); the
+      uphill call lost "Expect to lose speed." Spanish carries the new lines.
+- [ ] (Found along the way) The advise-only follow-up to a turn the route
+      already named ("Advise 11 miles per hour.") is queued on the droppable
+      default, so busy street speech can drop it; a player heard the advise
+      speed only sometimes. Same report.
+- [ ] (Found along the way) The turn chime sounds at the corner, panned to
+      the side just taken, and the next corner's call can follow within a
+      second, so the chime reads as a cue for the next turn on the other
+      side. Same report.
+- [ ] (Found along the way) The same player asks for turn calls with enough
+      lead to brake by ear at street speeds, a speed-dependent countdown into
+      steep grades instead of a distance, and automatic gear choice that
+      skips gears when lightly loaded. Design calls for the owner.
+
 - [x] Main menu ambience (owner, 2026-10-12): an ElevenLabs bed under the
       main menu and the screens opened from it, picked like the music by
       the career it would load. After dark it is a truck stop lot. By day an

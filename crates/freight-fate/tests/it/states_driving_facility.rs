@@ -233,7 +233,7 @@ fn test_fast_crossing_misses_the_gate_and_loops_back() {
     assert!(d.trip.position_mi < d.trip.total_miles());
     assert_eq!(d.gate_miss_count, 1);
     assert_eq!(d.trip.game_minutes, minutes + GATE_MISS_LOOP_MIN);
-    let text = last_with(&app, "safe turnaround");
+    let text = last_with(&app, "You turned around");
     assert!(app
         .event_calls()
         .iter()
@@ -499,11 +499,11 @@ fn test_repeat_miss_appends_the_help_clause() {
     app.clear_speech();
     at_gate(&mut d, 70.0, true);
     d.handle_arrival_gate(&mut app.ctx);
-    let first = last_with(&app, "carried past the gate");
+    let first = last_with(&app, "Missed the gate at");
     assert!(!first.contains("Settings"));
     at_gate(&mut d, 70.0, true);
     d.handle_arrival_gate(&mut app.ctx);
-    let second = lines_with(&app, "carried past the gate")
+    let second = lines_with(&app, "Missed the gate at")
         .into_iter()
         .find(|line| line.contains("Brake with"))
         .expect("the repeat miss appends help");
@@ -615,7 +615,10 @@ fn test_terse_mode_hears_the_essential_cues() {
     at_gate(&mut d, 70.0, true);
     d.handle_arrival_gate(&mut app.ctx);
     let said = last_with(&app, "Missed the gate");
-    assert!(said.contains("Safe turnaround"));
+    assert_eq!(
+        said,
+        "Missed the gate, too fast. Slow to 15 miles per hour."
+    );
     assert!(said.to_lowercase().contains("slow to"));
 }
 
@@ -633,7 +636,7 @@ fn test_time_is_charged_each_loop() {
 
 #[test]
 fn test_missed_gate_loop_charges_hos_fatigue_and_fuel() {
-    // The spoken "The clock is still running" line must be true: a gate
+    // The time a miss costs must be real: a gate
     // miss's scripted loop-back costs real HOS, fatigue, and fuel, not just
     // the game clock -- otherwise the loop is a free-time exploit.
     let mut app = TestApp::new();

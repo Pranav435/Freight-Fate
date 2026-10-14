@@ -58,6 +58,12 @@
 
 ### Changed
 
+- **Space now says speed, speed control and air as three short sentences.** Normal air and brake states and an unset open-road target are left out.
+
+- **Missed turn, exit and gate lines are shorter, and so are the warnings when cruise or the speed keeper loses speed on a grade.**
+
+- **Downhill grade calls stop naming the engine brake key once you have used it a few times.** Uphill grade calls no longer add "Expect to lose speed."
+
 - **Dispatch trust now changes half a point earlier at each cutoff.** It follows the rounded reputation you hear.
 
 - **The nearest town readout now says only the name.** Alt+3 says "Nearest town: Nashville" without the distance.

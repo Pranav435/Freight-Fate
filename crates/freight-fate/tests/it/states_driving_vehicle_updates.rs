@@ -569,13 +569,13 @@ fn test_the_descent_advisory_names_controls_the_driver_actually_has() {
     let mut app = TestApp::new();
     let mut d = a_drive(&mut app);
     d.trip.truck.transmission.automatic = true;
-    let said = d.descend_advice(&app.ctx);
+    let said = d.descend_advice(&mut app.ctx);
     assert!(!said.to_lowercase().contains("pick your gear"));
     assert!(said.starts_with("Set the engine brake with"));
 
     // The manual box keeps the gear advice, because it can act on it.
     d.trip.truck.transmission.automatic = false;
-    assert!(d.descend_advice(&app.ctx).starts_with("Pick your gear"));
+    assert!(d.descend_advice(&mut app.ctx).starts_with("Pick your gear"));
 
     // With the jake already on, J turns it OFF: the agent drive into Edwards
     // (2026-09-24) heard "Set the engine brake with J", pressed it, and got
@@ -583,14 +583,35 @@ fn test_the_descent_advisory_names_controls_the_driver_actually_has() {
     // to be told.
     d.trip.truck.engine_brake_stage = 2;
     assert_eq!(
-        d.descend_advice(&app.ctx),
+        d.descend_advice(&mut app.ctx),
         "Pick your gear before it starts."
     );
     d.trip.truck.transmission.automatic = true;
-    assert_eq!(d.descend_advice(&app.ctx), "");
+    assert_eq!(d.descend_advice(&mut app.ctx), "");
     d.trip.truck.engine_brake_stage = 0;
     d.auto_jake = true; // armed, sitting at stage zero on the flat
-    assert_eq!(d.descend_advice(&app.ctx), "");
+    assert_eq!(d.descend_advice(&mut app.ctx), "");
+}
+
+#[test]
+fn test_the_descent_advisory_stops_teaching_once_the_jake_is_known() {
+    // Heard on every downgrade, "Set the engine brake with J" got old for a
+    // driver who already uses it (player report, 2026-10). Switching the jake
+    // on a few times retires it; the grade line itself stays.
+    let mut app = TestApp::new();
+    let mut d = a_drive(&mut app);
+    d.trip.truck.transmission.automatic = true;
+    assert!(d
+        .descend_advice(&mut app.ctx)
+        .starts_with("Set the engine brake"));
+    for _ in 0..ff_core::spoken_advice::RETIRE_AFTER {
+        d.toggle_engine_brake(&mut app.ctx); // on
+        d.toggle_engine_brake(&mut app.ctx); // off
+    }
+    assert_eq!(d.descend_advice(&mut app.ctx), "");
+    d.trip.truck.transmission.automatic = false;
+    // A manual box is a different binding count: it is taught afresh.
+    assert!(d.descend_advice(&mut app.ctx).starts_with("Pick your gear"));
 }
 
 // -- ignored: the roadside screens a settled stop pushes ------------------------------

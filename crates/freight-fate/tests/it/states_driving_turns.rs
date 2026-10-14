@@ -706,7 +706,7 @@ fn test_a_missed_turn_keeps_the_speed_control_session_armed() {
     assert_eq!(d.turn_miss_count, 1);
     assert!(d.keeper_mph.is_none());
     assert!(d.speed_control_armed, "the session survives the miss");
-    assert!(!lines_with(&app, "missed the turn").is_empty());
+    assert!(!lines_with(&app, "Missed the turn").is_empty());
 }
 
 #[test]
@@ -742,15 +742,15 @@ fn test_over_the_turn_speed_loops_back_and_charges_time() {
     assert_eq!(d.turn_miss_count, 1);
     assert_eq!(d.trip.game_minutes, minutes + TURN_MISS_LOOP_MIN);
     assert!(d.trip.position_mi < 0.6); // dropped back onto the approach
-    let text = last_with(&app, "You missed the turn");
+    let text = last_with(&app, "Missed the turn");
     assert!(app
         .event_calls()
         .iter()
         .any(|(line, interrupt)| *line == text && *interrupt));
     assert_eq!(
         text,
-        "You missed the turn onto North Michigan Street. Next safe turnaround, back onto the \
-         approach. The turn is ahead again."
+        "Missed the turn onto North Michigan Street. You turned around, and the turn is ahead \
+         again."
     );
 }
 
@@ -795,7 +795,7 @@ fn test_terse_miss_keeps_the_essentials() {
     at_turn(&mut d, &mut app, 0.6, 45.0);
     assert_eq!(
         last_with(&app, "Missed the turn."),
-        "Missed the turn. Safe turnaround. Turn ahead again."
+        "Missed the turn. Turn ahead again."
     );
 }
 
@@ -806,21 +806,20 @@ fn test_a_repeat_miss_appends_help_to_an_identical_core_sentence() {
     a_street_chain(&mut d);
     app.clear_speech();
     at_turn(&mut d, &mut app, 0.6, 45.0);
-    let first = last_with(&app, "You missed the turn");
-    assert!(!first.contains("Brake to"));
+    let first = last_with(&app, "Missed the turn");
+    assert!(!first.contains("Slow to"));
     at_turn(&mut d, &mut app, 1.1, 45.0);
     let expected_brake = {
         let cue = d.turn_cue_in_play().expect("a corner is in play");
         d.turn_speed_mph(&cue).round() as i64
     };
-    let second = lines_with(&app, "You missed the turn")
+    let second = lines_with(&app, "Missed the turn")
         .into_iter()
-        .find(|line| line.contains("Brake to"))
+        .find(|line| line.contains("Slow to"))
         .expect("the repeat miss appends help");
-    assert!(second.starts_with("You missed the turn onto West Sample Street."));
+    assert!(second.starts_with("Missed the turn onto West Sample Street."));
     assert_eq!(expected_brake, 10, "the corner this fixture misses");
-    assert!(second.contains("Brake to 10 miles per hour"));
-    assert!(second.contains("Down arrow")); // the brake key this driver actually has
+    assert!(second.ends_with("Slow to 10 miles per hour before the turn."));
 }
 
 #[test]
@@ -835,8 +834,8 @@ fn test_a_second_miss_on_the_same_turn_is_made_for_the_player() {
     assert_eq!(d.turn_miss_count, 2);
     assert_eq!(d.trip.game_minutes, minutes + 2.0 * TURN_MISS_LOOP_MIN);
     assert!(d.trip.position_mi > 0.6); // routed around, past the turn
-    let last = last_with(&app, "The turn is made for you");
-    assert!(last.starts_with("You missed the turn onto North Michigan Street."));
+    let last = last_with(&app, "The turn was made for you");
+    assert!(last.starts_with("Missed the turn onto North Michigan Street."));
     // The turn is settled: it never comes back to be missed a third time.
     assert_eq!(
         d.turn_cue_in_play().expect("the next corner").key,
@@ -856,7 +855,7 @@ fn test_the_third_miss_anywhere_completes_the_turn() {
     assert_eq!(d.turn_miss_count, 3);
     assert_eq!(d.trip.game_minutes, minutes + TURN_MISS_LOOP_MIN); // time still charged
     assert!(d.trip.position_mi > 0.6);
-    assert!(!lines_with(&app, "The turn is made for you").is_empty());
+    assert!(!lines_with(&app, "The turn was made for you").is_empty());
 }
 
 #[test]

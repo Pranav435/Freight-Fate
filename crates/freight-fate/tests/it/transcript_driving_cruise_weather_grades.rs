@@ -483,7 +483,7 @@ fn test_predictive_cruise_shaves_before_a_descent() {
         d.say_predictive_cruise(ctx, 0.0, bias, reason);
     });
     assert!(
-        said_any(&harness, "percent downhill grade ahead"),
+        said_any(&harness, "percent downhill grade."),
         "{:#?}",
         spoken(&harness)
     );
@@ -546,7 +546,7 @@ fn test_cruise_says_when_a_climb_has_beaten_it() {
         }
         let said = spoken(&harness)
             .iter()
-            .filter(|e| e.contains("still losing the grade"))
+            .filter(|e| e.contains("Cruise can't hold speed"))
             .count();
         assert_eq!(said > 0, expected, "{driving_speech}: {said}");
         if expected {
@@ -581,7 +581,7 @@ fn test_climb_cue_stays_quiet_when_cruise_is_winning() {
         });
     }
     assert!(
-        !said_any(&harness, "still losing the grade"),
+        !said_any(&harness, "Cruise can't hold speed"),
         "{:#?}",
         spoken(&harness)
     );

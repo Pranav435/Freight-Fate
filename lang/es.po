@@ -24477,49 +24477,20 @@ msgid "adaptive cruise set at {speed_text}"
 msgstr "control de crucero adaptativo fijado en {speed_text}"
 
 #. placeholders: {speed_text}
-msgid ", open-road target {speed_text}"
-msgstr ", objetivo en carretera abierta {speed_text}"
-
-#. placeholders: {speed_text}
-#. one clause of a longer line
-msgid "open-road target {speed_text}"
-msgstr "objetivo en carretera abierta {speed_text}"
-
-msgid ", open-road target will use the posted limit"
-msgstr ", el objetivo en carretera abierta usará el límite señalizado"
-
-#. one clause of a longer line
-msgid "open-road target will use the posted limit"
-msgstr "el objetivo en carretera abierta usará el límite señalizado"
-
-#. placeholders: {cruise_holding_text}
-msgid ", automatic speed control, {cruise_holding_text}"
-msgstr ", control automático de velocidad, {cruise_holding_text}"
-
-#. one clause of a longer line
-msgid "automatic speed control"
-msgstr "control automático de velocidad"
-
-#. placeholders: {keeper_holding_text}, {keeper_target}
-msgid ", automatic speed control, {keeper_holding_text}{keeper_target}"
-msgstr ""
-", control automático de velocidad, {keeper_holding_text}{keeper_target}"
+msgid " Open-road target {speed_text}."
+msgstr " Objetivo en carretera abierta {speed_text}."
 
 #. placeholders: {keeper_target}
-msgid ", automatic speed control paused{keeper_target}"
-msgstr ", control automático de velocidad en pausa{keeper_target}"
-
-#. one clause of a longer line
-msgid "automatic speed control paused"
-msgstr "control automático de velocidad en pausa"
+msgid " Automatic speed control paused.{keeper_target}"
+msgstr " Control automático de velocidad en pausa.{keeper_target}"
 
 #. placeholders: {signal_verb}, {armed_exit_name}, {distance_text}
 msgid " Signal {signal_verb} for {armed_exit_name}, {distance_text}."
 msgstr " Señal {signal_verb} para {armed_exit_name}, {distance_text}."
 
-#. placeholders: {speed}, {gear}, {rpm}, {cruise}, {air}, {armed}
-msgid "{speed}, {gear}, {rpm} RPM{cruise}, {air}.{armed}"
-msgstr "{speed}, {gear}, {rpm} RPM{cruise}, {air}.{armed}"
+#. placeholders: {speed}, {gear}, {rpm}, {control}, {air}, {armed}
+msgid "{speed}, {gear}, {rpm} RPM.{control} {air}.{armed}"
+msgstr "{speed}, {gear}, {rpm} RPM.{control} {air}.{armed}"
 
 msgid "set"
 msgstr "puesta"
@@ -24958,6 +24929,18 @@ msgstr "Fatiga: {fatigue} por ciento"
 #. placeholders: {context}
 msgid "HOS route: {context}"
 msgstr "Horas de servicio en la ruta: {context}"
+
+msgid ", low air"
+msgstr ", aire bajo"
+
+msgid ", air building"
+msgstr ", subiendo el aire"
+
+msgid ", spring brakes active"
+msgstr ", frenos de muelle activados"
+
+msgid ", parking brake set"
+msgstr ", freno de estacionamiento puesto"
 
 msgid "spring brakes active"
 msgstr "frenos de muelle activados"
@@ -25886,18 +25869,14 @@ msgstr "Modo de emergencia. Manteniendo {speed_text}."
 
 #. placeholders: {speed_text}
 #. one sentence of a longer line
-msgid "Cruise cannot hold {speed_text}; the truck is in limp mode."
-msgstr ""
-"El crucero no puede mantener {speed_text}; el camión está en modo de "
-"emergencia."
+msgid "Cruise can't hold {speed_text} in limp mode."
+msgstr "El crucero no puede mantener {speed_text} en modo de emergencia."
 
 #. placeholders: {speed_text}, {speed_text2}
-msgid ""
-"Cruise cannot hold {speed_text}; the truck is in limp mode. Holding "
-"{speed_text2}."
+msgid "Cruise can't hold {speed_text} in limp mode. Holding {speed_text2}."
 msgstr ""
-"El crucero no puede mantener {speed_text}; el camión está en modo de "
-"emergencia. Manteniendo {speed_text2}."
+"El crucero no puede mantener {speed_text} en modo de emergencia. "
+"Manteniendo {speed_text2}."
 
 #. placeholders: {speed_text2}
 #. one sentence of a longer line
@@ -27536,23 +27515,19 @@ msgstr "por el tráfico de delante"
 
 #. placeholders: {held}
 #. one sentence of a longer line
-msgid "Holding {held}."
-msgstr "Manteniendo {held}."
+msgid "Down to {held}."
+msgstr "Baja a {held}."
 
 #. placeholders: {wanted}
 #. one sentence of a longer line
-msgid "Speed keeper is flat out and cannot make {wanted} on this grade."
-msgstr ""
-"El limitador de velocidad va a fondo y no llega a {wanted} en esta "
-"pendiente."
+msgid "Speed keeper can't make {wanted} on this grade."
+msgstr "El limitador de velocidad no llega a {wanted} en esta pendiente."
 
 #. placeholders: {wanted}, {held}
-msgid ""
-"Speed keeper is flat out and cannot make {wanted} on this grade. Holding "
-"{held}."
+msgid "Speed keeper can't make {wanted} on this grade. Down to {held}."
 msgstr ""
-"El limitador de velocidad va a fondo y no llega a {wanted} en esta "
-"pendiente. Manteniendo {held}."
+"El limitador de velocidad no llega a {wanted} en esta pendiente. Baja a "
+"{held}."
 
 #. placeholders: {held}
 msgid "Speed keeper building to {held} for the merge."
@@ -27566,19 +27541,17 @@ msgid " on this grade"
 msgstr " en esta pendiente"
 
 #. one sentence of a longer line
-msgid "Apply service brakes."
-msgstr "Usa el freno de servicio."
+msgid "Brake."
+msgstr "Frena."
 
 #. placeholders: {held}, {because}
 #. one sentence of a longer line
-msgid "Speed keeper cannot hold {held}{because}."
+msgid "Speed keeper can't hold {held}{because}."
 msgstr "El limitador de velocidad no puede mantener {held}{because}."
 
 #. placeholders: {held}, {because}
-msgid "Speed keeper cannot hold {held}{because}. Apply service brakes."
-msgstr ""
-"El limitador de velocidad no puede mantener {held}{because}. Usa el freno "
-"de servicio."
+msgid "Speed keeper can't hold {held}{because}. Brake."
+msgstr "El limitador de velocidad no puede mantener {held}{because}. Frena."
 
 #. placeholders: {held}, {zone}
 msgid "Speed keeper holding {held} through {zone}."
@@ -27617,16 +27590,14 @@ msgid "building-capped"
 msgstr "building-capped"
 
 #. placeholders: {climb_ahead}
-msgid "Building speed for a {climb_ahead} percent uphill grade ahead."
+msgid "Building speed for a {climb_ahead} percent uphill grade."
 msgstr ""
-"Ganando velocidad para una pendiente de subida del {climb_ahead} por ciento "
-"más adelante."
+"Ganando velocidad para una pendiente de subida del {climb_ahead} por ciento."
 
 #. placeholders: {descent_pct}
-msgid "Easing off for a {descent_pct} percent downhill grade ahead."
+msgid "Easing off for a {descent_pct} percent downhill grade."
 msgstr ""
-"Aflojando para una pendiente de bajada del {descent_pct} por ciento más "
-"adelante."
+"Aflojando para una pendiente de bajada del {descent_pct} por ciento."
 
 msgid "Adaptive cruise canceled; automatic speed control off."
 msgstr ""
@@ -27681,13 +27652,13 @@ msgid "for the grade"
 msgstr "para la pendiente"
 
 #. one sentence of a longer line
-msgid "Cruise is flat out and still losing the grade."
-msgstr "El crucero va a fondo y sigue perdiendo en la pendiente."
+msgid "Cruise can't hold speed on this grade."
+msgstr "El crucero no puede mantener la velocidad en esta pendiente."
 
 #. placeholders: {held}
-msgid "Cruise is flat out and still losing the grade. Holding {held}."
+msgid "Cruise can't hold speed on this grade. Down to {held}."
 msgstr ""
-"El crucero va a fondo y sigue perdiendo en la pendiente. Manteniendo {held}."
+"El crucero no puede mantener la velocidad en esta pendiente. Baja a {held}."
 
 msgid "Exit speed assistance"
 msgstr "Asistencia de velocidad de salida"
@@ -27725,10 +27696,8 @@ msgstr "traction"
 msgid "Low traction limits descent control."
 msgstr "La poca tracción limita el control de descenso."
 
-msgid "Descent control cannot hold this grade. Apply service brakes."
-msgstr ""
-"El control de descenso no puede con esta pendiente. Usa el freno de "
-"servicio."
+msgid "Descent control can't hold this grade. Brake."
+msgstr "El control de descenso no puede con esta pendiente. Frena."
 
 msgid "deliver"
 msgstr "deliver"
@@ -28974,21 +28943,16 @@ msgstr "{exit_speed} {take} {ramp} de rampa, {ending}."
 
 #. placeholders: {place}
 #. one sentence of a longer line
-msgid "Drove past {place}; you never stopped."
-msgstr "Pasaste de largo {place}; no llegaste a parar."
+msgid "Drove past {place}."
+msgstr "Pasaste de largo {place}."
 
 #. placeholders: {place}
-msgid ""
-"Drove past {place}; you never stopped. Safe turnaround. {place} ahead "
-"again; stop this time."
-msgstr ""
-"Pasaste de largo {place}; no llegaste a parar. Retorno seguro. {place} "
-"vuelve a estar delante; esta vez para."
+msgid "Drove past {place}. It is ahead again."
+msgstr "Pasaste de largo {place}. Vuelve a estar delante."
 
-#. placeholders: {place}
 #. one sentence of a longer line
-msgid "{place} ahead again; stop this time."
-msgstr "{place} vuelve a estar delante; esta vez para."
+msgid "It is ahead again."
+msgstr "Vuelve a estar delante."
 
 #. placeholders: {place}
 #. one sentence of a longer line
@@ -28997,31 +28961,20 @@ msgstr "Pasaste de largo {place} sin parar."
 
 #. placeholders: {place}
 msgid ""
-"Drove past {place} without stopping. You loop back through the next safe "
-"turnaround. {place} is ahead again, stop this time. The clock is still "
-"running."
+"Drove past {place} without stopping. You turned around, and {place} is "
+"ahead again."
 msgstr ""
-"Pasaste de largo {place} sin parar. Das la vuelta por el próximo retorno "
-"seguro. {place} vuelve a estar delante, esta vez para. El reloj sigue "
-"corriendo."
-
-#. one sentence of a longer line
-msgid "The clock is still running."
-msgstr "El reloj sigue corriendo."
+"Pasaste de largo {place} sin parar. Diste la vuelta y {place} vuelve a "
+"estar delante."
 
 #. placeholders: {place}
 #. one sentence of a longer line
-msgid "{place} is ahead again, stop this time."
-msgstr "{place} vuelve a estar delante, esta vez para."
+msgid "You turned around, and {place} is ahead again."
+msgstr "Diste la vuelta y {place} vuelve a estar delante."
 
 #. placeholders: {control_hint}
 msgid " Brake with {control_hint} well before it."
 msgstr " Frena con {control_hint} bastante antes."
-
-#. placeholders: {place}
-#. one sentence of a longer line
-msgid "Drove past {place}."
-msgstr "Pasaste de largo {place}."
 
 #. placeholders: {place}
 msgid "Drove past {place}. Use the next safe turnaround."
@@ -29074,46 +29027,34 @@ msgid ""
 msgstr ""
 "La entrada de {facility} está a {closing_text}. Para ahí para registrarte."
 
-#. placeholders: {target}
 #. one sentence of a longer line
-msgid "Gate ahead again; slow to {target}."
-msgstr "La entrada vuelve a estar delante; reduce a {target}."
-
-#. one sentence of a longer line
-msgid "Missed the gate: too fast."
-msgstr "Te pasaste la entrada: demasiado rápido."
+msgid "Missed the gate, too fast."
+msgstr "Te pasaste la entrada, demasiado rápido."
 
 #. placeholders: {target}
-msgid ""
-"Missed the gate: too fast. Safe turnaround. Gate ahead again; slow to "
-"{target}."
-msgstr ""
-"Te pasaste la entrada: demasiado rápido. Retorno seguro. La entrada vuelve "
-"a estar delante; reduce a {target}."
-
-#. placeholders: {target}
-#. one sentence of a longer line
-msgid "The gate is ahead again; slow to {target} this time."
-msgstr "La entrada vuelve a estar delante; esta vez reduce a {target}."
+msgid "Missed the gate, too fast. Slow to {target}."
+msgstr "Te pasaste la entrada, demasiado rápido. Reduce a {target}."
 
 #. placeholders: {destination_facility_text}
 #. one sentence of a longer line
 msgid ""
-"You carried past the gate at {destination_facility_text}, too fast for the "
-"entrance."
+"Missed the gate at {destination_facility_text}, too fast for the entrance."
 msgstr ""
-"Te pasaste la entrada de {destination_facility_text}, ibas demasiado rápido "
-"para entrar."
+"Te pasaste la entrada de {destination_facility_text}, demasiado rápido para "
+"entrar."
 
 #. placeholders: {destination_facility_text}, {target}
 msgid ""
-"You carried past the gate at {destination_facility_text}, too fast for the "
-"entrance. You loop back through the next safe turnaround. The gate is ahead "
-"again; slow to {target} this time. The clock is still running."
+"Missed the gate at {destination_facility_text}, too fast for the entrance. "
+"You turned around, and the gate is ahead again. Slow to {target}."
 msgstr ""
-"Te pasaste la entrada de {destination_facility_text}, ibas demasiado rápido "
-"para entrar. Das la vuelta por el próximo retorno seguro. La entrada vuelve "
-"a estar delante; esta vez reduce a {target}. El reloj sigue corriendo."
+"Te pasaste la entrada de {destination_facility_text}, demasiado rápido para "
+"entrar. Diste la vuelta y la entrada vuelve a estar delante. Reduce a "
+"{target}."
+
+#. one sentence of a longer line
+msgid "You turned around, and the gate is ahead again."
+msgstr "Diste la vuelta y la entrada vuelve a estar delante."
 
 #. placeholders: {control_hint}
 msgid " Brake with {control_hint} well before the gate."
@@ -33746,42 +33687,40 @@ msgid "Missed the turn."
 msgstr "Te pasaste el giro."
 
 #. placeholders: {street}
-msgid "You missed the turn onto {street}."
+msgid "Missed the turn onto {street}."
 msgstr "Te pasaste el giro hacia {street}."
 
 msgid "Turn made for you."
 msgstr "Giro hecho por ti."
 
-#. placeholders: {street}
 #. one sentence of a longer line
-msgid "The turn is made for you and you are on {street}."
-msgstr "El giro se hace por ti y estás en {street}."
+msgid "The turn was made for you."
+msgstr "El giro se hizo por ti."
 
 #. placeholders: {street}
-msgid ""
-"The turn is made for you and you are on {street}. The clock is still "
-"running."
-msgstr ""
-"El giro se hace por ti y estás en {street}. El reloj sigue corriendo."
+msgid "The turn was made for you. You're on {street}."
+msgstr "El giro se hizo por ti. Estás en {street}."
+
+#. placeholders: {street}
+#. one sentence of a longer line
+msgid "You're on {street}."
+msgstr "Estás en {street}."
 
 msgid "Turn missed again. The turn was made for you."
 msgstr "Te volviste a pasar el giro. Se hizo por ti."
 
-msgid "Safe turnaround. Turn ahead again."
-msgstr "Retorno seguro. El giro vuelve a estar delante."
+msgid "Turn ahead again."
+msgstr "El giro vuelve a estar delante."
 
-msgid ""
-"Next safe turnaround, back onto the approach. The turn is ahead again."
-msgstr ""
-"Próximo retorno seguro, de vuelta a la aproximación. El giro vuelve a estar "
-"delante."
+msgid "You turned around, and the turn is ahead again."
+msgstr "Diste la vuelta y el giro vuelve a estar delante."
 
 msgid "Missed the turn. Use the next safe turnaround."
 msgstr "Te pasaste el giro. Usa el próximo retorno seguro."
 
-#. placeholders: {target}, {control_hint}
-msgid " Brake to {target} with {control_hint} on the approach."
-msgstr " Frena a {target} con {control_hint} en la aproximación."
+#. placeholders: {target}
+msgid " Slow to {target} before the turn."
+msgstr " Reduce a {target} antes del giro."
 
 msgid "one lane"
 msgstr "un carril"
@@ -34314,9 +34253,6 @@ msgstr "al menos "
 #. placeholders: {about}, {distance_text}
 msgid " for {about}{distance_text}"
 msgstr " durante {about}{distance_text}"
-
-msgid "Expect to lose speed."
-msgstr "Cuenta con perder velocidad."
 
 #. placeholders: {pct}, {direction}, {length}
 #. one sentence of a longer line
@@ -42687,6 +42623,184 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid ", open-road target {speed_text}"
+#~ msgstr ", objetivo en carretera abierta {speed_text}"
+
+#~ msgid "open-road target {speed_text}"
+#~ msgstr "objetivo en carretera abierta {speed_text}"
+
+#~ msgid ", open-road target will use the posted limit"
+#~ msgstr ", el objetivo en carretera abierta usará el límite señalizado"
+
+#~ msgid "open-road target will use the posted limit"
+#~ msgstr "el objetivo en carretera abierta usará el límite señalizado"
+
+#~ msgid ", automatic speed control, {cruise_holding_text}"
+#~ msgstr ", control automático de velocidad, {cruise_holding_text}"
+
+#~ msgid "automatic speed control"
+#~ msgstr "control automático de velocidad"
+
+#~ msgid ", automatic speed control, {keeper_holding_text}{keeper_target}"
+#~ msgstr ""
+#~ ", control automático de velocidad, {keeper_holding_text}{keeper_target}"
+
+#~ msgid ", automatic speed control paused{keeper_target}"
+#~ msgstr ", control automático de velocidad en pausa{keeper_target}"
+
+#~ msgid "automatic speed control paused"
+#~ msgstr "control automático de velocidad en pausa"
+
+#~ msgid "{speed}, {gear}, {rpm} RPM{cruise}, {air}.{armed}"
+#~ msgstr "{speed}, {gear}, {rpm} RPM{cruise}, {air}.{armed}"
+
+#~ msgid "Cruise cannot hold {speed_text}; the truck is in limp mode."
+#~ msgstr ""
+#~ "El crucero no puede mantener {speed_text}; el camión está en modo de "
+#~ "emergencia."
+
+#~ msgid ""
+#~ "Cruise cannot hold {speed_text}; the truck is in limp mode. Holding "
+#~ "{speed_text2}."
+#~ msgstr ""
+#~ "El crucero no puede mantener {speed_text}; el camión está en modo de "
+#~ "emergencia. Manteniendo {speed_text2}."
+
+#~ msgid "Holding {held}."
+#~ msgstr "Manteniendo {held}."
+
+#~ msgid "Speed keeper is flat out and cannot make {wanted} on this grade."
+#~ msgstr ""
+#~ "El limitador de velocidad va a fondo y no llega a {wanted} en esta "
+#~ "pendiente."
+
+#~ msgid ""
+#~ "Speed keeper is flat out and cannot make {wanted} on this grade. Holding "
+#~ "{held}."
+#~ msgstr ""
+#~ "El limitador de velocidad va a fondo y no llega a {wanted} en esta "
+#~ "pendiente. Manteniendo {held}."
+
+#~ msgid "Apply service brakes."
+#~ msgstr "Usa el freno de servicio."
+
+#~ msgid "Speed keeper cannot hold {held}{because}."
+#~ msgstr "El limitador de velocidad no puede mantener {held}{because}."
+
+#~ msgid "Speed keeper cannot hold {held}{because}. Apply service brakes."
+#~ msgstr ""
+#~ "El limitador de velocidad no puede mantener {held}{because}. Usa el freno "
+#~ "de servicio."
+
+#~ msgid "Building speed for a {climb_ahead} percent uphill grade ahead."
+#~ msgstr ""
+#~ "Ganando velocidad para una pendiente de subida del {climb_ahead} por ciento "
+#~ "más adelante."
+
+#~ msgid "Easing off for a {descent_pct} percent downhill grade ahead."
+#~ msgstr ""
+#~ "Aflojando para una pendiente de bajada del {descent_pct} por ciento más "
+#~ "adelante."
+
+#~ msgid "Cruise is flat out and still losing the grade."
+#~ msgstr "El crucero va a fondo y sigue perdiendo en la pendiente."
+
+#~ msgid "Cruise is flat out and still losing the grade. Holding {held}."
+#~ msgstr ""
+#~ "El crucero va a fondo y sigue perdiendo en la pendiente. Manteniendo {held}."
+
+#~ msgid "Descent control cannot hold this grade. Apply service brakes."
+#~ msgstr ""
+#~ "El control de descenso no puede con esta pendiente. Usa el freno de "
+#~ "servicio."
+
+#~ msgid "Drove past {place}; you never stopped."
+#~ msgstr "Pasaste de largo {place}; no llegaste a parar."
+
+#~ msgid ""
+#~ "Drove past {place}; you never stopped. Safe turnaround. {place} ahead "
+#~ "again; stop this time."
+#~ msgstr ""
+#~ "Pasaste de largo {place}; no llegaste a parar. Retorno seguro. {place} "
+#~ "vuelve a estar delante; esta vez para."
+
+#~ msgid "{place} ahead again; stop this time."
+#~ msgstr "{place} vuelve a estar delante; esta vez para."
+
+#~ msgid ""
+#~ "Drove past {place} without stopping. You loop back through the next safe "
+#~ "turnaround. {place} is ahead again, stop this time. The clock is still "
+#~ "running."
+#~ msgstr ""
+#~ "Pasaste de largo {place} sin parar. Das la vuelta por el próximo retorno "
+#~ "seguro. {place} vuelve a estar delante, esta vez para. El reloj sigue "
+#~ "corriendo."
+
+#~ msgid "The clock is still running."
+#~ msgstr "El reloj sigue corriendo."
+
+#~ msgid "{place} is ahead again, stop this time."
+#~ msgstr "{place} vuelve a estar delante, esta vez para."
+
+#~ msgid "Gate ahead again; slow to {target}."
+#~ msgstr "La entrada vuelve a estar delante; reduce a {target}."
+
+#~ msgid "Missed the gate: too fast."
+#~ msgstr "Te pasaste la entrada: demasiado rápido."
+
+#~ msgid ""
+#~ "Missed the gate: too fast. Safe turnaround. Gate ahead again; slow to "
+#~ "{target}."
+#~ msgstr ""
+#~ "Te pasaste la entrada: demasiado rápido. Retorno seguro. La entrada vuelve "
+#~ "a estar delante; reduce a {target}."
+
+#~ msgid "The gate is ahead again; slow to {target} this time."
+#~ msgstr "La entrada vuelve a estar delante; esta vez reduce a {target}."
+
+#~ msgid ""
+#~ "You carried past the gate at {destination_facility_text}, too fast for the "
+#~ "entrance."
+#~ msgstr ""
+#~ "Te pasaste la entrada de {destination_facility_text}, ibas demasiado rápido "
+#~ "para entrar."
+
+#~ msgid ""
+#~ "You carried past the gate at {destination_facility_text}, too fast for the "
+#~ "entrance. You loop back through the next safe turnaround. The gate is ahead "
+#~ "again; slow to {target} this time. The clock is still running."
+#~ msgstr ""
+#~ "Te pasaste la entrada de {destination_facility_text}, ibas demasiado rápido "
+#~ "para entrar. Das la vuelta por el próximo retorno seguro. La entrada vuelve "
+#~ "a estar delante; esta vez reduce a {target}. El reloj sigue corriendo."
+
+#~ msgid "You missed the turn onto {street}."
+#~ msgstr "Te pasaste el giro hacia {street}."
+
+#~ msgid "The turn is made for you and you are on {street}."
+#~ msgstr "El giro se hace por ti y estás en {street}."
+
+#~ msgid ""
+#~ "The turn is made for you and you are on {street}. The clock is still "
+#~ "running."
+#~ msgstr ""
+#~ "El giro se hace por ti y estás en {street}. El reloj sigue corriendo."
+
+#~ msgid "Safe turnaround. Turn ahead again."
+#~ msgstr "Retorno seguro. El giro vuelve a estar delante."
+
+#~ msgid ""
+#~ "Next safe turnaround, back onto the approach. The turn is ahead again."
+#~ msgstr ""
+#~ "Próximo retorno seguro, de vuelta a la aproximación. El giro vuelve a estar "
+#~ "delante."
+
+#~ msgid " Brake to {target} with {control_hint} on the approach."
+#~ msgstr " Frena a {target} con {control_hint} en la aproximación."
+
+#~ msgid "Expect to lose speed."
+#~ msgstr "Cuenta con perder velocidad."
 
 #~ msgid ""
 #~ "While your dispatch trust is {band}, the carrier keeps you on routine "

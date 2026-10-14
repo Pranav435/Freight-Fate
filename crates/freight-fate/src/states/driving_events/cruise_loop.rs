@@ -367,12 +367,12 @@ impl DrivingState {
                 // (tester, 2026-08-15).
                 let (climb_ahead, _) = self.grade_extremes_ahead();
                 format!(
-                    "Building speed for a {:.1} percent uphill grade ahead.",
+                    "Building speed for a {:.1} percent uphill grade.",
                     climb_ahead * 100.0
                 )
             }
             PccReason::EasingForDescent(descent_pct) => format!(
-                "Easing off for a {:.1} percent downhill grade ahead.",
+                "Easing off for a {:.1} percent downhill grade.",
                 descent_pct * 100.0
             ),
             _ => return,
@@ -948,7 +948,7 @@ impl DrivingState {
         let mut opts = SayEvent::queued();
         opts.category = Some(SpeechCategory::Status);
         ctx.say_event_with(
-            format!("Cruise is flat out and still losing the grade. Holding {held}."),
+            format!("Cruise can't hold speed on this grade. Down to {held}."),
             opts,
         );
     }

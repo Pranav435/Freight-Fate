@@ -269,8 +269,8 @@ fn keeper_builds_to_the_merge_number() {
 /// A driver who cannot see the speedometer has the engine note and the
 /// downshifts, which say the truck is working but not that it is losing --
 /// and losing is the part that decides whether to take it over by hand.
-/// Adaptive cruise has said this for a while ("Cruise is flat out and still
-/// losing the grade"); the keeper said nothing at all, so a truck twenty-one
+/// Adaptive cruise has said this for a while ("Cruise can't hold speed on
+/// this grade"); the keeper said nothing at all, so a truck twenty-one
 /// miles an hour under its own announced number was completely silent.
 #[test]
 fn keeper_says_so_when_the_grade_beats_it() {
@@ -282,7 +282,7 @@ fn keeper_says_so_when_the_grade_beats_it() {
     );
     let heard = harness.transcript_text();
     assert!(
-        heard.contains("Speed keeper is flat out and cannot make 55 miles per hour on this grade."),
+        heard.contains("Speed keeper can't make 55 miles per hour on this grade."),
         "the keeper never owned up to losing the grade:\n{heard}"
     );
 }
@@ -298,7 +298,7 @@ fn keeper_droop_warning_is_said_once() {
     let said = harness
         .transcript()
         .iter()
-        .filter(|line| line.contains("Speed keeper is flat out"))
+        .filter(|line| line.contains("Speed keeper can't make"))
         .count();
     assert_eq!(said, 1, "{}", harness.transcript_text());
 }
@@ -317,7 +317,7 @@ fn keeper_says_nothing_on_a_grade_it_can_hold() {
     assert!(
         !harness
             .transcript_text()
-            .contains("Speed keeper is flat out"),
+            .contains("Speed keeper can't make"),
         "{}",
         harness.transcript_text()
     );
@@ -1109,10 +1109,10 @@ fn keeper_corridor_measurement() {
         let owned_up = drive
             .heard
             .iter()
-            .filter(|l| l.contains("flat out"))
+            .filter(|l| l.contains("can't make") || l.contains("Cruise can't hold speed"))
             .count();
         if owned_up > 0 {
-            println!("  (the controller said it was flat out and losing {owned_up} time(s))");
+            println!("  (the controller said it could not hold its speed {owned_up} time(s))");
         }
         for d in &dev {
             println!("  DEVIATION {}", d.report());

@@ -38,6 +38,9 @@ impl DrivingState {
             ctx.say("Jake off.");
             return;
         }
+        // Turning it on is what retires the downgrade call's "set the engine
+        // brake" advice (`descend_advice`).
+        self.note_instruction_demonstrated(ctx, "engine_brake");
         if self.trip.truck.transmission.automatic && self.auto_jake_enabled {
             self.auto_jake = true;
             self.auto_jake_hold_mph = Some(5.0f64.max(self.trip.truck.speed_mph()));
