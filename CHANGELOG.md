@@ -106,6 +106,12 @@
 
 ### Fixed
 
+- **A full brake stop with the engine brake on no longer damages your load.**
+
+- **An engine brake stage you pick now stays picked.** Cruise and the bend assist no longer turn it off when their reason ends.
+
+- **Turning automatic engine brake off with Alt J now lasts between drives.** It used to switch back on at every dispatch.
+
 - **With score display set to percentage only, the dispatch trust line keeps its trust level.**
 
 - **Spanish dispatch trust levels now agree with confianza (completa, con reservas, baja, última oportunidad).**

@@ -96,13 +96,13 @@ fn the_struct_carries_the_persisted_fields_in_python_order() {
     // score_display, assist_preset_chosen (2026-09-30), and touch_haptics and
     // touch_practice_offered (2026-10-07), the six touch gesture
     // thresholds (2026-10-08), facility_streets (2026-10-11) and language
-    // (2026-10-12) were added on the Rust side;
+    // (2026-10-12) and automatic_jake (2026-10-14) were added on the Rust side;
     // lane_centering_assist was retired for 1.9.
-    assert_eq!(Settings::FIELD_NAMES.len(), 96);
+    assert_eq!(Settings::FIELD_NAMES.len(), 97);
     assert_eq!(Settings::FIELD_NAMES[0], "online_services");
-    assert_eq!(Settings::FIELD_NAMES[80], "settings_layout_notice_from");
+    assert_eq!(Settings::FIELD_NAMES[81], "settings_layout_notice_from");
     let pairs = Settings::default().ordered_values();
-    assert_eq!(pairs.len(), 96);
+    assert_eq!(pairs.len(), 97);
     for ((name, _), field) in pairs.iter().zip(Settings::FIELD_NAMES) {
         assert_eq!(name, field);
     }
@@ -120,6 +120,7 @@ fn the_defaults_match_the_python_dataclass() {
         r#"{
         "online_services": true, "imperial_units": true, "engine_voice": "real",
         "jake_voice": "real", "acc_following_gap": "normal", "automatic_transmission": true,
+        "automatic_jake": true,
         "automatic_direction_changes": "simple", "time_scale": 10.0,
         "pace_retired_notice_left": 0, "real_weather": false, "real_traffic": false,
         "real_parking": false, "real_fuel_prices": true,
@@ -165,7 +166,7 @@ fn the_defaults_match_the_python_dataclass() {
     let Value::Object(expected) = expected else {
         unreachable!()
     };
-    assert_eq!(expected.len(), 96);
+    assert_eq!(expected.len(), 97);
     for (name, value) in s.ordered_values() {
         assert_eq!(Some(&value), expected.get(name), "{name}");
     }
