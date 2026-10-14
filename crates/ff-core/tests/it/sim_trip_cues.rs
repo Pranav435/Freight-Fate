@@ -1234,6 +1234,72 @@ fn published_tolls_carry_plate_rates_and_one_way_collection() {
         !carquinez.applies_to_direction(true) && carquinez.applies_to_direction(false),
         "collected eastbound only"
     );
+    let named = |a: &str, b: &str, name: &str| {
+        tolls(a, b)
+            .into_iter()
+            .filter(|toll| toll.name == name)
+            .collect::<Vec<_>>()
+    };
+    for (from, forward) in [
+        ("newark_nj_us", true),
+        ("allentown_pa_us", true),
+        ("philadelphia_pa_us", false),
+    ] {
+        let (a, b) = if forward {
+            (from, "new_york_ny_us")
+        } else {
+            ("new_york_ny_us", from)
+        };
+        let gwb = named(a, b, "George Washington Bridge toll");
+        assert_eq!(gwb.len(), 1, "{from} to New York pays the GWB");
+        let gwb = &gwb[0];
+        assert_eq!((gwb.amount, gwb.plate_amount()), (120.85, 128.35));
+        assert!(
+            gwb.applies_to_direction(forward) && !gwb.applies_to_direction(!forward),
+            "{from}: collected into New York only"
+        );
+    }
+    for from in ["los_angeles_ca_us", "sacramento_ca_us", "stockton_ca_us"] {
+        let bay = named(
+            from,
+            "san_francisco_ca_us",
+            "San Francisco-Oakland Bay Bridge toll",
+        );
+        assert_eq!(bay.len(), 1, "{from} to San Francisco pays the Bay Bridge");
+        assert!(
+            bay[0].applies_to_direction(true) && !bay[0].applies_to_direction(false),
+            "{from}: collected westbound into San Francisco only"
+        );
+        assert_eq!(bay[0].amount, 40.5);
+    }
+    let golden = named(
+        "san_francisco_ca_us",
+        "santa_rosa_ca_us",
+        "Golden Gate Bridge toll",
+    );
+    assert_eq!(golden.len(), 1);
+    assert_eq!((golden[0].amount, golden[0].plate_amount()), (51.25, 52.5));
+    assert!(
+        !golden[0].applies_to_direction(true) && golden[0].applies_to_direction(false),
+        "collected southbound into San Francisco only"
+    );
+    let turnpike = named(
+        "new_york_ny_us",
+        "philadelphia_pa_us",
+        "New Jersey Turnpike settlement",
+    );
+    assert_eq!(turnpike.len(), 2, "one settlement each way");
+    for forward in [true, false] {
+        let due: Vec<_> = turnpike
+            .iter()
+            .filter(|toll| toll.applies_to_direction(forward))
+            .collect();
+        assert_eq!(due.len(), 1, "forward={forward}");
+        assert_eq!(
+            (due[0].amount, due[0].plate_amount(), due[0].estimated),
+            (62.51, 68.6, false)
+        );
+    }
 }
 
 #[test]
