@@ -67,16 +67,13 @@ impl DrivingState {
             return;
         }
         let kind = event.kind;
-        // The route's own call counts as telling the driver about the turn,
-        // so the turn chimes as the truck takes it. Only the turn's approach
-        // call used to count, and a truck already under a turn's speed never
-        // gets one: every turn taken at a crawl went by without its chime
-        // (agent drive, Aberdeen yard, 2026-09-23).
+        // The route's own call names the turn too, so when it is the first
+        // word about a corner, the corner's chime goes out with it.
         if kind == TripEventKind::GpsCue
             && (ctx.settings.speaks(Self::event_category(event)) || !ctx.ladder_applies())
         {
             if let Some(cue) = event.data.cue.as_ref().filter(|cue| is_judged_turn(cue)) {
-                self.turn_announced.insert(cue.key.clone());
+                self.chime_corner(ctx, cue);
             }
         }
         let sound = route_event_sound(event);
@@ -782,11 +779,10 @@ impl DrivingState {
             // were never a substitute for a sentence (owner, 2026-08-17:
             // "sound is enough").
             // A JUDGED corner -- one with a real side to it -- belongs to the
-            // turn flow, which sounds it once as the truck actually turns
-            // (`resolve_turn`). Its route cues fire twice more, at the
-            // quarter-mile lead and at the corner itself, and the owner heard
-            // all three on one turn out of Houston (2026-09-20). One corner,
-            // one chime, at the corner.
+            // turn flow, which sounds it once with the first words about it
+            // (`chime_corner`). Its route cues fire at the lead and at the
+            // corner itself, and the owner heard three chimes on one turn
+            // out of Houston (2026-09-20). One corner, one chime.
             //
             // A cue with no side to it -- "continue onto", "straight on" --
             // never reaches the turn flow, so it keeps its own sound and only
