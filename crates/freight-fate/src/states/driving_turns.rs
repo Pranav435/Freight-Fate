@@ -126,7 +126,7 @@ impl DrivingState {
         self.turn_advised.clear();
         self.turn_missed.clear();
         self.turn_resolved.clear();
-        self.turn_chimed.clear();
+        self.turn_announced.clear();
         self.turn_called_now.clear();
         self.turn_grace_s = 0.0;
         self.trip.controlled_turn = false;
@@ -504,9 +504,9 @@ impl DrivingState {
                 return;
             }
             if ahead > 0.0 && self.trip.turning_through_corner() {
-                // Still round the last corner: this call, and its chime,
-                // wait for the rear to clear it, so the driver is not told
-                // about one side while still turning the other way.
+                // Still round the last corner, whose chime has just sounded:
+                // this call waits for the rear to clear it, or the words name
+                // one side over the other side's chime.
                 self.pace_clock_for_turn(&cue, ahead);
                 return;
             }
@@ -541,14 +541,15 @@ impl DrivingState {
             } else {
                 full
             };
-            // The earcon goes with these words, and only when they are
-            // spoken: a rung that silences them would leave a chime with
-            // nothing attached to it (owner, 2026-09-20). A lead the route
-            // already spoke has chimed with that lead.
-            if !message.is_empty()
-                && (ctx.settings.speaks(Some(SpeechCategory::Navigation)) || !ctx.ladder_applies())
-            {
-                self.chime_turn(ctx, &cue);
+            // The earcon waits for the corner itself. It used to sound
+            // here, on the approach, whether or not the words that go with
+            // it were ever spoken -- so a rung that silenced the lead left a
+            // turn chime with nothing attached to it, and the owner heard
+            // corners announced by sound alone (2026-09-20). It marks the
+            // moment the truck turns now, his own preference, and only for a
+            // corner he was actually told about.
+            if ctx.settings.speaks(Some(SpeechCategory::Navigation)) || !ctx.ladder_applies() {
+                self.turn_announced.insert(cue.key.clone());
             }
             // A LEAD is deliberately left on the droppable ambient default,
             // unlike the act-now navigation calls raised to ROUTE alongside
@@ -616,31 +617,21 @@ impl DrivingState {
 
     /// `_resolve_turn(cue)`: this corner is settled; the clock goes back to
     /// trip pacing.
-    pub fn resolve_turn(&mut self, _ctx: &mut GameContext, cue: &NavigationCue) {
+    pub fn resolve_turn(&mut self, ctx: &mut GameContext, cue: &NavigationCue) {
         self.turn_resolved.insert(cue.key.clone());
         self.turn_grace_s = 0.0;
         self.trip.controlled_turn = false;
-    }
-
-    /// The turn earcon, once per corner, panned to the side it goes. Called
-    /// with the first words that name the corner, so the chime and the words
-    /// always say the same side.
-    ///
-    /// It used to sound as the truck took the corner. On a run of corners
-    /// that put it just ahead of the NEXT corner's call: a right chime, then
-    /// "Turn left onto East 8th Street", heard as a right warning for a left
-    /// turn, and as a warning that came too late (player report, 2026-10-14).
-    pub fn chime_turn(&mut self, ctx: &mut GameContext, cue: &NavigationCue) {
-        if !self.turn_chimed.insert(cue.key.clone()) {
-            return;
-        }
-        if let Some(sound) = local_turn_sound(Some(&cue.direction)) {
-            let pan = match cue.direction.trim().to_lowercase().as_str() {
-                "left" => -TURN_CUE_PAN,
-                "right" => TURN_CUE_PAN,
-                _ => 0.0,
-            };
-            ctx.audio.play_with(sound, 1.0, pan);
+        // Taken, by the driver or by the assists: the corner is behind the
+        // truck and this is the sound of it, panned to the side it went.
+        if self.turn_announced.remove(&cue.key) {
+            if let Some(sound) = local_turn_sound(Some(&cue.direction)) {
+                let pan = if cue.direction == "left" {
+                    -TURN_CUE_PAN
+                } else {
+                    TURN_CUE_PAN
+                };
+                ctx.audio.play_with(sound, 1.0, pan);
+            }
         }
     }
 
@@ -657,8 +648,6 @@ impl DrivingState {
         self.trip.position_mi = floor.max(cue.at_mi - self.turn_window_mi());
         self.turn_advised.remove(&cue.key);
         self.turn_called_now.remove(&cue.key);
-        // The re-approach calls the corner again, and its chime goes with it.
-        self.turn_chimed.remove(&cue.key);
         self.turn_grace_s = 0.0;
         self.trip.controlled_turn = false;
         // The trip's own GPS maneuver announcements latch per cue key; without

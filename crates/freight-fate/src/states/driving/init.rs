@@ -633,7 +633,7 @@ impl DrivingState {
             turn_advised: HashSet::new(),
             turn_missed: HashSet::new(),
             turn_resolved: HashSet::new(),
-            turn_chimed: HashSet::new(),
+            turn_announced: HashSet::new(),
             turn_called_now: HashSet::new(),
             turn_grace_s: 0.0,
             air_ready_said: air_ready,

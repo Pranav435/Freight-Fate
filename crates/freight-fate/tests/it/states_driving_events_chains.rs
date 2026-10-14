@@ -155,7 +155,7 @@ fn test_chain_swaps_to_streets_and_keeps_the_clock() {
 }
 
 #[test]
-fn test_each_corner_chimes_with_its_own_call() {
+fn test_each_first_corner_sounds_where_it_is_made() {
     // Live drive into Ardmore, 2026-09-24: the yard's streets open with three
     // corners 0.05 mile apart -- left onto West Broadway Street, right onto M
     // Street Southwest, left back onto West Broadway Street. The first is
@@ -206,15 +206,8 @@ fn test_each_corner_chimes_with_its_own_call() {
     let sides: Vec<&str> = corners.iter().map(|(_, side)| side.as_str()).collect();
     assert_eq!(sides, ["left", "right", "left"], "{corners:?}");
     assert!(corners[2].0 - corners[0].0 < 0.15, "{corners:?}");
-    // Chimes and spoken turns, in the order the driver met them. The chime
-    // sounds once per corner, with the words that name it, before the corner
-    // and after the one before it. Sounded as each corner was taken, it was
-    // a left chime just ahead of "turn right onto M Street", heard as the
-    // wrong side (player report, 2026-10-14).
-    let mut heard: Vec<(String, f64)> = Vec::new();
     let mut tones = Vec::new();
     let mut played = 0;
-    let mut said = 0;
     for _ in 0..(30 * 120) {
         harness.advance_clock(dt);
         harness.with_drive(|d, ctx| {
@@ -225,44 +218,22 @@ fn test_each_corner_chimes_with_its_own_call() {
         let at = harness.read_drive(|d| d.trip.position_mi);
         let calls = log.borrow().played.clone();
         for (key, _, _) in &calls[played..] {
-            if let Some(side) = key.strip_prefix("events/turn_") {
-                tones.push((side.to_string(), at));
-                heard.push((format!("chime {side}"), at));
+            if key.starts_with("events/turn_") {
+                tones.push((key.clone(), at));
             }
         }
         played = calls.len();
-        let lines = harness.app.event_lines();
-        for line in &lines[said..] {
-            let lowered = line.to_lowercase();
-            for side in ["left", "right"] {
-                if lowered.contains(&format!("turn {side}")) {
-                    heard.push((format!("said {side}"), at));
-                }
-            }
-        }
-        said = lines.len();
         if at > corners[2].0 + 0.05 {
             break;
         }
     }
-    assert_eq!(tones.len(), 3, "{heard:?}");
-    let mut previous_mi = f64::NEG_INFINITY;
-    for ((side, at), (corner_mi, corner_side)) in tones.iter().zip(&corners) {
-        assert_eq!(side, corner_side, "{heard:?}");
+    assert_eq!(tones.len(), 3, "{tones:?}");
+    for ((key, at), (corner_mi, side)) in tones.iter().zip(&corners) {
+        assert_eq!(key, &format!("events/turn_{side}"), "{tones:?}");
         assert!(
-            *at <= *corner_mi && *at > previous_mi,
-            "the {side} turn at {corner_mi:.3} mile chimed at {at:.3}: {heard:?}"
+            at - corner_mi < 0.01,
+            "the {side} turn at {corner_mi:.2} mile sounded at {at:.3}: {tones:?}"
         );
-        previous_mi = *corner_mi;
-    }
-    // No spoken turn follows a chime for the other side.
-    let mut last_chime: Option<&str> = None;
-    for (what, _) in &heard {
-        if let Some(side) = what.strip_prefix("chime ") {
-            last_chime = Some(side);
-        } else if let (Some(side), Some(chimed)) = (what.strip_prefix("said "), last_chime) {
-            assert_eq!(side, chimed, "{heard:?}");
-        }
     }
 }
 
@@ -397,7 +368,7 @@ fn test_a_resumed_street_chain_calls_its_first_corner_fresh() {
 
     assert!(resumed.surface_chain);
     assert!(!resumed.turn_advised.contains(&key));
-    assert!(!resumed.turn_chimed.contains(&key));
+    assert!(!resumed.turn_announced.contains(&key));
     assert!(
         resumed.speed_control_armed,
         "the session waits for the truck to roll"

@@ -58,8 +58,6 @@
 
 ### Changed
 
-- **The left and right turn chimes now play with the call for that turn, before the corner, not as you take it.**
-
 - **The Steering guide setting now reads steer toward the sound, or steer away from the sound.**
 
 - **Dispatch trust now changes half a point earlier at each cutoff.** It follows the rounded reputation you hear.
