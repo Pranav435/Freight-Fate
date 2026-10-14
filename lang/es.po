@@ -33742,46 +33742,24 @@ msgstr "Recomendado {target}."
 msgid "{advice} Speed keeper easing."
 msgstr "{advice} El limitador de velocidad afloja."
 
-msgid "Missed the turn."
-msgstr "Te pasaste el giro."
+msgid "Missed the turn. Going around the block."
+msgstr "Te pasaste el giro. Das la vuelta a la manzana."
 
-#. placeholders: {street}
-msgid "You missed the turn onto {street}."
-msgstr "Te pasaste el giro hacia {street}."
-
-msgid "Turn made for you."
-msgstr "Giro hecho por ti."
+#. one sentence of a longer line
+msgid "Going around the block."
+msgstr "Das la vuelta a la manzana."
 
 #. placeholders: {street}
 #. one sentence of a longer line
-msgid "The turn is made for you and you are on {street}."
-msgstr "El giro se hace por ti y estás en {street}."
+msgid "Missed the turn onto {street}."
+msgstr "Te pasaste el giro hacia {street}."
 
 #. placeholders: {street}
-msgid ""
-"The turn is made for you and you are on {street}. The clock is still "
-"running."
-msgstr ""
-"El giro se hace por ti y estás en {street}. El reloj sigue corriendo."
+msgid "Missed the turn onto {street}. Going around the block."
+msgstr "Te pasaste el giro hacia {street}. Das la vuelta a la manzana."
 
-msgid "Turn missed again. The turn was made for you."
-msgstr "Te volviste a pasar el giro. Se hizo por ti."
-
-msgid "Safe turnaround. Turn ahead again."
-msgstr "Retorno seguro. El giro vuelve a estar delante."
-
-msgid ""
-"Next safe turnaround, back onto the approach. The turn is ahead again."
-msgstr ""
-"Próximo retorno seguro, de vuelta a la aproximación. El giro vuelve a estar "
-"delante."
-
-msgid "Missed the turn. Use the next safe turnaround."
-msgstr "Te pasaste el giro. Usa el próximo retorno seguro."
-
-#. placeholders: {target}, {control_hint}
-msgid " Brake to {target} with {control_hint} on the approach."
-msgstr " Frena a {target} con {control_hint} en la aproximación."
+msgid "Missed the turn. Went around the block."
+msgstr "Te pasaste el giro. Diste la vuelta a la manzana."
 
 msgid "one lane"
 msgstr "un carril"
@@ -42687,6 +42665,42 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "Missed the turn."
+#~ msgstr "Te pasaste el giro."
+
+#~ msgid "You missed the turn onto {street}."
+#~ msgstr "Te pasaste el giro hacia {street}."
+
+#~ msgid "Turn made for you."
+#~ msgstr "Giro hecho por ti."
+
+#~ msgid "The turn is made for you and you are on {street}."
+#~ msgstr "El giro se hace por ti y estás en {street}."
+
+#~ msgid ""
+#~ "The turn is made for you and you are on {street}. The clock is still "
+#~ "running."
+#~ msgstr ""
+#~ "El giro se hace por ti y estás en {street}. El reloj sigue corriendo."
+
+#~ msgid "Turn missed again. The turn was made for you."
+#~ msgstr "Te volviste a pasar el giro. Se hizo por ti."
+
+#~ msgid "Safe turnaround. Turn ahead again."
+#~ msgstr "Retorno seguro. El giro vuelve a estar delante."
+
+#~ msgid ""
+#~ "Next safe turnaround, back onto the approach. The turn is ahead again."
+#~ msgstr ""
+#~ "Próximo retorno seguro, de vuelta a la aproximación. El giro vuelve a estar "
+#~ "delante."
+
+#~ msgid "Missed the turn. Use the next safe turnaround."
+#~ msgstr "Te pasaste el giro. Usa el próximo retorno seguro."
+
+#~ msgid " Brake to {target} with {control_hint} on the approach."
+#~ msgstr " Frena a {target} con {control_hint} en la aproximación."
 
 #~ msgid ""
 #~ "While your dispatch trust is {band}, the carrier keeps you on routine "

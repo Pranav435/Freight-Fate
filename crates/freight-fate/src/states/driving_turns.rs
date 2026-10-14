@@ -26,22 +26,15 @@
 //! of them and never heard an advisory at all. `docs/turn-geometry-brief.md`
 //! is the standing record of that directive and the sources behind the model.
 //!
-//! The miss is the fourth instance of the shipped loop-back pattern (blown ramp
-//! stop, missed destination exit, missed facility gate) and inherits the two
-//! lessons that cost the most to learn:
+//! Every corner is called once its window opens, with its advise speed,
+//! whether or not the truck is already under it, so the number a driver has
+//! to make is never a guess.
 //!
-//! - Drop back a FULL SPOKEN WINDOW, never a fixed distance. Under time
-//!   compression a fixed stretch passes before it can be heard, so the retry is
-//!   unwinnable.
-//! - RESET EVERY say-once latch on the reposition, including the trip's own
-//!   navigation announcements. When the missed-exit loop did not, the second
-//!   miss stranded the trip.
-//!
-//! Escalation ships on day one, because a loop with no escalation is a route
-//! that can stop being finishable: the core sentence is identical every time so
-//! the flow stays predictable by ear, help is appended from the second miss, and
-//! the corner is completed for the player -- with the time still charged --
-//! either on a repeat miss of the SAME corner or on the third miss anywhere.
+//! A miss costs time and nothing else: the truck goes around the block and
+//! comes out on the street it missed. Until 2026-10-14 it was the fourth
+//! instance of the shipped loop-back pattern (blown ramp stop, missed
+//! destination exit, missed facility gate) and dropped the truck back onto
+//! the approach to try again, which a player heard as a teleport.
 //!
 //! Highway junctions are deliberately not judged here. Their cues carry no
 //! direction, radius, or lane ordinal, and `docs/nav-phrasing-brief.md` forbids
@@ -64,8 +57,10 @@ use crate::states::driving_speed_control::{KEEPER_EASE_REAL_S, KEEPER_SETTLE_REA
 /// street speed -- a reflex window, which is the thing this design refuses.
 pub const TURN_WARNING_REAL_S: f64 = 25.0;
 /// Bounded by the road it lives on: a city block is short, and no corner call
-/// should arrive two miles of arterial before the corner exists.
-pub const TURN_WINDOW_MIN_MI: f64 = 0.25;
+/// should arrive two miles of arterial before the corner exists. Never later
+/// than the route's own street lead, so the call that carries the advise
+/// speed is the first word about a corner, not a repeat after it.
+pub const TURN_WINDOW_MIN_MI: f64 = ff_core::sim::trip::LOCAL_TURN_LOOKAHEAD_MI;
 pub const TURN_WINDOW_MAX_MI: f64 = 2.0;
 /// The nominal corner speed the APPROACH WINDOW is sized against -- not a
 /// ceiling on the corner itself, which `data::corners` derives per angle.
@@ -78,13 +73,12 @@ pub const TURN_CLOCK_EASE_REAL_S: f64 = ff_core::sim::trip::EXIT_APPROACH_RELEAS
 /// Brake deadband: the truck may be a few mph over without failing, the same
 /// forgiveness the curve assist's hysteresis grants.
 pub const TURN_SPEED_MARGIN_MPH: f64 = 3.0;
-/// Game minutes one loop through the safe turnaround costs. The gate and the
-/// destination exit charge 20 for a highway-scale turnaround -- miles of
-/// frontage road at 45 and back. A city corner is four right turns around one
-/// block at 20 with signals on two of them, so it costs a fraction of that.
+/// Game minutes a missed corner costs: three turns around one block at 20,
+/// with signals on two of them. The gate and the destination exit charge 20
+/// for a highway-scale turnaround, miles of frontage road at 45 and back.
 pub const TURN_MISS_LOOP_MIN: f64 = 8.0;
-/// How far past the corner it stays the corner in play, and where a completed
-/// turn puts the truck back on the road.
+/// How far past the corner it stays the corner in play, and where the truck
+/// comes out on the new street after going around the block.
 pub const TURN_COMMIT_TAIL_MI: f64 = 0.15;
 /// Inside this the approach call drops the distance and says "now" -- and is
 /// an act-now instruction rather than a lead, which changes how it is paced.
@@ -124,7 +118,6 @@ impl DrivingState {
     pub fn reset_turn_state_for_trip(&mut self) {
         self.turn_trip_id = self.trip_generation;
         self.turn_advised.clear();
-        self.turn_missed.clear();
         self.turn_resolved.clear();
         self.turn_announced.clear();
         self.turn_called_now.clear();
@@ -343,8 +336,8 @@ impl DrivingState {
         ))
     }
 
-    /// `_turn_window_mi()`: how far out the corner is called, and how far back
-    /// a miss drops -- a full spoken window, so the retry is winnable.
+    /// `_turn_window_mi()`: how far out the corner is called -- a full spoken
+    /// window, so there is road left to brake in once it has been heard.
     pub fn turn_window_mi(&self) -> f64 {
         let speed = self.trip.truck.speed_mph().max(TURN_CORNER_MAX_MPH);
         let miles = TURN_WARNING_REAL_S * speed * self.trip.effective_time_scale() / 3600.0;
@@ -418,9 +411,8 @@ impl DrivingState {
     /// `_turn_approach_text(cue, ahead_mi)`: the approach call, in the pacenote
     /// grammar -- side, street, distance, advisory.
     ///
-    /// Terse drops the advisory tail but keeps everything a driver needs to
-    /// place the corner -- and always says the verb, because a bare "Right now"
-    /// reads as a direction or as timing, never reliably one.
+    /// Always says the verb, because a bare "Right now" reads as a direction
+    /// or as timing, never reliably one.
     pub fn turn_approach_text(
         &self,
         ctx: &GameContext,
@@ -436,21 +428,20 @@ impl DrivingState {
             let distance = settings.short_distance_text(ahead_mi);
             format!("{} turn onto {street}, {distance}.", capitalize(&direction))
         };
-        if self.terse_speech(ctx) {
-            return call;
-        }
         format!("{call} {}", self.turn_advice_text(ctx, cue))
     }
 
     /// The approach call's advisory half alone: "Advise 11 miles per hour.",
-    /// with the keeper's own line when it is taking the corner. Empty in
-    /// terse, which drops the advisory.
+    /// with the keeper's own line when it is taking the corner.
+    ///
+    /// Terse keeps the advise speed. It used to drop it with the rest of the
+    /// tail, which left a terse driver no number to brake to at all.
     pub fn turn_advice_text(&self, ctx: &GameContext, cue: &NavigationCue) -> String {
-        if self.terse_speech(ctx) {
-            return String::new();
-        }
         let target = ctx.settings.speed_text(self.turn_speed_mph(cue));
         let mut advice = format!("Advise {target}.");
+        if self.terse_speech(ctx) {
+            return advice;
+        }
         if self.keeper_mph.is_some() && self.trip.truck.speed_mph() > self.turn_speed_mph(cue) {
             // The keeper sheds this corner's speed itself, so say so here
             // rather than as a second utterance on top of the corner call --
@@ -477,29 +468,19 @@ impl DrivingState {
         };
         let ahead = cue.at_mi - self.trip.position_mi;
         if !self.turn_advised.contains(&cue.key) {
-            if self.trip.truck.speed_mph() <= self.turn_speed_mph(&cue) {
-                // Already slow enough to make it: the route's own maneuver cue
-                // is the whole story, and an advisory a crawling truck cannot
-                // fail is noise. The gate's speed warning works the same way.
-                //
-                // The CLOCK is a separate question, and conflating the two is
-                // what made a downtown arrival unfollowable: this return used
-                // to leave `controlled_turn` alone, so a truck held under
-                // every corner's speed by the keeper took the whole chain at
-                // full compression and heard four corners in fifteen real
-                // seconds (owner, Spokane, 2026-08-21: "I missed the turn").
-                // Being slow enough to MAKE a corner is not being given time
-                // to HEAR about it, and the route's own maneuver cue -- the
-                // whole story here, by the comment above -- still has to
-                // arrive far enough ahead to be acted on. That time is the
-                // brake point's reaction seconds, on the real clock.
-                if ahead <= 0.0 {
-                    self.resolve_turn(ctx, &cue);
-                } else if ahead <= self.turn_window_mi() {
-                    self.pace_clock_for_turn(&cue, ahead);
-                }
+            if ahead <= 0.0 && self.trip.truck.speed_mph() <= self.turn_speed_mph(&cue) {
+                // A cold arrival already under the corner's speed: there is
+                // nothing left to call and nothing to fail.
+                self.resolve_turn(&cue);
                 return;
             }
+            // Every corner is called, at its speed, whether or not the truck
+            // is already under it. Calling only the corners a truck was too
+            // fast for left a driver who had slowed down hearing an advise
+            // speed on some turns and not others, with no way to know how
+            // fast the next one could be taken (player report, 2026-10-13:
+            // "I'm not a mind reader"). Knowing the number is what lets a
+            // driver run the block between corners at the street's speed.
             if ahead > self.turn_window_mi() {
                 return;
             }
@@ -541,15 +522,15 @@ impl DrivingState {
             } else {
                 full
             };
-            // The earcon waits for the corner itself. It used to sound
-            // here, on the approach, whether or not the words that go with
-            // it were ever spoken -- so a rung that silenced the lead left a
-            // turn chime with nothing attached to it, and the owner heard
-            // corners announced by sound alone (2026-09-20). It marks the
-            // moment the truck turns now, his own preference, and only for a
-            // corner he was actually told about.
+            // The side's chime goes out with the words that name the turn,
+            // and only when those words are spoken: a rung that silences the
+            // call silences its chime too (owner, 2026-09-20). It used to
+            // wait for the corner itself, so the chime for the turn just
+            // taken landed next to the call for the next one, and a driver
+            // heard a right chime beside "Left turn" (player report,
+            // 2026-10-13).
             if ctx.settings.speaks(Some(SpeechCategory::Navigation)) || !ctx.ladder_applies() {
-                self.turn_announced.insert(cue.key.clone());
+                self.chime_corner(ctx, &cue);
             }
             // A LEAD is deliberately left on the droppable ambient default,
             // unlike the act-now navigation calls raised to ROUTE alongside
@@ -570,9 +551,7 @@ impl DrivingState {
             if !lead_heard && 0.0f64.max(ahead) <= TURN_NOW_MI {
                 self.turn_called_now.insert(cue.key.clone());
             }
-            if message.is_empty() {
-                // Terse, with the lead already heard: nothing new to say.
-            } else if 0.0f64.max(ahead) <= TURN_NOW_MI {
+            if 0.0f64.max(ahead) <= TURN_NOW_MI {
                 ctx.say_event_with(
                     message,
                     SayEvent::queued()
@@ -602,14 +581,14 @@ impl DrivingState {
             // the truck drove through the next two corners, whose calls came
             // late and whose tones all sounded together at the end of it
             // (live drive into Ardmore, 2026-09-24).
-            self.resolve_turn(ctx, &cue);
+            self.resolve_turn(&cue);
             return;
         }
         if self.turn_grace_s > 0.0 {
             return; // the corner's own cue is still speaking
         }
         if self.turn_miss_suspended() {
-            self.resolve_turn(ctx, &cue);
+            self.resolve_turn(&cue);
             return;
         }
         self.handle_missed_turn(ctx, &cue);
@@ -617,107 +596,58 @@ impl DrivingState {
 
     /// `_resolve_turn(cue)`: this corner is settled; the clock goes back to
     /// trip pacing.
-    pub fn resolve_turn(&mut self, ctx: &mut GameContext, cue: &NavigationCue) {
+    pub fn resolve_turn(&mut self, cue: &NavigationCue) {
         self.turn_resolved.insert(cue.key.clone());
         self.turn_grace_s = 0.0;
         self.trip.controlled_turn = false;
-        // Taken, by the driver or by the assists: the corner is behind the
-        // truck and this is the sound of it, panned to the side it went.
-        if self.turn_announced.remove(&cue.key) {
-            if let Some(sound) = local_turn_sound(Some(&cue.direction)) {
-                let pan = if cue.direction == "left" {
-                    -TURN_CUE_PAN
-                } else {
-                    TURN_CUE_PAN
-                };
-                ctx.audio.play_with(sound, 1.0, pan);
-            }
+    }
+
+    /// The turn's chime, panned to its side: once per corner, with the
+    /// first words that name it, whichever line that is (this call, the
+    /// route's own lead, or the street chain's briefing).
+    pub fn chime_corner(&mut self, ctx: &mut GameContext, cue: &NavigationCue) {
+        if !self.turn_announced.insert(cue.key.clone()) {
+            return;
+        }
+        if let Some(sound) = local_turn_sound(Some(&cue.direction)) {
+            let pan = if cue.direction.trim().eq_ignore_ascii_case("left") {
+                -TURN_CUE_PAN
+            } else {
+                TURN_CUE_PAN
+            };
+            ctx.audio.play_with(sound, 1.0, pan);
         }
     }
 
-    /// `_reposition_for_turn(cue)`: drop back a full spoken window onto the
-    /// approach, and clear every say-once latch the re-approach has to speak
-    /// through again.
-    pub fn reposition_for_turn(&mut self, cue: &NavigationCue) {
-        let mut floor: f64 = 0.0;
-        for other in &self.trip.navigation_cues {
-            if is_judged_turn(other) && other.at_mi < cue.at_mi {
-                floor = floor.max(other.at_mi + TURN_COMMIT_TAIL_MI);
-            }
-        }
-        self.trip.position_mi = floor.max(cue.at_mi - self.turn_window_mi());
-        self.turn_advised.remove(&cue.key);
-        self.turn_called_now.remove(&cue.key);
-        self.turn_grace_s = 0.0;
-        self.trip.controlled_turn = false;
-        // The trip's own GPS maneuver announcements latch per cue key; without
-        // this the loop-back would run in silence (the missed-exit lesson).
-        self.trip
-            .announced_navigation
-            .remove(&format!("{}:advance", cue.key));
-        self.trip
-            .announced_navigation
-            .remove(&format!("{}:near", cue.key));
-    }
-
-    /// `_handle_missed_turn(cue)`: the scripted loop-back, or the corner
-    /// completed for the player.
+    /// `_handle_missed_turn(cue)`: the truck goes around the block.
+    ///
+    /// A truck too fast for a corner drives on past it, makes three turns
+    /// round the block, and comes out on the street it missed: time lost,
+    /// nothing else. The truck carries on forward and never rewinds. This
+    /// used to drop it back a full spoken window before the corner to try
+    /// again, with a brake lesson from the second miss, and a player heard
+    /// it as a teleport (player report, 2026-10-13).
     pub fn handle_missed_turn(&mut self, ctx: &mut GameContext, cue: &NavigationCue) {
         self.turn_miss_count += 1;
         self.trip.game_minutes += TURN_MISS_LOOP_MIN;
-        // The loop-back drops the controllers but keeps the session armed:
-        // on a facility approach the keeper manages the corners, and after
-        // the turnaround or the auto-turn it resumes on its own instead of
-        // leaving the truck idling off the corner (owner ruling, 2026-09-01;
-        // disarming here is what did that on the first agent drives).
+        // The controllers drop but the session stays armed: on a facility
+        // approach the keeper manages the corners, and it resumes on its own
+        // on the new street instead of leaving the truck idling (owner
+        // ruling, 2026-09-01).
         self.cancel_cruise(ctx, true);
         self.cancel_keeper(ctx, true);
-        let terse = self.terse_speech(ctx);
-        let street = self.turn_street_text(cue);
-        let target = ctx.settings.speed_text(self.turn_speed_mph(cue));
-        // One loop-back per corner, and never a fourth miss on one run: a
-        // route must never become unfinishable. The time is still charged.
-        let completed = self.turn_missed.contains(&cue.key) || self.turn_miss_count >= 3;
-        let core = if terse {
-            "Missed the turn.".to_string()
+        self.resolve_turn(cue);
+        self.trip.position_mi = self.trip.position_mi.max(cue.at_mi + TURN_COMMIT_TAIL_MI);
+        let message = if self.terse_speech(ctx) {
+            "Missed the turn. Going around the block.".to_string()
         } else {
-            format!("You missed the turn onto {street}.")
+            let street = self.turn_street_text(cue);
+            format!("Missed the turn onto {street}. Going around the block.")
         };
-        let (tail, status): (String, &str) = if completed {
-            self.resolve_turn(ctx, cue);
-            self.trip.position_mi = self.trip.position_mi.max(cue.at_mi + TURN_COMMIT_TAIL_MI);
-            let tail = if terse {
-                "Turn made for you.".to_string()
-            } else {
-                format!(
-                    "The turn is made for you and you are on {street}. The clock is still running."
-                )
-            };
-            (tail, "Turn missed again. The turn was made for you.")
-        } else {
-            self.turn_missed.insert(cue.key.clone());
-            self.reposition_for_turn(cue);
-            let tail = if terse {
-                "Safe turnaround. Turn ahead again.".to_string()
-            } else {
-                "Next safe turnaround, back onto the approach. The turn is ahead again.".to_string()
-            };
-            (tail, "Missed the turn. Use the next safe turnaround.")
-        };
-        let mut message = format!("{core} {tail}");
-        if self.turn_miss_count >= 2 {
-            // The identical core line keeps the flow predictable by ear; a
-            // repeat miss earns help, not scolding.
-            message += &format!(
-                " Brake to {target} with {} on the approach.",
-                ctx.control_hint("brake")
-            );
-        }
         ctx.audio.play("ui/warning");
-        self.set_status(status);
-        // A mandatory turn on the route, not an optional stop: names the
-        // loop-back (or the auto-turn) that still delivers the load, so it
-        // must survive quiet/urgent_only as words, not an earcon blip.
+        self.set_status("Missed the turn. Went around the block.");
+        // A turn on the route, not an optional stop: it must survive
+        // quiet and urgent-only as words, not an earcon blip.
         ctx.say_event_with(
             message,
             SayEvent::new().category(SpeechCategory::Navigation),

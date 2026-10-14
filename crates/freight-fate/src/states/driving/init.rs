@@ -631,7 +631,6 @@ impl DrivingState {
             turn_miss_count: 0,
             turn_trip_id: 0,
             turn_advised: HashSet::new(),
-            turn_missed: HashSet::new(),
             turn_resolved: HashSet::new(),
             turn_announced: HashSet::new(),
             turn_called_now: HashSet::new(),

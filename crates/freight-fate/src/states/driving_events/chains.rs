@@ -284,10 +284,8 @@ impl DrivingState {
                 first_corner = format!(" Then {}", lower_first(&call));
                 self.turn_advised.insert(corner.key.clone());
                 self.pace_clock_for_turn(&corner, ahead);
-                // Spoken inside this line, so the corner counts as told;
-                // its earcon sounds when the truck actually turns, not here
-                // (see `resolve_turn`).
-                self.turn_announced.insert(corner.key.clone());
+                // Spoken inside this line, so its chime goes with it.
+                self.chime_corner(ctx, &corner);
                 if ahead <= crate::states::driving_turns::TURN_NOW_MI {
                     self.turn_called_now.insert(corner.key.clone());
                 }
