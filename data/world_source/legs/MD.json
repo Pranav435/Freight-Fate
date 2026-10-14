@@ -14472,6 +14472,33 @@
             "oneway": true,
             "source": "OpenStreetMap lanes tags on the corridor highway ways (Overpass), development-time; total per the OSM lanes semantics (directional on oneway carriageways). ODbL, (c) OpenStreetMap contributors."
           }
+        ],
+        "toll_events": [
+          {
+            "name": "JFK Memorial Highway toll settlement",
+            "at_mi": 49.2,
+            "road": "I-95 JFK Memorial Highway",
+            "authority": "Maryland Transportation Authority",
+            "method": "ezpass",
+            "amount": 48.0,
+            "estimated": false,
+            "source": "Maryland Transportation Authority toll rate tables, I-95 John F. Kennedy Memorial Highway, 5 axle E-ZPass and video toll, collected northbound only, accessed 2026-10-11: https://mdta.maryland.gov/TollRatesTables",
+            "amount_plate": 63.0,
+            "directions": [
+              "forward"
+            ]
+          },
+          {
+            "name": "Delaware Turnpike toll plaza settlement",
+            "at_mi": 68.5,
+            "road": "I-95 Delaware Turnpike",
+            "authority": "Delaware Department of Transportation",
+            "method": "ezpass",
+            "amount": 10.0,
+            "estimated": false,
+            "source": "Delaware Department of Transportation I-95 Newark toll plaza rates, 5 axle, cash and E-ZPass, accessed 2026-10-11: https://deldot.gov/public.ejs?command=PublicTollRateI95",
+            "amount_plate": 10.0
+          }
         ]
       },
       "stops": [],

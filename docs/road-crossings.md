@@ -154,8 +154,8 @@ duplicated here.
 
 ## Tolls
 
-Every toll on the map was an estimate until this audit. 62 of the
-67 toll events now carry a five-axle rate read from the authority's own
+Every toll on the map was an estimate until this audit. 66 of the
+72 toll events now carry a five-axle rate read from the authority's own
 schedule or calculator, with the source and access date on the event.
 
 - **Amount** is what a five-axle rig pays with a transponder: Class 5H in
@@ -202,8 +202,15 @@ priced stretch. The Thruway fares to New York City include the Mario Cuomo
 Bridge, which is collected southbound only, so the northbound fare is a few
 dollars high until the bridge is split out.
 
+The legal detour legs from the tunnel work pay the tolls on their own
+roads: Baltimore to Wilmington pays the Delaware Newark plaza and, northbound
+only, the JFK Memorial Highway, the same rates as Philadelphia to Baltimore,
+and Worcester to Boston pays the Mass Pike from Auburn to Route 128. Wilmington
+to Baltimore, which drives both plazas, was missing both and now pays them.
+Boston to Portsmouth runs US 1 past the Hampton plaza and pays nothing.
+
 Still estimated, because no official figure was matched to the leg's road:
-aurora_il_us:rockford_il_us Reagan Tollway settlement; new_york_ny_us:boston_ma_us Massachusetts Turnpike settlement segment; new_york_ny_us:philadelphia_pa_us New Jersey Turnpike ticket entry; new_york_ny_us:philadelphia_pa_us Delaware River Turnpike Toll Bridge settlement point; syracuse_ny_us:utica_ny_us New York State Thruway settlement.
+aurora_il_us:rockford_il_us Reagan Tollway settlement; new_york_ny_us:boston_ma_us Massachusetts Turnpike settlement segment; new_york_ny_us:philadelphia_pa_us New Jersey Turnpike ticket entry; new_york_ny_us:philadelphia_pa_us Delaware River Turnpike Toll Bridge settlement point; syracuse_ny_us:utica_ny_us New York State Thruway settlement; worcester_ma_us:boston_ma_us Massachusetts Turnpike settlement (scaled per mile from the published West Stockbridge to Auburn rate).
 
 ## Whittier
 

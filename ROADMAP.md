@@ -2942,11 +2942,12 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       Golden Gate explosive-load hours are not modelled.
 - [x] **Chesapeake Bay Bridge (US 50) toll.** Charged eastbound at the
       published 24 dollars E-ZPass, 36 video toll.
-- [x] **Published toll rates.** 62 of 67 toll events read from
+- [x] **Published toll rates.** 66 of 72 toll events read from
       the authorities' five-axle schedules, with plate rates and one-way
       collection (see docs/road-crossings.md).
-- [ ] **Last estimated tolls.** 5 events still estimated: Aurora to
-      Rockford, Syracuse to Utica, the Mass Pike stretch into Boston, and the
+- [ ] **Last estimated tolls.** 6 events still estimated: Aurora to
+      Rockford, Syracuse to Utica, the Mass Pike stretches into Boston (New
+      York to Boston, and the Worcester to Boston detour), and the
       New Jersey Turnpike and Delaware River bridge on New York to Philadelphia.
 - [x] **Missing toll facilities, first pass.** 14 tolls added on legs that
       drove a priced toll road for free (see docs/road-crossings.md).

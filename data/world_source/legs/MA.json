@@ -20604,6 +20604,19 @@
             "oneway": true,
             "source": "OpenStreetMap lanes tags on the corridor highway ways (Overpass), development-time; total per the OSM lanes semantics (directional on oneway carriageways). ODbL, (c) OpenStreetMap contributors."
           }
+        ],
+        "toll_events": [
+          {
+            "name": "Massachusetts Turnpike settlement",
+            "at_mi": 31.2,
+            "road": "Massachusetts Turnpike (I-90)",
+            "authority": "Massachusetts Department of Transportation",
+            "method": "ezpass",
+            "amount": 3.9,
+            "estimated": true,
+            "amount_plate": 4.5,
+            "source": "Estimated 2026-10-14: no published class 5 figure matched for Auburn to Route 128 (Weston); scaled per mile from the MassDOT calculator's West Stockbridge to Auburn class 5 rate (11.70 E-ZPass, 13.50 plate, tools/toll_rates.py ma_ny_line_worcester) over the 29 turnpike miles this leg drives: https://www.ezdrivema.com/"
+          }
         ]
       },
       "stops": [],
