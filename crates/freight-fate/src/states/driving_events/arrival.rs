@@ -229,11 +229,10 @@ impl DrivingState {
             // lane work is theirs they still need to hear that arming it is
             // on them again -- and when it is not, that it is not.
             if automated {
-                "Safe turnaround. Destination exit ahead again; lane keeping will take it."
-                    .to_string()
+                "Destination exit ahead again. Lane keeping takes it.".to_string()
             } else {
                 format!(
-                    "Safe turnaround. Destination exit ahead again; press {} to signal.",
+                    "Destination exit ahead again. Press {} to signal.",
                     ctx.control_hint("take_exit")
                 )
             }
@@ -244,13 +243,12 @@ impl DrivingState {
             // instruction to take it themselves -- which is what "I was about
             // to hit X when the truck took the exit" is describing. Never
             // name a control the driver's own settings have taken off them.
-            "You loop back through the next safe turnaround. The destination exit is ahead \
-             again, and lane keeping will take it."
+            "You turned around, and the destination exit is ahead again. Lane keeping takes it."
                 .to_string()
         } else {
             format!(
-                "You loop back through the next safe turnaround. The destination exit is ahead \
-                 again. Press {} to signal for it.",
+                "You turned around, and the destination exit is ahead again. Press {} to signal \
+                 for it.",
                 ctx.control_hint("take_exit")
             )
         };
@@ -263,7 +261,7 @@ impl DrivingState {
         let mut opts = SayEvent::new();
         opts.category = Some(SpeechCategory::Navigation);
         ctx.say_event_with(
-            format!("You missed the destination exit for {facility}. {reroute_text}"),
+            format!("Missed the destination exit for {facility}. {reroute_text}"),
             opts,
         );
     }

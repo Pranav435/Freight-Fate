@@ -14422,21 +14422,15 @@ msgstr "{reason}"
 msgid "the {reason} zone"
 msgstr "la zona de {reason}"
 
-#. one sentence of a longer line
 msgid "Live weather ready."
 msgstr "Tiempo en directo listo."
 
-#. placeholders: {live_observation_notice}
-msgid "Live weather ready. {live_observation_notice}."
-msgstr "Tiempo en directo listo. {live_observation_notice}."
-
-#. one sentence of a longer line
 msgid "Last-known conditions in use."
 msgstr "Usando las últimas condiciones conocidas."
 
-#. placeholders: {last_known_notice}
-msgid "{last_known_notice}. Last-known conditions in use."
-msgstr "{last_known_notice}. Usando las últimas condiciones conocidas."
+#. placeholders: {notice}
+msgid "{notice}. Last-known conditions in use."
+msgstr "{notice}. Usando las últimas condiciones conocidas."
 
 msgid "Live weather unavailable. Simulated weather in use."
 msgstr "Tiempo en directo no disponible. Usando tiempo simulado."
@@ -15290,14 +15284,14 @@ msgstr "Actualizando el tiempo en directo para tu ubicación actual"
 msgid "The latest live weather check failed"
 msgstr "Falló la última consulta del tiempo en directo"
 
-msgid "Observation age is unavailable"
-msgstr "La antigüedad de la observación no está disponible"
-
 msgid "not applicable"
 msgstr "no aplicable"
 
 msgid "unavailable"
 msgstr "no disponible"
+
+msgid "Observation age is unavailable"
+msgstr "La antigüedad de la observación no está disponible"
 
 #. one sentence of a longer line
 msgid "Temporary neutral driving conditions in use"
@@ -15308,23 +15302,21 @@ msgid "{source_label}. Temporary neutral driving conditions in use"
 msgstr "{source_label}. Usando condiciones de conducción neutras temporales"
 
 #. placeholders: {conditions}
-#. one sentence of a longer line
-msgid "Live weather: {conditions}."
-msgstr "Tiempo en directo: {conditions}."
+msgid "Live weather: {conditions}"
+msgstr "Tiempo en directo: {conditions}"
 
-#. placeholders: {conditions}, {live_observation_notice}
-msgid "Live weather: {conditions}. {live_observation_notice}"
-msgstr "Tiempo en directo: {conditions}. {live_observation_notice}"
+#. placeholders: {conditions}
+msgid "Last-known live weather: {conditions}"
+msgstr "Último tiempo en directo conocido: {conditions}"
 
 #. placeholders: {conditions}
 #. one sentence of a longer line
 msgid "Last-known live weather: {conditions}."
 msgstr "Último tiempo en directo conocido: {conditions}."
 
-#. placeholders: {conditions}, {last_known_notice}
-msgid "Last-known live weather: {conditions}. {last_known_notice}"
-msgstr ""
-"Último tiempo en directo conocido: {conditions}. {last_known_notice}"
+#. placeholders: {conditions}, {notice}
+msgid "Last-known live weather: {conditions}. {notice}"
+msgstr "Último tiempo en directo conocido: {conditions}. {notice}"
 
 #. one sentence of a longer line
 msgid "Live weather is unavailable"
@@ -23455,23 +23447,8 @@ msgstr "Motor al ralentí."
 msgid "{control_hint} lists the controls."
 msgstr "{control_hint} enumera los controles."
 
-#. placeholders: {target}, {control_hint}
-msgid ""
-"Automatic speed control is paused; open-road target {target}. It will "
-"resume once the truck is rolling. Press {control_hint} to cancel it. "
-msgstr ""
-"El control automático de velocidad está en pausa; objetivo en carretera "
-"abierta: {target}. Se reanudará cuando el camión esté rodando. Pulsa "
-"{control_hint} para cancelarlo. "
-
-#. one sentence of a longer line
-msgid "It will resume once the truck is rolling."
-msgstr "Se reanudará cuando el camión esté rodando."
-
-#. placeholders: {control_hint}
-#. one sentence of a longer line
-msgid "Press {control_hint} to cancel it."
-msgstr "Pulsa {control_hint} para cancelarlo."
+msgid "Automatic speed control paused. "
+msgstr "Control automático de velocidad en pausa. "
 
 msgid "Engine idling"
 msgstr "Motor al ralentí"
@@ -26954,37 +26931,32 @@ msgstr "Pulsa {engine} para volver a arrancar el motor."
 msgid "Roadside rescue brought thirty gallons {billing}."
 msgstr "El rescate en carretera trajo treinta galones {billing}."
 
-msgid ""
-"Safe turnaround. Destination exit ahead again; lane keeping will take it."
+msgid "Destination exit ahead again. Lane keeping takes it."
 msgstr ""
-"Retorno seguro. La salida de destino vuelve a estar delante; el "
-"mantenimiento de carril la tomará."
+"La salida de destino vuelve a estar delante. La toma el mantenimiento de "
+"carril."
+
+#. one sentence of a longer line
+msgid "Destination exit ahead again."
+msgstr "La salida de destino vuelve a estar delante."
 
 #. placeholders: {control_hint}
-#. one sentence of a longer line
-msgid "Destination exit ahead again; press {control_hint} to signal."
+msgid "Destination exit ahead again. Press {control_hint} to signal."
 msgstr ""
-"La salida de destino vuelve a estar delante; pulsa {control_hint} para "
+"La salida de destino vuelve a estar delante. Pulsa {control_hint} para "
 "señalizar."
 
-#. one sentence of a longer line
-msgid "Safe turnaround."
-msgstr "Retorno seguro."
-
 #. placeholders: {control_hint}
-msgid ""
-"Safe turnaround. Destination exit ahead again; press {control_hint} to "
-"signal."
-msgstr ""
-"Retorno seguro. La salida de destino vuelve a estar delante; pulsa "
-"{control_hint} para señalizar."
+#. one sentence of a longer line
+msgid "Press {control_hint} to signal."
+msgstr "Pulsa {control_hint} para señalizar."
 
 msgid ""
-"You loop back through the next safe turnaround. The destination exit is "
-"ahead again, and lane keeping will take it."
+"You turned around, and the destination exit is ahead again. Lane keeping "
+"takes it."
 msgstr ""
-"Das la vuelta por el próximo retorno seguro. La salida de destino vuelve a "
-"estar delante, y el mantenimiento de carril la tomará."
+"Diste la vuelta y la salida de destino vuelve a estar delante. La toma el "
+"mantenimiento de carril."
 
 #. placeholders: {control_hint}
 #. one sentence of a longer line
@@ -26992,31 +26964,27 @@ msgid "Press {control_hint} to signal for it."
 msgstr "Pulsa {control_hint} para señalizarla."
 
 #. one sentence of a longer line
-msgid "The destination exit is ahead again."
-msgstr "La salida de destino vuelve a estar delante."
-
-#. one sentence of a longer line
-msgid "You loop back through the next safe turnaround."
-msgstr "Das la vuelta por el próximo retorno seguro."
+msgid "You turned around, and the destination exit is ahead again."
+msgstr "Diste la vuelta y la salida de destino vuelve a estar delante."
 
 #. placeholders: {control_hint}
 msgid ""
-"You loop back through the next safe turnaround. The destination exit is "
-"ahead again. Press {control_hint} to signal for it."
+"You turned around, and the destination exit is ahead again. Press "
+"{control_hint} to signal for it."
 msgstr ""
-"Das la vuelta por el próximo retorno seguro. La salida de destino vuelve a "
-"estar delante. Pulsa {control_hint} para señalizarla."
+"Diste la vuelta y la salida de destino vuelve a estar delante. Pulsa "
+"{control_hint} para señalizarla."
 
 msgid "Destination exit missed. Use the next safe turnaround."
 msgstr "Te pasaste la salida de destino. Usa el próximo retorno seguro."
 
 #. placeholders: {facility}
 #. one sentence of a longer line
-msgid "You missed the destination exit for {facility}."
+msgid "Missed the destination exit for {facility}."
 msgstr "Te pasaste la salida de destino de {facility}."
 
 #. placeholders: {facility}, {reroute_text}
-msgid "You missed the destination exit for {facility}. {reroute_text}"
+msgid "Missed the destination exit for {facility}. {reroute_text}"
 msgstr "Te pasaste la salida de destino de {facility}. {reroute_text}"
 
 #. one sentence of a longer line
@@ -27722,8 +27690,8 @@ msgid " Move to the right lane."
 msgstr " Ponte en el carril derecho."
 
 #. placeholders: {core}
-msgid "{core} Lane keeping will take this exit."
-msgstr "{core} El mantenimiento de carril tomará esta salida."
+msgid "{core} Lane keeping takes it."
+msgstr "{core} La toma el mantenimiento de carril."
 
 msgid "Already on the exit ramp."
 msgstr "Ya estás en la rampa de salida."
@@ -27803,12 +27771,8 @@ msgstr "El mantenimiento de carril toma el carril de salida."
 msgid "Lane keeping takes the exit lane for you."
 msgstr "El mantenimiento de carril toma el carril de salida por ti."
 
-msgid ""
-" Facility stopping assistance armed. It stops at the entrance once the ramp "
-"control is clear."
-msgstr ""
-" Asistencia de parada en la instalación preparada. Para en la entrada en "
-"cuanto el final de la rampa esté despejado."
+msgid " Facility stopping assistance armed."
+msgstr " Asistencia de parada en la instalación activada."
 
 msgid " Stop at the entrance."
 msgstr " Para en la entrada."
@@ -27816,21 +27780,6 @@ msgstr " Para en la entrada."
 msgid " Your planned rest stop waits until you are past the scale."
 msgstr ""
 " Tu parada de descanso planificada espera hasta que pases la báscula."
-
-#. placeholders: {target}
-msgid ""
-" Adaptive cruise holds road speed, eases to {target} for the exit, and "
-"pauses on the ramp."
-msgstr ""
-" El control de crucero adaptativo mantiene la velocidad de la carretera, "
-"baja a {target} para la salida y se pausa en la rampa."
-
-#. placeholders: {target}
-msgid ""
-" Adaptive cruise holding {target} to the exit, then pausing on the ramp."
-msgstr ""
-" El control de crucero adaptativo mantiene {target} hasta la salida y luego "
-"se pausa en la rampa."
 
 msgid "Destination exit"
 msgstr "Salida de destino"
@@ -31086,11 +31035,8 @@ msgstr "Recogida más adelante: {facility}. Para en la entrada."
 msgid "At {facility}. Stop to check in."
 msgstr "En {facility}. Para para registrarte."
 
-msgid ""
-"Automatic speed control paused for pickup. It resumes when you depart."
-msgstr ""
-"Control automático de velocidad en pausa por la recogida. Se reanuda cuando "
-"salgas."
+msgid "Automatic speed control paused for pickup."
+msgstr "Control automático de velocidad en pausa para la recogida."
 
 msgid "Pulling into pickup. Check-in menu opening."
 msgstr "Entrando en la recogida. Se abre el menú de registro."
@@ -42629,6 +42575,112 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "Live weather ready. {live_observation_notice}."
+#~ msgstr "Tiempo en directo listo. {live_observation_notice}."
+
+#~ msgid "{last_known_notice}. Last-known conditions in use."
+#~ msgstr "{last_known_notice}. Usando las últimas condiciones conocidas."
+
+#~ msgid "Live weather: {conditions}."
+#~ msgstr "Tiempo en directo: {conditions}."
+
+#~ msgid "Live weather: {conditions}. {live_observation_notice}"
+#~ msgstr "Tiempo en directo: {conditions}. {live_observation_notice}"
+
+#~ msgid "Last-known live weather: {conditions}. {last_known_notice}"
+#~ msgstr ""
+#~ "Último tiempo en directo conocido: {conditions}. {last_known_notice}"
+
+#~ msgid ""
+#~ "Automatic speed control is paused; open-road target {target}. It will "
+#~ "resume once the truck is rolling. Press {control_hint} to cancel it. "
+#~ msgstr ""
+#~ "El control automático de velocidad está en pausa; objetivo en carretera "
+#~ "abierta: {target}. Se reanudará cuando el camión esté rodando. Pulsa "
+#~ "{control_hint} para cancelarlo. "
+
+#~ msgid "It will resume once the truck is rolling."
+#~ msgstr "Se reanudará cuando el camión esté rodando."
+
+#~ msgid "Press {control_hint} to cancel it."
+#~ msgstr "Pulsa {control_hint} para cancelarlo."
+
+#~ msgid ""
+#~ "Safe turnaround. Destination exit ahead again; lane keeping will take it."
+#~ msgstr ""
+#~ "Retorno seguro. La salida de destino vuelve a estar delante; el "
+#~ "mantenimiento de carril la tomará."
+
+#~ msgid "Destination exit ahead again; press {control_hint} to signal."
+#~ msgstr ""
+#~ "La salida de destino vuelve a estar delante; pulsa {control_hint} para "
+#~ "señalizar."
+
+#~ msgid "Safe turnaround."
+#~ msgstr "Retorno seguro."
+
+#~ msgid ""
+#~ "Safe turnaround. Destination exit ahead again; press {control_hint} to "
+#~ "signal."
+#~ msgstr ""
+#~ "Retorno seguro. La salida de destino vuelve a estar delante; pulsa "
+#~ "{control_hint} para señalizar."
+
+#~ msgid ""
+#~ "You loop back through the next safe turnaround. The destination exit is "
+#~ "ahead again, and lane keeping will take it."
+#~ msgstr ""
+#~ "Das la vuelta por el próximo retorno seguro. La salida de destino vuelve a "
+#~ "estar delante, y el mantenimiento de carril la tomará."
+
+#~ msgid "The destination exit is ahead again."
+#~ msgstr "La salida de destino vuelve a estar delante."
+
+#~ msgid "You loop back through the next safe turnaround."
+#~ msgstr "Das la vuelta por el próximo retorno seguro."
+
+#~ msgid ""
+#~ "You loop back through the next safe turnaround. The destination exit is "
+#~ "ahead again. Press {control_hint} to signal for it."
+#~ msgstr ""
+#~ "Das la vuelta por el próximo retorno seguro. La salida de destino vuelve a "
+#~ "estar delante. Pulsa {control_hint} para señalizarla."
+
+#~ msgid "You missed the destination exit for {facility}."
+#~ msgstr "Te pasaste la salida de destino de {facility}."
+
+#~ msgid "You missed the destination exit for {facility}. {reroute_text}"
+#~ msgstr "Te pasaste la salida de destino de {facility}. {reroute_text}"
+
+#~ msgid "{core} Lane keeping will take this exit."
+#~ msgstr "{core} El mantenimiento de carril tomará esta salida."
+
+#~ msgid ""
+#~ " Facility stopping assistance armed. It stops at the entrance once the ramp "
+#~ "control is clear."
+#~ msgstr ""
+#~ " Asistencia de parada en la instalación preparada. Para en la entrada en "
+#~ "cuanto el final de la rampa esté despejado."
+
+#~ msgid ""
+#~ " Adaptive cruise holds road speed, eases to {target} for the exit, and "
+#~ "pauses on the ramp."
+#~ msgstr ""
+#~ " El control de crucero adaptativo mantiene la velocidad de la carretera, "
+#~ "baja a {target} para la salida y se pausa en la rampa."
+
+#~ msgid ""
+#~ " Adaptive cruise holding {target} to the exit, then pausing on the ramp."
+#~ msgstr ""
+#~ " El control de crucero adaptativo mantiene {target} hasta la salida y luego "
+#~ "se pausa en la rampa."
+
+#~ msgid ""
+#~ "Automatic speed control paused for pickup. It resumes when you depart."
+#~ msgstr ""
+#~ "Control automático de velocidad en pausa por la recogida. Se reanuda cuando "
+#~ "salgas."
 
 #~ msgid ", open-road target {speed_text}"
 #~ msgstr ", objetivo en carretera abierta {speed_text}"

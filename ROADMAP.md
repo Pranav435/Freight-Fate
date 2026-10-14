@@ -71,7 +71,10 @@ bookmarks usable.
       keeper's brake calls, and the missed exit and gate loop-backs say
       the same facts in fewer words. The downhill grade call's engine brake
       advice retires once J has been used three times (`spoken_advice`); the
-      uphill call lost "Expect to lose speed." Spanish carries the new lines.
+      uphill call lost "Expect to lose speed." Exit calls no longer narrate
+      how cruise takes the ramp, and spoken weather leaves out the live
+      observation's age, which stays on the Weather app (owner, same day).
+      Spanish carries the new lines.
 - [ ] (Found along the way) The advise-only follow-up to a turn the route
       already named ("Advise 11 miles per hour.") is queued on the droppable
       default, so busy street speech can drop it; a player heard the advise

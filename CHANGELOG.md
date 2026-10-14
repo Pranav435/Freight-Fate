@@ -62,6 +62,10 @@
 
 - **Missed exit and gate lines are shorter, and so are the warnings when cruise or the speed keeper loses speed on a grade.**
 
+- **Exit calls no longer explain how adaptive cruise will take the ramp.** "Lane keeping takes it" replaces the longer lane keeping line.
+
+- **Spoken weather no longer says how old the live observation is.** The Weather app still lists it.
+
 - **Downhill grade calls stop naming the engine brake key once you have used it a few times.** Uphill grade calls no longer add "Expect to lose speed."
 
 - **Dispatch trust now changes half a point earlier at each cutoff.** It follows the rounded reputation you hear.

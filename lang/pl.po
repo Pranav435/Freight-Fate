@@ -12248,20 +12248,14 @@ msgstr ""
 msgid "the {reason} zone"
 msgstr ""
 
-#. one sentence of a longer line
 msgid "Live weather ready."
 msgstr ""
 
-#. placeholders: {live_observation_notice}
-msgid "Live weather ready. {live_observation_notice}."
-msgstr ""
-
-#. one sentence of a longer line
 msgid "Last-known conditions in use."
 msgstr ""
 
-#. placeholders: {last_known_notice}
-msgid "{last_known_notice}. Last-known conditions in use."
+#. placeholders: {notice}
+msgid "{notice}. Last-known conditions in use."
 msgstr ""
 
 msgid "Live weather unavailable. Simulated weather in use."
@@ -13073,13 +13067,13 @@ msgstr ""
 msgid "The latest live weather check failed"
 msgstr ""
 
-msgid "Observation age is unavailable"
-msgstr ""
-
 msgid "not applicable"
 msgstr ""
 
 msgid "unavailable"
+msgstr ""
+
+msgid "Observation age is unavailable"
 msgstr ""
 
 #. one sentence of a longer line
@@ -13091,12 +13085,11 @@ msgid "{source_label}. Temporary neutral driving conditions in use"
 msgstr ""
 
 #. placeholders: {conditions}
-#. one sentence of a longer line
-msgid "Live weather: {conditions}."
+msgid "Live weather: {conditions}"
 msgstr ""
 
-#. placeholders: {conditions}, {live_observation_notice}
-msgid "Live weather: {conditions}. {live_observation_notice}"
+#. placeholders: {conditions}
+msgid "Last-known live weather: {conditions}"
 msgstr ""
 
 #. placeholders: {conditions}
@@ -13104,8 +13097,8 @@ msgstr ""
 msgid "Last-known live weather: {conditions}."
 msgstr ""
 
-#. placeholders: {conditions}, {last_known_notice}
-msgid "Last-known live weather: {conditions}. {last_known_notice}"
+#. placeholders: {conditions}, {notice}
+msgid "Last-known live weather: {conditions}. {notice}"
 msgstr ""
 
 #. one sentence of a longer line
@@ -20128,19 +20121,7 @@ msgstr ""
 msgid "{control_hint} lists the controls."
 msgstr ""
 
-#. placeholders: {target}, {control_hint}
-msgid ""
-"Automatic speed control is paused; open-road target {target}. It will "
-"resume once the truck is rolling. Press {control_hint} to cancel it. "
-msgstr ""
-
-#. one sentence of a longer line
-msgid "It will resume once the truck is rolling."
-msgstr ""
-
-#. placeholders: {control_hint}
-#. one sentence of a longer line
-msgid "Press {control_hint} to cancel it."
+msgid "Automatic speed control paused. "
 msgstr ""
 
 msgid "Engine idling"
@@ -23147,28 +23128,25 @@ msgstr ""
 msgid "Roadside rescue brought thirty gallons {billing}."
 msgstr ""
 
-msgid ""
-"Safe turnaround. Destination exit ahead again; lane keeping will take it."
+msgid "Destination exit ahead again. Lane keeping takes it."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Destination exit ahead again."
+msgstr ""
+
+#. placeholders: {control_hint}
+msgid "Destination exit ahead again. Press {control_hint} to signal."
 msgstr ""
 
 #. placeholders: {control_hint}
 #. one sentence of a longer line
-msgid "Destination exit ahead again; press {control_hint} to signal."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Safe turnaround."
-msgstr ""
-
-#. placeholders: {control_hint}
-msgid ""
-"Safe turnaround. Destination exit ahead again; press {control_hint} to "
-"signal."
+msgid "Press {control_hint} to signal."
 msgstr ""
 
 msgid ""
-"You loop back through the next safe turnaround. The destination exit is "
-"ahead again, and lane keeping will take it."
+"You turned around, and the destination exit is ahead again. Lane keeping "
+"takes it."
 msgstr ""
 
 #. placeholders: {control_hint}
@@ -23177,17 +23155,13 @@ msgid "Press {control_hint} to signal for it."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "The destination exit is ahead again."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "You loop back through the next safe turnaround."
+msgid "You turned around, and the destination exit is ahead again."
 msgstr ""
 
 #. placeholders: {control_hint}
 msgid ""
-"You loop back through the next safe turnaround. The destination exit is "
-"ahead again. Press {control_hint} to signal for it."
+"You turned around, and the destination exit is ahead again. Press "
+"{control_hint} to signal for it."
 msgstr ""
 
 msgid "Destination exit missed. Use the next safe turnaround."
@@ -23195,11 +23169,11 @@ msgstr ""
 
 #. placeholders: {facility}
 #. one sentence of a longer line
-msgid "You missed the destination exit for {facility}."
+msgid "Missed the destination exit for {facility}."
 msgstr ""
 
 #. placeholders: {facility}, {reroute_text}
-msgid "You missed the destination exit for {facility}. {reroute_text}"
+msgid "Missed the destination exit for {facility}. {reroute_text}"
 msgstr ""
 
 #. one sentence of a longer line
@@ -23848,7 +23822,7 @@ msgid " Move to the right lane."
 msgstr ""
 
 #. placeholders: {core}
-msgid "{core} Lane keeping will take this exit."
+msgid "{core} Lane keeping takes it."
 msgstr ""
 
 msgid "Already on the exit ramp."
@@ -23924,26 +23898,13 @@ msgstr ""
 msgid "Lane keeping takes the exit lane for you."
 msgstr ""
 
-msgid ""
-" Facility stopping assistance armed. It stops at the entrance once the ramp "
-"control is clear."
+msgid " Facility stopping assistance armed."
 msgstr ""
 
 msgid " Stop at the entrance."
 msgstr ""
 
 msgid " Your planned rest stop waits until you are past the scale."
-msgstr ""
-
-#. placeholders: {target}
-msgid ""
-" Adaptive cruise holds road speed, eases to {target} for the exit, and "
-"pauses on the ramp."
-msgstr ""
-
-#. placeholders: {target}
-msgid ""
-" Adaptive cruise holding {target} to the exit, then pausing on the ramp."
 msgstr ""
 
 msgid "Destination exit"
@@ -26879,8 +26840,7 @@ msgstr ""
 msgid "At {facility}. Stop to check in."
 msgstr ""
 
-msgid ""
-"Automatic speed control paused for pickup. It resumes when you depart."
+msgid "Automatic speed control paused for pickup."
 msgstr ""
 
 msgid "Pulling into pickup. Check-in menu opening."

@@ -404,10 +404,7 @@ fn test_live_report_lines_read_the_station_back() {
     // 18 C -> 64.4 F -> "64".
     assert_eq!(ws.source_conditions(true), "rain, 64 degrees");
     assert_eq!(ws.source_conditions(false), "rain, 18 degrees Celsius");
-    assert_eq!(
-        ws.report_lead(true),
-        "Live weather: rain, 64 degrees. The observation is 12 minutes old"
-    );
+    assert_eq!(ws.report_lead(true), "Live weather: rain, 64 degrees");
     assert_eq!(ws.observation_age_value(), "12 minutes old");
     assert_eq!(ws.event_source_label(), "Live weather");
     assert_eq!(ws.conditions_label(), "Live conditions");
@@ -451,7 +448,7 @@ fn test_observation_age_text_rounds_down_to_whole_minutes() {
     );
     assert_eq!(
         ws.last_known_notice(),
-        "The observation is 1 minute old. Live weather is updating for your current location"
+        "Live weather is updating for your current location"
     );
     // No city tracked: nothing to age.
     let mut ws = with_provider(
@@ -463,7 +460,7 @@ fn test_observation_age_text_rounds_down_to_whole_minutes() {
         }),
     );
     assert_eq!(ws.observation_age_text(), None);
-    assert_eq!(ws.last_known_notice(), "Observation age is unavailable");
+    assert_eq!(ws.last_known_notice(), "");
     assert_eq!(
         ws.live_observation_notice(),
         "Observation age is unavailable"
@@ -813,7 +810,7 @@ fn test_live_change_omits_modeled_temperature_and_does_not_hide_later_stale_stat
     let delayed = kind_messages(&trip.update(0.0), TripEventKind::WeatherChange);
     assert_eq!(delayed.len(), 1, "{delayed:?}");
     assert!(
-        delayed[0].starts_with("The observation is 12 minutes old"),
+        delayed[0].starts_with("The latest live weather check failed"),
         "{}",
         delayed[0]
     );
@@ -822,7 +819,7 @@ fn test_live_change_omits_modeled_temperature_and_does_not_hide_later_stale_stat
 }
 
 #[test]
-fn test_freshly_fetched_old_observation_change_stays_live_and_announces_age() {
+fn test_freshly_fetched_old_observation_change_stays_live_and_leaves_the_age_unsaid() {
     use crate::sim::trip_models::TripEventKind;
 
     struct OldObservationProvider;
@@ -847,7 +844,7 @@ fn test_freshly_fetched_old_observation_change_stays_live_and_announces_age() {
         "{}",
         changes[0]
     );
-    assert!(changes[0].contains("The observation is 12 minutes old"));
+    assert!(!changes[0].contains("minutes old"));
     assert!(!changes[0].to_lowercase().contains("updat"));
 }
 

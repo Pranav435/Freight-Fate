@@ -169,7 +169,7 @@ impl DrivingState {
             return core;
         }
         self.lane_keeping_takes_exit_said = true;
-        format!("{core} Lane keeping will take this exit.")
+        format!("{core} Lane keeping takes it.")
     }
 
     /// `_check_destination_exit()`.
@@ -193,7 +193,7 @@ impl DrivingState {
             // Cruise stays engaged down the ramp approach, capped at the ramp
             // target, rather than handing the pedal back cold.
             let announcement = self.destination_exit_announcement(ctx, &stop, ahead);
-            let cap = self.cap_cruise_for_ramp(ctx, Some(&stop));
+            self.cap_cruise_for_ramp(Some(&stop));
             ctx.audio.play_with("ui/notify", 0.7, 0.0);
             // ROUTE: this line carries "lane keeping will take this exit",
             // which is the only warning the driver gets that the truck is
@@ -204,7 +204,7 @@ impl DrivingState {
             // attribution was written for in the first place).
             let mut opts = SayEvent::queued().priority(EventPriority::Route);
             opts.category = Some(SpeechCategory::Navigation);
-            ctx.say_event_with(format!("{announcement}{cap}"), opts);
+            ctx.say_event_with(announcement, opts);
         }
         if self.exit_stop.is_none() {
             self.exit_stop = Some(stop);

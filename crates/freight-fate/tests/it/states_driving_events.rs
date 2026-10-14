@@ -678,40 +678,19 @@ fn test_arming_on_the_ramp_is_refused() {
 }
 
 #[test]
-fn test_capping_cruise_for_a_ramp_says_when_not_just_what() {
-    // Owner playtest, 2026-08-21: "will ease to 40" heard five miles out
-    // reads as "I am going to 40 now".
-    let mut app = TestApp::new();
-    let mut d = a_real_drive(&mut app);
-    let stop = a_stop(d.trip.position_mi + 5.0);
-    let (road, _) = d.trip.speed_limit_at(stop.at_mi);
-    d.cruise_mph = Some(road);
-    d.trip.truck.velocity_mps = mph_to_mps(road);
-
-    // And where it lets go: speed control pauses on the ramp, where the
-    // exit speed is braked for (realistic exit, 2026-09-24).
-    let text = d.cap_cruise_for_ramp(&app.ctx, Some(&stop));
-    assert!(
-        text.contains("holds road speed, eases to") && text.ends_with("and pauses on the ramp."),
-        "{text}"
-    );
-
-    // Already at the exit floor: the plain holding line.
-    d.cruise_exit_mph = None;
-    d.trip.truck.velocity_mps = mph_to_mps(20.0);
-    let text = d.cap_cruise_for_ramp(&app.ctx, Some(&stop));
-    assert!(text.contains("holding"), "{text}");
-}
-
-#[test]
-fn test_the_cap_says_nothing_twice_for_one_exit() {
+fn test_capping_cruise_for_a_ramp_caps_once_for_one_exit() {
+    // The cap is no longer narrated (owner, 2026-10-14); it still lands once
+    // and a second call for the same exit leaves it alone.
     let mut app = TestApp::new();
     let mut d = a_real_drive(&mut app);
     let stop = a_stop(d.trip.position_mi + 5.0);
     d.cruise_mph = Some(65.0);
 
-    assert!(!d.cap_cruise_for_ramp(&app.ctx, Some(&stop)).is_empty());
-    assert!(d.cap_cruise_for_ramp(&app.ctx, Some(&stop)).is_empty());
+    d.cap_cruise_for_ramp(Some(&stop));
+    let capped = d.cruise_exit_mph.expect("the ramp cap");
+    assert!(capped <= 65.0);
+    d.cap_cruise_for_ramp(Some(&stop));
+    assert_eq!(d.cruise_exit_mph, Some(capped));
 }
 
 #[test]
@@ -723,9 +702,8 @@ fn test_a_paused_session_remembers_the_ramp_cap_silently() {
     d.speed_control_armed = true;
     d.speed_control_target_mph = Some(65.0);
 
-    let text = d.cap_cruise_for_ramp(&app.ctx, Some(&stop));
+    d.cap_cruise_for_ramp(Some(&stop));
 
-    assert_eq!(text, "");
     assert!(d.cruise_exit_mph.is_some());
 }
 
@@ -787,14 +765,11 @@ fn test_the_destination_announcement_names_the_automation_once() {
         .expect("a delivery always has a destination exit");
 
     let first = d.destination_exit_announcement(&mut app.ctx, &stop, 2.0);
-    assert!(
-        first.contains("Lane keeping will take this exit"),
-        "{first}"
-    );
+    assert!(first.contains("Lane keeping takes it."), "{first}");
 
     let second = d.destination_exit_announcement(&mut app.ctx, &stop, 1.0);
     assert!(
-        !second.contains("Lane keeping will take this exit"),
+        !second.contains("Lane keeping takes it."),
         "said once per run: {second}"
     );
 }

@@ -533,7 +533,7 @@ fn test_full_lane_keeping_says_it_is_taking_the_destination_exit() {
     frame(&mut harness, DT);
 
     assert!(
-        said_any(&harness, "Lane keeping will take this exit"),
+        said_any(&harness, "Lane keeping takes it."),
         "{:?}",
         spoken(&harness)
     );
@@ -670,7 +670,7 @@ fn test_missed_destination_exit_reroutes_every_time() {
         });
     }
     assert_eq!(
-        said_count(&harness, "missed the destination exit"),
+        said_count(&harness, "Missed the destination exit"),
         2,
         "{:?}",
         spoken(&harness)
@@ -1159,31 +1159,17 @@ fn test_a_fresh_cruise_session_inherits_an_armed_exit_s_ramp_cap() {
 }
 
 #[test]
-fn test_the_ramp_cruise_line_says_when_the_ease_happens() {
+fn test_the_ramp_cap_holds_road_speed_until_the_exit() {
     // Owner playtest, 2026-08-21: heard "adaptive cruise will ease to 40 for
     // the ramp" five miles from the exit and reported the truck slowing early.
-    //
-    // It was not slowing. The cap holds road speed until about half a mile out
-    // and only then sheds. The sentence was what lied, by naming the end state
-    // with no sense of when. A behaviour that is right described by words that
-    // are wrong is the worse failure of the two: nobody goes looking for a bug
-    // in a truck that is behaving.
+    // It was not slowing: the cap holds road speed until about half a mile
+    // out and only then sheds. The line is gone (owner, 2026-10-14); the
+    // behaviour it described is pinned here.
     let mut harness = a_drive("Exits");
-    harness.with_drive(|d, ctx| {
+    harness.with_drive(|d, _| {
         d.truck_mut().velocity_mps = 65.0 * MPS_PER_MPH;
         d.cruise_mph = Some(65.0);
-        let stop = RoadStop::new("Test Plaza", d.trip.position_mi + 5.0, "travel_center");
-
-        let line = d.cap_cruise_for_ramp(ctx, Some(&stop));
-        // Rolling at road speed: the line must place the ease at the exit,
-        // not imply it starts now, and say where speed control lets go.
-        assert!(line.contains("holds road speed"), "{line}");
-        assert!(line.contains("for the exit"), "{line}");
-        assert!(line.contains("pauses on the ramp"), "{line}");
-        assert!(!line.contains("will ease to"), "{line}");
     });
-
-    // And the cap itself proves the claim: road speed stands miles out.
     harness.with_drive(|d, _| {
         let stop = RoadStop::new("Test Plaza", 100.0, "travel_center");
         let ramp = 65.0f64.min(d.exit_approach_floor_mph(Some(&stop)));

@@ -223,7 +223,7 @@ impl DrivingState {
         // No ramp number here: it is braked for past the gore, where taking
         // the exit names it as the exit speed. Said a mile out it asked the
         // driver to shed on the mainline (realistic exit, 2026-09-24).
-        let cap = self.cap_cruise_for_ramp(ctx, Some(&stop));
+        self.cap_cruise_for_ramp(Some(&stop));
         let mut message = if ctx.settings.lane_is_automated() {
             self.exit_lane_entered = true;
             ctx.audio.play_with("ui/notify", 0.6, 0.0);
@@ -239,7 +239,7 @@ impl DrivingState {
                 self.lane_keeping_grant_said = true;
                 "Lane keeping takes the exit lane for you."
             };
-            format!("{head} {ahead_text} ahead. {granted}{ending}{cap}")
+            format!("{head} {ahead_text} ahead. {granted}{ending}")
         } else {
             // The right lane now; the exit lane itself where it opens, which
             // the cab calls at the taper. Nothing at all when the truck is
@@ -250,15 +250,12 @@ impl DrivingState {
             } else {
                 " Move to the right lane."
             };
-            format!("{head} {ahead_text} ahead.{lane_hint}{ending}{cap}")
+            format!("{head} {ahead_text} ahead.{lane_hint}{ending}")
         };
         if self.is_selected_stop(Some(&stop)) {
             self.selected_stop_assist_armed = ctx.settings.destination_approach_assist;
             if self.selected_stop_assist_armed {
-                message.push_str(
-                    " Facility stopping assistance armed. It stops at the entrance once the \
-                     ramp control is clear.",
-                );
+                message.push_str(" Facility stopping assistance armed.");
             } else {
                 message.push_str(" Stop at the entrance.");
             }
@@ -421,9 +418,8 @@ impl DrivingState {
     /// comes down to [`Self::exit_approach_floor_mph`] -- at most ten under
     /// road speed, never the ramp's number. The ramp's number is reached past
     /// the gore, in the deceleration lane, where taking the ramp pauses speed
-    /// control. Returns the spoken addition, or an empty string when there is
-    /// nothing to say.
-    pub fn cap_cruise_for_ramp(&mut self, ctx: &GameContext, stop: Option<&RoadStop>) -> String {
+    /// control.
+    pub fn cap_cruise_for_ramp(&mut self, stop: Option<&RoadStop>) {
         let floor = self.exit_approach_floor_mph(stop);
         let Some(cruise_mph) = self.cruise_mph else {
             // Paused mid-session -- a zone keeper, or a planned-stop pause.
@@ -434,36 +430,22 @@ impl DrivingState {
                     self.cruise_exit_mph = Some(target.min(floor));
                 }
             }
-            return String::new();
+            return;
         };
         let capped = cruise_mph.min(floor);
         if self
             .cruise_exit_mph
             .is_some_and(|existing| existing <= capped)
         {
-            // The destination-exit announcement already capped cruise and said
-            // so; pressing X right after must not repeat the whole sentence.
-            return String::new();
+            // The destination-exit announcement already capped cruise.
+            return;
         }
         self.cruise_exit_mph = Some(capped);
-        // The number is where the truck will BE at the gore, not where it goes
-        // now: _ramp_approach_cap_mph holds road speed until the exit is close
-        // enough to ease for. Arming five miles out and dropping straight to
-        // the cap is the "keeper goes to 40 miles away from the exit" report
-        // (Shane, 2026-08-15).
-        let target = ctx.settings.speed_text(capped);
-        if self.trip.truck.speed_mph() > capped + 1.0 {
-            // Say WHEN, not just what. "Adaptive cruise will ease to 40 for
-            // the ramp", heard five miles out, reads as "I am going to 40 now"
-            // (owner playtest, 2026-08-21). And say where it lets go: past the
-            // gore the deceleration lane is the driver's, or the exit speed
-            // assist's, to brake in.
-            return format!(
-                " Adaptive cruise holds road speed, eases to {target} for the exit, and pauses \
-                 on the ramp."
-            );
-        }
-        format!(" Adaptive cruise holding {target} to the exit, then pausing on the ramp.")
+        // Silent. The exit call used to explain how cruise would take the
+        // ramp (hold road speed, ease, pause on the ramp); players do not
+        // need the controller's plan read to them (owner, 2026-10-14: "Players
+        // don't need to know how the speed control works"). The cap glides on
+        // its own, see `ramp_approach_cap_mph`.
     }
 
     /// The armed exit's cap right now, measured off the road still left.

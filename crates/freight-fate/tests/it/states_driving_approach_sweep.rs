@@ -629,7 +629,7 @@ pub fn what_went_wrong(destination: &Destination, arrival: &Arrival) -> Option<S
     for lie in [
         "Drove past",
         "You never stopped",
-        "missed the destination exit",
+        "Missed the destination exit",
     ] {
         if arrival.said(lie) {
             return fault("was told it had blown the arrival it made");

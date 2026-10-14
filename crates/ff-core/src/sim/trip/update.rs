@@ -199,10 +199,11 @@ impl Trip {
         let imperial = self.imperial();
         if let Some(changed) = changed {
             let mut source_details = self.weather.source_conditions(imperial);
-            if source_status == "live" {
-                source_details += &format!(". {}", self.weather.live_observation_notice());
-            } else if source_status == "last_known" {
-                source_details += &format!(". {}", self.weather.last_known_notice());
+            if source_status == "last_known" {
+                let notice = self.weather.last_known_notice();
+                if !notice.is_empty() {
+                    source_details += &format!(". {notice}");
+                }
             }
             let label = self.weather.event_source_label();
             self.emit(
@@ -236,14 +237,15 @@ impl Trip {
                     && !suppress_routine_refresh
                 {
                     let message = match source_status {
-                        "live" => format!(
-                            "Live weather ready. {}.",
-                            self.weather.live_observation_notice()
-                        ),
-                        "last_known" => format!(
-                            "{}. Last-known conditions in use.",
-                            self.weather.last_known_notice()
-                        ),
+                        "live" => "Live weather ready.".to_string(),
+                        "last_known" => {
+                            let notice = self.weather.last_known_notice();
+                            if notice.is_empty() {
+                                "Last-known conditions in use.".to_string()
+                            } else {
+                                format!("{notice}. Last-known conditions in use.")
+                            }
+                        }
                         _ => "Live weather unavailable. Simulated weather in use.".to_string(),
                     };
                     let current = self.weather.current;

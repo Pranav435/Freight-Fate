@@ -109,19 +109,15 @@ impl DrivingState {
     }
 
     /// `_resumed_speed_control_status()`.
-    pub fn resumed_speed_control_status(&self, ctx: &GameContext) -> String {
+    ///
+    /// Just the state. It used to add the open-road target, when it would
+    /// resume and the key that cancels it; the target is on Space and Tab,
+    /// and the key is in the help.
+    pub fn resumed_speed_control_status(&self) -> String {
         if !self.speed_control_armed {
             return String::new();
         }
-        let target = match self.speed_control_target_mph {
-            Some(mph) => ctx.settings.speed_text(mph),
-            None => "the posted limit when the open road begins".to_string(),
-        };
-        format!(
-            "Automatic speed control is paused; open-road target {target}. It will resume once \
-             the truck is rolling. Press {} to cancel it. ",
-            ctx.control_hint("cruise_set")
-        )
+        "Automatic speed control paused. ".to_string()
     }
 
     /// `_parked_entry_status()`.
@@ -215,7 +211,7 @@ impl DrivingState {
             } else {
                 self.trip.progress_summary(imperial)
             };
-            let speed_control = self.resumed_speed_control_status(ctx);
+            let speed_control = self.resumed_speed_control_status();
             let report_lead = self.trip.weather.report_lead(imperial);
             if self.terse_speech(ctx) {
                 let parked = self.parked_entry_status();

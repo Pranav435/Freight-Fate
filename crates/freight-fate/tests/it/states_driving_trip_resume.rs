@@ -245,18 +245,11 @@ fn test_active_drive_snapshot_restores_paused_speed_control_session() {
     let lines = harness.app.speech().lines();
     let resume_message = lines
         .iter()
-        .find(|line| line.contains("Automatic speed control is paused"))
+        .find(|line| line.contains("Automatic speed control paused."))
         .unwrap_or_else(|| panic!("no paused-cruise line: {lines:#?}"));
+    // Just the state: the target is on Space and Tab, the key in the help.
     assert!(
-        resume_message.contains("open-road target 52 miles per hour"),
-        "{resume_message}"
-    );
-    assert!(
-        resume_message.contains("resume once the truck is rolling"),
-        "{resume_message}"
-    );
-    assert!(
-        resume_message.contains("Press K to cancel it"),
+        !resume_message.contains("open-road target"),
         "{resume_message}"
     );
 }
@@ -284,10 +277,7 @@ fn test_resumed_drive_reports_old_fresh_observation_as_live() {
         resume_message.contains("Live weather: rain"),
         "{resume_message}"
     );
-    assert!(
-        resume_message.contains("The observation is 12 minutes old"),
-        "{resume_message}"
-    );
+    assert!(!resume_message.contains("minutes old"), "{resume_message}");
     assert!(
         !resume_message.to_lowercase().contains("updating"),
         "{resume_message}"

@@ -105,7 +105,7 @@ impl DrivingState {
         // throttle (automation-handoff sweep, 2026-08-20, the deferred
         // 2026-08-15 audit).
         ctx.say_event_with(
-            "Automatic speed control paused for pickup. It resumes when you depart.",
+            "Automatic speed control paused for pickup.",
             SayEvent::queued()
                 .priority(EventPriority::Route)
                 .category(SpeechCategory::Confirmation),
