@@ -69,7 +69,7 @@ pub fn suspension_text(ctx: &GameContext, hours: f64, verb: &str) -> String {
     let profile = profile_of(ctx);
     let left = enforcement::days_text(profile.driving_record.days_left(hours));
     format!(
-        "Your CDL is {verb} for {left}. Driving jobs are off the dispatch board until it clears, \
+        "Your CDL is {verb} for {left}. Driving jobs are off the dispatch board until it ends, \
          {}. Your money and your truck are safe; rest, repairs, and the garage are still open.",
         enforcement::clears_text(profile)
     )
@@ -79,7 +79,7 @@ pub fn suspension_text(ctx: &GameContext, hours: f64, verb: &str) -> String {
 pub fn serious_violation_text(ctx: &GameContext, count: i64, hours: f64) -> String {
     if count <= 1 {
         return "That is a serious violation on your record. One more inside three years and your \
-                CDL is suspended for 60 days, and driving jobs stop until it clears."
+                CDL is suspended for 60 days, and driving jobs stop until it ends."
             .to_string();
     }
     let which = enforcement::ordinal_word(count);
@@ -302,15 +302,18 @@ impl DrivingState {
     /// For the record events that happen at speed (a run off the road
     /// asleep, the barrels): driving on with a suspended or disqualified CDL
     /// is exactly what the suspension forbids, so the truck stops on the
-    /// shoulder and the roadside exit closes out the run. The debug hours
-    /// modes, which freeze the ladder, never end a run.
-    pub fn end_drive_if_licence_pulled(&mut self, ctx: &mut GameContext) {
+    /// shoulder and the roadside exit closes out the run. Returns whether it
+    /// did. The debug hours modes, which freeze the ladder, never end a run.
+    pub fn end_drive_if_licence_pulled(&mut self, ctx: &mut GameContext) -> bool {
+        if self.enforcement_bypassed(ctx) {
+            return false;
+        }
         let pulled = ctx
             .profile
             .as_ref()
             .is_some_and(|p| p.driving_record.suspended(record_hours(ctx, self)));
-        if !pulled || self.enforcement_bypassed(ctx) {
-            return;
+        if !pulled {
+            return false;
         }
         self.trip.truck.velocity_mps = 0.0;
         self.trip.truck.throttle = 0.0;
@@ -318,6 +321,7 @@ impl DrivingState {
         self.trip.truck.set_parking_brake();
         let state = LicencePulledState::new(ctx, self);
         ctx.push_state(state);
+        true
     }
 
     /// `ctx.push_state(FelonyStopState(ctx, self))`.

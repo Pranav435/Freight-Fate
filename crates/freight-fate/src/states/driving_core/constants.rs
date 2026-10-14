@@ -759,7 +759,7 @@ pub const PULL_OVER_FORCED_STOP_S: f64 = 10.0;
 pub const PURSUIT_RUN_S: f64 = 12.0;
 pub const PURSUIT_RUN_MIN_MPH: f64 = 30.0;
 pub const FAILURE_TO_STOP_DAMAGE_PCT: f64 = 12.0;
-pub const FAILURE_TO_STOP_PROCESSING_MIN: f64 = 180.0;
+pub const FAILURE_TO_STOP_PROCESSING_MIN: f64 = 720.0;
 pub const WEIGH_STATION_NOTICE_MI: f64 = 2.0;
 // The sim layer owns the number: the scale reminder's real-time hold lets go
 // at the same speed a crossing stops counting as a bypass.

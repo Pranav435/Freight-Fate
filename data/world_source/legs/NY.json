@@ -42838,14 +42838,46 @@
         "source": "Development-time OpenRouteService driving-hgv (truck) route geometry and elevation over OpenStreetMap, with Census/OpenStreetMap state context and curated corridor POIs checked in for offline runtime use.",
         "toll_events": [
           {
-            "name": "New Jersey Turnpike ticket entry",
-            "at_mi": 8.9,
-            "road": "New Jersey Turnpike",
+            "name": "George Washington Bridge toll",
+            "at_mi": 8.0,
+            "road": "I-95 George Washington Bridge upper level",
+            "authority": "Port Authority of New York and New Jersey",
+            "method": "open_road",
+            "amount": 120.85,
+            "estimated": false,
+            "source": "Port Authority of New York and New Jersey commercial toll rates effective July 2026, 5 axles, E-ZPass peak 120.85 (off-peak 108.35, overnight 100.85), Tolls by Mail 128.35; collected entering New York only; read 2026-10-14: https://www.panynj.gov/bridges-tunnels/en/tolls.html",
+            "amount_plate": 128.35,
+            "directions": [
+              "reverse"
+            ]
+          },
+          {
+            "name": "New Jersey Turnpike settlement",
+            "at_mi": 11.1,
+            "road": "New Jersey Turnpike (I-95)",
             "authority": "New Jersey Turnpike Authority",
-            "method": "ticket_system",
-            "amount": 18.0,
-            "estimated": true,
-            "source": "NJTA toll information and commercial vehicle toll schedule, accessed 2026-06-16; checked-in estimate for a Class 8 tractor-trailer corridor movement: https://www.njta.com/toll-calculator"
+            "method": "ezpass",
+            "amount": 62.51,
+            "estimated": false,
+            "source": "NJTA 2026 Toll Rate Schedule, Class 5 trucks, interchange 18E/18W (George Washington Bridge approach) to or from interchange 6 (Pennsylvania Turnpike connection), E-ZPass peak 62.51 (NJ off-peak 59.38), cash 68.60, same both ways; read 2026-10-14: https://www.njta.gov/document/2026-turnpike-class-5-5-axle-trucks/",
+            "amount_plate": 68.6,
+            "directions": [
+              "reverse"
+            ]
+          },
+          {
+            "name": "New Jersey Turnpike settlement",
+            "at_mi": 76.4,
+            "road": "New Jersey Turnpike (I-95)",
+            "authority": "New Jersey Turnpike Authority",
+            "method": "ezpass",
+            "amount": 62.51,
+            "estimated": false,
+            "source": "NJTA 2026 Toll Rate Schedule, Class 5 trucks, interchange 18E/18W (George Washington Bridge approach) to or from interchange 6 (Pennsylvania Turnpike connection), E-ZPass peak 62.51 (NJ off-peak 59.38), cash 68.60, same both ways; read 2026-10-14: https://www.njta.gov/document/2026-turnpike-class-5-5-axle-trucks/",
+            "amount_plate": 68.6,
+            "directions": [
+              "forward"
+            ]
           },
           {
             "name": "Delaware River Turnpike Toll Bridge settlement point",

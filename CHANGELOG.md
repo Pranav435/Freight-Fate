@@ -7,9 +7,9 @@
 - **Explosive and flammable tank loads now avoid the San Francisco-Oakland Bay Bridge.** The Mackinac Bridge toll is charged, and the Chesapeake Bay Bridge-Tunnel toll matches its published rate.
 - **Tolls now match each toll road's published truck rate.** The Maryland Bay Bridge now charges eastbound, and one-way tolls charge only one way.
 - **High winds now close the Chesapeake Bay Bridge-Tunnel and Mackinac Bridge to trucks.** Your truck waits on duty at the bridge until the wind drops.
-- **Toll roads the game let you drive for free now charge.** These include the New York Thruway, the I-78 Toll Bridge and the Carquinez Bridge.
+- **Toll roads you could drive for free now charge.** These include the New York Thruway and the George Washington, Bay and Golden Gate bridges.
 
-- **Dispatch now routes hazardous and tank loads around real tunnels that ban them.** Boston, Baltimore, Pennsylvania Turnpike, Hampton Roads, Eisenhower and Seattle tunnels included.
+- **Dispatch now routes hazardous and tank loads around real tunnels that ban them.** They take the legal road instead, such as Loveland Pass or the Baltimore Beltway.
 
 - **Whittier is now reached through the Anton Anderson Memorial Tunnel.** Its one-lane gate and Bear Valley toll make the crossing a planned part of the drive.
 
@@ -55,6 +55,8 @@
 
 ### Changed
 
+- **A CDL pulled at speed now ends the run.** A second run off the road asleep, or driving through work-zone barrels, on top of a serious violation already on the record, used to suspend the CDL while the drive carried on. Now the truck stops on the shoulder and the run closes out the way a roadside stop does. A loaded departure and a saved trip on a pulled CDL are refused as well; the saved trip closes out instead of resuming. When a roadside stop pulls the CDL, it no longer says you are released to your home terminal. It says a relief driver takes the truck back to the city the run left from, where you wait out the suspension, and when it ends. The row is now "Hand the truck to the relief driver".
+- **Dispatch trust no longer says the carrier is deciding whether to keep a driver whose CDL is pulled.** A lifetime disqualification now hears "Dispatch trust: none. With a lifetime CDL disqualification there is no dispatch." A timed disqualification hears that there are no loads at all while the CDL is disqualified, and that the yard holds the seat until the disqualification ends. The carrier only weighs the seat when the record or the service really puts it at risk, and then the line still says so.
 - With no carrier, choosing Stay a company driver on the Business status screen now says "Staying on the company-driver path." instead of "Staying a company driver.", since there is no seat to stay in.
 - **A debt firing or repossession is said before the terminal, not after.** Walking into the terminal with the balance past the ceiling used to read the old hub line and the Dispatch board row first, for the seat or truck that was about to go. The notice now speaks first, and leaving it reads the rebuilt hub.
 - **A suspended or disqualified CDL is no longer sent to the dispatch board.** The terminal's objective now says to wait out the suspension or disqualification, with the days remaining, and to choose the terminal row that skips ahead, instead of telling you to accept a load the board refuses; a lifetime disqualification gets no driving objective. That row is named for your status: Wait out the CDL disqualification, or Wait out the CDL suspension. An owner-operator's Bobtail to a nearby city is refused, not even bobtail, with the day the disqualification or suspension ends and where to wait it out.
@@ -64,6 +66,7 @@
 - **The terminal says where your truck really is.** In your home terminal city it is parked at the carrier terminal. Anywhere else it is at the facility where you last delivered or dropped, or at the city's travel center or truck parking, or the terminal just names the city. It never names a yard in another city or a bare "Terminal".
 - **A new career starts at your carrier's terminal.** Pick a region, then a home city, then one of the carriers hiring there; each carrier row says where your truck starts. The truck starts at that carrier's nearest terminal, and the first-day briefing says orientation and truck assignment are there, for example at Northstar Freight Lines Chicago terminal for a Milwaukee home. When that terminal is in another city, a company hire hears that the carrier covered the travel from the home city and a hotel for orientation. Your picked home city is saved as your home; the terminal city does not replace it.
 - Resetting a career starts over from your home city, or from your old terminal city on careers from before the home city was saved; on those, the terminal city is not recorded as your home. Prairie Link appears only within 250 air miles of its Kansas City, Omaha, and Wichita terminals.
+- **After a felony roadside stop the truck is towed, not left at your home terminal.** You post bond and are released after booking, which takes 12 hours of game time logged off duty, so it counts as a 10-hour reset, and the truck is towed to an impound lot in the city where you were stopped, for example "The truck was towed to an impound lot in Buffalo, New York." The terminal then reads it parked at an impound lot in that city, even in your home terminal city, until the truck next drives out. Company drivers and leased owner-operators hear that their carrier recovered the load; own-authority drivers hear that the load is theirs to sort out with the shipper.
 - Careers saved before this update get the home terminal of their carrier's nearest terminal city (within the hiring radius for a regional). The truck stays where it was parked.
 - A company-yard load in your home terminal city now deadheads from the carrier terminal instead of starting staged there, since the carrier terminal is its own yard.
 
@@ -75,6 +78,8 @@
 - Phase A ALCAN FIX: I-5 Bellingham↔Blaine uses public Valhalla truck costing and Washington RCW 46.61.410 60 mph HGV speed context; Hwy 15 Blaine↔Surrey keeps paid miles with Valhalla auto densify (FOSSGIS truck costing rejected as dishonest at this POE).
 
 ### Fixed
+
+- **Dispatch calls read cargo damage, hours and distance cleanly.** The load call says the damage once, as "with 12 percent cargo damage", and no longer calls a sound load damaged. Whole hours drop the ".0", and the distance left follows your metric setting.
 
 - **The Alaska Highway border crossing now has its real name, the Alcan port.** Heading into Canada, you pass the Beaver Creek border post instead.
 - **Yukon and northern British Columbia roads now follow their posted speed limits.**
