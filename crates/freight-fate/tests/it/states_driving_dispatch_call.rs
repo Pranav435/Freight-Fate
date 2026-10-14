@@ -198,6 +198,11 @@ fn test_road_summary_follows_the_distance_unit() {
         let road = dispatch_request(driving, ctx, CALL_ROAD).summary;
         assert!(road.ends_with(" kilometers remain."), "{road}");
         assert!(!road.contains("mile"), "{road}");
+        let request = dispatch_request(driving, ctx, CALL_ROAD);
+        let answer = local_dispatch_response(&request, driving, ctx).message;
+        let distance = road.trim_end_matches('.');
+        assert!(answer.contains(distance), "{answer} / {road}");
+        assert!(!answer.contains("mile"), "{answer}");
         ctx.settings.imperial_units = true;
         let road = dispatch_request(driving, ctx, CALL_ROAD).summary;
         assert!(road.ends_with(" miles remain."), "{road}");

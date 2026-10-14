@@ -3,6 +3,7 @@
 use chrono::Utc;
 use ff_core::models::cargo_condition::{cargo_condition_text, cargo_outcome, CARGO_OUTCOME_CLEAN};
 use ff_core::models::exchange::{stable_id, DispatchCallRequest, DispatchCallResponse, JsonObject};
+use ff_core::settings::distance_text_for;
 use ff_core::sim::hos::duration_text;
 use std::sync::mpsc::TryRecvError;
 
@@ -67,7 +68,8 @@ impl DispatchCallState {
             let request = dispatch_request(driving, ctx, kind);
             let local = local_dispatch_response(&request, driving, ctx);
             let facts = call_facts(driving, ctx);
-            let remaining_text = driving.trip.gap_text(driving.trip.remaining_miles());
+            let remaining_text =
+                remaining_phrase(driving.trip.remaining_miles(), ctx.settings.imperial_units);
             Some((request, local, facts, remaining_text))
         });
         let Some(Some((request, local, facts, remaining_text))) = prepared else {
@@ -346,9 +348,9 @@ pub fn local_dispatch_response(
     ctx: &GameContext,
 ) -> DispatchCallResponse {
     let (decision, message, effects) = match request.kind.as_str() {
-        CALL_DELAY => delay_response(driving),
+        CALL_DELAY => delay_response(driving, ctx.settings.imperial_units),
         CALL_HOURS => hours_response(ctx),
-        CALL_ROAD => road_response(driving),
+        CALL_ROAD => road_response(driving, ctx.settings.imperial_units),
         CALL_TRUCK => truck_response(driving),
         CALL_LOAD => load_response(driving),
         _ => (
@@ -435,7 +437,7 @@ fn remote_message(
         ),
         ("delay", "late_update") => format!(
             "I'm marking this load as running late. Keep it safe and update me at the next stop; \
-             {remaining} remain."
+             {remaining}."
         ),
         ("hours", "stop") => match facts.hos_remaining_minutes {
             Some(minutes) => format!(
@@ -447,13 +449,13 @@ fn remote_message(
                 .to_string(),
         },
         ("road_conditions", "caution") => format!(
-            "There's no active warning on my board, but take it easy out there; {remaining} remain."
+            "There's no active warning on my board, but take it easy out there; {remaining}."
         ),
         ("truck_trouble", "repair_authorized")
             if facts.truck_damage_pct <= FIELD_REPAIR_DAMAGE_PCT =>
         {
-            "Your dispatcher authorized a roadside repair, but the truck doesn't need one yet. \
-             Watch the gauges and stop if it worsens."
+            "I can authorize a roadside repair, but the truck doesn't need one yet. Watch the \
+             gauges and stop if it worsens."
                 .to_string()
         }
         ("load_trouble", "protect_load") if facts.cargo_damage_pct < 1.0 => {
@@ -526,18 +528,10 @@ fn request_summary(driving: &DrivingState, ctx: &GameContext, kind: &str) -> Str
             )
         }
         CALL_HOURS => hos_of(ctx).summary(&ctx.settings.hos_mode),
-        CALL_ROAD => {
-            // In the player's unit, like every other spoken distance; one
-            // decimal only while the decimal still matters.
-            let miles = driving.trip.remaining_miles();
-            let left = ctx.settings.distance_text(miles, miles < 10.0);
-            let verb = if !left.ends_with('s') {
-                "remains"
-            } else {
-                "remain"
-            };
-            format!("{left} {verb}.")
-        }
+        CALL_ROAD => format!(
+            "{}.",
+            remaining_phrase(driving.trip.remaining_miles(), ctx.settings.imperial_units)
+        ),
         CALL_TRUCK => format!(
             "Truck damage is {:.0} percent.",
             driving.trip.truck.damage_pct
@@ -548,6 +542,20 @@ fn request_summary(driving: &DrivingState, ctx: &GameContext, kind: &str) -> Str
         ),
         _ => "Driver requested dispatch assistance.".to_string(),
     }
+}
+
+/// "312 kilometers remain", "1 mile remains": the distance left in the
+/// player's unit, with one decimal only while the decimal still matters.
+/// Every call line that says how far is left goes through this, so the
+/// office and a remote dispatcher read the same distance the same way.
+pub fn remaining_phrase(miles: f64, imperial: bool) -> String {
+    let left = distance_text_for(miles, imperial, miles < 10.0);
+    let verb = if left.ends_with('s') {
+        "remain"
+    } else {
+        "remains"
+    };
+    format!("{left} {verb}")
 }
 
 /// Hours for a spoken readout: a whole number without a trailing ".0"
@@ -561,7 +569,7 @@ fn hours_value(hours: f64) -> String {
     }
 }
 
-fn delay_response(driving: &DrivingState) -> (&'static str, String, JsonObject) {
+fn delay_response(driving: &DrivingState, imperial: bool) -> (&'static str, String, JsonObject) {
     let hours_used = driving.trip.game_minutes / 60.0;
     let hours_left = driving.job.deadline_game_h - hours_used;
     let travel_hours = driving.trip.remaining_miles() / 50.0;
@@ -571,8 +579,8 @@ fn delay_response(driving: &DrivingState) -> (&'static str, String, JsonObject) 
             "late_update",
             format!(
                 "The appointment is already late. I am marking the delay. Keep it safe and send \
-                 another update at the next stop; {} remain.",
-                driving.trip.gap_text(driving.trip.remaining_miles())
+                 another update at the next stop; {}.",
+                remaining_phrase(driving.trip.remaining_miles(), imperial)
             ),
             JsonObject::from_iter([("late_update_recorded".to_string(), json!(true))]),
         );
@@ -631,14 +639,14 @@ fn hours_response(ctx: &GameContext) -> (&'static str, String, JsonObject) {
     )
 }
 
-fn road_response(driving: &DrivingState) -> (&'static str, String, JsonObject) {
-    let remaining = driving.trip.gap_text(driving.trip.remaining_miles());
+fn road_response(driving: &DrivingState, imperial: bool) -> (&'static str, String, JsonObject) {
+    let remaining = remaining_phrase(driving.trip.remaining_miles(), imperial);
     if driving.trip.live_alerts.is_empty() {
         return (
             "continue",
             format!(
-                "I have no active weather warning on your current stretch. {remaining} remain on \
-                 this route."
+                "I have no active weather warning on your current stretch. {remaining} on this \
+                 route."
             ),
             JsonObject::new(),
         );
@@ -654,7 +662,7 @@ fn road_response(driving: &DrivingState) -> (&'static str, String, JsonObject) {
         "caution",
         format!(
             "The active warning is {alerts}. Stay with the planned route unless the road closes; \
-             {remaining} remain."
+             {remaining}."
         ),
         JsonObject::from_iter([("weather_alerts".to_string(), json!(alerts))]),
     )
@@ -752,9 +760,18 @@ mod tests {
             &request(CALL_TRUCK),
             &response("monitor", "Local answer."),
             facts,
-            "80 miles",
+            "80 miles remain",
             "repair_authorized",
         )
+    }
+
+    #[test]
+    fn remaining_phrase_uses_the_unit_whole_numbers_and_agreement() {
+        assert_eq!(remaining_phrase(194.1, false), "312 kilometers remain");
+        assert_eq!(remaining_phrase(194.1, true), "194 miles remain");
+        assert_eq!(remaining_phrase(1.0, true), "1.0 mile remains");
+        assert_eq!(remaining_phrase(4.24, true), "4.2 miles remain");
+        assert_eq!(remaining_phrase(10.4, true), "10 miles remain");
     }
 
     #[test]
@@ -767,7 +784,7 @@ mod tests {
             &request(CALL_DELAY),
             &response("watch", "Local watch."),
             facts(),
-            "80 miles",
+            "80 miles remain",
             "continue",
         );
         assert_eq!(local.decision, "watch");
@@ -776,7 +793,7 @@ mod tests {
             &request(CALL_DELAY),
             &response("continue", "local continue"),
             facts(),
-            "80 miles",
+            "80 miles remain",
             "late_update",
         );
         assert_eq!(
@@ -796,7 +813,7 @@ mod tests {
             &request(CALL_DELAY),
             &response("continue", "local continue"),
             facts(),
-            "80 miles",
+            "80 miles remain",
             "watch",
         );
         assert_eq!(
@@ -808,7 +825,7 @@ mod tests {
             &request(CALL_ROAD),
             &response("continue", "local continue"),
             facts(),
-            "80 miles",
+            "80 miles remain",
             "caution",
         );
         assert_eq!(
@@ -828,7 +845,7 @@ mod tests {
             &request(CALL_HOURS),
             &response("stop", "You are out of legal time. Park safely now."),
             facts(),
-            "80 miles",
+            "80 miles remain",
             "plan_rest",
         );
         assert_eq!(stop.decision, "stop");
@@ -843,7 +860,7 @@ mod tests {
             &request(CALL_HOURS),
             &local_hours,
             facts(),
-            "80 miles",
+            "80 miles remain",
             "stop",
         );
         assert_eq!(escalated_stop.decision, "stop");
@@ -864,13 +881,13 @@ mod tests {
             &request(CALL_TRUCK),
             &response("monitor", "local monitor"),
             truck_facts,
-            "80 miles",
+            "80 miles remain",
             "repair_authorized",
         );
         assert_eq!(
             truck.message,
-            "Your dispatcher authorized a roadside repair, but the truck doesn't need one yet. \
-             Watch the gauges and stop if it worsens."
+            "I can authorize a roadside repair, but the truck doesn't need one yet. Watch the \
+             gauges and stop if it worsens."
         );
         assert!(truck.effects.is_empty());
         assert!(!roadside_mechanic_needed(
@@ -889,7 +906,7 @@ mod tests {
             &request(CALL_LOAD),
             &response("continue", "local continue"),
             load_facts,
-            "80 miles",
+            "80 miles remain",
             "protect_load",
         );
         assert_eq!(
@@ -931,9 +948,10 @@ mod tests {
             )
         });
         assert_eq!(after, before);
-        assert!(harness.transcript().join(" ").contains(
-            "Your dispatcher authorized a roadside repair, but the truck doesn't need one yet."
-        ));
+        assert!(harness
+            .transcript()
+            .join(" ")
+            .contains("I can authorize a roadside repair, but the truck doesn't need one yet."));
 
         harness.with_drive(|driving, _| {
             driving.trip.truck.damage_pct = FIELD_REPAIR_DAMAGE_PCT + 20.0;
@@ -959,7 +977,7 @@ mod tests {
             request: request(CALL_DELAY),
             local,
             facts: facts(),
-            remaining_text: "80 miles".to_string(),
+            remaining_text: "80 miles remain".to_string(),
             claim_announced: false,
         }
     }
