@@ -50,6 +50,31 @@ pub fn world_data_path() -> PathBuf {
     data_root().join("world_data")
 }
 
+/// The leg a hop from `a` to `b` drives, among those `allowed`: the main
+/// road's record for this direction, else its other-direction record, else
+/// a detour leg. Both directions may carry separate corridor records.
+fn pick_hop<'l>(
+    legs: &'l [Arc<Leg>],
+    a: &str,
+    b: &str,
+    allowed: impl Fn(&Arc<Leg>) -> bool,
+) -> Option<&'l Arc<Leg>> {
+    let main = |leg: &&Arc<Leg>| leg.detour_for.is_empty() && allowed(leg);
+    legs.iter()
+        .filter(main)
+        .find(|leg| leg.a.as_str() == a && leg.b.as_str() == b)
+        .or_else(|| legs.iter().filter(main).find(|leg| leg.other(a) == b))
+        .or_else(|| {
+            legs.iter()
+                .filter(|leg| allowed(leg))
+                .find(|leg| leg.other(a) == b)
+        })
+}
+
+/// Search cost added to a legal detour leg, in miles. It runs between the
+/// same two cities as the road it bypasses; on a tie the main road wins.
+const DETOUR_TIE_BREAK_MILES: f64 = 0.01;
+
 /// Routing cost multiplier for a leg carrying a truck_advisory (see
 /// `shortest_route`). Calibrated, not tasted: carriers accept the ~1.7x
 /// distance detour through Cortez and Moab rather than run the warned
@@ -231,6 +256,10 @@ impl World {
                 Value::Null => String::new(),
                 v => py_str(v).trim().to_string(),
             };
+            let detour_for = match &leg.detour_for {
+                Value::Null => String::new(),
+                v => py_str(v).trim().to_string(),
+            };
             let crossings: Vec<RoadCrossing> = match &leg.crossings {
                 Value::Null => Vec::new(),
                 v => serde_json::from_value(v.clone()).map_err(|e| {
@@ -261,6 +290,7 @@ impl World {
             built.divided = divided;
             built.truck_advisory = truck_advisory;
             built.crossings = crossings;
+            built.detour_for = detour_for;
             built.meta_complete = Some(meta_complete);
             legs.push(Arc::new(built));
         }
@@ -394,6 +424,7 @@ impl World {
             built.divided = baked.divided;
             built.truck_advisory = baked.truck_advisory;
             built.crossings = baked.crossings;
+            built.detour_for = baked.detour_for;
             built.meta_complete = baked.meta_complete;
             legs.push(Arc::new(built));
         }
@@ -782,11 +813,16 @@ impl World {
                     continue;
                 }
                 let nxt = leg.other(&city);
-                let has_forward_leg = legs.iter().any(|candidate| {
-                    candidate.a.as_str() == city
-                        && candidate.b.as_str() == nxt
-                        && (!require_metadata || self.leg_metadata_complete(candidate))
-                });
+                // A leg's reverse record is the same road the other way; a
+                // detour leg is a different road, so it neither hides nor is
+                // hidden by the leg it bypasses.
+                let has_forward_leg = leg.detour_for.is_empty()
+                    && legs.iter().any(|candidate| {
+                        candidate.detour_for.is_empty()
+                            && candidate.a.as_str() == city
+                            && candidate.b.as_str() == nxt
+                            && (!require_metadata || self.leg_metadata_complete(candidate))
+                    });
                 if leg.a.as_str() != city && has_forward_leg {
                     continue;
                 }
@@ -799,6 +835,9 @@ impl World {
                 } else {
                     leg.miles
                 };
+                if !leg.detour_for.is_empty() {
+                    cost += DETOUR_TIE_BREAK_MILES;
+                }
                 if !leg.truck_advisory.is_empty() {
                     // Strong avoidance, never refusal. Calibrated against the
                     // decision real carriers make at Red Mountain Pass: they
@@ -855,11 +894,36 @@ impl World {
         let mut legs: Vec<Arc<Leg>> = Vec::new();
         for pair in cities.windows(2) {
             let (a, b) = (&pair[0], &pair[1]);
+            let leg = self
+                .adjacency
+                .get(a)
+                .and_then(|legs| pick_hop(legs, a, b, |_| true))?;
+            legs.push(Arc::clone(leg));
+        }
+        Some(Route::new(cities, legs))
+    }
+
+    /// `route_from_cities` for a trip carrying `load`: where a hop has a
+    /// legal detour beside a road whose crossing refuses the load, the hop
+    /// is the detour, the road a saved trip with that load was planned on.
+    pub fn route_from_cities_for<S: AsRef<str>>(
+        &self,
+        cities: &[S],
+        load: &CrossingLoad,
+    ) -> Option<Route> {
+        if cities.len() < 2 {
+            return None;
+        }
+        let cities: Vec<String> = cities
+            .iter()
+            .map(|c| self.resolve_city_key(c.as_ref()))
+            .collect();
+        let mut legs: Vec<Arc<Leg>> = Vec::new();
+        for pair in cities.windows(2) {
+            let (a, b) = (&pair[0], &pair[1]);
+            let legal = |leg: &Arc<Leg>| leg.crossings.iter().all(|c| c.refusal(load).is_none());
             let leg = self.adjacency.get(a).and_then(|legs| {
-                // Both directions may carry separate corridor records.
-                legs.iter()
-                    .find(|leg| leg.a.as_str() == a && leg.b.as_str() == b)
-                    .or_else(|| legs.iter().find(|leg| leg.other(a) == b))
+                pick_hop(legs, a, b, legal).or_else(|| pick_hop(legs, a, b, |_| true))
             })?;
             legs.push(Arc::clone(leg));
         }

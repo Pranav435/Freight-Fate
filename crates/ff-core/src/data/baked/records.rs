@@ -337,6 +337,7 @@ pub struct BakedLeg {
     pub stops: Vec<BakedStop>,
     pub truck_advisory: String,
     pub crossings: Vec<RoadCrossing>,
+    pub detour_for: String,
     pub lanes: i64,
     pub local_cue: String,
     pub local_speed_mph: f64,
