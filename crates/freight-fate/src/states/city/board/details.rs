@@ -154,7 +154,7 @@ impl JobDetailState {
                 fmt_f(s.per_distance(dollars_per_mile), 2)
             ),
             format!(
-                "Deadline: {} hours once loaded, deliver by about {}.",
+                "Deadline {} hours after loading, about {}.",
                 fmt_f(job.deadline_game_h, 0),
                 appointment_text(p.game_hours, loaded_departure_h + job.deadline_game_h, zone)
             ),

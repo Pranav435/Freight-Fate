@@ -279,7 +279,7 @@ impl DrivingState {
     /// Falling asleep at the wheel is not a scrape: 49 CFR 392.3 forbids
     /// driving impaired by fatigue, and to a carrier this is a preventable
     /// safety incident. The first one costs standing; from the second on it
-    /// is a violation the licence answers for.
+    /// is a violation the license answers for.
     pub fn record_fatigue_event(&mut self, ctx: &mut GameContext) -> String {
         if ctx.profile.is_none() || self.enforcement_bypassed(ctx) {
             return String::new();

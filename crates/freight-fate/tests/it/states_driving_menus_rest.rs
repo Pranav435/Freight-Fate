@@ -449,7 +449,7 @@ fn first_letter_navigation_withdraws_sleep_confirmation_before_selecting_again()
     app.clear_speech();
     Menu::activate(&mut state, &mut app.ctx);
     let said = app.main_lines().join(" ");
-    assert!(said.contains("Preview: sleep 10 hours"), "{said}");
+    assert!(said.contains("Sleep 10 hours at"), "{said}");
     assert_eq!(with_drive(&drive, |d| d.trip.game_minutes), before_time);
     let profile = app.ctx.profile.as_ref().unwrap();
     assert_eq!(profile.hos, before_hos);
@@ -482,7 +482,7 @@ fn controller_navigation_cancels_sleep_preview_and_a_second_select_confirms() {
     state.handle_controller(&mut app.ctx, &InputEvent::button(ControllerButton::A));
     assert_eq!(with_drive(&drive, |d| d.trip.game_minutes), before);
     let said = app.main_lines().join(" ");
-    assert!(said.contains("Select this choice again to sleep"), "{said}");
+    assert!(said.contains("Select again to sleep"), "{said}");
     state.handle_controller(&mut app.ctx, &InputEvent::button(ControllerButton::A));
     assert!(with_drive(&drive, |d| d.trip.game_minutes) > before);
 }

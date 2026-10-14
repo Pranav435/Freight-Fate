@@ -444,7 +444,7 @@ impl Trip {
                 self.planned_stop_key = None;
                 self.emit(
                     TripEventKind::GpsCue,
-                    SpokenMessage::new(format!("Past your planned stop, {name}. Plan cancelled.")),
+                    SpokenMessage::new(format!("Past your planned stop, {name}. Plan canceled.")),
                     TripEventData {
                         planned: Some(true),
                         ..Default::default()

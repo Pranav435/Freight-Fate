@@ -271,7 +271,7 @@ fn test_resumed_drive_reports_old_fresh_observation_as_live() {
     let lines = harness.app.speech().lines();
     let resume_message = lines
         .iter()
-        .find(|line| line.starts_with("Resuming your"))
+        .find(|line| line.starts_with("Resuming "))
         .unwrap_or_else(|| panic!("no resume line: {lines:#?}"));
     assert!(
         resume_message.contains("Live weather: rain"),

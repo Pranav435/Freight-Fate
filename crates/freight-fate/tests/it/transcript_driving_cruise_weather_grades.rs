@@ -482,7 +482,7 @@ fn test_predictive_cruise_shaves_before_a_descent() {
 
 #[test]
 fn test_predictive_cruise_never_banks_past_the_posted_limit() {
-    // Momentum for a hill is not a licence to speed.
+    // Momentum for a hill is not a license to speed.
     let mut harness = cruising("Bank Limit", 55.0, 55.0, &[(0.0, BENCH_MILES, 0.0)]);
     harness.app.ctx.settings.predictive_cruise = true;
     let start = harness.read_drive(|d| d.trip.position_mi);

@@ -531,7 +531,7 @@ fn test_standing_is_said_plainly_and_names_the_next_consequence() {
     assert!(text.contains("one serious violation"));
     assert!(text.contains("60 days"));
     assert!(!text.to_lowercase().contains("strike")); // that noun belongs to the per-trip counter
-                                                      // The licence half is unchanged; the carrier's review now speaks after it.
+                                                      // The license half is unchanged; the carrier's review now speaks after it.
     assert!(
         text.starts_with(
             "Record: one serious violation. One more before your CDL is suspended for 60 days. "
@@ -629,7 +629,7 @@ fn the_spoken_standing_lines_match_the_python_f_strings() {
         "{text}"
     );
     // Two serious violations in the window is also the carrier's termination
-    // floor, and the line says so after the licence half.
+    // floor, and the line says so after the license half.
     assert!(
         text.ends_with("The carrier ends your employment at the next terminal."),
         "{text}"
@@ -703,7 +703,7 @@ fn test_a_suspended_licence_holds_the_seat_but_an_old_violation_does_not() {
     // The LICENCE band only moves on a suspension. A lone serious violation
     // reaches the band another way now -- the carrier's record review, which
     // holds at guarded and names its own end date (owner, 2026-09-12) -- and
-    // the licence band stays out of it until the second one suspends the CDL.
+    // the license band stays out of it until the second one suspends the CDL.
     let mut p = profile();
     let hours = p.game_hours;
     p.record_mut().record_serious_violation(hours);
@@ -1147,7 +1147,7 @@ fn a_career_saved_before_the_review_existed_starts_it_from_the_first_load() {
     // Staging, 2026-09-12: two testers carry serious violations inside the
     // window, one of them six. Under the review as first written, both were
     // due for termination on their first terminal visit of the new build,
-    // over offenses they served through the licence ladder at the time.
+    // over offenses they served through the license ladder at the time.
     use crate::models::profile::Profile;
     // The round trip reads the save directory for the signing key; pin a
     // throwaway one for this thread, the way the profile tests do.
@@ -1168,7 +1168,7 @@ fn a_career_saved_before_the_review_existed_starts_it_from_the_first_load() {
 
     let loaded = Profile::from_dict(&saved);
     assert_eq!(loaded.driving_record.review_started_h, 400.0 * DAY);
-    // The licence ladder still sees both: the CDL is suspended as before.
+    // The license ladder still sees both: the CDL is suspended as before.
     assert_eq!(
         loaded.driving_record.serious_in_window(loaded.game_hours),
         2

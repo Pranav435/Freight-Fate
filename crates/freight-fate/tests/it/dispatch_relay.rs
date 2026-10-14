@@ -124,11 +124,11 @@ fn test_a_relayed_loads_appointment_counts_from_the_loaded_departure() {
     key(&mut app, Key::F1);
     let deadline = labels::<JobDetailState>(&app)
         .into_iter()
-        .find(|line| line.starts_with("Deadline:"))
+        .find(|line| line.starts_with("Deadline "))
         .expect("a deadline line");
     let due = appointment_text(now, departure_h + job.deadline_game_h, zone);
     assert!(
-        deadline.ends_with(&format!("deliver by about {due}.")),
+        deadline.ends_with(&format!("after loading, about {due}.")),
         "{deadline}"
     );
     assert_ne!(due, appointment_text(now, job.deadline_game_h, zone));

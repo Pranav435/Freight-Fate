@@ -143,11 +143,11 @@ fn early_sleep_hint_and_requested_readout_separate_plan_from_legal_fallback() {
     });
     let readout = app.main_lines().join(" ");
     assert!(
-        readout.contains("Suggested sleep stop: travel center: Comfortable"),
+        readout.contains("sleep stop travel center: Comfortable"),
         "{readout}"
     );
     assert!(
-        readout.contains("Last legally reachable fallback: travel center: Legal fallback"),
+        readout.contains("Last legal: travel center: Legal fallback"),
         "{readout}"
     );
 }

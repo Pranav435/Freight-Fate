@@ -452,7 +452,7 @@ pub struct Profile {
     pub selection_score: f64,
     // Times this driver has been placed out of service, roadside or at a
     // scale. Feeds the safety record; kept on the profile rather than the
-    // licence file because it is a carrier fact, not a licensing one.
+    // license file because it is a carrier fact, not a licensing one.
     pub out_of_service_events: i64,
     pub market: Market,
     /// hours-of-service shift clock

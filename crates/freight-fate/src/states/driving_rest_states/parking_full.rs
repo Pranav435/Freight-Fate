@@ -86,8 +86,8 @@ impl ParkingFullState {
             let label = self.fuel_label(ctx, d);
             items.push(
                 MenuItem::new(label, |s: &mut Self, ctx| s.refuel(ctx)).help(
-                    "Fills the tank at the regional diesel price plus a 35 dollar service fee. \
-                     The engine must be off.",
+                    "Fills the tank at the posted diesel price plus a 35 dollar service fee. Engine \
+                     must be off.",
                 ),
             );
         }
@@ -162,9 +162,8 @@ impl ParkingFullState {
             }
             let money = profile_of(ctx).money();
             format!(
-                "{engine_off}You took a motel room for {} dollars and slept a full ten hours. It \
-                 is {}. Hours of service reset and you wake fresh. You have {} dollars. {} \
-                 starts the engine.",
+                "{engine_off}Motel, {} dollars, 10 hours. {}. Hours of service reset; you're fresh. \
+                 {} dollars. {} starts the engine.",
                 fmt_grouped(MOTEL_COST, 0),
                 clock_text(d.trip.local_hour()),
                 fmt_grouped(money, 0),

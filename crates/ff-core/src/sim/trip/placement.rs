@@ -593,7 +593,7 @@ impl Trip {
         match anchor {
             SignAnchor::Corridor => true,
             SignAnchor::States(states) => match self.state_code_at(at) {
-                // An unbaked state is not a licence to claim a place. The
+                // An unbaked state is not a license to claim a place. The
                 // roadside falls back to signs that are true anywhere.
                 None => false,
                 Some(code) => states.contains(&code.as_str()),
@@ -832,7 +832,7 @@ impl Trip {
         false
     }
 
-    /// True while a signalled exit is inside the road the truck must shed,
+    /// True while a signaled exit is inside the road the truck must shed,
     /// sized from the exit's own ramp speed (Shane, 2026-08-15).
     pub fn armed_exit_decompression(&self) -> bool {
         let Some(ahead) = self.exit_approach_mi else {

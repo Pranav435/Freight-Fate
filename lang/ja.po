@@ -7026,7 +7026,7 @@ msgid "standing-repair lane"
 msgstr ""
 
 msgid ""
-"Load choice returns when your service, licence, record and debt are back in "
+"Load choice returns when your service, license, record and debt are back in "
 "good standing."
 msgstr ""
 
@@ -7942,7 +7942,7 @@ msgstr ""
 
 msgid ""
 "That was the second major offense on your CDL. Under the federal rules a "
-"second major offense disqualifies a commercial licence for life, and there "
+"second major offense disqualifies a commercial license for life, and there "
 "is no waiting it out."
 msgstr ""
 
@@ -8569,88 +8569,59 @@ msgstr ""
 
 #. placeholders: {destination_travel_min}
 #. one sentence of a longer line
-msgid ""
-"Destination estimated reachable before your next hours limit, about "
-"{destination_travel_min} minutes including access."
+msgid "Destination fits this shift, about {destination_travel_min} minutes."
 msgstr ""
 
 #. placeholders: {destination_travel_min}
 msgid ""
-"Destination estimated reachable before your next hours limit, about "
-"{destination_travel_min} minutes including access. No HOS stop is needed "
-"first. Traffic can change."
+"Destination fits this shift, about {destination_travel_min} minutes. No HOS "
+"stop first."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "No HOS stop is needed first."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Traffic can change."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Includes 5 minutes of legal planning margin."
+msgid "No HOS stop first."
 msgstr ""
 
 #. placeholders: {last_name}, {fallback_distance}, {last_minutes}
 #. one sentence of a longer line
 msgid ""
-"Last legally reachable fallback: {last_name}, {fallback_distance} ahead, "
-"about {last_minutes} minutes including access."
+"Last legal: {last_name}, {fallback_distance}, {last_minutes} minutes."
 msgstr ""
 
-#. placeholders: {action}, {suggested_name}, {suggested_distance}, {suggested_minutes}, {buffer}
+#. placeholders: {action}, {suggested_name}, {suggested_distance}, {suggested_minutes}
 #. one sentence of a longer line
 msgid ""
-"Suggested {action} stop: {suggested_name}, {suggested_distance} ahead, "
-"about {suggested_minutes} minutes including access; estimated {buffer} "
-"minutes before your next hours limit."
+"{action} stop {suggested_name}, {suggested_distance}, {suggested_minutes} "
+"minutes."
 msgstr ""
 
 #. placeholders: {action}, {suggested_name}, {suggested_distance}, {suggested_minutes}, {buffer}, {last_name}, {fallback_distance}, {last_minutes}
 msgid ""
-"Suggested {action} stop: {suggested_name}, {suggested_distance} ahead, "
-"about {suggested_minutes} minutes including access; estimated {buffer} "
-"minutes before your next hours limit. Last legally reachable fallback: "
-"{last_name}, {fallback_distance} ahead, about {last_minutes} minutes "
-"including access. Includes 5 minutes of legal planning margin. Traffic and "
-"parking can change."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Traffic and parking can change."
+"{action} stop {suggested_name}, {suggested_distance}, {suggested_minutes} "
+"minutes. {buffer} minutes to the limit. Last legal: {last_name}, "
+"{fallback_distance}, {last_minutes} minutes."
 msgstr ""
 
 #. placeholders: {buffer}
 #. one sentence of a longer line
-msgid ""
-"Estimated {buffer} minutes remain before your next hours limit; the legal "
-"planning margin is 5 minutes."
+msgid "{buffer} minutes to the limit."
 msgstr ""
 
 #. placeholders: {action}, {name}, {fallback_distance}, {minutes}
 #. one sentence of a longer line
 msgid ""
-"Last reachable {action} stop: {name}, {fallback_distance} ahead, about "
-"{minutes} minutes including access."
+"Last legal {action} stop {name}, {fallback_distance}, {minutes} minutes."
 msgstr ""
 
 #. placeholders: {action}, {name}, {fallback_distance}, {minutes}, {buffer}, {earlier}
 msgid ""
-"Last reachable {action} stop: {name}, {fallback_distance} ahead, about "
-"{minutes} minutes including access. Estimated {buffer} minutes remain "
-"before your next hours limit; the legal planning margin is 5 minutes. "
-"{earlier} Traffic and parking can change. Plan to stop here."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Plan to stop here."
+"Last legal {action} stop {name}, {fallback_distance}, {minutes} minutes. "
+"{buffer} minutes to the limit. {earlier} Stop here."
 msgstr ""
 
 #. placeholders: {earlier}
 #. one sentence of a longer line
-msgid "{earlier} Traffic and parking can change."
+msgid "{earlier} Stop here."
 msgstr ""
 
 msgid "This stop also has a comfortable estimated buffer."
@@ -8659,22 +8630,20 @@ msgstr ""
 msgid "No earlier compatible stop offers a 30-minute estimated buffer."
 msgstr ""
 
-#. one sentence of a longer line
-msgid "Find a safe place to stop; shoulder rest may bring a parking ticket."
-msgstr ""
-
 #. placeholders: {action}, {minutes}
 #. one sentence of a longer line
 msgid ""
-"No reachable {action} stop on the remaining route within the estimated time "
-"available, {minutes} minutes before your next hours limit."
+"No {action} stop left before your hours limit, {minutes} minutes remaining."
 msgstr ""
 
 #. placeholders: {action}, {minutes}
 msgid ""
-"No reachable {action} stop on the remaining route within the estimated time "
-"available, {minutes} minutes before your next hours limit. Find a safe "
-"place to stop; shoulder rest may bring a parking ticket."
+"No {action} stop left before your hours limit, {minutes} minutes remaining. "
+"Stop soon; a shoulder rest can draw a ticket."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Stop soon; a shoulder rest can draw a ticket."
 msgstr ""
 
 #. placeholders: {action}, {name}, {distance}
@@ -8685,6 +8654,10 @@ msgstr ""
 #. placeholders: {action}, {name}, {distance}
 msgid ""
 "Last reachable {action} stop: {name}, {distance} ahead. Plan to stop here."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Plan to stop here."
 msgstr ""
 
 msgid "landmark"
@@ -9624,7 +9597,7 @@ msgstr ""
 
 msgid ""
 "A modern cabover: short, light, and startlingly quick, with the whole road "
-"laid out under the windscreen. Every pound it saves goes to the load, and "
+"laid out under the windshield. Every pound it saves goes to the load, and "
 "it turns where nothing else will."
 msgstr ""
 
@@ -10402,9 +10375,7 @@ msgstr ""
 msgid "Hours of service: {phrase} until {due}."
 msgstr ""
 
-msgid ""
-"Hours of service: past your break limit. Take a 30-minute break at a rest "
-"stop."
+msgid "Hours of service: 30-minute break overdue."
 msgstr ""
 
 msgid ""
@@ -10429,14 +10400,13 @@ msgstr ""
 
 #. placeholders: {duration_text}, {duration_text2}
 msgid ""
-"Hours of service: {duration_text} of driving left, {duration_text2} of duty "
-"window left."
+"Hours of service: {duration_text} driving, 14-hour window {duration_text2}."
 msgstr ""
 
 #. placeholders: {duration_text}, {duration_text2}, {duration_text3}
 msgid ""
-"Hours of service: {duration_text} of driving left, break due in "
-"{duration_text2}, duty window closes in {duration_text3}."
+"Hours of service: {duration_text} driving, 30-minute break in "
+"{duration_text2}, 14-hour window {duration_text3}."
 msgstr ""
 
 #. placeholders: {duration_text}
@@ -10468,15 +10438,21 @@ msgstr ""
 msgid "At the wheel {driven}"
 msgstr ""
 
-msgid "no driving yet"
+msgid "nothing yet"
 msgstr ""
 
-#. placeholders: {driven}
-msgid "{driven} driving"
+#. placeholders: {spent}
+#. one sentence of a longer line
+msgid "Driven {spent}."
 msgstr ""
 
 #. placeholders: {spent}, {duration_text}
-msgid "At the wheel so far: {spent}, {duration_text} on duty this shift"
+msgid "Driven {spent}. On duty {duration_text}"
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid "On duty {duration_text}"
 msgstr ""
 
 msgid "Out of hours."
@@ -10516,11 +10492,11 @@ msgid "duty window {duration_text}"
 msgstr ""
 
 #. placeholders: {duration_text}
-msgid ", but your duty window closes first, in {duration_text}"
+msgid ", 14-hour window closes first, {duration_text}"
 msgstr ""
 
 #. one clause of a longer line
-msgid "but your duty window closes first"
+msgid "14-hour window closes first"
 msgstr ""
 
 #. placeholders: {answer}, {shift_over}
@@ -10559,15 +10535,6 @@ msgstr ""
 msgid "{drive_text}, duty window {duration_text}"
 msgstr ""
 
-#. placeholders: {duty_text}
-#. one sentence of a longer line
-msgid "{duty_text}, before your driving time runs out."
-msgstr ""
-
-#. placeholders: {duty_text}, {drive_text}
-msgid "{duty_text}, before your driving time runs out. {drive_text}"
-msgstr ""
-
 msgid ", break overdue"
 msgstr ""
 
@@ -10603,19 +10570,17 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Sleeper split pending: pair this with 2 more hours at sleep-capable parking."
+"Sleeper split open: 2 more hours off duty or in the sleeper to pair it."
 msgstr ""
 
 msgid ""
-"Sleeper split pending: pair this with 3 more hours at sleep-capable parking."
+"Sleeper split open: 3 more hours off duty or in the sleeper to pair it."
 msgstr ""
 
-msgid ""
-"Sleeper split pending: pair this with 7 more hours in the sleeper berth."
+msgid "Sleeper split open: 7 more hours in the sleeper to pair it."
 msgstr ""
 
-msgid ""
-"Sleeper split pending: pair this with 8 more hours in the sleeper berth."
+msgid "Sleeper split open: 8 more hours in the sleeper to pair it."
 msgstr ""
 
 msgid "warned"
@@ -11062,8 +11027,8 @@ msgstr ""
 
 #. placeholders: {closure_words}, {road}, {near_city}, {distance_text}, {speed_text}, {minutes_words}
 msgid ""
-"{closure_words} on {road} near {near_city}, {distance_text} at "
-"{speed_text}, {minutes_words}"
+"{closure_words} on {road} near {near_city}, {distance_text}, {speed_text}, "
+"{minutes_words}"
 msgstr ""
 
 #. placeholders: {name}
@@ -11429,7 +11394,7 @@ msgstr ""
 msgid "curve assist shedding speed"
 msgstr ""
 
-msgid "signalled exit"
+msgid "signaled exit"
 msgstr ""
 
 msgid "scale reminder"
@@ -11897,11 +11862,11 @@ msgid "Past your planned stop, {name}."
 msgstr ""
 
 #. placeholders: {name}
-msgid "Past your planned stop, {name}. Plan cancelled."
+msgid "Past your planned stop, {name}. Plan canceled."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Plan cancelled."
+msgid "Plan canceled."
 msgstr ""
 
 #. placeholders: {ahead_text}, {text}, {speed}
@@ -14782,7 +14747,7 @@ msgstr ""
 
 #. one sentence of a longer line
 msgid ""
-"The server does not recognise the town this career is parked in, which "
+"The server does not recognize the town this career is parked in, which "
 "usually means it has not caught up with this build yet."
 msgstr ""
 
@@ -14794,7 +14759,7 @@ msgstr ""
 
 #. placeholders: {name}
 msgid ""
-"{name}: backup not accepted. The server does not recognise the town this "
+"{name}: backup not accepted. The server does not recognize the town this "
 "career is parked in, which usually means it has not caught up with this "
 "build yet. Your local career is safe, and backups start working again on "
 "their own once it has."
@@ -15833,16 +15798,12 @@ msgid " Deadline extended to {f} hours."
 msgstr ""
 
 msgid ""
-"Enter accepts a dispatch and starts the deadhead from your terminal to its "
-"origin facility. F1 reads the job details. Tab repeats the freight market "
-"watch. Escape returns to the terminal."
+"Enter accepts. F1 is job details. Tab is the market. Escape goes back."
 msgstr ""
 
 msgid ""
-"Dispatch assigned this load. Enter accepts it and starts the deadhead from "
-"your terminal to its origin facility. Declining draws another load, but "
-"refusals cost reputation from a budget that refills at your next promotion. "
-"F1 reads the job details. Escape returns to the terminal."
+"Assigned load. Enter accepts. Decline costs dispatch trust until your next "
+"promotion. F1 is details. Escape goes back."
 msgstr ""
 
 #. placeholders: {SENIOR_LOAD_CHOICE_LEVEL}
@@ -16191,8 +16152,7 @@ msgid "Dollars per {distance_unit_text}: {f}."
 msgstr ""
 
 #. placeholders: {f}, {appointment_text}
-msgid ""
-"Deadline: {f} hours once loaded, deliver by about {appointment_text}."
+msgid "Deadline {f} hours after loading, about {appointment_text}."
 msgstr ""
 
 #. placeholders: {equipment_text}
@@ -16488,18 +16448,18 @@ msgstr ""
 
 #. placeholders: {grouped}
 #. one sentence of a longer line
-msgid "Advance: {grouped} dollars."
+msgid "Advance {grouped} dollars on the next load, due at delivery."
 msgstr ""
 
 #. placeholders: {grouped}, {grouped2}, {grouped3}
 msgid ""
-"Advance: {grouped} dollars. You have {grouped2} dollars, {grouped3} dollars "
-"to repay."
+"Advance {grouped} dollars on the next load, due at delivery. You have "
+"{grouped2}, owe {grouped3}."
 msgstr ""
 
 #. placeholders: {grouped2}, {grouped3}
 #. one sentence of a longer line
-msgid "You have {grouped2} dollars, {grouped3} dollars to repay."
+msgid "You have {grouped2}, owe {grouped3}."
 msgstr ""
 
 msgid "Time and weather"
@@ -18055,30 +18015,20 @@ msgstr ""
 msgid "{py_capitalize} checks out.{tank_walk_around_clause}"
 msgstr ""
 
-#. one sentence of a longer line
-msgid "Pull out with it and the write-up is yours at the first scale."
-msgstr ""
-
 #. placeholders: {f}, {tank_walk_around_clause}
 #. one sentence of a longer line
-msgid "Refuse it for a swap, about {f} minutes.{tank_walk_around_clause}"
+msgid "Refuse for a swap, about {f} minutes.{tank_walk_around_clause}"
 msgstr ""
 
-#. placeholders: {condition_text}
 #. one sentence of a longer line
-msgid "The trailer is {condition_text}."
-msgstr ""
-
-#. placeholders: {name}, {defect}
-#. one sentence of a longer line
-msgid "Walking {name}, you find a {defect}."
+msgid "Take it and the write-up is yours at the first scale."
 msgstr ""
 
 #. placeholders: {name}, {defect}, {condition_text}, {f}, {tank_walk_around_clause}
 msgid ""
-"Walking {name}, you find a {defect}. The trailer is {condition_text}. Pull "
-"out with it and the write-up is yours at the first scale. Refuse it for a "
-"swap, about {f} minutes.{tank_walk_around_clause}"
+"{name}: {defect}, {condition_text}. Take it and the write-up is yours at "
+"the first scale. Refuse for a swap, about {f} "
+"minutes.{tank_walk_around_clause}"
 msgstr ""
 
 msgid ""
@@ -18123,12 +18073,12 @@ msgid "Checked in."
 msgstr ""
 
 #. placeholders: {map}
-msgid "Checked in. Your load is on {map} in the drop yard."
+msgid "Checked in. Load on {map} in the drop yard."
 msgstr ""
 
 #. placeholders: {map}
 #. one sentence of a longer line
-msgid "Your load is on {map} in the drop yard."
+msgid "Load on {map} in the drop yard."
 msgstr ""
 
 msgid "Checked in. Dock assigned."
@@ -18201,34 +18151,24 @@ msgstr ""
 
 #. placeholders: {f2}, {brake}, {speed_control_pause_text}
 #. one sentence of a longer line
-msgid "Air pressure {f2} psi, {brake}.{speed_control_pause_text}"
-msgstr ""
-
-#. placeholders: {destination_facility_text}
-#. one sentence of a longer line
-msgid "Destination {destination_facility_text}."
+msgid "Air {f2} psi, {brake}.{speed_control_pause_text}"
 msgstr ""
 
 #. placeholders: {facility}, {state}
 #. one sentence of a longer line
-msgid "Pickup at {facility}: {state}."
+msgid "Pickup {facility}: {state}."
 msgstr ""
 
 #. placeholders: {facility}, {state}, {f}, {label}, {destination_facility_text}, {speed_text}, {engine}, {f2}, {brake}, {speed_control_pause_text}
 msgid ""
-"Pickup at {facility}: {state}. {f} tons of {label}. Destination "
-"{destination_facility_text}. Speed {speed_text}. {engine}. Air pressure "
-"{f2} psi, {brake}.{speed_control_pause_text}"
+"Pickup {facility}: {state}. {f} tons of {label} for "
+"{destination_facility_text}. {speed_text}. {engine}. Air {f2} psi, "
+"{brake}.{speed_control_pause_text}"
 msgstr ""
 
-#. placeholders: {speed_text}
+#. placeholders: {f}, {label}, {destination_facility_text}
 #. one sentence of a longer line
-msgid "Speed {speed_text}."
-msgstr ""
-
-#. placeholders: {f}, {label}
-#. one sentence of a longer line
-msgid "{f} tons of {label}."
+msgid "{f} tons of {label} for {destination_facility_text}."
 msgstr ""
 
 msgid "Saved. The pickup resumes here."
@@ -18299,7 +18239,7 @@ msgid "Checked in at {facility}."
 msgstr ""
 
 #. placeholders: {facility}, {map}
-msgid "Checked in at {facility}. Your load is on {map} in the drop yard."
+msgid "Checked in at {facility}. Load on {map} in the drop yard."
 msgstr ""
 
 #. placeholders: {facility}
@@ -19281,50 +19221,22 @@ msgstr ""
 msgid "{progress} {hours_used} of {deadline_game_h} hours used."
 msgstr ""
 
-#. placeholders: {now}
-#. one sentence of a longer line
-msgid "It is {now}."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Parked."
-msgstr ""
-
 #. placeholders: {drive_name}, {weight_tons}, {label}, {destination}
 #. one sentence of a longer line
 msgid ""
-"Resuming your {drive_name}: {weight_tons} tons of {label} to {destination}."
+"Resuming {drive_name}: {weight_tons} tons of {label} to {destination}."
 msgstr ""
 
-#. placeholders: {drive_name}, {weight_tons}, {label}, {destination}, {progress}, {hours_used}, {deadline_game_h}, {now}, {mode}, {report_lead}, {speed_control}, {engine}, {control_hint}
+#. placeholders: {drive_name}, {weight_tons}, {label}, {destination}, {progress}, {hours_used}, {deadline_game_h}, {now}, {mode}, {report_lead}, {speed_control}, {engine}
 msgid ""
-"Resuming your {drive_name}: {weight_tons} tons of {label} to {destination}. "
-"{progress} {hours_used} hours used of {deadline_game_h}. It is {now}. "
-"Transmission is {mode}. Weather: {report_lead}. Parked. "
-"{speed_control}{engine} At air ready, {control_hint} releases the parking "
-"brake."
-msgstr ""
-
-#. placeholders: {mode}
-#. one sentence of a longer line
-msgid "Transmission is {mode}."
-msgstr ""
-
-#. placeholders: {report_lead}
-#. one sentence of a longer line
-msgid "Weather: {report_lead}."
+"Resuming {drive_name}: {weight_tons} tons of {label} to {destination}. "
+"{progress} {hours_used} of {deadline_game_h} hours. {now}. {mode}. "
+"{report_lead}. {speed_control}{engine}"
 msgstr ""
 
 #. placeholders: {progress}, {hours_used}, {deadline_game_h}
 #. one sentence of a longer line
-msgid "{progress} {hours_used} hours used of {deadline_game_h}."
-msgstr ""
-
-#. placeholders: {speed_control}, {engine}, {control_hint}
-#. one sentence of a longer line
-msgid ""
-"{speed_control}{engine} At air ready, {control_hint} releases the parking "
-"brake."
+msgid "{progress} {hours_used} of {deadline_game_h} hours."
 msgstr ""
 
 #. placeholders: {pickup_facility_text}
@@ -19345,10 +19257,9 @@ msgstr ""
 msgid "At the wheel."
 msgstr ""
 
-#. placeholders: {objective}, {now}, {mode}, {report_lead}, {engine}, {help}
+#. placeholders: {objective}, {now}, {mode}, {report_lead}, {engine}
 msgid ""
-"At the wheel. {objective}It is {now}. Transmission is {mode}. Weather: "
-"{report_lead}. {engine} {help}"
+"At the wheel. {objective}It is {now}. {mode}. {report_lead}. {engine}"
 msgstr ""
 
 #. placeholders: {objective}, {now}
@@ -19362,25 +19273,22 @@ msgstr ""
 msgid "local game time"
 msgstr ""
 
-#. placeholders: {now}, {facility}, {remaining}, {hours_used}, {tail}
-msgid ""
-"{now} Pickup at {facility}, {remaining} to go, {hours_used} hours "
-"used.{tail}"
+#. placeholders: {now}, {facility}, {remaining}, {tail}
+msgid "{now} Pickup {facility}, {remaining}.{tail}"
 msgstr ""
 
 #. placeholders: {tail}
 #. one sentence of a longer line
-msgid "The pay is shrinking.{tail}"
+msgid "Pay is dropping.{tail}"
 msgstr ""
 
 #. placeholders: {now}, {remaining}
 #. one sentence of a longer line
-msgid "{now} {remaining} hours past the deadline."
+msgid "{now} {remaining} hours late."
 msgstr ""
 
 #. placeholders: {now}, {remaining}, {tail}
-msgid ""
-"{now} {remaining} hours past the deadline. The pay is shrinking.{tail}"
+msgid "{now} {remaining} hours late. Pay is dropping.{tail}"
 msgstr ""
 
 msgid "On schedule"
@@ -19403,22 +19311,20 @@ msgstr ""
 msgid "at a typical highway pace"
 msgstr ""
 
-#. placeholders: {hours_used}, {tail}
+#. placeholders: {eta}, {basis}
 #. one sentence of a longer line
-msgid "{hours_used} hours on the road.{tail}"
+msgid "Arrival {eta} hours {basis}."
 msgstr ""
 
-#. placeholders: {now}, {verdict}, {eta}, {basis}, {remaining}, {appointment}
+#. placeholders: {remaining}, {appointment}, {tail}
 #. one sentence of a longer line
-msgid ""
-"{now} {verdict}: arrival in {eta} hours {basis}, deadline in {remaining}, "
-"due {appointment}."
+msgid "Deadline {remaining}, due {appointment}.{tail}"
 msgstr ""
 
-#. placeholders: {now}, {verdict}, {eta}, {basis}, {remaining}, {appointment}, {hours_used}, {tail}
+#. placeholders: {now}, {verdict}, {eta}, {basis}, {remaining}, {appointment}, {tail}
 msgid ""
-"{now} {verdict}: arrival in {eta} hours {basis}, deadline in {remaining}, "
-"due {appointment}. {hours_used} hours on the road.{tail}"
+"{now} {verdict}. Arrival {eta} hours {basis}. Deadline {remaining}, due "
+"{appointment}.{tail}"
 msgstr ""
 
 msgid "Break overdue."
@@ -21866,7 +21772,7 @@ msgstr ""
 
 #. placeholders: {blitz}
 msgid ""
-"Routine roadside inspection, Level 3: licence, medical card, logbook and "
+"Routine roadside inspection, Level 3: license, medical card, logbook and "
 "the load's paperwork.{blitz}"
 msgstr ""
 
@@ -23392,7 +23298,7 @@ msgstr ""
 msgid "Drove past {exit_ref} without stopping."
 msgstr ""
 
-msgid " Plan cancelled."
+msgid " Plan canceled."
 msgstr ""
 
 msgid "Destination exit comes around again."
@@ -24014,46 +23920,37 @@ msgstr ""
 
 #. placeholders: {grouped}, {grouped2}
 #. one sentence of a longer line
-msgid ""
-"No pay for the haul, {grouped} dollars gone, and a freight claim of about "
-"{grouped2} dollars."
+msgid "No pay, {grouped} dollars gone, claim about {grouped2}."
 msgstr ""
 
 #. placeholders: {cargo_condition_text}, {f}
 #. one sentence of a longer line
-msgid ""
-"The receiver refused the load, {cargo_condition_text} at {f} percent."
+msgid "Receiver refused the load, {cargo_condition_text} at {f} percent."
 msgstr ""
 
 #. placeholders: {cargo_condition_text}, {f}, {grouped}, {grouped2}, {claim_holder}
 msgid ""
-"The receiver refused the load, {cargo_condition_text} at {f} percent. No "
-"pay for the haul, {grouped} dollars gone, and a freight claim of about "
-"{grouped2} dollars. {claim_holder}."
+"Receiver refused the load, {cargo_condition_text} at {f} percent. No pay, "
+"{grouped} dollars gone, claim about {grouped2}. {claim_holder}."
 msgstr ""
 
-#. placeholders: {grouped}
+#. placeholders: {grouped}, {grouped2}
 #. one sentence of a longer line
-msgid "Freight claim about {grouped} dollars."
+msgid "Claim about {grouped} dollars, {grouped2} off this settlement."
 msgstr ""
 
 #. placeholders: {cargo_condition_text}, {f}
 #. one sentence of a longer line
 msgid ""
-"The receiver took the load but wrote it up, {cargo_condition_text} at {f} "
+"Receiver took the load with an exception, {cargo_condition_text} at {f} "
 "percent."
 msgstr ""
 
 #. placeholders: {cargo_condition_text}, {f}, {grouped}, {grouped2}, {claim_holder}
 msgid ""
-"The receiver took the load but wrote it up, {cargo_condition_text} at {f} "
-"percent. Freight claim about {grouped} dollars. {grouped2} dollars comes "
-"off this settlement. {claim_holder}."
-msgstr ""
-
-#. placeholders: {grouped2}
-#. one sentence of a longer line
-msgid "{grouped2} dollars comes off this settlement."
+"Receiver took the load with an exception, {cargo_condition_text} at {f} "
+"percent. Claim about {grouped} dollars, {grouped2} off this settlement. "
+"{claim_holder}."
 msgstr ""
 
 #. placeholders: {cargo_condition_text}, {f}
@@ -24085,20 +23982,18 @@ msgstr ""
 
 #. placeholders: {damage_reason}
 #. one sentence of a longer line
-msgid ""
-"Driver-responsibility charges: damage ruled preventable, {damage_reason}."
+msgid "Preventable damage, {damage_reason}."
 msgstr ""
 
 #. placeholders: {damage_reason}, {grouped}, {f}
 msgid ""
-"Driver-responsibility charges: damage ruled preventable, {damage_reason}. "
-"Carrier covers the repair. Deductible {grouped} dollars, safety bonus void. "
-"Reputation down {f}, on your record."
+"Preventable damage, {damage_reason}. Carrier covers the repair. Deductible "
+"{grouped} dollars, safety bonus void. Reputation down {f}."
 msgstr ""
 
 #. placeholders: {f}
 #. one sentence of a longer line
-msgid "Reputation down {f}, on your record."
+msgid "Reputation down {f}."
 msgstr ""
 
 #. placeholders: {grouped}
@@ -24185,49 +24080,46 @@ msgstr ""
 msgid "Billed to the carrier, not deducted from driver pay."
 msgstr ""
 
-#. placeholders: {grouped4}
-#. one sentence of a longer line
-msgid "Business costs {grouped4} dollars."
-msgstr ""
-
 #. placeholders: {grouped2}, {grouped3}, {charge_summary}
 #. one sentence of a longer line
-msgid ""
-"Carrier-paid or reimbursed charges {grouped2} dollars: tolls {grouped3}, "
-"accessorials {charge_summary}."
+msgid "Charges {grouped2}: tolls {grouped3}, accessorials {charge_summary}."
+msgstr ""
+
+#. placeholders: {grouped4}
+#. one sentence of a longer line
+msgid "Costs {grouped4}."
 msgstr ""
 
 #. placeholders: {f}, {label}, {destination}, {f2}, {else}, {receiver_service_clause}, {clock_text}
 #. one sentence of a longer line
 msgid ""
 "Delivered {f} tons of {label} to {destination} in {f2} hours, "
-"{else}.{receiver_service_clause} It is {clock_text}."
+"{else}.{receiver_service_clause} {clock_text}."
 msgstr ""
 
-#. placeholders: {f}, {label}, {destination}, {f2}, {else}, {receiver_service_clause}, {clock_text}, {pay_label}, {grouped}, {grouped2}, {grouped3}, {charge_summary}, {accessorial_clause}, {status_label}, {grouped4}, {grouped5}, {grouped6}, {grouped7}, {name}, {destination2}
+#. placeholders: {f}, {label}, {destination}, {f2}, {else}, {receiver_service_clause}, {clock_text}, {pay_label}, {grouped}, {grouped2}, {grouped3}, {charge_summary}, {accessorial_clause}, {status_label}, {grouped4}, {grouped5}, {grouped6}, {grouped7}, {name}
 msgid ""
 "Delivered {f} tons of {label} to {destination} in {f2} hours, "
-"{else}.{receiver_service_clause} It is {clock_text}. {pay_label} {grouped} "
-"dollars. Carrier-paid or reimbursed charges {grouped2} dollars: tolls "
-"{grouped3}, accessorials {charge_summary}. {accessorial_clause} Business "
-"status: {status_label}. Business costs {grouped4} dollars. Fines carried "
-"over {grouped5} dollars. Net driver pay {grouped6} dollars, you now have "
-"{grouped7}. Parked at {name} for the {destination2} service area."
+"{else}.{receiver_service_clause} {clock_text}. {pay_label} {grouped} "
+"dollars. Charges {grouped2}: tolls {grouped3}, accessorials "
+"{charge_summary}. {accessorial_clause} Business status: {status_label}. "
+"Costs {grouped4}. Fines {grouped5}. Net {grouped6}, you have {grouped7}. "
+"Parked at {name}."
 msgstr ""
 
 #. placeholders: {grouped5}
 #. one sentence of a longer line
-msgid "Fines carried over {grouped5} dollars."
+msgid "Fines {grouped5}."
 msgstr ""
 
 #. placeholders: {grouped6}, {grouped7}
 #. one sentence of a longer line
-msgid "Net driver pay {grouped6} dollars, you now have {grouped7}."
+msgid "Net {grouped6}, you have {grouped7}."
 msgstr ""
 
-#. placeholders: {name}, {destination2}
+#. placeholders: {name}
 #. one sentence of a longer line
-msgid "Parked at {name} for the {destination2} service area."
+msgid "Parked at {name}."
 msgstr ""
 
 #. placeholders: {accessorial_clause}, {status_label}
@@ -24624,34 +24516,30 @@ msgstr ""
 
 #. placeholders: {grouped3}, {grouped4}, {charge_summary}
 #. one sentence of a longer line
-msgid ""
-"Carrier-paid or reimbursed charges so far {grouped3} dollars, tolls "
-"{grouped4}, accessorials {charge_summary}."
+msgid "Charges {grouped3}: tolls {grouped4}, accessorials {charge_summary}."
 msgstr ""
 
 #. placeholders: {grouped6}, {advance_note}, {timing}
 #. one sentence of a longer line
-msgid "Estimated net driver pay {grouped6} dollars.{advance_note} {timing}."
+msgid "Net about {grouped6}.{advance_note} {timing}."
 msgstr ""
 
 #. placeholders: {facility}, {f}, {label}
 #. one sentence of a longer line
-msgid "Paperwork for {facility}: {f} tons of {label}."
+msgid "Paperwork, {facility}: {f} tons of {label}."
 msgstr ""
 
 #. placeholders: {facility}, {f}, {label}, {grouped}, {grouped2}, {grouped3}, {grouped4}, {charge_summary}, {charge_fate}, {grouped5}, {grouped6}, {advance_note}, {timing}, {cargo_condition}, {finish}
 msgid ""
-"Paperwork for {facility}: {f} tons of {label}. Rate sheet {grouped} "
-"dollars, current gross {grouped2} dollars. Carrier-paid or reimbursed "
-"charges so far {grouped3} dollars, tolls {grouped4}, accessorials "
-"{charge_summary}. {charge_fate} Fines carried over {grouped5} dollars. "
-"Estimated net driver pay {grouped6} dollars.{advance_note} {timing}. "
-"{cargo_condition} {finish} to settle."
+"Paperwork, {facility}: {f} tons of {label}. Rate {grouped}, gross "
+"{grouped2}. Charges {grouped3}: tolls {grouped4}, accessorials "
+"{charge_summary}. {charge_fate} Fines {grouped5}. Net about "
+"{grouped6}.{advance_note} {timing}. {cargo_condition} {finish} to settle."
 msgstr ""
 
 #. placeholders: {grouped}, {grouped2}
 #. one sentence of a longer line
-msgid "Rate sheet {grouped} dollars, current gross {grouped2} dollars."
+msgid "Rate {grouped}, gross {grouped2}."
 msgstr ""
 
 #. placeholders: {cargo_condition}, {finish}
@@ -24661,7 +24549,7 @@ msgstr ""
 
 #. placeholders: {charge_fate}, {grouped5}
 #. one sentence of a longer line
-msgid "{charge_fate} Fines carried over {grouped5} dollars."
+msgid "{charge_fate} Fines {grouped5}."
 msgstr ""
 
 #. placeholders: {facility}, {f}, {label}, {speed_text}, {else}, {finish}
@@ -24670,9 +24558,19 @@ msgid ""
 "{finish}."
 msgstr ""
 
+#. placeholders: {speed_text}
+#. one sentence of a longer line
+msgid "Speed {speed_text}."
+msgstr ""
+
 #. placeholders: {finish}
 #. one sentence of a longer line
 msgid "Stop, then {finish}."
+msgstr ""
+
+#. placeholders: {f}, {label}
+#. one sentence of a longer line
+msgid "{f} tons of {label}."
 msgstr ""
 
 msgid "Delivering"
@@ -25784,7 +25682,7 @@ msgstr ""
 #. placeholders: {name}
 msgid ""
 "That is your second major offense. Under federal rules a second major "
-"offense disqualifies a commercial licence for life, so this driver will not "
+"offense disqualifies a commercial license for life, so this driver will not "
 "drive commercially again. Nothing is taken away: {name} keeps every dollar, "
 "the truck, and the whole record, and you can open this career any time to "
 "look back over it. Rest, repairs, and the garage still work here, and the "
@@ -25796,7 +25694,7 @@ msgstr ""
 #. one sentence of a longer line
 msgid ""
 "Under federal rules a second major offense disqualifies a commercial "
-"licence for life, so this driver will not drive commercially again."
+"license for life, so this driver will not drive commercially again."
 msgstr ""
 
 #. one sentence of a longer line
@@ -25855,7 +25753,7 @@ msgstr ""
 #. one sentence of a longer line
 msgid ""
 "Driving impaired by fatigue is a federal violation, so this one counts "
-"against your licence as well as {f} points off your reputation."
+"against your license as well as {f} points off your reputation."
 msgstr ""
 
 #. placeholders: {times_now_text}
@@ -25867,7 +25765,7 @@ msgstr ""
 msgid ""
 "That is {times_now_text} that you have run off the road asleep. Driving "
 "impaired by fatigue is a federal violation, so this one counts against your "
-"licence as well as {f} points off your reputation. {serious_violation_text}"
+"license as well as {f} points off your reputation. {serious_violation_text}"
 msgstr ""
 
 msgid "over"
@@ -26025,8 +25923,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Fills the tank at the regional diesel price plus a 35 dollar service fee. "
-"The engine must be off."
+"Fills the tank at the posted diesel price plus a 35 dollar service fee. "
+"Engine must be off."
 msgstr ""
 
 msgid "Drive on to the next stop"
@@ -26057,7 +25955,7 @@ msgid "A motel room costs {grouped} dollars and you have {grouped2}."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Hours of service reset and you wake fresh."
+msgid "Hours of service reset; you're fresh."
 msgstr ""
 
 #. placeholders: {control_hint}
@@ -26067,16 +25965,19 @@ msgstr ""
 
 #. placeholders: {engine_off}, {grouped}
 #. one sentence of a longer line
-msgid ""
-"{engine_off}You took a motel room for {grouped} dollars and slept a full "
-"ten hours."
+msgid "{engine_off}Motel, {grouped} dollars, 10 hours."
 msgstr ""
 
 #. placeholders: {engine_off}, {grouped}, {clock_text}, {grouped2}, {control_hint}
 msgid ""
-"{engine_off}You took a motel room for {grouped} dollars and slept a full "
-"ten hours. It is {clock_text}. Hours of service reset and you wake fresh. "
-"You have {grouped2} dollars. {control_hint} starts the engine."
+"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Hours of "
+"service reset; you're fresh. {grouped2} dollars. {control_hint} starts the "
+"engine."
+msgstr ""
+
+#. placeholders: {grouped2}
+#. one sentence of a longer line
+msgid "{grouped2} dollars."
 msgstr ""
 
 #. placeholders: {name}
@@ -26143,39 +26044,35 @@ msgstr ""
 msgid " The room costs {f} dollars."
 msgstr ""
 
+#. placeholders: {span}
+#. one sentence of a longer line
+msgid "Clock +{span}."
+msgstr ""
+
 #. placeholders: {span}, {more}, {name}
 #. one sentence of a longer line
-msgid "Preview: sleep {span}{more} in {name}."
+msgid "Sleep {span}{more} at {name}."
 msgstr ""
 
 #. placeholders: {span}, {more}, {name}, {effect}, {legal}, {f}, {f2}, {deadline}, {pending}, {cost}
 msgid ""
-"Preview: sleep {span}{more} in {name}. {effect} {legal} Fatigue goes from "
-"{f} to {f2}. The game clock advances {span}. {deadline}{pending}{cost} "
-"Select this choice again to sleep, or move to another choice."
-msgstr ""
-
-#. placeholders: {span}
-#. one sentence of a longer line
-msgid "The game clock advances {span}."
+"Sleep {span}{more} at {name}. {effect} {legal} Fatigue {f} to {f2}. Clock "
+"+{span}. {deadline}{pending}{cost} Select again to sleep."
 msgstr ""
 
 #. placeholders: {deadline}, {pending}, {cost}
 #. one sentence of a longer line
-msgid ""
-"{deadline}{pending}{cost} Select this choice again to sleep, or move to "
-"another choice."
+msgid "{deadline}{pending}{cost} Select again to sleep."
 msgstr ""
 
 #. placeholders: {effect}, {legal}, {f}, {f2}
 #. one sentence of a longer line
-msgid "{effect} {legal} Fatigue goes from {f} to {f2}."
+msgid "{effect} {legal} Fatigue {f} to {f2}."
 msgstr ""
 
 msgid ""
-"Select opens a choice; Back returns to the road. Sleep choices first read a "
-"preview; select the same choice again to sleep. Breaks and sleep advance "
-"the clock and the deadline."
+"Select a choice. Sleep reads a preview; select again to sleep. Breaks and "
+"sleep move the clock and the deadline."
 msgstr ""
 
 msgid "Take a 30-minute break"
@@ -26200,8 +26097,8 @@ msgid "Loyalty points, shower credits, and rewards."
 msgstr ""
 
 msgid ""
-"Fills the tank at the regional diesel price plus a 35 dollar service fee. "
-"Short on cash, it buys what you can afford. The engine must be off."
+"Fills the tank at the posted diesel price plus a 35 dollar service fee. "
+"Buys what you can afford if cash is short. Engine must be off."
 msgstr ""
 
 msgid "Food and coffee break"
@@ -26343,20 +26240,13 @@ msgstr ""
 #. placeholders: {grouped}, {destination}
 #. one sentence of a longer line
 msgid ""
-"Pay advance approved: {grouped} dollars against your {destination} load, "
-"repaid at delivery."
+"Advance {grouped} dollars on the {destination} load, due at delivery."
 msgstr ""
 
 #. placeholders: {grouped}, {destination}, {grouped2}, {grouped3}
 msgid ""
-"Pay advance approved: {grouped} dollars against your {destination} load, "
-"repaid at delivery. You have {grouped2} dollars, {grouped3} dollars of "
-"advance to repay."
-msgstr ""
-
-#. placeholders: {grouped2}, {grouped3}
-#. one sentence of a longer line
-msgid "You have {grouped2} dollars, {grouped3} dollars of advance to repay."
+"Advance {grouped} dollars on the {destination} load, due at delivery. You "
+"have {grouped2}, owe {grouped3}."
 msgstr ""
 
 #. one sentence of a longer line
@@ -26374,20 +26264,17 @@ msgid ""
 msgstr ""
 
 #. one sentence of a longer line
-msgid ""
-"Coffee eases fatigue a little, but does not reset your 30-minute break "
-"requirement."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "You took a food and coffee break."
+msgid "Coffee break."
 msgstr ""
 
 #. placeholders: {clock_text}, {deadline_text}
 msgid ""
-"You took a food and coffee break. It is {clock_text}. Coffee eases fatigue "
-"a little, but does not reset your 30-minute break requirement. "
-"{deadline_text}"
+"Coffee break. {clock_text}. Eases fatigue; does not count as your 30-minute "
+"break. {deadline_text}"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Eases fatigue; does not count as your 30-minute break."
 msgstr ""
 
 msgid "Hours of service reset. "
@@ -26496,26 +26383,24 @@ msgstr ""
 
 #. placeholders: {engine_off}, {grouped}, {clock_text}, {grouped2}, {deadline_text}, {wake_air_instruction}
 msgid ""
-"{engine_off}You took a motel room for {grouped} dollars and slept a full "
-"ten hours. It is {clock_text}. Hours of service reset and you wake fresh. "
-"You have {grouped2} dollars. {deadline_text}{wake_air_instruction}"
+"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Hours of "
+"service reset; you're fresh. {grouped2} dollars. "
+"{deadline_text}{wake_air_instruction}"
 msgstr ""
 
 #. one sentence of a longer line
-msgid ""
-"Hours of service reset, but the rest was poor and you wake still tired."
+msgid "Hours of service reset; rest was poor."
 msgstr ""
 
 #. placeholders: {engine_off}
 #. one sentence of a longer line
-msgid "{engine_off}You slept 10 hours in the lot."
+msgid "{engine_off}Slept 10 hours in the lot."
 msgstr ""
 
 #. placeholders: {engine_off}, {clock_text}, {deadline_text}, {wake_air_instruction}
 msgid ""
-"{engine_off}You slept 10 hours in the lot. It is {clock_text}. Hours of "
-"service reset, but the rest was poor and you wake still tired. "
-"{deadline_text}{wake_air_instruction}"
+"{engine_off}Slept 10 hours in the lot. {clock_text}. Hours of service "
+"reset; rest was poor. {deadline_text}{wake_air_instruction}"
 msgstr ""
 
 msgid "The truck does not need repair."
@@ -26831,20 +26716,18 @@ msgstr ""
 
 #. one sentence of a longer line
 msgid ""
-"A certified weight ticket: steer axle, drive axles, trailer axles and "
-"gross, before a state scale weighs you."
+"CAT Scale ticket: steer, drive, trailer, and gross, ahead of a state scale."
 msgstr ""
 
 #. placeholders: {dollars_and_cents}, {f}
 msgid ""
-"A certified weight ticket: steer axle, drive axles, trailer axles and "
-"gross, before a state scale weighs you. A reweigh here within 24 hours is "
-"{dollars_and_cents}. {f} minutes on duty."
+"CAT Scale ticket: steer, drive, trailer, and gross, ahead of a state scale. "
+"Reweigh within 24 hours is {dollars_and_cents}. {f} minutes on duty."
 msgstr ""
 
 #. placeholders: {dollars_and_cents}
 #. one sentence of a longer line
-msgid "A reweigh here within 24 hours is {dollars_and_cents}."
+msgid "Reweigh within 24 hours is {dollars_and_cents}."
 msgstr ""
 
 #. placeholders: {f}
@@ -26884,7 +26767,7 @@ msgid "Return to terminal"
 msgstr ""
 
 msgid ""
-"Licence pulled, so the truck stays put. Dispatch takes the load back."
+"License pulled, so the truck stays put. Dispatch takes the load back."
 msgstr ""
 
 msgid "Pull back onto the highway"
@@ -26903,12 +26786,12 @@ msgstr ""
 
 #. placeholders: {load}, {terminal}
 msgid ""
-" The licence is gone for good, so the truck stays here. {load}, and a "
+" The license is gone for good, so the truck stays here. {load}, and a "
 "relief driver takes the truck in. You are released to {terminal}."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "The licence is gone for good, so the truck stays here."
+msgid "The license is gone for good, so the truck stays here."
 msgstr ""
 
 #. placeholders: {terminal}
@@ -26923,13 +26806,13 @@ msgstr ""
 
 #. placeholders: {load}, {terminal}
 msgid ""
-" The licence is pulled as of now, so the truck stays here. {load}, and a "
+" The license is pulled as of now, so the truck stays here. {load}, and a "
 "relief driver takes the truck in. You are released to {terminal} to wait "
 "the suspension out."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "The licence is pulled as of now, so the truck stays here."
+msgid "The license is pulled as of now, so the truck stays here."
 msgstr ""
 
 #. placeholders: {terminal}
@@ -27153,29 +27036,21 @@ msgid ""
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Hours of service reset if enforced."
-msgstr ""
-
-#. one sentence of a longer line
-msgid ""
-"Possible parking ticket, possible minor truck damage, and the deadline "
-"keeps counting."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Ten hours of poor rest."
+msgid "Ticket and light damage possible; the deadline keeps running."
 msgstr ""
 
 #. placeholders: {reason}
 #. one sentence of a longer line
-msgid "{reason} Shoulder sleep is emergency-only."
+msgid ""
+"{reason} Emergency shoulder sleep: 10 hours of poor rest, HOS reset if "
+"enforced."
 msgstr ""
 
 #. placeholders: {title}, {reason}, {current}
 msgid ""
-"{title}. {reason} Shoulder sleep is emergency-only. Ten hours of poor rest. "
-"Hours of service reset if enforced. Possible parking ticket, possible minor "
-"truck damage, and the deadline keeps counting. {current}"
+"{title}. {reason} Emergency shoulder sleep: 10 hours of poor rest, HOS "
+"reset if enforced. Ticket and light damage possible; the deadline keeps "
+"running. {current}"
 msgstr ""
 
 #. one sentence of a longer line
@@ -27576,10 +27451,6 @@ msgstr ""
 msgid "Going around the block."
 msgstr ""
 
-#. one sentence of a longer line
-msgid "The clock is still running."
-msgstr ""
-
 #. placeholders: {street}
 #. one sentence of a longer line
 msgid "Missed the turn onto {street}."
@@ -27789,7 +27660,7 @@ msgstr ""
 msgid "Transponder bypass."
 msgstr ""
 
-msgid "All trucks must pull in. Signal for the scale exit."
+msgid "All trucks must pull in."
 msgstr ""
 
 #. placeholders: {announced}, {name}
@@ -28414,7 +28285,7 @@ msgstr ""
 #. placeholders: {distance}
 #. one sentence of a longer line
 msgid ""
-"Backing on a travelled lane is illegal, and you have given up {distance} of "
+"Backing on a traveled lane is illegal, and you have given up {distance} of "
 "the route."
 msgstr ""
 
@@ -28428,7 +28299,7 @@ msgstr ""
 
 #. placeholders: {distance}
 msgid ""
-"You are driving the wrong way. Backing on a travelled lane is illegal, and "
+"You are driving the wrong way. Backing on a traveled lane is illegal, and "
 "you have given up {distance} of the route. Stop and select a forward gear."
 msgstr ""
 
@@ -28538,21 +28409,59 @@ msgstr ""
 msgid "{terminal} in {the_city} service area"
 msgstr ""
 
+#. one sentence of a longer line
+msgid "Fuel, repairs, wear, trailers, and reserves come from your cash."
+msgstr ""
+
+#. placeholders: {grouped}
+#. one sentence of a longer line
+msgid "New truck, {grouped} dollars working capital."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Next: dispatch board."
+msgstr ""
+
+#. placeholders: {prefix}, {carrier_name}, {location}
+#. one sentence of a longer line
+msgid "{prefix}First-day briefing: leased to {carrier_name} at {location}."
+msgstr ""
+
 #. placeholders: {prefix}, {carrier_name}, {location}, {grouped}
 msgid ""
-"{prefix}First-day briefing: leased to {carrier_name}, parked at {location}. "
-"You own a new truck with a full tank and {grouped} dollars of working "
-"capital. Fuel, repairs, truck wear, trailer programs, and business reserves "
-"come out of your cash. Next: the dispatch board."
+"{prefix}First-day briefing: leased to {carrier_name} at {location}. New "
+"truck, {grouped} dollars working capital. Fuel, repairs, wear, trailers, "
+"and reserves come from your cash. Next: dispatch board."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Assigned loads; a refusal goes on your record."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Carrier covers fuel, repairs, insurance, and trailers."
+msgstr ""
+
+#. placeholders: {summary}
+#. one sentence of a longer line
+msgid "Dispatch: {summary}."
+msgstr ""
+
+#. placeholders: {location}
+#. one sentence of a longer line
+msgid "Truck at {location}."
+msgstr ""
+
+#. placeholders: {prefix}, {carrier_name}
+#. one sentence of a longer line
+msgid "{prefix}First-day briefing: {carrier_name}."
 msgstr ""
 
 #. placeholders: {prefix}, {carrier_name}, {location}, {summary}
 msgid ""
-"{prefix}First-day briefing: welcome aboard {carrier_name}. Your assigned "
-"truck is parked at {location}. The carrier covers fuel, repairs, insurance, "
-"and trailer support. Dispatch style: {summary}. As a new hire, dispatch "
-"assigns your load and route, and refusing an assignment goes on your "
-"service record. Next: the dispatch board."
+"{prefix}First-day briefing: {carrier_name}. Truck at {location}. Carrier "
+"covers fuel, repairs, insurance, and trailers. Dispatch: {summary}. "
+"Assigned loads; a refusal goes on your record. Next: dispatch board."
 msgstr ""
 
 msgid ""
@@ -29542,7 +29451,7 @@ msgid "Exit speed assistance"
 msgstr ""
 
 msgid ""
-"For a signalled exit: slows a truck too fast for the gore, keeps the "
+"For a signaled exit: slows a truck too fast for the gore, keeps the "
 "approach within 10 miles per hour of road speed, and brakes in the exit "
 "lane to the exit speed. You still take the exit."
 msgstr ""
@@ -34025,7 +33934,7 @@ msgstr ""
 msgid "Installing the update. The game closes and restarts by itself."
 msgstr ""
 
-msgid "Update cancelled."
+msgid "Update canceled."
 msgstr ""
 
 msgid "Unpacking the update."

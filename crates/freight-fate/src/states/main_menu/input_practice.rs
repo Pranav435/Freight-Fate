@@ -297,7 +297,7 @@ impl State for InputPracticeState {
         self.poll_analog(ctx);
     }
 
-    /// Every key is practised here, the review keys included.
+    /// Every key is practiced here, the review keys included.
     fn handle_message_review(&mut self, _ctx: &mut GameContext, _event: &InputEvent) -> bool {
         false
     }

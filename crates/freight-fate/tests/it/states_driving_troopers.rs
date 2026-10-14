@@ -711,7 +711,7 @@ fn test_weigh_station_warning_is_spoken_before_bypass() {
     // The notice names no key: "Press T" at speed plans a sleep stop, which
     // is the instruction that used to march drivers into the bypass.
     assert!(
-        notices[0].ends_with("All trucks must pull in. Signal for the scale exit."),
+        notices[0].ends_with("All trucks must pull in."),
         "{}",
         notices[0]
     );

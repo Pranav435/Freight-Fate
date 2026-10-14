@@ -270,8 +270,8 @@ impl ArrivalState {
         }
         if cargo.rejected() {
             return format!(
-                "The receiver refused the load, {} at {} percent. No pay for the haul, {} \
-                 dollars gone, and a freight claim of about {} dollars. {claim_holder}.",
+                "Receiver refused the load, {} at {} percent. No pay, {} dollars gone, claim \
+                 about {}. {claim_holder}.",
                 cargo_condition_text(cargo.condition_pct, liquid),
                 fmt_f(cargo.condition_pct, 0),
                 fmt_grouped(cargo.pay_loss, 0),
@@ -280,8 +280,8 @@ impl ArrivalState {
         }
         if cargo.outcome == "claim" {
             return format!(
-                "The receiver took the load but wrote it up, {} at {} percent. Freight claim \
-                 about {} dollars. {} dollars comes off this settlement. {claim_holder}.",
+                "Receiver took the load with an exception, {} at {} percent. Claim about {} \
+                 dollars, {} off this settlement. {claim_holder}.",
                 cargo_condition_text(cargo.condition_pct, liquid),
                 fmt_f(cargo.condition_pct, 0),
                 fmt_grouped(cargo.claim_value, 0),
@@ -419,9 +419,8 @@ impl ArrivalState {
                 "preventable_equipment_damage",
             );
             self.summary_parts.push(format!(
-                "Driver-responsibility charges: damage ruled preventable, {damage_reason}. \
-                 Carrier covers the repair. Deductible {} dollars, safety bonus void. \
-                 Reputation down {}, on your record.",
+                "Preventable damage, {damage_reason}. Carrier covers the repair. Deductible {} \
+                 dollars, safety bonus void. Reputation down {}.",
                 fmt_grouped(damage_deductible, 0),
                 fmt_f(damage_reputation_hit, 0)
             ));
@@ -711,12 +710,9 @@ impl ArrivalState {
         self.summary_parts.insert(
             0,
             format!(
-                "Delivered {} tons of {} to {} in {} hours, {}.{receiver_service_clause} It is {}. {} {} dollars. \
-                 Carrier-paid or reimbursed charges {} dollars: tolls {}, accessorials {}. \
-                 {accessorial_clause} \
-                 Business status: {}. Business costs {} dollars. Fines carried over {} dollars. \
-                 Net driver pay {} dollars, you now have {}. Parked at {} for the {} service \
-                 area.",
+                "Delivered {} tons of {} to {} in {} hours, {}.{receiver_service_clause} {}. {} {} dollars. \
+                 Charges {}: tolls {}, accessorials {}. {accessorial_clause} Business status: {}. Costs {}. \
+                 Fines {}. Net {}, you have {}. Parked at {}.",
                 fmt_f(job.weight_tons, 0),
                 job.cargo.label,
                 job.spoken_destination(),
@@ -734,7 +730,6 @@ impl ArrivalState {
                 fmt_grouped(net_pay, 0),
                 fmt_grouped(money, 0),
                 self.terminal.name,
-                job.spoken_destination(),
             ),
         );
         if on_time_bonus_paid >= 1.0 {

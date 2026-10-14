@@ -608,7 +608,7 @@ fn test_a_tenth_of_a_mile_back_names_it_as_illegal() {
         "{spoken}"
     );
     assert!(
-        spoken.contains("Backing on a travelled lane is illegal"),
+        spoken.contains("Backing on a traveled lane is illegal"),
         "{spoken}"
     );
 }

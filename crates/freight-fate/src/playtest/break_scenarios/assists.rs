@@ -319,7 +319,7 @@ pub fn ramp_speed_control_handback() -> Outcome {
         ));
     }
     let Some(entry_mph) = entry_mph else {
-        findings.push("the signalled exit was never taken at all".to_string());
+        findings.push("the signaled exit was never taken at all".to_string());
         return outcome(NAME, &rig, findings, "");
     };
     if entry_mph > gore_mph {

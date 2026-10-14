@@ -499,11 +499,10 @@ impl PickupFacilityState {
             return;
         };
         ctx.audio.play("ui/warning");
+        let name = crate::states::city::py_capitalize(&trailer.spoken_name());
         ctx.say(&format!(
-            "Walking {}, you find a {defect}. The trailer is {}. Pull out with it and the \
-             write-up is yours at the first scale. Refuse it for a swap, about {} \
-             minutes.{}",
-            trailer.spoken_name(),
+            "{name}: {defect}, {}. Take it and the write-up is yours at the first scale. \
+             Refuse for a swap, about {} minutes.{}",
             trailer.condition_text(),
             fmt_f(TRAILER_SWAP_MIN, 0),
             self.tank_walk_around_clause()
@@ -624,7 +623,7 @@ impl PickupFacilityState {
         let plan = self.pickup_plan(ctx);
         if plan.is_drop_hook() {
             ctx.say(&format!(
-                "Checked in. Your load is on {} in the drop yard.",
+                "Checked in. Load on {} in the drop yard.",
                 plan.trailer
                     .as_ref()
                     .map(|t| t.spoken_name())
@@ -847,8 +846,8 @@ impl PickupFacilityState {
             "Engine off"
         };
         let text = format!(
-            "Pickup at {}: {state}. {} tons of {}. Destination {}. Speed {}. {engine}. Air \
-             pressure {} psi, {brake}.{}",
+            "Pickup {}: {state}. {} tons of {} for {}. {}. {engine}. Air {} psi, \
+             {brake}.{}",
             self.facility(),
             fmt_f(self.job.weight_tons, 0),
             self.job.cargo.label,
@@ -992,7 +991,7 @@ impl Menu for PickupFacilityState {
         } else if self.checked_in {
             if plan.is_drop_hook() {
                 format!(
-                    "Checked in at {facility}. Your load is on {} in the drop yard.",
+                    "Checked in at {facility}. Load on {} in the drop yard.",
                     plan.trailer
                         .as_ref()
                         .map(|t| t.spoken_name())

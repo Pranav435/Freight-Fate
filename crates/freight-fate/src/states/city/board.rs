@@ -50,15 +50,11 @@ pub use details::{describe_job, JobDetailState};
 /// The board's class-level `intro_help` (the browsable board; an assigned
 /// board swaps in its own on construction).
 pub const JOB_BOARD_INTRO_HELP: &str =
-    "Enter accepts a dispatch and starts the deadhead from your terminal to its origin \
-     facility. F1 reads the job details. Tab repeats the freight market watch. Escape returns \
-     to the terminal.";
+    "Enter accepts. F1 is job details. Tab is the market. Escape goes back.";
 
 const ASSIGNED_INTRO_HELP: &str =
-    "Dispatch assigned this load. Enter accepts it and starts the deadhead from your terminal \
-     to its origin facility. Declining draws another load, but refusals cost reputation from a \
-     budget that refills at your next promotion. F1 reads the job details. Escape returns to \
-     the terminal.";
+    "Assigned load. Enter accepts. Decline costs dispatch trust until your next promotion. F1 \
+     is details. Escape goes back.";
 
 /// How long dispatch keeps assigning loads: a new hire waits for level 8, but
 /// a driver at level 8 or above is only here because standing slipped.

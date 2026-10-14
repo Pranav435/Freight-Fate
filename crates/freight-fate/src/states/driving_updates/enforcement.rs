@@ -362,7 +362,7 @@ impl DrivingState {
                 let instruction = if verdict == "green" {
                     "Transponder bypass."
                 } else {
-                    "All trucks must pull in. Signal for the scale exit."
+                    "All trucks must pull in."
                 };
                 // Bound here and moved into the gate below, not read from the
                 // sweep when the gate runs: the validity test has to compare

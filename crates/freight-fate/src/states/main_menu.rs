@@ -233,19 +233,17 @@ pub fn first_day_orientation_message(ctx: &GameContext, prefix: &str) -> String 
     );
     if option.is_owner_operator() {
         return format!(
-            "{prefix}First-day briefing: leased to {}, parked at {location}. You own a new \
-             truck with a full tank and {} dollars of working capital. Fuel, repairs, truck \
-             wear, trailer programs, and business reserves come out of your cash. Next: the \
-             dispatch board.",
+            "{prefix}First-day briefing: leased to {} at {location}. New truck, {} dollars \
+             working capital. Fuel, repairs, wear, trailers, and reserves come from your cash. \
+             Next: dispatch board.",
             option.carrier_name,
             fmt_grouped(p.money(), 0)
         );
     }
     format!(
-        "{prefix}First-day briefing: welcome aboard {}. Your assigned truck is parked at \
-         {location}. The carrier covers fuel, repairs, insurance, and trailer support. \
-         Dispatch style: {}. As a new hire, dispatch assigns your load and route, and \
-         refusing an assignment goes on your service record. Next: the dispatch board.",
+        "{prefix}First-day briefing: {}. Truck at {location}. Carrier covers fuel, repairs, \
+         insurance, and trailers. Dispatch: {}. Assigned loads; a refusal goes on your record. \
+         Next: dispatch board.",
         option.carrier_name,
         option.dispatch.summary()
     )

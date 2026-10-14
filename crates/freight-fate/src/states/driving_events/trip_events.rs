@@ -888,7 +888,7 @@ impl DrivingState {
     /// corridor thick with truck stops narrated the traffic at exit after
     /// exit the driver had no intention of using (owner, 2026-08-15). The
     /// advisory earns its words only for somebody about to move right, so it
-    /// speaks for a signalled exit and for one lane keeping is taking on the
+    /// speaks for a signaled exit and for one lane keeping is taking on the
     /// driver's behalf, and stays silent for the rest of them.
     ///
     /// The trip marks the pressure announced whether or not it is spoken, so

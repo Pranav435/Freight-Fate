@@ -390,9 +390,9 @@ fn test_food_and_coffee_break_boosts_alertness_without_resetting_break_rule() {
         assert!(approx(p.fatigue, 47.0), "{}", p.fatigue);
     }
     let said = last(&harness);
-    assert!(said.contains("Coffee eases fatigue a little"), "{said}");
+    assert!(said.contains("Eases fatigue"), "{said}");
     assert!(
-        said.contains("does not reset your 30-minute break requirement"),
+        said.contains("does not count as your 30-minute break"),
         "{said}"
     );
 }
@@ -461,7 +461,7 @@ fn test_split_sleeper_rest_action_advances_clock_and_speaks_status() {
     let lines = spoken(&harness);
     let status_at = lines
         .iter()
-        .position(|line| line.contains("Sleeper split pending"))
+        .position(|line| line.contains("Sleeper split open"))
         .unwrap_or_else(|| panic!("no pending-split status line: {lines:#?}"));
     let badge_at = lines
         .iter()
@@ -499,8 +499,8 @@ fn test_split_sleeper_rest_action_advances_clock_and_speaks_status() {
                 spoken(&harness)
             )
         });
-    assert!(completed.contains("hours of driving left"), "{completed}");
-    assert!(completed.contains("duty window closes"), "{completed}");
+    assert!(completed.contains("hours driving"), "{completed}");
+    assert!(completed.contains("14-hour window"), "{completed}");
 }
 
 /// The long half of a split stops the duty window while it runs. A tester
@@ -567,7 +567,7 @@ fn test_long_sleeper_period_pauses_duty_window_and_says_so() {
         )),
         "{woke}"
     );
-    assert!(woke.contains("Sleeper split pending"), "{woke}");
+    assert!(woke.contains("Sleeper split open"), "{woke}");
 }
 
 #[test]
@@ -756,7 +756,7 @@ fn test_full_parking_offers_drive_on_and_shoulder() {
     harness.select_menu_item("Park on the shoulder and sleep");
     assert!(harness.state_is::<ShoulderSleepConfirmationState>());
     let said = last(&harness);
-    assert!(said.contains("emergency-only"), "{said}");
+    assert!(said.contains("Emergency shoulder sleep:"), "{said}");
     assert!(
         said.contains("possible") || said.contains("may be ticketed"),
         "{said}"
@@ -859,14 +859,14 @@ fn test_emergency_shoulder_sleep_pause_menu_constraints() {
     assert!(harness.state_is::<ShoulderSleepConfirmationState>());
     let said = spoken(&harness)
         .into_iter()
-        .find(|line| line.contains("Shoulder sleep is emergency-only"))
+        .find(|line| line.contains("Emergency shoulder sleep:"))
         .unwrap_or_default();
     assert!(
-        said.contains("Hours of service reset if enforced"),
+        said.contains("HOS reset if enforced"),
         "{:?}",
         spoken(&harness)
     );
-    assert!(said.contains("minor truck damage"), "{said}");
+    assert!(said.contains("light damage possible"), "{said}");
     assert_eq!(
         harness.focused_label().expect("a focused row"),
         "Cancel and keep looking for a safe stop"
@@ -907,7 +907,7 @@ fn test_t_opens_roadside_sleep_confirmation_at_safe_stop() {
             .starts_with("Cancel"));
         let said = last(&harness);
         assert!(said.contains("poor rest"), "{said}");
-        assert!(said.contains("minor truck damage"), "{said}");
+        assert!(said.contains("light damage possible"), "{said}");
         harness.with_drive(|d, _| {
             assert!(d.trip.planned_stop_key.is_some());
             assert!(d.selected_stop_key.is_some());
@@ -1119,10 +1119,7 @@ fn test_hos_off_still_allows_fatigue_emergency_shoulder_sleep() {
     assert!(harness.state_is::<ShoulderSleepConfirmationState>());
     let said = last(&harness);
     assert!(said.contains("poor rest"), "{said}");
-    assert!(
-        said.contains("Hours of service reset if enforced"),
-        "{said}"
-    );
+    assert!(said.contains("HOS reset if enforced"), "{said}");
 
     let minutes_before = harness.read_drive(|d| d.trip.game_minutes);
     harness.key(InputEvent::key(Key::Return)); // the focused Cancel row

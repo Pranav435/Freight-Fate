@@ -339,7 +339,7 @@ fn test_split_pending_summary_names_needed_pair() {
 
     assert_eq!(
         c.split_pending_summary(),
-        Some("Sleeper split pending: pair this with 2 more hours at sleep-capable parking.")
+        Some("Sleeper split open: 2 more hours off duty or in the sleeper to pair it.")
     );
 }
 
@@ -351,7 +351,7 @@ fn test_hos_summary_mentions_pending_sleeper_split() {
 
     let summary = c.summary("realistic");
 
-    assert!(summary.contains("Sleeper split pending"));
+    assert!(summary.contains("Sleeper split open"));
     assert!(summary.contains("2 more hours"));
 }
 
@@ -496,9 +496,9 @@ fn test_hos_summary_includes_time_units() {
 
     let summary = c.summary("realistic");
 
-    assert!(summary.contains("9 hours of driving left"));
-    assert!(summary.contains("break due in 6 hours"));
-    assert!(summary.contains("duty window closes in 12 hours"));
+    assert!(summary.contains("9 hours driving"));
+    assert!(summary.contains("30-minute break in 6 hours"));
+    assert!(summary.contains("14-hour window 12 hours"));
 }
 
 #[test]
@@ -511,8 +511,8 @@ fn test_hos_summary_omits_break_when_duty_window_closes_first() {
 
     let summary = c.summary("realistic");
 
-    assert!(summary.contains("1.8 hours of duty window left"));
-    assert!(!summary.contains("break due"));
+    assert!(summary.contains("14-hour window 1.8 hours"));
+    assert!(!summary.contains("30-minute break"));
 }
 
 // -- the one-answer readouts (Alt A, Alt S, Alt D) ---------------------------------
@@ -534,9 +534,9 @@ fn test_wheel_time_leads_with_its_own_noun_and_names_both_spent_clocks() {
 
     let said = c.wheel_time_summary("realistic", false);
 
-    assert!(said.starts_with("At the wheel so far:"));
-    assert!(said.contains("5.4 hours driving"));
-    assert!(said.contains("5.4 hours on duty this shift"));
+    assert!(said.starts_with("Driven "));
+    assert!(said.contains("Driven 5.4 hours"));
+    assert!(said.contains("On duty 5.4 hours"));
 }
 
 #[test]
@@ -556,14 +556,14 @@ fn test_wheel_time_speaks_short_stretches_as_minutes() {
 
     assert!(c
         .wheel_time_summary("realistic", false)
-        .contains("24 minutes driving"));
+        .contains("Driven 24 minutes"));
 }
 
 #[test]
 fn test_wheel_time_says_no_driving_yet_on_a_fresh_shift() {
     assert!(HosClock::new()
         .wheel_time_summary("realistic", false)
-        .contains("no driving yet"));
+        .contains("Driven nothing yet"));
 }
 
 #[test]
@@ -597,7 +597,7 @@ fn test_wheel_time_answers_instead_of_going_quiet_with_enforcement_off() {
 
     for mode in ["off", "debug_off"] {
         let said = c.wheel_time_summary(mode, false);
-        assert!(said.contains("5.4 hours driving"));
+        assert!(said.contains("Driven 5.4 hours"));
         assert!(said.contains("Hours enforcement off."));
     }
 }
@@ -631,7 +631,7 @@ fn test_break_key_answers_the_break_first_then_the_window_that_closes_first() {
     let said = duty_closes_first().break_summary("realistic", false);
 
     assert!(said.starts_with("Break due in 3.5 hours"));
-    assert!(said.contains("duty window closes first, in 1.8 hours"));
+    assert!(said.contains("14-hour window closes first, 1.8 hours"));
 }
 
 #[test]
@@ -753,7 +753,7 @@ fn test_drive_time_key_carries_the_pending_sleeper_split() {
     for terse in [false, true] {
         assert!(c
             .drive_time_summary("realistic", terse)
-            .contains("Sleeper split pending"));
+            .contains("Sleeper split open"));
     }
     // The split belongs to the shift-ending key, not the other two.
     assert!(!c

@@ -144,7 +144,7 @@ pub fn career_level_guidance<P: CareerProfile + ?Sized>(profile: &P) -> CareerLe
             "Earn back your load choice",
             "Dispatch is assigning your loads because your standing has slipped.",
             "standing-repair lane",
-            "Load choice returns when your service, licence, record and debt are back in good standing.",
+            "Load choice returns when your service, license, record and debt are back in good standing.",
         );
     }
     if level >= 10 {

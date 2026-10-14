@@ -221,7 +221,7 @@ fn test_walking_a_bad_trailer_finds_it_and_offers_the_refusal() {
     let lines = app.main_lines();
     let found = lines
         .iter()
-        .position(|line| line.starts_with("Walking"))
+        .position(|line| line.contains("Take it and the write-up"))
         .unwrap_or_else(|| panic!("no walk-around line: {lines:?}"));
     assert!(lines[found].contains(defect), "{lines:?}");
     assert!(lines[found].contains(&unit.number));

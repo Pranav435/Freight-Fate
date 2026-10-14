@@ -705,9 +705,7 @@ impl HosClock {
                 .map(|s| s.kind)
                 .collect();
             if blown == ["break"] {
-                return "Hours of service: past your break limit. \
-                        Take a 30-minute break at a rest stop."
-                    .to_string();
+                return "Hours of service: 30-minute break overdue.".to_string();
             }
             return "Hours of service: past your limit. Sleep 10 hours at a rest stop to reset."
                 .to_string();
@@ -724,14 +722,14 @@ impl HosClock {
         };
         let hours = if duty_left <= break_left {
             format!(
-                "Hours of service: {} of driving left, {} of duty window left.",
+                "Hours of service: {} driving, 14-hour window {}.",
                 duration_text(drive_left),
                 duration_text(duty_left),
             )
         } else {
             format!(
-                "Hours of service: {} of driving left, break due in {}, \
-                 duty window closes in {}.",
+                "Hours of service: {} driving, 30-minute break in {}, \
+                 14-hour window {}.",
                 duration_text(drive_left),
                 duration_text(break_left),
                 duration_text(duty_left),
@@ -816,12 +814,12 @@ impl HosClock {
             }
         } else {
             let spent = if fresh {
-                "no driving yet".to_string()
+                "nothing yet".to_string()
             } else {
-                format!("{driven} driving")
+                driven.clone()
             };
             format!(
-                "At the wheel so far: {spent}, {} on duty this shift",
+                "Driven {spent}. On duty {}",
                 duration_text(self.duty_min / 60.0)
             )
         };
@@ -867,7 +865,7 @@ impl HosClock {
                     format!(", duty window {}", duration_text(duty_left))
                 } else {
                     format!(
-                        ", but your duty window closes first, in {}",
+                        ", 14-hour window closes first, {}",
                         duration_text(duty_left)
                     )
                 });
@@ -909,7 +907,7 @@ impl HosClock {
                 format!("{drive_text}, duty window {}", duration_text(duty_left))
             }
         } else if duty_binds {
-            format!("{duty_text}, before your driving time runs out. {drive_text}")
+            format!("{duty_text}. {drive_text}")
         } else {
             format!("{drive_text}. {duty_text}")
         };
@@ -988,24 +986,16 @@ impl HosClock {
         }
         let last = rest_events.last()?;
         if last.status == "sleeper_berth" && last.minutes >= SPLIT_LONG_ALT_MIN {
-            return Some(
-                "Sleeper split pending: pair this with 2 more hours at sleep-capable parking.",
-            );
+            return Some("Sleeper split open: 2 more hours off duty or in the sleeper to pair it.");
         }
         if last.status == "sleeper_berth" && last.minutes >= SPLIT_LONG_MIN {
-            return Some(
-                "Sleeper split pending: pair this with 3 more hours at sleep-capable parking.",
-            );
+            return Some("Sleeper split open: 3 more hours off duty or in the sleeper to pair it.");
         }
         if last.minutes >= SPLIT_SHORT_ALT_MIN {
-            return Some(
-                "Sleeper split pending: pair this with 7 more hours in the sleeper berth.",
-            );
+            return Some("Sleeper split open: 7 more hours in the sleeper to pair it.");
         }
         if last.minutes >= SPLIT_SHORT_MIN {
-            return Some(
-                "Sleeper split pending: pair this with 8 more hours in the sleeper berth.",
-            );
+            return Some("Sleeper split open: 8 more hours in the sleeper to pair it.");
         }
         None
     }

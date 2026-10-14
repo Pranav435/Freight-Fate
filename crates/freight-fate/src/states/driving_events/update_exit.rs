@@ -337,7 +337,7 @@ impl DrivingState {
             format!("Drove past {exit_ref} without stopping.")
         };
         if planned {
-            line.push_str(" Plan cancelled.");
+            line.push_str(" Plan canceled.");
         }
         self.say_confirmation_interrupt(ctx, &line);
     }
@@ -471,7 +471,7 @@ impl DrivingState {
                 // hears a single cue, and clear it here so _check_stops doesn't
                 // also emit a "drove past your planned stop" warning next tick.
                 self.trip.planned_stop_key = None;
-                line.push_str(" Plan cancelled.");
+                line.push_str(" Plan canceled.");
             }
             if self.is_selected_stop(Some(&stop)) {
                 self.clear_selected_stop_intent();

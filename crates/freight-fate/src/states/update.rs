@@ -814,7 +814,7 @@ impl State for UpdateDownloadState {
                 // worker stops and tidies up when it next wakes.
                 self.cancelled.store(true, Ordering::SeqCst);
                 self.finished = true;
-                ctx.say("Update cancelled.");
+                ctx.say("Update canceled.");
                 ctx.audio.play("ui/menu_back");
                 ctx.pop_state();
             }

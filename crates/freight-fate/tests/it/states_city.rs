@@ -406,10 +406,10 @@ fn test_assigned_board_help_describes_accept_and_decline() {
     push_board(&mut app, vec![job(70.0)]);
 
     let help = with_state::<JobBoardState, _>(&app, |b, _| b.intro_help().to_string());
-    assert!(help.contains("Dispatch assigned this load"));
-    assert!(help.contains("refusals cost reputation"));
+    assert!(help.contains("Assigned load"));
+    assert!(help.contains("Decline costs dispatch trust"));
     // the browsable class-level help is untouched for senior boards
-    assert!(JOB_BOARD_INTRO_HELP.contains("Enter accepts a dispatch"));
+    assert!(JOB_BOARD_INTRO_HELP.contains("Tab is the market"));
 }
 
 #[test]
@@ -707,7 +707,7 @@ fn test_accepting_a_retired_pickup_says_so_instead_of_crashing() {
 
 #[test]
 fn test_job_board_help_names_drivable_pickup_before_route_planning() {
-    assert!(JOB_BOARD_INTRO_HELP.contains("deadhead from your terminal"));
+    assert!(JOB_BOARD_INTRO_HELP.starts_with("Enter accepts."));
     assert!(!JOB_BOARD_INTRO_HELP.contains("route planning"));
 }
 
@@ -1523,7 +1523,7 @@ fn test_the_terminal_does_not_double_the_dalles_article() {
     app.push_state(city);
 
     let entry = entry_announcement(&app);
-    assert!(entry.contains(", The Dalles. "), "{entry}");
+    assert!(entry.contains(" in The Dalles. "), "{entry}");
     assert!(!entry.contains("the The"), "{entry}");
 }
 

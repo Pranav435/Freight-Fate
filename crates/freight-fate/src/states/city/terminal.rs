@@ -257,7 +257,7 @@ impl CityMenuState {
         ctx.save_profile();
         ctx.audio.play("ui/notify");
         ctx.say(&format!(
-            "Advance: {} dollars. You have {} dollars, {} dollars to repay.",
+            "Advance {} dollars on the next load, due at delivery. You have {}, owe {}.",
             fmt_grouped(grant, 0),
             fmt_grouped(money, 0),
             fmt_grouped(advance, 0)
@@ -427,7 +427,7 @@ impl CityMenuState {
 
     /// Speak a trust-band change, once, when it changes -- never on a timer.
     ///
-    /// The band now answers to the licence and to what the driver owes as
+    /// The band now answers to the license and to what the driver owes as
     /// well as to their service, so the line names whichever of the three is
     /// actually holding it, what the yard is doing about the equipment, and
     /// whether the career has slowed. All of it is available on demand from
@@ -687,7 +687,7 @@ impl Menu for CityMenuState {
             // Level, title and business status live in Career stats, and the
             // objective in Career plan (or the first-day briefing): the entry
             // line is where you are and what you have.
-            // A licence that is not clear is said here, every time, because it
+            // A license that is not clear is said here, every time, because it
             // decides what the rest of this screen can do. A career that is
             // over says so in full: what stopped, what stays, and the one
             // way to remove it.

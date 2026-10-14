@@ -224,15 +224,12 @@ impl DrivingState {
             } else {
                 let engine = self.engine_entry_instruction(ctx);
                 let text = format!(
-                    "Resuming your {drive_name}: {:.0} tons of {} to {destination}. {progress} \
-                     {hours_used:.1} hours used of {:.0}. It is {now}. Transmission is {mode}. \
-                     Weather: {report_lead}. Parked. {speed_control}{engine} At air ready, {} \
-                     releases the parking brake.",
-                    self.job.weight_tons,
-                    self.job.cargo.label,
-                    self.job.deadline_game_h,
-                    ctx.control_hint("parking_brake")
+                    "Resuming {drive_name}: {:.0} tons of {} to {destination}. {progress} \
+                     {hours_used:.1} of {:.0} hours. {now}. {mode}. {report_lead}. \
+                     {speed_control}{engine}",
+                    self.job.weight_tons, self.job.cargo.label, self.job.deadline_game_h,
                 );
+                let text = text.trim_end().to_string();
                 ctx.say_with(text, Say::queued());
             }
         } else {
@@ -255,10 +252,8 @@ impl DrivingState {
                 ctx.say_with(text, Say::queued());
             } else {
                 let engine = self.engine_entry_instruction(ctx);
-                let help = self.help_hint_tail(ctx);
                 let text = format!(
-                    "At the wheel. {objective}It is {now}. Transmission is {mode}. \
-                     Weather: {report_lead}. {engine} {help}"
+                    "At the wheel. {objective}It is {now}. {mode}. {report_lead}. {engine}"
                 );
                 ctx.say_with(text.trim_end().to_string(), Say::queued());
             }
