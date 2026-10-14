@@ -303,6 +303,17 @@ bookmarks usable.
       and automatic) sit 5 to 11 dB under their siblings by momentary
       loudness, with peaks too close to full scale for static gain. Needs a
       peak limiter or replacement takes.
+- [x] Street corners, from a player report (bscross32, 2026-10-13): every
+      corner is now called at its window with its advise speed, also when
+      the truck is already under it, and terse keeps the number. The turn
+      chime plays with the first words that name the corner, not as the
+      truck takes it, so a chime can no longer sit beside the next turn's
+      call. A miss goes around the block (8 game minutes) and carries on
+      forward; the loop-back onto the approach and its escalation are gone.
+- [ ] (Found along the way) Street corner calls still come only from the
+      cab's own call and the route's call at the corner; a short countdown
+      to the corner itself, as the player asked for, is not built.
+
 - [x] New installs start on All assists (owner, 2026-09-30): first drives kept
       going wrong at the wheel, city street corners above all, so the truck
       steers until the driver steps down to Balanced. Saved settings keep
@@ -584,6 +595,10 @@ Everything found before 2026-09-25 moved to
 - [x] A way out of the training fleet (player report, 2026-10-10): a
       company driver at Great Lakes Training Transport can move to another
       carrier at level 4 with full dispatch trust.
+- [x] Engine brake on the driver's terms (player report, 2026-10-14): a
+      full brake stop with the engine brake on no longer damages the load, a
+      stage the driver picks is no longer dropped by cruise or the bend
+      assist, and automatic engine brake off with Alt J lasts between drives.
 - [x] Plainer career and equipment wording, and a Common questions page
       in How to play and the manual (owner, 2026-10-11, from a livestreamer
       asking what the fleets meant and when he could get or buy a truck,

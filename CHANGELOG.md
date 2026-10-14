@@ -72,6 +72,10 @@
 
 - **Downhill grade calls stop naming the engine brake key once you have used it a few times.** Uphill grade calls no longer add "Expect to lose speed."
 
+- **Every street corner is now called with its distance and the speed to take it at.** The turn's chime plays with that call, on the side you turn.
+
+- **Missing a street corner now sends the truck around the block instead of back up the street.** You come out on the street you missed, a few minutes later.
+
 - **Dispatch trust now changes half a point earlier at each cutoff.** It follows the rounded reputation you hear.
 
 - **The nearest town readout now says only the name.** Alt+3 says "Nearest town: Nashville" without the distance.
@@ -115,6 +119,12 @@
 - **A slower vehicle ahead now plays the slowing-traffic sound, not a passing sound.**
 
 ### Fixed
+
+- **A full brake stop with the engine brake on no longer damages your load.**
+
+- **An engine brake stage you pick now stays picked.** Cruise and the bend assist no longer turn it off when their reason ends.
+
+- **Turning automatic engine brake off with Alt J now lasts between drives.** It used to switch back on at every dispatch.
 
 - **With score display set to percentage only, the dispatch trust line keeps its trust level.**
 
