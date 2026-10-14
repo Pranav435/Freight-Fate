@@ -89,11 +89,13 @@ saved trip resumes on whichever of the two its load was planned on.
 | Worcester to Boston | I-90, I-95 and Route 128, then Route 9 into the city | 47.5 (47.2) | Boston tunnels |
 | Providence to Boston | I-95 and Route 128, then Route 9 | 53.1 (50) | Boston tunnels |
 | Boston to Portsmouth | Route 99, US 1 and I-95 | 58 (58) | Boston tunnels |
+| Manchester to Boston | I-93 to Sullivan Square, then Rutherford Avenue into Charlestown | 54 (52) | Boston tunnels |
 | Baltimore to Wilmington | I-83, the northern I-695 beltway and I-95 | 82.9 (75) | Fort McHenry Tunnel |
 | Silverthorne to Denver | US 6 over Loveland Pass and I-70 | 76.9 (67) | Eisenhower-Johnson Memorial Tunnel |
 
-Hartford, Manchester, Portland and New York loads into or out of Boston
-join one of these roads at Worcester, Providence or Portsmouth. Philadelphia
+Hartford, Portland and New York loads into or out of Boston join one of
+these roads at Worcester, Providence or Portsmouth, and Manchester loads
+take the I-93 leg in both directions. Philadelphia
 and Washington loads through Baltimore use the I-695 leg by way of
 Wilmington.
 
