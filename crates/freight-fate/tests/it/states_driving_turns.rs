@@ -347,30 +347,46 @@ fn test_the_planner_sees_past_the_corner_it_is_already_easing_for() {
 }
 
 #[test]
-fn test_the_turn_earcon_waits_for_the_corner_itself() {
-    // The chime used to sound the moment the approach call was armed, whether
-    // or not the words that go with it ever reached the voice: at urgent only
-    // the owner heard corners announced by sound alone (2026-09-20). It is
-    // owed to a corner the driver was told about, and spent when the truck
-    // actually turns.
+fn test_the_turn_earcon_sounds_with_the_call() {
+    // The chime goes with the words that name the corner, once, and only when
+    // those words are spoken: at urgent only the owner heard corners
+    // announced by sound alone (2026-09-20). It used to wait for the corner
+    // itself, which put it just ahead of the next corner's call (player
+    // report, 2026-10-14).
     let mut app = TestApp::new();
+    let audio = app.record_audio();
     let mut d = a_drive(&mut app);
     a_street_chain(&mut d);
     let cue = d.turn_cue_in_play().expect("a corner is in play");
-    assert!(!d.turn_announced.contains(&cue.key));
+    let chimes = |audio: &freight_fate::app::testing::AudioLog| {
+        audio
+            .borrow()
+            .played
+            .iter()
+            .filter(|(key, _, _)| key.starts_with("events/turn_"))
+            .map(|(key, _, pan)| (key.clone(), *pan))
+            .collect::<Vec<_>>()
+    };
+    assert!(!d.turn_chimed.contains(&cue.key));
     d.trip.position_mi = 0.4;
     mph(&mut d, 30.0);
     d.update_turn_commitment(&mut app.ctx, 0.016);
     assert!(
-        d.turn_announced.contains(&cue.key),
-        "the corner was called, so its earcon is owed at the corner"
+        !lines_with(&app, "North Michigan Street").is_empty(),
+        "{:?}",
+        app.event_lines()
+    );
+    assert!(d.turn_chimed.contains(&cue.key));
+    assert_eq!(
+        chimes(&audio),
+        vec![("events/turn_left".to_string(), -TURN_CUE_PAN)],
+        "the left call chimes in the left ear"
     );
 
     // And the corner is a JUDGED one, which is what stops its route cues
-    // sounding the same chime at the quarter-mile lead and again at the
-    // corner: `handle_trip_event` suppresses the earcon for exactly these,
-    // so the turn flow owns it outright. Three chimes on one turn out of
-    // Houston is what that cost before (owner drive, 2026-09-20).
+    // sounding the chime again at the quarter-mile lead and at the corner:
+    // three chimes on one turn out of Houston is what that cost before
+    // (owner drive, 2026-09-20).
     assert!(is_judged_turn(&cue));
     let straight_on = d
         .trip
@@ -380,14 +396,12 @@ fn test_the_turn_earcon_waits_for_the_corner_itself() {
     if let Some(straight_on) = straight_on {
         // A cue with no side to it never reaches the turn flow, so it keeps
         // its own sound.
-        assert!(!d.turn_announced.contains(&straight_on.key));
+        assert!(!d.turn_chimed.contains(&straight_on.key));
     }
 
-    // Taking it spends the earcon, once and once only.
+    // Taking the corner adds nothing.
     d.resolve_turn(&mut app.ctx, &cue);
-    assert!(!d.turn_announced.contains(&cue.key));
-    d.resolve_turn(&mut app.ctx, &cue);
-    assert!(!d.turn_announced.contains(&cue.key));
+    assert_eq!(chimes(&audio).len(), 1);
 }
 
 #[test]
@@ -409,7 +423,7 @@ fn test_a_turn_taken_at_a_crawl_still_chimes_when_the_route_called_it() {
         },
     };
     d.handle_trip_event(&mut app.ctx, &near);
-    assert!(d.turn_announced.contains(&cue.key));
+    assert!(d.turn_chimed.contains(&cue.key));
 }
 
 #[test]
@@ -496,8 +510,8 @@ fn test_the_next_turn_waits_until_the_truck_is_round_the_last() {
     d.update_turn_commitment(&mut app.ctx, 0.016);
     app.clear_speech();
 
-    // At the corner: its own chime, and not a word about the next one, from
-    // the route or from the corner's approach call.
+    // At the corner: its chime came with its call, and there is not a word
+    // about the next one, from the route or from the corner's approach call.
     d.trip.position_mi = first.at_mi + 0.001;
     route_calls(&mut d, &mut app);
     d.update_turn_commitment(&mut app.ctx, 0.016);

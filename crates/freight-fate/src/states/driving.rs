@@ -817,11 +817,10 @@ pub struct DrivingState {
     pub turn_advised: HashSet<String>,
     pub turn_missed: HashSet<String>,
     pub turn_resolved: HashSet<String>,
-    /// Corners whose call actually reached the voice. The turn earcon is
-    /// played off this at the moment the corner is taken, so a driver who
-    /// was told nothing about a corner is not chimed at for it either
-    /// (owner, 2026-09-20).
-    pub turn_announced: HashSet<String>,
+    /// Corners whose turn earcon has sounded. It sounds once, with the first
+    /// words that name the corner, so a driver who was told nothing about a
+    /// corner is not chimed at for it either (owner, 2026-09-20).
+    pub turn_chimed: HashSet<String>,
     /// Corners whose own call already said "now": the route's call at the
     /// corner would only say the turn again.
     pub turn_called_now: HashSet<String>,
