@@ -163,6 +163,9 @@ fn restricted_tunnels_detour_by_their_real_legal_roads() {
         ("worcester_ma_us", "boston_ma_us", 8.0),
         ("providence_ri_us", "boston_ma_us", 8.0),
         ("portsmouth_nh_us", "boston_ma_us", 8.0),
+        ("boston_ma_us", "portsmouth_nh_us", 8.0),
+        ("manchester_nh_us", "boston_ma_us", 8.0),
+        ("boston_ma_us", "manchester_nh_us", 8.0),
         ("boston_ma_us", "worcester_ma_us", 8.0),
         ("wilmington_de_us", "baltimore_md_us", 15.0),
         ("philadelphia_pa_us", "baltimore_md_us", 15.0),
@@ -197,6 +200,15 @@ fn restricted_tunnels_detour_by_their_real_legal_roads() {
                     .ne(open.legs.iter().map(|leg| leg.id)),
                 "{from} to {to} leaves the tunnel leg"
             );
+            if from == "boston_ma_us" || to == "boston_ma_us" {
+                assert!(
+                    legal
+                        .legs
+                        .iter()
+                        .any(|leg| leg.detour_for == "Boston tunnels"),
+                    "{from} to {to} drives the Boston tunnels detour"
+                );
+            }
         }
     }
 }
