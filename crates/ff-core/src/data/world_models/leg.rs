@@ -156,15 +156,19 @@ pub struct Leg {
     /// oneway-pair geometry (Track D2). None where the bake was mixed or
     /// thin -- honest absence; the runtime infers from road class instead.
     pub divided: Option<bool>,
+    /// Truck rules at real tunnels and bridges on this leg. Eager, so the
+    /// route graph plans around them without parsing the corridor.
+    pub crossings: Vec<super::RoadCrossing>,
+    /// The bypassed crossing's name when this leg is the real legal road
+    /// around it: a second road between the same two cities, not the other
+    /// direction of the leg it bypasses. Empty on every ordinary leg.
+    pub detour_for: String,
     /// Dispatch-completeness precomputed at world load from raw corridor
     /// counts (see `world_corridor::raw_metadata_complete`). None means "not
     /// precomputed" -- direct-constructed legs (tests, overlays) fall back to
     /// computing it from their own fields, so behavior is unchanged. The
     /// world sets it so the route graph never has to parse deferred detail
     /// just to gate dispatch.
-    /// Truck rules at real tunnels and bridges on this leg. Eager, so the
-    /// route graph plans around them without parsing the corridor.
-    pub crossings: Vec<super::RoadCrossing>,
     pub meta_complete: Option<bool>,
     corridor: OnceCell<Result<CorridorDetail, DataError>>,
     detail_source: Mutex<Option<Deferred>>,
@@ -199,6 +203,7 @@ impl Leg {
             local_yard: false,
             divided: None,
             crossings: Vec::new(),
+            detour_for: String::new(),
             meta_complete: None,
             corridor: OnceCell::new(),
             detail_source: Mutex::new(None),
@@ -469,6 +474,7 @@ impl Clone for Leg {
             local_yard: self.local_yard,
             divided: self.divided,
             crossings: self.crossings.clone(),
+            detour_for: self.detour_for.clone(),
             meta_complete: self.meta_complete,
             corridor,
             detail_source: Mutex::new(self.detail_source.lock().clone()),

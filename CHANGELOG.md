@@ -4,7 +4,7 @@
 
 ### Added
 
-- **Dispatch now routes hazardous and tank loads around real tunnels that ban them.** Boston, Baltimore, Pennsylvania Turnpike, Hampton Roads, Eisenhower and Seattle tunnels included.
+- **Dispatch now routes hazardous and tank loads around real tunnels that ban them.** They take the legal road instead, such as Loveland Pass or the Baltimore Beltway.
 
 - **Whittier is now reached through the Anton Anderson Memorial Tunnel.** Its one-lane gate and Bear Valley toll make the crossing a planned part of the drive.
 

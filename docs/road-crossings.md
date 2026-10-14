@@ -46,13 +46,12 @@ Size limits use a stock rig: 73.5 feet with a trailer, 25 feet bobtail,
 | Tunnel | Legs | Rules modelled | Source (read 2026-10-11) |
 | --- | --- | --- | --- |
 | Anton Anderson Memorial Tunnel | Bear Valley to Whittier | Placarded loads banned; 400 lb unplacarded limit; 75 ft long, 10 ft wide, 14 ft high without permit | https://dot.alaska.gov/creg/whittiertunnel/vehiclesize.shtml |
-| Eisenhower-Johnson Memorial Tunnel | Denver to Salt Lake City; Denver to Silverthorne | Placarded loads banned (must use Loveland Pass while open) | https://www.codot.gov/travel/ejmt/metering |
+| Eisenhower-Johnson Memorial Tunnel | Denver to Salt Lake City; Denver to Silverthorne | Placarded loads banned; they take US 6 over Loveland Pass (the map's Silverthorne to Denver leg) | https://www.codot.gov/travel/ejmt/metering |
 | Fort McHenry Tunnel | Wilmington to Baltimore; Philadelphia to Baltimore; Washington to Philadelphia | Placarded loads banned, including bulk fuel | https://www.mdta.maryland.gov/TunnelRestrictionsAndVehiclePermits |
 | Boston tunnels (Central Artery, Prudential, Tip O'Neill) | Boston to Hartford, Manchester, Providence, Worcester; New York, Portland and Portsmouth to Boston | All hazardous cargo (any amount) and all cargo tankers banned | https://www.mass.gov/info-details/hazardous-material-route-designation |
 | Hampton Roads Bridge-Tunnel | Norfolk to Richmond; Richmond to Virginia Beach | Banned classes refuse placarded packaged loads; flammables only non-bulk, so bulk fuel refused | https://law.lis.virginia.gov/admincode/title24/agency30/chapter61/section40/ |
 | Chesapeake Bay Bridge-Tunnel (Thimble Shoal and Chesapeake Channel tunnels) | Norfolk to Cape Charles | Banned classes refuse placarded packaged loads; Class 3 tank vehicles banned even empty | https://www.cbbt.com/regulations/ |
 | Pennsylvania Turnpike tunnels (Allegheny, Tuscarora, Kittatinny, Blue Mountain, Lehigh) | Baltimore, Harrisburg, Philadelphia, Carlisle and Hagerstown to Pittsburgh; Scranton to Allentown | Table 1 materials and explosives banned; flammable liquid banned in bulk | https://www.paturnpike.com/commercial/permits-restrictions/hazardous-materials-(placarded-loads) |
-| Interstate 90 tunnels across Lake Washington (Mount Baker Ridge, Mercer Island lid) | Seattle to Moses Lake, Wenatchee, Spokane, Tri-Cities and Yakima | Flammable cargo banned, so bulk fuel detours | https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359 |
 
 Supporting sources: Colorado rule 2 CCR 601-8, 3.02 (EJMT placarded loads
 use Loveland Pass); COMAR 11.07.01.04 (Maryland tunnels); 700 CMR 7.11
@@ -66,14 +65,56 @@ The map has one record per leg, crossed in either direction, so each rule
 applies both ways. Legs without archived geometry were checked against
 their corridor route points.
 
-**Assumptions to know.** EJMT: Loveland Pass is not on the map and its
-closures are not modelled, so placarded loads are always planned off these
-legs. Fort McHenry: unplacarded packaged chemicals are not refused, since
-the propane container limits are not modelled. Boston: the map's Boston
-legs end at the downtown city point through the tunnels, so most Boston
-hazardous and tank freight is not offered; Barnstable to Boston stays open.
+**Assumptions to know.** EJMT: Loveland Pass closures are not modelled,
+so the pass is always open to placarded loads. Fort McHenry: unplacarded
+packaged chemicals are not refused, since the propane container limits are
+not modelled. Boston: the legal roads below reach the same downtown city
+point as the tunnel legs, on surface streets for the last miles.
+
+## Legal detours
+
+A load a tunnel refuses is planned onto the real road a hazardous-materials
+truck takes instead. Five legs carry those roads. Each runs between the same
+two cities as the tunnel leg it replaces, so it serves every trip that
+tunnel leg did, and the planner only picks it for a refused load or when it
+is shorter. Each road was pinned from a Valhalla truck route with
+`hazmat=true` (OpenStreetMap data, read 2026-10-13) and then given the full
+corridor enrichment; lane counts came from the same OpenStreetMap data in a
+local extract. Each leg's `detour_for` names the crossing it bypasses, so the
+planner never mistakes it for the other direction of the tunnel leg, and a
+saved trip resumes on whichever of the two its load was planned on.
+
+| Detour leg | Road | Miles (tunnel leg) | Avoids |
+| --- | --- | --- | --- |
+| Worcester to Boston | I-90, I-95 and Route 128, then Route 9 into the city | 47.5 (47.2) | Boston tunnels |
+| Providence to Boston | I-95 and Route 128, then Route 9 | 53.1 (50) | Boston tunnels |
+| Boston to Portsmouth | Route 99, US 1 and I-95 | 58 (58) | Boston tunnels |
+| Baltimore to Wilmington | I-83, the northern I-695 beltway and I-95 | 82.9 (75) | Fort McHenry Tunnel |
+| Silverthorne to Denver | US 6 over Loveland Pass and I-70 | 76.9 (67) | Eisenhower-Johnson Memorial Tunnel |
+
+Hartford, Manchester, Portland and New York loads into or out of Boston
+join one of these roads at Worcester, Providence or Portsmouth. Philadelphia
+and Washington loads through Baltimore use the I-695 leg by way of
+Wilmington.
+
+**Which legs pass under Fort McHenry.** Checked against archived geometry:
+Wilmington to Baltimore passes 0.13 miles from the tunnel's inventory point
+at mile 70 and then takes I-395 downtown; Philadelphia to Baltimore and
+Washington to Philadelphia run the same I-95 harbor crossing. No other
+Baltimore leg does.
 
 ## Researched and left out
+
+- **Interstate 90 tunnels across Lake Washington (Mount Baker Ridge,
+  Mercer Island lid).** The only official text found is a WSDOT notice of
+  an overnight maintenance closure
+  (https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359, read
+  2026-10-13). No standing WSDOT rule, WAC section or posted restriction
+  was found, and RCW 47.48.050 only allows temporary restrictions, so no
+  rule is modelled and Seattle fuel keeps I-90.
+- **Holland and Lincoln tunnels.** No leg uses them. The New York city point
+  is in the Bronx, and every New York leg, including Allentown and Newark,
+  crosses the Hudson on the George Washington Bridge.
 
 - **Baltimore Harbor Tunnel (I-895).** Same MDTA ban, but no leg runs
   through it.

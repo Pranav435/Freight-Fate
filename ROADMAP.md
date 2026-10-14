@@ -2910,8 +2910,9 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       a truck that still reaches one is re-planned from that city.
 - [x] **Tunnels with truck rules across the map.** Eisenhower-Johnson, Fort
       McHenry, the Boston tunnels, Hampton Roads and Chesapeake Bay
-      bridge-tunnels, the Pennsylvania Turnpike tunnels and the I-90 Lake
-      Washington tunnels carry their published cargo rules (see
+      bridge-tunnels and the Pennsylvania Turnpike tunnels carry their
+      published cargo rules, and refused loads take real legal detour legs
+      into Boston, around Baltimore on I-695 and over Loveland Pass (see
       docs/road-crossings.md).
 - [ ] **Bridges with truck rules.** Posted weight limits, low clearances,
       bridge hazmat rules (San Francisco-Oakland Bay Bridge), tolls and wind
@@ -2919,9 +2920,17 @@ branch. The older Phase A/B plan checklists are not a live completion list.
 - [ ] **Hazard classes on freight.** The catalog does not name hazard
       classes, so a placarded packaged load is refused wherever any class is
       banned. Naming classes would let some loads through.
-- [ ] **Loveland Pass for placarded loads.** The Eisenhower tunnel's
-      required detour over US 6 is not on the map, so placarded loads are
-      planned off I-70 entirely.
+- [x] **Loveland Pass for placarded loads.** A Silverthorne to Denver leg
+      over US 6 carries the Eisenhower tunnel's required detour.
+- [ ] **Loveland Pass closures.** The pass is treated as always open to
+      placarded loads; CDOT closes it in storms.
+- [ ] **I-90 Lake Washington flammable-cargo rule.** Left out: the only
+      source is a WSDOT closure notice. Model it if WSDOT publishes a
+      standing rule.
+- [ ] **Curve classes on the detour legs.** Their curves mark interchange
+      ramps only near each end, by position. The OSM curve-class reading the
+      rest of the map has needs `curve_osm.jsonl`, whose builder is not in
+      the repo.
 - [ ] **Board estimates on detoured loads.** The board's hours and route
       readouts still use the open road; departure uses the legal one.
 - [ ] **Whittier tunnel cold-weather and train disruption rules.** The

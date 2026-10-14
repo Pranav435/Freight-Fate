@@ -8232,25 +8232,7 @@
         }
       ],
       "divided": true,
-      "lanes": 2,
-      "crossings": [
-        {
-          "kind": "tunnel",
-          "name": "Interstate 90 tunnels across Lake Washington",
-          "hazmat": "none",
-          "bulk_flammable_banned": true,
-          "tank_banned": false,
-          "regulated_lb_limit": null,
-          "max_length_ft": null,
-          "max_width_ft": null,
-          "max_height_ft": null,
-          "hazmat_text": "Flammable cargo may not use the Interstate 90 tunnels across Lake Washington; it detours by Interstate 5 and Interstate 405.",
-          "size_text": "",
-          "source_url": "https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359",
-          "access_date": "2026-10-11",
-          "basis": "Read: WSDOT says a flammable cargo restriction applies in both directions of I-90 at the Mount Baker and Mercer Island lid tunnels, with the detour by I-5 and I-405. Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. Assumed: only bulk fuel is flammable cargo among the game's loads; the packaged hazardous load is not refused because its classes are not named."
-        }
-      ]
+      "lanes": 2
     },
     {
       "from": "moses_lake_wa_us",
@@ -18616,25 +18598,7 @@
           "vehicle_access": "tractor_trailer"
         }
       ],
-      "lanes": 1,
-      "crossings": [
-        {
-          "kind": "tunnel",
-          "name": "Interstate 90 tunnels across Lake Washington",
-          "hazmat": "none",
-          "bulk_flammable_banned": true,
-          "tank_banned": false,
-          "regulated_lb_limit": null,
-          "max_length_ft": null,
-          "max_width_ft": null,
-          "max_height_ft": null,
-          "hazmat_text": "Flammable cargo may not use the Interstate 90 tunnels across Lake Washington; it detours by Interstate 5 and Interstate 405.",
-          "size_text": "",
-          "source_url": "https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359",
-          "access_date": "2026-10-11",
-          "basis": "Read: WSDOT says a flammable cargo restriction applies in both directions of I-90 at the Mount Baker and Mercer Island lid tunnels, with the detour by I-5 and I-405. Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. Assumed: only bulk fuel is flammable cargo among the game's loads; the packaged hazardous load is not refused because its classes are not named."
-        }
-      ]
+      "lanes": 1
     },
     {
       "from": "spokane_wa_us",
@@ -33827,25 +33791,7 @@
         }
       ],
       "divided": true,
-      "lanes": 2,
-      "crossings": [
-        {
-          "kind": "tunnel",
-          "name": "Interstate 90 tunnels across Lake Washington",
-          "hazmat": "none",
-          "bulk_flammable_banned": true,
-          "tank_banned": false,
-          "regulated_lb_limit": null,
-          "max_length_ft": null,
-          "max_width_ft": null,
-          "max_height_ft": null,
-          "hazmat_text": "Flammable cargo may not use the Interstate 90 tunnels across Lake Washington; it detours by Interstate 5 and Interstate 405.",
-          "size_text": "",
-          "source_url": "https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359",
-          "access_date": "2026-10-11",
-          "basis": "Read: WSDOT says a flammable cargo restriction applies in both directions of I-90 at the Mount Baker and Mercer Island lid tunnels, with the detour by I-5 and I-405. Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. Assumed: only bulk fuel is flammable cargo among the game's loads; the packaged hazardous load is not refused because its classes are not named."
-        }
-      ]
+      "lanes": 2
     },
     {
       "from": "spokane_wa_us",
@@ -48270,25 +48216,7 @@
       },
       "terrain": "mountain",
       "divided": true,
-      "lanes": 2,
-      "crossings": [
-        {
-          "kind": "tunnel",
-          "name": "Interstate 90 tunnels across Lake Washington",
-          "hazmat": "none",
-          "bulk_flammable_banned": true,
-          "tank_banned": false,
-          "regulated_lb_limit": null,
-          "max_length_ft": null,
-          "max_width_ft": null,
-          "max_height_ft": null,
-          "hazmat_text": "Flammable cargo may not use the Interstate 90 tunnels across Lake Washington; it detours by Interstate 5 and Interstate 405.",
-          "size_text": "",
-          "source_url": "https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359",
-          "access_date": "2026-10-11",
-          "basis": "Read: WSDOT says a flammable cargo restriction applies in both directions of I-90 at the Mount Baker and Mercer Island lid tunnels, with the detour by I-5 and I-405. Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. Assumed: only bulk fuel is flammable cargo among the game's loads; the packaged hazardous load is not refused because its classes are not named."
-        }
-      ]
+      "lanes": 2
     },
     {
       "from": "tri_cities_wa_us",
@@ -61294,25 +61222,7 @@
         }
       ],
       "divided": true,
-      "lanes": 3,
-      "crossings": [
-        {
-          "kind": "tunnel",
-          "name": "Interstate 90 tunnels across Lake Washington",
-          "hazmat": "none",
-          "bulk_flammable_banned": true,
-          "tank_banned": false,
-          "regulated_lb_limit": null,
-          "max_length_ft": null,
-          "max_width_ft": null,
-          "max_height_ft": null,
-          "hazmat_text": "Flammable cargo may not use the Interstate 90 tunnels across Lake Washington; it detours by Interstate 5 and Interstate 405.",
-          "size_text": "",
-          "source_url": "https://content.govdelivery.com/accounts/WADOT/bulletins/3df8359",
-          "access_date": "2026-10-11",
-          "basis": "Read: WSDOT says a flammable cargo restriction applies in both directions of I-90 at the Mount Baker and Mercer Island lid tunnels, with the detour by I-5 and I-405. Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. Assumed: only bulk fuel is flammable cargo among the game's loads; the packaged hazardous load is not refused because its classes are not named."
-        }
-      ]
+      "lanes": 3
     },
     {
       "from": "yakima_wa_us",

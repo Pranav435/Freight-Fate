@@ -329,6 +329,12 @@ impl DrivingState {
         } else {
             DRIVE_PHASE_DELIVERY
         };
+        // A load a tunnel refuses resumes on the legal detour it was planned on.
+        let load = job_from_payload(job_payload_data).map(|job| job.crossing_load());
+        let rebuild = |cities: &[String]| match &load {
+            Some(load) => ctx.world.route_from_cities_for(cities, load),
+            None => ctx.world.route_from_cities(cities),
+        };
         let route = if phase == DRIVE_PHASE_PICKUP {
             let origin = job_payload_data.get("origin").and_then(Value::as_str)?;
             let location = job_payload_data
@@ -344,7 +350,7 @@ impl DrivingState {
                 while cities.len() > 2 && cities.last() == cities.get(cities.len() - 2) {
                     cities.pop();
                 }
-                let corridor = ctx.world.route_from_cities(&cities)?;
+                let corridor = rebuild(&cities)?;
                 match approach {
                     Some(approach) => corridor.then(&approach),
                     None => corridor,
@@ -354,7 +360,7 @@ impl DrivingState {
             }
         } else {
             let cities = strings(data, "route_cities");
-            ctx.world.route_from_cities(&cities)?
+            rebuild(&cities)?
         };
         // Pre-slug saves store display names; canonicalize before any
         // world lookup so an old trip resumes instead of being dropped.
