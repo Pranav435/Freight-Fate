@@ -705,11 +705,11 @@ fn test_the_hold_prompt_does_not_come_back_once_the_menu_is_open() {
     let holds = |app: &TestApp| {
         app.event_lines()
             .into_iter()
-            .filter(|line| line.contains("holding at the entrance"))
+            .filter(|line| line.contains("Holding at the entrance"))
             .count()
     };
     assert_eq!(holds(&app), 1);
-    let prompt = last_with(&app, "holding at the entrance");
+    let prompt = last_with(&app, "Holding at the entrance");
     assert!(prompt.contains("Press Enter"), "{prompt}");
     assert!(!prompt.contains("controller A"), "{prompt}");
 
@@ -778,7 +778,7 @@ fn test_the_assist_stops_the_truck_at_a_pickup_gate() {
     // the same line and the same control as the dock.
     d.trip.truck.velocity_mps = 0.0;
     d.handle_pickup_gate(&mut app.ctx);
-    let prompt = last_with(&app, "holding at the entrance");
+    let prompt = last_with(&app, "Holding at the entrance");
     assert!(prompt.contains("Press Enter"), "{prompt}");
     assert!(d.trip.truck.parking_brake);
 }

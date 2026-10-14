@@ -74,6 +74,10 @@ bookmarks usable.
       uphill call lost "Expect to lose speed." Exit calls no longer narrate
       how cruise takes the ramp, and spoken weather leaves out the live
       observation's age, which stays on the Weather app (owner, same day).
+      Exit, destination and rest stop calls name the stop and the driver's
+      own job only; what lane keeping and stopping assistance do is the
+      manual's. Space gives RPM only with a manual transmission and air or
+      brakes only when they need attention; Tab keeps the full reading.
       Spanish carries the new lines.
 - [ ] (Found along the way) The advise-only follow-up to a turn the route
       already named ("Advise 11 miles per hour.") is queued on the droppable
@@ -87,6 +91,13 @@ bookmarks usable.
       lead to brake by ear at street speeds, a speed-dependent countdown into
       steep grades instead of a distance, and automatic gear choice that
       skips gears when lightly loaded. Design calls for the owner.
+- [ ] (Found along the way) Context-sensitive help on F1: what the assist,
+      control or call in front of the driver does, now that the spoken
+      calls no longer explain it (owner, 2026-10-14, "should implement that
+      one later").
+- [ ] (Found along the way) Layered readout keys in the style of Talking
+      Flight Monitor or MSFS Blind Assist, so the dash is split across a
+      key layer instead of one long Space readout (owner, 2026-10-14).
 
 - [x] Main menu ambience (owner, 2026-10-12): an ElevenLabs bed under the
       main menu and the screens opened from it, picked like the music by

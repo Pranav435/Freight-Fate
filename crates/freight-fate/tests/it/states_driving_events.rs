@@ -753,9 +753,9 @@ fn test_no_destination_exit_while_the_departure_chain_runs() {
 }
 
 #[test]
-fn test_the_destination_announcement_names_the_automation_once() {
-    // Sarah A, 2026-08-15: lane keeping taking the exit must not read as the
-    // exit taking itself.
+fn test_the_destination_announcement_names_only_the_exit() {
+    // Owner, 2026-10-14: "Players know they have assists on or they don't."
+    // With lane keeping on full the callout is the exit and nothing more.
     let mut app = TestApp::new();
     let mut d = a_real_drive(&mut app);
     app.ctx.settings.lane_keeping = "full".to_string();
@@ -764,14 +764,12 @@ fn test_the_destination_announcement_names_the_automation_once() {
         .destination_exit_stop(&mut app.ctx)
         .expect("a delivery always has a destination exit");
 
-    let first = d.destination_exit_announcement(&mut app.ctx, &stop, 2.0);
-    assert!(first.contains("Lane keeping takes it."), "{first}");
-
-    let second = d.destination_exit_announcement(&mut app.ctx, &stop, 1.0);
-    assert!(
-        !second.contains("Lane keeping takes it."),
-        "said once per run: {second}"
-    );
+    for ahead in [2.0, 1.0] {
+        let line = d.destination_exit_announcement(&mut app.ctx, &stop, ahead);
+        assert!(line.starts_with("In "), "{line}");
+        assert!(!line.contains("Lane keeping"), "{line}");
+        assert_eq!(line.matches('.').count(), 1, "one sentence: {line}");
+    }
 }
 
 #[test]
@@ -1313,7 +1311,7 @@ fn test_the_accel_coast_buttons_walk_the_fives_grid() {
 }
 
 #[test]
-fn test_the_dial_with_cruise_off_says_where_the_switch_is() {
+fn test_the_dial_with_cruise_off_says_it_is_off() {
     let mut app = TestApp::new();
     let mut d = a_real_drive(&mut app);
     app.clear_speech();
@@ -1321,7 +1319,7 @@ fn test_the_dial_with_cruise_off_says_where_the_switch_is() {
     d.adjust_cruise(&mut app.ctx, 1, false);
 
     let spoken = app.main_lines().join(" ");
-    assert!(spoken.contains("Adaptive cruise off. Press K"), "{spoken}");
+    assert_eq!(spoken, "Adaptive cruise off.");
 }
 
 #[test]

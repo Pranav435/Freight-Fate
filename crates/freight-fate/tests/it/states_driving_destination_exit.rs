@@ -1000,7 +1000,7 @@ fn test_the_loop_back_never_tells_an_automated_driver_to_signal() {
         !missed.contains("press X") && !missed.contains("Press X"),
         "{missed}"
     );
-    assert!(missed.contains("Lane keeping takes it"), "{missed}");
+    assert!(missed.contains("ahead again"), "{missed}");
 }
 
 #[test]
@@ -1017,23 +1017,22 @@ fn test_the_loop_back_still_asks_a_manual_driver_for_the_signal() {
 }
 
 #[test]
-fn test_the_loop_back_owes_the_lane_keeping_warning_again() {
-    // The once-per-drive "lane keeping will take this exit" was spent on the
-    // approach the driver just missed. A second approach with no warning at
-    // all is a truck leaving the highway unannounced.
+fn test_the_full_lane_keeping_callout_names_only_the_exit() {
+    // The driver chose lane keeping; the callout names the exit and stops
+    // there, on the first approach and the loop-back alike (owner,
+    // 2026-10-14).
     let mut harness = a_drive("Loop Back Warning");
     harness.app.ctx.settings.lane_keeping = "full".to_string();
-    harness.with_drive(|drive, _| drive.lane_keeping_takes_exit_said = true);
 
-    miss_the_destination_exit(&mut harness);
+    let missed = miss_the_destination_exit(&mut harness);
 
-    assert!(!harness.read_drive(|d| d.lane_keeping_takes_exit_said));
+    assert!(!missed.contains("Lane keeping"), "{missed}");
     let announcement = harness.with_drive(|drive, ctx| {
         let stop = a_destination_stop(drive.trip.position_mi + 3.0);
         drive.destination_exit_announcement(ctx, &stop, 3.0)
     });
     assert!(
-        announcement.contains("Lane keeping takes it."),
+        announcement == "In 3 miles, the destination exit for Test Receiver.",
         "{announcement}"
     );
 }

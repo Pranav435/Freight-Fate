@@ -1171,7 +1171,7 @@ fn test_cruise_owns_up_to_a_limp_cap_once_per_engagement() {
 
     drive.announce_limp_cruise_cap(&mut app.ctx);
     let spoken = app.event_lines().join(" ");
-    assert!(spoken.contains("in limp mode"), "{spoken}");
+    assert!(spoken.contains("Limp mode. Holding"), "{spoken}");
     assert!(drive.limp_cruise_said);
 
     app.clear_speech();

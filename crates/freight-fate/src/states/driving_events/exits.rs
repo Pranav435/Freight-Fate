@@ -83,22 +83,11 @@ impl DrivingState {
         // not optional, and arming the farther ramp is exactly what carried
         // a tester past the scale unarmed. The plan itself survives.
         let scale_claimed = self.scale_claiming_exit(ctx, stop.as_ref());
-        let outranked = if scale_claimed.is_some() {
-            stop.clone()
-        } else {
-            None
-        };
         if let Some(scale) = scale_claimed.clone() {
             stop = Some(scale);
         }
         let Some(stop) = stop else {
-            self.say_plain(
-                ctx,
-                format!(
-                    "No route exit to signal for yet. Press {} to plan a suitable rest stop.",
-                    ctx.control_hint("rest")
-                ),
-            );
+            self.say_plain(ctx, "No route exit to signal for yet.");
             return;
         };
         let responding_to_destination_callout = stop.stop_type == "delivery_destination"
@@ -228,18 +217,9 @@ impl DrivingState {
             self.exit_lane_entered = true;
             ctx.audio.play_with("ui/notify", 0.6, 0.0);
             // No lane hint: lane keeping moves to the right lane itself
-            // (`keep_right_for_exit`).
-            // The first granted lane of the run says who granted it. A driver
-            // who never asked for this needs one chance to notice the truck
-            // is doing it, and where to change that.
-            // It takes the exit lane where it opens, at the gore.
-            let granted = if self.lane_keeping_grant_said {
-                "Lane keeping takes the exit lane."
-            } else {
-                self.lane_keeping_grant_said = true;
-                "Lane keeping takes the exit lane for you."
-            };
-            format!("{head} {ahead_text} ahead. {granted}{ending}")
+            // (`keep_right_for_exit`), and what it does is the manual's to
+            // explain, not the callout's (owner, 2026-10-14).
+            format!("{head} {ahead_text} ahead.{ending}")
         } else {
             // The right lane now; the exit lane itself where it opens, which
             // the cab calls at the taper. Nothing at all when the truck is
@@ -254,17 +234,8 @@ impl DrivingState {
         };
         if self.is_selected_stop(Some(&stop)) {
             self.selected_stop_assist_armed = ctx.settings.destination_approach_assist;
-            if self.selected_stop_assist_armed {
-                message.push_str(" Facility stopping assistance armed.");
-            } else {
+            if !self.selected_stop_assist_armed {
                 message.push_str(" Stop at the entrance.");
-            }
-        }
-        if scale_claimed.is_some() {
-            if let Some(outranked) = outranked.as_ref() {
-                if self.is_selected_stop(Some(outranked)) || self.trip.is_planned(outranked) {
-                    message.push_str(" Your planned rest stop waits until you are past the scale.");
-                }
             }
         }
         self.set_status(message.clone());

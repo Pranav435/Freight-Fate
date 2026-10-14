@@ -240,7 +240,7 @@ fn t_selects_the_comfortable_sleep_stop_instead_of_the_nearest_stop() {
     });
     let said = app.main_lines().join(" ");
     assert!(
-        said.contains("Planned sleep stop selected with time to spare"),
+        said.contains("Sleep stop planned, travel center: Comfortable"),
         "{said}"
     );
     assert!(said.contains("Comfortable"), "{said}");
@@ -280,11 +280,7 @@ fn t_selects_a_break_only_stop_and_focuses_the_break_row_after_arrival() {
         assert!(d.selected_stop_break);
     });
     let said = app.main_lines().join(" ");
-    assert!(
-        said.contains("Planned 30-minute break stop selected"),
-        "{said}"
-    );
-    assert!(said.contains("before your next break limit"), "{said}");
+    assert!(said.contains("Break stop planned"), "{said}");
 
     let snapshot = drive_and_ctx(&drive, &mut app, |d, ctx| d.snapshot(ctx));
     assert_eq!(snapshot["selected_stop_break"], true);
@@ -356,11 +352,8 @@ fn sleep_only_stop_for_break_speaks_the_long_rest_needed() {
         assert!(!d.selected_stop_break);
     });
     let said = app.main_lines().join(" ");
-    assert!(
-        said.contains("Sleep here to reset the break clock"),
-        "{said}"
-    );
-    assert!(!said.contains("30-minute break stop selected"), "{said}");
+    assert!(said.contains("Sleep stop planned for your break"), "{said}");
+    assert!(!said.contains("Break stop planned"), "{said}");
 }
 
 #[test]
@@ -377,7 +370,10 @@ fn t_selects_the_last_legal_fallback_when_no_stop_has_a_comfort_buffer() {
         assert_eq!(d.trip.planned_stop().unwrap().name, "Last");
     });
     let said = app.main_lines().join(" ");
-    assert!(said.contains("last legally reachable fallback"), "{said}");
+    assert!(
+        said.contains("the last one before your sleep limit"),
+        "{said}"
+    );
 }
 
 #[test]
@@ -395,7 +391,7 @@ fn t_keeps_nearest_usable_sleep_stop_when_no_hos_recommendation_applies() {
         assert_eq!(d.trip.planned_stop().unwrap().name, "Usable");
     });
     let said = app.main_lines().join(" ");
-    assert!(said.contains("Planned sleep stop selected"), "{said}");
+    assert!(said.contains("Sleep stop planned"), "{said}");
     assert!(!said.contains("Bobtail only"), "{said}");
 
     drive_and_ctx(&drive, &mut app, |d, ctx| {
@@ -407,7 +403,7 @@ fn t_keeps_nearest_usable_sleep_stop_when_no_hos_recommendation_applies() {
     });
     let said = app.main_lines().join(" ");
     assert!(
-        said.contains("no route stop is estimated reachable"),
+        said.contains("none is reachable before your hours limit"),
         "{said}"
     );
 }
@@ -429,10 +425,7 @@ fn requested_t_selection_speaks_in_quiet_and_urgent_only() {
             assert_eq!(d.trip.planned_stop().unwrap().name, "Break here");
         });
         let said = app.main_lines().join(" ");
-        assert!(
-            said.contains("30-minute break stop selected"),
-            "{rung}: {said}"
-        );
+        assert!(said.contains("Break stop planned"), "{rung}: {said}");
         assert!(
             app.event_lines().is_empty(),
             "{rung}: {:?}",

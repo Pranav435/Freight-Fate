@@ -127,8 +127,17 @@ impl DrivingState {
             String::new()
         };
         let speed = ctx.settings.speed_text(self.trip.truck.speed_mph());
-        let rpm = self.trip.truck.rpm;
-        let air = capitalize_first(&self.air_brief_text());
+        // The tachometer matters to a driver who shifts; an automatic
+        // shifts for them.
+        let rpm = if self.trip.truck.transmission.automatic {
+            String::new()
+        } else {
+            format!(", {:.0} RPM", self.trip.truck.rpm)
+        };
+        let air = match self.air_brief_text() {
+            air if air.is_empty() => air,
+            air => format!(" {}.", capitalize_first(&air)),
+        };
         // With the signal on, how far to the exit is the number the driver is
         // waiting on, and until now only the countdown anchors said it (owner,
         // driving, 2026-09-24: "I should be able to see how far away from the
@@ -144,9 +153,7 @@ impl DrivingState {
             ),
             None => String::new(),
         };
-        ctx.say(&format!(
-            "{speed}, {gear}, {rpm:.0} RPM.{control} {air}.{armed}"
-        ));
+        ctx.say(&format!("{speed}, {gear}{rpm}.{control}{air}{armed}"));
     }
 
     /// The exit the signal is on for, while the truck is still short of its

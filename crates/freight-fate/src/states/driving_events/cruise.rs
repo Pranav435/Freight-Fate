@@ -126,7 +126,6 @@ impl DrivingState {
         self.acc_limit_cap_said = None;
         self.acc_limit_hold = None;
         self.acc_weather_cap_said = None;
-        let gap = self.acc_gap_seconds(ctx);
         let mut effective_mph = match self.cruise_exit_mph {
             Some(exit) => set.min(exit),
             None => set,
@@ -179,7 +178,7 @@ impl DrivingState {
             ctx.audio.play_with("ui/notify", 0.5, 0.0);
         }
         let message = format!(
-            "Adaptive cruise {} at {}{exit_note}. Following gap {gap:.0} seconds.",
+            "Adaptive cruise {} at {}{exit_note}.",
             if transition_label.is_some() {
                 "resuming"
             } else {
@@ -232,8 +231,7 @@ impl DrivingState {
         // below. Telling a paused driver to press K sent them to the key that
         // switches it off (2026-09-28).
         if self.cruise_mph.is_none() && self.keeper_mph.is_none() && !self.speed_control_armed {
-            let key = ctx.control_name(crate::bindings::Action::Cruise);
-            self.say_plain(ctx, format!("Adaptive cruise off. Press {key} to set it."));
+            self.say_plain(ctx, "Adaptive cruise off.");
             return;
         }
         let base = match self.speed_control_target_mph {
@@ -634,7 +632,7 @@ impl DrivingState {
             }
         }
         self.trip.truck.throttle = applied;
-        self.say_keeper_out_of_truck(ctx, dt, error, applied, target_mph);
+        self.say_keeper_out_of_truck(ctx, dt, error, applied);
         self.keeper_snub_brakes(ctx, dt, -error, target_mph);
     }
 
@@ -646,7 +644,7 @@ impl DrivingState {
     /// a blind driver has the engine note and the downshifts, which say the
     /// truck is working, not that it is losing -- and losing is the part that
     /// decides whether to take it over by hand. Adaptive cruise has said this
-    /// for a while ("Cruise can't hold speed on this grade"); this is
+    /// for a while ("Cruise down to 38 on this grade"); this is
     /// the same sentence for the other controller.
     ///
     /// Only once the pedal is genuinely on the floor and the truck is still
@@ -658,7 +656,6 @@ impl DrivingState {
         dt: f64,
         error: f64,
         applied: f64,
-        target_mph: f64,
     ) {
         self.keeper_droop_cue_s = 0.0f64.max(self.keeper_droop_cue_s - dt);
         let beaten = applied >= CRUISE_FLOORED_THROTTLE
@@ -683,14 +680,10 @@ impl DrivingState {
         }
         self.keeper_droop_said = true;
         self.keeper_droop_cue_s = CLIMB_CUE_COOLDOWN_S;
-        let wanted = ctx.settings.speed_text(target_mph);
         let held = ctx.settings.speed_text(self.trip.truck.speed_mph());
         let mut opts = SayEvent::queued();
         opts.category = Some(SpeechCategory::Status);
-        ctx.say_event_with(
-            format!("Speed keeper can't make {wanted} on this grade. Down to {held}."),
-            opts,
-        );
+        ctx.say_event_with(format!("Speed keeper down to {held} on this grade."), opts);
     }
 
     /// Hand the keeper back up to street speed when the street changes.

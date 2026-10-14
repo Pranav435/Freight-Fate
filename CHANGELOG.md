@@ -58,13 +58,15 @@
 
 ### Changed
 
-- **Space now says speed, speed control and air as three short sentences.** Normal air and brake states and an unset open-road target are left out.
+- **Space now says only what is on the dash and needs you.** RPM comes with a manual transmission, and air or brakes only when they need attention.
 
 - **Missed exit and gate lines are shorter, and so are the warnings when cruise or the speed keeper loses speed on a grade.**
 
-- **Exit calls no longer explain how adaptive cruise will take the ramp.** "Lane keeping takes it" replaces the longer lane keeping line.
+- **Exit and rest stop calls name the exit and stop there.** What lane keeping, cruise and stopping assistance will do is left to the manual.
 
 - **Spoken weather no longer says how old the live observation is.** The Weather app still lists it.
+
+- **Cruise no longer narrates how it drives.** It eases off and builds for hills in silence, and its traffic and weather lines are a few words.
 
 - **Downhill grade calls stop naming the engine brake key once you have used it a few times.** Uphill grade calls no longer add "Expect to lose speed."
 

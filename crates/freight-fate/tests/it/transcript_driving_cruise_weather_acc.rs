@@ -323,10 +323,7 @@ fn test_adaptive_cruise_follows_npc_traffic() {
     assert!(harness.read_drive(|d| d.acc_following));
     assert!(harness.read_drive(|d| d.truck().throttle) < 0.9);
     assert!(harness.read_drive(|d| d.truck().brake) > 0.0);
-    assert!(said_any(
-        &harness,
-        "Traffic ahead, adaptive cruise reducing speed."
-    ));
+    assert!(said_any(&harness, "Traffic ahead, slowing."));
 }
 
 #[test]
@@ -478,10 +475,7 @@ fn test_adaptive_cruise_follows_the_lane_being_entered_mid_change() {
 
     assert_eq!(harness.read_drive(|d| d.lane_change_target), Some(1)); // still underway
     assert!(harness.read_drive(|d| d.acc_following));
-    assert!(said_any(
-        &harness,
-        "Traffic ahead, adaptive cruise reducing speed."
-    ));
+    assert!(said_any(&harness, "Traffic ahead, slowing."));
 }
 
 #[test]
@@ -519,10 +513,7 @@ fn test_adaptive_cruise_reverts_to_origin_lane_when_a_change_is_aborted() {
 
     assert_eq!(harness.read_drive(|d| d.lane.lane), 0); // still in the origin lane
     assert!(harness.read_drive(|d| d.acc_following)); // following the origin lead again
-    assert!(said_any(
-        &harness,
-        "Traffic ahead, adaptive cruise reducing speed."
-    ));
+    assert!(said_any(&harness, "Traffic ahead, slowing."));
 }
 
 #[test]
@@ -550,10 +541,7 @@ fn test_adaptive_cruise_ignores_distant_slower_traffic() {
 
     assert!(!harness.read_drive(|d| d.acc_following));
     assert!(approx(harness.read_drive(|d| d.truck().brake), 0.0));
-    assert!(!said_any(
-        &harness,
-        "Traffic ahead, adaptive cruise reducing speed."
-    ));
+    assert!(!said_any(&harness, "Traffic ahead, slowing."));
 }
 
 #[test]
@@ -592,7 +580,7 @@ fn test_adaptive_cruise_follow_cue_does_not_repeat_within_the_cooldown() {
     let cue_count = |harness: &PlaytestHarness| {
         spoken(harness)
             .iter()
-            .filter(|e| *e == "Traffic ahead, adaptive cruise reducing speed.")
+            .filter(|e| *e == "Traffic ahead, slowing.")
             .count()
     };
 
@@ -809,10 +797,7 @@ fn test_adaptive_cruise_increases_gap_for_bad_weather() {
 
     assert!(wet_gap > clear_gap, "{wet_gap} {clear_gap}");
     assert!(harness.read_drive(|d| d.acc_following));
-    assert!(said_any(
-        &harness,
-        "Wet roads, adaptive cruise increasing following gap."
-    ));
+    assert!(said_any(&harness, "Wet roads, longer gap."));
 }
 
 #[test]

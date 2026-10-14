@@ -226,7 +226,7 @@ fn test_x_signals_for_upcoming_route_exit_without_taking_it() {
         assert_eq!(armed.stop_type, "delivery_destination");
         assert!(d.exit_signal_on);
     });
-    assert!(said_any(&harness, "Signal set"), "{:?}", spoken(&harness));
+    assert!(said_any(&harness, "Signal "), "{:?}", spoken(&harness));
 
     press_x(&mut harness);
 
@@ -517,9 +517,10 @@ fn test_destination_exit_auto_arms_and_takes_ramp_with_valid_setup() {
 }
 
 #[test]
-fn test_full_lane_keeping_says_it_is_taking_the_destination_exit() {
-    // The reported bug: exits took themselves with nothing said. Full lane
-    // keeping is allowed to take them; it is not allowed to be silent.
+fn test_full_lane_keeping_still_calls_the_destination_exit() {
+    // The reported bug: exits took themselves with nothing said. The callout
+    // names the exit; what lane keeping does with it is the manual's
+    // (owner, 2026-10-14).
     let mut harness = a_drive("Exits");
     harness.app.ctx.settings.lane_keeping = "full".to_string();
     let stop = destination_exit(&mut harness);
@@ -533,7 +534,7 @@ fn test_full_lane_keeping_says_it_is_taking_the_destination_exit() {
     frame(&mut harness, DT);
 
     assert!(
-        said_any(&harness, "Lane keeping takes it."),
+        said_any(&harness, "destination exit."),
         "{:?}",
         spoken(&harness)
     );
@@ -850,8 +851,9 @@ fn test_lane_drift_off_sets_exit_lane_when_signaling() {
     press_x(&mut harness);
 
     assert!(harness.read_drive(|d| d.exit_lane_ready()));
+    assert!(said_any(&harness, "Signal "), "{:?}", spoken(&harness));
     assert!(
-        said_any(&harness, "Lane keeping takes the exit lane"),
+        !said_any(&harness, "Lane keeping"),
         "{:?}",
         spoken(&harness)
     );

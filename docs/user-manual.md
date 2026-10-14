@@ -142,7 +142,7 @@ Start the engine with E, then give the air pressure time to reach 100 psi. The b
 
 On a controller, hold the right bumper and press A to start the engine, then hold the right bumper and press Y to release the parking brake. The right trigger accelerates and the left trigger brakes, as far as you press them. Y starts automatic speed control and B reads your speed.
 
-You don't have to hold the accelerator for the whole trip. When automatic speed control is available, K starts it. That leaves you more time to listen to the road and learn the readouts. Press Space to check your speed, speed-control mode, and air pressure. On the open road, K uses adaptive cruise. In supported low-speed areas, it uses speed keeper to help you manage an approach to a pickup or delivery facility.
+You don't have to hold the accelerator for the whole trip. When automatic speed control is available, K starts it. That leaves you more time to listen to the road and learn the readouts. Press Space to check your speed and speed-control mode. On the open road, K uses adaptive cruise. In supported low-speed areas, it uses speed keeper to help you manage an approach to a pickup or delivery facility.
 
 ### Collecting the freight
 
@@ -390,7 +390,7 @@ A control marked Driving commands has no controller button. Hold the right bumpe
 | Alt+T | Driving commands | Switch between automatic and manual transmission on the road. This changes your whole control scheme. |
 | 1 / 2 / 3 | Right bumper plus right stick click steps to the next stage | Select the engine brake stage, two, four, or six cylinders of retard, while it is on. With the engine brake off these keys do nothing. |
 | H | Left stick click, hold | Hold to sound the horn; release to stop it. |
-| Space | B | Report speed, gear, RPM, the active speed-control mode and open-road target when speed control is on, air pressure, and brake state. With the signal set for an exit, it ends with that exit and how far away it is. |
+| Space | B | Report speed, gear, and the active speed-control mode and open-road target when speed control is on. RPM is added with a manual transmission, and air pressure or the parking brake only when they need attention. With the signal set for an exit, it ends with that exit and how far away it is. Tab has the full air and brake readings. |
 | S | Right bumper plus X | Report the posted speed limit here, the zone if any, and how far over you are. In bend country it adds the bend's advisory speed, since the posted limit and the yellow diamond are different numbers on a real road. On a delivery ramp that ends at a traffic light, S answers with the light and the distance to the stop bar instead, since the light is the law there. |
 | D | Driving commands | Report one safe-speed number for right now. Weather grip, a steep downgrade, and the next bend are already baked into the number. On an exit ramp it is the exit speed. |
 | G | Driving commands | Report the grade under the wheels: the slope, how far it runs, and whether the truck is holding, pulling, or losing it, including whether the engine brake has the descent or is about to lose it. G also names the next grade ahead worth planning for, how far off and how long it runs, including one that steepens without flattening out first, and the gentler pull automatic speed control is building speed for when nothing steep is coming. |
@@ -700,7 +700,7 @@ Use a readout hotkey for a quick check of fuel or time left. Press Tab, or the r
 
 | Key | Controller | Information |
 | --- | --- | --- |
-| Space | B | Speed, gear, RPM, air pressure, and brake state, and with the signal set, how far to the exit. |
+| Space | B | Speed, gear, and speed control, plus RPM with a manual transmission and air or brakes when they need attention. With the signal set, how far to the exit. |
 | F | Right bumper plus B | Fuel level and estimated range. |
 | C | D-pad right | Clock, deadline, estimated arrival, and the nearest hours-of-service limit. |
 | Alt+A | Driving commands | Time at the wheel so far this shift, and time on duty. |

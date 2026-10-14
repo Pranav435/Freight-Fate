@@ -24461,13 +24461,18 @@ msgstr " Objetivo en carretera abierta {speed_text}."
 msgid " Automatic speed control paused.{keeper_target}"
 msgstr " Control automático de velocidad en pausa.{keeper_target}"
 
+#. placeholders: {rpm}
+msgid ", {rpm} RPM"
+msgstr ", {rpm} RPM"
+
+#. placeholders: {rpm}
+#. one clause of a longer line
+msgid "{rpm} RPM"
+msgstr "{rpm} RPM"
+
 #. placeholders: {signal_verb}, {armed_exit_name}, {distance_text}
 msgid " Signal {signal_verb} for {armed_exit_name}, {distance_text}."
 msgstr " Señal {signal_verb} para {armed_exit_name}, {distance_text}."
-
-#. placeholders: {speed}, {gear}, {rpm}, {control}, {air}, {armed}
-msgid "{speed}, {gear}, {rpm} RPM.{control} {air}.{armed}"
-msgstr "{speed}, {gear}, {rpm} RPM.{control} {air}.{armed}"
 
 msgid "set"
 msgstr "puesta"
@@ -24907,17 +24912,13 @@ msgstr "Fatiga: {fatigue} por ciento"
 msgid "HOS route: {context}"
 msgstr "Horas de servicio en la ruta: {context}"
 
-msgid ", low air"
-msgstr ", aire bajo"
+#. placeholders: {air_pressure_psi}
+msgid "low air, {air_pressure_psi} psi"
+msgstr "aire bajo, {air_pressure_psi} psi"
 
-msgid ", air building"
-msgstr ", subiendo el aire"
-
-msgid ", spring brakes active"
-msgstr ", frenos de muelle activados"
-
-msgid ", parking brake set"
-msgstr ", freno de estacionamiento puesto"
+#. placeholders: {air_pressure_psi}
+msgid "air building, {air_pressure_psi} psi"
+msgstr "subiendo el aire, {air_pressure_psi} psi"
 
 msgid "spring brakes active"
 msgstr "frenos de muelle activados"
@@ -25843,22 +25844,6 @@ msgstr "Manteniendo {speed_text}."
 #. placeholders: {speed_text}
 msgid "Limp mode. Holding {speed_text}."
 msgstr "Modo de emergencia. Manteniendo {speed_text}."
-
-#. placeholders: {speed_text}
-#. one sentence of a longer line
-msgid "Cruise can't hold {speed_text} in limp mode."
-msgstr "El crucero no puede mantener {speed_text} en modo de emergencia."
-
-#. placeholders: {speed_text}, {speed_text2}
-msgid "Cruise can't hold {speed_text} in limp mode. Holding {speed_text2}."
-msgstr ""
-"El crucero no puede mantener {speed_text} en modo de emergencia. "
-"Manteniendo {speed_text2}."
-
-#. placeholders: {speed_text2}
-#. one sentence of a longer line
-msgid "Holding {speed_text2}."
-msgstr "Manteniendo {speed_text2}."
 
 #. placeholders: {damage_pct}
 msgid " Damage is down to {damage_pct} percent."
@@ -26931,12 +26916,6 @@ msgstr "Pulsa {engine} para volver a arrancar el motor."
 msgid "Roadside rescue brought thirty gallons {billing}."
 msgstr "El rescate en carretera trajo treinta galones {billing}."
 
-msgid "Destination exit ahead again. Lane keeping takes it."
-msgstr ""
-"La salida de destino vuelve a estar delante. La toma el mantenimiento de "
-"carril."
-
-#. one sentence of a longer line
 msgid "Destination exit ahead again."
 msgstr "La salida de destino vuelve a estar delante."
 
@@ -26951,21 +26930,13 @@ msgstr ""
 msgid "Press {control_hint} to signal."
 msgstr "Pulsa {control_hint} para señalizar."
 
-msgid ""
-"You turned around, and the destination exit is ahead again. Lane keeping "
-"takes it."
-msgstr ""
-"Diste la vuelta y la salida de destino vuelve a estar delante. La toma el "
-"mantenimiento de carril."
+msgid "You turned around, and the destination exit is ahead again."
+msgstr "Diste la vuelta y la salida de destino vuelve a estar delante."
 
 #. placeholders: {control_hint}
 #. one sentence of a longer line
 msgid "Press {control_hint} to signal for it."
 msgstr "Pulsa {control_hint} para señalizarla."
-
-#. one sentence of a longer line
-msgid "You turned around, and the destination exit is ahead again."
-msgstr "Diste la vuelta y la salida de destino vuelve a estar delante."
 
 #. placeholders: {control_hint}
 msgid ""
@@ -26988,21 +26959,17 @@ msgid "Missed the destination exit for {facility}. {reroute_text}"
 msgstr "Te pasaste la salida de destino de {facility}. {reroute_text}"
 
 #. one sentence of a longer line
-msgid "Facility stopping assistance is holding at the entrance."
-msgstr "La asistencia de parada en la instalación espera en la entrada."
+msgid "Holding at the entrance."
+msgstr "Detenido en la entrada."
 
 #. placeholders: {control_hint}
-msgid ""
-"Facility stopping assistance is holding at the entrance. Press "
-"{control_hint} to continue into the facility."
-msgstr ""
-"La asistencia de parada en la instalación espera en la entrada. Pulsa "
-"{control_hint} para entrar en la instalación."
+msgid "Holding at the entrance. Press {control_hint} to continue."
+msgstr "Detenido en la entrada. Pulsa {control_hint} para continuar."
 
 #. placeholders: {control_hint}
 #. one sentence of a longer line
-msgid "Press {control_hint} to continue into the facility."
-msgstr "Pulsa {control_hint} para entrar en la instalación."
+msgid "Press {control_hint} to continue."
+msgstr "Pulsa {control_hint} para continuar."
 
 #. placeholders: {facility}
 msgid "At {facility}. Stop to dock."
@@ -27052,9 +27019,6 @@ msgstr "Para en la entrada."
 
 msgid " Speed keeper off."
 msgstr " Limitador de velocidad desactivado."
-
-msgid " Speed keeper off. The pedals are yours."
-msgstr " Limitador de velocidad desactivado. Los pedales son tuyos."
 
 #. placeholders: {pickup_facility_text}
 msgid "At {pickup_facility_text}. Stop to check in."
@@ -27360,22 +27324,8 @@ msgid " in the {value}"
 msgstr " con {value}"
 
 #. placeholders: {else}, {speed_text}, {exit_note}
-#. one sentence of a longer line
 msgid "Adaptive cruise {else} at {speed_text}{exit_note}."
 msgstr "Control de crucero adaptativo {else} a {speed_text}{exit_note}."
-
-#. placeholders: {else}, {speed_text}, {exit_note}, {gap}
-msgid ""
-"Adaptive cruise {else} at {speed_text}{exit_note}. Following gap {gap} "
-"seconds."
-msgstr ""
-"Control de crucero adaptativo {else} a {speed_text}{exit_note}. Distancia "
-"de seguimiento de {gap} segundos."
-
-#. placeholders: {gap}
-#. one sentence of a longer line
-msgid "Following gap {gap} seconds."
-msgstr "Distancia de seguimiento de {gap} segundos."
 
 msgid "resuming"
 msgstr "reanudándose"
@@ -27388,19 +27338,8 @@ msgstr "Crucero reanudándose, {speed_value}."
 msgid "High idle {rpm} RPM."
 msgstr "Ralentí alto {rpm} RPM."
 
-#. one sentence of a longer line
 msgid "Adaptive cruise off."
 msgstr "Control de crucero adaptativo desactivado."
-
-#. placeholders: {key}
-msgid "Adaptive cruise off. Press {key} to set it."
-msgstr ""
-"Control de crucero adaptativo desactivado. Pulsa {key} para fijarlo."
-
-#. placeholders: {key}
-#. one sentence of a longer line
-msgid "Press {key} to set it."
-msgstr "Pulsa {key} para fijarlo."
 
 #. placeholders: {speed_text}, {speed_text2}
 msgid ""
@@ -27482,20 +27421,8 @@ msgid "for the traffic ahead"
 msgstr "por el tráfico de delante"
 
 #. placeholders: {held}
-#. one sentence of a longer line
-msgid "Down to {held}."
-msgstr "Baja a {held}."
-
-#. placeholders: {wanted}
-#. one sentence of a longer line
-msgid "Speed keeper can't make {wanted} on this grade."
-msgstr "El limitador de velocidad no llega a {wanted} en esta pendiente."
-
-#. placeholders: {wanted}, {held}
-msgid "Speed keeper can't make {wanted} on this grade. Down to {held}."
-msgstr ""
-"El limitador de velocidad no llega a {wanted} en esta pendiente. Baja a "
-"{held}."
+msgid "Speed keeper down to {held} on this grade."
+msgstr "Limitador de velocidad bajando a {held} en esta pendiente."
 
 #. placeholders: {held}
 msgid "Speed keeper building to {held} for the merge."
@@ -27529,18 +27456,8 @@ msgstr "El limitador de velocidad mantiene {held} en {zone}."
 msgid "Speed keeper holding {held}."
 msgstr "El limitador de velocidad mantiene {held}."
 
-msgid "Wet roads, adaptive cruise increasing following gap."
-msgstr ""
-"Carretera mojada, el control de crucero adaptativo aumenta la distancia de "
-"seguimiento."
-
 msgid "Wet roads, longer gap."
 msgstr "Carretera mojada, más distancia."
-
-msgid "Low visibility, adaptive cruise increasing following gap."
-msgstr ""
-"Poca visibilidad, el control de crucero adaptativo aumenta la distancia de "
-"seguimiento."
 
 msgid "Low visibility, longer gap."
 msgstr "Poca visibilidad, más distancia."
@@ -27556,16 +27473,6 @@ msgstr "easing-capped"
 
 msgid "building-capped"
 msgstr "building-capped"
-
-#. placeholders: {climb_ahead}
-msgid "Building speed for a {climb_ahead} percent uphill grade."
-msgstr ""
-"Ganando velocidad para una pendiente de subida del {climb_ahead} por ciento."
-
-#. placeholders: {descent_pct}
-msgid "Easing off for a {descent_pct} percent downhill grade."
-msgstr ""
-"Aflojando para una pendiente de bajada del {descent_pct} por ciento."
 
 msgid "Adaptive cruise canceled; automatic speed control off."
 msgstr ""
@@ -27606,9 +27513,8 @@ msgid "Stopped traffic ahead; adaptive cruise canceled."
 msgstr ""
 "Tráfico parado más adelante; control de crucero adaptativo cancelado."
 
-msgid "Traffic ahead, adaptive cruise reducing speed."
-msgstr ""
-"Tráfico más adelante, el control de crucero adaptativo reduce la velocidad."
+msgid "Traffic ahead, slowing."
+msgstr "Tráfico delante, reduciendo."
 
 msgid "for the exit"
 msgstr "para la salida"
@@ -27619,14 +27525,9 @@ msgstr "para la curva"
 msgid "for the grade"
 msgstr "para la pendiente"
 
-#. one sentence of a longer line
-msgid "Cruise can't hold speed on this grade."
-msgstr "El crucero no puede mantener la velocidad en esta pendiente."
-
 #. placeholders: {held}
-msgid "Cruise can't hold speed on this grade. Down to {held}."
-msgstr ""
-"El crucero no puede mantener la velocidad en esta pendiente. Baja a {held}."
+msgid "Cruise down to {held} on this grade."
+msgstr "Crucero bajando a {held} en esta pendiente."
 
 msgid "Exit speed assistance"
 msgstr "Asistencia de velocidad de salida"
@@ -27689,30 +27590,11 @@ msgstr "A {distance}, {labeled}, salida de destino."
 msgid " Move to the right lane."
 msgstr " Ponte en el carril derecho."
 
-#. placeholders: {core}
-msgid "{core} Lane keeping takes it."
-msgstr "{core} La toma el mantenimiento de carril."
-
 msgid "Already on the exit ramp."
 msgstr "Ya estás en la rampa de salida."
 
-#. one sentence of a longer line
 msgid "No route exit to signal for yet."
 msgstr "Todavía no hay ninguna salida de la ruta que señalizar."
-
-#. placeholders: {control_hint}
-msgid ""
-"No route exit to signal for yet. Press {control_hint} to plan a suitable "
-"rest stop."
-msgstr ""
-"Todavía no hay ninguna salida de la ruta que señalizar. Pulsa "
-"{control_hint} para planificar una parada de descanso adecuada."
-
-#. placeholders: {control_hint}
-#. one sentence of a longer line
-msgid "Press {control_hint} to plan a suitable rest stop."
-msgstr ""
-"Pulsa {control_hint} para planificar una parada de descanso adecuada."
 
 #. placeholders: {control_hint}
 #. one sentence of a longer line
@@ -27765,21 +27647,8 @@ msgstr " La rampa termina en un semáforo."
 msgid " Ramp ends at a stop sign."
 msgstr " La rampa termina en una señal de stop."
 
-msgid "Lane keeping takes the exit lane."
-msgstr "El mantenimiento de carril toma el carril de salida."
-
-msgid "Lane keeping takes the exit lane for you."
-msgstr "El mantenimiento de carril toma el carril de salida por ti."
-
-msgid " Facility stopping assistance armed."
-msgstr " Asistencia de parada en la instalación activada."
-
 msgid " Stop at the entrance."
 msgstr " Para en la entrada."
-
-msgid " Your planned rest stop waits until you are past the scale."
-msgstr ""
-" Tu parada de descanso planificada espera hasta que pases la báscula."
 
 msgid "Destination exit"
 msgstr "Salida de destino"
@@ -28301,29 +28170,13 @@ msgid "Emergency shoulder sleep is not available here. Use a route stop."
 msgstr ""
 "Aquí no puedes dormir en el arcén de emergencia. Usa una parada de la ruta."
 
-msgid ""
-"Facility stopping assistance armed. It stops at the entrance once the ramp "
-"control is clear."
-msgstr ""
-"Asistencia de parada en la instalación preparada. Para en la entrada en "
-"cuanto el final de la rampa esté despejado."
-
-msgid "Facility stopping assistance off. Stop at the entrance."
-msgstr ""
-"Asistencia de parada en la instalación desactivada. Para en la entrada."
-
-#. placeholders: {name}
-#. one sentence of a longer line
-msgid "On the selected ramp for {name}."
-msgstr "En la rampa elegida de {name}."
+#. placeholders: {name}, {assist}
+msgid "On the selected ramp for {name}.{assist}"
+msgstr "En la rampa seleccionada para {name}.{assist}"
 
 #. placeholders: {name}, {assist}
-msgid "On the selected ramp for {name}. {assist}"
-msgstr "En la rampa elegida de {name}. {assist}"
-
-#. placeholders: {name}, {assist}
-msgid "On the ramp for {name}. {assist}"
-msgstr "En la rampa de {name}. {assist}"
+msgid "On the ramp for {name}.{assist}"
+msgstr "En la rampa para {name}.{assist}"
 
 msgid "Planned stop canceled. Exit signal canceled."
 msgstr "Parada planificada cancelada. Intermitente de salida cancelado."
@@ -28382,21 +28235,9 @@ msgstr ""
 msgid "Exit signal active for {name}."
 msgstr "Intermitente de salida activo para {name}."
 
-#. placeholders: {exit_hint}
-#. one sentence of a longer line
-msgid "Press {exit_hint} to cancel it."
-msgstr "Pulsa {exit_hint} para cancelarlo."
-
 #. placeholders: {name}
-#. one sentence of a longer line
 msgid "The exit for {name} is already selected."
 msgstr "La salida de {name} ya está elegida."
-
-#. placeholders: {name}, {exit_hint}
-msgid ""
-"The exit for {name} is already selected. Press {exit_hint} to cancel it."
-msgstr ""
-"La salida de {name} ya está elegida. Pulsa {exit_hint} para cancelarlo."
 
 msgid "No sleep-capable route stop ahead on this route."
 msgstr ""
@@ -28455,98 +28296,45 @@ msgstr ""
 msgid "{name2} is also ahead."
 msgstr "{name2} también está más adelante."
 
-msgid ""
-"Facility stopping assistance on. Once you signal and take the exit lane, it "
-"stops at the entrance."
+msgid "Still planned for a 30-minute break"
+msgstr "Sigue planificada para un descanso de 30 minutos"
+
+msgid "Still planned"
+msgstr "Sigue planificada"
+
+msgid "Break stop planned, the last one before your break limit"
 msgstr ""
-"Asistencia de parada en la instalación activada. Cuando señalices y tomes "
-"el carril de salida, para en la entrada."
+"Parada de descanso planificada, la última antes de tu límite de descanso"
 
-msgid "Still selected for a 30-minute break"
-msgstr "Sigue elegida para una pausa de 30 minutos"
-
-msgid "Still selected"
-msgstr "Sigue elegida"
-
-msgid ""
-"Planned 30-minute break stop selected as the last legally reachable "
-"fallback before your next break limit"
-msgstr ""
-"Parada para la pausa de 30 minutos planificada como último recurso "
-"alcanzable legalmente antes de tu próximo límite de pausa"
+msgid "Break stop planned"
+msgstr "Parada de descanso planificada"
 
 msgid ""
-"Planned 30-minute break stop selected with time to spare before your next "
-"break limit"
+"Sleep stop planned for your break, the last one before your break limit"
 msgstr ""
-"Parada para la pausa de 30 minutos planificada con tiempo de sobra antes de "
-"tu próximo límite de pausa"
+"Parada para dormir planificada para tu descanso, la última antes de tu "
+"límite de descanso"
 
-msgid ""
-"Planned sleep stop selected as the last legally reachable fallback before "
-"your next break limit. Sleep here to reset the break clock"
+msgid "Sleep stop planned, the last one before your sleep limit"
 msgstr ""
-"Parada para dormir planificada como último recurso alcanzable legalmente "
-"antes de tu próximo límite de pausa. Duerme aquí para reiniciar el reloj de "
-"la pausa"
+"Parada para dormir planificada, la última antes de tu límite de sueño"
 
-msgid ""
-"Planned sleep stop selected with time to spare before your next break "
-"limit. Sleep here to reset the break clock"
-msgstr ""
-"Parada para dormir planificada con tiempo de sobra antes de tu próximo "
-"límite de pausa. Duerme aquí para reiniciar el reloj de la pausa"
+msgid "Sleep stop planned for your break"
+msgstr "Parada para dormir planificada para tu descanso"
 
-msgid ""
-"Planned sleep stop selected as the last legally reachable fallback before "
-"your next sleep limit"
-msgstr ""
-"Parada para dormir planificada como último recurso alcanzable legalmente "
-"antes de tu próximo límite de sueño"
-
-msgid ""
-"Planned sleep stop selected with time to spare before your next sleep limit"
-msgstr ""
-"Parada para dormir planificada con tiempo de sobra antes de tu próximo "
-"límite de sueño"
-
-msgid ""
-"Nearest sleep stop selected, but no route stop is estimated reachable "
-"before your next hours limit. Find a safe place to stop sooner"
-msgstr ""
-"Parada para dormir más cercana elegida, pero no se calcula que llegues a "
-"ninguna parada de la ruta antes de tu próximo límite de horas. Busca antes "
-"un sitio seguro para parar"
-
-msgid "Planned sleep stop selected"
+msgid "Sleep stop planned"
 msgstr "Parada para dormir planificada"
 
-#. placeholders: {control_hint}
-msgid "Press {control_hint} to signal for this exit."
-msgstr "Pulsa {control_hint} para señalizar esta salida."
-
-#. one sentence of a longer line
-msgid "Its exit will be announced."
-msgstr "Se anunciará su salida."
-
-#. placeholders: {control_hint}
-msgid "Its exit will be announced. Press {control_hint} to signal then."
+msgid ""
+"Nearest sleep stop planned, but none is reachable before your hours limit. "
+"Stop somewhere safe sooner"
 msgstr ""
-"Se anunciará su salida. Pulsa {control_hint} entonces para señalizar."
-
-#. placeholders: {control_hint}
-#. one sentence of a longer line
-msgid "Press {control_hint} to signal then."
-msgstr "Pulsa {control_hint} entonces para señalizar."
-
-#. placeholders: {prefix}, {name}, {distance}, {exit_text}
-#. one sentence of a longer line
-msgid "{prefix}, {name}, {distance} ahead{exit_text}."
-msgstr "{prefix}, {name}, a {distance}{exit_text}."
+"Parada para dormir más cercana planificada, pero ninguna es alcanzable "
+"antes de tu límite de horas. Detente antes en un lugar seguro"
 
 #. placeholders: {prefix}, {name}, {distance}, {exit_text}, {next_step}, {assist}
-msgid "{prefix}, {name}, {distance} ahead{exit_text}. {next_step} {assist}"
-msgstr "{prefix}, {name}, a {distance}{exit_text}. {next_step} {assist}"
+msgid "{prefix}, {name}, {distance} ahead{exit_text}.{next_step}{assist}"
+msgstr "{prefix}, {name}, a {distance}{exit_text}.{next_step}{assist}"
 
 msgid "Pulling into stop"
 msgstr "Entrando en la parada"
@@ -38072,31 +37860,28 @@ msgid "Driving information keys"
 msgstr "Teclas de información de conducción"
 
 #. one sentence of a longer line
-msgid "With an exit signal set, it adds distance to that exit."
+msgid ""
+"It adds RPM with a manual transmission, air or brakes when they need "
+"attention, and the distance to an exit you signaled for."
 msgstr ""
-"Con el intermitente puesto para una salida, añade la distancia hasta esa "
-"salida."
+"Añade las RPM con transmisión manual, el aire o los frenos cuando necesitan "
+"atención y la distancia a la salida señalizada."
 
 #. placeholders: {control_speed}
 #. one sentence of a longer line
-msgid ""
-"{control_speed} speaks your speed, gear, RPM, active speed-control mode, "
-"open-road target, air pressure, and brake state."
+msgid "{control_speed} speaks your speed, gear, and speed-control mode."
 msgstr ""
-"{control_speed} dice tu velocidad, marcha, RPM, modo de control de "
-"velocidad activo, objetivo en carretera abierta, presión de aire y estado "
-"de los frenos."
+"{control_speed} dice tu velocidad, marcha y modo de control de velocidad."
 
 #. placeholders: {control_speed}
 msgid ""
-"{control_speed} speaks your speed, gear, RPM, active speed-control mode, "
-"open-road target, air pressure, and brake state. With an exit signal set, "
-"it adds distance to that exit."
+"{control_speed} speaks your speed, gear, and speed-control mode. It adds "
+"RPM with a manual transmission, air or brakes when they need attention, and "
+"the distance to an exit you signaled for."
 msgstr ""
-"{control_speed} dice tu velocidad, marcha, RPM, modo de control de "
-"velocidad activo, objetivo en carretera abierta, presión de aire y estado "
-"de los frenos. Con el intermitente puesto para una salida, añade la "
-"distancia hasta esa salida."
+"{control_speed} dice tu velocidad, marcha y modo de control de velocidad. "
+"Añade las RPM con transmisión manual, el aire o los frenos cuando necesitan "
+"atención y la distancia a la salida señalizada."
 
 #. placeholders: {control_safe_speed}, {control_grade}
 #. one sentence of a longer line
@@ -42575,6 +42360,280 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "Cruise can't hold {speed_text} in limp mode."
+#~ msgstr "El crucero no puede mantener {speed_text} en modo de emergencia."
+
+#~ msgid "Cruise can't hold {speed_text} in limp mode. Holding {speed_text2}."
+#~ msgstr ""
+#~ "El crucero no puede mantener {speed_text} en modo de emergencia. "
+#~ "Manteniendo {speed_text2}."
+
+#~ msgid "Holding {speed_text2}."
+#~ msgstr "Manteniendo {speed_text2}."
+
+#~ msgid ""
+#~ "Adaptive cruise {else} at {speed_text}{exit_note}. Following gap {gap} "
+#~ "seconds."
+#~ msgstr ""
+#~ "Control de crucero adaptativo {else} a {speed_text}{exit_note}. Distancia "
+#~ "de seguimiento de {gap} segundos."
+
+#~ msgid "Following gap {gap} seconds."
+#~ msgstr "Distancia de seguimiento de {gap} segundos."
+
+#~ msgid "Adaptive cruise off. Press {key} to set it."
+#~ msgstr ""
+#~ "Control de crucero adaptativo desactivado. Pulsa {key} para fijarlo."
+
+#~ msgid "Press {key} to set it."
+#~ msgstr "Pulsa {key} para fijarlo."
+
+#~ msgid "Down to {held}."
+#~ msgstr "Baja a {held}."
+
+#~ msgid "Speed keeper can't make {wanted} on this grade."
+#~ msgstr "El limitador de velocidad no llega a {wanted} en esta pendiente."
+
+#~ msgid "Speed keeper can't make {wanted} on this grade. Down to {held}."
+#~ msgstr ""
+#~ "El limitador de velocidad no llega a {wanted} en esta pendiente. Baja a "
+#~ "{held}."
+
+#~ msgid "Wet roads, adaptive cruise increasing following gap."
+#~ msgstr ""
+#~ "Carretera mojada, el control de crucero adaptativo aumenta la distancia de "
+#~ "seguimiento."
+
+#~ msgid "Low visibility, adaptive cruise increasing following gap."
+#~ msgstr ""
+#~ "Poca visibilidad, el control de crucero adaptativo aumenta la distancia de "
+#~ "seguimiento."
+
+#~ msgid "Building speed for a {climb_ahead} percent uphill grade."
+#~ msgstr ""
+#~ "Ganando velocidad para una pendiente de subida del {climb_ahead} por ciento."
+
+#~ msgid "Easing off for a {descent_pct} percent downhill grade."
+#~ msgstr ""
+#~ "Aflojando para una pendiente de bajada del {descent_pct} por ciento."
+
+#~ msgid "Traffic ahead, adaptive cruise reducing speed."
+#~ msgstr ""
+#~ "Tráfico más adelante, el control de crucero adaptativo reduce la velocidad."
+
+#~ msgid "Cruise can't hold speed on this grade."
+#~ msgstr "El crucero no puede mantener la velocidad en esta pendiente."
+
+#~ msgid "Cruise can't hold speed on this grade. Down to {held}."
+#~ msgstr ""
+#~ "El crucero no puede mantener la velocidad en esta pendiente. Baja a {held}."
+
+#~ msgid "{speed}, {gear}, {rpm} RPM.{control} {air}.{armed}"
+#~ msgstr "{speed}, {gear}, {rpm} RPM.{control} {air}.{armed}"
+
+#~ msgid ", low air"
+#~ msgstr ", aire bajo"
+
+#~ msgid ", air building"
+#~ msgstr ", subiendo el aire"
+
+#~ msgid ", spring brakes active"
+#~ msgstr ", frenos de muelle activados"
+
+#~ msgid ", parking brake set"
+#~ msgstr ", freno de estacionamiento puesto"
+
+#~ msgid "Destination exit ahead again. Lane keeping takes it."
+#~ msgstr ""
+#~ "La salida de destino vuelve a estar delante. La toma el mantenimiento de "
+#~ "carril."
+
+#~ msgid ""
+#~ "You turned around, and the destination exit is ahead again. Lane keeping "
+#~ "takes it."
+#~ msgstr ""
+#~ "Diste la vuelta y la salida de destino vuelve a estar delante. La toma el "
+#~ "mantenimiento de carril."
+
+#~ msgid "Facility stopping assistance is holding at the entrance."
+#~ msgstr "La asistencia de parada en la instalación espera en la entrada."
+
+#~ msgid ""
+#~ "Facility stopping assistance is holding at the entrance. Press "
+#~ "{control_hint} to continue into the facility."
+#~ msgstr ""
+#~ "La asistencia de parada en la instalación espera en la entrada. Pulsa "
+#~ "{control_hint} para entrar en la instalación."
+
+#~ msgid "Press {control_hint} to continue into the facility."
+#~ msgstr "Pulsa {control_hint} para entrar en la instalación."
+
+#~ msgid " Speed keeper off. The pedals are yours."
+#~ msgstr " Limitador de velocidad desactivado. Los pedales son tuyos."
+
+#~ msgid "{core} Lane keeping takes it."
+#~ msgstr "{core} La toma el mantenimiento de carril."
+
+#~ msgid ""
+#~ "No route exit to signal for yet. Press {control_hint} to plan a suitable "
+#~ "rest stop."
+#~ msgstr ""
+#~ "Todavía no hay ninguna salida de la ruta que señalizar. Pulsa "
+#~ "{control_hint} para planificar una parada de descanso adecuada."
+
+#~ msgid "Press {control_hint} to plan a suitable rest stop."
+#~ msgstr ""
+#~ "Pulsa {control_hint} para planificar una parada de descanso adecuada."
+
+#~ msgid "Lane keeping takes the exit lane."
+#~ msgstr "El mantenimiento de carril toma el carril de salida."
+
+#~ msgid "Lane keeping takes the exit lane for you."
+#~ msgstr "El mantenimiento de carril toma el carril de salida por ti."
+
+#~ msgid " Facility stopping assistance armed."
+#~ msgstr " Asistencia de parada en la instalación activada."
+
+#~ msgid " Your planned rest stop waits until you are past the scale."
+#~ msgstr ""
+#~ " Tu parada de descanso planificada espera hasta que pases la báscula."
+
+#~ msgid ""
+#~ "Facility stopping assistance armed. It stops at the entrance once the ramp "
+#~ "control is clear."
+#~ msgstr ""
+#~ "Asistencia de parada en la instalación preparada. Para en la entrada en "
+#~ "cuanto el final de la rampa esté despejado."
+
+#~ msgid "Facility stopping assistance off. Stop at the entrance."
+#~ msgstr ""
+#~ "Asistencia de parada en la instalación desactivada. Para en la entrada."
+
+#~ msgid "On the selected ramp for {name}."
+#~ msgstr "En la rampa elegida de {name}."
+
+#~ msgid "On the selected ramp for {name}. {assist}"
+#~ msgstr "En la rampa elegida de {name}. {assist}"
+
+#~ msgid "On the ramp for {name}. {assist}"
+#~ msgstr "En la rampa de {name}. {assist}"
+
+#~ msgid "Press {exit_hint} to cancel it."
+#~ msgstr "Pulsa {exit_hint} para cancelarlo."
+
+#~ msgid ""
+#~ "The exit for {name} is already selected. Press {exit_hint} to cancel it."
+#~ msgstr ""
+#~ "La salida de {name} ya está elegida. Pulsa {exit_hint} para cancelarlo."
+
+#~ msgid ""
+#~ "Facility stopping assistance on. Once you signal and take the exit lane, it "
+#~ "stops at the entrance."
+#~ msgstr ""
+#~ "Asistencia de parada en la instalación activada. Cuando señalices y tomes "
+#~ "el carril de salida, para en la entrada."
+
+#~ msgid "Still selected for a 30-minute break"
+#~ msgstr "Sigue elegida para una pausa de 30 minutos"
+
+#~ msgid "Still selected"
+#~ msgstr "Sigue elegida"
+
+#~ msgid ""
+#~ "Planned 30-minute break stop selected as the last legally reachable "
+#~ "fallback before your next break limit"
+#~ msgstr ""
+#~ "Parada para la pausa de 30 minutos planificada como último recurso "
+#~ "alcanzable legalmente antes de tu próximo límite de pausa"
+
+#~ msgid ""
+#~ "Planned 30-minute break stop selected with time to spare before your next "
+#~ "break limit"
+#~ msgstr ""
+#~ "Parada para la pausa de 30 minutos planificada con tiempo de sobra antes de "
+#~ "tu próximo límite de pausa"
+
+#~ msgid ""
+#~ "Planned sleep stop selected as the last legally reachable fallback before "
+#~ "your next break limit. Sleep here to reset the break clock"
+#~ msgstr ""
+#~ "Parada para dormir planificada como último recurso alcanzable legalmente "
+#~ "antes de tu próximo límite de pausa. Duerme aquí para reiniciar el reloj de "
+#~ "la pausa"
+
+#~ msgid ""
+#~ "Planned sleep stop selected with time to spare before your next break "
+#~ "limit. Sleep here to reset the break clock"
+#~ msgstr ""
+#~ "Parada para dormir planificada con tiempo de sobra antes de tu próximo "
+#~ "límite de pausa. Duerme aquí para reiniciar el reloj de la pausa"
+
+#~ msgid ""
+#~ "Planned sleep stop selected as the last legally reachable fallback before "
+#~ "your next sleep limit"
+#~ msgstr ""
+#~ "Parada para dormir planificada como último recurso alcanzable legalmente "
+#~ "antes de tu próximo límite de sueño"
+
+#~ msgid ""
+#~ "Planned sleep stop selected with time to spare before your next sleep limit"
+#~ msgstr ""
+#~ "Parada para dormir planificada con tiempo de sobra antes de tu próximo "
+#~ "límite de sueño"
+
+#~ msgid ""
+#~ "Nearest sleep stop selected, but no route stop is estimated reachable "
+#~ "before your next hours limit. Find a safe place to stop sooner"
+#~ msgstr ""
+#~ "Parada para dormir más cercana elegida, pero no se calcula que llegues a "
+#~ "ninguna parada de la ruta antes de tu próximo límite de horas. Busca antes "
+#~ "un sitio seguro para parar"
+
+#~ msgid "Planned sleep stop selected"
+#~ msgstr "Parada para dormir planificada"
+
+#~ msgid "Press {control_hint} to signal for this exit."
+#~ msgstr "Pulsa {control_hint} para señalizar esta salida."
+
+#~ msgid "Its exit will be announced."
+#~ msgstr "Se anunciará su salida."
+
+#~ msgid "Its exit will be announced. Press {control_hint} to signal then."
+#~ msgstr ""
+#~ "Se anunciará su salida. Pulsa {control_hint} entonces para señalizar."
+
+#~ msgid "Press {control_hint} to signal then."
+#~ msgstr "Pulsa {control_hint} entonces para señalizar."
+
+#~ msgid "{prefix}, {name}, {distance} ahead{exit_text}."
+#~ msgstr "{prefix}, {name}, a {distance}{exit_text}."
+
+#~ msgid "{prefix}, {name}, {distance} ahead{exit_text}. {next_step} {assist}"
+#~ msgstr "{prefix}, {name}, a {distance}{exit_text}. {next_step} {assist}"
+
+#~ msgid "With an exit signal set, it adds distance to that exit."
+#~ msgstr ""
+#~ "Con el intermitente puesto para una salida, añade la distancia hasta esa "
+#~ "salida."
+
+#~ msgid ""
+#~ "{control_speed} speaks your speed, gear, RPM, active speed-control mode, "
+#~ "open-road target, air pressure, and brake state."
+#~ msgstr ""
+#~ "{control_speed} dice tu velocidad, marcha, RPM, modo de control de "
+#~ "velocidad activo, objetivo en carretera abierta, presión de aire y estado "
+#~ "de los frenos."
+
+#~ msgid ""
+#~ "{control_speed} speaks your speed, gear, RPM, active speed-control mode, "
+#~ "open-road target, air pressure, and brake state. With an exit signal set, "
+#~ "it adds distance to that exit."
+#~ msgstr ""
+#~ "{control_speed} dice tu velocidad, marcha, RPM, modo de control de "
+#~ "velocidad activo, objetivo en carretera abierta, presión de aire y estado "
+#~ "de los frenos. Con el intermitente puesto para una salida, añade la "
+#~ "distancia hasta esa salida."
 
 #~ msgid "Live weather ready. {live_observation_notice}."
 #~ msgstr "Tiempo en directo listo. {live_observation_notice}."

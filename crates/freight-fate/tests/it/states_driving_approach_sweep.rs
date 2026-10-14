@@ -645,11 +645,7 @@ pub fn what_went_wrong(destination: &Destination, arrival: &Arrival) -> Option<S
     // 5. And it ended on an instruction the driver can act on: either the dock
     //    menu opened by itself, or the assist is holding and said which key
     //    opens it.
-    if !arrival.docked
-        && !arrival.said(
-            "Facility stopping assistance is holding at the entrance. Press Enter to continue into the facility.",
-        )
-    {
+    if !arrival.docked && !arrival.said("Holding at the entrance. Press Enter to continue.") {
         return fault("stopped without telling the driver how to pull in");
     }
     if destination.chain {
@@ -1140,9 +1136,7 @@ fn test_the_assist_drives_from_the_clear_sign_to_the_entrance_hold_hands_off() {
     );
     assert!(release.held_at_entrance, "{}", release.report(destination));
     assert!(
-        release.said(
-            "Facility stopping assistance is holding at the entrance. Press Enter to continue into the facility."
-        ),
+        release.said("Holding at the entrance. Press Enter to continue."),
         "{}",
         release.report(destination)
     );
@@ -1307,7 +1301,7 @@ fn test_shelby_cross_dock_approach_assist_reaches_the_arrival_gate() {
             arrival.report(&destination)
         );
         assert!(
-            !arrival.said("Facility stopping assistance is holding at the entrance."),
+            !arrival.said("Holding at the entrance."),
             "level {level}: {}",
             arrival.report(&destination)
         );

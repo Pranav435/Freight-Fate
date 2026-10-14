@@ -234,11 +234,11 @@ fn test_air_brake_help_and_status_are_spoken() {
         harness.app.main_calls()
     );
 
-    // And the space-bar readout carries the air pressure.
+    // And the space-bar readout carries the air pressure while it is low.
     harness.clear_speech();
     press(&mut harness, Key::Space);
     let said = last_main(&harness);
-    assert!(said.contains("Air 55 psi"), "{said}");
+    assert!(said.contains("Low air, 55 psi"), "{said}");
     // `driving.lines()`: the on-screen readout, not the Tab status list.
     let lines = harness.with_drive(|d, ctx| d.lines(ctx));
     assert!(

@@ -216,12 +216,6 @@ impl DrivingState {
         self.destination_exit_announced_key = String::new();
         self.destination_exit_response_s = 0.0;
         self.destination_exit_cache = None;
-        // The loop-back is a whole fresh approach, so the once-per-drive
-        // "lane keeping will take this exit" warning is owed again. Spending
-        // it on the first approach and then never repeating it is half of how
-        // a truck comes to leave the highway with nothing said (Sarah A,
-        // St. George to Cedar City, 2026-08-26).
-        self.lane_keeping_takes_exit_said = false;
         let automated = ctx.settings.lane_is_automated();
         let reroute_text = if self.terse_speech(ctx) {
             // Terse holds on to consequences, and who is driving the second
@@ -229,7 +223,7 @@ impl DrivingState {
             // lane work is theirs they still need to hear that arming it is
             // on them again -- and when it is not, that it is not.
             if automated {
-                "Destination exit ahead again. Lane keeping takes it.".to_string()
+                "Destination exit ahead again.".to_string()
             } else {
                 format!(
                     "Destination exit ahead again. Press {} to signal.",
@@ -243,8 +237,7 @@ impl DrivingState {
             // instruction to take it themselves -- which is what "I was about
             // to hit X when the truck took the exit" is describing. Never
             // name a control the driver's own settings have taken off them.
-            "You turned around, and the destination exit is ahead again. Lane keeping takes it."
-                .to_string()
+            "You turned around, and the destination exit is ahead again.".to_string()
         } else {
             format!(
                 "You turned around, and the destination exit is ahead again. Press {} to signal \
@@ -326,7 +319,7 @@ impl DrivingState {
             opts.category = Some(SpeechCategory::Navigation);
             ctx.say_event_with(
                 format!(
-                    "Facility stopping assistance is holding at the entrance. Press {} to continue into the facility.",
+                    "Holding at the entrance. Press {} to continue.",
                     ctx.control_hint("confirm")
                 ),
                 opts,
@@ -384,11 +377,7 @@ impl DrivingState {
             format!("Destination ahead, {facility}. Stop at the gate.")
         };
         if keeper_held {
-            message.push_str(if self.terse_speech(ctx) {
-                " Speed keeper off."
-            } else {
-                " Speed keeper off. The pedals are yours."
-            });
+            message.push_str(" Speed keeper off.");
         }
         self.seed_gate_grace_at_gate(ctx, &message);
         if keeper_held {

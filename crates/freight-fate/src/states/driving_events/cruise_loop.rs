@@ -48,16 +48,10 @@ impl DrivingState {
     pub fn acc_weather_gap_text(&self) -> Option<SpokenMessage> {
         let effects = self.trip.weather.effects();
         if effects.grip < 0.9 {
-            return Some(SpokenMessage::with_terse(
-                "Wet roads, adaptive cruise increasing following gap.",
-                "Wet roads, longer gap.",
-            ));
+            return Some(SpokenMessage::new("Wet roads, longer gap."));
         }
         if effects.visibility_mi < 3.0 {
-            return Some(SpokenMessage::with_terse(
-                "Low visibility, adaptive cruise increasing following gap.",
-                "Low visibility, longer gap.",
-            ));
+            return Some(SpokenMessage::new("Low visibility, longer gap."));
         }
         None
     }
@@ -321,65 +315,27 @@ impl DrivingState {
         (0.0, PccReason::None)
     }
 
-    /// Name what the preview is doing, once per hill and never terse.
+    /// Track what the preview is doing, in silence.
     ///
-    /// A truck that quietly runs three over and then sags four under reads as
-    /// broken to a driver who cannot see the road ahead. Naming it once turns
-    /// the same behavior into the system working. It is information, not
-    /// safety, so terse speech keeps it.
+    /// It used to name each hill ("Easing off for a 1.7 percent downhill
+    /// grade."); players heard that as chatter about how cruise works, which
+    /// the manual covers (player report and owner, 2026-10-14). The phase is
+    /// still tracked for the radio and the badge.
     /// `delta` is the change the target actually took after the caps
-    /// clamped it: a shave that the posted cap neutralised is not "easing"
-    /// and says nothing. `reason` names which preview case produced it.
-    pub fn say_predictive_cruise(
-        &mut self,
-        ctx: &mut GameContext,
-        dt: f64,
-        delta: f64,
-        reason: PccReason,
-    ) {
-        self.pcc_cue_s = 0.0f64.max(self.pcc_cue_s - dt);
-        // Silent phases still track, so the next audible change speaks; a
-        // bias the caps neutralised is its own phase so the cue fires once
-        // the cap lifts. The crest hold eases nothing -- it just stops
-        // chasing -- so it stays silent (silence over redundant speech).
-        let (phase, speaks) = match reason {
-            PccReason::Building if delta > 0.5 => ("building", true),
-            PccReason::EasingForDescent(_) if delta <= -0.5 => ("easing", true),
-            PccReason::HoldingOverCrest => ("holding", false),
-            PccReason::EasingForDescent(_) => ("easing-capped", false),
-            PccReason::Building => ("building-capped", false),
-            PccReason::None => ("", false),
+    /// clamped it: a shave that the posted cap neutralised is its own phase.
+    /// `reason` names which preview case produced it.
+    pub fn track_predictive_cruise(&mut self, delta: f64, reason: PccReason) {
+        let phase = match reason {
+            PccReason::Building if delta > 0.5 => "building",
+            PccReason::EasingForDescent(_) if delta <= -0.5 => "easing",
+            PccReason::HoldingOverCrest => "holding",
+            PccReason::EasingForDescent(_) => "easing-capped",
+            PccReason::Building => "building-capped",
+            PccReason::None => "",
         };
-        if phase == self.pcc_phase {
-            return;
+        if phase != self.pcc_phase {
+            self.pcc_phase = phase.to_string();
         }
-        self.pcc_phase = phase.to_string();
-        if !speaks || self.terse_speech(ctx) || self.pcc_cue_s > 0.0 {
-            return;
-        }
-        self.pcc_cue_s = PCC_CUE_COOLDOWN_S;
-        let message = match reason {
-            PccReason::Building => {
-                // Name the number. "The grade ahead" reads as a steep one, and
-                // the G key -- which only calls a grade steep at three percent
-                // -- then answered that nothing steep was coming for fifteen
-                // miles, which is how a two percent pull looked like a bug
-                // (tester, 2026-08-15).
-                let (climb_ahead, _) = self.grade_extremes_ahead();
-                format!(
-                    "Building speed for a {:.1} percent uphill grade.",
-                    climb_ahead * 100.0
-                )
-            }
-            PccReason::EasingForDescent(descent_pct) => format!(
-                "Easing off for a {:.1} percent downhill grade.",
-                descent_pct * 100.0
-            ),
-            _ => return,
-        };
-        let mut opts = SayEvent::queued();
-        opts.category = Some(SpeechCategory::Confirmation);
-        ctx.say_event_with(message, opts);
     }
 
     /// Hold speed when clear, and follow slower modeled traffic when present.
@@ -687,7 +643,7 @@ impl DrivingState {
             delta = applied - target_mph;
             target_mph = applied;
         }
-        self.say_predictive_cruise(ctx, dt, delta, reason);
+        self.track_predictive_cruise(delta, reason);
         let context = self.trip.traffic_context();
         let mut following = false;
         if let Some(context) = context.as_ref() {
@@ -737,11 +693,7 @@ impl DrivingState {
             ctx.play_event_cue(Some(SpeechCategory::Traffic), "ui/notify", 0.55, 0.0);
             // Settling in behind a slower vehicle is the assist doing its
             // job, and the notify tone marks it: words at standard only.
-            self.say_route_line(
-                ctx,
-                "Traffic ahead, adaptive cruise reducing speed.",
-                SpeechCategory::Traffic,
-            );
+            self.say_route_line(ctx, "Traffic ahead, slowing.", SpeechCategory::Traffic);
         }
         self.acc_following = following;
         // Publish what cruise is really holding, for the status keys. The
@@ -947,10 +899,7 @@ impl DrivingState {
         let held = ctx.settings.speed_text(self.trip.truck.speed_mph());
         let mut opts = SayEvent::queued();
         opts.category = Some(SpeechCategory::Status);
-        ctx.say_event_with(
-            format!("Cruise can't hold speed on this grade. Down to {held}."),
-            opts,
-        );
+        ctx.say_event_with(format!("Cruise down to {held} on this grade."), opts);
     }
 
     /// Bring the truck back down to the target: retarder first, drums last.
