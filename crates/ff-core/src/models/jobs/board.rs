@@ -820,7 +820,12 @@ impl<'w> JobBoard<'w> {
                 .flatten();
             if let Some(open) = &open_route {
                 let legal_road = legal.as_ref()?;
-                if legal_road.cities != open.cities {
+                if legal_road
+                    .legs
+                    .iter()
+                    .map(|leg| leg.id)
+                    .ne(open.legs.iter().map(|leg| leg.id))
+                {
                     if legal_road.miles() > max_alternate_miles(open.miles()) {
                         return None;
                     }
