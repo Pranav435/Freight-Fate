@@ -70,7 +70,7 @@
 
 - **Spoken weather no longer says how old the live observation is.** The Weather app still lists it.
 
-- **Spoken lines across the game are shorter.** Driving, the terminal, dispatch and pickup drop key reminders, assist explanations and facts you just heard; menu help keeps the explanations.
+- **Spoken lines across the game are shorter.** Driving, the terminal, dispatch and pickup drop assist explanations and facts you just heard, and key reminders stop after a few uses; menu help keeps the explanations.
 
 - **Cruise no longer narrates how it drives.** It eases off and builds for hills in silence, and its traffic and weather lines are a few words.
 

@@ -113,7 +113,7 @@ fn test_logbook_opens_with_what_you_are_doing_and_since_when() {
     assert!(
         lines
             .iter()
-            .any(|l| l.starts_with("Break due in ") || l.starts_with("Duty window ")),
+            .any(|l| l.starts_with("30-minute break due in ") || l.starts_with("Duty window ")),
         "{lines:?}"
     );
 }

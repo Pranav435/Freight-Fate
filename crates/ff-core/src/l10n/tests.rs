@@ -746,10 +746,10 @@ fn shipped_spanish_says_every_eld_status_whole() {
     // loose "{driven} driving" once took the stopped line and left
     // "ELD status en duty not de conducción".
     let tr = shipped_spanish();
-    let hours = "Hours of service: 11 hours driving, 30-minute break in 8 hours, \
-                 14-hour window 14 hours";
-    let spanish_hours = "Horas de servicio: 11 horas de conducción, pausa de 30 minutos \
-                         en 8 horas, ventana de 14 horas 14 horas";
+    let hours = "Hours of service: 11 hours of driving left, 30-minute break due in 8 hours, \
+                 14 hours left in the 14-hour window";
+    let spanish_hours = "Horas de servicio: quedan 11 horas de conducción, la pausa de 30 minutos \
+                         toca en 8 horas y quedan 14 horas de la ventana de 14 horas";
     for (status, spoken) in [
         ("driving", "conduciendo"),
         ("on duty not driving", "en servicio sin conducir"),

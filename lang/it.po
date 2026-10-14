@@ -10400,13 +10400,14 @@ msgstr ""
 
 #. placeholders: {duration_text}, {duration_text2}
 msgid ""
-"Hours of service: {duration_text} driving, 14-hour window {duration_text2}."
+"Hours of service: {duration_text} of driving left, {duration_text2} left in "
+"the 14-hour window."
 msgstr ""
 
 #. placeholders: {duration_text}, {duration_text2}, {duration_text3}
 msgid ""
-"Hours of service: {duration_text} driving, 30-minute break in "
-"{duration_text2}, 14-hour window {duration_text3}."
+"Hours of service: {duration_text} of driving left, 30-minute break due in "
+"{duration_text2}, {duration_text3} left in the 14-hour window."
 msgstr ""
 
 #. placeholders: {duration_text}
@@ -10418,7 +10419,7 @@ msgid "Duty window left: {duration_text}."
 msgstr ""
 
 #. placeholders: {duration_text}
-msgid "Break due in {duration_text}."
+msgid "30-minute break due in {duration_text}."
 msgstr ""
 
 #. placeholders: {duration_text}
@@ -10476,7 +10477,7 @@ msgid " Take a 30 minute break at a rest stop."
 msgstr ""
 
 #. placeholders: {duration_text}, {else}
-msgid "Break due in {duration_text}{else}"
+msgid "30-minute break due in {duration_text}{else}"
 msgstr ""
 
 msgid " of driving"
@@ -10492,11 +10493,12 @@ msgid "duty window {duration_text}"
 msgstr ""
 
 #. placeholders: {duration_text}
-msgid ", 14-hour window closes first, {duration_text}"
+msgid ", {duration_text} left in the 14-hour window"
 msgstr ""
 
+#. placeholders: {duration_text}
 #. one clause of a longer line
-msgid "14-hour window closes first"
+msgid "{duration_text} left in the 14-hour window"
 msgstr ""
 
 #. placeholders: {answer}, {shift_over}
@@ -19351,7 +19353,7 @@ msgid "Break overdue."
 msgstr ""
 
 #. placeholders: {left}
-msgid "Break due in {left}."
+msgid "30-minute break due in {left}."
 msgstr ""
 
 #. placeholders: {left}
@@ -26011,7 +26013,7 @@ msgid "A motel room costs {grouped} dollars and you have {grouped2}."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Hours of service reset; you're fresh."
+msgid "Driving and duty clocks reset."
 msgstr ""
 
 #. placeholders: {control_hint}
@@ -26026,9 +26028,8 @@ msgstr ""
 
 #. placeholders: {engine_off}, {grouped}, {clock_text}, {grouped2}, {control_hint}
 msgid ""
-"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Hours of "
-"service reset; you're fresh. {grouped2} dollars. {control_hint} starts the "
-"engine."
+"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Driving and "
+"duty clocks reset. {grouped2} dollars. {control_hint} starts the engine."
 msgstr ""
 
 #. placeholders: {grouped2}
@@ -26439,13 +26440,12 @@ msgstr ""
 
 #. placeholders: {engine_off}, {grouped}, {clock_text}, {grouped2}, {deadline_text}, {wake_air_instruction}
 msgid ""
-"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Hours of "
-"service reset; you're fresh. {grouped2} dollars. "
-"{deadline_text}{wake_air_instruction}"
+"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Driving and "
+"duty clocks reset. {grouped2} dollars. {deadline_text}{wake_air_instruction}"
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Hours of service reset; rest was poor."
+msgid "Driving and duty clocks reset; rest was poor."
 msgstr ""
 
 #. placeholders: {engine_off}
@@ -26455,8 +26455,8 @@ msgstr ""
 
 #. placeholders: {engine_off}, {clock_text}, {deadline_text}, {wake_air_instruction}
 msgid ""
-"{engine_off}Slept 10 hours in the lot. {clock_text}. Hours of service "
-"reset; rest was poor. {deadline_text}{wake_air_instruction}"
+"{engine_off}Slept 10 hours in the lot. {clock_text}. Driving and duty "
+"clocks reset; rest was poor. {deadline_text}{wake_air_instruction}"
 msgstr ""
 
 msgid "The truck does not need repair."

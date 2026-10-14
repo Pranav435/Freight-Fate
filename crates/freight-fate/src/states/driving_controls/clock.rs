@@ -210,7 +210,7 @@ impl DrivingState {
         }
         let left = hos::duration_text(limit.remaining_min / 60.0);
         match limit.kind {
-            "break" => format!("Break due in {left}."),
+            "break" => format!("30-minute break due in {left}."),
             "drive" => format!("Driving time left: {left}."),
             _ => format!("Duty window closes in {left}."),
         }

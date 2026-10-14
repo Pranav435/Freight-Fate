@@ -12386,18 +12386,20 @@ msgstr "Estado del ELD: {replace}."
 
 #. placeholders: {duration_text}, {duration_text2}
 msgid ""
-"Hours of service: {duration_text} driving, 14-hour window {duration_text2}."
+"Hours of service: {duration_text} of driving left, {duration_text2} left in "
+"the 14-hour window."
 msgstr ""
-"Horas de servicio: {duration_text} de conducción, ventana de 14 horas "
-"{duration_text2}."
+"Horas de servicio: quedan {duration_text} de conducción y {duration_text2} "
+"de la ventana de 14 horas."
 
 #. placeholders: {duration_text}, {duration_text2}, {duration_text3}
 msgid ""
-"Hours of service: {duration_text} driving, 30-minute break in "
-"{duration_text2}, 14-hour window {duration_text3}."
+"Hours of service: {duration_text} of driving left, 30-minute break due in "
+"{duration_text2}, {duration_text3} left in the 14-hour window."
 msgstr ""
-"Horas de servicio: {duration_text} de conducción, pausa de 30 minutos en "
-"{duration_text2}, ventana de 14 horas {duration_text3}."
+"Horas de servicio: quedan {duration_text} de conducción, la pausa de 30 "
+"minutos toca en {duration_text2} y quedan {duration_text3} de la ventana de "
+"14 horas."
 
 #. placeholders: {duration_text}
 msgid "Driving left: {duration_text}."
@@ -12408,8 +12410,8 @@ msgid "Duty window left: {duration_text}."
 msgstr "Ventana de servicio restante: {duration_text}."
 
 #. placeholders: {duration_text}
-msgid "Break due in {duration_text}."
-msgstr "La pausa toca en {duration_text}."
+msgid "30-minute break due in {duration_text}."
+msgstr "La pausa de 30 minutos toca en {duration_text}."
 
 #. placeholders: {duration_text}
 msgid "Duty window closes in {duration_text}."
@@ -12466,8 +12468,8 @@ msgid " Take a 30 minute break at a rest stop."
 msgstr " Haz una pausa de 30 minutos en un área de descanso."
 
 #. placeholders: {duration_text}, {else}
-msgid "Break due in {duration_text}{else}"
-msgstr "La pausa toca en {duration_text}{else}"
+msgid "30-minute break due in {duration_text}{else}"
+msgstr "La pausa de 30 minutos toca en {duration_text}{else}"
 
 msgid " of driving"
 msgstr " de conducción"
@@ -12482,12 +12484,13 @@ msgid "duty window {duration_text}"
 msgstr "ventana de servicio {duration_text}"
 
 #. placeholders: {duration_text}
-msgid ", 14-hour window closes first, {duration_text}"
-msgstr ", la ventana de 14 horas se cierra antes, {duration_text}"
+msgid ", {duration_text} left in the 14-hour window"
+msgstr ", quedan {duration_text} de la ventana de 14 horas"
 
+#. placeholders: {duration_text}
 #. one clause of a longer line
-msgid "14-hour window closes first"
-msgstr "la ventana de 14 horas se cierra antes"
+msgid "{duration_text} left in the 14-hour window"
+msgstr "quedan {duration_text} de la ventana de 14 horas"
 
 #. placeholders: {answer}, {shift_over}
 #. one sentence of a longer line
@@ -22360,8 +22363,8 @@ msgid "Break overdue."
 msgstr "Pausa atrasada."
 
 #. placeholders: {left}
-msgid "Break due in {left}."
-msgstr "Pausa en {left}."
+msgid "30-minute break due in {left}."
+msgstr "Pausa de 30 minutos en {left}."
 
 #. placeholders: {left}
 msgid "Driving time left: {left}."
@@ -29813,8 +29816,8 @@ msgstr ""
 "Una habitación de motel cuesta {grouped} dólares y tienes {grouped2}."
 
 #. one sentence of a longer line
-msgid "Hours of service reset; you're fresh."
-msgstr "Horas de servicio reiniciadas; estás descansado."
+msgid "Driving and duty clocks reset."
+msgstr "Relojes de conducción y de servicio reiniciados."
 
 #. placeholders: {control_hint}
 #. one sentence of a longer line
@@ -29828,12 +29831,11 @@ msgstr "{engine_off}Motel, {grouped} dólares, 10 horas."
 
 #. placeholders: {engine_off}, {grouped}, {clock_text}, {grouped2}, {control_hint}
 msgid ""
-"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Hours of "
-"service reset; you're fresh. {grouped2} dollars. {control_hint} starts the "
-"engine."
+"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Driving and "
+"duty clocks reset. {grouped2} dollars. {control_hint} starts the engine."
 msgstr ""
-"{engine_off}Motel, {grouped} dólares, 10 horas. {clock_text}. Horas de "
-"servicio reiniciadas; estás descansado. {grouped2} dólares. {control_hint} "
+"{engine_off}Motel, {grouped} dólares, 10 horas. {clock_text}. Relojes de "
+"conducción y de servicio reiniciados. {grouped2} dólares. {control_hint} "
 "arranca el motor."
 
 #. placeholders: {grouped2}
@@ -30317,17 +30319,16 @@ msgstr ""
 
 #. placeholders: {engine_off}, {grouped}, {clock_text}, {grouped2}, {deadline_text}, {wake_air_instruction}
 msgid ""
-"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Hours of "
-"service reset; you're fresh. {grouped2} dollars. "
-"{deadline_text}{wake_air_instruction}"
+"{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Driving and "
+"duty clocks reset. {grouped2} dollars. {deadline_text}{wake_air_instruction}"
 msgstr ""
-"{engine_off}Motel, {grouped} dólares, 10 horas. {clock_text}. Horas de "
-"servicio reiniciadas; estás descansado. {grouped2} dólares. "
+"{engine_off}Motel, {grouped} dólares, 10 horas. {clock_text}. Relojes de "
+"conducción y de servicio reiniciados. {grouped2} dólares. "
 "{deadline_text}{wake_air_instruction}"
 
 #. one sentence of a longer line
-msgid "Hours of service reset; rest was poor."
-msgstr "Horas de servicio reiniciadas; descansaste mal."
+msgid "Driving and duty clocks reset; rest was poor."
+msgstr "Relojes de conducción y de servicio reiniciados; descansaste mal."
 
 #. placeholders: {engine_off}
 #. one sentence of a longer line
@@ -30336,11 +30337,12 @@ msgstr "{engine_off}Dormiste 10 horas en el aparcamiento."
 
 #. placeholders: {engine_off}, {clock_text}, {deadline_text}, {wake_air_instruction}
 msgid ""
-"{engine_off}Slept 10 hours in the lot. {clock_text}. Hours of service "
-"reset; rest was poor. {deadline_text}{wake_air_instruction}"
+"{engine_off}Slept 10 hours in the lot. {clock_text}. Driving and duty "
+"clocks reset; rest was poor. {deadline_text}{wake_air_instruction}"
 msgstr ""
-"{engine_off}Dormiste 10 horas en el aparcamiento. {clock_text}. Horas de "
-"servicio reiniciadas; descansaste mal. {deadline_text}{wake_air_instruction}"
+"{engine_off}Dormiste 10 horas en el aparcamiento. {clock_text}. Relojes de "
+"conducción y de servicio reiniciados; descansaste mal. "
+"{deadline_text}{wake_air_instruction}"
 
 msgid "The truck does not need repair."
 msgstr "El camión no necesita reparación."
@@ -40315,6 +40317,65 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid ""
+#~ "Hours of service: {duration_text} driving, 14-hour window {duration_text2}."
+#~ msgstr ""
+#~ "Horas de servicio: {duration_text} de conducción, ventana de 14 horas "
+#~ "{duration_text2}."
+
+#~ msgid ""
+#~ "Hours of service: {duration_text} driving, 30-minute break in "
+#~ "{duration_text2}, 14-hour window {duration_text3}."
+#~ msgstr ""
+#~ "Horas de servicio: {duration_text} de conducción, pausa de 30 minutos en "
+#~ "{duration_text2}, ventana de 14 horas {duration_text3}."
+
+#~ msgid "Break due in {duration_text}."
+#~ msgstr "La pausa toca en {duration_text}."
+
+#~ msgid "Break due in {duration_text}{else}"
+#~ msgstr "La pausa toca en {duration_text}{else}"
+
+#~ msgid ", 14-hour window closes first, {duration_text}"
+#~ msgstr ", la ventana de 14 horas se cierra antes, {duration_text}"
+
+#~ msgid "14-hour window closes first"
+#~ msgstr "la ventana de 14 horas se cierra antes"
+
+#~ msgid "Break due in {left}."
+#~ msgstr "Pausa en {left}."
+
+#~ msgid "Hours of service reset; you're fresh."
+#~ msgstr "Horas de servicio reiniciadas; estás descansado."
+
+#~ msgid ""
+#~ "{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Hours of "
+#~ "service reset; you're fresh. {grouped2} dollars. {control_hint} starts the "
+#~ "engine."
+#~ msgstr ""
+#~ "{engine_off}Motel, {grouped} dólares, 10 horas. {clock_text}. Horas de "
+#~ "servicio reiniciadas; estás descansado. {grouped2} dólares. {control_hint} "
+#~ "arranca el motor."
+
+#~ msgid ""
+#~ "{engine_off}Motel, {grouped} dollars, 10 hours. {clock_text}. Hours of "
+#~ "service reset; you're fresh. {grouped2} dollars. "
+#~ "{deadline_text}{wake_air_instruction}"
+#~ msgstr ""
+#~ "{engine_off}Motel, {grouped} dólares, 10 horas. {clock_text}. Horas de "
+#~ "servicio reiniciadas; estás descansado. {grouped2} dólares. "
+#~ "{deadline_text}{wake_air_instruction}"
+
+#~ msgid "Hours of service reset; rest was poor."
+#~ msgstr "Horas de servicio reiniciadas; descansaste mal."
+
+#~ msgid ""
+#~ "{engine_off}Slept 10 hours in the lot. {clock_text}. Hours of service "
+#~ "reset; rest was poor. {deadline_text}{wake_air_instruction}"
+#~ msgstr ""
+#~ "{engine_off}Dormiste 10 horas en el aparcamiento. {clock_text}. Horas de "
+#~ "servicio reiniciadas; descansaste mal. {deadline_text}{wake_air_instruction}"
 
 #~ msgid "Brake below 5 miles per hour first."
 #~ msgstr "Primero frena por debajo de 5 millas por hora."

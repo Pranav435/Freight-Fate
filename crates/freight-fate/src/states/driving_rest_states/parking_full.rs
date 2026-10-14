@@ -162,7 +162,7 @@ impl ParkingFullState {
             }
             let money = profile_of(ctx).money();
             format!(
-                "{engine_off}Motel, {} dollars, 10 hours. {}. Hours of service reset; you're fresh. \
+                "{engine_off}Motel, {} dollars, 10 hours. {}. Driving and duty clocks reset. \
                  {} dollars. {} starts the engine.",
                 fmt_grouped(MOTEL_COST, 0),
                 clock_text(d.trip.local_hour()),

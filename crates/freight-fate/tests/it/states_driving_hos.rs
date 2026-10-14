@@ -499,7 +499,7 @@ fn test_split_sleeper_rest_action_advances_clock_and_speaks_status() {
                 spoken(&harness)
             )
         });
-    assert!(completed.contains("hours driving"), "{completed}");
+    assert!(completed.contains("of driving left"), "{completed}");
     assert!(completed.contains("14-hour window"), "{completed}");
 }
 

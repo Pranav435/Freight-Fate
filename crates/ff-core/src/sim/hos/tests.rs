@@ -496,9 +496,9 @@ fn test_hos_summary_includes_time_units() {
 
     let summary = c.summary("realistic");
 
-    assert!(summary.contains("9 hours driving"));
-    assert!(summary.contains("30-minute break in 6 hours"));
-    assert!(summary.contains("14-hour window 12 hours"));
+    assert!(summary.contains("9 hours of driving left"));
+    assert!(summary.contains("30-minute break due in 6 hours"));
+    assert!(summary.contains("12 hours left in the 14-hour window"));
 }
 
 #[test]
@@ -511,8 +511,8 @@ fn test_hos_summary_omits_break_when_duty_window_closes_first() {
 
     let summary = c.summary("realistic");
 
-    assert!(summary.contains("14-hour window 1.8 hours"));
-    assert!(!summary.contains("30-minute break"));
+    assert!(summary.contains("1.8 hours left in the 14-hour window"));
+    assert!(!summary.contains("30-minute break due"));
 }
 
 // -- the one-answer readouts (Alt A, Alt S, Alt D) ---------------------------------
@@ -609,9 +609,12 @@ fn test_break_key_leads_with_the_break_and_counts_driving_time() {
 
     assert_eq!(
         c.break_summary("realistic", false),
-        "Break due in 6 hours of driving."
+        "30-minute break due in 6 hours of driving."
     );
-    assert_eq!(c.break_summary("realistic", true), "Break due in 6 hours.");
+    assert_eq!(
+        c.break_summary("realistic", true),
+        "30-minute break due in 6 hours."
+    );
 }
 
 #[test]
@@ -621,7 +624,7 @@ fn test_break_key_speaks_minutes_when_under_an_hour() {
 
     assert!(c
         .break_summary("realistic", false)
-        .contains("Break due in 24 minutes"));
+        .contains("30-minute break due in 24 minutes"));
 }
 
 #[test]
@@ -630,15 +633,15 @@ fn test_break_key_answers_the_break_first_then_the_window_that_closes_first() {
     // has to answer the break, then add the fact that overrides it.
     let said = duty_closes_first().break_summary("realistic", false);
 
-    assert!(said.starts_with("Break due in 3.5 hours"));
-    assert!(said.contains("14-hour window closes first, 1.8 hours"));
+    assert!(said.starts_with("30-minute break due in 3.5 hours"));
+    assert!(said.contains(", 1.8 hours left in the 14-hour window"));
 }
 
 #[test]
 fn test_terse_break_key_still_names_the_window_that_closes_first() {
     let said = duty_closes_first().break_summary("realistic", true);
 
-    assert!(said.contains("Break due in 3.5 hours"));
+    assert!(said.contains("30-minute break due in 3.5 hours"));
     assert!(said.contains("duty window 1.8 hours"));
 }
 

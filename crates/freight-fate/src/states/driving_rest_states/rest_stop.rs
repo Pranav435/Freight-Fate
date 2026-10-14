@@ -731,7 +731,7 @@ impl RestStopState {
             profile_mut_of(ctx).fatigue = 0.0;
             let money = profile_of(ctx).money();
             format!(
-                "{engine_off}Motel, {} dollars, 10 hours. {}. Hours of service reset; you're fresh. \
+                "{engine_off}Motel, {} dollars, 10 hours. {}. Driving and duty clocks reset. \
                  {} dollars. {}{}",
                 fmt_grouped(MOTEL_COST, 0),
                 clock_text(d.trip.local_hour()),
@@ -767,7 +767,7 @@ impl RestStopState {
                 p.fatigue = hos::rest_shoulder(p.fatigue);
             }
             format!(
-                "{engine_off}Slept 10 hours in the lot. {}. Hours of service reset; rest was poor. \
+                "{engine_off}Slept 10 hours in the lot. {}. Driving and duty clocks reset; rest was poor. \
                  {}{}",
                 clock_text(d.trip.local_hour()),
                 deadline_text(d, ctx),

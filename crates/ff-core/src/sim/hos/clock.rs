@@ -722,14 +722,14 @@ impl HosClock {
         };
         let hours = if duty_left <= break_left {
             format!(
-                "Hours of service: {} driving, 14-hour window {}.",
+                "Hours of service: {} of driving left, {} left in the 14-hour window.",
                 duration_text(drive_left),
                 duration_text(duty_left),
             )
         } else {
             format!(
-                "Hours of service: {} driving, 30-minute break in {}, \
-                 14-hour window {}.",
+                "Hours of service: {} of driving left, 30-minute break due in {}, \
+                 {} left in the 14-hour window.",
                 duration_text(drive_left),
                 duration_text(break_left),
                 duration_text(duty_left),
@@ -763,7 +763,10 @@ impl HosClock {
         if duty_left <= break_left {
             lines.push(format!("Duty window left: {}.", duration_text(duty_left)));
         } else {
-            lines.push(format!("Break due in {}.", duration_text(break_left)));
+            lines.push(format!(
+                "30-minute break due in {}.",
+                duration_text(break_left)
+            ));
             lines.push(format!(
                 "Duty window closes in {}.",
                 duration_text(duty_left)
@@ -853,7 +856,7 @@ impl HosClock {
             };
         } else {
             answer = format!(
-                "Break due in {}{}",
+                "30-minute break due in {}{}",
                 duration_text(break_left),
                 if terse { "" } else { " of driving" }
             );
@@ -864,10 +867,7 @@ impl HosClock {
                 answer.push_str(&if terse {
                     format!(", duty window {}", duration_text(duty_left))
                 } else {
-                    format!(
-                        ", 14-hour window closes first, {}",
-                        duration_text(duty_left)
-                    )
+                    format!(", {} left in the 14-hour window", duration_text(duty_left))
                 });
             }
         }

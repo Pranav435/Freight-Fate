@@ -612,7 +612,7 @@ fn test_clock_key_keeps_one_hours_clause_instead_of_the_whole_report() {
     let report = last(&app);
     // The limit that comes first still rides the clock key: a driver can be on
     // schedule and out of hours at once.
-    assert!(report.contains("Break due in 3 hours."), "{report}");
+    assert!(report.contains("30-minute break due in 3 hours."), "{report}");
     // ...but the full ELD report belongs to Tab and the three hours keys.
     assert!(!report.contains("hours of driving left"), "{report}");
     assert!(!report.contains("ELD status"), "{report}");
@@ -652,7 +652,7 @@ fn test_alt_a_s_and_d_each_answer_one_hours_question() {
     app.clear_speech();
     d.handle_key_event(&mut app.ctx, &alt(Key::S));
     assert!(
-        last(&app).starts_with("Break due in 3 hours"),
+        last(&app).starts_with("30-minute break due in 3 hours"),
         "{}",
         last(&app)
     );
