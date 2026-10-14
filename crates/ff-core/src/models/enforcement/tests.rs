@@ -447,7 +447,11 @@ fn score_display_formats_reputation_and_trust_honestly() {
     );
     assert!(
         dispatch_trust_line_with_display(&service, ScoreDisplay::Percent)
-            .starts_with("Dispatch trust. Reputation 85 out of 100.")
+            .starts_with("Dispatch trust: full. Reputation 85 out of 100.")
+    );
+    assert_eq!(
+        trust_text_with_display(85.0, ScoreDisplay::Percent),
+        trust_text_with_display(85.0, ScoreDisplay::Both)
     );
     assert!(
         dispatch_trust_line_with_display(&service, ScoreDisplay::Description)

@@ -7968,16 +7968,34 @@ msgstr ""
 msgid "last chance"
 msgstr ""
 
-#. placeholders: {band}
 #: crates/ff-core/src/models/career.rs
 msgid ""
-"While your dispatch trust is {band}, the carrier keeps you on routine "
+"While your dispatch trust is guarded, the carrier keeps you on routine "
 "freight, so career experience comes in more slowly until it is back up."
 msgstr ""
 
-#. placeholders: {band}
 #: crates/ff-core/src/models/career.rs
-msgid "at the slower rate that comes with {band} dispatch trust"
+msgid ""
+"While your dispatch trust is poor, the carrier keeps you on routine "
+"freight, so career experience comes in more slowly until it is back up."
+msgstr ""
+
+#: crates/ff-core/src/models/career.rs
+msgid ""
+"While your dispatch trust is last chance, the carrier keeps you on routine "
+"freight, so career experience comes in more slowly until it is back up."
+msgstr ""
+
+#: crates/ff-core/src/models/career.rs
+msgid "at the slower rate that comes with guarded dispatch trust"
+msgstr ""
+
+#: crates/ff-core/src/models/career.rs
+msgid "at the slower rate that comes with poor dispatch trust"
+msgstr ""
+
+#: crates/ff-core/src/models/career.rs
+msgid "at the slower rate that comes with last chance dispatch trust"
 msgstr ""
 
 #: crates/ff-core/src/models/career.rs
@@ -10161,9 +10179,9 @@ msgstr ""
 msgid " Clean on-time runs rebuild it."
 msgstr ""
 
-#. placeholders: {band}, {number}
+#. placeholders: {number}
 #: crates/ff-core/src/models/enforcement.rs
-msgid "Dispatch trust: {band}. Reputation {number} out of 100."
+msgid "Dispatch trust: full. Reputation {number} out of 100."
 msgstr ""
 
 #. placeholders: {number}
@@ -10172,19 +10190,35 @@ msgstr ""
 msgid "Reputation {number} out of 100."
 msgstr ""
 
-#. one sentence of a longer line
+#. placeholders: {number}
 #: crates/ff-core/src/models/enforcement.rs
-msgid "Dispatch trust."
+msgid "Dispatch trust: guarded. Reputation {number} out of 100."
 msgstr ""
 
 #. placeholders: {number}
 #: crates/ff-core/src/models/enforcement.rs
-msgid "Dispatch trust. Reputation {number} out of 100."
+msgid "Dispatch trust: poor. Reputation {number} out of 100."
 msgstr ""
 
-#. placeholders: {band}
+#. placeholders: {number}
 #: crates/ff-core/src/models/enforcement.rs
-msgid "Dispatch trust: {band}."
+msgid "Dispatch trust: last chance. Reputation {number} out of 100."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: full."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: guarded."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: poor."
+msgstr ""
+
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: last chance."
 msgstr ""
 
 #: crates/ff-core/src/models/enforcement.rs
@@ -10384,6 +10418,11 @@ msgstr ""
 
 #: crates/ff-core/src/models/enforcement.rs
 msgid "Clean on-time runs rebuild it."
+msgstr ""
+
+#. placeholders: {band}
+#: crates/ff-core/src/models/enforcement.rs
+msgid "Dispatch trust: {band}."
 msgstr ""
 
 #: crates/ff-core/src/models/enforcement.rs crates/freight-fate/src/online_activation.rs

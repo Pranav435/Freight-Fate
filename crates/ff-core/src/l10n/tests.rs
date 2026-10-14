@@ -884,6 +884,104 @@ fn shipped_spanish_says_places_board_rows_and_regions_whole() {
 }
 
 #[test]
+fn shipped_spanish_dispatch_trust_bands_agree_in_gender() {
+    // "full" alone is "completo" for lane assist; trust lines must not use it.
+    // Whole per-band openings keep feminine agreement with "confianza".
+    use crate::models::enforcement::{
+        dispatch_trust_line_with_display, trust_text_with_display, TRUST_FULL, TRUST_GUARDED,
+        TRUST_LAST_CHANCE, TRUST_POOR,
+    };
+    use crate::models::solvency::test_profile::FakeProfile;
+    use crate::settings::ScoreDisplay;
+
+    let tr = shipped_spanish();
+    assert_eq!(tr.translate("full"), "completo");
+
+    let bands = [
+        (100.0, TRUST_FULL, "completa"),
+        (35.0, TRUST_GUARDED, "con reservas"),
+        (22.0, TRUST_POOR, "baja"),
+        (10.0, TRUST_LAST_CHANCE, "última oportunidad"),
+    ];
+    for (rep, band, spanish_band) in bands {
+        assert_eq!(crate::models::enforcement::trust_band(rep), band);
+        for mode in [
+            ScoreDisplay::Both,
+            ScoreDisplay::Percent,
+            ScoreDisplay::Description,
+        ] {
+            let mut profile = FakeProfile::new();
+            profile.reputation = rep;
+            let line = dispatch_trust_line_with_display(&profile, mode);
+            let spoken = tr.translate(&line);
+            assert!(
+                spoken.contains(&format!("Confianza de despacho: {spanish_band}")),
+                "mode={mode:?} band={band} english={line:?} spanish={spoken:?}"
+            );
+            assert!(
+                !spoken.contains("Confianza de despacho: completo"),
+                "mode={mode:?} band={band} kept masculine completo: {spoken:?}"
+            );
+            if mode != ScoreDisplay::Description {
+                let head = trust_text_with_display(rep, mode);
+                let head_es = tr.translate(&head);
+                assert!(
+                    head_es.contains(&format!("Confianza de despacho: {spanish_band}")),
+                    "trust_text mode={mode:?} band={band} english={head:?} spanish={head_es:?}"
+                );
+            }
+        }
+    }
+
+    // Debt hold: service is full, money sets the band. No reputation number.
+    let mut debt = FakeProfile::new();
+    debt.reputation = 85.0;
+    debt.money = -5_000.0;
+    for mode in [
+        ScoreDisplay::Both,
+        ScoreDisplay::Percent,
+        ScoreDisplay::Description,
+    ] {
+        let line = dispatch_trust_line_with_display(&debt, mode);
+        assert!(!line.contains("out of 100"), "{line}");
+        let spoken = tr.translate(&line);
+        let band = crate::models::enforcement::standing_band(&debt);
+        let spanish_band = match band {
+            TRUST_GUARDED => "con reservas",
+            TRUST_POOR => "baja",
+            TRUST_LAST_CHANCE => "última oportunidad",
+            other => panic!("debt should hold the band below full, got {other}"),
+        };
+        assert!(
+            spoken.contains(&format!("Confianza de despacho: {spanish_band}")),
+            "debt hold mode={mode:?} band={band} english={line:?} spanish={spoken:?}"
+        );
+        assert!(
+            !spoken.contains("Confianza de despacho: completo"),
+            "debt hold kept masculino completo: {spoken:?}"
+        );
+        assert!(
+            spoken.contains("debes") || spoken.contains("Debes") || spoken.contains("5.000"),
+            "debt hold should name the debt: {spoken:?}"
+        );
+    }
+
+    for (band, spanish_band) in [
+        ("guarded", "con reservas"),
+        ("poor", "baja"),
+        ("last chance", "última oportunidad"),
+    ] {
+        let clause = crate::models::career::xp_rate_clause(band);
+        let spoken = tr.translate(&clause);
+        assert!(
+            spoken.contains(spanish_band),
+            "xp clause band={band} english={clause:?} spanish={spoken:?}"
+        );
+        assert!(!spoken.contains("completo"), "{spoken}");
+    }
+}
+
+#[test]
 fn every_facility_kind_and_market_class_has_its_phrases() {
     // lang/extra.pot carries a whole phrase per facility kind and per
     // market class; a new kind or class needs its own.
