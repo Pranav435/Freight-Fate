@@ -598,7 +598,7 @@ fn test_wheel_time_answers_instead_of_going_quiet_with_enforcement_off() {
     for mode in ["off", "debug_off"] {
         let said = c.wheel_time_summary(mode, false);
         assert!(said.contains("5.4 hours driving"));
-        assert!(said.contains("enforcement is off"));
+        assert!(said.contains("Hours enforcement off."));
     }
 }
 
@@ -686,7 +686,7 @@ fn test_break_key_says_none_required_with_enforcement_off() {
             .contains("Break: none required."));
         assert!(HosClock::new()
             .break_summary(mode, false)
-            .contains("enforcement is off"));
+            .contains("Hours enforcement off."));
     }
 }
 
@@ -772,7 +772,7 @@ fn test_drive_time_key_says_no_limit_with_enforcement_off() {
     for mode in ["off", "debug_off"] {
         let said = c.drive_time_summary(mode, false);
         assert!(said.contains("no limit"));
-        assert!(said.contains("enforcement is off"));
+        assert!(said.contains("Hours enforcement off."));
     }
 }
 
@@ -853,7 +853,7 @@ fn test_off_mode_never_warns_or_violates() {
     assert!(!c.in_violation("off"));
     assert_eq!(c.remaining_min("off"), None);
     assert!(!c.summary("off").contains("developer mode"));
-    assert!(c.summary("off").contains("enforcement is off"));
+    assert!(c.summary("off").contains("Hours enforcement off."));
 }
 
 // -- serialization and compatibility ----------------------------------------------

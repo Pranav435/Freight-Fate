@@ -39,11 +39,7 @@ impl DrivingState {
         }
         self.low_fuel_said = true;
         let pct = fraction * 100.0;
-        let message = if self.terse_speech(ctx) {
-            format!("Fuel low: {pct:.0} percent.")
-        } else {
-            format!("Low fuel warning, {pct:.0} percent. Find a fuel stop soon.")
-        };
+        let message = format!("Fuel low: {pct:.0} percent.");
         ctx.audio.play("ui/warning");
         ctx.say_event_with(message, SayEvent::new().category(SpeechCategory::Safety));
     }
@@ -354,7 +350,7 @@ impl DrivingState {
             let message = if self.terse_speech(ctx) {
                 format!("At {facility}. Stop to dock.")
             } else {
-                format!("Still at {facility}. The delivery is here, not ahead. Stop to dock.")
+                format!("Still at {facility}. Stop to dock.")
             };
             self.remind_arrival_gate(ctx, "Destination gate: stop to dock.", &message, false);
             return;
@@ -495,11 +491,7 @@ impl DrivingState {
         let message = if ctx.settings.destination_approach_assist {
             format!("At {facility}. Stop to dock.")
         } else {
-            format!(
-                "At {facility}. Stop, set the parking brake with {}, then {} opens the facility.",
-                ctx.control_hint("parking_brake"),
-                ctx.control_hint("rest")
-            )
+            format!("At {facility}. Stop and set the parking brake.")
         };
         self.say_route_navigation(ctx, &message);
     }
@@ -539,7 +531,7 @@ impl DrivingState {
         ctx.replace_state(
             TimedMessageState::new(
                 "Pulling into destination",
-                &format!("Pulling into {facility}. Brakes set; dock menu opening in a moment."),
+                &format!("Pulling into {facility}."),
                 "Pulling into the destination facility.",
                 STOP_PULL_IN_WAIT_S,
                 move |ctx: &mut GameContext| {

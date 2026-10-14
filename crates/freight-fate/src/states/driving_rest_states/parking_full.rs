@@ -131,7 +131,7 @@ impl ParkingFullState {
             .unwrap_or(false);
         ctx.audio.play("ui/menu_back");
         ctx.pop_state();
-        ctx.say_with(back_on_the_road_line(ctx, engine_on), Say::new());
+        ctx.say_with(back_on_the_road_line(engine_on), Say::new());
     }
 
     fn motel(&mut self, ctx: &mut GameContext) {

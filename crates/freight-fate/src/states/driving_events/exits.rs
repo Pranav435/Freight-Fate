@@ -671,14 +671,11 @@ impl DrivingState {
         }
         if self.exit_right_taps >= 2 && self.lane.exit_lane_open && !self.exit_tap_hint_said {
             self.exit_tap_hint_said = true;
-            let text = format!(
-                "Taps only nudge the wheel. Hold {} to steer into the exit lane.",
-                ctx.control_name(Action::SteerRight)
-            );
+            let text = format!("Hold {} to steer in.", ctx.control_name(Action::SteerRight));
             self.say_plain(ctx, text);
         }
         // No "Exit lane set" or "lost": crossing into the lane is the truck
-        // taking the exit, and "You take" says so. No line at the gore. It used to say "Stay under" the ramp's number,
+        // taking the exit, and the ramp line says so. No line at the gore. It used to say "Stay under" the ramp's number,
         // which the gate itself never asked for (it accepts road speed), and
         // the ramp's speed belongs past the gore anyway, where taking the
         // ramp names it. Without the number all it restated was the half-mile
@@ -769,7 +766,7 @@ impl DrivingState {
         // obey it cancels the signal instead.
         let mut opts = SayEvent::queued().priority(EventPriority::Route);
         opts.category = Some(SpeechCategory::Confirmation);
-        ctx.say_event_with(format!("Exit speed assistance slowing.{lane_text}"), opts);
+        ctx.say_event_with(format!("Slowing.{lane_text}"), opts);
     }
 
     /// Keep the truck at its exit floor on an approach the assist is running.

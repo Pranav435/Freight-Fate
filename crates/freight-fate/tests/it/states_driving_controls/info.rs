@@ -517,7 +517,7 @@ fn test_grade_key_reads_slope_and_verdict() {
     d.handle_key_event(&mut app.ctx, &key(Key::G));
     let said = last(&app);
     assert!(said.contains("percent uphill"), "{said}");
-    assert!(said.contains("lose speed"), "{said}");
+    assert!(said.contains("Losing speed."), "{said}");
 
     // Downhill with no jake and speed building: the warning speaks.
     d.trip.truck.grade = -0.05;
@@ -527,7 +527,7 @@ fn test_grade_key_reads_slope_and_verdict() {
     d.handle_key_event(&mut app.ctx, &key(Key::G));
     let said = last(&app);
     assert!(said.contains("percent downhill"), "{said}");
-    assert!(said.contains("set the jake"), "{said}");
+    assert!(said.contains("Set the jake."), "{said}");
 }
 
 #[test]

@@ -894,11 +894,11 @@ pub fn record_consequence_text<P: StandingProfile + ?Sized>(profile: &P) -> Stri
             return String::new();
         }
         let percent = round_py_int((surcharge - 1.0) * 100.0);
-        return format!(
-            "Your insurance reserve is up {percent} percent for it, on every settlement. It \
-             comes down as the record ages out, and is gone {}.",
-            record_clears_text(profile, |citations, serious| citations + serious > 0)
-        );
+        let until = record_clears_text(profile, |citations, serious| citations + serious > 0);
+        if until.is_empty() {
+            return format!("Insurance surcharge: {percent} percent.");
+        }
+        return format!("Insurance surcharge: {percent} percent until {until}.");
     }
     if !under_carrier_review(profile) {
         return String::new();
@@ -963,10 +963,8 @@ pub fn career_ended<P: StandingProfile + ?Sized>(profile: &P) -> bool {
 
 /// The terminal greeting's sentence for a career that is over.
 pub fn career_ended_text() -> &'static str {
-    "Your driving career is over: the CDL is disqualified for life. There is no dispatch, no \
-     board and no buy-in. Your money, levels, achievements, road journal and record stay as \
-     they are, and Close out this career on this menu removes the save and its cloud backups \
-     when you want them gone."
+    "Your CDL is disqualified for life, so this career cannot drive again. Close out this \
+     career removes the save."
 }
 
 /// The notice the terminal reads once, the first time the driver comes in
@@ -1250,12 +1248,10 @@ pub fn suspension_board_line<P: StandingProfile + ?Sized>(profile: &P) -> String
 pub fn suspension_refusal_line<P: StandingProfile + ?Sized>(profile: &P) -> String {
     let record = record_of(profile);
     if record.lifetime_disqualified {
-        return "You cannot take driving work with a lifetime CDL disqualification. \
-                Escape goes back to the terminal."
-            .to_string();
+        return "You cannot take driving work with a lifetime CDL disqualification.".to_string();
     }
     format!(
-        "You cannot take this job while your CDL is {}. It clears {}. Escape goes back to the board.",
+        "You cannot take this job while your CDL is {}. It clears {}.",
         status_verb(record),
         clears_text(profile)
     )
@@ -1276,8 +1272,7 @@ pub fn suspension_drive_refusal_line<P: StandingProfile + ?Sized>(profile: &P) -
         "suspension"
     };
     format!(
-        "You cannot drive, not even bobtail, while your CDL is {verb}. The {noun} ends {}. \
-         Wait out the CDL suspension is on the terminal menu.",
+        "You cannot drive, not even bobtail, while your CDL is {verb}. The {noun} ends {}.",
         clears_text(profile)
     )
 }

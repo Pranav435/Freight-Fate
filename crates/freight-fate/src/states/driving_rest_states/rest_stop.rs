@@ -650,7 +650,7 @@ impl RestStopState {
                 "{engine_off}You slept {hours} hours in the sleeper berth. It is {}. {status}{}{}",
                 clock_text(d.trip.local_hour()),
                 deadline_text(d, ctx),
-                wake_air_instruction(d, ctx, true)
+                wake_air_instruction(d)
             )
         }) else {
             return;
@@ -687,7 +687,7 @@ impl RestStopState {
                 "{engine_off}{slept} It is {}. Hours of service reset. {}{}",
                 clock_text(d.trip.local_hour()),
                 deadline_text(d, ctx),
-                wake_air_instruction(d, ctx, true)
+                wake_air_instruction(d)
             )
         }) else {
             return;
@@ -738,7 +738,7 @@ impl RestStopState {
                 clock_text(d.trip.local_hour()),
                 fmt_grouped(money, 0),
                 deadline_text(d, ctx),
-                wake_air_instruction(d, ctx, true)
+                wake_air_instruction(d)
             )
         }) else {
             return;
@@ -772,7 +772,7 @@ impl RestStopState {
                  but the rest was poor and you wake still tired. {}{}",
                 clock_text(d.trip.local_hour()),
                 deadline_text(d, ctx),
-                wake_air_instruction(d, ctx, true)
+                wake_air_instruction(d)
             )
         }) else {
             return;
@@ -1556,7 +1556,7 @@ impl Menu for RestStopState {
             .unwrap_or(false);
         ctx.audio.play("ui/menu_back");
         ctx.pop_state();
-        let back = back_on_the_road_line(ctx, engine_on);
+        let back = back_on_the_road_line(engine_on);
         match checked {
             Some((text, waved)) => {
                 ctx.say(&text);

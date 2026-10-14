@@ -460,7 +460,7 @@ impl EnforcementStopState {
                      {}, the 30-minute break is satisfied, and the delivery deadline kept \
                      counting.{}",
                     clock_text(d.trip.local_hour()),
-                    wake_air_instruction(d, ctx, false)
+                    wake_air_instruction(d)
                 )
             } else {
                 format!(
@@ -468,7 +468,7 @@ impl EnforcementStopState {
                      hours of service reset, you wake rested, and the delivery deadline kept \
                      counting.{}",
                     clock_text(d.trip.local_hour()),
-                    wake_air_instruction(d, ctx, false)
+                    wake_air_instruction(d)
                 )
             };
             self.outcome_text.push_str(&oos_line);

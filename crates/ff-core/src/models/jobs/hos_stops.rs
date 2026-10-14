@@ -62,30 +62,30 @@ impl HosStopAdvice {
         if self.destination_reachable {
             return None;
         }
+        let mut action = self.action.to_string();
+        if let Some(first) = action.get_mut(..1) {
+            first.make_ascii_uppercase();
+        }
         Some(match &self.stop {
             Some(stop) => match &self.suggested {
                 Some(suggested) if suggested.stop.at_mi < stop.at_mi => format!(
-                    "Plan your next {action} stop early: {suggested_name}, {suggested_distance} ahead. Estimated arrival leaves {buffer:.0} minutes before your hours limit. Last legally reachable fallback: {last_name}, {fallback_distance} ahead.",
-                    action = self.action,
+                    "{action} stop: {suggested_name}, {suggested_distance} ahead. Last legal stop: {last_name}, {fallback_distance} ahead.",
                     suggested_name = suggested.stop.spoken_name(),
                     last_name = stop.spoken_name(),
-                    buffer = (self.remaining_min - suggested.travel_min).floor(),
                 ),
                 Some(_) => format!(
-                    "Plan your next {action} stop: {name}, {fallback_distance} ahead. Estimated arrival leaves {buffer:.0} minutes before your hours limit. This is also the last legally reachable fallback.",
-                    action = self.action,
+                    "{action} stop: {name}, {fallback_distance} ahead. Also the last legal stop.",
                     name = stop.spoken_name(),
-                    buffer = (self.remaining_min - self.travel_min).floor(),
                 ),
                 None => format!(
-                    "No {action} stop with a 30-minute buffer is reachable. {name}, {fallback_distance} ahead, is the last legally reachable fallback. Plan to stop there.",
-                    action = self.action,
+                    "No {lower} stop with a 30-minute buffer. Last legal stop: {name}, {fallback_distance} ahead.",
+                    lower = self.action,
                     name = stop.spoken_name(),
                 ),
             },
             None => format!(
-                "No reachable {action} stop remains on this route before your hours limit. Find a safe place to stop and check your route and hours.",
-                action = self.action,
+                "No reachable {lower} stop before your hours limit.",
+                lower = self.action,
             ),
         })
     }
@@ -402,9 +402,9 @@ mod tests {
         assert!(remaining - suggested.travel_min >= COMFORT_BUFFER_MIN);
         assert!(remaining - suggested.travel_min <= COMFORT_BUFFER_MAX_MIN);
         let hint = advice.planning_hint("10 miles", "40 miles").unwrap();
-        assert!(hint.contains("stop early"), "{hint}");
+        assert!(hint.starts_with("Sleep stop:"), "{hint}");
         assert!(hint.contains("10 miles"), "{hint}");
-        assert!(hint.contains("Last legally reachable fallback"), "{hint}");
+        assert!(hint.contains("Last legal stop:"), "{hint}");
         assert!(hint.contains("40 miles"), "{hint}");
         let summary = advice.summary("10 miles", "40 miles");
         assert!(summary.contains("Suggested sleep stop"), "{summary}");
@@ -435,10 +435,7 @@ mod tests {
         assert_eq!(advice.stop.as_ref().unwrap().at_mi, 80.0);
         assert_eq!(advice.suggested.as_ref().unwrap().stop.at_mi, 80.0);
         let hint = advice.planning_hint("80 miles", "80 miles").unwrap();
-        assert!(
-            hint.contains("also the last legally reachable fallback"),
-            "{hint}"
-        );
+        assert!(hint.contains("Also the last legal stop."), "{hint}");
     }
 
     #[test]
@@ -496,8 +493,8 @@ mod tests {
         assert_eq!(advice.suggested.as_ref().unwrap().stop.at_mi, 10.0);
         assert_eq!(advice.stop.as_ref().unwrap().at_mi, 40.0);
         let hint = advice.planning_hint("10 miles", "40 miles").unwrap();
-        assert!(hint.contains("next break stop early"), "{hint}");
-        assert!(hint.contains("Last legally reachable fallback"), "{hint}");
+        assert!(hint.starts_with("Break stop:"), "{hint}");
+        assert!(hint.contains("Last legal stop:"), "{hint}");
     }
 
     #[test]
@@ -524,6 +521,6 @@ mod tests {
             hint.contains("No sleep stop with a 30-minute buffer"),
             "{hint}"
         );
-        assert!(hint.contains("last legally reachable fallback"), "{hint}");
+        assert!(hint.contains("Last legal stop:"), "{hint}");
     }
 }

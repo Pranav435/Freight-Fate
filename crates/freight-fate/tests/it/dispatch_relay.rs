@@ -50,13 +50,10 @@ fn test_accepting_a_relayed_load_drives_the_deadhead_and_the_approach_as_one_pic
     // The offer says the deadhead comes first.
     let text = describe_job(&app.ctx, 1, &job, Some(1));
     assert!(
-        text.contains(&format!("Load waiting in {}", job.spoken_origin())),
+        text.contains(&format!("Load in {}", job.spoken_origin())),
         "{text}"
     );
-    assert!(
-        text.contains("deadhead first, paid at the empty-mile rate"),
-        "{text}"
-    );
+    assert!(text.contains(" deadhead first. "), "{text}");
 
     let mut board = JobBoardState::new(&app.ctx, vec![job.clone()]);
     app.clear_speech();
@@ -64,8 +61,8 @@ fn test_accepting_a_relayed_load_drives_the_deadhead_and_the_approach_as_one_pic
     app.ctx.run_deferred();
     assert!(is::<DrivingState>(&app), "the accept launched a drive");
     let announced = app.main_lines().join(" ");
-    assert!(announced.contains("Load waiting at"), "{announced}");
-    assert!(announced.contains("deadhead"), "{announced}");
+    assert!(announced.starts_with("Accepted."), "{announced}");
+    assert!(announced.contains("Deadhead "), "{announced}");
 
     let (phase, cities) = with_state::<DrivingState, _>(&app, |d, _| {
         (d.phase.to_string(), d.trip.route.cities.clone())

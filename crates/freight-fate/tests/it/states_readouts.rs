@@ -61,7 +61,7 @@ fn test_first_day_briefing_is_a_screen_of_lines() {
         "{rows:?}"
     );
     assert!(
-        rows.iter().any(|r| r.starts_with("First objective: ")),
+        rows.iter().any(|r| r == "Next: the dispatch board."),
         "{rows:?}"
     );
     assert_eq!(rows.len(), 7, "{rows:?}");

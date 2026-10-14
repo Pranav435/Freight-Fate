@@ -605,13 +605,7 @@ fn test_sleeping_shuts_down_a_running_engine() {
         .iter()
         .find(|l| l.contains("You slept 10 hours"))
         .unwrap_or_else(|| panic!("no wake line: {lines:#?}"));
-    assert!(wake.contains("Air pressure 55 psi"), "{wake}");
-    assert!(
-        wake.contains("Choose Back to the road, then press E to start the engine"),
-        "{wake}"
-    );
-    assert!(wake.contains("At air ready"), "{wake}");
-    assert!(wake.contains("P releases the parking brake"), "{wake}");
+    assert!(wake.contains("Engine off, air 55 psi."), "{wake}");
 
     harness.clear_speech();
     harness.select_menu_item("Sleep 10 hours");
@@ -804,10 +798,7 @@ fn test_full_parking_offers_drive_on_and_shoulder() {
         .into_iter()
         .find(|line| line.contains("sleep poorly on the shoulder"))
         .unwrap_or_else(|| panic!("no shoulder wake line: {:#?}", spoken(&harness)));
-    assert!(
-        wake.contains("Air pressure 55 psi. Press E to start the engine"),
-        "{wake}"
-    );
+    assert!(wake.contains("Engine off, air 55 psi."), "{wake}");
     assert!(
         !wake.contains("Back to the road"),
         "there is no stop menu to go back to: {wake}"
@@ -960,14 +951,7 @@ fn test_t_plans_rest_instead_of_opening_roadside_sleep_while_moving() {
         // the truck, so the decline is the only honest answer -- and what T
         // must never do while rolling is open roadside sleep.
         let said = last(&harness);
-        assert!(
-            said.starts_with("No sleep-capable route stop is ahead on this route"),
-            "{said}"
-        );
-        assert!(
-            said.contains("Away from a route point, emergency shoulder sleep is available"),
-            "{said}"
-        );
+        assert_eq!(said, "No sleep stop ahead. Shoulder sleep available.");
         assert_eq!(harness.read_drive(|d| d.trip.game_minutes), minutes_before);
         assert!(!harness.read_drive(|d| d.trip.truck.parking_brake));
         drop(harness);
@@ -1059,7 +1043,11 @@ fn test_shoulder_sleep_revalidates_stop_and_unwinds_without_stale_pause_speech()
         "the unwound pause menu must not speak on its way out: {:#?}",
         spoken(&harness)
     );
-    assert!(last(&harness).contains("Press E"), "{}", last(&harness));
+    assert!(
+        last(&harness).contains("Engine off, air"),
+        "{}",
+        last(&harness)
+    );
 }
 
 #[test]

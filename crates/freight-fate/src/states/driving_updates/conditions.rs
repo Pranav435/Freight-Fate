@@ -237,12 +237,12 @@ impl DrivingState {
             // an assist that is not working, and is the likeliest reason it
             // was reported three times as "it did not stop me".
             //
-            // Unless the terminal release already named it: "Facility stopping
-            // assistance is taking you to the entrance" a second earlier, then
-            // this, is the same handoff announced twice.
+            // Unless the terminal release already armed the pull-ahead: the
+            // truck moving off the bar is that handoff, and saying it here
+            // too announced it twice.
             if !self.approach_pull_ahead {
                 ctx.say_event_with(
-                    "Facility stopping assistance taking the pedals to the entrance.",
+                    "Slowing for the entrance.",
                     SayEvent::queued()
                         .priority(EventPriority::Route)
                         .category(SpeechCategory::Confirmation),
@@ -499,7 +499,7 @@ impl DrivingState {
             "to the entrance"
         };
         ctx.say_event_with(
-            format!("Facility stopping assistance released; pull ahead {whither}."),
+            format!("Pull ahead {whither}."),
             SayEvent::queued()
                 .priority(EventPriority::Route)
                 .category(SpeechCategory::Confirmation),
@@ -532,7 +532,7 @@ impl DrivingState {
         if self.trip.truck.chains_just_snapped {
             self.trip.truck.chains_just_snapped = false;
             ctx.say_event_with(
-                "A tire chain let go. The set is scrap; you are running on rubber again.",
+                "A tire chain broke.",
                 SayEvent::new().category(SpeechCategory::Safety),
             );
         }
@@ -540,10 +540,7 @@ impl DrivingState {
             self.trip.truck.chains_on && self.trip.truck.speed_mph() > CHAIN_SAFE_MPH + 2.0;
         if chains_fast && !self.chains_fast_active {
             ctx.say_event_with(
-                format!(
-                    "The chains are hammering the pavement at this speed. Keep it under \
-                     {CHAIN_SAFE_MPH:.0}."
-                ),
+                format!("Chains: keep under {CHAIN_SAFE_MPH:.0}."),
                 SayEvent::new().category(SpeechCategory::Coaching),
             );
         }

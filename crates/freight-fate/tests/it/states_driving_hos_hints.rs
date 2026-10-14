@@ -1,9 +1,7 @@
 //! Opt-in early stop planning, using the same legal-reach route as Alt D.
 
-use ff_core::input_hints::CONTROLLER;
 use ff_core::sim::trip_models::RoadStop;
 use freight_fate::app::testing::TestApp;
-use freight_fate::controller::fakes::FakePad;
 use freight_fate::playtest::menu::menu_rows;
 use freight_fate::states::base::{InputEvent, Key, Mods};
 use freight_fate::states::driving::DrivingState;
@@ -40,18 +38,12 @@ fn driving_frame_uses_the_opt_in_and_keeps_required_warnings_without_it() {
         ctx.profile.as_mut().unwrap().hos.duty_min = 660.0;
         d.update_hours_and_fatigue(ctx, 0.0);
     });
-    assert!(!app
-        .event_lines()
-        .join(" ")
-        .contains("Plan your next sleep stop"));
+    assert!(!app.event_lines().join(" ").contains("Sleep stop:"));
     app.ctx.settings.hos_planning_hints = true;
     drive_and_ctx(&drive, &mut app, |d, ctx| {
         d.update_hours_and_fatigue(ctx, 0.0)
     });
-    assert!(app
-        .event_lines()
-        .join(" ")
-        .contains("Plan your next sleep stop"));
+    assert!(app.event_lines().join(" ").contains("Sleep stop:"));
 
     app.ctx.stop_event_speech();
     app.clear_speech();
@@ -79,14 +71,14 @@ fn optional_hint_waits_until_three_hours_and_speaks_once() {
     app.ctx.profile.as_mut().unwrap().hos.duty_min = 660.0;
     drive_and_ctx(&drive, &mut app, |d, ctx| d.maybe_hos_planning_hint(ctx));
     let heard = app.event_lines().join(" ");
-    assert!(heard.contains("Plan your next sleep stop"), "{heard}");
+    assert!(heard.contains("Sleep stop:"), "{heard}");
     assert!(heard.contains("Last"), "{heard}");
-    assert!(heard.contains("last legally reachable fallback"), "{heard}");
+    assert!(heard.contains("Also the last legal stop."), "{heard}");
     drive_and_ctx(&drive, &mut app, |d, ctx| d.maybe_hos_planning_hint(ctx));
     assert_eq!(
         app.event_lines()
             .iter()
-            .filter(|line| line.contains("Plan your next sleep stop"))
+            .filter(|line| line.contains("Sleep stop:"))
             .count(),
         1
     );
@@ -103,9 +95,7 @@ fn optional_hint_waits_until_three_hours_and_speaks_once() {
     });
     let pending = app.ctx.event_delivery_pending();
     assert!(
-        app.event_lines()
-            .join(" ")
-            .contains("Plan your next sleep stop"),
+        app.event_lines().join(" ").contains("Sleep stop:"),
         "events={:?}, first={first_key:?}, warned={:?}, pending={}",
         app.event_lines(),
         app.ctx.profile.as_ref().unwrap().hos.warned,
@@ -114,32 +104,14 @@ fn optional_hint_waits_until_three_hours_and_speaks_once() {
 }
 
 #[test]
-fn early_hint_names_a_rebound_hours_readout_key() {
+fn early_hint_names_no_readout_key() {
     let (mut app, drive) = setup("sleep");
     app.ctx.settings.hos_planning_hints = true;
-    app.ctx.settings.key_bindings = "hos_drive=f7".into();
-    app.ctx.apply_bindings();
     app.ctx.profile.as_mut().unwrap().hos.duty_min = 660.0;
     drive_and_ctx(&drive, &mut app, |d, ctx| d.maybe_hos_planning_hint(ctx));
     let said = app.event_lines().join(" ");
-    assert!(said.contains("Press F7 for full hours"), "{said}");
-    assert!(!said.contains("Press Alt D"), "{said}");
-}
-
-#[test]
-fn early_hint_on_a_controller_names_the_clock_button() {
-    let (mut app, drive) = setup("sleep");
-    app.ctx.settings.hos_planning_hints = true;
-    let c = &mut app.ctx.controller;
-    c.set_enabled(true);
-    c.bind_device(Box::new(FakePad::new(0)), "test pad");
-    c.set_id_pending(false);
-    c.active_device = CONTROLLER;
-    app.ctx.profile.as_mut().unwrap().hos.duty_min = 660.0;
-    drive_and_ctx(&drive, &mut app, |d, ctx| d.maybe_hos_planning_hint(ctx));
-    let said = app.event_lines().join(" ");
-    assert!(said.contains("Press D-pad right for full hours"), "{said}");
-    assert!(!said.contains("Alt D"), "{said}");
+    assert!(said.contains("Sleep stop:"), "{said}");
+    assert!(!said.contains("Press"), "{said}");
 }
 
 #[test]
@@ -158,11 +130,14 @@ fn early_sleep_hint_and_requested_readout_separate_plan_from_legal_fallback() {
         d.maybe_hos_planning_hint(ctx);
     });
     let hint = app.event_lines().join(" ");
-    assert!(hint.contains("Plan your next sleep stop early"), "{hint}");
+    assert!(
+        hint.contains("Sleep stop: travel center: Comfortable"),
+        "{hint}"
+    );
     assert!(hint.contains("Comfortable"), "{hint}");
-    assert!(hint.contains("Last legally reachable fallback"), "{hint}");
+    assert!(hint.contains("Last legal stop:"), "{hint}");
     assert!(hint.contains("Legal fallback"), "{hint}");
-    assert!(hint.contains("Press Alt D"), "{hint}");
+    assert!(!hint.contains("Press"), "{hint}");
     drive_and_ctx(&drive, &mut app, |d, ctx| {
         d.handle_key_event(ctx, &InputEvent::key_mods(Key::D, Mods::ALT));
     });
@@ -216,7 +191,10 @@ fn early_break_hint_prefers_a_break_stop_and_keeps_a_sleep_stop_as_fallback() {
         d.maybe_hos_planning_hint(ctx);
     });
     let hint = app.event_lines().join(" ");
-    assert!(hint.contains("Plan your next break stop early"), "{hint}");
+    assert!(
+        hint.contains("Break stop: travel center: Break first"),
+        "{hint}"
+    );
     assert!(hint.contains("Break first"), "{hint}");
     assert!(hint.contains("Sleeper fallback"), "{hint}");
 }
@@ -444,8 +422,10 @@ fn early_hint_names_when_no_stop_can_be_reached() {
         d.maybe_hos_planning_hint(ctx);
     });
     let heard = app.event_lines().join(" ");
-    assert!(heard.contains("No reachable sleep stop remains"), "{heard}");
-    assert!(heard.contains("Find a safe place to stop"), "{heard}");
+    assert!(
+        heard.contains("No reachable sleep stop before your hours limit."),
+        "{heard}"
+    );
 }
 
 #[test]
@@ -460,7 +440,7 @@ fn break_hint_uses_break_stops_and_stays_ahead_of_the_hour_warning() {
     }
     drive_and_ctx(&drive, &mut app, |d, ctx| d.maybe_hos_planning_hint(ctx));
     let heard = app.event_lines().join(" ");
-    assert!(heard.contains("Plan your next break stop"), "{heard}");
+    assert!(heard.contains("Break stop:"), "{heard}");
     assert!(!heard.contains("Hours of service:"), "{heard}");
 }
 
@@ -488,10 +468,7 @@ fn quiet_and_urgent_only_suppress_optional_words_without_spending_the_hint() {
             .any(|key| key.contains("plan-hint")));
         app.ctx.settings.driving_speech = "standard".into();
         drive_and_ctx(&drive, &mut app, |d, ctx| d.maybe_hos_planning_hint(ctx));
-        assert!(app
-            .event_lines()
-            .join(" ")
-            .contains("Plan your next sleep stop"));
+        assert!(app.event_lines().join(" ").contains("Sleep stop:"));
     }
 }
 
@@ -528,20 +505,14 @@ fn interrupted_hint_is_retried_until_delivery_completes() {
     app.ctx.settings.hos_planning_hints = true;
     app.ctx.profile.as_mut().unwrap().hos.duty_min = 660.0;
     drive_and_ctx(&drive, &mut app, |d, ctx| d.maybe_hos_planning_hint(ctx));
-    assert!(app
-        .event_lines()
-        .join(" ")
-        .contains("Plan your next sleep stop"));
+    assert!(app.event_lines().join(" ").contains("Sleep stop:"));
     assert!(app.ctx.profile.as_ref().unwrap().hos.warned.is_empty());
 
     app.ctx.stop_event_speech();
     app.clear_speech();
     clock.advance(120.0);
     drive_and_ctx(&drive, &mut app, |d, ctx| d.maybe_hos_planning_hint(ctx));
-    assert!(app
-        .event_lines()
-        .join(" ")
-        .contains("Plan your next sleep stop"));
+    assert!(app.event_lines().join(" ").contains("Sleep stop:"));
     assert!(app.ctx.profile.as_ref().unwrap().hos.warned.is_empty());
 
     clock.advance(120.0);

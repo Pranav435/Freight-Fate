@@ -157,8 +157,7 @@ fn keep_last<T>(items: &mut Vec<T>, max: usize) {
     }
 }
 
-const ENFORCEMENT_OFF: &str =
-    "Hours of service enforcement is off; the ELD clock still records time.";
+const ENFORCEMENT_OFF: &str = "Hours enforcement off.";
 const RESET_ADVICE: &str = "Sleep 10 hours at a rest stop to reset.";
 
 /// kind -> (clause after "you are", sentence that can lead a readout)

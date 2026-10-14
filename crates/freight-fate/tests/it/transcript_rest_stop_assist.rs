@@ -348,7 +348,7 @@ fn test_selected_stop_assist_does_nothing_without_t_and_x() {
     assert!(approx(harness.read_drive(|d| d.truck().brake), 0.0));
     assert!(!spoken(&harness)
         .iter()
-        .any(|line| line.contains("stopping assistance braking")));
+        .any(|line| line.contains("Slowing for the entrance")));
     assert!(stop.at_mi > harness.read_drive(|d| d.trip.position_mi));
 }
 
@@ -458,7 +458,7 @@ fn test_selected_stop_assist_reaches_full_stop_and_sleep_menu() {
     assert!(harness.read_drive(|d| d.trip.planned_stop_key.is_none()));
     assert!(spoken(&harness)
         .iter()
-        .any(|line| line.contains("Facility stopping assistance taking the pedals")));
+        .any(|line| line.contains("Slowing for the entrance.")));
     assert!(spoken(&harness)
         .iter()
         .any(|line| line.contains("Stopped at public rest area: Prairie View Rest Area")));
@@ -493,7 +493,7 @@ fn test_selected_stop_assist_reaches_full_stop_and_sleep_menu() {
     };
     let selected_i = index_of("Sleep stop planned");
     let armed_i = index_of("Signal ");
-    let braking_i = index_of("Facility stopping assistance taking the pedals");
+    let braking_i = index_of("Slowing for the entrance.");
     let stopped_i = index_of("Stopped at public rest area");
     let menu_i = index_of("Sleep 10 hours");
     assert!(
@@ -578,9 +578,6 @@ fn test_overshoot_clears_assist_then_stopped_t_recovers() {
         lower.contains("drove past")
             && (lower.contains("without stopping") || lower.contains("never stopped"))
     }));
-    assert!(spoken(&harness)
-        .iter()
-        .any(|line| line.contains("disarmed for that stop")));
 
     let at_mi = stop.at_mi;
     harness.with_drive(move |d, _| {
@@ -602,14 +599,7 @@ fn test_rolling_t_without_sleep_stop_gives_recovery_guidance() {
     assert!(harness.state_is::<DrivingState>());
     assert!(harness.read_drive(|d| d.selected_stop_key.is_none()));
     let said = last(&harness);
-    assert!(
-        said.contains("No sleep-capable route stop is ahead on this route"),
-        "{said}"
-    );
-    assert!(
-        said.contains("Press Tab for the upcoming route points"),
-        "{said}"
-    );
+    assert_eq!(said, "No sleep stop ahead. Shoulder sleep available.");
 }
 
 #[test]
@@ -628,7 +618,7 @@ fn test_unselected_stop_passes_without_braking_or_menu() {
     assert!(harness.read_drive(|d| d.ramp_stop.is_none()));
     assert!(!spoken(&harness)
         .iter()
-        .any(|line| line.contains("stopping assistance braking")));
+        .any(|line| line.contains("Slowing for the entrance")));
 }
 
 #[test]

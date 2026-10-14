@@ -1324,7 +1324,7 @@ fn test_the_dial_with_cruise_off_says_it_is_off() {
 
 #[test]
 fn test_the_keeper_refuses_politely_when_it_is_switched_off() {
-    // Shane, 2026-08-15: naming the way out matters more than the refusal.
+    // Shane, 2026-08-15: the refusal names where the keeper will not hold.
     let mut app = TestApp::new();
     let mut d = a_real_drive(&mut app);
     app.ctx.settings.speed_keeper = false;
@@ -1334,7 +1334,7 @@ fn test_the_keeper_refuses_politely_when_it_is_switched_off() {
 
     let spoken = app.main_lines().join(" ");
     assert!(
-        spoken.contains("The speed keeper holds speed here; turn it on in Settings"),
+        spoken.contains("No cruise in a construction zone."),
         "{spoken}"
     );
     assert!(d.keeper_mph.is_none());

@@ -165,7 +165,7 @@ fn test_a_steep_downgrade_is_called_out_before_the_truck_is_on_it() {
     );
     assert!(spoken.iter().any(|l| l.contains("at least")), "{spoken:#?}");
     assert!(
-        spoken.iter().any(|l| l.contains("engine brake")),
+        spoken.iter().any(|l| l.contains("Set the jake")),
         "{spoken:#?}"
     );
 

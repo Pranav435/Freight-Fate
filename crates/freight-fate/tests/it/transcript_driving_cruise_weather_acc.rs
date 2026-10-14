@@ -622,7 +622,7 @@ fn test_adaptive_cruise_caps_at_posted_limit() {
     assert!(harness.read_drive(|d| d.acc_limit_capped));
     assert!(harness.read_drive(|d| d.truck().throttle) < 0.8); // backed off the throttle
     assert!(harness.read_drive(|d| d.truck().brake) > 0.0); // braking down toward the limit
-    assert!(said_any(&harness, "adaptive cruise easing to"));
+    assert!(said_any(&harness, "ruise easing to"));
 }
 
 #[test]
@@ -642,7 +642,7 @@ fn test_adaptive_cruise_slows_before_large_limit_drop() {
     assert!(harness.read_drive(|d| d.acc_limit_capped));
     assert!(harness.read_drive(|d| d.truck().throttle) < 0.8);
     assert!(harness.read_drive(|d| d.truck().brake) > 0.0);
-    assert!(said_any(&harness, "adaptive cruise easing to"));
+    assert!(said_any(&harness, "ruise easing to"));
 }
 
 #[test]
@@ -667,7 +667,7 @@ fn test_adaptive_cruise_easing_preannounces_the_capped_target() {
 
     frame(&mut harness, DT);
 
-    assert!(said_any(&harness, "adaptive cruise easing to"));
+    assert!(said_any(&harness, "ruise easing to"));
     // 40 + ACC_LIMIT_OFFSET_MPH
     assert!(harness.read_drive(|d| d
         .trip
@@ -1046,7 +1046,7 @@ fn test_speed_control_restores_cruise_target_after_zone() {
     assert_eq!(
         spoken(&harness)
             .iter()
-            .filter(|e| e.contains("Adaptive cruise resuming"))
+            .filter(|e| e.contains("Cruise resuming"))
             .count(),
         1
     );
@@ -1185,7 +1185,7 @@ fn test_a_hazard_that_leaves_the_truck_below_cruise_speed_still_resumes() {
         spoken(&harness)
     );
     assert!(
-        said_any(&harness, "Automatic speed control resuming."),
+        said_any(&harness, "Speed control resuming."),
         "{:?}",
         spoken(&harness)
     );

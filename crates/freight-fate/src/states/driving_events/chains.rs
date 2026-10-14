@@ -141,8 +141,7 @@ impl DrivingState {
             let street = Self::start_street_text(&route);
             ctx.audio.play_with("ui/notify", 0.7, 0.0);
             let message = format!(
-                "Off the ramp and onto city streets. {street}.{first_corner} {} to the facility \
-                 gate.",
+                "{street}.{first_corner} {} to the facility gate.",
                 self.trip.distance_text(route.miles())
             );
             self.announce_streets(ctx, message, !first_corner.is_empty());
@@ -476,10 +475,7 @@ impl DrivingState {
             let mut opts = SayEvent::queued().priority(EventPriority::Route);
             opts.category = Some(SpeechCategory::Navigation);
             ctx.say_event_with(
-                format!(
-                    "Out of the gate and onto city streets. {street}. {distance} to the \
-                     {merge_highway} on-ramp."
-                ),
+                format!("{street}. {distance} to the {merge_highway} on-ramp."),
                 opts,
             );
             self.mark_start_cue_said();
@@ -640,7 +636,7 @@ impl DrivingState {
             // sudden highway-speed transition.
             self.start_departure_merge_recovery(speed, limit);
             format!(
-                "Lane ending at {}, under the {} traffic is running. Take a big gap.",
+                "Lane ending at {}, traffic at {}. Take a big gap.",
                 ctx.settings.speed_text(speed),
                 ctx.settings.speed_text(limit)
             )

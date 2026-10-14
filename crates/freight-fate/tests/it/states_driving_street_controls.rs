@@ -302,14 +302,8 @@ fn test_the_assists_stop_for_a_red_street_light_hold_it_and_drive_on_at_green() 
     assert!(stopped, "never held at the red\n{heard}");
     // Named in whatever phase it was in; pinned red from the next frame on.
     assert!(heard.contains("Traffic light ahead. Light"), "{heard}");
-    assert!(
-        heard.contains("Route-transition assistance braking for the light."),
-        "{heard}"
-    );
-    assert!(
-        heard.contains("Stopped at the red light. Assistance is holding the brakes for green."),
-        "{heard}"
-    );
+    assert!(heard.contains("Braking for the light."), "{heard}");
+    assert!(heard.contains("Red light."), "{heard}");
     let at = harness.read_drive(|d| d.trip.position_mi);
     assert!(
         at <= bar_mi + 0.005 && bar_mi - at < 0.03,
@@ -368,11 +362,7 @@ fn test_a_green_street_light_is_driven_at_the_streets_own_speed() {
         slowest > 25.0,
         "slowed to {slowest:.1} for a green\n{heard}"
     );
-    for bad in [
-        "Route-transition assistance slowing",
-        "Green light. Through",
-        "far too fast",
-    ] {
+    for bad in ["Slowing for", "Green light. Through", "far too fast"] {
         assert!(!heard.contains(bad), "heard {bad:?}\n{heard}");
     }
 }
@@ -438,7 +428,7 @@ fn test_the_assists_stop_at_a_street_stop_sign_and_drive_on_from_it() {
     assert!(stopped_at_sign, "never stopped at the sign\n{heard}");
     assert!(heard.contains("Stop sign ahead."), "{heard}");
     assert!(heard.contains("Stopped at the sign."), "{heard}");
-    assert!(heard.contains("Speed keeper pulling ahead."), "{heard}");
+    assert!(!heard.contains("Speed keeper pulling ahead."), "{heard}");
     assert!(
         harness.read_drive(|d| d.trip.position_mi) > node + 0.05,
         "never drove on\n{heard}"
@@ -911,10 +901,5 @@ fn test_the_streets_start_on_the_road_the_destination_ramp_meets() {
     let first = d.trip.route.legs[0].highway.clone();
     assert_eq!(first, exit_chain.legs[0].highway);
     let heard = app.event_lines().join("\n");
-    assert!(
-        heard.contains(&format!(
-            "Off the ramp and onto city streets. Start on {first}"
-        )),
-        "{heard}"
-    );
+    assert!(heard.contains(&format!("Start on {first}")), "{heard}");
 }

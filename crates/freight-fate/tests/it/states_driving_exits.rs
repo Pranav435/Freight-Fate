@@ -415,7 +415,7 @@ fn test_canceled_destination_exit_signal_stays_on_highway() {
 
     assert!(harness.read_drive(|d| d.ramp_mi.is_none()));
     assert!(
-        !said_any(&harness, "stayed on the highway"),
+        !said_any(&harness, "Missed the exit"),
         "{:?}",
         spoken(&harness)
     );
@@ -510,7 +510,7 @@ fn test_destination_exit_auto_arms_and_takes_ramp_with_valid_setup() {
     assert!(
         spoken(&harness)
             .iter()
-            .any(|line| line.contains("You take") && line.contains("destination exit")),
+            .any(|line| line.contains("destination exit for")),
         "{:?}",
         spoken(&harness)
     );
@@ -610,7 +610,7 @@ fn test_manual_lane_keeping_requires_signal_for_destination_exit() {
 
         assert!(harness.read_drive(|d| d.ramp_mi.is_none()), "{mode}");
         assert!(
-            said_any(&harness, "signal was not set"),
+            said_any(&harness, ", no signal."),
             "{mode}: {:?}",
             spoken(&harness)
         );
@@ -637,7 +637,7 @@ fn test_relaxed_lane_drift_infers_destination_exit_intent() {
     let ramp = harness.read_drive(|d| d.ramp_mi);
     let start = ramp_starts_at(&harness, &stop);
     assert!(ramp.is_some_and(|mi| (mi - start).abs() < 1e-6), "{ramp:?}");
-    assert!(said_any(&harness, "You take"), "{:?}", spoken(&harness));
+    assert!(said_any(&harness, " of ramp"), "{:?}", spoken(&harness));
 }
 
 #[test]
@@ -729,12 +729,12 @@ fn test_a_blown_destination_exit_names_the_loop_back_not_a_later_exit() {
             "{lane_keeping}"
         );
         assert!(
-            said_any(&harness, "the destination exit comes around again"),
+            said_any(&harness, "exit comes around again"),
             "{lane_keeping}: {:?}",
             spoken(&harness)
         );
         assert!(
-            !said_any(&harness, "recover at the next safe exit"),
+            !said_any(&harness, "Take a later exit"),
             "{lane_keeping}: {:?}",
             spoken(&harness)
         );
@@ -888,7 +888,7 @@ fn test_exit_missed_after_gore_window() {
         assert!(d.exit_stop.is_none());
     });
     assert!(
-        said_any(&harness, "missed the exit window"),
+        said_any(&harness, "Missed the exit."),
         "{:?}",
         spoken(&harness)
     );
@@ -921,12 +921,12 @@ fn test_exit_traffic_pressure_changes_missed_lane_recovery() {
 
     assert!(harness.read_drive(|d| d.ramp_mi.is_none()));
     assert!(
-        said_any(&harness, "Traffic boxed you out of the exit lane"),
+        said_any(&harness, "Boxed out of the exit lane"),
         "{:?}",
         spoken(&harness)
     );
     assert!(
-        said_any(&harness, "recover at the next safe exit"),
+        said_any(&harness, "Take a later exit."),
         "{:?}",
         spoken(&harness)
     );
@@ -980,15 +980,11 @@ fn test_exit_traffic_still_speaks_once_you_signal_for_that_exit() {
 
     let heard = pressure_speech(&harness);
     assert!(
-        heard
-            .iter()
-            .any(|line| line.contains("Exit traffic building")),
+        heard.iter().any(|line| line.contains("Exit traffic,")),
         "{heard:?}"
     );
     assert!(
-        heard
-            .iter()
-            .any(|line| line.contains("Hold the right lane")),
+        heard.iter().any(|line| line.contains("Hold right")),
         "{heard:?}"
     );
 }
@@ -1000,13 +996,9 @@ fn test_merging_and_construction_pressures_still_speak_unsignalled() {
     let mut harness = a_drive("Exits");
     let at = harness.read_drive(|d| d.trip.position_mi) + 1.6;
     for (kind, direction, phrase) in [
-        ("route_merge", "right", "Merging traffic in"),
-        (
-            "construction_merge",
-            "left",
-            "Traffic squeezing at the construction taper",
-        ),
-        ("traffic_pack", "right", "Traffic pack in"),
+        ("route_merge", "right", "Merging traffic,"),
+        ("construction_merge", "left", "Taper squeezing,"),
+        ("traffic_pack", "right", "Traffic pack,"),
     ] {
         // Real time between the three cues: these are AMBIENT lines, and
         // AMBIENT is the one priority the pacer's stale rule throws away. Fire
@@ -1063,7 +1055,7 @@ fn test_exit_speed_assist_slows_with_full_lane_keeping() {
     assert!(harness.read_drive(|d| d.truck().brake >= 0.35));
     let slowing: Vec<String> = spoken(&harness)
         .into_iter()
-        .filter(|line| line.contains("Exit speed assistance slowing"))
+        .filter(|line| line.starts_with("Slowing."))
         .collect();
     assert!(!slowing.is_empty(), "{:?}", spoken(&harness));
     // No lane request at all: lane keeping on full moves right itself, and a
@@ -1112,11 +1104,7 @@ fn test_the_exit_speed_assist_runs_when_lane_keeping_takes_the_exit() {
         harness.read_drive(|d| d.truck().brake >= 0.35),
         "the assist never touched the brakes without a signal"
     );
-    assert!(
-        said_any(&harness, "Exit speed assistance slowing"),
-        "{:?}",
-        spoken(&harness)
-    );
+    assert!(said_any(&harness, "Slowing."), "{:?}", spoken(&harness));
 }
 
 #[test]

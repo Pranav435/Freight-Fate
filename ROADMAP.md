@@ -78,7 +78,11 @@ bookmarks usable.
       own job only; what lane keeping and stopping assistance do is the
       manual's. Space gives RPM only with a manual transmission and air or
       brakes only when they need attention; Tab keeps the full reading.
-      Spanish carries the new lines.
+      Then a whole-game pass (owner, same day): driving, the terminal,
+      dispatch board, pickup and career lines drop key reminders, assist
+      explanations, restated facts and coaching prose; explanations a
+      player may still need moved to the screen's F1 help. Cruise eases and
+      builds for hills in silence. Spanish carries the new lines.
 - [ ] (Found along the way) The advise-only follow-up to a turn the route
       already named ("Advise 11 miles per hour.") is queued on the droppable
       default, so busy street speech can drop it; a player heard the advise

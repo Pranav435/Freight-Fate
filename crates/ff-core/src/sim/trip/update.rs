@@ -246,7 +246,7 @@ impl Trip {
                                 format!("{notice}. Last-known conditions in use.")
                             }
                         }
-                        _ => "Live weather unavailable. Simulated weather in use.".to_string(),
+                        _ => "Live weather unavailable.".to_string(),
                     };
                     let current = self.weather.current;
                     self.emit(
@@ -712,7 +712,7 @@ impl Trip {
         }
     }
 
-    /// A traffic advisory, with the terse half these were shipped without.
+    /// A traffic advisory: one short form for every verbosity.
     pub fn traffic_pressure_message(
         &self,
         pressure: &TrafficPressure,
@@ -721,27 +721,14 @@ impl Trip {
         let distance = self.ahead_text(ahead);
         let speed = self.speed_value(pressure.target_speed_mph);
         let side = &pressure.direction;
-        match pressure.kind.as_str() {
-            "exit" => SpokenMessage::with_terse(
-                format!("Exit traffic building in {distance}. Hold the {side} lane, near {speed}."),
-                format!("Exit traffic, {distance}. Hold {side}, {speed}."),
-            ),
+        let text = match pressure.kind.as_str() {
+            "exit" => format!("Exit traffic, {distance}. Hold {side}, {speed}."),
             // No target speed: the taper's posted limit is spoken separately.
-            "construction_merge" => SpokenMessage::with_terse(
-                format!(
-                    "Traffic squeezing at the construction taper in {distance}. Merge {side} early."
-                ),
-                format!("Taper squeezing, {distance}. Merge {side}."),
-            ),
-            "route_merge" => SpokenMessage::with_terse(
-                format!("Merging traffic in {distance}. Keep {side}."),
-                format!("Merging traffic, {distance}. Keep {side}."),
-            ),
-            _ => SpokenMessage::with_terse(
-                format!("Traffic pack in {distance}, near {speed}."),
-                format!("Traffic pack, {distance}. {speed}."),
-            ),
-        }
+            "construction_merge" => format!("Taper squeezing, {distance}. Merge {side}."),
+            "route_merge" => format!("Merging traffic, {distance}. Keep {side}."),
+            _ => format!("Traffic pack, {distance}. {speed}."),
+        };
+        SpokenMessage::new(text)
     }
 
     pub fn check_traffic_pressures(&mut self) {

@@ -625,8 +625,8 @@ fn test_the_status_readout_names_the_speed_cruise_is_actually_holding_on_a_ramp(
         resumed.contains("for the exit"),
         "the resume never named the exit -- {resumed}"
     );
-    let ramp_number = number_after(&resumed, r"Adaptive cruise resuming at (\d+)")
-        .expect("the resume names a number");
+    let ramp_number =
+        number_after(&resumed, r"Cruise resuming, (\d+)").expect("the resume names a number");
     let space = ask(&mut harness, Key::Space);
     let holding = number_after(&space, r"(?i)adaptive cruise holding (\d+)")
         .expect("the status readout names what cruise is holding");

@@ -90,11 +90,7 @@ impl DrivingState {
         {
             message.normal = message
                 .normal
-                .replace("billed to carrier settlement", "charged to your settlement")
-                .replace(
-                    "recorded for carrier settlement",
-                    "recorded for your settlement",
-                );
+                .replace("billed to carrier settlement", "charged to your settlement");
             if let Some(terse) = message.terse.as_mut() {
                 *terse = terse.replace(", carrier.", ", your settlement.");
             }
@@ -1211,11 +1207,7 @@ impl DrivingState {
         // cruise canceled". As a zone entry (STATUS) urgent only dropped it
         // whole, and the cruise let go without a word; quiet now says it
         // short.
-        let message = if self.terse_speech(ctx) {
-            message.plus("Cruise off.")
-        } else {
-            message.plus("Adaptive cruise disabled; take manual speed control.")
-        };
+        let message = message.plus("Cruise off.");
         let mut opts = SayEvent::queued().priority(EventPriority::Route);
         opts.category = Some(SpeechCategory::Safety);
         ctx.say_event_with(message, opts);

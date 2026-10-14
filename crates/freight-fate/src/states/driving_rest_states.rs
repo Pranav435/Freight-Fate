@@ -46,16 +46,12 @@ use crate::states::driving_updates::pending::EnforcementStopParams;
 
 /// Leaving a stop menu. The engine is whatever it already was: "starts the
 /// engine" over a running one sent the driver's press to shut it down.
-pub fn back_on_the_road_line(ctx: &GameContext, engine_on: bool) -> String {
-    let brake = ctx.control_hint("parking_brake");
+pub fn back_on_the_road_line(engine_on: bool) -> String {
     if engine_on {
-        return format!("Back on the road. Parking brake set. {brake} releases the brake.");
+        "Parking brake set.".to_string()
+    } else {
+        "Engine off, parking brake set.".to_string()
     }
-    let engine = ctx.control_hint("engine");
-    format!(
-        "Back on the road. Parking brake set. {engine} starts the engine, {brake} releases the \
-         brake."
-    )
 }
 
 /// Where the career clock stands right now, mid-trip included.

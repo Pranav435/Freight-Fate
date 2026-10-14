@@ -417,7 +417,7 @@ impl DrivingState {
     /// driver asked, and I again turns it off.
     pub fn toggle_lane_locator(&mut self, ctx: &mut GameContext) {
         if ctx.settings.lane_is_automated() {
-            ctx.say("Lane keeping assistance is on full; the truck holds the lane for you.");
+            ctx.say("Lane keeping on full.");
             return;
         }
         self.lane_locator_on = !self.lane_locator_on;
@@ -469,9 +469,9 @@ impl DrivingState {
             let stage = truck.engine_brake_stage;
             if grade > 0.005 {
                 if accel_mph_s < -GRADE_HOLDING_MPH_PER_S {
-                    parts.push("The hill has the load; expect to lose speed.".to_string());
+                    parts.push("Losing speed.".to_string());
                 } else if accel_mph_s > GRADE_HOLDING_MPH_PER_S {
-                    parts.push("Pulling it with speed to spare.".to_string());
+                    parts.push("Gaining speed.".to_string());
                 } else {
                     parts.push("Holding speed.".to_string());
                 }
@@ -489,12 +489,12 @@ impl DrivingState {
                         };
                         parts.push(format!("Jake stage {stage} is not holding it; {losing}."));
                     } else if truck.throttle <= 0.05 {
-                        parts.push("Speed is building; set the jake before it runs.".to_string());
+                        parts.push("Speed building. Set the jake.".to_string());
                     }
                 } else if stage > 0 && truck.jake_brake_force() > 0.0 {
                     parts.push(format!("Jake stage {stage} has it."));
                 } else {
-                    parts.push("Speed in hand.".to_string());
+                    parts.push("Holding speed.".to_string());
                 }
             }
         }

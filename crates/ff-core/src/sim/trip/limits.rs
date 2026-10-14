@@ -41,52 +41,14 @@ impl Trip {
     }
 
     pub fn zone_warning_message(&self, zone: &Zone, ahead: f64) -> String {
-        if zone.reason == "construction" {
-            let merge_part = if zone.closed_side.is_some() {
-                let (shut, keep) = Self::closure_phrases(zone);
-                format!("The {shut} lane is closed, merge {keep} before the work zone. ")
-            } else {
-                "All lanes open through the work. ".to_string()
-            };
-            // NOT "Brake now!". This is an advance warning that fires up to
-            // eight miles out, and "Brake now" is the emergency hazard
-            // opening -- the words the cab uses for debris in your lane.
-            // Telling a driver to brake now for something eight miles away is
-            // untrue, and they act on it: Shane asked why the game slows "as
-            // early as we are" for construction when the assists in fact ease
-            // at the taper, and he had been braking because he was told to
-            // (2026-08-24). It also spends the phrase that has to mean
-            // something when a real emergency uses it. The heavy-traffic and
-            // generic zone warnings below have always opened with the
-            // distance; this one was the odd sibling out.
-            // The mile ahead of the work is the reduced-speed approach, the
-            // way a real interstate work zone steps its limit down through
-            // its advance warning area; the taper is the short merge at the
-            // end of it (MUTCD Part 6), so the word is kept for that spot
-            // alone (owner ruling, 2026-09-14).
-            // The approach's own limit, not the constant: on a road posted
-            // under it the zone steps down from the road (2026-09-28).
-            let taper_mph = self
-                .zones
-                .iter()
-                .find(|z| {
-                    z.reason == "construction merge" && (z.end_mi - zone.start_mi).abs() < 1e-6
-                })
-                .map_or(CONSTRUCTION_TAPER_LIMIT_MPH, |z| z.limit_mph);
-            if taper_mph <= zone.limit_mph {
-                return format!(
-                    "In {}, construction ahead. {merge_part}Speed limit {} through the work zone.",
-                    self.ahead_text(ahead),
-                    self.speed_value(zone.limit_mph)
-                );
-            }
-            return format!(
-                "In {}, construction ahead. {merge_part}Speed limit {} from {} out, then {} through the work zone.",
-                self.ahead_text(ahead),
-                self.speed_value(taper_mph),
-                self.ahead_text(CONSTRUCTION_TAPER_MI),
-                self.speed_value(zone.limit_mph)
-            );
+        // NOT "Brake now!". This is an advance warning that fires up to
+        // eight miles out, and "Brake now" is the emergency hazard opening;
+        // Shane had been braking for work eight miles away because he was
+        // told to (2026-08-24). It opens with the distance like its siblings.
+        // One short form for every verbosity: the full warning ran three
+        // sentences (speech mode audit, 2026-10-03).
+        if let Some(short) = self.zone_warning_terse(zone, ahead) {
+            return short;
         }
         if self.street_zone_before(zone).is_some() {
             // The next street's lower number, the way the limit pacenote says
@@ -121,11 +83,12 @@ impl Trip {
         )
     }
 
-    /// The quiet rungs' short form of a construction warning, in the terse
-    /// slot grammar: the thing and how far, the lane to be in, the limit.
-    /// The full warning ran three sentences and was read whole at quiet and
-    /// urgent only (speech mode audit, 2026-10-03). Other zones keep their
-    /// one-sentence wording.
+    /// The construction warning, in the terse slot grammar: the thing and
+    /// how far, the lane to be in, the limit. The mile ahead of the work is
+    /// the reduced-speed approach, the way a real interstate work zone steps
+    /// its limit down through its advance warning area (MUTCD Part 6; owner
+    /// ruling, 2026-09-14), at the approach's own limit (2026-09-28). Other
+    /// zones keep their one-sentence wording.
     pub fn zone_warning_terse(&self, zone: &Zone, ahead: f64) -> Option<String> {
         if zone.reason != "construction" {
             return None;
@@ -169,9 +132,8 @@ impl Trip {
         }
     }
 
-    /// The quiet rungs' short form of a work zone entry: the lane to be in
-    /// and the limit (speech mode audit, 2026-10-03). Other zones are a
-    /// sentence already.
+    /// A work zone entry: the lane to be in and the limit (speech mode
+    /// audit, 2026-10-03). Other zones are a sentence already.
     pub fn zone_entry_terse(&self, zone: &Zone) -> Option<String> {
         let limit = self.speed_value(zone.limit_mph);
         let keep = zone
@@ -190,33 +152,9 @@ impl Trip {
     }
 
     pub fn zone_entry_message(&self, zone: &Zone) -> String {
-        if zone.reason == "construction merge" {
-            if zone.closed_side.is_some() {
-                let (shut, keep) = Self::closure_phrases(zone);
-                return format!(
-                    "Reduced speed for construction. The {shut} lane closes ahead, merge {keep}. Speed limit {}.",
-                    self.speed_value(zone.limit_mph)
-                );
-            }
-            return format!(
-                "Reduced speed for construction. Flagger ahead. Speed limit {}.",
-                self.speed_value(zone.limit_mph)
-            );
-        }
-        if zone.reason == "construction" {
-            if zone.closed_side.is_some() {
-                let (shut, keep) = Self::closure_phrases(zone);
-                // "Keep left" is the same instruction on a two-lane stretch
-                // and still true on a wider one.
-                return format!(
-                    "Work zone active. The {shut} lane is closed, keep {keep}. Speed limit {}.",
-                    self.speed_value(zone.limit_mph)
-                );
-            }
-            return format!(
-                "Work zone active. Speed limit {}.",
-                self.speed_value(zone.limit_mph)
-            );
+        // A work zone's entry is its short form at every verbosity.
+        if let Some(short) = self.zone_entry_terse(zone) {
+            return short;
         }
         if zone.reason == "heavy traffic" && zone.aadt.is_some() {
             return format!(
@@ -356,11 +294,7 @@ impl Trip {
             let zone = self.zones[i].clone();
             self.announced_zone_warnings.insert(zone_key(&zone));
             self.pending_zone_warning = Some(zone.start_mi);
-            let message = self.zone_warning_message(&zone, ahead);
-            let message = match self.zone_warning_terse(&zone, ahead) {
-                Some(terse) => SpokenMessage::with_terse(message, terse),
-                None => SpokenMessage::new(message),
-            };
+            let message = SpokenMessage::new(self.zone_warning_message(&zone, ahead));
             self.emit(
                 TripEventKind::GpsCue,
                 message,
@@ -455,11 +389,7 @@ impl Trip {
                 z.reason == "construction merge" && (z.end_mi - zone.start_mi).abs() < 0.01
             });
         self.event_breather.spoke("zone");
-        let message = self.zone_entry_message(zone);
-        let message = match self.zone_entry_terse(zone) {
-            Some(terse) => SpokenMessage::with_terse(message, terse),
-            None => SpokenMessage::new(message),
-        };
+        let message = SpokenMessage::new(self.zone_entry_message(zone));
         self.emit(
             TripEventKind::ZoneEnter,
             message,

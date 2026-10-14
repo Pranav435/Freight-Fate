@@ -135,15 +135,12 @@ pub const WEIGH_STATION_REMINDER_MAX_MI: f64 = 1.0;
 pub const SCALE_REMINDER_REAL_LEAD_S: f64 = 15.0;
 
 /// The sentence the open-scale lead distance is sized from. It must pace the
-/// real announcement's longest realistic rendering -- a long stop name and the
-/// controller phrases, which run longer than the keyboard letters -- or the
-/// spoken lead undershoots and the notice lands with no road left to act on.
+/// real announcement's longest realistic rendering -- a long stop name -- or
+/// the spoken lead undershoots and the notice lands with no road left to act
+/// on.
 pub const SCALE_NOTICE_SAMPLE: &str = concat!(
     "Open weigh station ahead in two miles: Northbound Platte River Port ",
-    "of Entry. All trucks must pull in. Signal for the scale exit with ",
-    "right bumper plus D-pad down; the ramp brings you down to the scale. ",
-    "Once you are stopped at the scale, press right bumper plus D-pad down ",
-    "to check in."
+    "of Entry. All trucks must pull in. Signal for the scale exit."
 );
 
 // The fines for the things an officer sees rather than clocks -- chain law,

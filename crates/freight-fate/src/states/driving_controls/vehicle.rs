@@ -132,12 +132,8 @@ impl DrivingState {
         if self.trip.truck.engine_on {
             if self.trip.truck.speed_mph() > ENGINE_SHUTDOWN_SAFE_MPH {
                 ctx.audio.play("ui/error");
-                let speed = ctx.settings.speed_text(self.trip.truck.speed_mph());
-                let text = format!(
-                    "Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour first."
-                );
                 self.set_status("Engine shutdown blocked: slow down first.");
-                ctx.say(&text);
+                ctx.say("Too fast to shut down.");
                 return;
             }
             self.trip.truck.stop_engine();
@@ -164,7 +160,7 @@ impl DrivingState {
                 self.low_air_said = true;
             }
             self.set_status("Engine running.");
-            let instruction = self.air_start_instruction(ctx);
+            let instruction = self.air_start_instruction();
             ctx.say_with(
                 format!("Engine running. {instruction}"),
                 Say::new().category(SpeechCategory::Confirmation),
@@ -184,26 +180,11 @@ impl DrivingState {
     }
 
     /// `_air_start_instruction()`.
-    pub fn air_start_instruction(&self, ctx: &mut GameContext) -> String {
-        let psi = self.trip.truck.air_pressure_psi();
-        if self.terse_speech(ctx) {
-            return format!("Air pressure {psi:.0} psi.");
+    pub fn air_start_instruction(&self) -> String {
+        if self.trip.truck.air_ready() {
+            return "Air ready.".to_string();
         }
-        let brake_hint = ctx.control_hint("parking_brake");
-        if self.trip.truck.parking_brake {
-            if self.trip.truck.air_ready() {
-                return format!(
-                    "Air pressure ready. Press {brake_hint} to release the parking brake."
-                );
-            }
-            return format!(
-                "Air pressure {psi:.0} psi. At 100 psi, {brake_hint} releases the parking brake."
-            );
-        }
-        format!(
-            "Air pressure ready. Hold {} to drive.",
-            ctx.control_hint("accelerate")
-        )
+        format!("Air {:.0} psi.", self.trip.truck.air_pressure_psi())
     }
 
     /// `_toggle_parking_brake()`: P.
@@ -233,10 +214,7 @@ impl DrivingState {
                         Say::new().category(SpeechCategory::Confirmation),
                     );
                 } else {
-                    ctx.say(&format!(
-                        "Parking brake stays set. Air pressure {psi:.0} psi. It releases at 100 \
-                         psi with the engine running."
-                    ));
+                    ctx.say(&format!("Parking brake set. Air {psi:.0} psi."));
                 }
             }
             return;

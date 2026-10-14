@@ -363,10 +363,7 @@ impl DrivingState {
             // ROUTE, not the ambient default: the automation just released the
             // throttle (automation-handoff sweep, 2026-08-20, the deferred
             // 2026-08-15 audit).
-            self.say_route_confirmation(
-                ctx,
-                "Adaptive cruise canceled; automatic speed control off.",
-            );
+            self.say_route_confirmation(ctx, "Cruise off.");
             return;
         }
         let position = self.trip.position_mi;
@@ -549,10 +546,12 @@ impl DrivingState {
                 .is_none_or(|said| cap_mph < said - 0.5)
             {
                 self.acc_limit_cap_said = Some(cap_mph);
+                // The cause only where the speed limit cue does not already
+                // carry it: a plain posted drop is its own announcement.
                 let reason = match limit_reason.as_deref() {
-                    Some("construction") => "Construction zone ahead",
-                    Some("heavy traffic") => "Heavy traffic ahead",
-                    _ => "Posted limit lower",
+                    Some("construction") => Some("Construction zone ahead"),
+                    Some("heavy traffic") => Some("Heavy traffic ahead"),
+                    _ => None,
                 };
                 // ROUTE, not the ambient default. An assist saying it is
                 // about to change how fast the truck is going is a
@@ -564,14 +563,12 @@ impl DrivingState {
                 // easing to 45 miles per hour" -- seventeen seconds before
                 // a trooper stopped him over the gap the easing was
                 // closing. The truck slowed itself and never said why.
-                let eased = ctx.settings.speed_text(cap_mph);
-                self.say_route_confirmation(
-                    ctx,
-                    SpokenMessage::with_terse(
-                        format!("{reason}; adaptive cruise easing to {eased}."),
-                        format!("Cruise easing to {}.", ctx.settings.speed_value(cap_mph)),
-                    ),
-                );
+                let eased = ctx.settings.speed_value(cap_mph);
+                let message = match reason {
+                    Some(reason) => format!("{reason}, cruise easing to {eased}."),
+                    None => format!("Cruise easing to {eased}."),
+                };
+                self.say_route_confirmation(ctx, message);
                 // This line already named the number for a plain posted-limit
                 // drop; the arrival "Speed limit reduced to X" would otherwise
                 // repeat it a moment (or, under compression, an instant)
@@ -610,19 +607,12 @@ impl DrivingState {
             {
                 self.acc_weather_cap_said = Some(safe_mph);
                 let kind = self.trip.weather.current.value();
-                let eased = ctx.settings.speed_text(safe_mph);
                 self.say_route_confirmation(
                     ctx,
-                    SpokenMessage::with_terse(
-                        format!(
-                            "{}; adaptive cruise easing to {eased}.",
-                            capitalize_first(kind)
-                        ),
-                        format!(
-                            "{}, cruise easing to {}.",
-                            capitalize_first(kind),
-                            ctx.settings.speed_value(safe_mph)
-                        ),
+                    format!(
+                        "{}, cruise easing to {}.",
+                        capitalize_first(kind),
+                        ctx.settings.speed_value(safe_mph)
                     ),
                 );
             }

@@ -249,7 +249,7 @@ fn test_the_welcome_is_heard_in_full_and_then_the_offer() {
         lines[0].starts_with("First-day briefing: welcome aboard"),
         "{lines:?}"
     );
-    assert!(lines[0].ends_with("and deliver it cleanly."), "{lines:?}");
+    assert!(lines[0].ends_with("Next: the dispatch board."), "{lines:?}");
     // The parked-at location speaks the city's name, never the map key:
     // "in the chicago_il_us service area" reached a driver's ears before
     // the first agent-driven playtest caught it (2026-08-30).
@@ -286,11 +286,8 @@ fn test_saying_no_is_heard_before_the_city_menu_announcement() {
     assert!(menus::is::<CityMenuState>(&app));
     let calls = app.main_calls();
     let lines: Vec<String> = calls.iter().map(|(text, _)| text.clone()).collect();
-    assert_eq!(
-        lines[0],
-        "No problem. You can connect any time from Online on the main menu."
-    );
-    assert!(lines[1].starts_with("Parked at"), "{lines:?}");
+    assert_eq!(lines[0], "Online on the main menu connects any time.");
+    assert!(lines[1].ends_with(" dollars."), "{lines:?}");
     assert!(lines[2].starts_with("Dispatch board."), "{lines:?}");
     let interrupts: Vec<bool> = calls.iter().map(|(_, interrupt)| *interrupt).collect();
     let mut expected = vec![false; interrupts.len()];

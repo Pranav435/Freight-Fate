@@ -152,10 +152,11 @@ fn test_facility_menu_waits_for_full_stop() {
     // speeding warning, depending on the posted limit of the route dispatch
     // drew.
     assert!(
-        harness.app.event_lines().iter().any(|line| {
-            line.contains("Stop, set the parking brake with P")
-                && line.contains("T opens the facility")
-        }),
+        harness
+            .app
+            .event_lines()
+            .iter()
+            .any(|line| { line.contains("Stop and set the parking brake.") }),
         "{:#?}",
         harness.app.event_lines()
     );

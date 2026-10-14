@@ -27,13 +27,7 @@ impl DrivingState {
             if self.trip.truck.high_idle_rpm.is_none() {
                 self.trip.truck.high_idle_rpm = Some(HIGH_IDLE_DEFAULT_RPM);
                 let rpm = HIGH_IDLE_DEFAULT_RPM;
-                self.say_plain(
-                    ctx,
-                    format!(
-                        "High idle, {rpm:.0} RPM. Plus and minus adjust it; releasing the parking \
-                         brake cancels."
-                    ),
-                );
+                self.say_plain(ctx, format!("High idle, {rpm:.0} RPM."));
             } else {
                 self.trip.truck.high_idle_rpm = None;
                 self.say_plain(ctx, "High idle off.");
@@ -186,19 +180,16 @@ impl DrivingState {
             },
             ctx.settings.speed_text(effective_mph)
         );
-        if let Some(label) = transition_label {
+        if transition_label.is_some() {
             // ROUTE: automation retaking the pedals after a zone, the same
             // handoff as the keeper's resume line (driving_speed_control 291,
             // already ROUTE). The quiet rung still silences it by category;
             // ROUTE only stops a busy channel eating it at standard.
             self.say_route_confirmation(
                 ctx,
-                SpokenMessage::with_terse(
-                    format!("{label}. {message}"),
-                    format!(
-                        "Cruise resuming, {}.",
-                        ctx.settings.speed_value(effective_mph)
-                    ),
+                format!(
+                    "Cruise resuming, {}{exit_note}.",
+                    ctx.settings.speed_value(effective_mph)
                 ),
             );
         } else {
@@ -313,22 +304,15 @@ impl DrivingState {
         announce: bool,
     ) {
         if !ctx.settings.speed_keeper {
-            // Naming the way out matters more than the refusal: the keeper is
-            // exactly the thing that holds speed here, and a driver who has
-            // never turned it on hears only that cruise "is not available"
-            // and concludes the ramp kills speed control (Shane, 2026-08-15).
+            // Where the cruise is refused, not how to get the keeper: that
+            // lives in the settings help and the manual (owner rule,
+            // 2026-09-21: silence over redundant speech).
             let place = if ff_core::sim::trip::is_street_zone_reason(zone_reason) {
                 "on city streets".to_string()
             } else {
                 format!("in a {zone_reason} zone")
             };
-            self.say_plain(
-                ctx,
-                format!(
-                    "No adaptive cruise {place}. The speed keeper holds speed here; turn it on \
-                     in Settings, Controls."
-                ),
-            );
+            self.say_plain(ctx, format!("No cruise {place}."));
             return;
         }
         let speed = self.trip.truck.speed_mph();
@@ -375,7 +359,7 @@ impl DrivingState {
             // throttle, and a driver who assumed it still held speed needs to
             // hear that (automation-handoff sweep, 2026-08-20, the deferred
             // 2026-08-15 audit).
-            self.say_route_confirmation(ctx, "Speed keeper canceled; automatic speed control off.");
+            self.say_route_confirmation(ctx, "Speed keeper off.");
             return;
         }
         let position = self.trip.position_mi;

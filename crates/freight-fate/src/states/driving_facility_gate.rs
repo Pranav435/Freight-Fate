@@ -270,7 +270,7 @@ impl DrivingState {
         }
         let facility = self.approach_facility_text(ctx);
         Some(format!(
-            "The gate at {facility} is {} ahead. Stop there to check in.",
+            "Gate at {facility}, {} ahead.",
             self.closing_text(remaining)
         ))
     }

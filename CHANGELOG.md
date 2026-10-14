@@ -66,6 +66,8 @@
 
 - **Spoken weather no longer says how old the live observation is.** The Weather app still lists it.
 
+- **Spoken lines across the game are shorter.** Driving, the terminal, dispatch and pickup drop key reminders, assist explanations and facts you just heard; menu help keeps the explanations.
+
 - **Cruise no longer narrates how it drives.** It eases off and builds for hills in silence, and its traffic and weather lines are a few words.
 
 - **Downhill grade calls stop naming the engine brake key once you have used it a few times.** Uphill grade calls no longer add "Expect to lose speed."

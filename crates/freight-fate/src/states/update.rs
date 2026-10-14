@@ -125,14 +125,14 @@ impl State for UpdateCheckState {
             self.message = "On iPhone and iPad, updates come through the App Store \
                             or TestFlight."
                 .to_string();
-            ctx.say(&format!("{} Escape goes back.", self.message));
+            ctx.say(&self.message);
             return;
         }
         if !updater::is_frozen() {
             self.message = "Updates are only available in the packaged game. \
                             This copy runs from source; update it with git."
                 .to_string();
-            ctx.say(&format!("{} Escape goes back.", self.message));
+            ctx.say(&self.message);
             return;
         }
         if self.checker.is_none() {
@@ -160,7 +160,7 @@ impl State for UpdateCheckState {
                 updater::spoken_version(version())
             );
         }
-        ctx.say(&format!("{} Escape goes back.", self.message));
+        ctx.say(&self.message);
     }
 
     fn handle_event(&mut self, ctx: &mut GameContext, event: &InputEvent) {

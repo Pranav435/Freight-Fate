@@ -982,7 +982,7 @@ fn test_leaving_an_open_scale_runs_the_check_in_first() {
     state.go_back(&mut app.ctx);
     let said = app.main_lines().join(" ");
     assert!(said.contains("Inspection check-in complete"), "{said}");
-    assert!(said.contains("Back on the road"), "{said}");
+    assert!(said.to_lowercase().contains("parking brake set."), "{said}");
     assert!(with_drive(&drive, |d| d.stop_visit(&stop).inspected));
 }
 
@@ -1000,7 +1000,7 @@ fn test_leaving_a_closed_scale_only_leaves() {
     state.go_back(&mut app.ctx);
     let said = app.main_lines().join(" ");
     assert!(!said.contains("Inspection check-in complete"), "{said}");
-    assert!(said.contains("Back on the road"), "{said}");
+    assert!(said.to_lowercase().contains("parking brake set."), "{said}");
     assert!(!with_drive(&drive, |d| d.stop_visit(&stop).inspected));
     assert_eq!(with_drive(&drive, |d| d.trip.game_minutes), before);
 }
@@ -1018,8 +1018,8 @@ fn test_leaving_a_stop_with_the_engine_running_does_not_ask_to_start_it() {
     app.clear_speech();
     state.go_back(&mut app.ctx);
     let said = app.main_lines().join(" ");
-    assert!(said.contains("Back on the road"), "{said}");
-    assert!(!said.contains("starts the engine"), "{said}");
+    assert!(said.contains("Parking brake set."), "{said}");
+    assert!(!said.contains("Engine off"), "{said}");
 }
 
 #[test]
