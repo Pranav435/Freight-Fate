@@ -20493,8 +20493,9 @@ msgstr ""
 msgid "Too fast to shut down."
 msgstr ""
 
+#. placeholders: {limit}
 #. one sentence of a longer line
-msgid "Brake below 5 miles per hour first."
+msgid "Brake below {limit} first."
 msgstr ""
 
 #. placeholders: {speed}
@@ -20502,10 +20503,8 @@ msgstr ""
 msgid "Unsafe to shut the engine off at {speed}."
 msgstr ""
 
-#. placeholders: {speed}
-msgid ""
-"Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour "
-"first."
+#. placeholders: {speed}, {limit}
+msgid "Unsafe to shut the engine off at {speed}. Brake below {limit} first."
 msgstr ""
 
 msgid "Engine running."

@@ -146,9 +146,9 @@ impl DrivingState {
                     ctx.say("Too fast to shut down.");
                 } else {
                     let speed = ctx.settings.speed_text(self.trip.truck.speed_mph());
+                    let limit = ctx.settings.speed_text(ENGINE_SHUTDOWN_SAFE_MPH);
                     ctx.say(&format!(
-                        "Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour \
-                         first."
+                        "Unsafe to shut the engine off at {speed}. Brake below {limit} first."
                     ));
                 }
                 return;

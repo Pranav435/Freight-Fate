@@ -25912,9 +25912,10 @@ msgstr ""
 msgid "Too fast to shut down."
 msgstr ""
 
+#. placeholders: {limit}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_controls/vehicle.rs
-msgid "Brake below 5 miles per hour first."
+msgid "Brake below {limit} first."
 msgstr ""
 
 #. placeholders: {speed}
@@ -25923,11 +25924,9 @@ msgstr ""
 msgid "Unsafe to shut the engine off at {speed}."
 msgstr ""
 
-#. placeholders: {speed}
+#. placeholders: {speed}, {limit}
 #: crates/freight-fate/src/states/driving_controls/vehicle.rs
-msgid ""
-"Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour "
-"first."
+msgid "Unsafe to shut the engine off at {speed}. Brake below {limit} first."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_controls/vehicle.rs

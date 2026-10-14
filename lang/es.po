@@ -23694,22 +23694,20 @@ msgstr "Apagado del motor bloqueado: primero reduce la velocidad."
 msgid "Too fast to shut down."
 msgstr "Vas demasiado rápido para apagar."
 
+#. placeholders: {limit}
 #. one sentence of a longer line
-msgid "Brake below 5 miles per hour first."
-msgstr "Primero frena por debajo de 5 millas por hora."
+msgid "Brake below {limit} first."
+msgstr "Primero frena por debajo de {limit}."
 
 #. placeholders: {speed}
 #. one sentence of a longer line
 msgid "Unsafe to shut the engine off at {speed}."
 msgstr "No es seguro apagar el motor a {speed}."
 
-#. placeholders: {speed}
-msgid ""
-"Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour "
-"first."
+#. placeholders: {speed}, {limit}
+msgid "Unsafe to shut the engine off at {speed}. Brake below {limit} first."
 msgstr ""
-"No es seguro apagar el motor a {speed}. Primero frena por debajo de 5 "
-"millas por hora."
+"No es seguro apagar el motor a {speed}. Primero frena por debajo de {limit}."
 
 msgid "Engine running."
 msgstr "Motor en marcha."
@@ -40317,6 +40315,16 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "Brake below 5 miles per hour first."
+#~ msgstr "Primero frena por debajo de 5 millas por hora."
+
+#~ msgid ""
+#~ "Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour "
+#~ "first."
+#~ msgstr ""
+#~ "No es seguro apagar el motor a {speed}. Primero frena por debajo de 5 "
+#~ "millas por hora."
 
 #~ msgid ""
 #~ "Resuming {drive_name}: {weight_tons} tons of {label} to {destination}. "
