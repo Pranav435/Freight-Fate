@@ -333,7 +333,10 @@ impl Trip {
                         .as_ref()
                         .is_some_and(|previous| self.same_traffic_pace(previous, &zone));
                 let urgent = old_limit.is_some_and(|old| zone.limit_mph < old);
-                if already_spoken {
+                if self.yard_entry_held && Self::is_yard_like(&zone) {
+                    // Not in until the driveway turn is settled: gated.
+                    self.zone_entry_spoken = false;
+                } else if already_spoken {
                     // Keep the local section and its queue lifecycle, without
                     // repeating the speed the driver is already following.
                 } else if urgent || self.event_breather.ready("zone") {
@@ -375,12 +378,20 @@ impl Trip {
             }
             self.entered_zone = zone;
         } else if let Some(zone) = zone {
-            if !self.zone_entry_spoken && self.event_breather.ready("zone") {
+            let held = self.yard_entry_held && Self::is_yard_like(&zone);
+            if !held && !self.zone_entry_spoken && self.event_breather.ready("zone") {
                 // Self-supersede: this zone is still the one governing the
                 // truck and its own entry was gated when it started.
                 self.speak_zone_entry(&zone);
             }
         }
+    }
+
+    fn is_yard_like(zone: &Zone) -> bool {
+        matches!(
+            zone.reason.as_str(),
+            super::streets::YARD_ZONE | super::streets::LOT_ZONE
+        )
     }
 
     pub fn speak_zone_entry(&mut self, zone: &Zone) {

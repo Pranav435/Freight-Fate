@@ -567,6 +567,9 @@ impl DrivingState {
         // On the ramp the highway odometer holds and the ramp consumes the
         // movement instead; the trip records how far the truck rolled either way.
         self.trip.on_ramp = self.ramp_mi.is_some();
+        // The yard is announced when the truck has turned into it, not when
+        // it rolls over the driveway's milepost on its way past the turn.
+        self.trip.yard_entry_held = self.driveway_turn_pending();
         for event in self.trip.update(dt) {
             self.handle_trip_event(ctx, &event);
         }

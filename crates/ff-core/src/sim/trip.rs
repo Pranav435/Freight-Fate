@@ -367,6 +367,11 @@ pub struct Trip {
     /// Whether the current entered zone's ZONE_ENTER colour line has been
     /// spoken.
     pub zone_entry_spoken: bool,
+    /// Set by the drive while the turn into the yard or lot is still ahead
+    /// or unsettled: the yard's entry line waits for the truck to have
+    /// actually turned in, so a truck that overruns the driveway is not told
+    /// it is in the yard before it is told it missed the turn.
+    pub yard_entry_held: bool,
     pub announced_speed_limit: Option<f64>,
     pub warned_limit_drops: Vec<f64>,
     /// Posted-limit values already spoken for the CURRENT posting.
@@ -519,6 +524,7 @@ impl Trip {
             charged_tolls: HashSet::new(),
             entered_zone: None,
             zone_entry_spoken: true,
+            yard_entry_held: false,
             announced_speed_limit: None,
             warned_limit_drops: Vec::new(),
             limit_drop_preannounced: Vec::new(),
