@@ -40,7 +40,7 @@
 //! direction, radius, or lane ordinal, and `docs/nav-phrasing-brief.md` forbids
 //! speaking a lane ordinal that was never harvested.
 
-use ff_core::data::corners::{corner_radius_ft, corner_speed_mph, ASSUMED_TURN_DEG};
+use ff_core::data::corners::{corner_radius_ft, ASSUMED_TURN_DEG};
 use ff_core::data::curves::RouteCurve;
 use ff_core::sim::trip_models::{NavigationCue, FACILITY_ACCESS_LIMIT_MPH};
 use ff_core::sim::turn_guide::{TurnShape, TurnSide};
@@ -73,6 +73,9 @@ pub const TURN_CLOCK_EASE_REAL_S: f64 = ff_core::sim::trip::EXIT_APPROACH_RELEAS
 /// Brake deadband: the truck may be a few mph over without failing, the same
 /// forgiveness the curve assist's hysteresis grants.
 pub const TURN_SPEED_MARGIN_MPH: f64 = 3.0;
+/// A judged corner this close to where the yard or lot begins is the turn
+/// off the street into the driveway, not a street corner.
+pub const DRIVEWAY_TURN_WITHIN_MI: f64 = 0.01;
 /// Game minutes a missed corner costs: three turns around one block at 20,
 /// with signals on two of them. The gate and the destination exit charge 20
 /// for a highway-scale turnaround, miles of frontage road at 45 and back.
@@ -167,6 +170,24 @@ impl DrivingState {
     /// the audio pass, which `_update_turn_commitment` has already run ahead
     /// of in the same frame (`driving_updates.py`: 577 before 595), so the
     /// re-seed has always happened by then.
+    /// Whether `cue` is the turn off the public street into the facility's
+    /// driveway (where the yard or lot zone begins, inbound).
+    pub fn is_driveway_turn(&self, cue: &NavigationCue) -> bool {
+        self.trip
+            .driveway_mi()
+            .is_some_and(|at| (cue.at_mi - at).abs() <= DRIVEWAY_TURN_WITHIN_MI)
+    }
+
+    /// The driveway turn is on this route and not yet settled -- not taken
+    /// cleanly, not gone around the block for.
+    pub fn driveway_turn_pending(&self) -> bool {
+        self.trip.navigation_cues.iter().any(|cue| {
+            is_judged_turn(cue)
+                && self.is_driveway_turn(cue)
+                && !self.turn_resolved.contains(&cue.key)
+        })
+    }
+
     pub(crate) fn turn_cue_in_play_read(&self) -> Option<NavigationCue> {
         let position = self.trip.position_mi;
         self.trip
@@ -330,8 +351,14 @@ impl DrivingState {
         // and `corners` prices that as a square one rather than inventing a
         // shape for it.
         let measured = leg.map(|leg| leg.local_turn_deg).filter(|deg| *deg > 0.0);
-        street.min(corner_speed_mph(
+        // The turn off the street into the gate or driveway itself: the
+        // facility's own entry speed, then the yard's limit inside.
+        if self.is_driveway_turn(cue) {
+            return street.min(ff_core::data::corners::DRIVEWAY_TURN_MPH);
+        }
+        street.min(ff_core::data::corners::corner_speed_side_mph(
             measured,
+            ff_core::data::corners::CornerSide::from_direction(&cue.direction),
             self.trip.truck.roll_load_fraction(),
         ))
     }
