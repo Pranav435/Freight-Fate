@@ -19,6 +19,17 @@ pub const WIND_WAIT_STEP_MINUTES: f64 = 30.0;
 /// The longest a closure is waited out before dispatch looks for a detour.
 pub const MAX_WIND_WAIT_MINUTES: f64 = 4.0 * 60.0;
 
+/// What the wind at a crossing did with the truck.
+enum WindGate {
+    /// The wind lets the truck on with no wait.
+    Open,
+    /// The truck waited for a wind escort, which also covers any escort
+    /// the crossing gives this load in calm weather.
+    Escorted,
+    /// The truck did not cross: held at the approach (true) or rerouted.
+    Stopped(bool),
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TunnelDirection {
     ToWhittier,
@@ -297,11 +308,18 @@ impl Trip {
     }
 
     /// A crossing that escorts this load in any weather is a short wait on
-    /// duty, unless a wind escort already takes the truck across. A closed
-    /// window waited out just before (`before`) shares one spoken line with
-    /// the escort, so the driver hears both waits and when the truck may go.
-    fn process_escort(&mut self, leg_index: usize, load: &CrossingLoad, before: Option<HoursWait>) {
-        let escort = if matches!(self.wind_call(leg_index, load), Some((false, _))) {
+    /// duty, unless a wind escort already took the truck across
+    /// (`wind_escorted`). A closed window waited out just before (`before`)
+    /// shares one spoken line with the escort, so the driver hears both waits
+    /// and when the truck may go.
+    fn process_escort(
+        &mut self,
+        leg_index: usize,
+        load: &CrossingLoad,
+        before: Option<HoursWait>,
+        wind_escorted: bool,
+    ) {
+        let escort = if wind_escorted {
             None
         } else {
             self.route.legs.get(leg_index).and_then(|leg| {
@@ -398,9 +416,8 @@ impl Trip {
 
     /// Wind at a crossing: an escort is a short wait on duty; a closure is
     /// waited out on duty, then driven around when a legal road exists, and
-    /// otherwise held at the approach until the wind drops. Returns Some
-    /// with whether the truck is held, or None when the wind lets it on.
-    fn process_wind_gate(&mut self, leg_index: usize, load: &CrossingLoad) -> Option<bool> {
+    /// otherwise held at the approach until the wind drops.
+    fn process_wind_gate(&mut self, leg_index: usize, load: &CrossingLoad) -> WindGate {
         let (refused, text) = match self.wind_call(leg_index, load) {
             Some(call) => call,
             None => {
@@ -414,11 +431,11 @@ impl Trip {
                         },
                     );
                 }
-                return None;
+                return WindGate::Open;
             }
         };
         if self.wind_held_gates.contains(&leg_index) {
-            return Some(true);
+            return WindGate::Stopped(true);
         }
         if !refused {
             self.game_minutes += ESCORT_WAIT_MINUTES;
@@ -430,7 +447,7 @@ impl Trip {
                     wait_text(ESCORT_WAIT_MINUTES as i64)
                 ),
             );
-            return None;
+            return WindGate::Escorted;
         }
         let mut waited = 0.0;
         while waited < MAX_WIND_WAIT_MINUTES {
@@ -454,10 +471,12 @@ impl Trip {
         match self.wind_call(leg_index, load) {
             Some((true, _)) => {}
             Some((false, _)) => return self.process_wind_gate(leg_index, load),
-            None => return None,
+            None => return WindGate::Open,
         }
         let ahead = leg_index;
-        let avoid = self.route.legs.get(leg_index)?.id;
+        let Some(avoid) = self.route.legs.get(leg_index).map(|leg| leg.id) else {
+            return WindGate::Open;
+        };
         let city = self.route.cities.get(ahead).cloned().unwrap_or_default();
         if let Some(route) = self.world.detour_ahead(&self.route, ahead, load, avoid) {
             self.reroute_ahead(route);
@@ -475,7 +494,7 @@ impl Trip {
                     ..Default::default()
                 },
             );
-            return Some(false);
+            return WindGate::Stopped(false);
         }
         self.wind_held_gates.insert(leg_index);
         self.emit(
@@ -488,7 +507,7 @@ impl Trip {
                 ..Default::default()
             },
         );
-        Some(true)
+        WindGate::Stopped(true)
     }
 
     fn log_wind_wait(&mut self, minutes: f64, spoken: String) {
@@ -568,11 +587,13 @@ impl Trip {
                 }
             }
         }
-        if let Some(held) = self.process_wind_gate(leg_index, &load) {
-            return held;
-        }
+        let wind_escorted = match self.process_wind_gate(leg_index, &load) {
+            WindGate::Stopped(held) => return held,
+            WindGate::Escorted => true,
+            WindGate::Open => false,
+        };
         let hours = self.process_hazmat_hours(leg_index, &load);
-        self.process_escort(leg_index, &load, hours);
+        self.process_escort(leg_index, &load, hours, wind_escorted);
         let Some(leg) = self.route.legs.get(leg_index) else {
             return false;
         };
