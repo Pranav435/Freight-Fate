@@ -2949,8 +2949,9 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       49 CFR 172.101 material with its class; class-rule crossings (Hampton
       Roads, CBBT, Pennsylvania Turnpike, Bay Bridge) refuse
       only the classes they ban, on the board, at departure and on the road.
-- [x] **Golden Gate explosive-load hours.** Explosives wait out weekday rush
-      hours on duty, then wait 20 minutes for the inspection and escort.
+- [x] **Golden Gate explosive-load hours.** Explosives (not 1.4 consumer
+      fireworks, per Vehicle Code 31600(c)) wait out weekday rush hours on
+      duty, then wait 20 minutes for the inspection and escort.
 - [ ] **Mackinac oversize escorts.** Wait for oversize loads.
 - [ ] **Hazard class follow-ups.** Poison inhalation hazard is not told apart
       from other Class 6.1 (no game load is 6.1), and Golden Gate hours ignore

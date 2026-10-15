@@ -76,7 +76,7 @@ Size limits use a stock rig: 73.5 feet with a trailer, 25 feet bobtail,
 | Fort McHenry Tunnel | Wilmington to Baltimore; Philadelphia to Baltimore; Washington to Philadelphia | Placarded loads banned, including bulk fuel | https://www.mdta.maryland.gov/TunnelRestrictionsAndVehiclePermits |
 | Boston tunnels (Central Artery, Prudential, Tip O'Neill) | Boston to Hartford, Manchester, Providence, Worcester; New York, Portland and Portsmouth to Boston | All hazardous cargo (any amount) and all cargo tankers banned | https://www.mass.gov/info-details/hazardous-material-route-designation |
 | Hampton Roads Bridge-Tunnel | Norfolk to Richmond; Richmond to Virginia Beach | Divisions 1.1 to 1.3, 2.3 and 4.3 banned; 2.1, 3, 5.1, 5.2 and 8 only non-bulk, so packaged loads pass and bulk fuel is refused | https://law.lis.virginia.gov/admincode/title24/agency30/chapter61/section40/ |
-| Chesapeake Bay Bridge-Tunnel (Thimble Shoal and Chesapeake Channel tunnels) | Norfolk to Cape Charles | Divisions 1.1 to 1.3, 2.3 and 4.3 banned; 2.1, 3, 4.1, 4.2, 5.1, 5.2, 8 and 9 capped far below a truckload, and 7 by permission, so refused; 1.4, 2.2 pass; Class 3 tank vehicles banned even empty | https://www.cbbt.com/regulations/ |
+| Chesapeake Bay Bridge-Tunnel (Thimble Shoal and Chesapeake Channel tunnels) | Norfolk to Cape Charles | Divisions 1.1 to 1.3, 2.3, 4.3 and 6.1 inhalation hazard banned, and 7 without the facility's permission, which game drivers lack; 2.1, 3, 4.1, 4.2, 5.1, 5.2, 8 and 9 capped per vehicle (120 gallons, 900 pounds, 2,000 pounds of 9) far below a truckload, so refused and spoken as over the quantity limits; 1.4, 1.5, 1.6 and 2.2 pass (oxygen in a tank excepted); Class 3 tank vehicles banned even empty | https://www.cbbt.com/regulations/ |
 | Pennsylvania Turnpike tunnels (Allegheny, Tuscarora, Kittatinny, Blue Mountain, Lehigh) | Baltimore, Harrisburg, Philadelphia, Carlisle and Hagerstown to Pittsburgh; Scranton to Allentown | Table 1 and explosives banned (all of Class 1, 2.3, 4.3, 5.2, 6.1, 7); 2.1, 3, 4.1, 4.2, 5.1, 6.1 and 8 banned in bulk; packaged 2.1, 3, 5.1, 8 and 2.2 pass | https://www.paturnpike.com/commercial/permits-restrictions/hazardous-materials-(placarded-loads) |
 
 Supporting sources: Colorado rule 2 CCR 601-8, 3.02 (EJMT placarded loads
@@ -140,7 +140,7 @@ Baltimore leg does.
 | Mackinac Bridge | Sault Ste. Marie to Traverse City | Wind: escort from 35 mph, closed to trucks from 50, closed to all from 65. Escort in any weather for placarded loads and rigs over 40 tons (80,000 lb) gross | https://www.mackinacbridge.org/about-the-bridge/frequently-asked-questions/ (wind), https://www.mackinacbridge.org/fares-traffic/rules-regulations/ (escorts) |
 | Chesapeake Bay Bridge-Tunnel | Norfolk to Cape Charles | Toll corrected from an estimated 45 to the published 48 dollars (Class 12, initial crossing) | https://www.cbbt.com/tolls/ |
 | Chesapeake Bay Bridge-Tunnel | Norfolk to Cape Charles | Wind: tractor-trailers under 15,000 lb of cargo refused from 40 mph, every truck from 50, closed from 60 | https://cbbt.com/weather/ |
-| Golden Gate Bridge | San Francisco to Santa Rosa | Explosives (every Class 1 division) closed 6:30 to 9:30 and 4 to 7 on weekdays, waited out on duty; otherwise inspection and bridge escort, a 20-minute wait on duty | https://www.law.cornell.edu/regulations/california/13-CCR-1151.5 (13 CCR 1151.5(b)(3)) |
+| Golden Gate Bridge | San Francisco to Santa Rosa | Explosives (Divisions 1.1, 1.2, 1.3, 1.5 and 1.6; 1.4 is not an explosive under Vehicle Code 31600(c)) closed 6:30 to 9:30 and 4 to 7 on weekdays, waited out on duty; otherwise inspection and bridge escort, a 20-minute wait on duty | https://www.law.cornell.edu/regulations/california/13-CCR-1151.5 (13 CCR 1151.5(b)(3)) |
 
 Bay Bridge legs were matched where archived geometry runs within 60 metres
 of the Yerba Buena Island tunnel. The Golden Gate leg's geometry crosses the span
@@ -195,11 +195,12 @@ California's rule 13 CCR 1151.5(b)(3) bars vehicles transporting explosives
 from the Golden Gate Bridge from 6:30 to 9:30 in the morning and 4 to 7 in
 the evening on weekdays, and has every explosives vehicle stop for
 inspection and a bridge escort (also in the California Highway Patrol route
-list, https://www.chp.ca.gov/siteassets/files/ib_hmroutes.pdf). The game
-reads explosives as every Class 1 division, since Vehicle Code 31600 covers
-anything meant to detonate or burn rapidly
-(https://california.public.law/codes/vehicle_code_section_31600), and a
-load with no class as explosives.
+list, https://www.chp.ca.gov/siteassets/files/ib_hmroutes.pdf). Vehicle Code 31600
+(https://california.public.law/codes/vehicle_code_section_31600) defines
+explosives as Divisions 1.1, 1.2, 1.3 and 1.6, and 31600(c) says Division
+1.4 is not an explosive under it. The game counts 1.1, 1.2, 1.3, 1.5
+(blasting agents) and 1.6, and a load with no class, as explosives; 1.4
+consumer fireworks cross with no wait or escort.
 
 The windows are read on the bridge's own clock, Pacific Time, and on the
 weekday the game's calendar speaks (the real weekday when the career follows

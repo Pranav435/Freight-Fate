@@ -151,6 +151,13 @@ pub struct RoadCrossing {
     /// Under `HazmatRule::Classes`: banned in a cargo tank (bulk).
     #[serde(default)]
     pub bulk_banned_classes: Vec<HazardClass>,
+    /// Under `HazmatRule::Classes`: allowed only in amounts far below a
+    /// placarded truckload, so a placarded load of them is refused.
+    #[serde(default)]
+    pub limited_classes: Vec<HazardClass>,
+    /// Spoken when a `limited_classes` load is refused.
+    #[serde(default)]
+    pub limited_text: String,
     /// Placarded flammable liquid in bulk (a fuel tanker) is banned.
     pub bulk_flammable_banned: bool,
     /// Every cargo tank vehicle is banned, whatever it carries.
@@ -364,7 +371,7 @@ impl RoadCrossing {
         let hazmat = load.placarded
             && match self.hazmat {
                 HazmatRule::All => true,
-                HazmatRule::Classes => self.class_refused(load),
+                HazmatRule::Classes => self.class_banned(load),
                 HazmatRule::None => load.bulk_flammable && self.bulk_flammable_banned,
             };
         let regulated = self
@@ -373,10 +380,13 @@ impl RoadCrossing {
         if hazmat || regulated || (load.tank && self.tank_banned) {
             return Some(&self.hazmat_text);
         }
+        if self.hazmat == HazmatRule::Classes && load.may_be(&self.limited_classes) {
+            return Some(&self.limited_text);
+        }
         None
     }
 
-    fn class_refused(&self, load: &CrossingLoad) -> bool {
+    fn class_banned(&self, load: &CrossingLoad) -> bool {
         (load.hazard_class.is_none() && !load.bulk_flammable)
             || load.may_be(&self.banned_classes)
             || (load.tank && load.may_be(&self.bulk_banned_classes))
@@ -391,8 +401,9 @@ impl RoadCrossing {
             Some(class)
                 if self.hazmat == HazmatRule::Classes
                     && !load.tank
-                    && reason == self.hazmat_text
-                    && self.banned_classes.contains(&class) =>
+                    && ((reason == self.hazmat_text && self.banned_classes.contains(&class))
+                        || (reason == self.limited_text
+                            && self.limited_classes.contains(&class))) =>
             {
                 let lead = if class.explosive() { "are" } else { "is" };
                 let noun = if class.explosive() {
@@ -436,8 +447,12 @@ impl RoadCrossing {
         if self.hazmat == HazmatRule::Classes
             && self.banned_classes.is_empty()
             && self.bulk_banned_classes.is_empty()
+            && self.limited_classes.is_empty()
         {
             return Err(bad("bans classes without naming any"));
+        }
+        if !self.limited_classes.is_empty() && self.limited_text.trim().is_empty() {
+            return Err(bad("limits classes with no spoken rule"));
         }
         if let Some(hours) = &self.hazmat_hours {
             let times_ok = hours
@@ -498,7 +513,7 @@ impl RoadCrossing {
             .flat_map(|w| [&w.escort_text, &w.refused_text])
             .chain(self.escort.iter().map(|e| &e.text))
             .chain(self.hazmat_hours.iter().map(|h| &h.text));
-        for text in [&self.hazmat_text, &self.size_text]
+        for text in [&self.hazmat_text, &self.size_text, &self.limited_text]
             .into_iter()
             .chain(wind_texts)
         {
@@ -534,6 +549,8 @@ mod tests {
             escort: None,
             banned_classes: Vec::new(),
             bulk_banned_classes: Vec::new(),
+            limited_classes: Vec::new(),
+            limited_text: String::new(),
             hazmat_hours: None,
         }
     }
@@ -594,6 +611,39 @@ mod tests {
             .with_hazard_class(Some(HazardClass::PoisonGas))
             .hazard_class
             .is_none());
+    }
+
+    #[test]
+    fn a_quantity_limited_class_is_refused_as_over_the_limits() {
+        let mut c = crossing(HazmatRule::Classes);
+        c.banned_classes = vec![HazardClass::PoisonGas];
+        c.limited_classes = vec![HazardClass::FlammableLiquid];
+        c.limited_text = "A placarded truckload is over the quantity limits.".into();
+        let load = |class| {
+            rig()
+                .with_cargo("hazardous", false, 20_000)
+                .with_hazard_class(Some(class))
+        };
+        assert_eq!(
+            c.refusal_spoken(&load(HazardClass::FlammableLiquid))
+                .as_deref(),
+            Some(
+                "This load is flammable liquid. A placarded truckload is over the quantity limits."
+            )
+        );
+        assert_eq!(
+            c.refusal_spoken(&load(HazardClass::PoisonGas)).as_deref(),
+            Some("This load is poison gas. No hazardous materials.")
+        );
+        assert!(c.refusal(&load(HazardClass::NonflammableGas)).is_none());
+        assert_eq!(
+            c.refusal(&rig().with_cargo("hazardous", false, 20_000)),
+            Some("No hazardous materials."),
+            "an old save's load names no class and gets the outright rule"
+        );
+        assert!(c.validate("test").is_ok());
+        c.limited_text.clear();
+        assert!(c.validate("test").is_err());
     }
 
     #[test]

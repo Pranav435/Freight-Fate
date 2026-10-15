@@ -414,6 +414,36 @@ fn class_rules_pass_allowed_classes_and_route_banned_ones_around() {
         .crossings
         .iter()
         .all(|c| c.refusal(&packaged(HazardClass::PoisonGas)).is_none())));
+    let cbbt = world
+        .legs
+        .iter()
+        .flat_map(|leg| leg.crossings.iter())
+        .find(|c| c.name == "Chesapeake Bay Bridge-Tunnel")
+        .expect("CBBT");
+    assert_eq!(
+        cbbt.refusal_spoken(&packaged(HazardClass::FlammableLiquid))
+            .as_deref(),
+        Some(
+            "This load is flammable liquid. A placarded truckload of it is over the \
+             Chesapeake Bay Bridge-Tunnel's quantity limits."
+        ),
+        "quantity-limited classes are refused as over the limits, not as banned"
+    );
+    let banned = cbbt
+        .refusal_spoken(&packaged(HazardClass::DangerousWhenWet))
+        .expect("4.3 is banned outright");
+    assert!(
+        banned.starts_with("This load is dangerous when wet. Explosives, poison gas"),
+        "{banned}"
+    );
+    for class in [
+        HazardClass::Explosive14,
+        HazardClass::Explosive15,
+        HazardClass::Explosive16,
+        HazardClass::NonflammableGas,
+    ] {
+        assert!(cbbt.refusal(&packaged(class)).is_none(), "{class:?}");
+    }
     // The Golden Gate never refuses outright: explosives wait for the hour.
     let blast = packaged(HazardClass::Explosive11);
     let gg = world
@@ -507,9 +537,15 @@ fn golden_gate_holds_explosives_through_weekday_rush_hour_then_escorts_them() {
     assert_eq!(before_dawn.len(), 1, "4 AM at the bridge is before the ban");
     assert_eq!(before_dawn[0].0, Some(20.0));
     assert!(minutes >= 20.0, "the escort moves the trip clock");
-    let (midday, _) = waits(Some(HazardClass::Explosive14), monday, 15.0);
+    let (midday, _) = waits(Some(HazardClass::Explosive13), monday, 15.0);
     assert_eq!(midday.len(), 1, "escort only");
     assert_eq!(midday[0].0, Some(20.0));
+    let (fireworks, minutes) = waits(Some(HazardClass::Explosive14), monday, 10.0);
+    assert!(
+        fireworks.is_empty(),
+        "1.4 is not an explosive under Vehicle Code 31600(c): {fireworks:?}"
+    );
+    assert!(minutes < 20.0, "fireworks are not held: {minutes}");
     let (weekend, _) = waits(Some(HazardClass::Explosive11), sunday, 10.0);
     assert_eq!(weekend.len(), 1, "no rush-hour ban at the weekend");
     assert_eq!(weekend[0].0, Some(20.0));
