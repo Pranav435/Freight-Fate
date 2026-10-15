@@ -578,9 +578,7 @@ fn test_the_pause_menu_and_the_assist_share_the_same_chain_actions() {
                 f: fn(
         &mut freight_fate::states::driving::DrivingState,
         &mut freight_fate::app::GameContext,
-    ) -> Option<String>| {
-        drive_and_ctx(&drive, app, |d, ctx| f(d, ctx)).unwrap_or_default()
-    };
+    ) -> Option<String>| { drive_and_ctx(&drive, app, f).unwrap_or_default() };
     let on = said(&mut app, |d, ctx| d.do_install_chains(ctx));
     assert!(
         on.starts_with("Chains on in 30 minutes. Keep under "),
