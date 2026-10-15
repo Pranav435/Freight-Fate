@@ -177,7 +177,7 @@ fn trip_clear() -> Trip {
 #[test]
 fn test_trucks_chain_at_every_level_except_colorado_level_1() {
     use ff_core::sim::trip_models::rig_must_chain;
-    for state in ["CA", "WA", "OR", "NV", "ID", "MT", "UT"] {
+    for state in ["CA", "WA", "NV", "ID", "MT", "UT"] {
         assert!(!rig_must_chain(Some(state), 0), "{state}");
         assert!(rig_must_chain(Some(state), 1), "{state}");
         assert!(rig_must_chain(Some(state), 2), "{state}");
@@ -282,4 +282,21 @@ fn test_a_montana_chain_season_runs_october_to_april() {
     let october = mt_chain_season_id(at(288.0, 0.0));
     assert_eq!(mt_chain_season_id(at(100.0, 1.0)), october); // next April
     assert_eq!(mt_chain_season_id(at(290.0, 1.0)), october + 1); // next October
+}
+
+#[test]
+fn test_oregon_level_1_chains_only_single_drive_axle_trucks() {
+    use ff_core::sim::trip_models::{chain_law_sign_rule, rig_must_chain};
+    // ODOT: "Chains or traction tires required" chains single-drive-axle
+    // trucks over 10,000 lb; the player's tandem drive chains at Level 2.
+    assert!(!rig_must_chain(Some("OR"), 1));
+    assert!(rig_must_chain(Some("OR"), 2));
+    assert_eq!(
+        chain_law_sign_rule(Some("OR"), 1),
+        "level 1: chains required on single-drive-axle trucks"
+    );
+    assert_eq!(
+        chain_law_sign_rule(Some("OR"), 2),
+        "level 2: chains required on all trucks"
+    );
 }
