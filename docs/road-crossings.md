@@ -105,6 +105,23 @@ at mile 70 and then takes I-395 downtown; Philadelphia to Baltimore and
 Washington to Philadelphia run the same I-95 harbor crossing. No other
 Baltimore leg does.
 
+## Bridges added
+
+| Bridge | Legs | Rules modelled | Source (read 2026-10-11) |
+| --- | --- | --- | --- |
+| San Francisco-Oakland Bay Bridge | Sacramento, Stockton and Los Angeles to San Francisco; San Francisco to Portland and Salt Lake City | Explosives and flammable-placarded tank loads banned; placarded packaged freight refused (classes unnamed) | https://www.chp.ca.gov/siteassets/files/ib_hmroutes.pdf (21 CCR 1402.1) |
+| Mackinac Bridge | Sault Ste. Marie to Traverse City | Toll: 5 dollars per axle, 25 dollars for a five-axle rig, both directions | https://www.mackinacbridge.org/fares-traffic/fare-schedule/ |
+| Chesapeake Bay Bridge-Tunnel | Norfolk to Cape Charles | Toll corrected from an estimated 45 to the published 48 dollars (Class 12, initial crossing) | https://www.cbbt.com/tolls/ |
+
+Bay Bridge legs were matched where archived geometry runs within 60 metres
+of the Yerba Buena Island tunnel. The Mackinac toll sits at the St. Ignace
+plaza, 52.1 miles along its leg, from the same geometry.
+
+**Posted bridge weight limits and low clearances** were already on the map
+as corridor restrictions taken from OpenStreetMap; truck routing already
+keeps a legal rig under them, so they stay as spoken signage and are not
+duplicated here.
+
 ## Researched and left out
 
 - **Interstate 90 tunnels across Lake Washington (Mount Baker Ridge,
@@ -126,11 +143,19 @@ Baltimore leg does.
 - **George Washington Bridge lower level.** Trucks are kept off the lower
   level, but placarded loads may use the upper level, so no load is turned
   away; a bridge in any case.
-- **San Francisco-Oakland Bay Bridge (Yerba Buena tunnel).** Its I-80
-  hazardous-material rule is a bridge rule; left for the bridge pass.
-- **Bridges.** Posted weight limits, low clearances, hazmat rules, tolls and
-  wind closures on bridges are not added yet; the Chesapeake Bay
-  Bridge-Tunnel's toll and wind policy are recorded for that pass.
+- **Golden Gate Bridge (San Francisco to Santa Rosa).** It bans explosive
+  loads only at rush hours and escorts them otherwise; the game has no
+  explosives cargo or escort, so nothing is refused.
+- **Mackinac Bridge escorts.** Placarded loads, rigs over 40 tons gross and
+  oversize loads cross under bridge escort, not a ban; escorts are not
+  modelled. Its 72-ton maximum is above any legal game rig.
+- **Wind closures.** The Chesapeake Bay Bridge-Tunnel restricts empty
+  tractor-trailers (under 15,000 lb of cargo) from 40 mph winds, and the
+  Mackinac Bridge closes in high wind. The game's weather has no wind
+  speed yet, so these are not modelled.
+- **Chesapeake Bay Bridge (US 50, Maryland) toll.** Collected eastbound
+  only; the official truck rate table could not be read, so no toll was
+  added.
 
 ## Whittier
 

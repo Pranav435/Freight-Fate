@@ -67460,6 +67460,19 @@
             "oneway": true,
             "source": "OpenStreetMap lanes tags on the corridor highway ways (Overpass), development-time; total per the OSM lanes semantics (directional on oneway carriageways). ODbL, (c) OpenStreetMap contributors."
           }
+        ],
+        "toll_events": [
+          {
+            "name": "Mackinac Bridge toll",
+            "at_mi": 52.1,
+            "road": "I-75 Mackinac Bridge",
+            "authority": "Mackinac Bridge Authority",
+            "method": "cash_card",
+            "amount": 25.0,
+            "amount_plate": 25.0,
+            "estimated": false,
+            "source": "https://www.mackinacbridge.org/fares-traffic/fare-schedule/ (tractor-trailers 5 dollars per axle; a five-axle rig pays 25), accessed 2026-10-11. Position derived from the St. Ignace toll plaza on the leg's archived geometry."
+          }
         ]
       },
       "stops": [
