@@ -58,6 +58,8 @@
 
 ### Changed
 
+- **Achievement descriptions are about half as long.** Each badge's description is now one or two short sentences, so the unlock line and the achievements menu finish quickly. A few facts are corrected too: air pressure builds to the governor's cut-out, the flatbed badge names the 50-mile chain re-check, and the brake smoke badge says the brakes started to fade. Spanish is updated; other languages show these lines in English until they are translated again.
+
 - **Hours of service, rest stop, settlement and dispatch lines are shorter.** The hours readout names the 30-minute break and the 14-hour window, stop planning gives each stop, its distance and minutes, delivery and dock paperwork read the money as plain figures, and sleep previews end with "Select again to sleep." The open weigh station notice says to pull in; the reminder nearer the scale says to signal.
 
 - **Player text uses US spelling.** License, canceled, signaled, traveled, recognize and windshield replace the British forms.
