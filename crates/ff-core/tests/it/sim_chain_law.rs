@@ -362,3 +362,28 @@ fn test_upcoming_chain_corridor_follows_the_season_and_the_corridor() {
         .expect("still a corridor");
     assert_eq!(ahead.exit_label, "");
 }
+
+#[test]
+fn test_an_early_storm_reminds_out_of_season_and_a_bare_day_does_not() {
+    let mut ca = trip_on("Sacramento", "Reno", None);
+    ca.chain_law_areas = vec![(60.0, 70.0)];
+    assert_eq!(ca.state_code_at(61.0).as_deref(), Some("CA"));
+    assert_eq!(ca.route.legs[0].highway, "I-80");
+    ca.position_mi = 50.0;
+    ca.career_hours = on_day(258.0); // September 15
+    ca.weather.current = WeatherKind::Snow;
+    assert!(ca.chain_law_level() > 0);
+    assert!(ca.upcoming_chain_corridor(15.0).is_some());
+    ca.weather.current = WeatherKind::Clear;
+    assert_eq!(ca.chain_law_level(), 0);
+    assert!(ca.upcoming_chain_corridor(15.0).is_none());
+}
+
+#[test]
+fn test_washington_carries_chains_november_to_march() {
+    use ff_core::sim::trip_models::in_chain_reminder_season;
+    assert!(in_chain_reminder_season("WA", 11));
+    assert!(in_chain_reminder_season("WA", 3));
+    assert!(!in_chain_reminder_season("WA", 10));
+    assert!(!in_chain_reminder_season("WA", 4));
+}

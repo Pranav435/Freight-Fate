@@ -956,9 +956,8 @@ impl Trip {
     /// The chain-law areas starting between route miles `from_mi` and
     /// `to_mi` that sit on a chain corridor (`on_chain_corridor`) of a
     /// chain-control state in that state's season
-    /// (`in_chain_reminder_season`), in route order. Weather doesn't
-    /// matter: it answers where chains must be aboard, not where they must
-    /// be on. Empty without a career calendar.
+    /// (`in_chain_reminder_season`) or under an active chain law, in route
+    /// order. Empty without a career calendar.
     pub fn chain_corridors_between(&self, from_mi: f64, to_mi: f64) -> Vec<ChainCorridorAhead> {
         use chrono::Datelike;
         let Some(hours) = self.current_career_hours() else {
@@ -982,7 +981,8 @@ impl Trip {
                 continue;
             }
             let highway = self.route.legs[self.leg_at_mile(probe).0].highway.clone();
-            if !on_chain_corridor(&state, &highway) || !in_chain_reminder_season(&state, month) {
+            let in_season = in_chain_reminder_season(&state, month) || self.chain_law_level() > 0;
+            if !on_chain_corridor(&state, &highway) || !in_season {
                 continue;
             }
             out.push(ChainCorridorAhead {
