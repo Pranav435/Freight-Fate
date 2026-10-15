@@ -618,6 +618,10 @@ Everything found before 2026-09-25 moved to
       and stick names its driving command without running it. Shift F1, or
       Back plus Start on a controller, opens it over any screen, the drive
       included; the main and pause menus carry it too.
+- [x] Snapped chains offered again (player report, Colorado, 2026-10-14):
+      after a set snapped, the pause menu still offered to hang it, and it
+      snapped again as soon as the truck rolled, until the chain-law ticket.
+      The menu now reads the truck's own wear, so a scrap set stays off.
 - [ ] With several controllers connected (a second pad, or Steam's virtual
       one), the game listens only to the first it found, and the other's
       buttons do nothing. It could switch to whichever controller the
@@ -2945,6 +2949,11 @@ terminal becomes the anchor of that week instead of a spawn point.
       cycle pressure, lower pay -- weighted toward new hires in the
       assigned-dispatch levels.
 
+- [ ] Trucks that drive differently (player report, 2026-10-14): models
+      already differ in torque, weight, drag, tank and thirst, but every one
+      shares the same gearbox, RPM band, governed speed and engine recording,
+      so they feel alike. Give each its own gearing, power curve, top speed
+      and engine sound.
 - [ ] genny's instruments in Synthesized music (owner, 2026-10-08): the game
       already composes endless seeded pieces in Rust (`ff_core::music_synth`);
       porting genny's voiced instruments, drums and styles into that renderer
