@@ -292,6 +292,9 @@ pub struct DrivingState {
     pub chain_law_cited: HashSet<(i64, i64)>, // checkpoint rolls already taken
     /// Cited with chains aboard: held on the apron until they are on.
     pub chain_checkpoint_hold: bool,
+    /// Colorado chain-carry rule: warned once, and rolled once, per drive.
+    pub chain_carry_warned: bool,
+    pub chain_carry_rolled: bool,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,

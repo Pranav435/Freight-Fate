@@ -497,3 +497,82 @@ fn test_california_always_staffs_its_checkpoints() {
         CHAIN_LAW_CHECKPOINT_CHANCE
     );
 }
+
+/// A Denver-Silverthorne run on I-70 with a clear sky, inside a chain area,
+/// past its midpoint, on a given day of the career year (day 80 is March 21).
+fn carry_drive(app: &mut TestApp, day_of_year: f64, chains: bool) -> SharedState {
+    let drive = a_drive_between(app, "Denver", "Silverthorne", "Carrier");
+    {
+        let p = app.ctx.profile.as_mut().expect("a career");
+        p.set_money(1000.0);
+        p.set_chains_owned(chains);
+        p.set_chain_wear_pct(0.0);
+    }
+    with_drive(&drive, |d| {
+        d.trip.weather.current = WeatherKind::Clear;
+        d.trip.career_hours = Some((day_of_year - 80.0) * 24.0 + 12.0);
+        d.trip.game_minutes = 0.0;
+        d.trip.chain_law_areas = vec![(0.0, 10.0)];
+        d.trip.position_mi = 6.0;
+        d.trip.truck.chain_wear_pct = 0.0;
+        d.trip.truck.velocity_mps = 20.0;
+        d.trip.zones = Vec::new();
+    });
+    app.clear_speech();
+    drive
+}
+
+fn carry_tick(app: &mut TestApp, drive: &SharedState) {
+    drive_and_ctx(drive, app, |d, ctx| d.update_chain_carry(ctx));
+    app.ctx.run_deferred();
+}
+
+/// A seed whose carry roll is caught.
+fn carry_seed() -> i64 {
+    (0..40)
+        .find(|seed| {
+            PyRandom::new_from_str(&format!("{seed}:chain-carry:0")).random()
+                < CHAIN_LAW_CHECKPOINT_CHANCE
+        })
+        .expect("some seed is caught")
+}
+
+#[test]
+fn test_no_chains_aboard_on_i70_in_october_is_a_132_dollar_citation() {
+    let mut app = TestApp::new();
+    let drive = carry_drive(&mut app, 288.0, false); // October 15
+    with_drive(&drive, |d| d.trip_seed = carry_seed());
+    let date = with_drive(&drive, |d| {
+        ff_core::sim::season::date_text(d.trip.current_career_hours().unwrap())
+    });
+    assert_eq!(date, "October 15");
+    carry_tick(&mut app, &drive);
+    let lines = spoken(&app);
+    assert!(
+        lines
+            .iter()
+            .any(|s| s.starts_with("Colorado requires chains aboard")),
+        "{lines:?}"
+    );
+    assert!(
+        lines.iter().any(|s| s.contains("Citation, 132 dollars")),
+        "{lines:?}"
+    );
+    assert!((money(&app) - 868.0).abs() < 0.01);
+}
+
+#[test]
+fn test_the_carry_rule_is_quiet_in_july_and_with_chains_aboard() {
+    let mut app = TestApp::new();
+    let drive = carry_drive(&mut app, 196.0, false); // July 15
+    with_drive(&drive, |d| d.trip_seed = carry_seed());
+    carry_tick(&mut app, &drive);
+    assert!(spoken(&app).is_empty(), "{:?}", spoken(&app));
+    drop(app);
+
+    let mut app = TestApp::new();
+    let drive = carry_drive(&mut app, 288.0, true);
+    with_drive(&drive, |d| d.trip_seed = carry_seed());
+    carry_tick(&mut app, &drive);
+    assert!(spoken(&app).is_empty(), "{:?}", spoken(&app));
+}

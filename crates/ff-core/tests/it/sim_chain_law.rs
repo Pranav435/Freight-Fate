@@ -64,7 +64,7 @@ fn test_chain_law_areas_sit_over_sustained_steep_grade() {
     assert_eq!(trip.chain_law_areas.len(), 1);
     let (start, end) = trip.chain_law_areas[0];
     // The area leads the grade by the chain-up pullout and covers the run.
-    assert!((start - 9.5).abs() <= 0.3, "{start}");
+    assert!((start - 9.0).abs() <= 0.3, "{start}");
     assert!(end >= 14.0, "{end}");
     assert_eq!(trip.chain_law_area_at(12.0), Some(0));
     assert_eq!(trip.chain_law_area_at(5.0), None);
@@ -137,7 +137,7 @@ fn test_chain_law_level_follows_the_surface() {
 fn test_chain_law_sign_speaks_on_approach_and_escalates() {
     let mut trip = trip(mountain_grade());
     trip.weather.current = WeatherKind::Snow;
-    trip.position_mi = 9.0; // inside the lookahead of the area at 9.5
+    trip.position_mi = 8.5; // inside the lookahead of the area at 9.0
     trip.check_chain_law();
     let signs = |trip: &Trip| -> Vec<String> {
         trip.events
@@ -187,4 +187,33 @@ fn test_trucks_chain_at_every_level_except_colorado_level_1() {
     assert!(!rig_must_chain(Some("CO"), 1));
     assert!(rig_must_chain(Some("CO"), 2));
     assert!(rig_must_chain(None, 1));
+}
+
+#[test]
+fn test_a_steep_run_off_the_listed_corridors_is_not_a_chain_law() {
+    // I-70 over the divide is a Colorado chain corridor; a synthetic 6
+    // percent on I-25 to Colorado Springs is not.
+    let on = trip(mountain_grade());
+    assert_eq!(on.route.legs[0].highway, "I-70");
+    assert_eq!(on.chain_law_areas.len(), 1);
+    let off = trip_on("Denver", "Colorado Springs", mountain_grade());
+    assert_eq!(off.route.legs[0].highway, "I-25");
+    assert!(off.chain_law_areas.is_empty(), "{:?}", off.chain_law_areas);
+}
+
+#[test]
+fn test_chain_corridor_table() {
+    use ff_core::sim::trip_models::{in_co_chain_carry_season, on_chain_corridor};
+    assert!(on_chain_corridor("CO", "I-70"));
+    assert!(!on_chain_corridor("CO", "I-25"));
+    assert!(on_chain_corridor("WA", "I-90"));
+    assert!(on_chain_corridor("OR", "I-84"));
+    assert!(on_chain_corridor("CA", "I-80"));
+    assert!(!on_chain_corridor("CA", "I-10"));
+    // Unlisted states keep the grade-only rule.
+    assert!(on_chain_corridor("NV", "I-80"));
+    assert!(in_co_chain_carry_season(9));
+    assert!(in_co_chain_carry_season(5));
+    assert!(!in_co_chain_carry_season(6));
+    assert!(!in_co_chain_carry_season(8));
 }

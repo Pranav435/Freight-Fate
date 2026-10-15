@@ -34854,6 +34854,42 @@ msgid ""
 "Held at the chain checkpoint. Put your chains on from the pause menu."
 msgstr ""
 
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Colorado requires chains aboard on this road from September 1 to May 31. "
+"You have none."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "No chains aboard on a Colorado chain-carry corridor"
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Chain check."
+msgstr ""
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Chain check. No chains aboard on a mountain corridor in chain season. "
+"Citation, {grouped} dollars.{construction_zone_fine_clause} You have "
+"{grouped2} dollars."
+msgstr ""
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Citation, {grouped} dollars.{construction_zone_fine_clause} You have "
+"{grouped2} dollars."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "No chains aboard on a mountain corridor in chain season."
+msgstr ""
+
 #: crates/freight-fate/src/states/driving_updates/cues.rs
 msgid "Across the centerline, in the oncoming lane!"
 msgstr ""

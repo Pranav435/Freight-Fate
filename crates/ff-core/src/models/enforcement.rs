@@ -206,6 +206,9 @@ pub const CHAIN_LAW_FINE_OR: f64 = 880.0;
 /// Colorado: blocking a lane for not chaining, 1,000 plus 156 (CDOT freight
 /// fact sheet, Aug 2026). For a future stuck-in-the-lane outcome.
 pub const CHAIN_BLOCKING_FINE_CO: f64 = 1156.0;
+/// Colorado: a commercial vehicle with no chains aboard on a carry corridor
+/// in season, 100 plus 32 (CDOT freight fact sheet, Aug 2026).
+pub const CHAIN_CARRY_FINE_CO: f64 = 132.0;
 
 /// The chain-law citation in `state` (two-letter code). Only Colorado and
 /// Oregon are sourced; every other state keeps the placeholder.
