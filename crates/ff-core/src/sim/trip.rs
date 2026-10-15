@@ -588,6 +588,15 @@ impl Trip {
                 provider.request(&weather_key, lat, lon);
             }
         }
+        // Each wind-rule bridge is read at its own station, so fetch those
+        // now too, well before the truck reaches the gate.
+        for leg_index in 0..trip.route.legs.len() {
+            if let Some((key, lat, lon)) = trip.crossing_station(leg_index) {
+                if let Some(provider) = trip.weather.provider_mut() {
+                    provider.request(&key, lat, lon);
+                }
+            }
+        }
         trip
     }
 

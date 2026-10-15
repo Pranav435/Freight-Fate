@@ -270,10 +270,36 @@ impl Trip {
         self.curves = self.place_curves();
     }
 
+    /// Where live weather reads a wind-rule crossing on this leg: the leg's
+    /// toll point named for the crossing, as (station key, lat, lon). None
+    /// when the leg names no such point; the truck's own station is used.
+    pub fn crossing_station(&self, leg_index: usize) -> Option<(String, f64, f64)> {
+        let leg = self.route.legs.get(leg_index)?;
+        let crossing = leg.crossings.iter().find(|c| c.wind.is_some())?;
+        let toll = leg
+            .toll_events()
+            .iter()
+            .find(|t| t.name.starts_with(&crossing.name))?;
+        let forward = self.route.cities.get(leg_index)? == &leg.a;
+        let offset = if forward {
+            toll.at_mi
+        } else {
+            leg.miles - toll.at_mi
+        };
+        let start = *self.leg_starts.get(leg_index)?;
+        let (lat, lon) = self.latlon_at(Some(start + offset.clamp(0.0, leg.miles)));
+        Some((format!("crossing:{}", crossing.name), lat, lon))
+    }
+
     /// The wind call at a crossing on this leg, if it has one, judged at
     /// the sky's current sustained wind: (refused, spoken rule).
     fn wind_call(&mut self, leg_index: usize, load: &CrossingLoad) -> Option<(bool, String)> {
-        let wind_mph = self.weather.wind_mph();
+        let station = self.crossing_station(leg_index);
+        let wind_mph = self.weather.wind_mph_near(
+            station
+                .as_ref()
+                .map(|(key, lat, lon)| (key.as_str(), *lat, *lon)),
+        );
         self.route
             .legs
             .get(leg_index)?
