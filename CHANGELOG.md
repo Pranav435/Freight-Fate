@@ -8,6 +8,7 @@
 - **Tolls now match each toll road's published truck rate.** The Maryland Bay Bridge now charges eastbound, and one-way tolls charge only one way.
 - **High winds now close the Chesapeake Bay Bridge-Tunnel and Mackinac Bridge to trucks.** Your truck waits on duty at the bridge until the wind drops.
 - **Hazardous and heavy loads now wait for an escort across the Mackinac Bridge.** The 20-minute wait counts as on duty.
+- **Simulated high winds now vary and ease off over a few hours.** Live weather reads the wind at the bridge itself.
 - **Toll roads you could drive for free now charge.** These include the New York Thruway and the George Washington, Bay and Golden Gate bridges.
 
 - **Dispatch now routes hazardous and tank loads around real tunnels that ban them.** They take the legal road instead, such as Loveland Pass or the Baltimore Beltway.
