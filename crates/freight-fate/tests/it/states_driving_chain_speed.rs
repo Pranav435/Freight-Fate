@@ -80,3 +80,23 @@ fn test_the_speed_keeper_holds_chain_speed() {
     });
     assert_eq!(with_drive(&drive, |d| d.keeper_mph), Some(45.0));
 }
+
+#[test]
+fn test_a_cruise_cancelled_while_chained_resumes_the_drivers_own_speed() {
+    let mut app = TestApp::new();
+    let drive = a_drive(&mut app);
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.trip.truck.engine_on = true;
+        d.trip.truck.velocity_mps = 50.0 * MPS_PER_MPH;
+        d.engage_cruise(ctx, 55.0, false);
+        d.trip.truck.chains_on = true;
+        d.apply_chain_speed_cap(ctx);
+        d.disarm_speed_control(ctx);
+    });
+    assert_eq!(with_drive(&drive, |d| d.cruise_mph), None);
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.trip.truck.chains_on = false;
+        d.apply_chain_speed_cap(ctx);
+    });
+    assert_eq!(with_drive(&drive, |d| d.resume_target_mph), Some(55.0));
+}

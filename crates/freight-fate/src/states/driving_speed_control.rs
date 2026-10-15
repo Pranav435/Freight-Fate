@@ -831,6 +831,10 @@ impl DrivingState {
             if let Some(set) = self.chain_cap_cruise_mph.take() {
                 if self.cruise_mph.is_some() {
                     self.cruise_mph = Some(set);
+                } else {
+                    // Cancelled while capped: Shift+K resumes the driver's own
+                    // number, not the chain speed it was held to.
+                    self.resume_target_mph = Some(set);
                 }
             }
             if let Some(set) = self.chain_cap_keeper_mph.take() {
@@ -857,12 +861,12 @@ impl DrivingState {
         if capped && !self.chain_cap_said {
             self.chain_cap_said = true;
             let held = ctx.settings.speed_text(CHAIN_SAFE_MPH);
-            let system = if self.cruise_mph.is_some() {
-                "Cruise"
+            let line = if self.cruise_mph.is_some() {
+                format!("Cruise held to {held} for chains.")
             } else {
-                "Speed keeper"
+                format!("Speed keeper held to {held} for chains.")
             };
-            self.say_route_confirmation(ctx, format!("{system} held to {held} for chains."));
+            self.say_route_confirmation(ctx, line);
         }
     }
 }

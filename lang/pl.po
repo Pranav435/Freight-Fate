@@ -27358,14 +27358,12 @@ msgstr ""
 msgid "turn"
 msgstr ""
 
-msgid "Cruise"
+#. placeholders: {held}
+msgid "Cruise held to {held} for chains."
 msgstr ""
 
-msgid "Speed keeper"
-msgstr ""
-
-#. placeholders: {system}, {held}
-msgid "{system} held to {held} for chains."
+#. placeholders: {held}
+msgid "Speed keeper held to {held} for chains."
 msgstr ""
 
 msgid ""
@@ -29616,6 +29614,9 @@ msgstr ""
 #. placeholders: {control_upcoming}
 #. one sentence of a longer line
 msgid "Press {control_upcoming} to list the next few either way."
+msgstr ""
+
+msgid "Speed keeper"
 msgstr ""
 
 #. placeholders: {control_cruise}

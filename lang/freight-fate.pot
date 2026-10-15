@@ -34443,17 +34443,14 @@ msgstr ""
 msgid "turn"
 msgstr ""
 
+#. placeholders: {held}
 #: crates/freight-fate/src/states/driving_speed_control.rs
-msgid "Cruise"
+msgid "Cruise held to {held} for chains."
 msgstr ""
 
-#: crates/freight-fate/src/states/driving_speed_control.rs crates/freight-fate/src/states/main_menu/settings_items.rs
-msgid "Speed keeper"
-msgstr ""
-
-#. placeholders: {system}, {held}
+#. placeholders: {held}
 #: crates/freight-fate/src/states/driving_speed_control.rs
-msgid "{system} held to {held} for chains."
+msgid "Speed keeper held to {held} for chains."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_stop_detail.rs
@@ -37262,6 +37259,10 @@ msgstr ""
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/main_menu/settings_items.rs
 msgid "Press {control_upcoming} to list the next few either way."
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid "Speed keeper"
 msgstr ""
 
 #. placeholders: {control_cruise}
