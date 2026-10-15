@@ -18,7 +18,8 @@ pub enum HazmatRule {
     None,
     /// The classes in `banned_classes` are banned outright and those in
     /// `bulk_banned_classes` in a cargo tank. A placarded load whose class
-    /// is not known (an old save) is refused.
+    /// is not known (an old save) matches no class list, only the rules for
+    /// every placard, tank or bulk flammable load.
     Classes,
     /// Every placarded load is banned.
     All,
@@ -71,6 +72,32 @@ pub enum HazardClass {
 }
 
 impl HazardClass {
+    /// The class or division number the placard shows, e.g. `2.3`.
+    pub fn number(self) -> &'static str {
+        match self {
+            HazardClass::Explosive11 => "1.1",
+            HazardClass::Explosive12 => "1.2",
+            HazardClass::Explosive13 => "1.3",
+            HazardClass::Explosive14 => "1.4",
+            HazardClass::Explosive15 => "1.5",
+            HazardClass::Explosive16 => "1.6",
+            HazardClass::FlammableGas => "2.1",
+            HazardClass::NonflammableGas => "2.2",
+            HazardClass::PoisonGas => "2.3",
+            HazardClass::FlammableLiquid => "3",
+            HazardClass::FlammableSolid => "4.1",
+            HazardClass::SpontaneouslyCombustible => "4.2",
+            HazardClass::DangerousWhenWet => "4.3",
+            HazardClass::Oxidizer => "5.1",
+            HazardClass::OrganicPeroxide => "5.2",
+            HazardClass::Poison => "6.1",
+            HazardClass::Infectious => "6.2",
+            HazardClass::Radioactive => "7",
+            HazardClass::Corrosive => "8",
+            HazardClass::Miscellaneous => "9",
+        }
+    }
+
     /// Class 1, every division.
     pub fn explosive(self) -> bool {
         matches!(
@@ -335,10 +362,14 @@ impl CrossingLoad {
         self
     }
 
-    /// The placarded load's class, where the job names one.
+    /// The placarded load's class, where the job names one. Packaged
+    /// freight with no known class (an old save) is carried as unplacarded:
+    /// no crossing takes it for a class it may not be.
     pub fn with_hazard_class(mut self, class: Option<HazardClass>) -> Self {
         if self.placarded && class.is_some() {
             self.hazard_class = class;
+        } else if self.placarded && class.is_none() && !self.bulk_flammable {
+            self.placarded = false;
         }
         self
     }
@@ -348,7 +379,7 @@ impl CrossingLoad {
     pub fn may_be(&self, classes: &[HazardClass]) -> bool {
         self.placarded
             && !classes.is_empty()
-            && self.hazard_class.is_none_or(|c| classes.contains(&c))
+            && self.hazard_class.is_some_and(|c| classes.contains(&c))
     }
 
     /// Whether any crossing rule could apply beyond size.
@@ -387,8 +418,7 @@ impl RoadCrossing {
     }
 
     fn class_banned(&self, load: &CrossingLoad) -> bool {
-        (load.hazard_class.is_none() && !load.bulk_flammable)
-            || load.may_be(&self.banned_classes)
+        load.may_be(&self.banned_classes)
             || (load.tank && load.may_be(&self.bulk_banned_classes))
             || (load.bulk_flammable && self.bulk_flammable_banned)
     }
@@ -405,13 +435,7 @@ impl RoadCrossing {
                         || (reason == self.limited_text
                             && self.limited_classes.contains(&class))) =>
             {
-                let lead = if class.explosive() { "are" } else { "is" };
-                let noun = if class.explosive() {
-                    "These loads"
-                } else {
-                    "This load"
-                };
-                Some(format!("{noun} {lead} {}. {reason}", class.spoken()))
+                Some(format!("This load is {}. {reason}", class.spoken()))
             }
             _ => Some(reason.to_string()),
         }
@@ -592,8 +616,8 @@ mod tests {
         assert!(c.refusal(&packaged(HazardClass::FlammableLiquid)).is_none());
         assert!(
             c.refusal(&rig().with_cargo("hazardous", false, 20_000))
-                .is_some(),
-            "an old save's load names no class and is refused"
+                .is_none(),
+            "an old save's load names no class, so no class list matches it"
         );
         assert!(c
             .refusal(&rig().with_cargo("fuel_bulk", true, 40_000))
@@ -638,8 +662,8 @@ mod tests {
         assert!(c.refusal(&load(HazardClass::NonflammableGas)).is_none());
         assert_eq!(
             c.refusal(&rig().with_cargo("hazardous", false, 20_000)),
-            Some("No hazardous materials."),
-            "an old save's load names no class and gets the outright rule"
+            None,
+            "an old save's load names no class and is not assumed to be limited"
         );
         assert!(c.validate("test").is_ok());
         c.limited_text.clear();
@@ -660,14 +684,18 @@ mod tests {
         let blast = gas.with_hazard_class(Some(HazardClass::Explosive11));
         assert_eq!(
             c.refusal_spoken(&blast).as_deref(),
-            Some("These loads are explosives. No hazardous materials.")
+            Some("This load is explosives. No hazardous materials.")
         );
-        let unknown = rig().with_cargo("hazardous", false, 20_000);
-        assert_eq!(
-            c.refusal_spoken(&unknown).as_deref(),
-            Some("No hazardous materials.")
+        let unknown = rig()
+            .with_cargo("hazardous", false, 20_000)
+            .with_hazard_class(None);
+        assert!(
+            !unknown.placarded,
+            "an unknown class is carried unplacarded"
         );
+        assert_eq!(c.refusal_spoken(&unknown), None);
         let all = crossing(HazmatRule::All);
+        assert_eq!(all.refusal_spoken(&unknown), None);
         assert_eq!(
             all.refusal_spoken(&gas).as_deref(),
             Some("No hazardous materials."),
@@ -697,8 +725,14 @@ mod tests {
         assert_eq!(hours.wait_minutes(&blast, at(7, 0), true), None);
         let paint = blast.with_hazard_class(Some(HazardClass::FlammableLiquid));
         assert_eq!(hours.wait_minutes(&paint, at(7, 0), false), None);
-        let unknown = rig().with_cargo("hazardous", false, 20_000);
-        assert_eq!(hours.wait_minutes(&unknown, at(7, 0), false), Some(150));
+        let unknown = rig()
+            .with_cargo("hazardous", false, 20_000)
+            .with_hazard_class(None);
+        assert_eq!(
+            hours.wait_minutes(&unknown, at(7, 0), false),
+            None,
+            "a load with no class is not taken for explosives"
+        );
         let plain = rig().with_cargo("general", false, 20_000);
         assert_eq!(hours.wait_minutes(&plain, at(7, 0), false), None);
     }

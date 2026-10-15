@@ -61,8 +61,10 @@ every placard needs no class, and nothing is said where the load drives
 through.
 
 **Old saves.** A save from before classes keeps loading. Bulk fuel is read
-as gasoline. A packaged load with no saved material has no class, and a
-crossing that bans some classes refuses it, as before.
+as gasoline. A packaged load with no saved material has no class. It is
+never taken for a class: only rules on every placarded load, tank or bulk
+flammable load apply to it, so a crossing that bans some classes lets it
+through, and the Golden Gate does not hold or escort it as explosives.
 
 Size limits use a stock rig: 73.5 feet with a trailer, 25 feet bobtail,
 8.5 feet wide, 13.5 feet high.
@@ -199,7 +201,7 @@ list, https://www.chp.ca.gov/siteassets/files/ib_hmroutes.pdf). Vehicle Code 316
 (https://california.public.law/codes/vehicle_code_section_31600) defines
 explosives as Divisions 1.1, 1.2, 1.3 and 1.6, and 31600(c) says Division
 1.4 is not an explosive under it. The game counts 1.1, 1.2, 1.3, 1.5
-(blasting agents) and 1.6, and a load with no class, as explosives; 1.4
+(blasting agents) and 1.6 as explosives; 1.4
 consumer fireworks cross with no wait or escort.
 
 The windows are read on the bridge's own clock, Pacific Time, and on the

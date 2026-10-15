@@ -559,6 +559,10 @@ fn mackinac_escorts_placarded_and_heavy_loads_once_in_any_weather() {
     let waits = |key: &str, cargo_kg: f64, sky: WeatherKind| {
         let mut trip = wind_trip("sault_ste_marie_mi_us", "traverse_city_mi_us", cargo_kg);
         trip.truck.cargo_key = key.into();
+        if key == "hazardous" {
+            trip.truck.hazard_class =
+                Some(ff_core::data::world_models::HazardClass::FlammableLiquid);
+        }
         trip.weather.forced = Some(sky);
         trip.weather.current = sky;
         trip.update(1.0)
@@ -574,6 +578,7 @@ fn mackinac_escorts_placarded_and_heavy_loads_once_in_any_weather() {
     assert!(placarded[0].1.contains("20 minutes on duty"));
     let mut clocked = wind_trip("sault_ste_marie_mi_us", "traverse_city_mi_us", 9_000.0);
     clocked.truck.cargo_key = "hazardous".into();
+    clocked.truck.hazard_class = Some(ff_core::data::world_models::HazardClass::FlammableLiquid);
     clocked.weather.forced = Some(WeatherKind::Clear);
     clocked.weather.current = WeatherKind::Clear;
     let start_minutes = clocked.game_minutes;
@@ -683,6 +688,7 @@ fn a_refused_truck_is_rerouted_at_the_crossing_not_held() {
     let mut truck = TruckState::default();
     truck.start_engine();
     truck.cargo_key = "hazardous".into();
+    truck.hazard_class = Some(ff_core::data::world_models::HazardClass::FlammableLiquid);
     truck.cargo_kg = 13_600.0;
     truck.placarded_hazmat = true;
     truck.velocity_mps = 10.0;

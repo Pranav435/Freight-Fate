@@ -113,8 +113,40 @@ pub const HAZMAT_COMMODITIES: &[HazmatCommodity] = &[
     },
 ];
 
+impl HazmatCommodity {
+    /// What the load card names: shipping name, UN number and class, e.g.
+    /// `Gasoline, UN1203, Class 3`.
+    pub fn card_text(&self) -> String {
+        format!(
+            "{}, {}, Class {}",
+            self.shipping_name,
+            self.un_number,
+            self.class.number()
+        )
+    }
+}
+
 pub fn hazmat_commodity(key: &str) -> Option<&'static HazmatCommodity> {
     HAZMAT_COMMODITIES.iter().find(|c| c.key == key)
+}
+
+/// A saved material named by key, UN number (`UN1203` or `1203`), shipping
+/// name or spoken name, so a save that names its load any of those ways
+/// keeps its class.
+pub fn hazmat_commodity_named(text: &str) -> Option<&'static HazmatCommodity> {
+    let text = text.trim();
+    let digits = text
+        .strip_prefix("UN")
+        .or_else(|| text.strip_prefix("un"))
+        .unwrap_or(text)
+        .trim();
+    hazmat_commodity(text).or_else(|| {
+        HAZMAT_COMMODITIES.iter().find(|c| {
+            c.un_number[2..] == *digits
+                || c.shipping_name.eq_ignore_ascii_case(text)
+                || c.spoken.eq_ignore_ascii_case(text)
+        })
+    })
 }
 
 /// The material a load of this cargo carries. Bulk fuel is always
@@ -162,6 +194,23 @@ mod tests {
     }
 
     #[test]
+    fn the_load_card_names_material_un_number_and_class() {
+        assert_eq!(
+            hazmat_commodity("gasoline").unwrap().card_text(),
+            "Gasoline, UN1203, Class 3"
+        );
+        assert_eq!(
+            hazmat_commodity("chlorine_cylinders").unwrap().card_text(),
+            "Chlorine, UN1017, Class 2.3"
+        );
+        assert_eq!(
+            hazmat_commodity_named("un1203").map(|c| c.key),
+            Some("gasoline")
+        );
+        assert_eq!(hazmat_commodity_named("rocks"), None);
+    }
+
+    #[test]
     fn packaged_freight_varies_by_lane_and_is_stable() {
         let pick = |lane: &str| commodity_for("hazardous", lane).map(|c| c.key);
         assert_eq!(pick("x|y"), pick("x|y"));
@@ -183,6 +232,29 @@ mod tests {
         let old = job_from_payload(&saved).expect("an old save loads");
         assert_eq!(old.hazmat, None);
         assert_eq!(old.crossing_load().hazard_class, None);
+        assert!(
+            !old.crossing_load().placarded,
+            "a load of unknown class is carried unplacarded, not as explosives"
+        );
+        saved.insert("hazmat".into(), "UN1017".into());
+        assert_eq!(
+            job_from_payload(&saved).unwrap().hazmat.map(|m| m.key),
+            Some("chlorine_cylinders"),
+            "a save naming the UN number keeps the class"
+        );
+        saved.insert("hazmat".into(), "Paint".into());
+        assert_eq!(
+            job_from_payload(&saved).unwrap().hazmat.map(|m| m.key),
+            Some("paint"),
+            "a save naming the material keeps the class"
+        );
+        saved.remove("hazmat");
+        saved.insert("un_number".into(), "1066".into());
+        assert_eq!(
+            job_from_payload(&saved).unwrap().hazmat.map(|m| m.key),
+            Some("nitrogen_cylinders")
+        );
+        saved.remove("un_number");
         saved.insert("hazmat".into(), "gasoline".into());
         assert_eq!(
             job_from_payload(&saved).unwrap().hazmat,

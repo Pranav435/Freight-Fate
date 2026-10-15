@@ -622,10 +622,10 @@ pub fn job_from_payload(data: &Map<String, Value>) -> Option<Job> {
                 percent,
             })
         });
-    if let Some(material) = data
-        .get("hazmat")
-        .and_then(Value::as_str)
-        .and_then(hazmat::hazmat_commodity)
+    if let Some(material) = ["hazmat", "un_number"]
+        .iter()
+        .filter_map(|field| data.get(*field).and_then(Value::as_str))
+        .find_map(hazmat::hazmat_commodity_named)
         .filter(|m| m.cargo == cargo.key)
     {
         job.hazmat = Some(material);
