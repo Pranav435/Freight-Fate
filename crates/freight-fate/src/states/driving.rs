@@ -295,6 +295,10 @@ pub struct DrivingState {
     /// Colorado chain-carry rule: warned once, and rolled once, per drive.
     pub chain_carry_warned: bool,
     pub chain_carry_rolled: bool,
+    /// "A chain is slapping the fender" is said once per install.
+    pub chain_slap_said: bool,
+    /// The chains were tightened once since they went on.
+    pub chain_tightened: bool,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,

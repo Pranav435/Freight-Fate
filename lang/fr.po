@@ -17590,6 +17590,22 @@ msgid ""
 "{grouped2} dollars left."
 msgstr ""
 
+#. placeholders: {grouped}
+msgid "Repair links cost {grouped} dollars."
+msgstr ""
+
+msgid "Two chain repair links are in the side box, carrier billed."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Two chain repair links are in the side box."
+msgstr ""
+
+#. placeholders: {grouped}
+msgid ""
+"Two chain repair links are in the side box. You have {grouped} dollars left."
+msgstr ""
+
 msgid "brake service"
 msgstr ""
 
@@ -17681,8 +17697,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Put chains on from the pause menu once you're stopped in snow or ice. They "
-"wear out fast on bare pavement. Company drivers bill the carrier."
+"A chain set is seven chains: four for the drive tires, one for a trailer "
+"tire, and two spares, the most any state here asks of a semi, plus two "
+"repair links. Put chains on from the pause menu once you're stopped in snow "
+"or ice. They wear out fast on bare pavement. Company drivers bill the "
+"carrier."
 msgstr ""
 
 msgid ""
@@ -17697,6 +17716,14 @@ msgid ""
 msgstr ""
 
 msgid "Company drivers bill the carrier, owner-operators pay."
+msgstr ""
+
+#. placeholders: {grouped}
+msgid "Restock chain repair links: {grouped} dollars"
+msgstr ""
+
+msgid ""
+"A spare link fixes a broken chain on the shoulder in about 15 minutes."
 msgstr ""
 
 msgid ""
@@ -24772,6 +24799,31 @@ msgid ""
 msgstr ""
 
 #. placeholders: {f}
+msgid "Tighten chains: about {f} minutes"
+msgstr ""
+
+msgid ""
+"A loose chain slaps the fender and wears out fast. Tightening helps once."
+msgstr ""
+
+#. placeholders: {f}
+msgid "Repair the broken chain: about {f} minutes"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Uses a spare repair link."
+msgstr ""
+
+#. placeholders: {chain_repair_links}
+msgid "Uses a spare repair link. {chain_repair_links} left."
+msgstr ""
+
+#. placeholders: {chain_repair_links}
+#. one sentence of a longer line
+msgid "{chain_repair_links} left."
+msgstr ""
+
+#. placeholders: {f}
 msgid "Remove snow chains: about {f} minutes"
 msgstr ""
 
@@ -24855,6 +24907,43 @@ msgstr ""
 #. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
 #. one sentence of a longer line
 msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
+msgstr ""
+
+msgid "No repair links left. The chain stays off."
+msgstr ""
+
+msgid "repair chain"
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Back on in {f} minutes."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Chain repaired with a spare link."
+msgstr ""
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid ""
+"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
+"soon. It is {clock_text}. {deadline_text}"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Check it again soon."
+msgstr ""
+
+msgid "tighten chains"
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains tightened in {f} minutes."
+msgstr ""
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
 msgstr ""
 
 msgid "remove chains"
@@ -27431,7 +27520,11 @@ msgstr ""
 msgid "The drive wheels are sliding under the engine brake."
 msgstr ""
 
-msgid "A tire chain broke."
+msgid ""
+"A tire chain broke and is flailing. Slow down and pull over to check it."
+msgstr ""
+
+msgid "A chain is slapping the fender. Stop soon and tighten it."
 msgstr ""
 
 #. placeholders: {speed_text}

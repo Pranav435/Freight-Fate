@@ -20179,6 +20179,25 @@ msgstr ""
 "Un juego de cadenas nuevo guardado en el cajón lateral por {grouped} "
 "dólares. Te quedan {grouped2} dólares."
 
+#. placeholders: {grouped}
+msgid "Repair links cost {grouped} dollars."
+msgstr "Los eslabones de reparación cuestan {grouped} dólares."
+
+msgid "Two chain repair links are in the side box, carrier billed."
+msgstr ""
+"Hay dos eslabones de reparación en la caja lateral, a cargo de la empresa."
+
+#. one sentence of a longer line
+msgid "Two chain repair links are in the side box."
+msgstr "Hay dos eslabones de reparación en la caja lateral."
+
+#. placeholders: {grouped}
+msgid ""
+"Two chain repair links are in the side box. You have {grouped} dollars left."
+msgstr ""
+"Hay dos eslabones de reparación en la caja lateral. Te quedan {grouped} "
+"dólares."
+
 msgid "brake service"
 msgstr "servicio de frenos"
 
@@ -20286,8 +20305,11 @@ msgstr ""
 "antes y agarran un poco menos en asfalto seco y templado."
 
 msgid ""
-"Put chains on from the pause menu once you're stopped in snow or ice. They "
-"wear out fast on bare pavement. Company drivers bill the carrier."
+"A chain set is seven chains: four for the drive tires, one for a trailer "
+"tire, and two spares, the most any state here asks of a semi, plus two "
+"repair links. Put chains on from the pause menu once you're stopped in snow "
+"or ice. They wear out fast on bare pavement. Company drivers bill the "
+"carrier."
 msgstr ""
 "Pon las cadenas desde el menú de pausa cuando estés detenido en nieve o "
 "hielo. Se desgastan rápido sobre asfalto seco. Los conductores de empresa "
@@ -20314,6 +20336,16 @@ msgid "Company drivers bill the carrier, owner-operators pay."
 msgstr ""
 "Los conductores de empresa lo cargan a la empresa; los conductores "
 "propietarios pagan."
+
+#. placeholders: {grouped}
+msgid "Restock chain repair links: {grouped} dollars"
+msgstr "Reponer eslabones de reparación: {grouped} dólares"
+
+msgid ""
+"A spare link fixes a broken chain on the shoulder in about 15 minutes."
+msgstr ""
+"Un eslabón de repuesto arregla una cadena rota en el arcén en unos 15 "
+"minutos."
 
 msgid ""
 "Performance upgrades for owned tractors: more torque, less drag, a bigger "
@@ -28216,6 +28248,34 @@ msgstr ""
 "camión o problemas con la carga."
 
 #. placeholders: {f}
+msgid "Tighten chains: about {f} minutes"
+msgstr "Tensar las cadenas: unos {f} minutos"
+
+msgid ""
+"A loose chain slaps the fender and wears out fast. Tightening helps once."
+msgstr ""
+"Una cadena floja golpea el guardabarros y se desgasta rápido. Tensarla "
+"ayuda una vez."
+
+#. placeholders: {f}
+msgid "Repair the broken chain: about {f} minutes"
+msgstr "Reparar la cadena rota: unos {f} minutos"
+
+#. one sentence of a longer line
+msgid "Uses a spare repair link."
+msgstr "Usa un eslabón de reparación de repuesto."
+
+#. placeholders: {chain_repair_links}
+msgid "Uses a spare repair link. {chain_repair_links} left."
+msgstr ""
+"Usa un eslabón de reparación de repuesto. Quedan {chain_repair_links}."
+
+#. placeholders: {chain_repair_links}
+#. one sentence of a longer line
+msgid "{chain_repair_links} left."
+msgstr "Quedan {chain_repair_links}."
+
+#. placeholders: {f}
 msgid "Remove snow chains: about {f} minutes"
 msgstr "Quitar las cadenas: unos {f} minutos"
 
@@ -28315,6 +28375,46 @@ msgstr ""
 #. one sentence of a longer line
 msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
 msgstr "{effort}No pases de {speed_text}.{bare} Son las {clock_text}."
+
+msgid "No repair links left. The chain stays off."
+msgstr "No quedan eslabones de reparación. La cadena se queda sin poner."
+
+msgid "repair chain"
+msgstr "repair chain"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Back on in {f} minutes."
+msgstr "Puesta de nuevo en {f} minutos."
+
+#. one sentence of a longer line
+msgid "Chain repaired with a spare link."
+msgstr "Cadena reparada con un eslabón de repuesto."
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid ""
+"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
+"soon. It is {clock_text}. {deadline_text}"
+msgstr ""
+"Cadena reparada con un eslabón de repuesto. Puesta de nuevo en {f} minutos. "
+"Revísala pronto. Son las {clock_text}. {deadline_text}"
+
+#. one sentence of a longer line
+msgid "Check it again soon."
+msgstr "Revísala pronto."
+
+msgid "tighten chains"
+msgstr "tighten chains"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains tightened in {f} minutes."
+msgstr "Cadenas tensadas en {f} minutos."
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
+msgstr ""
+"Cadenas tensadas en {f} minutos. Son las {clock_text}. {deadline_text}"
 
 msgid "remove chains"
 msgstr "remove chains"
@@ -31259,8 +31359,15 @@ msgstr "Aquaplaning. La dirección se ha quedado ligera."
 msgid "The drive wheels are sliding under the engine brake."
 msgstr "Las ruedas motrices patinan con el freno motor."
 
-msgid "A tire chain broke."
-msgstr "Se rompió una cadena."
+msgid ""
+"A tire chain broke and is flailing. Slow down and pull over to check it."
+msgstr ""
+"Se rompió una cadena y va golpeando. Reduce la velocidad y oríllate para "
+"revisarla."
+
+msgid "A chain is slapping the fender. Stop soon and tighten it."
+msgstr ""
+"Una cadena está golpeando el guardabarros. Detente pronto y ténsala."
 
 #. placeholders: {speed_text}
 #. one sentence of a longer line
@@ -39977,6 +40084,9 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "A tire chain broke."
+#~ msgstr "Se rompió una cadena."
 
 #~ msgid ""
 #~ "An officer waves you onto the scale apron and writes a chain-law citation, "
