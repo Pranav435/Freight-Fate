@@ -20805,7 +20805,8 @@ msgstr ""
 #. placeholders: {wake_air_instruction}
 #. one sentence of a longer line
 msgid ""
-"Hours of service reset, but you are still tired.{wake_air_instruction}"
+"Driving and duty clocks reset, but you are still "
+"tired.{wake_air_instruction}"
 msgstr ""
 
 #. placeholders: {engine_off}
@@ -20818,8 +20819,8 @@ msgstr ""
 #. placeholders: {engine_off}, {clock_text}, {wake_air_instruction}
 msgid ""
 "{engine_off}You sleep poorly on the shoulder, woken again and again by "
-"passing trucks. It is {clock_text}. Hours of service reset, but you are "
-"still tired.{wake_air_instruction}"
+"passing trucks. It is {clock_text}. Driving and duty clocks reset, but you "
+"are still tired.{wake_air_instruction}"
 msgstr ""
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
@@ -26335,7 +26336,7 @@ msgstr ""
 msgid "Eases fatigue; does not count as your 30-minute break."
 msgstr ""
 
-msgid "Hours of service reset. "
+msgid "Driving and duty clocks reset. "
 msgstr ""
 
 #. one sentence of a longer line
@@ -26424,10 +26425,6 @@ msgstr ""
 msgid "You slept 10 hours and woke rested."
 msgstr ""
 
-#. one sentence of a longer line
-msgid "Hours of service reset."
-msgstr ""
-
 #. placeholders: {engine_off}, {slept}, {clock_text}
 #. one sentence of a longer line
 msgid "{engine_off}{slept} It is {clock_text}."
@@ -26435,7 +26432,7 @@ msgstr ""
 
 #. placeholders: {engine_off}, {slept}, {clock_text}, {deadline_text}, {wake_air_instruction}
 msgid ""
-"{engine_off}{slept} It is {clock_text}. Hours of service reset. "
+"{engine_off}{slept} It is {clock_text}. Driving and duty clocks reset. "
 "{deadline_text}{wake_air_instruction}"
 msgstr ""
 
@@ -26970,7 +26967,7 @@ msgstr ""
 #. placeholders: {clock_text}, {wake_air_instruction}
 #. one sentence of a longer line
 msgid ""
-"It is {clock_text}, hours of service reset, you wake rested, and the "
+"It is {clock_text}, driving and duty clocks reset, you wake rested, and the "
 "delivery deadline kept counting.{wake_air_instruction}"
 msgstr ""
 
@@ -26982,8 +26979,8 @@ msgstr ""
 #. placeholders: {lead}, {why}, {clock_text}, {wake_air_instruction}
 msgid ""
 "{lead}{why} Out of service: ten hours parked on the shoulder. It is "
-"{clock_text}, hours of service reset, you wake rested, and the delivery "
-"deadline kept counting.{wake_air_instruction}"
+"{clock_text}, driving and duty clocks reset, you wake rested, and the "
+"delivery deadline kept counting.{wake_air_instruction}"
 msgstr ""
 
 msgid "weigh station bypass inspection"
@@ -27855,7 +27852,8 @@ msgid "Stop and sleep before you wreck."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Hours of service reset, and the delivery deadline kept counting."
+msgid ""
+"Driving and duty clocks reset, and the delivery deadline kept counting."
 msgstr ""
 
 #. placeholders: {FATIGUE_OUT_OF_SERVICE_HOURS}
@@ -27867,8 +27865,8 @@ msgstr ""
 #. placeholders: {FATIGUE_OUT_OF_SERVICE_HOURS}, {clock_text}
 msgid ""
 "Out of service for fatigue, {FATIGUE_OUT_OF_SERVICE_HOURS} hours off duty. "
-"It is now {clock_text}. Hours of service reset, and the delivery deadline "
-"kept counting."
+"It is now {clock_text}. Driving and duty clocks reset, and the delivery "
+"deadline kept counting."
 msgstr ""
 
 #. placeholders: {mode}

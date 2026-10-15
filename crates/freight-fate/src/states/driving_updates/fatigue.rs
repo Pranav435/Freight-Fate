@@ -302,8 +302,8 @@ impl DrivingState {
         self.trip.truck.set_parking_brake();
         self.place_out_of_service(ctx);
         format!(
-            "Out of service for fatigue, {:.0} hours off duty. It is now {}. Hours of service \
-             reset, and the delivery deadline kept counting.",
+            "Out of service for fatigue, {:.0} hours off duty. It is now {}. Driving and duty \
+             clocks reset, and the delivery deadline kept counting.",
             enforcement::FATIGUE_OUT_OF_SERVICE_HOURS,
             clock_text(self.trip.local_hour())
         )

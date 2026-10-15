@@ -65,7 +65,7 @@ fn back_to_back_berth_sleeps_count_toward_the_reset() {
         "{:?}",
         h.menu_labels()
     );
-    assert!(woke.contains("Hours of service reset"), "{woke}");
+    assert!(woke.contains("Driving and duty clocks reset"), "{woke}");
     let clock = hos(&h);
     assert_eq!(clock.driving_min, 0.0);
     assert_eq!(clock.duty_min, 0.0);

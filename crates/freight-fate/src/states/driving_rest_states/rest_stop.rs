@@ -590,7 +590,7 @@ impl RestStopState {
             }
             let mode = ctx.settings.hos_mode.clone();
             let status = if full_reset {
-                "Hours of service reset. ".to_string()
+                "Driving and duty clocks reset. ".to_string()
             } else if completed {
                 format!("Sleeper split credited. {} ", hos_of(ctx).summary(&mode))
             } else {
@@ -683,7 +683,7 @@ impl RestStopState {
                 None => "You slept 10 hours and woke rested.".to_string(),
             };
             format!(
-                "{engine_off}{slept} It is {}. Hours of service reset. {}{}",
+                "{engine_off}{slept} It is {}. Driving and duty clocks reset. {}{}",
                 clock_text(d.trip.local_hour()),
                 deadline_text(d, ctx),
                 wake_air_instruction(d)
