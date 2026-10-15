@@ -253,3 +253,33 @@ fn test_chain_law_signs_speak_each_state_rule() {
         "level 2: chains required on all trucks"
     );
 }
+
+#[test]
+fn test_wyoming_level_1_takes_snow_tires_or_chains() {
+    use ff_core::sim::vehicle::TIRE_WINTER;
+    let mut trip = trip_on("Cheyenne", "Laramie", None);
+    trip.chain_law_areas = vec![(0.0, 10.0)];
+    assert_eq!(trip.state_code_at(5.0).as_deref(), Some("WY"));
+    trip.weather.current = WeatherKind::Snow;
+    trip.truck.tire_type = "all_season".to_string();
+    assert!(!trip.rig_compliant_at(5.0));
+    assert_eq!(trip.chain_law_need_at(5.0), "snow tires or chains");
+    trip.truck.tire_type = TIRE_WINTER.to_string();
+    assert!(trip.rig_compliant_at(5.0));
+    // Level 2: snow tires don't count.
+    trip.weather.current = WeatherKind::Ice;
+    assert!(!trip.rig_compliant_at(5.0));
+    assert_eq!(trip.chain_law_need_at(5.0), "chains");
+    trip.truck.chains_on = true;
+    assert!(trip.rig_compliant_at(5.0));
+}
+
+#[test]
+fn test_a_montana_chain_season_runs_october_to_april() {
+    use ff_core::sim::trip_models::mt_chain_season_id;
+    // Career hours for a day of the year (day 80 is hour 0).
+    let at = |doy: f64, year: f64| ((doy - 80.0) + 365.0 * year) * 24.0 + 12.0;
+    let october = mt_chain_season_id(at(288.0, 0.0));
+    assert_eq!(mt_chain_season_id(at(100.0, 1.0)), october); // next April
+    assert_eq!(mt_chain_season_id(at(290.0, 1.0)), october + 1); // next October
+}

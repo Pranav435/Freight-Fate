@@ -14844,6 +14844,14 @@ msgstr ""
 msgid "facility gate"
 msgstr ""
 
+#: crates/ff-core/src/sim/trip/lookups.rs
+msgid "snow tires or chains"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip/lookups.rs
+msgid "chains"
+msgstr ""
+
 #. placeholders: {lane_word}
 #: crates/ff-core/src/sim/trip/lookups.rs
 msgid "Road widens to {lane_word} lanes your side."
@@ -31532,11 +31540,33 @@ msgstr ""
 msgid "Chains grind apart fast on bare pavement."
 msgstr ""
 
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Chains bite snow and ice."
+msgstr ""
+
+#. placeholders: {speed_text}
 #: crates/freight-fate/src/states/driving_pause_states.rs
 msgid ""
-"Chains bite snow and ice. Keep under 30 miles per hour with chains on. Take "
-"them off once the road is bare. In the dark, installing takes longer and "
-"more out of you."
+"Chains bite snow and ice. Keep under {speed_text} with chains on. Take them "
+"off once the road is bare. In the dark, installing takes longer and more "
+"out of you."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "In the dark, installing takes longer and more out of you."
+msgstr ""
+
+#. placeholders: {speed_text}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Keep under {speed_text} with chains on."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Take them off once the road is bare."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs crates/freight-fate/src/states/online_hub.rs crates/freight-fate/src/states/online_states/board.rs
@@ -34814,8 +34844,9 @@ msgstr ""
 msgid "Too fast for chains. Keep under {speed_text}."
 msgstr ""
 
+#. placeholders: {need}
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Rolling into an active chain law without chains."
+msgid "Rolling into an active chain law without {need}."
 msgstr ""
 
 #. placeholders: {level}
@@ -39991,8 +40022,8 @@ msgstr ""
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
 "Chain work uses on-duty time and adds fatigue, especially at night. Keep "
-"under 30 miles per hour and remove chains on bare pavement before they "
-"break."
+"under chain speed, 30 miles per hour or 48 kilometers per hour, and remove "
+"chains on bare pavement before they break."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs

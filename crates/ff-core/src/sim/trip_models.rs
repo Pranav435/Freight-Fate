@@ -588,6 +588,15 @@ pub fn in_mt_chain_carry_season(month: u32) -> bool {
     !(5..=9).contains(&month)
 }
 
+/// Which Montana chain season (October 1 to April 30) a point on the career
+/// clock falls in, counted from the career's first October; January to
+/// April belong to the season that began the October before.
+pub fn mt_chain_season_id(game_hours: f64) -> i64 {
+    // Day of year 274 is October 1 on the career's fixed 365-day year.
+    let days = crate::sim::season::CAREER_START_DAY_OF_YEAR + game_hours / 24.0 - 274.0;
+    (days / 365.0).floor() as i64
+}
+
 /// September 1 to May 31: Colorado's chain-carry season.
 pub fn in_co_chain_carry_season(month: u32) -> bool {
     !(6..=8).contains(&month)

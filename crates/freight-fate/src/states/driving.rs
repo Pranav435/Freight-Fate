@@ -295,8 +295,6 @@ pub struct DrivingState {
     /// Colorado chain-carry rule: warned once, and rolled once, per drive.
     pub chain_carry_warned: bool,
     pub chain_carry_rolled: bool,
-    /// Montana carry rule: warned once per drive (no fine is verified).
-    pub chain_carry_mt_warned: bool,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,
