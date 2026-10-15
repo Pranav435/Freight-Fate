@@ -189,7 +189,7 @@ fn consecutive_three_and_seven_hours_are_a_full_reset_in_either_order() {
         assert_eq!(p.fatigue, 0.0);
         assert_eq!(with_drive(&drive, |d| d.trip.game_minutes), 600.0);
         let woke = app.main_lines().join(" ");
-        assert!(woke.contains("Hours of service reset"), "{woke}");
+        assert!(woke.contains("Driving and duty clocks reset"), "{woke}");
     }
 }
 

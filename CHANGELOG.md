@@ -126,6 +126,7 @@
 
 ### Fixed
 
+- **Sleeping on the shoulder or at a rest stop now says "Driving and duty clocks reset"** instead of "Hours of service reset", matching the motel and lot lines, because the 70-hour limit does not reset.
 - **A full brake stop with the engine brake on no longer damages your load.**
 
 - **An engine brake stage you pick now stays picked.** Cruise and the bend assist no longer turn it off when their reason ends.

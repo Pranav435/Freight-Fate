@@ -26299,7 +26299,8 @@ msgstr ""
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_core/state_helpers.rs
 msgid ""
-"Hours of service reset, but you are still tired.{wake_air_instruction}"
+"Driving and duty clocks reset, but you are still "
+"tired.{wake_air_instruction}"
 msgstr ""
 
 #. placeholders: {engine_off}
@@ -26314,8 +26315,8 @@ msgstr ""
 #: crates/freight-fate/src/states/driving_core/state_helpers.rs
 msgid ""
 "{engine_off}You sleep poorly on the shoulder, woken again and again by "
-"passing trucks. It is {clock_text}. Hours of service reset, but you are "
-"still tired.{wake_air_instruction}"
+"passing trucks. It is {clock_text}. Driving and duty clocks reset, but you "
+"are still tired.{wake_air_instruction}"
 msgstr ""
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
@@ -33193,7 +33194,7 @@ msgid "Eases fatigue; does not count as your 30-minute break."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
-msgid "Hours of service reset. "
+msgid "Driving and duty clocks reset. "
 msgstr ""
 
 #. one sentence of a longer line
@@ -33300,11 +33301,6 @@ msgstr ""
 msgid "You slept 10 hours and woke rested."
 msgstr ""
 
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
-msgid "Hours of service reset."
-msgstr ""
-
 #. placeholders: {engine_off}, {slept}, {clock_text}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
@@ -33314,7 +33310,7 @@ msgstr ""
 #. placeholders: {engine_off}, {slept}, {clock_text}, {deadline_text}, {wake_air_instruction}
 #: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
 msgid ""
-"{engine_off}{slept} It is {clock_text}. Hours of service reset. "
+"{engine_off}{slept} It is {clock_text}. Driving and duty clocks reset. "
 "{deadline_text}{wake_air_instruction}"
 msgstr ""
 
@@ -33969,7 +33965,7 @@ msgstr ""
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_rest_states/roadside.rs
 msgid ""
-"It is {clock_text}, hours of service reset, you wake rested, and the "
+"It is {clock_text}, driving and duty clocks reset, you wake rested, and the "
 "delivery deadline kept counting.{wake_air_instruction}"
 msgstr ""
 
@@ -33983,8 +33979,8 @@ msgstr ""
 #: crates/freight-fate/src/states/driving_rest_states/roadside.rs
 msgid ""
 "{lead}{why} Out of service: ten hours parked on the shoulder. It is "
-"{clock_text}, hours of service reset, you wake rested, and the delivery "
-"deadline kept counting.{wake_air_instruction}"
+"{clock_text}, driving and duty clocks reset, you wake rested, and the "
+"delivery deadline kept counting.{wake_air_instruction}"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_rest_states/roadside.rs

@@ -149,7 +149,7 @@ pub fn perform_shoulder_sleep(
     }
     let mut parts = vec![format!(
         "{engine_off}You sleep poorly on the shoulder, woken again and again by passing trucks. \
-         It is {}. Hours of service reset, but you are still tired.{}",
+         It is {}. Driving and duty clocks reset, but you are still tired.{}",
         clock_text(driving.trip.local_hour()),
         wake_air_instruction(driving)
     )];

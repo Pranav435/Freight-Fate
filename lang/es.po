@@ -24038,9 +24038,11 @@ msgstr "Ya vas {remaining} horas pasado el plazo de entrega."
 #. placeholders: {wake_air_instruction}
 #. one sentence of a longer line
 msgid ""
-"Hours of service reset, but you are still tired.{wake_air_instruction}"
+"Driving and duty clocks reset, but you are still "
+"tired.{wake_air_instruction}"
 msgstr ""
-"Horas de servicio reiniciadas, pero sigues cansado.{wake_air_instruction}"
+"Relojes de conducción y de servicio reiniciados, pero sigues "
+"cansado.{wake_air_instruction}"
 
 #. placeholders: {engine_off}
 #. one sentence of a longer line
@@ -24054,12 +24056,12 @@ msgstr ""
 #. placeholders: {engine_off}, {clock_text}, {wake_air_instruction}
 msgid ""
 "{engine_off}You sleep poorly on the shoulder, woken again and again by "
-"passing trucks. It is {clock_text}. Hours of service reset, but you are "
-"still tired.{wake_air_instruction}"
+"passing trucks. It is {clock_text}. Driving and duty clocks reset, but you "
+"are still tired.{wake_air_instruction}"
 msgstr ""
 "{engine_off}Duermes mal en el arcén; los camiones que pasan te despiertan "
-"una y otra vez. Son las {clock_text}. Horas de servicio reiniciadas, pero "
-"sigues cansado.{wake_air_instruction}"
+"una y otra vez. Son las {clock_text}. Relojes de conducción y de servicio "
+"reiniciados, pero sigues cansado.{wake_air_instruction}"
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
 msgid ""
@@ -30196,8 +30198,8 @@ msgstr ""
 msgid "Eases fatigue; does not count as your 30-minute break."
 msgstr "Alivia la fatiga; no cuenta como tu pausa de 30 minutos."
 
-msgid "Hours of service reset. "
-msgstr "Horas de servicio reiniciadas. "
+msgid "Driving and duty clocks reset. "
+msgstr "Relojes de conducción y de servicio reiniciados. "
 
 #. one sentence of a longer line
 msgid "Sleeper split credited."
@@ -30300,10 +30302,6 @@ msgstr ""
 msgid "You slept 10 hours and woke rested."
 msgstr "Dormiste 10 horas y te despertaste descansado."
 
-#. one sentence of a longer line
-msgid "Hours of service reset."
-msgstr "Horas de servicio reiniciadas."
-
 #. placeholders: {engine_off}, {slept}, {clock_text}
 #. one sentence of a longer line
 msgid "{engine_off}{slept} It is {clock_text}."
@@ -30311,11 +30309,11 @@ msgstr "{engine_off}{slept} Son las {clock_text}."
 
 #. placeholders: {engine_off}, {slept}, {clock_text}, {deadline_text}, {wake_air_instruction}
 msgid ""
-"{engine_off}{slept} It is {clock_text}. Hours of service reset. "
+"{engine_off}{slept} It is {clock_text}. Driving and duty clocks reset. "
 "{deadline_text}{wake_air_instruction}"
 msgstr ""
-"{engine_off}{slept} Son las {clock_text}. Horas de servicio reiniciadas. "
-"{deadline_text}{wake_air_instruction}"
+"{engine_off}{slept} Son las {clock_text}. Relojes de conducción y de "
+"servicio reiniciados. {deadline_text}{wake_air_instruction}"
 
 #. placeholders: {engine_off}, {grouped}, {clock_text}, {grouped2}, {deadline_text}, {wake_air_instruction}
 msgid ""
@@ -30935,11 +30933,11 @@ msgstr ""
 #. placeholders: {clock_text}, {wake_air_instruction}
 #. one sentence of a longer line
 msgid ""
-"It is {clock_text}, hours of service reset, you wake rested, and the "
+"It is {clock_text}, driving and duty clocks reset, you wake rested, and the "
 "delivery deadline kept counting.{wake_air_instruction}"
 msgstr ""
-"Son las {clock_text}, las horas de servicio se han reiniciado, te "
-"despiertas descansado y el plazo de entrega siguió "
+"Son las {clock_text}, los relojes de conducción y de servicio se han "
+"reiniciado, te despiertas descansado y el plazo de entrega siguió "
 "corriendo.{wake_air_instruction}"
 
 #. placeholders: {lead}, {why}
@@ -30950,12 +30948,13 @@ msgstr "{lead}{why} Fuera de servicio: diez horas aparcado en el arcén."
 #. placeholders: {lead}, {why}, {clock_text}, {wake_air_instruction}
 msgid ""
 "{lead}{why} Out of service: ten hours parked on the shoulder. It is "
-"{clock_text}, hours of service reset, you wake rested, and the delivery "
-"deadline kept counting.{wake_air_instruction}"
+"{clock_text}, driving and duty clocks reset, you wake rested, and the "
+"delivery deadline kept counting.{wake_air_instruction}"
 msgstr ""
 "{lead}{why} Fuera de servicio: diez horas aparcado en el arcén. Son las "
-"{clock_text}, las horas de servicio se han reiniciado, te despiertas "
-"descansado y el plazo de entrega siguió corriendo.{wake_air_instruction}"
+"{clock_text}, los relojes de conducción y de servicio se han reiniciado, te "
+"despiertas descansado y el plazo de entrega siguió "
+"corriendo.{wake_air_instruction}"
 
 msgid "weigh station bypass inspection"
 msgstr "weigh station bypass inspection"
@@ -40317,6 +40316,50 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid ""
+#~ "Hours of service reset, but you are still tired.{wake_air_instruction}"
+#~ msgstr ""
+#~ "Horas de servicio reiniciadas, pero sigues cansado.{wake_air_instruction}"
+
+#~ msgid ""
+#~ "{engine_off}You sleep poorly on the shoulder, woken again and again by "
+#~ "passing trucks. It is {clock_text}. Hours of service reset, but you are "
+#~ "still tired.{wake_air_instruction}"
+#~ msgstr ""
+#~ "{engine_off}Duermes mal en el arcén; los camiones que pasan te despiertan "
+#~ "una y otra vez. Son las {clock_text}. Horas de servicio reiniciadas, pero "
+#~ "sigues cansado.{wake_air_instruction}"
+
+#~ msgid "Hours of service reset. "
+#~ msgstr "Horas de servicio reiniciadas. "
+
+#~ msgid "Hours of service reset."
+#~ msgstr "Horas de servicio reiniciadas."
+
+#~ msgid ""
+#~ "{engine_off}{slept} It is {clock_text}. Hours of service reset. "
+#~ "{deadline_text}{wake_air_instruction}"
+#~ msgstr ""
+#~ "{engine_off}{slept} Son las {clock_text}. Horas de servicio reiniciadas. "
+#~ "{deadline_text}{wake_air_instruction}"
+
+#~ msgid ""
+#~ "It is {clock_text}, hours of service reset, you wake rested, and the "
+#~ "delivery deadline kept counting.{wake_air_instruction}"
+#~ msgstr ""
+#~ "Son las {clock_text}, las horas de servicio se han reiniciado, te "
+#~ "despiertas descansado y el plazo de entrega siguió "
+#~ "corriendo.{wake_air_instruction}"
+
+#~ msgid ""
+#~ "{lead}{why} Out of service: ten hours parked on the shoulder. It is "
+#~ "{clock_text}, hours of service reset, you wake rested, and the delivery "
+#~ "deadline kept counting.{wake_air_instruction}"
+#~ msgstr ""
+#~ "{lead}{why} Fuera de servicio: diez horas aparcado en el arcén. Son las "
+#~ "{clock_text}, las horas de servicio se han reiniciado, te despiertas "
+#~ "descansado y el plazo de entrega siguió corriendo.{wake_air_instruction}"
 
 #~ msgid ""
 #~ "Hours of service: {duration_text} driving, 14-hour window {duration_text2}."

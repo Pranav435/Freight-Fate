@@ -465,7 +465,7 @@ impl EnforcementStopState {
             } else {
                 format!(
                     "{lead}{why} Out of service: ten hours parked on the shoulder. It is {}, \
-                     hours of service reset, you wake rested, and the delivery deadline kept \
+                     driving and duty clocks reset, you wake rested, and the delivery deadline kept \
                      counting.{}",
                     clock_text(d.trip.local_hour()),
                     wake_air_instruction(d)
