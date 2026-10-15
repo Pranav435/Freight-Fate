@@ -839,6 +839,17 @@ impl Profile {
         self.set_condition("chain_wear_pct", Value::from(value));
     }
 
+    /// The Montana chain season (`mt_chain_season_id`) whose carry warning
+    /// was last spoken, so it is said once a season, not once a drive.
+    pub fn mt_chain_warned_season(&self) -> Option<i64> {
+        self.condition()
+            .and_then(|rec| rec.get("mt_chain_warned_season"))
+            .and_then(Value::as_i64)
+    }
+    pub fn set_mt_chain_warned_season(&mut self, season: i64) {
+        self.set_condition("mt_chain_warned_season", Value::from(season));
+    }
+
     /// Put the saved rig condition onto a fresh `TruckState` at trip start.
     ///
     /// Fuel, incident damage, and the wear meters travel together so no sync

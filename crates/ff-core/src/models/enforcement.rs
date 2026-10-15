@@ -213,9 +213,12 @@ pub const CHAIN_LAW_FINE_WY: f64 = 250.0;
 /// Wyoming: 750 dollars when the violation causes a road closure. Closures
 /// aren't modeled yet, so this is for a future outcome.
 pub const CHAIN_CLOSURE_FINE_WY: f64 = 750.0;
+/// Colorado: a commercial vehicle with no chains aboard on a carry corridor
+/// in season, 100 plus 32 (CDOT freight fact sheet, Aug 2026).
+pub const CHAIN_CARRY_FINE_CO: f64 = 132.0;
 
-/// The chain-law citation in `state` (two-letter code). Only Colorado and
-/// Oregon are sourced; every other state keeps the placeholder.
+/// The chain-law citation in `state` (two-letter code). Only Colorado,
+/// Oregon and Wyoming are sourced; every other state keeps the placeholder.
 pub fn chain_law_fine(state: Option<&str>) -> f64 {
     match state {
         Some("CO") => CHAIN_LAW_FINE_CO,

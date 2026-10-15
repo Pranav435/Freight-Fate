@@ -58,6 +58,9 @@
 
 ### Changed
 
+- **Chain laws post only on real chain-control highways in Colorado, California, Washington, Oregon and Idaho,** not on any steep grade in those states. Chain-law signs now come about a mile before the chain-up area.
+- **Colorado's chain-carry rule is enforced.** From September 1 to May 31, a truck with no chains aboard on a Colorado mountain corridor is warned once and can be cited 132 dollars, whatever the weather.
+- **Montana reminds you to carry chains.** From October 1 to April 30, a truck with no chains aboard on a Montana mountain run hears it once a season, even across drives and a quit and resume. There's no fine. The carry lines are in Spanish.
 - **A chain checkpoint now holds you on the apron until your chains are on.** If you have no chains aboard, the officer tells you to buy a set at the next garage.
 - **Chain-law fines follow the state.** Colorado is 579 dollars, Oregon is 880 and Wyoming is 250. Other states keep 580 until their own figures are confirmed. California checks every truck at an active chain control. The checkpoint and hold lines are in Spanish.
 - **Trucks must chain under every chain law; winter tires no longer count for a semi.** California, Washington and Oregon chain trucks at every level. Colorado Level 1 chains only single-drive-axle trucks, so your tandem-drive rig chains there at Level 2. Wyoming Level 1 accepts snow tires or chains, and Wyoming Level 2 requires chains on two tires of one drive axle. The signs, the help and the checkpoint all follow this rule.

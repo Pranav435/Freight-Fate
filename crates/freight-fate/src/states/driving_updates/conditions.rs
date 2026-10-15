@@ -1,7 +1,7 @@
 //! Standing physical conditions: hot brakes, the destination approach
 //! assist, the traction states, and the chain law.
 
-use ff_core::models::enforcement::chain_law_fine;
+use ff_core::models::enforcement::{chain_law_fine, CHAIN_CARRY_FINE_CO};
 use ff_core::pyfmt::fmt_grouped;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::vehicle::MIN_STOPPING_DECEL_MPS2;
@@ -722,5 +722,95 @@ impl DrivingState {
                 SayEvent::new().category(SpeechCategory::Navigation),
             );
         }
+    }
+
+    /// Colorado's carry rule: no chains aboard on a carry corridor's
+    /// mountain run from September 1 to May 31 is its own citation, whatever
+    /// the weather (CSP chain-law page; 100 plus 32, CDOT freight fact sheet,
+    /// Aug 2026). Warned once on entry, rolled once past the run's midpoint
+    /// at the same seeded checkpoint chance as the chain law.
+    pub fn update_chain_carry(&mut self, ctx: &mut GameContext) {
+        let at = self.trip.position_mi;
+        if self.trip.truck.speed_mph() < 3.0 {
+            return;
+        }
+        // Once a season, kept in the profile so a quit and resume or the
+        // next drive doesn't say it again.
+        let season = self
+            .trip
+            .current_career_hours()
+            .map(ff_core::sim::trip_models::mt_chain_season_id);
+        if season.is_some()
+            && profile_of(ctx).mt_chain_warned_season() != season
+            && self.trip.on_mt_chain_carry_run(at)
+            && !(profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0)
+        {
+            profile_mut_of(ctx).set_mt_chain_warned_season(season.unwrap_or_default());
+            ctx.say_event_with(
+                "Montana requires trucks to carry chains from October 1 to April 30. You have \
+                 none.",
+                SayEvent::new().category(SpeechCategory::Navigation),
+            );
+        }
+        if !self.trip.on_co_chain_carry_corridor(at) {
+            return;
+        }
+        let aboard = profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0;
+        if aboard {
+            return;
+        }
+        if !self.chain_carry_warned {
+            self.chain_carry_warned = true;
+            ctx.say_event_with(
+                "Colorado requires chains aboard on this road from September 1 to May 31. You \
+                 have none.",
+                SayEvent::new().category(SpeechCategory::Navigation),
+            );
+        }
+        let Some(area) = self.trip.chain_law_area_at(at) else {
+            return;
+        };
+        let (start, end) = self.trip.chain_law_areas[area];
+        if self.chain_carry_rolled || at < (start + end) / 2.0 {
+            return;
+        }
+        self.chain_carry_rolled = true;
+        let mut rng = PyRandom::new_from_str(&format!("{}:chain-carry:{area}", self.trip_seed));
+        if rng.random() >= CHAIN_LAW_CHECKPOINT_CHANCE {
+            return;
+        }
+        let zone = self.trip.in_construction_zone();
+        let fine = citation_fine(
+            CHAIN_CARRY_FINE_CO,
+            career_citations(profile_of(ctx)),
+            zone,
+            None,
+        );
+        let money = {
+            let p = profile_mut_of(ctx);
+            p.spend(fine);
+            p.money()
+        };
+        self.ticket_fines_paid += fine;
+        self.log_enforcement(
+            ctx,
+            fine,
+            false,
+            false,
+            "No chains aboard on a Colorado chain-carry corridor",
+        );
+        ctx.audio.play("ui/error");
+        ctx.say_event_with(
+            format!(
+                "Chain check. No chains aboard on a mountain corridor in chain season. Citation, \
+                 {} dollars.{} You have {} dollars.",
+                fmt_grouped(fine, 0),
+                construction_zone_fine_clause(zone),
+                fmt_grouped(money, 0)
+            ),
+            SayEvent::queued()
+                .priority(EventPriority::Route)
+                .category(SpeechCategory::Money),
+        );
     }
 }

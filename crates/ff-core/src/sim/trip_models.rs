@@ -526,7 +526,81 @@ pub fn chain_law_sign_rule(state: Option<&str>, level: i64) -> &'static str {
 
 pub const CHAIN_LAW_MIN_RUN_MI: f64 = 1.0;
 pub const CHAIN_LAW_JOIN_GAP_MI: f64 = 2.0;
-pub const CHAIN_LAW_LEAD_MI: f64 = 0.5;
+/// Caltrans: "about a mile between 'Chains Required' signs and the
+/// checkpoint" (winter driving tips).
+pub const CHAIN_LAW_LEAD_MI: f64 = 1.0;
+
+/// The highways each sourced state runs commercial chain controls on. A
+/// steep run in one of these states makes a chain-law area only on one of
+/// its listed highways; a state not listed (MT, NV, UT, WY) keeps the
+/// grade-only rule, UNVERIFIED until their own route lists are read. Leg
+/// highways carry no mileposts, so the listed mileposts below are matched by
+/// highway plus the steep-grade rule, not by milepost.
+/// - CO: the chain-carry corridors (csp.colorado.gov/chain-law-information):
+///   I-70 west of MP 259, CO-9 MP 63-97, US-40 west of MP 256, US-50 west of
+///   MP 225, US-160 west of MP 304, US-285 west of MP 250, US-550 MP 0-130.
+/// - CA: I-80 Donner and I-5 Grapevine and Siskiyou (Caltrans chain
+///   requirements); US-50 Echo, CA-58 Tehachapi and I-15 Cajon are
+///   UNVERIFIED rows, kept because Caltrans posts controls there.
+/// - WA: WAC 204-24-050(2)(i): I-90 MP 32-101, I-82 MP 3-26, US-2 MP 36-108,
+///   US-12 MP 135-187, US-97 (two stretches), SR-410, SR-20, SR-155, SR-970,
+///   SR-14 and SR-542.
+/// - ID: I-90 (Fourth of July and Lookout passes) and US-12 (Lolo Pass).
+/// - OR: ODOT snow zones on I-84 Cabbage Hill, I-5 Siskiyou, US-26 and
+///   OR-58 (Willamette Pass).
+pub const CHAIN_CORRIDORS: [(&str, &[&str]); 5] = [
+    (
+        "CO",
+        &[
+            "I-70", "CO-9", "US-40", "US-50", "US-160", "US-285", "US-550",
+        ],
+    ),
+    ("CA", &["I-80", "I-5", "US-50", "CA-58", "I-15"]),
+    (
+        "WA",
+        &[
+            "I-90", "I-82", "US-2", "US-12", "US-97", "WA-410", "WA-20", "WA-155", "WA-970",
+            "WA-14", "WA-542",
+        ],
+    ),
+    ("OR", &["I-84", "I-5", "US-26", "OR-58"]),
+    ("ID", &["I-90", "US-12"]),
+];
+
+/// Whether `highway` in `state` can carry a chain law (`CHAIN_CORRIDORS`).
+pub fn on_chain_corridor(state: &str, highway: &str) -> bool {
+    match CHAIN_CORRIDORS.iter().find(|(code, _)| *code == state) {
+        Some((_, highways)) => highways.contains(&highway),
+        None => true,
+    }
+}
+
+/// Colorado's carry rule: a commercial vehicle over 16,000 lb on these
+/// corridors must carry chains from September 1 to May 31 (CSP chain-law
+/// page). Matched by highway, inside a chain-law area (the mountain run).
+pub const CO_CHAIN_CARRY_CORRIDORS: [&str; 7] = [
+    "I-70", "CO-9", "US-40", "US-50", "US-160", "US-285", "US-550",
+];
+
+/// Montana: trucks of 26,001 lb or more must carry chains from October 1 to
+/// April 30 (MCA 61-9-436). No fine is verified, so the game only warns.
+pub fn in_mt_chain_carry_season(month: u32) -> bool {
+    !(5..=9).contains(&month)
+}
+
+/// Which Montana chain season (October 1 to April 30) a point on the career
+/// clock falls in, counted from the career's first October; January to
+/// April belong to the season that began the October before.
+pub fn mt_chain_season_id(game_hours: f64) -> i64 {
+    // Day of year 274 is October 1 on the career's fixed 365-day year.
+    let days = crate::sim::season::CAREER_START_DAY_OF_YEAR + game_hours / 24.0 - 274.0;
+    (days / 365.0).floor() as i64
+}
+
+/// September 1 to May 31: Colorado's chain-carry season.
+pub fn in_co_chain_carry_season(month: u32) -> bool {
+    !(6..=8).contains(&month)
+}
 pub const CHAIN_LAW_SAMPLE_MI: f64 = 0.25;
 pub const CONDITIONS_SPEED_MARGIN_MPH: f64 = 8.0;
 pub const CONDITIONS_GRIP_CEILING: f64 = 0.85;

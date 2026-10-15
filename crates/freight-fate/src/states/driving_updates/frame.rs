@@ -661,6 +661,7 @@ impl DrivingState {
         self.update_traction_cues(ctx);
         self.update_chain_law(ctx);
         self.update_chain_checkpoint_hold(ctx);
+        self.update_chain_carry(ctx);
         // The destination approach assist used to run here -- after the
         // physics step, which is why its brake never reached the truck. It
         // now runs with the other assists' pedal floors, ahead of t.update().

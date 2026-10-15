@@ -31323,6 +31323,51 @@ msgid ""
 msgstr ""
 "Retenido en el control de cadenas. Pon las cadenas desde el menú de pausa."
 
+msgid ""
+"Montana requires trucks to carry chains from October 1 to April 30. You "
+"have none."
+msgstr ""
+"Montana exige que los camiones lleven cadenas del 1 de octubre al 30 de "
+"abril. No llevas ninguna."
+
+msgid ""
+"Colorado requires chains aboard on this road from September 1 to May 31. "
+"You have none."
+msgstr ""
+"Colorado exige llevar cadenas en esta carretera del 1 de septiembre al 31 "
+"de mayo. No llevas ninguna."
+
+msgid "No chains aboard on a Colorado chain-carry corridor"
+msgstr ""
+"Sin cadenas en un corredor de Colorado donde es obligatorio llevarlas"
+
+#. one sentence of a longer line
+msgid "Chain check."
+msgstr "Control de cadenas."
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+msgid ""
+"Chain check. No chains aboard on a mountain corridor in chain season. "
+"Citation, {grouped} dollars.{construction_zone_fine_clause} You have "
+"{grouped2} dollars."
+msgstr ""
+"Control de cadenas. Sin cadenas en un corredor de montaña en temporada de "
+"cadenas. Multa de {grouped} dólares.{construction_zone_fine_clause} Tienes "
+"{grouped2} dólares."
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+#. one sentence of a longer line
+msgid ""
+"Citation, {grouped} dollars.{construction_zone_fine_clause} You have "
+"{grouped2} dollars."
+msgstr ""
+"Multa de {grouped} dólares.{construction_zone_fine_clause} Tienes "
+"{grouped2} dólares."
+
+#. one sentence of a longer line
+msgid "No chains aboard on a mountain corridor in chain season."
+msgstr "Sin cadenas en un corredor de montaña en temporada de cadenas."
+
 msgid "Across the centerline, in the oncoming lane!"
 msgstr "¡Has cruzado la línea central, estás en el carril contrario!"
 

@@ -936,6 +936,36 @@ impl Trip {
         )
     }
 
+    /// The truck is on a Colorado chain-carry corridor's mountain run in
+    /// carry season (`CO_CHAIN_CARRY_CORRIDORS`), with the career calendar
+    /// known. Weather doesn't matter: the rule is to carry, not to chain.
+    pub fn on_co_chain_carry_corridor(&self, mile: f64) -> bool {
+        use crate::sim::trip_models::{in_co_chain_carry_season, CO_CHAIN_CARRY_CORRIDORS};
+        use chrono::Datelike;
+        let Some(hours) = self.current_career_hours() else {
+            return false;
+        };
+        let month = crate::sim::season::calendar_date(hours).month();
+        let highway = &self.route.legs[self.leg_at_mile(mile).0].highway;
+        self.chain_law_area_at(mile).is_some()
+            && self.state_code_at(mile).as_deref() == Some("CO")
+            && CO_CHAIN_CARRY_CORRIDORS.contains(&highway.as_str())
+            && in_co_chain_carry_season(month)
+    }
+
+    /// The truck is on a Montana chain-law area (the mountain run) between
+    /// October 1 and April 30 (`in_mt_chain_carry_season`).
+    pub fn on_mt_chain_carry_run(&self, mile: f64) -> bool {
+        use chrono::Datelike;
+        let Some(hours) = self.current_career_hours() else {
+            return false;
+        };
+        let month = crate::sim::season::calendar_date(hours).month();
+        self.chain_law_area_at(mile).is_some()
+            && self.state_code_at(mile).as_deref() == Some("MT")
+            && crate::sim::trip_models::in_mt_chain_carry_season(month)
+    }
+
     /// Whether the truck meets the active chain law at this milepost: chains
     /// on, or a law that doesn't chain the rig here (`rig_must_chain`).
     /// Wyoming Level 1 asks for snow tires or chains (W.S. 31-5-956(e)), so
