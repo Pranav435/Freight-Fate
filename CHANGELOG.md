@@ -4,6 +4,8 @@
 
 ### Added
 
+- **Laredo now has two real border transfer yards for Mexico freight.** Southbound loads name their Mexican consignee and drop at the yard; northbound trailers wait on paperwork first.
+
 - **Dispatch now routes hazardous and tank loads around real tunnels that ban them.** They take the legal road instead, such as Loveland Pass or the Baltimore Beltway.
 
 - **Whittier is now reached through the Anton Anderson Memorial Tunnel.** Its one-lane gate and Bear Valley toll make the crossing a planned part of the drive.
