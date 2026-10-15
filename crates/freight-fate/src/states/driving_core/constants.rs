@@ -64,9 +64,10 @@ pub const CHAIN_REMOVE_MIN: f64 = 10.0;
 // A broken chain is one cross link or one chain, not the whole set, and it
 // is fixed on the shoulder: Caltrans tells drivers to carry "chain repair
 // links", and Washington requires two spare chains for this case (WAC
-// 204-24-050(2)(f)). A repair puts the set back at 85 percent worn.
+// 204-24-050(2)(f)). A repair puts the set back at 80 percent worn, under
+// the slap warning, so a fresh repair doesn't slap at once.
 pub const CHAIN_REPAIR_MIN: f64 = 15.0;
-pub const CHAIN_REPAIR_WEAR_RESTORE: f64 = 15.0;
+pub const CHAIN_REPAIR_WEAR_RESTORE: f64 = 20.0;
 // A worn chain loosens and slaps the fender before it lets go. Tightening it
 // takes about five minutes and buys back a little wear, once per install.
 pub const CHAIN_SLAP_WARN_PCT: f64 = 85.0;

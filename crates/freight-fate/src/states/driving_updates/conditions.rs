@@ -620,16 +620,18 @@ impl DrivingState {
         let Some(area) = self.trip.chain_law_area_at(self.trip.position_mi) else {
             return;
         };
-        // Winter tires never excuse a semi; only Colorado's Level 1 leaves a
-        // tandem-drive truck unchained (`rig_must_chain`).
-        if self.trip.truck.chains_on || !self.trip.rig_must_chain_at(self.trip.position_mi) {
+        // Winter tires never excuse a semi, except at Wyoming Level 1;
+        // Colorado's Level 1 leaves a tandem-drive truck unchained
+        // (`rig_compliant_at`).
+        if self.trip.rig_compliant_at(self.trip.position_mi) {
             return;
         }
         let key = (area as i64, level);
         if !self.chain_law_warned.contains(&key) {
             self.chain_law_warned.insert(key);
+            let need = self.trip.chain_law_need_at(self.trip.position_mi);
             ctx.say_event_with(
-                "Rolling into an active chain law without chains.",
+                format!("Rolling into an active chain law without {need}."),
                 SayEvent::new().category(SpeechCategory::Navigation),
             );
         }
@@ -742,11 +744,18 @@ impl DrivingState {
         if self.trip.truck.speed_mph() < 3.0 {
             return;
         }
-        if !self.chain_carry_mt_warned
+        // Once a season, kept in the profile so a quit and resume or the
+        // next drive doesn't say it again.
+        let season = self
+            .trip
+            .current_career_hours()
+            .map(ff_core::sim::trip_models::mt_chain_season_id);
+        if season.is_some()
+            && profile_of(ctx).mt_chain_warned_season() != season
             && self.trip.on_mt_chain_carry_run(at)
             && !(profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0)
         {
-            self.chain_carry_mt_warned = true;
+            profile_mut_of(ctx).set_mt_chain_warned_season(season.unwrap_or_default());
             ctx.say_event_with(
                 "Montana requires trucks to carry chains from October 1 to April 30. You have \
                  none.",

@@ -945,8 +945,16 @@ fn test_a_broken_chain_is_repaired_with_a_spare_link() {
     );
     app.clear_speech();
     activate(&mut state, &mut app.ctx, "Repair the broken chain");
-    assert_eq!(with_drive(&drive, |d| d.trip.truck.chain_wear_pct), 85.0);
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.chain_wear_pct), 80.0);
     assert!(with_drive(&drive, |d| d.trip.truck.chains_on));
+    // Under the slap threshold: no slap line straight after the repair.
+    drive_and_ctx(&drive, &mut app, |d, ctx| d.update_traction_cues(ctx));
+    app.ctx.run_deferred();
+    assert!(
+        !app.event_lines().iter().any(|s| s.contains("slapping")),
+        "{:?}",
+        app.event_lines()
+    );
     assert_eq!(app.ctx.profile.as_ref().unwrap().chain_repair_links(), 1);
     let minutes = with_drive(&drive, |d| d.trip.game_minutes) - before;
     assert!((minutes - 15.0).abs() < 0.5, "{minutes}");
