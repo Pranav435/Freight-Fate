@@ -1277,3 +1277,31 @@ fn the_controller_row_names_the_connected_controller() {
     app.ctx.settings.controller_enabled = false;
     assert_eq!(controller_row(&mut app), "Controller: disabled");
 }
+
+#[test]
+fn test_the_assist_help_says_what_chain_work_costs_and_that_nothing_is_bought() {
+    let mut app = TestApp::new();
+    open_settings_category(&mut app, "Driving assistance");
+    let facility = cat_rows(&mut app, "assistance")
+        .into_iter()
+        .find(|(label, _)| label.starts_with("Facility stopping assistance"))
+        .map(|(_, help)| help)
+        .expect("a facility stopping row");
+    assert!(
+        facility.contains("may spend on-duty minutes on chains"),
+        "{facility}"
+    );
+    assert!(facility.contains("It never buys chains."), "{facility}");
+    assert!(!facility.contains("money"), "{facility}");
+    open_settings_category(&mut app, "Difficulty and hours of service");
+    let planning = cat_rows(&mut app, "difficulty")
+        .into_iter()
+        .find(|(label, _)| label.starts_with("Hours of service planning hints"))
+        .map(|(_, help)| help)
+        .expect("a stop planning row");
+    assert!(
+        planning.contains("reminds you before a chain-law road"),
+        "{planning}"
+    );
+    assert!(planning.contains("never buys anything"), "{planning}");
+}
