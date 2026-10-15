@@ -11706,6 +11706,12 @@ msgstr ""
 msgid "facility gate"
 msgstr ""
 
+msgid "snow tires or chains"
+msgstr ""
+
+msgid "chains"
+msgstr ""
+
 #. placeholders: {lane_word}
 msgid "Road widens to {lane_word} lanes your side."
 msgstr ""
@@ -25000,10 +25006,28 @@ msgstr ""
 msgid "Chains grind apart fast on bare pavement."
 msgstr ""
 
+#. one sentence of a longer line
+msgid "Chains bite snow and ice."
+msgstr ""
+
+#. placeholders: {speed_text}
 msgid ""
-"Chains bite snow and ice. Keep under 30 miles per hour with chains on. Take "
-"them off once the road is bare. In the dark, installing takes longer and "
-"more out of you."
+"Chains bite snow and ice. Keep under {speed_text} with chains on. Take them "
+"off once the road is bare. In the dark, installing takes longer and more "
+"out of you."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "In the dark, installing takes longer and more out of you."
+msgstr ""
+
+#. placeholders: {speed_text}
+#. one sentence of a longer line
+msgid "Keep under {speed_text} with chains on."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Take them off once the road is bare."
 msgstr ""
 
 msgid "Drivers on duty"
@@ -27651,7 +27675,8 @@ msgstr ""
 msgid "Too fast for chains. Keep under {speed_text}."
 msgstr ""
 
-msgid "Rolling into an active chain law without chains."
+#. placeholders: {need}
+msgid "Rolling into an active chain law without {need}."
 msgstr ""
 
 #. placeholders: {level}
@@ -31839,8 +31864,8 @@ msgstr ""
 
 msgid ""
 "Chain work uses on-duty time and adds fatigue, especially at night. Keep "
-"under 30 miles per hour and remove chains on bare pavement before they "
-"break."
+"under chain speed, 30 miles per hour or 48 kilometers per hour, and remove "
+"chains on bare pavement before they break."
 msgstr ""
 
 msgid ""
