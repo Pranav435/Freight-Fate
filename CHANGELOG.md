@@ -4,6 +4,7 @@
 
 ### Added
 
+- **Stop planning reminds you before a chain-law road if you have no chains.** With Hours of service planning hints on, from fall to spring, the game says so at departure and about 15 miles before the chain-up area, names the exit when the map has one, and says which city garage sells chains and how far it is. It never buys anything. The lines are in Spanish.
 - **A broken snow chain can be fixed on the shoulder.** Each chain set comes with two spare repair links. Stopped with a broken chain, the pause menu offers "Repair the broken chain: about 15 minutes", which puts the set back on at 80 percent worn, under the slap warning. The garage restocks the links for 25 dollars.
 - **A worn chain warns you before it breaks.** At 85 percent wear the game says "A chain is slapping the fender. Stop soon and tighten it." Tightening takes about 5 minutes and buys back a little wear, once each time the chains go on.
 - **The game can speak Spanish.** Choose Español under Settings, Speech, Language; the radio stays in English.

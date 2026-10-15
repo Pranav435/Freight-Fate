@@ -305,6 +305,9 @@ pub struct DrivingState {
     pub chain_slap_said: bool,
     /// The chains were tightened once since they went on.
     pub chain_tightened: bool,
+    /// Stop planning's no-chains reminder, said once per corridor approach
+    /// (`ChainCorridorAhead::key`). Not saved: a resume may repeat it once.
+    pub chain_reminder_said: HashSet<String>,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,

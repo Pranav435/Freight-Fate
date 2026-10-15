@@ -953,6 +953,86 @@ impl Trip {
             && in_co_chain_carry_season(month)
     }
 
+    /// The chain-law areas starting between route miles `from_mi` and
+    /// `to_mi` that sit on a chain corridor (`on_chain_corridor`) of a
+    /// chain-control state in that state's season
+    /// (`in_chain_reminder_season`), in route order. Weather doesn't
+    /// matter: it answers where chains must be aboard, not where they must
+    /// be on. Empty without a career calendar.
+    pub fn chain_corridors_between(&self, from_mi: f64, to_mi: f64) -> Vec<ChainCorridorAhead> {
+        use chrono::Datelike;
+        let Some(hours) = self.current_career_hours() else {
+            return Vec::new();
+        };
+        if self.route.legs.is_empty() {
+            return Vec::new();
+        }
+        let month = crate::sim::season::calendar_date(hours).month();
+        let mut out = Vec::new();
+        for &(start, end) in &self.chain_law_areas {
+            if start < from_mi || start > to_mi {
+                continue;
+            }
+            // The grade itself, past the chain-up pullout, names the road.
+            let probe = (start + CHAIN_LAW_LEAD_MI).min(end);
+            let Some(state) = self.state_code_at(probe) else {
+                continue;
+            };
+            if !CHAIN_CONTROL_STATES.contains(&state.as_str()) {
+                continue;
+            }
+            let highway = self.route.legs[self.leg_at_mile(probe).0].highway.clone();
+            if !on_chain_corridor(&state, &highway) || !in_chain_reminder_season(&state, month) {
+                continue;
+            }
+            out.push(ChainCorridorAhead {
+                key: format!("{state}:{highway}:{}", fmt_f(start, 1)),
+                highway,
+                state,
+                start_mi: start,
+                exit_label: self.chain_area_exit_label(start),
+            });
+        }
+        out
+    }
+
+    /// The first chain corridor in season starting within `within_mi` ahead
+    /// of the truck (`chain_corridors_between`).
+    pub fn upcoming_chain_corridor(&self, within_mi: f64) -> Option<ChainCorridorAhead> {
+        let here = self.position_mi;
+        self.chain_corridors_between(here, here + within_mi)
+            .into_iter()
+            .next()
+    }
+
+    /// The real exit label of the nearest numbered interchange at or before
+    /// route mile `at` (in travel order) on the same leg, within
+    /// `CHAIN_CORRIDOR_EXIT_LOOKBACK_MI`. Empty when there is none: never
+    /// made up.
+    pub fn chain_area_exit_label(&self, at: f64) -> String {
+        if self.route.legs.is_empty() {
+            return String::new();
+        }
+        let (i, leg_start) = self.leg_at_mile(at);
+        let offset = at - leg_start;
+        let leg = &self.route.legs[i];
+        let forward = self.route.cities.get(i).is_none_or(|city| *city == leg.a);
+        let native = if forward { offset } else { leg.miles - offset };
+        let mut best = (CHAIN_CORRIDOR_EXIT_LOOKBACK_MI, String::new());
+        for ix in leg.interchanges() {
+            let before = if forward {
+                native - ix.at_mi
+            } else {
+                ix.at_mi - native
+            };
+            let label = ix.exit_label();
+            if (0.0..=best.0).contains(&before) && !label.is_empty() {
+                best = (before, label);
+            }
+        }
+        best.1
+    }
+
     /// The truck is on a Montana chain-law area (the mountain run) between
     /// October 1 and April 30 (`in_mt_chain_carry_season`).
     pub fn on_mt_chain_carry_run(&self, mile: f64) -> bool {

@@ -25301,6 +25301,108 @@ msgstr ""
 msgid "Billboard: {line}"
 msgstr "Valla publicitaria: {line}"
 
+msgid "Come to a complete stop first."
+msgstr "Primero detente del todo."
+
+msgid "chain up"
+msgstr "chain up"
+
+msgid "In the dark, it took more out of you. "
+msgstr "A oscuras te cansó más. "
+
+msgid " The road here is bare. Chains wear out fast until you reach snow."
+msgstr ""
+" Aquí la carretera está despejada. Las cadenas se desgastan rápido hasta "
+"que llegues a la nieve."
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains on in {f} minutes."
+msgstr "Cadenas puestas en {f} minutos."
+
+#. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
+msgid ""
+"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
+"{clock_text}. {deadline_text}"
+msgstr ""
+"Cadenas puestas en {f} minutos. {effort}No pases de {speed_text}.{bare} Son "
+"las {clock_text}. {deadline_text}"
+
+#. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
+#. one sentence of a longer line
+msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
+msgstr "{effort}No pases de {speed_text}.{bare} Son las {clock_text}."
+
+msgid "No repair links left. The chain stays off."
+msgstr "No quedan eslabones de reparación. La cadena se queda sin poner."
+
+msgid "repair chain"
+msgstr "repair chain"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Back on in {f} minutes."
+msgstr "Puesta de nuevo en {f} minutos."
+
+#. one sentence of a longer line
+msgid "Chain repaired with a spare link."
+msgstr "Cadena reparada con un eslabón de repuesto."
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid ""
+"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
+"soon. It is {clock_text}. {deadline_text}"
+msgstr ""
+"Cadena reparada con un eslabón de repuesto. Puesta de nuevo en {f} minutos. "
+"Revísala pronto. Son las {clock_text}. {deadline_text}"
+
+#. one sentence of a longer line
+msgid "Check it again soon."
+msgstr "Revísala pronto."
+
+msgid "tighten chains"
+msgstr "tighten chains"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains tightened in {f} minutes."
+msgstr "Cadenas tensadas en {f} minutos."
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
+msgstr ""
+"Cadenas tensadas en {f} minutos. Son las {clock_text}. {deadline_text}"
+
+msgid "remove chains"
+msgstr "remove chains"
+
+msgid "The set is about done."
+msgstr "El juego de cadenas está casi gastado."
+
+#. placeholders: {f}
+msgid "The set is {f} percent worn."
+msgstr "El juego de cadenas tiene un {f} por ciento de desgaste."
+
+msgid "The set is still fresh."
+msgstr "El juego de cadenas todavía está nuevo."
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains off in {f} minutes."
+msgstr "Cadenas quitadas en {f} minutos."
+
+#. placeholders: {f}, {state_word}, {clock_text}, {deadline_text}
+msgid ""
+"Chains off in {f} minutes. {state_word} It is {clock_text}. {deadline_text}"
+msgstr ""
+"Cadenas quitadas en {f} minutos. {state_word} Son las {clock_text}. "
+"{deadline_text}"
+
+#. placeholders: {state_word}, {clock_text}
+#. one sentence of a longer line
+msgid "{state_word} It is {clock_text}."
+msgstr "{state_word} Son las {clock_text}."
+
 #. placeholders: {street}, {first_corner}, {distance_text}
 msgid "{street}.{first_corner} {distance_text} to the facility gate."
 msgstr ""
@@ -26199,9 +26301,6 @@ msgstr ""
 #. one sentence of a longer line
 msgid "Stop at the scale, then press {rest_hint} to check in."
 msgstr "Para en la báscula y luego pulsa {rest_hint} para registrarte."
-
-msgid "Come to a complete stop first."
-msgstr "Primero detente del todo."
 
 msgid "Emergency shoulder sleep is not available here. Use a route stop."
 msgstr ""
@@ -28346,105 +28445,6 @@ msgstr ""
 "Se duerme mal en el arcén. Reinicia las horas de servicio. El cansancio "
 "sigue, puede haber multa, puede haber daños leves en el camión y el plazo "
 "de entrega sigue corriendo."
-
-msgid "chain up"
-msgstr "chain up"
-
-msgid "In the dark, it took more out of you. "
-msgstr "A oscuras te cansó más. "
-
-msgid " The road here is bare. Chains wear out fast until you reach snow."
-msgstr ""
-" Aquí la carretera está despejada. Las cadenas se desgastan rápido hasta "
-"que llegues a la nieve."
-
-#. placeholders: {f}
-#. one sentence of a longer line
-msgid "Chains on in {f} minutes."
-msgstr "Cadenas puestas en {f} minutos."
-
-#. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
-msgid ""
-"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
-"{clock_text}. {deadline_text}"
-msgstr ""
-"Cadenas puestas en {f} minutos. {effort}No pases de {speed_text}.{bare} Son "
-"las {clock_text}. {deadline_text}"
-
-#. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
-#. one sentence of a longer line
-msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
-msgstr "{effort}No pases de {speed_text}.{bare} Son las {clock_text}."
-
-msgid "No repair links left. The chain stays off."
-msgstr "No quedan eslabones de reparación. La cadena se queda sin poner."
-
-msgid "repair chain"
-msgstr "repair chain"
-
-#. placeholders: {f}
-#. one sentence of a longer line
-msgid "Back on in {f} minutes."
-msgstr "Puesta de nuevo en {f} minutos."
-
-#. one sentence of a longer line
-msgid "Chain repaired with a spare link."
-msgstr "Cadena reparada con un eslabón de repuesto."
-
-#. placeholders: {f}, {clock_text}, {deadline_text}
-msgid ""
-"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
-"soon. It is {clock_text}. {deadline_text}"
-msgstr ""
-"Cadena reparada con un eslabón de repuesto. Puesta de nuevo en {f} minutos. "
-"Revísala pronto. Son las {clock_text}. {deadline_text}"
-
-#. one sentence of a longer line
-msgid "Check it again soon."
-msgstr "Revísala pronto."
-
-msgid "tighten chains"
-msgstr "tighten chains"
-
-#. placeholders: {f}
-#. one sentence of a longer line
-msgid "Chains tightened in {f} minutes."
-msgstr "Cadenas tensadas en {f} minutos."
-
-#. placeholders: {f}, {clock_text}, {deadline_text}
-msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
-msgstr ""
-"Cadenas tensadas en {f} minutos. Son las {clock_text}. {deadline_text}"
-
-msgid "remove chains"
-msgstr "remove chains"
-
-msgid "The set is about done."
-msgstr "El juego de cadenas está casi gastado."
-
-#. placeholders: {f}
-msgid "The set is {f} percent worn."
-msgstr "El juego de cadenas tiene un {f} por ciento de desgaste."
-
-msgid "The set is still fresh."
-msgstr "El juego de cadenas todavía está nuevo."
-
-#. placeholders: {f}
-#. one sentence of a longer line
-msgid "Chains off in {f} minutes."
-msgstr "Cadenas quitadas en {f} minutos."
-
-#. placeholders: {f}, {state_word}, {clock_text}, {deadline_text}
-msgid ""
-"Chains off in {f} minutes. {state_word} It is {clock_text}. {deadline_text}"
-msgstr ""
-"Cadenas quitadas en {f} minutos. {state_word} Son las {clock_text}. "
-"{deadline_text}"
-
-#. placeholders: {state_word}, {clock_text}
-#. one sentence of a longer line
-msgid "{state_word} It is {clock_text}."
-msgstr "{state_word} Son las {clock_text}."
 
 msgid "Emergency shoulder sleep is not available."
 msgstr "No puedes dormir en el arcén de emergencia."
@@ -31389,6 +31389,59 @@ msgstr "Vas demasiado rápido para llevar cadenas."
 #. placeholders: {speed_text}
 msgid "Too fast for chains. Keep under {speed_text}."
 msgstr "Vas demasiado rápido para llevar cadenas. No pases de {speed_text}."
+
+#. placeholders: {highway}
+#. one sentence of a longer line
+msgid "Chain law ahead on {highway}."
+msgstr "Ley de cadenas más adelante en la {highway}."
+
+#. placeholders: {highway}, {store}
+msgid "Chain law ahead on {highway}. You have no chains. {store}"
+msgstr ""
+"Ley de cadenas más adelante en la {highway}. No llevas cadenas. {store}"
+
+#. one sentence of a longer line
+msgid "You have no chains."
+msgstr "No llevas cadenas."
+
+#. placeholders: {highway}, {exit}
+#. one sentence of a longer line
+msgid "Chain law ahead on {highway} at {exit}."
+msgstr "Ley de cadenas más adelante en la {highway}, en la {exit}."
+
+#. placeholders: {highway}, {exit}, {store}
+msgid "Chain law ahead on {highway} at {exit}. You have no chains. {store}"
+msgstr ""
+"Ley de cadenas más adelante en la {highway}, en la {exit}. No llevas "
+"cadenas. {store}"
+
+#. placeholders: {city}, {distance}
+msgid "Chains are sold at the garage in {city}, {distance}."
+msgstr "Venden cadenas en el taller de {city}, a {distance}."
+
+#. placeholders: {city}, {distance}
+msgid ""
+"The nearest garage that sells them is behind you, in {city}, {distance} "
+"back."
+msgstr ""
+"El taller más cercano que las vende queda atrás, en {city}, a {distance}."
+
+#. one sentence of a longer line
+msgid "The garage here sells them."
+msgstr "El taller de aquí las vende."
+
+#. placeholders: {highway}
+#. one sentence of a longer line
+msgid "{highway} has a chain law in season on this route."
+msgstr "La {highway} tiene ley de cadenas en temporada en esta ruta."
+
+#. placeholders: {highway}
+msgid ""
+"{highway} has a chain law in season on this route. You have no chains. The "
+"garage here sells them."
+msgstr ""
+"La {highway} tiene ley de cadenas en temporada en esta ruta. No llevas "
+"cadenas. El taller de aquí las vende."
 
 #. placeholders: {need}
 msgid "Rolling into an active chain law without {need}."

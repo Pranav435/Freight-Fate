@@ -597,6 +597,34 @@ pub fn mt_chain_season_id(game_hours: f64) -> i64 {
     (days / 365.0).floor() as i64
 }
 
+/// A chain-law area ahead on a chain corridor in season (`upcoming_chain_corridor`).
+#[derive(Debug, Clone, PartialEq)]
+pub struct ChainCorridorAhead {
+    /// `"{state}:{highway}:{start_mi to 0.1}"`, one per corridor approach.
+    pub key: String,
+    pub highway: String,
+    pub state: String,
+    /// Route mile the chain-law area (its chain-up pullout) starts at.
+    pub start_mi: f64,
+    /// The nearest numbered interchange at or before the area, or empty.
+    pub exit_label: String,
+}
+
+/// How far before a chain-law area its approach exit is looked for.
+pub const CHAIN_CORRIDOR_EXIT_LOOKBACK_MI: f64 = 5.0;
+
+/// Whether `month` is in chain season for a reminder in `state`: Colorado's
+/// carry season (September 1 to May 31), and October 1 to April 30 for
+/// Montana (MCA 61-9-436) and, as a reminder window only, UNVERIFIED for
+/// every other chain-control state.
+pub fn in_chain_reminder_season(state: &str, month: u32) -> bool {
+    if state == "CO" {
+        in_co_chain_carry_season(month)
+    } else {
+        in_mt_chain_carry_season(month)
+    }
+}
+
 /// September 1 to May 31: Colorado's chain-carry season.
 pub fn in_co_chain_carry_season(month: u32) -> bool {
     !(6..=8).contains(&month)

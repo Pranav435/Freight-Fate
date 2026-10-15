@@ -15,6 +15,12 @@ use crate::states::driving_core::{
 };
 
 impl DrivingState {
+    /// A usable set aboard: owned, and the truck's own meter says not
+    /// snapped (the profile only catches up at a stop).
+    pub fn chains_aboard(&self, ctx: &GameContext) -> bool {
+        profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0
+    }
+
     /// Put the chains on at a stop (on duty), or None after "Come to a complete stop first."
     /// Shared by the pause menu and facility stopping assistance.
     pub fn do_install_chains(&mut self, ctx: &mut GameContext) -> Option<String> {

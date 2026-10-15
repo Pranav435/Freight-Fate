@@ -660,6 +660,7 @@ impl DrivingState {
         self.update_pull_over(ctx, dt, braking || emergency);
         self.update_brake_heat_cue(ctx, dt);
         self.update_traction_cues(ctx);
+        self.update_chain_reminder(ctx);
         self.update_chain_law(ctx);
         self.update_chain_checkpoint_hold(ctx);
         self.update_chain_carry(ctx);

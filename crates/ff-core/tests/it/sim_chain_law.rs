@@ -283,3 +283,82 @@ fn test_a_montana_chain_season_runs_october_to_april() {
     assert_eq!(mt_chain_season_id(at(100.0, 1.0)), october); // next April
     assert_eq!(mt_chain_season_id(at(290.0, 1.0)), october + 1); // next October
 }
+
+/// Career hours at noon on a day of the career year (day 80 is hour 0).
+fn on_day(doy: f64) -> Option<f64> {
+    Some((doy - 80.0) * 24.0 + 12.0)
+}
+
+#[test]
+fn test_upcoming_chain_corridor_follows_the_season_and_the_corridor() {
+    // Colorado I-70: October has a corridor ahead, July none.
+    // The grade from mile 12 puts the chain-up area at 11, past exit 263.
+    let mut co = trip(Some((12.0, 16.0)));
+    co.career_hours = on_day(288.0); // October 15
+    let ahead = co.upcoming_chain_corridor(15.0).expect("I-70 in October");
+    assert_eq!(ahead.highway, "I-70");
+    assert_eq!(ahead.state, "CO");
+    assert_eq!(
+        ahead.key,
+        format!("CO:I-70:{}", ff_core::pyfmt::fmt_f(ahead.start_mi, 1))
+    );
+    // The label is the real interchange's, or empty: never made up.
+    let leg = &co.route.legs[0];
+    let mapped = leg
+        .interchanges()
+        .iter()
+        .any(|ix| !ix.exit_label().is_empty());
+    assert!(mapped, "the Denver-Silverthorne leg maps its exits");
+    assert_eq!(ahead.exit_label, co.chain_area_exit_label(ahead.start_mi));
+    assert_eq!(ahead.exit_label, "exit 263", "{ahead:?}");
+    // Out of reach, or behind the truck: nothing.
+    assert!(co.upcoming_chain_corridor(1.0).is_none());
+    co.career_hours = on_day(196.0); // July 15
+    assert!(co.upcoming_chain_corridor(15.0).is_none());
+
+    // Montana: April yes, May no.
+    let mut mt = trip_on("Missoula", "Butte", None);
+    mt.chain_law_areas = vec![(5.0, 10.0)];
+    assert_eq!(mt.state_code_at(6.0).as_deref(), Some("MT"));
+    mt.career_hours = on_day(100.0); // April 10
+    assert!(mt.upcoming_chain_corridor(15.0).is_some());
+    mt.career_hours = on_day(135.0); // May 15
+    assert!(mt.upcoming_chain_corridor(15.0).is_none());
+
+    // Idaho: I-84 is not a chain corridor; I-90 in January is.
+    let mut i84 = trip_on("Twin Falls", "Boise", None);
+    assert_eq!(i84.route.legs[0].highway, "I-84");
+    i84.chain_law_areas = vec![(5.0, 10.0)];
+    i84.career_hours = on_day(15.0 + 365.0);
+    assert!(i84.upcoming_chain_corridor(15.0).is_none());
+    let mut i90 = trip_on("Coeur d'Alene", "Kellogg", None);
+    assert_eq!(i90.route.legs[0].highway, "I-90");
+    i90.chain_law_areas = vec![(5.0, 10.0)];
+    i90.career_hours = on_day(15.0 + 365.0); // January 15
+    assert_eq!(i90.state_code_at(6.0).as_deref(), Some("ID"));
+    assert!(i90.upcoming_chain_corridor(15.0).is_some());
+
+    // A leg with no numbered interchange gives an empty label.
+    let w = world();
+    let route = first_route_option(w, "Denver", "Silverthorne");
+    let bare = with_corridor(&route.legs[0], |detail| detail.interchanges.clear());
+    let route = replace_leg(&route, 0, bare);
+    let mut truck = TruckState::default();
+    truck.transmission.automatic = true;
+    let mut none = Trip::new(
+        route,
+        truck,
+        weather("great_lakes", 1),
+        TripOptions {
+            seed: Some(2),
+            world: Some(w),
+            ..Default::default()
+        },
+    );
+    none.chain_law_areas = vec![(9.0, 14.0)];
+    none.career_hours = on_day(288.0);
+    let ahead = none
+        .upcoming_chain_corridor(15.0)
+        .expect("still a corridor");
+    assert_eq!(ahead.exit_label, "");
+}

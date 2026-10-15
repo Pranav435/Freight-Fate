@@ -27902,6 +27902,122 @@ msgstr ""
 msgid "Billboard: {line}"
 msgstr ""
 
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs crates/freight-fate/src/states/driving_events/stops.rs crates/freight-fate/src/states/driving_pause_states.rs crates/freight-fate/src/states/driving_rest_states/shoulder.rs
+msgid "Come to a complete stop first."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "chain up"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "In the dark, it took more out of you. "
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid " The road here is bare. Chains wear out fast until you reach snow."
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "Chains on in {f} minutes."
+msgstr ""
+
+#. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid ""
+"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
+"{clock_text}. {deadline_text}"
+msgstr ""
+
+#. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "No repair links left. The chain stays off."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "repair chain"
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "Back on in {f} minutes."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "Chain repaired with a spare link."
+msgstr ""
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid ""
+"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
+"soon. It is {clock_text}. {deadline_text}"
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "Check it again soon."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "tighten chains"
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "Chains tightened in {f} minutes."
+msgstr ""
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "remove chains"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "The set is about done."
+msgstr ""
+
+#. placeholders: {f}
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "The set is {f} percent worn."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "The set is still fresh."
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "Chains off in {f} minutes."
+msgstr ""
+
+#. placeholders: {f}, {state_word}, {clock_text}, {deadline_text}
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid ""
+"Chains off in {f} minutes. {state_word} It is {clock_text}. {deadline_text}"
+msgstr ""
+
+#. placeholders: {state_word}, {clock_text}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_events/chain_stop.rs
+msgid "{state_word} It is {clock_text}."
+msgstr ""
+
 #. placeholders: {street}, {first_corner}, {distance_text}
 #: crates/freight-fate/src/states/driving_events/chains.rs
 msgid "{street}.{first_corner} {distance_text} to the facility gate."
@@ -28984,10 +29100,6 @@ msgstr ""
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_events/stops.rs
 msgid "Stop at the scale, then press {rest_hint} to check in."
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_events/stops.rs crates/freight-fate/src/states/driving_pause_states.rs crates/freight-fate/src/states/driving_rest_states/shoulder.rs
-msgid "Come to a complete stop first."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_events/stops.rs
@@ -31441,118 +31553,6 @@ msgid ""
 "Poor sleep on the shoulder. Resets hours of service. Fatigue remains, "
 "possible ticket, possible minor truck damage, and the deadline keeps "
 "running."
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "chain up"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "In the dark, it took more out of you. "
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid " The road here is bare. Chains wear out fast until you reach snow."
-msgstr ""
-
-#. placeholders: {f}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "Chains on in {f} minutes."
-msgstr ""
-
-#. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid ""
-"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
-"{clock_text}. {deadline_text}"
-msgstr ""
-
-#. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "No repair links left. The chain stays off."
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "repair chain"
-msgstr ""
-
-#. placeholders: {f}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "Back on in {f} minutes."
-msgstr ""
-
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "Chain repaired with a spare link."
-msgstr ""
-
-#. placeholders: {f}, {clock_text}, {deadline_text}
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid ""
-"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
-"soon. It is {clock_text}. {deadline_text}"
-msgstr ""
-
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "Check it again soon."
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "tighten chains"
-msgstr ""
-
-#. placeholders: {f}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "Chains tightened in {f} minutes."
-msgstr ""
-
-#. placeholders: {f}, {clock_text}, {deadline_text}
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "remove chains"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "The set is about done."
-msgstr ""
-
-#. placeholders: {f}
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "The set is {f} percent worn."
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "The set is still fresh."
-msgstr ""
-
-#. placeholders: {f}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "Chains off in {f} minutes."
-msgstr ""
-
-#. placeholders: {f}, {state_word}, {clock_text}, {deadline_text}
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid ""
-"Chains off in {f} minutes. {state_word} It is {clock_text}. {deadline_text}"
-msgstr ""
-
-#. placeholders: {state_word}, {clock_text}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "{state_word} It is {clock_text}."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs
@@ -34740,6 +34740,63 @@ msgstr ""
 #. placeholders: {speed_text}
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid "Too fast for chains. Keep under {speed_text}."
+msgstr ""
+
+#. placeholders: {highway}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Chain law ahead on {highway}."
+msgstr ""
+
+#. placeholders: {highway}, {store}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Chain law ahead on {highway}. You have no chains. {store}"
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "You have no chains."
+msgstr ""
+
+#. placeholders: {highway}, {exit}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Chain law ahead on {highway} at {exit}."
+msgstr ""
+
+#. placeholders: {highway}, {exit}, {store}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Chain law ahead on {highway} at {exit}. You have no chains. {store}"
+msgstr ""
+
+#. placeholders: {city}, {distance}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Chains are sold at the garage in {city}, {distance}."
+msgstr ""
+
+#. placeholders: {city}, {distance}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"The nearest garage that sells them is behind you, in {city}, {distance} "
+"back."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "The garage here sells them."
+msgstr ""
+
+#. placeholders: {highway}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "{highway} has a chain law in season on this route."
+msgstr ""
+
+#. placeholders: {highway}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"{highway} has a chain law in season on this route. You have no chains. The "
+"garage here sells them."
 msgstr ""
 
 #. placeholders: {need}

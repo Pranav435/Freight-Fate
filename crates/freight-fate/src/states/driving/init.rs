@@ -390,6 +390,7 @@ impl DrivingState {
             chain_carry_rolled: false,
             chain_slap_said: false,
             chain_tightened: false,
+            chain_reminder_said: HashSet::new(),
             curve_warned_mi: None,
             speeding_tickets: 0,
             ticket_fines_paid: 0.0,

@@ -1358,3 +1358,26 @@ fn missing_touch_gesture_fields_use_additive_defaults() {
 // `test_the_driving_mode_row_explains_the_retired_pacing` is live in `crates/freight-fate/tests/states_main_menu_settings.rs`.
 
 // `test_lane_keeping_row_explains_its_rename_to_returning_players` is live in `crates/freight-fate/tests/states_main_menu_settings.rs`.
+
+#[test]
+fn test_chains_fold_into_the_existing_assists_with_no_new_setting() {
+    // Facility stopping assistance does the chain work: off, on, on.
+    let field = DRIVING_ASSIST_FIELDS
+        .iter()
+        .position(|f| *f == "destination_approach_assist")
+        .expect("a preset field");
+    for (preset, want) in [("realistic", false), ("balanced", true), ("all", true)] {
+        let values = driving_assist_preset(preset).expect("a preset");
+        assert_eq!(values.len(), 9);
+        assert_eq!(values[field], Flag(want), "{preset}");
+    }
+    // Stop planning owns the no-chains reminder, outside the presets.
+    let mut settings = Settings::default();
+    for preset in ["realistic", "balanced", "all"] {
+        assert!(settings.apply_driving_assistance_preset(preset));
+        settings.hos_planning_hints = !settings.hos_planning_hints;
+        assert_eq!(settings.refresh_driving_assistance_preset(), preset);
+    }
+    assert_eq!(SETTINGS_VERSION, 3);
+    assert_eq!(DRIVING_ASSIST_FIELDS.len(), 9);
+}
