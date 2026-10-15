@@ -177,7 +177,7 @@ fn trip_clear() -> Trip {
 #[test]
 fn test_trucks_chain_at_every_level_except_colorado_level_1() {
     use ff_core::sim::trip_models::rig_must_chain;
-    for state in ["CA", "WA", "OR", "NV", "ID", "MT", "UT", "WY"] {
+    for state in ["CA", "WA", "OR", "NV", "ID", "MT", "UT"] {
         assert!(!rig_must_chain(Some(state), 0), "{state}");
         assert!(rig_must_chain(Some(state), 1), "{state}");
         assert!(rig_must_chain(Some(state), 2), "{state}");
@@ -185,6 +185,9 @@ fn test_trucks_chain_at_every_level_except_colorado_level_1() {
     // Colorado Level 1 chains single-drive-axle combinations only; the
     // player's tandem-drive rig chains at Level 2.
     assert!(!rig_must_chain(Some("CO"), 1));
+    // Wyoming Level 1 takes snow tires or chains (W.S. 31-5-956(e)).
+    assert!(!rig_must_chain(Some("WY"), 1));
+    assert!(rig_must_chain(Some("WY"), 2));
     assert!(rig_must_chain(Some("CO"), 2));
     assert!(rig_must_chain(None, 1));
 }
@@ -216,4 +219,29 @@ fn test_chain_corridor_table() {
     assert!(in_co_chain_carry_season(5));
     assert!(!in_co_chain_carry_season(6));
     assert!(!in_co_chain_carry_season(8));
+}
+
+#[test]
+fn test_chain_law_signs_speak_each_state_rule() {
+    use ff_core::sim::trip_models::chain_law_sign_rule;
+    assert_eq!(
+        chain_law_sign_rule(Some("WY"), 1),
+        "level 1: snow tires or chains required"
+    );
+    assert_eq!(
+        chain_law_sign_rule(Some("WY"), 2),
+        "level 2: chains required on two tires of one drive axle"
+    );
+    assert_eq!(
+        chain_law_sign_rule(Some("CO"), 1),
+        "level 1: chains required on single-drive-axle trucks"
+    );
+    assert_eq!(
+        chain_law_sign_rule(Some("CA"), 1),
+        "level 1: chains required on trucks"
+    );
+    assert_eq!(
+        chain_law_sign_rule(Some("CO"), 2),
+        "level 2: chains required on all trucks"
+    );
 }

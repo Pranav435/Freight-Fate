@@ -194,28 +194,36 @@ pub const UNSAFE_DAMAGE_FINE: f64 = 2300.0;
 /// exposure standing behind them reaches 10,000.
 pub const WEIGH_STATION_BYPASS_FINE: f64 = 1800.0;
 /// The chain-law citation where no state figure has been sourced (CA, WA,
-/// NV, ID, MT, UT, WY): UNVERIFIED placeholder, the old Colorado figure,
+/// NV, ID, MT, UT): UNVERIFIED placeholder, the old Colorado figure,
 /// until each state's own schedule is read.
 pub const CHAIN_LAW_FINE: f64 = 580.0;
-/// Colorado: 500 plus 78 (CDOT freight chain-law fact sheet, Aug 2026);
-/// the CSP chain-law page still says 79.
-pub const CHAIN_LAW_FINE_CO: f64 = 578.0;
+/// Colorado: 500 plus 79 (csp.colorado.gov/chain-law-information; the
+/// CDOT freight fact sheet of Aug 2026 prints 78).
+pub const CHAIN_LAW_FINE_CO: f64 = 579.0;
 /// Oregon: trucks not chaining where required, 880 dollars (ODOT winter
 /// commercial vehicle page).
 pub const CHAIN_LAW_FINE_OR: f64 = 880.0;
-/// Colorado: blocking a lane for not chaining, 1,000 plus 156 (CDOT freight
-/// fact sheet, Aug 2026). For a future stuck-in-the-lane outcome.
-pub const CHAIN_BLOCKING_FINE_CO: f64 = 1156.0;
+/// Colorado: blocking a lane for not chaining, 1,000 plus 157
+/// (csp.colorado.gov/chain-law-information). For a future stuck-in-the-lane
+/// outcome.
+pub const CHAIN_BLOCKING_FINE_CO: f64 = 1157.0;
+/// Wyoming: 250 dollars for not chaining where required (WYDOT chain law;
+/// W.S. 31-5-956).
+pub const CHAIN_LAW_FINE_WY: f64 = 250.0;
+/// Wyoming: 750 dollars when the violation causes a road closure. Closures
+/// aren't modeled yet, so this is for a future outcome.
+pub const CHAIN_CLOSURE_FINE_WY: f64 = 750.0;
 /// Colorado: a commercial vehicle with no chains aboard on a carry corridor
 /// in season, 100 plus 32 (CDOT freight fact sheet, Aug 2026).
 pub const CHAIN_CARRY_FINE_CO: f64 = 132.0;
 
-/// The chain-law citation in `state` (two-letter code). Only Colorado and
-/// Oregon are sourced; every other state keeps the placeholder.
+/// The chain-law citation in `state` (two-letter code). Only Colorado,
+/// Oregon and Wyoming are sourced; every other state keeps the placeholder.
 pub fn chain_law_fine(state: Option<&str>) -> f64 {
     match state {
         Some("CO") => CHAIN_LAW_FINE_CO,
         Some("OR") => CHAIN_LAW_FINE_OR,
+        Some("WY") => CHAIN_LAW_FINE_WY,
         _ => CHAIN_LAW_FINE,
     }
 }
