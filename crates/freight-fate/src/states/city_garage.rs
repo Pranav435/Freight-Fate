@@ -3,7 +3,7 @@
 
 use ff_core::models::business::{is_owner_operator, player_pays_operating_costs};
 use ff_core::models::economy::{damage_severity_mult, Economy, REPAIR_COST_PER_PCT};
-use ff_core::models::profile::Profile;
+use ff_core::models::profile::{Profile, CHAIN_REPAIR_LINKS_PER_SET};
 use ff_core::pyfmt::{fmt_f, fmt_grouped, round_py_n};
 use ff_core::sim::vehicle::COMPONENT_SERVICE_LIMIT_PCT;
 
@@ -31,6 +31,8 @@ pub const TRUCK_WASH_COST: f64 = 35.0;
 pub const WINTER_TIRE_PREMIUM: f64 = 1.25;
 pub const CHAIN_SET_COST: f64 = 750.0;
 pub const TERMINAL_CHAINS_MIN: f64 = 10.0;
+/// Restocking the two spare chain repair links. UNVERIFIED retail price.
+pub const CHAIN_REPAIR_LINKS_COST: f64 = 25.0;
 
 fn record_terminal_duty(ctx: &mut GameContext, start_hour: f64, end_hour: f64, note: &str) {
     let terminal = crate::states::city::home_terminal(ctx);
@@ -614,6 +616,7 @@ impl GarageState {
                 let p = profile_mut(ctx);
                 p.set_chains_owned(true);
                 p.set_chain_wear_pct(0.0);
+                p.set_chain_repair_links(CHAIN_REPAIR_LINKS_PER_SET);
                 p.game_hours += TERMINAL_CHAINS_MIN / 60.0;
                 p.game_hours
             };
@@ -638,6 +641,7 @@ impl GarageState {
             p.spend(CHAIN_SET_COST);
             p.set_chains_owned(true);
             p.set_chain_wear_pct(0.0);
+            p.set_chain_repair_links(CHAIN_REPAIR_LINKS_PER_SET);
             p.game_hours += TERMINAL_CHAINS_MIN / 60.0;
             (p.game_hours, p.money())
         };
@@ -652,6 +656,37 @@ impl GarageState {
             fmt_grouped(CHAIN_SET_COST, 0),
             fmt_grouped(money, 0)
         ));
+        self.refresh(ctx, true);
+    }
+
+    pub fn restock_chain_links(&mut self, ctx: &mut GameContext) {
+        let carrier = !player_pays_operating_costs(&profile(ctx).business_status);
+        if !carrier && profile(ctx).money() < CHAIN_REPAIR_LINKS_COST {
+            ctx.audio.play("ui/error");
+            ctx.say(&format!(
+                "Repair links cost {} dollars.",
+                fmt_grouped(CHAIN_REPAIR_LINKS_COST, 0)
+            ));
+            return;
+        }
+        let money = {
+            let p = profile_mut(ctx);
+            if !carrier {
+                p.spend(CHAIN_REPAIR_LINKS_COST);
+            }
+            p.set_chain_repair_links(CHAIN_REPAIR_LINKS_PER_SET);
+            p.money()
+        };
+        save_equipment_change(ctx);
+        ctx.audio.play("ui/notify");
+        if carrier {
+            ctx.say("Two chain repair links are in the side box, carrier billed.");
+        } else {
+            ctx.say(&format!(
+                "Two chain repair links are in the side box. You have {} dollars left.",
+                fmt_grouped(money, 0)
+            ));
+        }
         self.refresh(ctx, true);
     }
 
@@ -894,8 +929,11 @@ impl Menu for GarageState {
                 |s: &mut Self, ctx| s.buy_chains(ctx),
             )
             .help(
-                "Put chains on from the pause menu once you're stopped in snow or ice. They \
-                 wear out fast on bare pavement. Company drivers bill the carrier.",
+                "A chain set is seven chains: four for the drive tires, one for a trailer \
+                 tire, and two spares, the most any state here asks of a semi, plus two \
+                 repair links. Put chains on from the pause menu once you're stopped in snow \
+                 or ice. They wear out fast on bare pavement. Company drivers bill the \
+                 carrier.",
             ),
             MenuItem::new(
                 Label::dynamic(|_s: &Self, ctx| Self::brake_label(ctx)),
@@ -919,6 +957,21 @@ impl Menu for GarageState {
             )
             .help("Company drivers bill the carrier, owner-operators pay."),
         ]);
+        // Spare repair links ride with the set; the shop restocks them.
+        if profile(ctx).chains_owned()
+            && profile(ctx).chain_repair_links() < CHAIN_REPAIR_LINKS_PER_SET
+        {
+            items.push(
+                MenuItem::new(
+                    format!(
+                        "Restock chain repair links: {} dollars",
+                        fmt_grouped(CHAIN_REPAIR_LINKS_COST, 0)
+                    ),
+                    |s: &mut Self, ctx| s.restock_chain_links(ctx),
+                )
+                .help("A spare link fixes a broken chain on the shoulder in about 15 minutes."),
+            );
+        }
         if owner {
             items.extend([
                 MenuItem::new("Upgrades", |s: &mut Self, ctx| s.upgrades(ctx)).help(

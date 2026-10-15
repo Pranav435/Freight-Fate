@@ -907,6 +907,114 @@ fn test_a_snapped_set_of_chains_is_not_offered_again_on_the_same_drive() {
     );
 }
 
+/// A stopped drive with a chain set aboard at `wear`, on or off.
+fn chain_drive(
+    app: &mut TestApp,
+    wear: f64,
+    on: bool,
+    links: i64,
+) -> freight_fate::app::SharedState {
+    let drive = a_drive(app);
+    {
+        let profile = app.ctx.profile.as_mut().expect("a career");
+        profile.set_chains_owned(true);
+        profile.set_chain_wear_pct(wear);
+        profile.set_chain_repair_links(links);
+    }
+    with_drive(&drive, |d| {
+        d.trip.truck.surface = "snow".to_string();
+        d.trip.truck.chain_wear_pct = wear;
+        d.trip.truck.chains_on = on;
+        d.trip.truck.velocity_mps = 0.0;
+    });
+    drive
+}
+
+#[test]
+fn test_a_broken_chain_is_repaired_with_a_spare_link() {
+    let mut app = TestApp::new();
+    let drive = chain_drive(&mut app, 100.0, false, 2);
+    let before = with_drive(&drive, |d| d.trip.game_minutes);
+    let mut state = PauseMenuState::with_drive(DriveRef::of(&drive));
+    Menu::enter(&mut state, &mut app.ctx);
+    let rows = labels(&state, &app.ctx);
+    assert!(
+        rows.iter()
+            .any(|row| row == "Repair the broken chain: about 15 minutes"),
+        "{rows:?}"
+    );
+    app.clear_speech();
+    activate(&mut state, &mut app.ctx, "Repair the broken chain");
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.chain_wear_pct), 85.0);
+    assert!(with_drive(&drive, |d| d.trip.truck.chains_on));
+    assert_eq!(app.ctx.profile.as_ref().unwrap().chain_repair_links(), 1);
+    let minutes = with_drive(&drive, |d| d.trip.game_minutes) - before;
+    assert!((minutes - 15.0).abs() < 0.5, "{minutes}");
+    assert!(
+        app.main_lines()
+            .iter()
+            .any(|s| s.starts_with("Chain repaired with a spare link.")),
+        "{:?}",
+        app.main_lines()
+    );
+}
+
+#[test]
+fn test_no_repair_links_leaves_the_chain_off() {
+    let mut app = TestApp::new();
+    let drive = chain_drive(&mut app, 100.0, false, 0);
+    let mut state = PauseMenuState::with_drive(DriveRef::of(&drive));
+    Menu::enter(&mut state, &mut app.ctx);
+    app.clear_speech();
+    activate(&mut state, &mut app.ctx, "Repair the broken chain");
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.chain_wear_pct), 100.0);
+    assert!(!with_drive(&drive, |d| d.trip.truck.chains_on));
+    assert!(
+        app.main_lines()
+            .iter()
+            .any(|s| s == "No repair links left. The chain stays off."),
+        "{:?}",
+        app.main_lines()
+    );
+}
+
+#[test]
+fn test_a_slapping_chain_warns_once_before_it_breaks() {
+    let mut app = TestApp::new();
+    let drive = chain_drive(&mut app, 84.0, true, 2);
+    app.clear_speech();
+    drive_and_ctx(&drive, &mut app, |d, ctx| d.update_traction_cues(ctx));
+    assert!(app.event_lines().is_empty(), "{:?}", app.event_lines());
+    with_drive(&drive, |d| d.trip.truck.chain_wear_pct = 86.0);
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.update_traction_cues(ctx);
+        d.update_traction_cues(ctx);
+    });
+    app.ctx.run_deferred();
+    let slaps = app
+        .event_lines()
+        .into_iter()
+        .filter(|s| s == "A chain is slapping the fender. Stop soon and tighten it.")
+        .count();
+    assert_eq!(slaps, 1);
+    assert!(with_drive(&drive, |d| d.trip.truck.chains_on));
+}
+
+#[test]
+fn test_tightening_a_slapping_chain_buys_back_wear_once() {
+    let mut app = TestApp::new();
+    let drive = chain_drive(&mut app, 90.0, true, 2);
+    let mut state = PauseMenuState::with_drive(DriveRef::of(&drive));
+    Menu::enter(&mut state, &mut app.ctx);
+    activate(&mut state, &mut app.ctx, "Tighten chains");
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.chain_wear_pct), 85.0);
+    let rows = labels(&state, &app.ctx);
+    assert!(
+        !rows.iter().any(|row| row.starts_with("Tighten chains")),
+        "{rows:?}"
+    );
+}
+
 // -- a rebuild that cannot reach the drive ----------------------------------------------------
 //
 // When a rebuild misses the drive, these screens used to show nothing at all,

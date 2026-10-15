@@ -577,7 +577,17 @@ impl DrivingState {
         if self.trip.truck.chains_just_snapped {
             self.trip.truck.chains_just_snapped = false;
             ctx.say_event_with(
-                "A tire chain broke.",
+                "A tire chain broke and is flailing. Slow down and pull over to check it.",
+                SayEvent::new().category(SpeechCategory::Safety),
+            );
+        }
+        if self.trip.truck.chains_on
+            && self.trip.truck.chain_wear_pct >= CHAIN_SLAP_WARN_PCT
+            && !self.chain_slap_said
+        {
+            self.chain_slap_said = true;
+            ctx.say_event_with(
+                "A chain is slapping the fender. Stop soon and tighten it.",
                 SayEvent::new().category(SpeechCategory::Safety),
             );
         }
