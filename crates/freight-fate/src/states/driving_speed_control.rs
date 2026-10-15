@@ -697,21 +697,24 @@ impl DrivingState {
         };
         let turn_scale = self.keeper_turn_ease_scale();
         let (limit, under_reason) = self.trip.speed_limit_at(position);
-        for cue in self.turn_cues_in_play() {
+        // Only the next corner ahead is aimed at, at its own target: a
+        // later, slower corner already lowers that target when it is too
+        // close to brake for after this one (`corner_targets_ahead`), and
+        // otherwise waits its turn. Running a left 90 at the 9 of a right 90
+        // half a mile on was the slowest-wins rule over-reaching.
+        let next = self
+            .corner_targets_ahead()
+            .into_iter()
+            .find(|(cue, _)| cue.at_mi - position > 0.0);
+        if let Some((cue, advise)) = next {
             let ahead = cue.at_mi - position;
-            if ahead <= 0.0 {
-                continue;
-            }
-            let advise = self.turn_speed_mph(&cue);
             // A corner too close to build back up to the street's number and
             // shed it again is held at its own number from here: building to
             // the limit between two corners a quarter mile apart and braking
             // for the second at about 0.3 g in the last 0.07 mile is the
             // see-saw the September 23 drive into Abilene measured.
             let no_room = ahead <= self.keeper_build_and_shed_mi(limit, advise, turn_scale);
-            if ahead > self.keeper_ease_mi(advise, turn_scale) && !no_room {
-                continue;
-            }
+            let in_window = ahead <= self.keeper_ease_mi(advise, turn_scale) || no_room;
             // Every corner whose window is open, not just the nearest, and the
             // slowest of them wins. A corner holds its target through its own
             // tail, and a city block is shorter than that tail -- so aiming at
@@ -724,13 +727,28 @@ impl DrivingState {
             // milepost puts the throttle back on mid-turn, so a run of corners
             // at one number holds to the far side of the last of them.
             let until = cue.at_mi + TURN_COMMIT_TAIL_MI;
-            match demand.as_mut() {
-                None => demand = Some((until, advise, "turn".to_string())),
-                Some(current) => {
-                    if advise < current.1 {
-                        *current = (until, advise, "turn".to_string());
-                    } else if advise == current.1 {
-                        current.0 = current.0.max(until);
+            // A hold left over from a corner the truck is already past
+            // (its tail runs on so the throttle stays off mid-turn) gives way
+            // to the next corner's own number, higher or lower: a 792 ft tail
+            // holding a right's 9.6 through a left 633 ft on coasted the
+            // truck to 8.7 for a 13.4 corner.
+            let past_held_corner = demand.as_ref().is_some_and(|held| {
+                held.2 == "turn"
+                    && position >= held.0 - TURN_COMMIT_TAIL_MI
+                    && cue.at_mi < held.0
+                    && held.0 < until
+            });
+            if past_held_corner {
+                demand = Some((until, advise, "turn".to_string()));
+            } else if in_window {
+                match demand.as_mut() {
+                    None => demand = Some((until, advise, "turn".to_string())),
+                    Some(current) => {
+                        if advise < current.1 {
+                            *current = (until, advise, "turn".to_string());
+                        } else if advise == current.1 {
+                            current.0 = current.0.max(until);
+                        }
                     }
                 }
             }
