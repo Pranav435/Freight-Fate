@@ -78,7 +78,8 @@ pub fn props(view: &DriveView, g: &Geom) -> Vec<Prop> {
             continue;
         }
         // Power line on the right, poles every five cells.
-        let poles = matches!(w.biome, Biome::Plains | Biome::Woodland) && !lanes.ramp;
+        let poles =
+            matches!(w.biome, Biome::Plains | Biome::Woodland | Biome::Steppe) && !lanes.ramp;
         if poles && cell.rem_euclid(5) == 0 {
             out.push(Prop {
                 s: cell_s,
@@ -133,6 +134,18 @@ pub fn props(view: &DriveView, g: &Geom) -> Vec<Prop> {
                         Some((PropKind::Broadleaf, tree_size * 0.8))
                     } else if roll < 0.3 && near {
                         Some((PropKind::Shrub, 2.5 + unit(h >> 3) * 3.0))
+                    } else {
+                        None
+                    }
+                }
+                Biome::Steppe => {
+                    if roll < 0.02 + grove * 0.05 {
+                        // A juniper now and then.
+                        Some((PropKind::Conifer, 9.0 + unit(h >> 2) * 9.0))
+                    } else if roll < 0.08 && near {
+                        Some((PropKind::Rock, 3.0 + unit(h >> 5) * 8.0))
+                    } else if roll < 0.62 && near {
+                        Some((PropKind::Shrub, 2.0 + unit(h >> 3) * 2.5))
                     } else {
                         None
                     }
@@ -315,6 +328,8 @@ pub fn draw(p: &mut Painter, f: &RoadFrame, prop: &Prop) {
                 Rgba::rgb(200, 206, 210)
             } else if w.biome == Biome::Desert {
                 Rgba::rgb(138, 142, 104)
+            } else if w.biome == Biome::Steppe {
+                Rgba::rgb(146, 152, 124) // sage
             } else {
                 land.tree_dark
             };

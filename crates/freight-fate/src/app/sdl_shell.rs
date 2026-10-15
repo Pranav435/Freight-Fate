@@ -32,6 +32,10 @@ use super::WINDOW_SIZE;
 
 mod display;
 
+/// Keep drawing while the window is covered (macOS stops otherwise), for
+/// capture software that records the window from behind other windows.
+pub const ALWAYS_DRAW_ENV: &str = "FREIGHT_FATE_ALWAYS_DRAW";
+
 /// The SDL clipboard (UTF-8 through `SDL_SetClipboardText`, so the whole
 /// CF_TEXT-drops-non-ASCII workaround of `online_states.py` is gone).
 pub struct SdlClipboard {
@@ -77,6 +81,8 @@ pub struct SdlShell {
     occlusion_checked: Option<Instant>,
     /// A real Cocoa window, whose AppKit view can be asked about occlusion.
     /// The dummy driver has none, and the sdl2 crate panics when asked.
+    /// False also when `FREIGHT_FATE_ALWAYS_DRAW` is set: capture software
+    /// recording the window while it is covered needs it kept drawing.
     #[cfg(target_os = "macos")]
     cocoa: bool,
     /// Whether the last frame drawn was the visual display (or the plain fill).
@@ -208,7 +214,8 @@ impl SdlShell {
         }
         let pump = sdl.event_pump()?;
         #[cfg(target_os = "macos")]
-        let cocoa = video.current_video_driver() == "cocoa";
+        let cocoa = video.current_video_driver() == "cocoa"
+            && std::env::var_os(ALWAYS_DRAW_ENV).is_none_or(|v| v.is_empty() || v == "0");
         // pygame delivered event.unicode for every key; SDL needs text
         // input running for TextInput events. On iOS starting text input
         // raises the on-screen keyboard, so there it waits for the player's

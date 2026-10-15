@@ -223,6 +223,8 @@ pub struct Land {
 pub fn land(w: &WeatherLook) -> Land {
     let (grass, tree): ((u8, u8, u8), (u8, u8, u8)) = match (w.biome, w.season) {
         (Biome::Desert, _) => ((184, 152, 110), (112, 122, 84)),
+        (Biome::Steppe, Season::Winter) => ((168, 160, 134), (78, 92, 66)),
+        (Biome::Steppe, _) => ((160, 152, 112), (82, 100, 68)),
         (Biome::Plains, Season::Winter) => ((150, 136, 98), (92, 84, 64)),
         (Biome::Plains, Season::Autumn) => ((160, 142, 88), (128, 104, 56)),
         (Biome::Plains, _) => ((128, 138, 72), (70, 98, 48)),
@@ -241,6 +243,7 @@ pub fn land(w: &WeatherLook) -> Land {
     }
     let ridge = match w.biome {
         Biome::Desert => Rgba::rgb(170, 120, 96),
+        Biome::Steppe => Rgba::rgb(138, 126, 120),
         Biome::Conifer => Rgba::rgb(78, 96, 110),
         _ => Rgba::rgb(96, 116, 110),
     };

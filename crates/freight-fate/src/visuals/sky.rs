@@ -228,6 +228,8 @@ fn ridges(p: &mut Painter, f: &SkyFrame) {
         (Terrain::Mountains, _) => (7.5f32, 3.6f32, 1.0f32),
         (Terrain::Hills, _) => (2.6, 1.6, 0.0),
         (Terrain::Flat, Biome::Desert) => (2.2, 0.8, 1.0),
+        // Basin and range: mountains always somewhere on the horizon.
+        (Terrain::Flat, Biome::Steppe) => (3.2, 1.0, 1.0),
         (Terrain::Flat, Biome::Plains) => (0.5, 0.35, 0.0),
         (Terrain::Flat, _) => (0.9, 0.7, 0.0),
     };

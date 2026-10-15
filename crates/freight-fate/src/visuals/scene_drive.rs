@@ -152,7 +152,11 @@ pub struct WorkZone {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Biome {
+    /// The cactus deserts of the far Southwest.
     Desert,
+    /// Sagebrush and juniper: the Great Basin, the Wyoming and Colorado
+    /// high country, the Snake River plain.
+    Steppe,
     Plains,
     Woodland,
     Conifer,
@@ -565,19 +569,26 @@ fn bearing(trip: &Trip) -> Option<f32> {
     Some(dx.atan2(dy).rem_euclid(std::f64::consts::TAU) as f32)
 }
 
-/// Broad landscape from where the truck is: desert southwest, open
-/// plains, the wooded east, the conifer northwest and high country.
+/// Broad landscape from where the truck is: cactus desert in the far
+/// Southwest, sagebrush across the rest of the dry West, conifers in the
+/// mountains and up the Pacific coast, open plains, the wooded east.
 fn biome(lat: f64, lon: f64, terrain: Terrain) -> Biome {
     if lat == 0.0 && lon == 0.0 {
         return Biome::Woodland;
     }
-    if lon < -103.0 && lat < 41.5 && lon > -121.0 && terrain != Terrain::Mountains {
-        return Biome::Desert;
+    if lon < -104.0 {
+        if terrain == Terrain::Mountains || (lon < -121.5 && lat >= 40.0) {
+            return Biome::Conifer;
+        }
+        if lat < 36.0 && lon > -118.5 {
+            return Biome::Desert;
+        }
+        if (-122.6..-119.0).contains(&lon) && (35.0..40.5).contains(&lat) {
+            return Biome::Plains; // California's Central Valley farmland
+        }
+        return Biome::Steppe;
     }
-    if lon < -104.0 && (terrain == Terrain::Mountains || lat >= 42.0) {
-        return Biome::Conifer;
-    }
-    if (-104.0..-95.5).contains(&lon) {
+    if lon < -95.5 {
         return Biome::Plains;
     }
     Biome::Woodland
@@ -857,7 +868,10 @@ mod tests {
 
     #[test]
     fn landscapes_follow_the_map() {
-        assert_eq!(biome(35.1, -111.6, Terrain::Flat), Biome::Desert); // Arizona
+        assert_eq!(biome(33.45, -112.07, Terrain::Flat), Biome::Desert); // Phoenix
+        assert_eq!(biome(40.06, -106.39, Terrain::Hills), Biome::Steppe); // Kremmling, Colorado
+        assert_eq!(biome(39.5, -117.0, Terrain::Flat), Biome::Steppe); // central Nevada
+        assert_eq!(biome(45.5, -122.7, Terrain::Flat), Biome::Conifer); // Portland
         assert_eq!(biome(39.7, -105.5, Terrain::Mountains), Biome::Conifer); // Rockies
         assert_eq!(biome(38.9, -99.3, Terrain::Flat), Biome::Plains); // Kansas
         assert_eq!(biome(35.9, -83.9, Terrain::Hills), Biome::Woodland); // Tennessee

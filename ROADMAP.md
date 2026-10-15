@@ -2980,6 +2980,14 @@ the display only reads the game state; it never feeds anything back.
   car drawn a few hundred feet back still blocked the lane. Blind-spot
   lights on the mirrors and a shaded radar lane now read that same
   clearance check.
+- In a real window: `tests/real_window.rs` (run by name; it needs a
+  desktop) plays the mountain bend the same way in the game's own window,
+  Metal renderer and event loop, in real time, and saves captures of the
+  window by its macOS window number. It runs as a background app that never
+  takes focus, with `FREIGHT_FATE_ALWAYS_DRAW=1` keeping the covered window
+  drawing -- the same switch capture software needs. Its first run caught
+  saguaros on US-40 in Colorado: the dry West is now sagebrush steppe, and
+  cactus desert is kept to the far Southwest.
 - Memory: `music.pak` (about 380 MB in the Mac download) was read whole
   into memory at launch. It is now opened like `channel3000.pak` and each
   track is read when it starts.
