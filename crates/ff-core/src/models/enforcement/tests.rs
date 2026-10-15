@@ -128,7 +128,14 @@ fn test_every_fine_is_anchored_to_the_real_penalty_it_names() {
     // The amounts themselves, so a rebalance is a deliberate edit here too.
     assert_eq!(UNSAFE_DAMAGE_FINE, 2300.0); // FMCSA unsafe conditions: 2,304
     assert_eq!(WEIGH_STATION_BYPASS_FINE, 1800.0); // CA/NY pass 1,000 on a first offense
-    assert_eq!(CHAIN_LAW_FINE, 580.0); // Colorado: 500 plus a 79-dollar surcharge
+    assert_eq!(CHAIN_LAW_FINE, 580.0); // UNVERIFIED placeholder outside CO, OR and WY
+    assert_eq!(chain_law_fine(Some("CO")), 579.0);
+    assert_eq!(chain_law_fine(Some("WY")), 250.0);
+    assert_eq!(CHAIN_CLOSURE_FINE_WY, 750.0);
+    assert_eq!(chain_law_fine(Some("OR")), 880.0);
+    assert_eq!(chain_law_fine(Some("CA")), CHAIN_LAW_FINE);
+    assert_eq!(chain_law_fine(None), CHAIN_LAW_FINE);
+    assert_eq!(CHAIN_BLOCKING_FINE_CO, 1157.0);
     assert_eq!(FOLLOWING_TOO_CLOSE_FINE, 600.0); // a 383.51 Table 2 serious violation
     assert_eq!(LANE_MISUSE_FINE, 500.0); // Virginia's highway safety corridor figure
     assert_eq!(LIGHTS_FINE, 350.0);

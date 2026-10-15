@@ -251,6 +251,10 @@ impl DrivingState {
         out.insert("engine_on".to_string(), json!(self.trip.truck.engine_on));
         out.insert("chains_on".to_string(), json!(self.trip.truck.chains_on));
         out.insert(
+            "chain_checkpoint_hold".to_string(),
+            json!(self.chain_checkpoint_hold),
+        );
+        out.insert(
             "chain_wear_pct".to_string(),
             json!(self.trip.truck.chain_wear_pct),
         );
@@ -450,6 +454,7 @@ impl DrivingState {
             .unwrap_or_else(|| state.maintenance_wear_levels());
         // Chains stay on the drives across a save; absent on older saves.
         state.trip.truck.chains_on = b(data, "chains_on", false);
+        state.chain_checkpoint_hold = b(data, "chain_checkpoint_hold", false);
         // The chain meter rides with the drive: the profile only catches up
         // at a stop, so a set that snapped (or wore) since then came back as
         // it was at the last stop. An older save keeps the profile's value.

@@ -55,10 +55,24 @@ pub const LIMP_CAP_RAMP_MPH_PER_S: f64 = 2.0;
 // Chaining up is done kneeling on the shoulder in the weather that made it
 // necessary. Real crews quote twenty to thirty minutes for a drive-axle set;
 // doing it in the dark by headlamp costs more time and much more out of the
-// driver. Removal is quick by comparison.
-pub const CHAIN_INSTALL_MIN: f64 = 25.0;
+// driver. Removal is quick by comparison. A set is now five chains mounted
+// (four drive tires and one trailer tire), so 30 minutes: about five a
+// chain. UNVERIFIED: no official time source; trucker guidance runs 20 to 45.
+pub const CHAIN_INSTALL_MIN: f64 = 30.0;
 pub const CHAIN_INSTALL_NIGHT_MULT: f64 = 1.6;
 pub const CHAIN_REMOVE_MIN: f64 = 10.0;
+// A broken chain is one cross link or one chain, not the whole set, and it
+// is fixed on the shoulder: Caltrans tells drivers to carry "chain repair
+// links", and Washington requires two spare chains for this case (WAC
+// 204-24-050(2)(f)). A repair puts the set back at 80 percent worn, under
+// the slap warning, so a fresh repair doesn't slap at once.
+pub const CHAIN_REPAIR_MIN: f64 = 15.0;
+pub const CHAIN_REPAIR_WEAR_RESTORE: f64 = 20.0;
+// A worn chain loosens and slaps the fender before it lets go. Tightening it
+// takes about five minutes and buys back a little wear, once per install.
+pub const CHAIN_SLAP_WARN_PCT: f64 = 85.0;
+pub const CHAIN_TIGHTEN_MIN: f64 = 5.0;
+pub const CHAIN_TIGHTEN_WEAR_RESTORE: f64 = 5.0;
 pub const CHAIN_INSTALL_FATIGUE: f64 = 6.0;
 pub const CHAIN_INSTALL_NIGHT_FATIGUE: f64 = 10.0;
 pub const CHAIN_REMOVE_FATIGUE: f64 = 2.0;
@@ -66,6 +80,19 @@ pub const CHAIN_REMOVE_FATIGUE: f64 = 2.0;
 // bottom of the grade is staffed often enough that gambling is a bad trade.
 // What the citation costs is priced in models/enforcement with every other fine.
 pub const CHAIN_LAW_CHECKPOINT_CHANCE: f64 = 0.6;
+// California staffs every active R-control at a fixed checkpoint, and
+// screening ("TS" on the Caltrans chain-control chart) stops every truck.
+// The other states' staffing is UNVERIFIED and keeps the 0.6 roll.
+pub const CHAIN_LAW_CHECKPOINT_CHANCE_CA: f64 = 1.0;
+
+/// How often the checkpoint chance for `state` (two-letter code).
+pub fn chain_law_checkpoint_chance(state: Option<&str>) -> f64 {
+    if state == Some("CA") {
+        CHAIN_LAW_CHECKPOINT_CHANCE_CA
+    } else {
+        CHAIN_LAW_CHECKPOINT_CHANCE
+    }
+}
 // Running the ramp-end red or stop sign is seen when someone is watching the
 // crossroad -- a patrol car on the corner, a camera on the mast arm -- and
 // most of the time nobody is. Same shape as CHAIN_LAW_CHECKPOINT_CHANCE: a

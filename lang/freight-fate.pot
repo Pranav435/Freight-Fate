@@ -14617,6 +14617,14 @@ msgstr ""
 msgid "facility gate"
 msgstr ""
 
+#: crates/ff-core/src/sim/trip/lookups.rs
+msgid "snow tires or chains"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip/lookups.rs
+msgid "chains"
+msgstr ""
+
 #. placeholders: {lane_word}
 #: crates/ff-core/src/sim/trip/lookups.rs
 msgid "Road widens to {lane_word} lanes your side."
@@ -14971,14 +14979,6 @@ msgid "destination approach"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/zones.rs
-msgid "level 2: chains required"
-msgstr ""
-
-#: crates/ff-core/src/sim/trip/zones.rs
-msgid "level 1: winter tires or chains required"
-msgstr ""
-
-#: crates/ff-core/src/sim/trip/zones.rs
 msgid " Chain-up area on the right."
 msgstr ""
 
@@ -14997,6 +14997,26 @@ msgstr ""
 
 #: crates/ff-core/src/sim/trip_models.rs
 msgid "max"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 2: chains required on two tires of one drive axle"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 2: chains required on all trucks"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 1: chains required on single-drive-axle trucks"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 1: snow tires or chains required"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 1: chains required on trucks"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip_models.rs
@@ -22320,6 +22340,26 @@ msgid ""
 "{grouped2} dollars left."
 msgstr ""
 
+#. placeholders: {grouped}
+#: crates/freight-fate/src/states/city_garage.rs
+msgid "Repair links cost {grouped} dollars."
+msgstr ""
+
+#: crates/freight-fate/src/states/city_garage.rs
+msgid "Two chain repair links are in the side box, carrier billed."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/city_garage.rs
+msgid "Two chain repair links are in the side box."
+msgstr ""
+
+#. placeholders: {grouped}
+#: crates/freight-fate/src/states/city_garage.rs
+msgid ""
+"Two chain repair links are in the side box. You have {grouped} dollars left."
+msgstr ""
+
 #: crates/freight-fate/src/states/city_garage.rs
 msgid "brake service"
 msgstr ""
@@ -22435,8 +22475,11 @@ msgstr ""
 
 #: crates/freight-fate/src/states/city_garage.rs
 msgid ""
-"Chains go on from the pause menu when stopped in snow or ice. They grind "
-"apart on bare pavement. Company drivers bill the carrier."
+"A chain set is seven chains: four for the drive tires, one for a trailer "
+"tire, and two spares, the most any state here asks of a semi, plus two "
+"repair links. Put chains on from the pause menu once you're stopped in snow "
+"or ice. They wear out fast on bare pavement. Company drivers bill the "
+"carrier."
 msgstr ""
 
 #: crates/freight-fate/src/states/city_garage.rs
@@ -22454,6 +22497,16 @@ msgstr ""
 
 #: crates/freight-fate/src/states/city_garage.rs
 msgid "Company drivers bill the carrier, owner-operators pay."
+msgstr ""
+
+#. placeholders: {grouped}
+#: crates/freight-fate/src/states/city_garage.rs
+msgid "Restock chain repair links: {grouped} dollars"
+msgstr ""
+
+#: crates/freight-fate/src/states/city_garage.rs
+msgid ""
+"A spare link fixes a broken chain on the shoulder in about 15 minutes."
 msgstr ""
 
 #: crates/freight-fate/src/states/city_garage.rs
@@ -31286,6 +31339,37 @@ msgstr ""
 
 #. placeholders: {f}
 #: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Tighten chains: about {f} minutes"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid ""
+"A loose chain slaps the fender and wears out fast. Tightening helps once."
+msgstr ""
+
+#. placeholders: {f}
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Repair the broken chain: about {f} minutes"
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Uses a spare repair link."
+msgstr ""
+
+#. placeholders: {chain_repair_links}
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Uses a spare repair link. {chain_repair_links} left."
+msgstr ""
+
+#. placeholders: {chain_repair_links}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "{chain_repair_links} left."
+msgstr ""
+
+#. placeholders: {f}
+#: crates/freight-fate/src/states/driving_pause_states.rs
 msgid "Remove snow chains: about {f} minutes"
 msgstr ""
 
@@ -31293,11 +31377,33 @@ msgstr ""
 msgid "Chains grind apart fast on bare pavement."
 msgstr ""
 
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Chains bite snow and ice."
+msgstr ""
+
+#. placeholders: {speed_text}
 #: crates/freight-fate/src/states/driving_pause_states.rs
 msgid ""
-"Chains bite snow and ice. Chain speed is about thirty miles per hour. Pull "
-"them once the road is bare. In the dark, installing takes longer and more "
+"Chains bite snow and ice. Keep under {speed_text} with chains on. Take them "
+"off once the road is bare. In the dark, installing takes longer and more "
 "out of you."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "In the dark, installing takes longer and more out of you."
+msgstr ""
+
+#. placeholders: {speed_text}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Keep under {speed_text} with chains on."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Take them off once the road is bare."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs crates/freight-fate/src/states/online_hub.rs crates/freight-fate/src/states/online_states/board.rs
@@ -31346,7 +31452,7 @@ msgid "In the dark, it took more out of you. "
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs
-msgid " The road here is bare, they grind fast until the snow."
+msgid " The road here is bare. Chains wear out fast until you reach snow."
 msgstr ""
 
 #. placeholders: {f}
@@ -31358,14 +31464,60 @@ msgstr ""
 #. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
 #: crates/freight-fate/src/states/driving_pause_states.rs
 msgid ""
-"Chains on in {f} minutes. {effort}Chain speed {speed_text}.{bare} It is "
+"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
 "{clock_text}. {deadline_text}"
 msgstr ""
 
 #. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "{effort}Chain speed {speed_text}.{bare} It is {clock_text}."
+msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "No repair links left. The chain stays off."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "repair chain"
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Back on in {f} minutes."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Chain repaired with a spare link."
+msgstr ""
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid ""
+"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
+"soon. It is {clock_text}. {deadline_text}"
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Check it again soon."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "tighten chains"
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Chains tightened in {f} minutes."
+msgstr ""
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+#: crates/freight-fate/src/states/driving_pause_states.rs
+msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs
@@ -34566,20 +34718,28 @@ msgid "The drive wheels are sliding under the engine brake."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "A tire chain broke."
-msgstr ""
-
-#. placeholders: {CHAIN_SAFE_MPH}
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Chains: keep under {CHAIN_SAFE_MPH}."
+msgid ""
+"A tire chain broke and is flailing. Slow down and pull over to check it."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "chains"
+msgid "A chain is slapping the fender. Stop soon and tighten it."
 msgstr ""
 
+#. placeholders: {speed_text}
+#. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "winter-rated tires or chains"
+msgid "Keep under {speed_text}."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Too fast for chains."
+msgstr ""
+
+#. placeholders: {speed_text}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Too fast for chains. Keep under {speed_text}."
 msgstr ""
 
 #. placeholders: {need}
@@ -34592,13 +34752,21 @@ msgstr ""
 msgid "No chains under a level {level} chain law"
 msgstr ""
 
-#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"You can't go on until your chains are on. Put them on from the pause menu."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "You have no chains aboard. Buy a set at the next garage."
+msgstr ""
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid ""
-"An officer waves you onto the scale apron and writes a chain-law citation, "
-"{grouped} dollars.{construction_zone_fine_clause} You have {grouped2} "
-"dollars."
+"An officer stops you and writes a chain-law citation, {grouped} "
+"dollars.{construction_zone_fine_clause} {after} You have {grouped2} dollars."
 msgstr ""
 
 #. one sentence of a longer line
@@ -34606,12 +34774,63 @@ msgstr ""
 msgid "Chain checkpoint."
 msgstr ""
 
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Chain checkpoint. An officer stops you and writes a chain-law citation, "
+"{grouped} dollars.{construction_zone_fine_clause} {after} You have "
+"{grouped2} dollars."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Chains on. The officer waves you back onto the highway."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Held at the chain checkpoint. Put your chains on from the pause menu."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Montana requires trucks to carry chains from October 1 to April 30. You "
+"have none."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Colorado requires chains aboard on this road from September 1 to May 31. "
+"You have none."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "No chains aboard on a Colorado chain-carry corridor"
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Chain check."
+msgstr ""
+
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid ""
-"Chain checkpoint. An officer waves you onto the scale apron and writes a "
-"chain-law citation, {grouped} dollars.{construction_zone_fine_clause} You "
-"have {grouped2} dollars."
+"Chain check. No chains aboard on a mountain corridor in chain season. "
+"Citation, {grouped} dollars.{construction_zone_fine_clause} You have "
+"{grouped2} dollars."
+msgstr ""
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Citation, {grouped} dollars.{construction_zone_fine_clause} You have "
+"{grouped2} dollars."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "No chains aboard on a mountain corridor in chain season."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_updates/cues.rs
@@ -39692,15 +39911,17 @@ msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
-"Level one chain law accepts winter tires or chains. Level two requires "
-"drive-axle chains. Signs announce the requirement before its checkpoint."
+"Chain laws require chains on a truck at every level. Winter tires don't "
+"count for a semi. The exceptions are level one in Colorado, which chains "
+"only single-drive-axle trucks, and in Wyoming, which accepts snow tires. "
+"Signs announce the requirement before the chain-up area."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
 "Chain work uses on-duty time and adds fatigue, especially at night. Keep "
-"near thirty miles per hour and remove chains on bare pavement before they "
-"break."
+"under chain speed, 30 miles per hour or 48 kilometers per hour, and remove "
+"chains on bare pavement before they break."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs

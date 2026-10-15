@@ -1,7 +1,7 @@
 //! Standing physical conditions: hot brakes, the destination approach
 //! assist, the traction states, and the chain law.
 
-use ff_core::models::enforcement::CHAIN_LAW_FINE;
+use ff_core::models::enforcement::{chain_law_fine, CHAIN_CARRY_FINE_CO};
 use ff_core::pyfmt::fmt_grouped;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::vehicle::MIN_STOPPING_DECEL_MPS2;
@@ -577,7 +577,17 @@ impl DrivingState {
         if self.trip.truck.chains_just_snapped {
             self.trip.truck.chains_just_snapped = false;
             ctx.say_event_with(
-                "A tire chain broke.",
+                "A tire chain broke and is flailing. Slow down and pull over to check it.",
+                SayEvent::new().category(SpeechCategory::Safety),
+            );
+        }
+        if self.trip.truck.chains_on
+            && self.trip.truck.chain_wear_pct >= CHAIN_SLAP_WARN_PCT
+            && !self.chain_slap_said
+        {
+            self.chain_slap_said = true;
+            ctx.say_event_with(
+                "A chain is slapping the fender. Stop soon and tighten it.",
                 SayEvent::new().category(SpeechCategory::Safety),
             );
         }
@@ -585,7 +595,10 @@ impl DrivingState {
             self.trip.truck.chains_on && self.trip.truck.speed_mph() > CHAIN_SAFE_MPH + 2.0;
         if chains_fast && !self.chains_fast_active {
             ctx.say_event_with(
-                format!("Chains: keep under {CHAIN_SAFE_MPH:.0}."),
+                format!(
+                    "Too fast for chains. Keep under {}.",
+                    ctx.settings.speed_text(CHAIN_SAFE_MPH)
+                ),
                 SayEvent::new().category(SpeechCategory::Coaching),
             );
         }
@@ -607,19 +620,16 @@ impl DrivingState {
         let Some(area) = self.trip.chain_law_area_at(self.trip.position_mi) else {
             return;
         };
-        let compliant =
-            self.trip.truck.chains_on || (level == 1 && self.trip.truck.tire_type == TIRE_WINTER);
-        if compliant {
+        // Winter tires never excuse a semi, except at Wyoming Level 1;
+        // Colorado's Level 1 leaves a tandem-drive truck unchained
+        // (`rig_compliant_at`).
+        if self.trip.rig_compliant_at(self.trip.position_mi) {
             return;
         }
         let key = (area as i64, level);
         if !self.chain_law_warned.contains(&key) {
             self.chain_law_warned.insert(key);
-            let need = if level >= 2 {
-                "chains"
-            } else {
-                "winter-rated tires or chains"
-            };
+            let need = self.trip.chain_law_need_at(self.trip.position_mi);
             ctx.say_event_with(
                 format!("Rolling into an active chain law without {need}."),
                 SayEvent::new().category(SpeechCategory::Navigation),
@@ -632,12 +642,13 @@ impl DrivingState {
         self.chain_law_cited.insert(key);
         let mut rng =
             PyRandom::new_from_str(&format!("{}:chain-law:{area}:{level}", self.trip_seed));
-        if rng.random() >= CHAIN_LAW_CHECKPOINT_CHANCE {
+        let state = self.trip.state_code_at(self.trip.position_mi);
+        if rng.random() >= chain_law_checkpoint_chance(state.as_deref()) {
             return;
         }
         let zone = self.trip.in_construction_zone();
         let fine = citation_fine(
-            CHAIN_LAW_FINE,
+            chain_law_fine(state.as_deref()),
             career_citations(profile_of(ctx)),
             zone,
             None,
@@ -660,12 +671,149 @@ impl DrivingState {
             &format!("No chains under a level {level} chain law"),
         );
         ctx.audio.play("ui/error");
+        // A real checkpoint doesn't fine and wave you on: California
+        // prohibits entering a control without devices (13 CCR 1072(h)) and
+        // screening stops every truck. With a set aboard, the truck is held
+        // on the apron until it is on (`update_chain_checkpoint_hold`).
+        let aboard = profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0;
+        let after = if aboard {
+            self.hold_at_chain_checkpoint(ctx);
+            "You can't go on until your chains are on. Put them on from the pause menu."
+        } else {
+            "You have no chains aboard. Buy a set at the next garage."
+        };
         // A citation is money, not an act-now warning: ROUTE's never-dropped
         // queue instead of an interrupt that could erase one.
         ctx.say_event_with(
             format!(
-                "Chain checkpoint. An officer waves you onto the scale apron and writes a \
-                 chain-law citation, {} dollars.{} You have {} dollars.",
+                "Chain checkpoint. An officer stops you and writes a chain-law citation, {} \
+                 dollars.{} {after} You have {} dollars.",
+                fmt_grouped(fine, 0),
+                construction_zone_fine_clause(zone),
+                fmt_grouped(money, 0)
+            ),
+            SayEvent::queued()
+                .priority(EventPriority::Route)
+                .category(SpeechCategory::Money),
+        );
+    }
+
+    /// Stop the truck on the checkpoint apron with the parking brake set.
+    pub fn hold_at_chain_checkpoint(&mut self, ctx: &mut GameContext) {
+        self.chain_checkpoint_hold = true;
+        let truck = &mut self.trip.truck;
+        truck.velocity_mps = 0.0;
+        truck.throttle = 0.0;
+        truck.brake = 1.0;
+        truck.set_parking_brake();
+        self.cancel_cruise_for_parking_brake(ctx);
+    }
+
+    /// Keep a held truck on the apron until its chains are on, or the law
+    /// lifts. Releasing the brake to drive off sets it again and says why.
+    pub fn update_chain_checkpoint_hold(&mut self, ctx: &mut GameContext) {
+        if !self.chain_checkpoint_hold {
+            return;
+        }
+        if self.trip.truck.chains_on || self.trip.chain_law_level() == 0 {
+            self.chain_checkpoint_hold = false;
+            if self.trip.truck.chains_on {
+                ctx.say_event_with(
+                    "Chains on. The officer waves you back onto the highway.",
+                    SayEvent::new().category(SpeechCategory::Navigation),
+                );
+            }
+            return;
+        }
+        if !self.trip.truck.parking_brake || self.trip.truck.velocity_mps > 0.0 {
+            self.hold_at_chain_checkpoint(ctx);
+            ctx.say_event_with(
+                "Held at the chain checkpoint. Put your chains on from the pause menu.",
+                SayEvent::new().category(SpeechCategory::Navigation),
+            );
+        }
+    }
+
+    /// Colorado's carry rule: no chains aboard on a carry corridor's
+    /// mountain run from September 1 to May 31 is its own citation, whatever
+    /// the weather (CSP chain-law page; 100 plus 32, CDOT freight fact sheet,
+    /// Aug 2026). Warned once on entry, rolled once past the run's midpoint
+    /// at the same seeded checkpoint chance as the chain law.
+    pub fn update_chain_carry(&mut self, ctx: &mut GameContext) {
+        let at = self.trip.position_mi;
+        if self.trip.truck.speed_mph() < 3.0 {
+            return;
+        }
+        // Once a season, kept in the profile so a quit and resume or the
+        // next drive doesn't say it again.
+        let season = self
+            .trip
+            .current_career_hours()
+            .map(ff_core::sim::trip_models::mt_chain_season_id);
+        if season.is_some()
+            && profile_of(ctx).mt_chain_warned_season() != season
+            && self.trip.on_mt_chain_carry_run(at)
+            && !(profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0)
+        {
+            profile_mut_of(ctx).set_mt_chain_warned_season(season.unwrap_or_default());
+            ctx.say_event_with(
+                "Montana requires trucks to carry chains from October 1 to April 30. You have \
+                 none.",
+                SayEvent::new().category(SpeechCategory::Navigation),
+            );
+        }
+        if !self.trip.on_co_chain_carry_corridor(at) {
+            return;
+        }
+        let aboard = profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0;
+        if aboard {
+            return;
+        }
+        if !self.chain_carry_warned {
+            self.chain_carry_warned = true;
+            ctx.say_event_with(
+                "Colorado requires chains aboard on this road from September 1 to May 31. You \
+                 have none.",
+                SayEvent::new().category(SpeechCategory::Navigation),
+            );
+        }
+        let Some(area) = self.trip.chain_law_area_at(at) else {
+            return;
+        };
+        let (start, end) = self.trip.chain_law_areas[area];
+        if self.chain_carry_rolled || at < (start + end) / 2.0 {
+            return;
+        }
+        self.chain_carry_rolled = true;
+        let mut rng = PyRandom::new_from_str(&format!("{}:chain-carry:{area}", self.trip_seed));
+        if rng.random() >= CHAIN_LAW_CHECKPOINT_CHANCE {
+            return;
+        }
+        let zone = self.trip.in_construction_zone();
+        let fine = citation_fine(
+            CHAIN_CARRY_FINE_CO,
+            career_citations(profile_of(ctx)),
+            zone,
+            None,
+        );
+        let money = {
+            let p = profile_mut_of(ctx);
+            p.spend(fine);
+            p.money()
+        };
+        self.ticket_fines_paid += fine;
+        self.log_enforcement(
+            ctx,
+            fine,
+            false,
+            false,
+            "No chains aboard on a Colorado chain-carry corridor",
+        );
+        ctx.audio.play("ui/error");
+        ctx.say_event_with(
+            format!(
+                "Chain check. No chains aboard on a mountain corridor in chain season. Citation, \
+                 {} dollars.{} You have {} dollars.",
                 fmt_grouped(fine, 0),
                 construction_zone_fine_clause(zone),
                 fmt_grouped(money, 0)

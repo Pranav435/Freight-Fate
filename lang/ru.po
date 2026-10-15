@@ -11479,6 +11479,12 @@ msgstr ""
 msgid "facility gate"
 msgstr ""
 
+msgid "snow tires or chains"
+msgstr ""
+
+msgid "chains"
+msgstr ""
+
 #. placeholders: {lane_word}
 msgid "Road widens to {lane_word} lanes your side."
 msgstr ""
@@ -11759,12 +11765,6 @@ msgstr ""
 msgid "destination approach"
 msgstr ""
 
-msgid "level 2: chains required"
-msgstr ""
-
-msgid "level 1: winter tires or chains required"
-msgstr ""
-
 msgid " Chain-up area on the right."
 msgstr ""
 
@@ -11779,6 +11779,21 @@ msgid "default"
 msgstr ""
 
 msgid "max"
+msgstr ""
+
+msgid "level 2: chains required on two tires of one drive axle"
+msgstr ""
+
+msgid "level 2: chains required on all trucks"
+msgstr ""
+
+msgid "level 1: chains required on single-drive-axle trucks"
+msgstr ""
+
+msgid "level 1: snow tires or chains required"
+msgstr ""
+
+msgid "level 1: chains required on trucks"
 msgstr ""
 
 msgid "hazard"
@@ -17576,6 +17591,22 @@ msgid ""
 "{grouped2} dollars left."
 msgstr ""
 
+#. placeholders: {grouped}
+msgid "Repair links cost {grouped} dollars."
+msgstr ""
+
+msgid "Two chain repair links are in the side box, carrier billed."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Two chain repair links are in the side box."
+msgstr ""
+
+#. placeholders: {grouped}
+msgid ""
+"Two chain repair links are in the side box. You have {grouped} dollars left."
+msgstr ""
+
 msgid "brake service"
 msgstr ""
 
@@ -17667,8 +17698,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Chains go on from the pause menu when stopped in snow or ice. They grind "
-"apart on bare pavement. Company drivers bill the carrier."
+"A chain set is seven chains: four for the drive tires, one for a trailer "
+"tire, and two spares, the most any state here asks of a semi, plus two "
+"repair links. Put chains on from the pause menu once you're stopped in snow "
+"or ice. They wear out fast on bare pavement. Company drivers bill the "
+"carrier."
 msgstr ""
 
 msgid ""
@@ -17683,6 +17717,14 @@ msgid ""
 msgstr ""
 
 msgid "Company drivers bill the carrier, owner-operators pay."
+msgstr ""
+
+#. placeholders: {grouped}
+msgid "Restock chain repair links: {grouped} dollars"
+msgstr ""
+
+msgid ""
+"A spare link fixes a broken chain on the shoulder in about 15 minutes."
 msgstr ""
 
 msgid ""
@@ -24758,16 +24800,59 @@ msgid ""
 msgstr ""
 
 #. placeholders: {f}
+msgid "Tighten chains: about {f} minutes"
+msgstr ""
+
+msgid ""
+"A loose chain slaps the fender and wears out fast. Tightening helps once."
+msgstr ""
+
+#. placeholders: {f}
+msgid "Repair the broken chain: about {f} minutes"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Uses a spare repair link."
+msgstr ""
+
+#. placeholders: {chain_repair_links}
+msgid "Uses a spare repair link. {chain_repair_links} left."
+msgstr ""
+
+#. placeholders: {chain_repair_links}
+#. one sentence of a longer line
+msgid "{chain_repair_links} left."
+msgstr ""
+
+#. placeholders: {f}
 msgid "Remove snow chains: about {f} minutes"
 msgstr ""
 
 msgid "Chains grind apart fast on bare pavement."
 msgstr ""
 
+#. one sentence of a longer line
+msgid "Chains bite snow and ice."
+msgstr ""
+
+#. placeholders: {speed_text}
 msgid ""
-"Chains bite snow and ice. Chain speed is about thirty miles per hour. Pull "
-"them once the road is bare. In the dark, installing takes longer and more "
+"Chains bite snow and ice. Keep under {speed_text} with chains on. Take them "
+"off once the road is bare. In the dark, installing takes longer and more "
 "out of you."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "In the dark, installing takes longer and more out of you."
+msgstr ""
+
+#. placeholders: {speed_text}
+#. one sentence of a longer line
+msgid "Keep under {speed_text} with chains on."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Take them off once the road is bare."
 msgstr ""
 
 msgid "Drivers on duty"
@@ -24806,7 +24891,7 @@ msgstr ""
 msgid "In the dark, it took more out of you. "
 msgstr ""
 
-msgid " The road here is bare, they grind fast until the snow."
+msgid " The road here is bare. Chains wear out fast until you reach snow."
 msgstr ""
 
 #. placeholders: {f}
@@ -24816,13 +24901,50 @@ msgstr ""
 
 #. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
 msgid ""
-"Chains on in {f} minutes. {effort}Chain speed {speed_text}.{bare} It is "
+"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
 "{clock_text}. {deadline_text}"
 msgstr ""
 
 #. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
 #. one sentence of a longer line
-msgid "{effort}Chain speed {speed_text}.{bare} It is {clock_text}."
+msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
+msgstr ""
+
+msgid "No repair links left. The chain stays off."
+msgstr ""
+
+msgid "repair chain"
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Back on in {f} minutes."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Chain repaired with a spare link."
+msgstr ""
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid ""
+"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
+"soon. It is {clock_text}. {deadline_text}"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Check it again soon."
+msgstr ""
+
+msgid "tighten chains"
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains tightened in {f} minutes."
+msgstr ""
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
 msgstr ""
 
 msgid "remove chains"
@@ -27407,17 +27529,24 @@ msgstr ""
 msgid "The drive wheels are sliding under the engine brake."
 msgstr ""
 
-msgid "A tire chain broke."
+msgid ""
+"A tire chain broke and is flailing. Slow down and pull over to check it."
 msgstr ""
 
-#. placeholders: {CHAIN_SAFE_MPH}
-msgid "Chains: keep under {CHAIN_SAFE_MPH}."
+msgid "A chain is slapping the fender. Stop soon and tighten it."
 msgstr ""
 
-msgid "chains"
+#. placeholders: {speed_text}
+#. one sentence of a longer line
+msgid "Keep under {speed_text}."
 msgstr ""
 
-msgid "winter-rated tires or chains"
+#. one sentence of a longer line
+msgid "Too fast for chains."
+msgstr ""
+
+#. placeholders: {speed_text}
+msgid "Too fast for chains. Keep under {speed_text}."
 msgstr ""
 
 #. placeholders: {need}
@@ -27428,23 +27557,71 @@ msgstr ""
 msgid "No chains under a level {level} chain law"
 msgstr ""
 
-#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+msgid ""
+"You can't go on until your chains are on. Put them on from the pause menu."
+msgstr ""
+
+msgid "You have no chains aboard. Buy a set at the next garage."
+msgstr ""
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
 #. one sentence of a longer line
 msgid ""
-"An officer waves you onto the scale apron and writes a chain-law citation, "
-"{grouped} dollars.{construction_zone_fine_clause} You have {grouped2} "
-"dollars."
+"An officer stops you and writes a chain-law citation, {grouped} "
+"dollars.{construction_zone_fine_clause} {after} You have {grouped2} dollars."
 msgstr ""
 
 #. one sentence of a longer line
 msgid "Chain checkpoint."
 msgstr ""
 
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
+msgid ""
+"Chain checkpoint. An officer stops you and writes a chain-law citation, "
+"{grouped} dollars.{construction_zone_fine_clause} {after} You have "
+"{grouped2} dollars."
+msgstr ""
+
+msgid "Chains on. The officer waves you back onto the highway."
+msgstr ""
+
+msgid ""
+"Held at the chain checkpoint. Put your chains on from the pause menu."
+msgstr ""
+
+msgid ""
+"Montana requires trucks to carry chains from October 1 to April 30. You "
+"have none."
+msgstr ""
+
+msgid ""
+"Colorado requires chains aboard on this road from September 1 to May 31. "
+"You have none."
+msgstr ""
+
+msgid "No chains aboard on a Colorado chain-carry corridor"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Chain check."
+msgstr ""
+
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
 msgid ""
-"Chain checkpoint. An officer waves you onto the scale apron and writes a "
-"chain-law citation, {grouped} dollars.{construction_zone_fine_clause} You "
-"have {grouped2} dollars."
+"Chain check. No chains aboard on a mountain corridor in chain season. "
+"Citation, {grouped} dollars.{construction_zone_fine_clause} You have "
+"{grouped2} dollars."
+msgstr ""
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+#. one sentence of a longer line
+msgid ""
+"Citation, {grouped} dollars.{construction_zone_fine_clause} You have "
+"{grouped2} dollars."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "No chains aboard on a mountain corridor in chain season."
 msgstr ""
 
 msgid "Across the centerline, in the oncoming lane!"
@@ -31588,14 +31765,16 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Level one chain law accepts winter tires or chains. Level two requires "
-"drive-axle chains. Signs announce the requirement before its checkpoint."
+"Chain laws require chains on a truck at every level. Winter tires don't "
+"count for a semi. The exceptions are level one in Colorado, which chains "
+"only single-drive-axle trucks, and in Wyoming, which accepts snow tires. "
+"Signs announce the requirement before the chain-up area."
 msgstr ""
 
 msgid ""
 "Chain work uses on-duty time and adds fatigue, especially at night. Keep "
-"near thirty miles per hour and remove chains on bare pavement before they "
-"break."
+"under chain speed, 30 miles per hour or 48 kilometers per hour, and remove "
+"chains on bare pavement before they break."
 msgstr ""
 
 msgid ""
