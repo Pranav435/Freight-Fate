@@ -13709,6 +13709,12 @@ msgstr "Próxima salida registrada en {ahead_text}: {text}."
 msgid "facility gate"
 msgstr "entrada de la instalación"
 
+msgid "snow tires or chains"
+msgstr "neumáticos de nieve o cadenas"
+
+msgid "chains"
+msgstr "cadenas"
+
 #. placeholders: {lane_word}
 msgid "Road widens to {lane_word} lanes your side."
 msgstr "La carretera se ensancha a {lane_word} carriles en tu sentido."
@@ -14015,19 +14021,19 @@ msgid "max"
 msgstr "max"
 
 msgid "level 2: chains required on two tires of one drive axle"
-msgstr ""
+msgstr "nivel 2: cadenas obligatorias en dos neumáticos de un eje motriz"
 
 msgid "level 2: chains required on all trucks"
-msgstr ""
+msgstr "nivel 2: cadenas obligatorias para todos los camiones"
 
 msgid "level 1: chains required on single-drive-axle trucks"
-msgstr ""
+msgstr "nivel 1: cadenas obligatorias para camiones de un solo eje motriz"
 
 msgid "level 1: snow tires or chains required"
-msgstr ""
+msgstr "nivel 1: neumáticos de nieve o cadenas obligatorios"
 
 msgid "level 1: chains required on trucks"
-msgstr ""
+msgstr "nivel 1: cadenas obligatorias para camiones"
 
 msgid "hazard"
 msgstr "peligro"
@@ -20724,6 +20730,9 @@ msgid ""
 "Put chains on from the pause menu once you're stopped in snow or ice. They "
 "wear out fast on bare pavement. Company drivers bill the carrier."
 msgstr ""
+"Pon las cadenas desde el menú de pausa cuando estés detenido en nieve o "
+"hielo. Se desgastan rápido sobre asfalto seco. Los conductores de empresa "
+"se las cobran a la empresa."
 
 msgid ""
 "Worn shoes pull weaker and fade sooner. The engine brake costs them "
@@ -28654,11 +28663,32 @@ msgstr "Quitar las cadenas: unos {f} minutos"
 msgid "Chains grind apart fast on bare pavement."
 msgstr "Las cadenas se destrozan rápido en asfalto despejado."
 
+#. one sentence of a longer line
+msgid "Chains bite snow and ice."
+msgstr "Las cadenas agarran en nieve y hielo."
+
+#. placeholders: {speed_text}
 msgid ""
-"Chains bite snow and ice. Keep under 30 miles per hour with chains on. Take "
-"them off once the road is bare. In the dark, installing takes longer and "
-"more out of you."
+"Chains bite snow and ice. Keep under {speed_text} with chains on. Take them "
+"off once the road is bare. In the dark, installing takes longer and more "
+"out of you."
 msgstr ""
+"Las cadenas agarran en nieve y hielo. Con cadenas, no pases de "
+"{speed_text}. Quítalas cuando la carretera esté despejada. De noche, "
+"ponerlas lleva más tiempo y cansa más."
+
+#. one sentence of a longer line
+msgid "In the dark, installing takes longer and more out of you."
+msgstr "De noche, ponerlas lleva más tiempo y cansa más."
+
+#. placeholders: {speed_text}
+#. one sentence of a longer line
+msgid "Keep under {speed_text} with chains on."
+msgstr "Con cadenas, no pases de {speed_text}."
+
+#. one sentence of a longer line
+msgid "Take them off once the road is bare."
+msgstr "Quítalas cuando la carretera esté despejada."
 
 msgid "Drivers on duty"
 msgstr "Conductores en servicio"
@@ -28706,6 +28736,8 @@ msgstr "A oscuras te cansó más. "
 
 msgid " The road here is bare. Chains wear out fast until you reach snow."
 msgstr ""
+" Aquí la carretera está despejada. Las cadenas se desgastan rápido hasta "
+"que llegues a la nieve."
 
 #. placeholders: {f}
 #. one sentence of a longer line
@@ -28717,11 +28749,13 @@ msgid ""
 "Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
 "{clock_text}. {deadline_text}"
 msgstr ""
+"Cadenas puestas en {f} minutos. {effort}No pases de {speed_text}.{bare} Son "
+"las {clock_text}. {deadline_text}"
 
 #. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
 #. one sentence of a longer line
 msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
-msgstr ""
+msgstr "{effort}No pases de {speed_text}.{bare} Son las {clock_text}."
 
 msgid "remove chains"
 msgstr "remove chains"
@@ -31672,18 +31706,19 @@ msgstr "Se rompió una cadena."
 #. placeholders: {speed_text}
 #. one sentence of a longer line
 msgid "Keep under {speed_text}."
-msgstr ""
+msgstr "No pases de {speed_text}."
 
 #. one sentence of a longer line
 msgid "Too fast for chains."
-msgstr ""
+msgstr "Vas demasiado rápido para llevar cadenas."
 
 #. placeholders: {speed_text}
 msgid "Too fast for chains. Keep under {speed_text}."
-msgstr ""
+msgstr "Vas demasiado rápido para llevar cadenas. No pases de {speed_text}."
 
-msgid "Rolling into an active chain law without chains."
-msgstr ""
+#. placeholders: {need}
+msgid "Rolling into an active chain law without {need}."
+msgstr "Entrando en una zona con obligación de cadenas activa sin {need}."
 
 #. placeholders: {level}
 msgid "No chains under a level {level} chain law"
@@ -36840,12 +36875,20 @@ msgid ""
 "only single-drive-axle trucks, and in Wyoming, which accepts snow tires. "
 "Signs announce the requirement before the chain-up area."
 msgstr ""
+"Las leyes de cadenas obligan a los camiones a llevar cadenas en todos los "
+"niveles. Los neumáticos de invierno no cuentan para un tráiler. Las "
+"excepciones son el nivel uno de Colorado, que solo exige cadenas a camiones "
+"de un solo eje motriz, y el de Wyoming, que acepta neumáticos de nieve. Las "
+"señales avisan del requisito antes de la zona para ponerlas."
 
 msgid ""
 "Chain work uses on-duty time and adds fatigue, especially at night. Keep "
-"under 30 miles per hour and remove chains on bare pavement before they "
-"break."
+"under chain speed, 30 miles per hour or 48 kilometers per hour, and remove "
+"chains on bare pavement before they break."
 msgstr ""
+"Poner cadenas cuenta como tiempo de servicio y cansa, sobre todo de noche. "
+"No pases de la velocidad con cadenas, 30 millas por hora o 48 kilómetros "
+"por hora, y quítalas sobre asfalto seco antes de que se rompan."
 
 msgid ""
 "Worn tires and strong engine braking make slippery roads harder to control. "
@@ -40357,14 +40400,8 @@ msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
 #~ msgid "Chains: keep under {CHAIN_SAFE_MPH}."
 #~ msgstr "Cadenas: mantente por debajo de {CHAIN_SAFE_MPH}."
 
-#~ msgid "chains"
-#~ msgstr "cadenas"
-
 #~ msgid "winter-rated tires or chains"
 #~ msgstr "neumáticos de invierno homologados o cadenas"
-
-#~ msgid "Rolling into an active chain law without {need}."
-#~ msgstr "Entrando en una zona con obligación de cadenas activa sin {need}."
 
 #~ msgid ""
 #~ "Level one chain law accepts winter tires or chains. Level two requires "

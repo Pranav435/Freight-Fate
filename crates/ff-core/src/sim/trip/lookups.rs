@@ -936,6 +936,32 @@ impl Trip {
         )
     }
 
+    /// Whether the truck meets the active chain law at this milepost: chains
+    /// on, or a law that doesn't chain the rig here (`rig_must_chain`).
+    /// Wyoming Level 1 asks for snow tires or chains (W.S. 31-5-956(e)), so
+    /// there winter tires count and all-season tires without chains don't.
+    pub fn rig_compliant_at(&self, mile: f64) -> bool {
+        let level = self.chain_law_level();
+        if self.truck.chains_on || level <= 0 {
+            return true;
+        }
+        let state = self.state_code_at(mile);
+        if state.as_deref() == Some("WY") && level == 1 {
+            return self.truck.tire_type == crate::sim::vehicle::TIRE_WINTER;
+        }
+        !crate::sim::trip_models::rig_must_chain(state.as_deref(), level)
+    }
+
+    /// The chain-law warning's missing equipment: "snow tires or chains" at
+    /// Wyoming Level 1, "chains" everywhere else.
+    pub fn chain_law_need_at(&self, mile: f64) -> &'static str {
+        if self.state_code_at(mile).as_deref() == Some("WY") && self.chain_law_level() == 1 {
+            "snow tires or chains"
+        } else {
+            "chains"
+        }
+    }
+
     /// Index of the chain-law area containing this milepost, or None.
     pub fn chain_law_area_at(&self, mile: f64) -> Option<usize> {
         self.chain_law_areas

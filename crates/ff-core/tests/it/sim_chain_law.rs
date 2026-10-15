@@ -216,3 +216,23 @@ fn test_chain_law_signs_speak_each_state_rule() {
         "level 2: chains required on all trucks"
     );
 }
+
+#[test]
+fn test_wyoming_level_1_takes_snow_tires_or_chains() {
+    use ff_core::sim::vehicle::TIRE_WINTER;
+    let mut trip = trip_on("Cheyenne", "Laramie", None);
+    trip.chain_law_areas = vec![(0.0, 10.0)];
+    assert_eq!(trip.state_code_at(5.0).as_deref(), Some("WY"));
+    trip.weather.current = WeatherKind::Snow;
+    trip.truck.tire_type = "all_season".to_string();
+    assert!(!trip.rig_compliant_at(5.0));
+    assert_eq!(trip.chain_law_need_at(5.0), "snow tires or chains");
+    trip.truck.tire_type = TIRE_WINTER.to_string();
+    assert!(trip.rig_compliant_at(5.0));
+    // Level 2: snow tires don't count.
+    trip.weather.current = WeatherKind::Ice;
+    assert!(!trip.rig_compliant_at(5.0));
+    assert_eq!(trip.chain_law_need_at(5.0), "chains");
+    trip.truck.chains_on = true;
+    assert!(trip.rig_compliant_at(5.0));
+}
