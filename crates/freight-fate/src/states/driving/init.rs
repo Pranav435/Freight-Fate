@@ -382,6 +382,7 @@ impl DrivingState {
             chains_fast_active: false,
             chain_law_warned: HashSet::new(),
             chain_law_cited: HashSet::new(),
+            chain_checkpoint_staffed: HashMap::new(),
             chain_checkpoint_hold: false,
             chain_carry_warned: false,
             chain_carry_rolled: false,

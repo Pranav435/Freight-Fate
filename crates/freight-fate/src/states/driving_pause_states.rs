@@ -230,6 +230,16 @@ impl PauseMenuState {
             let city = ctx.world.city(&key).map(|c| c.name.clone()).unwrap_or(key);
             items.insert(
                 1,
+                MenuItem::new("Wait for the chain law to lift", |s: &mut Self, ctx| {
+                    s.wait_for_chain_law(ctx)
+                })
+                .help(
+                    "Waits on duty, not driving, half an hour at a time, up to 8 hours or until \
+                     your 14-hour window runs out.",
+                ),
+            );
+            items.insert(
+                2,
                 MenuItem::new(format!("Turn back to {city}"), |s: &mut Self, ctx| {
                     s.turn_back_from_chain_checkpoint(ctx)
                 })
@@ -290,6 +300,18 @@ impl PauseMenuState {
         // inside, the rebuild found the drive busy and left the pause menu
         // with no rows at all -- "No options available" after a repair that
         // in fact worked.
+        let Some(Some(text)) = done else {
+            return;
+        };
+        self.refresh(ctx, true);
+        ctx.say(&text);
+    }
+
+    fn wait_for_chain_law(&mut self, ctx: &mut GameContext) {
+        let done = self
+            .driving
+            .clone()
+            .call(self, ctx, |_s, ctx, d| d.wait_for_chain_law_to_lift(ctx));
         let Some(Some(text)) = done else {
             return;
         };

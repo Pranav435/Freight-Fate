@@ -24855,6 +24855,14 @@ msgstr ""
 msgid "Take them off once the road is bare."
 msgstr ""
 
+msgid "Wait for the chain law to lift"
+msgstr ""
+
+msgid ""
+"Waits on duty, not driving, half an hour at a time, up to 8 hours or until "
+"your 14-hour window runs out."
+msgstr ""
+
 #. placeholders: {city}
 msgid "Turn back to {city}"
 msgstr ""
@@ -27554,15 +27562,29 @@ msgstr ""
 msgid "Rolling into an active chain law without {need}."
 msgstr ""
 
-#. placeholders: {level}
-msgid "No chains under a level {level} chain law"
-msgstr ""
-
 msgid ""
 "You can't go on until your chains are on. Put them on from the pause menu."
 msgstr ""
 
-msgid "You have no chains aboard. Buy a set at the next garage."
+msgid ""
+"You can't go on without chains. Wait here until the chain law lifts, or "
+"turn back."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Chain checkpoint."
+msgstr ""
+
+#. placeholders: {after}
+msgid "Chain checkpoint. The officer stops you again. {after}"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The officer stops you again."
+msgstr ""
+
+#. placeholders: {level}
+msgid "No chains under a level {level} chain law"
 msgstr ""
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
@@ -27570,10 +27592,6 @@ msgstr ""
 msgid ""
 "An officer stops you and writes a chain-law citation, {grouped} "
 "dollars.{construction_zone_fine_clause} {after} You have {grouped2} dollars."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Chain checkpoint."
 msgstr ""
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
@@ -27597,6 +27615,55 @@ msgstr ""
 msgid ""
 "Held at the chain checkpoint. You have no chains. Wait here until the chain "
 "law lifts, or turn back."
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid "The chain law lifted after {duration_text}."
+msgstr ""
+
+#. placeholders: {duration_text}
+msgid ""
+"The chain law lifted after {duration_text}. The officer waves you back onto "
+"the highway."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The officer waves you back onto the highway."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The chain law still stands."
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid ""
+"You waited {duration_text}, and your 14-hour duty window is nearly used up."
+msgstr ""
+
+#. placeholders: {duration_text}
+msgid ""
+"You waited {duration_text}, and your 14-hour duty window is nearly used up. "
+"The chain law still stands."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Wait again, or turn back."
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid "You waited {duration_text}."
+msgstr ""
+
+#. placeholders: {duration_text}
+msgid ""
+"You waited {duration_text}. The chain law still stands. Wait again, or turn "
+"back."
+msgstr ""
+
+msgid "chain checkpoint"
 msgstr ""
 
 #. one sentence of a longer line

@@ -463,7 +463,9 @@ fn test_a_cited_truck_with_chains_aboard_is_held_until_they_are_on() {
 }
 
 #[test]
-fn test_a_cited_truck_with_no_chains_aboard_is_not_held() {
+fn test_a_cited_truck_with_no_chains_aboard_is_held_too() {
+    // 13 CCR 1072(h): no entering a control without devices, so a cited
+    // truck with nothing to put on is held, not waved on.
     let mut app = TestApp::new();
     let drive = law_drive(
         &mut app,
@@ -479,13 +481,14 @@ fn test_a_cited_truck_with_no_chains_aboard_is_not_held() {
         .set_chains_owned(false);
     tick(&mut app, &drive);
     assert!(
-        spoken(&app)
-            .iter()
-            .any(|s| s.contains("You have no chains aboard")),
+        spoken(&app).iter().any(|s| s.contains(
+            "You can't go on without chains. Wait here until the chain law lifts, or turn back."
+        )),
         "{:?}",
         spoken(&app)
     );
-    assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
+    assert!(!spoken(&app).iter().any(|s| s.contains("next garage")));
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
 }
 
 #[test]
@@ -815,4 +818,147 @@ fn test_waiting_at_the_checkpoint_ends_the_hold_when_the_law_lifts() {
         "{:?}",
         spoken(&app)
     );
+}
+
+/// A chainless truck cited and held at the checkpoint over miles 0-10.
+fn held_with_no_chains(app: &mut TestApp) -> SharedState {
+    let drive = law_drive(
+        app,
+        Law {
+            seed: cited_seed(),
+            ..Law::default()
+        },
+    );
+    app.ctx
+        .profile
+        .as_mut()
+        .expect("a career")
+        .set_chains_owned(false);
+    tick(app, &drive);
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
+    drive
+}
+
+#[test]
+fn test_a_truck_that_turns_back_and_returns_is_held_again_but_not_fined_twice() {
+    let mut app = TestApp::new();
+    let drive = held_with_no_chains(&mut app);
+    let (fined, cited) = (money(&app), citations(&app));
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.turn_back_from_chain_checkpoint(ctx)
+    })
+    .expect("turned back");
+    // Back at the checkpoint at the same level.
+    with_drive(&drive, |d| {
+        d.trip.position_mi = 6.0;
+        d.trip.truck.parking_brake = false;
+        d.trip.truck.velocity_mps = 20.0;
+    });
+    app.clear_speech();
+    tick(&mut app, &drive);
+    assert!(
+        with_drive(&drive, |d| d.chain_checkpoint_hold),
+        "held again"
+    );
+    assert!(
+        spoken(&app)
+            .iter()
+            .any(|s| s.starts_with("Chain checkpoint. The officer stops you again.")),
+        "{:?}",
+        spoken(&app)
+    );
+    assert_eq!(money(&app), fined, "no second fine");
+    assert_eq!(citations(&app), cited, "no second citation");
+}
+
+#[test]
+fn test_checkpoint_staffing_and_citations_ride_the_snapshot() {
+    let mut app = TestApp::new();
+    let drive = held_with_no_chains(&mut app);
+    let snap = drive_and_ctx(&drive, &mut app, |d, ctx| d.snapshot(ctx));
+    assert_eq!(snap["chain_law_cited"], serde_json::json!([[0, 2]]));
+    assert_eq!(
+        snap["chain_checkpoint_staffed"],
+        serde_json::json!([[0, 2, true]])
+    );
+}
+
+#[test]
+fn test_waiting_at_the_checkpoint_runs_the_clock_on_duty_until_the_law_lifts() {
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "off".to_string();
+    let drive = held_with_no_chains(&mut app);
+    // The ice holds for the whole wait: 8 hours on duty, still held.
+    with_drive(&drive, |d| d.trip.weather.forced = Some(WeatherKind::Ice));
+    let before = with_drive(&drive, |d| d.trip.game_minutes);
+    let duty_before = app.ctx.profile.as_ref().unwrap().hos.duty_min;
+    let line = drive_and_ctx(&drive, &mut app, |d, ctx| d.wait_for_chain_law_to_lift(ctx))
+        .expect("held, so it waits");
+    assert_eq!(
+        line,
+        "You waited 8 hours. The chain law still stands. Wait again, or turn back."
+    );
+    assert_eq!(with_drive(&drive, |d| d.trip.game_minutes), before + 480.0);
+    assert_eq!(
+        app.ctx.profile.as_ref().unwrap().hos.duty_min,
+        duty_before + 480.0
+    );
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
+    // The sky clears during the next half hour: the hold ends.
+    with_drive(&drive, |d| d.trip.weather.forced = Some(WeatherKind::Clear));
+    let line = drive_and_ctx(&drive, &mut app, |d, ctx| d.wait_for_chain_law_to_lift(ctx))
+        .expect("still held");
+    assert_eq!(
+        line,
+        "The chain law lifted after 30 minutes. The officer waves you back onto the highway."
+    );
+    assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
+    assert!(drive_and_ctx(&drive, &mut app, |d, ctx| d.wait_for_chain_law_to_lift(ctx)).is_none());
+}
+
+#[test]
+fn test_waiting_stops_at_the_duty_window() {
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "realistic".to_string();
+    let drive = held_with_no_chains(&mut app);
+    with_drive(&drive, |d| d.trip.weather.forced = Some(WeatherKind::Ice));
+    app.ctx.profile.as_mut().unwrap().hos.on_duty(800.0);
+    let line = drive_and_ctx(&drive, &mut app, |d, ctx| d.wait_for_chain_law_to_lift(ctx))
+        .expect("held, so it waits");
+    assert!(
+        line.starts_with("You waited 30 minutes, and your 14-hour duty window"),
+        "{line}"
+    );
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
+}
+
+#[test]
+fn test_turning_back_is_driven_miles_and_the_drive_goes_on() {
+    let mut app = TestApp::new();
+    let drive = held_with_no_chains(&mut app);
+    with_drive(&drive, |d| d.trip.truck.start_engine());
+    let (odometer, fuel, phase) = with_drive(&drive, |d| {
+        (d.trip.truck.odometer_mi, d.trip.truck.fuel_gal, d.phase)
+    });
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.turn_back_from_chain_checkpoint(ctx)
+    })
+    .expect("turned back");
+    assert!((with_drive(&drive, |d| d.trip.truck.odometer_mi) - (odometer + 6.0)).abs() < 1e-9);
+    let burned = fuel - with_drive(&drive, |d| d.trip.truck.fuel_gal);
+    // Six highway miles at about 6.5 mpg, far more than idling would burn.
+    assert!(burned > 0.5 && burned < 2.0, "{burned}");
+    assert!(!with_drive(&drive, |d| d.trip.finished), "not delivered");
+    assert_eq!(with_drive(&drive, |d| d.phase), phase);
+    // The drive goes on: brake off and rolling, nothing holds it.
+    with_drive(&drive, |d| {
+        d.trip.truck.parking_brake = false;
+        d.trip.truck.velocity_mps = 20.0;
+    });
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.update_chain_checkpoint_hold(ctx)
+    });
+    tick(&mut app, &drive);
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.velocity_mps), 20.0);
+    assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
 }
