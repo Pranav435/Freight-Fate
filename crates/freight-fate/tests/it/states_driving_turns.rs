@@ -352,12 +352,16 @@ fn test_the_planner_sees_past_the_corner_it_is_already_easing_for() {
     assert_eq!(d.turn_speed_mph(&second), side_speed(&second, 105.0, load));
     assert!(second.at_mi - first.at_mi < 0.15); // inside the first corner's tail
 
-    // Easing for the first corner, well before the second one is close.
+    // Easing for the first corner, well before the second one is close. The
+    // first corner's number is lowered only if the second is too close to
+    // brake for after it.
     d.trip.position_mi = first.at_mi - 0.05;
     mph(&mut d, 25.0);
+    let first_target = d.corner_targets_ahead()[0].1;
+    assert!(first_target <= side_speed(&first, 90.0, load));
     assert_eq!(
         d.keeper_speed_ahead(&mut app.ctx),
-        Some((side_speed(&first, 90.0, load), "turn".to_string()))
+        Some((first_target, "turn".to_string()))
     );
 
     // One block on, with the second corner's own window open, the planner

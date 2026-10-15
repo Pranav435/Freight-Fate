@@ -178,6 +178,9 @@ pub struct Arrival {
     /// Hands-off runs: each street corner's own number and the speed the
     /// truck took it at, in order.
     pub corner_passes: Vec<(f64, f64)>,
+    /// (target, slowest mph in the last 0.1 mi before the corner, mph as
+    /// that 0.1 mi began).
+    pub corner_mins: Vec<(f64, f64, f64)>,
     pub street_kicked: bool,
     /// Facility stopping assistance had the pedals with a street corner
     /// still ahead of the truck.
@@ -373,6 +376,9 @@ fn arrive_driven(
     let mut kicked = false;
     let mut latched_with_corner_ahead = false;
     let mut corner_passes: Vec<(f64, f64)> = Vec::new();
+    let mut corner_mins: Vec<(f64, f64, f64)> = Vec::new();
+    let mut corner_min = f64::INFINITY;
+    let mut corner_entry = f64::NAN;
     let mut corner_in_play: Option<(f64, f64)> = None;
     let world = get_world();
     let origin = if destination.city == "shelby_mt_us" && company_profile.is_some() {
@@ -615,7 +621,15 @@ fn arrive_driven(
                     harness.read_drive(|d| (d.trip.position_mi, d.truck().speed_mph()));
                 if position >= at_mi || next_corner.is_none_or(|(next, _)| next != at_mi) {
                     corner_passes.push((target, speed));
+                    corner_mins.push((target, corner_min.min(speed), corner_entry));
+                    corner_min = f64::INFINITY;
+                    corner_entry = f64::NAN;
                     corner_in_play = None;
+                } else if position >= at_mi - 0.1 {
+                    if corner_entry.is_nan() {
+                        corner_entry = speed;
+                    }
+                    corner_min = corner_min.min(speed);
                 }
             }
             if corner_in_play.is_none() {
@@ -707,6 +721,7 @@ fn arrive_driven(
         crawl_short_ft,
         street_kicked: kicked,
         corner_passes,
+        corner_mins,
         latched_with_corner_ahead,
         heard,
     }
@@ -872,6 +887,29 @@ fn test_hands_off_street_approach_takes_every_corner_and_reaches_the_gate() {
         "crawled {:.0} ft at a walk with the gate still more than 250 ft off",
         arrival.crawl_short_ft
     );
+    // Braked onto each corner's number, not under it and back up again.
+    // A corner the truck was already under as its last 0.1 mi began (built
+    // back up from the corner before) is measured from where it was.
+    for (target, slowest, entry) in &arrival.corner_mins {
+        let floor = if entry.is_nan() {
+            *target
+        } else {
+            target.min(*entry)
+        };
+        assert!(
+            *slowest >= floor - 2.0,
+            "dipped to {slowest:.1} before a {target:.1} corner: {:?}",
+            arrival.corner_mins
+        );
+    }
+    // And each corner at its own number, not a held one from the last.
+    for (target, taken) in &arrival.corner_passes {
+        assert!(
+            (taken - target).abs() <= 1.0 || *taken <= *target && *target <= 6.5,
+            "took a {target:.1} corner at {taken:.1}: {:?}",
+            arrival.corner_passes
+        );
+    }
 }
 
 #[test]
@@ -892,8 +930,9 @@ fn test_the_arrival_leaves_the_last_corner_to_the_keeper() {
             eprintln!("{line}");
         }
         eprintln!(
-            "corners (target, taken) mph: {:?}\nready={} latched_with_corner_ahead={} crawl_short_ft={:.0} speed_at_point={:?}",
+            "corners (target, taken) mph: {:?}\nslowest in the last 0.1 mi: {:?}\nready={} latched_with_corner_ahead={} crawl_short_ft={:.0} speed_at_point={:?}",
             arrival.corner_passes,
+            arrival.corner_mins,
             arrival.ready,
             arrival.latched_with_corner_ahead,
             arrival.crawl_short_ft,
