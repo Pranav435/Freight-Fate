@@ -496,8 +496,10 @@ pub const CHAIN_CONTROL_STATES: [&str; 9] = ["CA", "CO", "ID", "MT", "NV", "OR",
 /// must chain under a chain law at `level` in `state`. Heavy trucks get no
 /// winter-tire exemption: Caltrans R-1 to R-3 ("no exemption for heavy-duty
 /// commercial vehicles ... equipped with snow tires", dot.ca.gov chain
-/// requirements), WSDOT over 10,000 lb (WAC 204-24-050) and ODOT snow zones
-/// (traction tires substitute only at 10,000 lb or less) all chain trucks.
+/// requirements) and WSDOT over 10,000 lb (WAC 204-24-050) chain trucks.
+/// Oregon's lower level ("Chains or traction tires required") chains only
+/// single-drive-axle trucks over 10,000 lb, and "Chains required" chains
+/// every truck (ODOT, oregon.gov/odot/mct/pages/chains-and-traction-tires.aspx).
 /// Colorado is the one split: Level 1 chains single-drive-axle combinations
 /// only, and Level 2 chains every truck (CDOT Commercial Vehicle Chain Law,
 /// csp.colorado.gov/chain-law-information). Wyoming Level 1 accepts snow
@@ -507,7 +509,7 @@ pub const CHAIN_CONTROL_STATES: [&str; 9] = ["CA", "CO", "ID", "MT", "NV", "OR",
 pub fn rig_must_chain(state: Option<&str>, level: i64) -> bool {
     match level {
         ..=0 => false,
-        1 => !matches!(state, Some("CO") | Some("WY")),
+        1 => !matches!(state, Some("CO") | Some("WY") | Some("OR")),
         _ => true,
     }
 }
@@ -518,7 +520,7 @@ pub fn chain_law_sign_rule(state: Option<&str>, level: i64) -> &'static str {
     match (state, level >= 2) {
         (Some("WY"), true) => "level 2: chains required on two tires of one drive axle",
         (_, true) => "level 2: chains required on all trucks",
-        (Some("CO"), false) => "level 1: chains required on single-drive-axle trucks",
+        (Some("CO") | Some("OR"), false) => "level 1: chains required on single-drive-axle trucks",
         (Some("WY"), false) => "level 1: snow tires or chains required",
         (_, false) => "level 1: chains required on trucks",
     }

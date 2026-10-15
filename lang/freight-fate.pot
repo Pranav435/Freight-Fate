@@ -39912,9 +39912,9 @@ msgstr ""
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
 "Chain laws require chains on a truck at every level. Winter tires don't "
-"count for a semi. The exceptions are level one in Colorado, which chains "
-"only single-drive-axle trucks, and in Wyoming, which accepts snow tires. "
-"Signs announce the requirement before the chain-up area."
+"count for a semi. The exceptions are level one in Colorado and Oregon, "
+"which chain only single-drive-axle trucks, and in Wyoming, which accepts "
+"snow tires. Signs announce the requirement before the chain-up area."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
