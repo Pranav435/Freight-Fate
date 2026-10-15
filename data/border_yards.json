@@ -42,13 +42,13 @@
       "name": "Monterrey, Nuevo León",
       "spoken": "Monterrey, Nuevo Leon",
       "state": "Nuevo Leon",
-      "source": "Federal Highway 85D runs from Laredo toward Monterrey and Saltillo (Cargado summary, secondary source), as recorded in the Mexico cross-border scope plan, section 5."
+      "source": "Federal Highway 85D runs from Nuevo Laredo to Monterrey. Automotive Logistics (https://www.automotivelogistics.media/supply-chain/down-mexico-wayand-back-again/179375) describes the Monterrey and Saltillo to Chicago and Detroit truck lane through Laredo."
     },
     {
       "name": "Saltillo, Coahuila",
       "spoken": "Saltillo, Coahuila",
       "state": "Coahuila",
-      "source": "Federal Highway 85D runs from Laredo toward Monterrey and Saltillo (Cargado summary, secondary source), as recorded in the Mexico cross-border scope plan, section 5."
+      "source": "Saltillo traffic from Nuevo Laredo uses Federal Highways 40 and 57, not 85D. Automotive Logistics (https://www.automotivelogistics.media/supply-chain/down-mexico-wayand-back-again/179375) reports GM Ramos Arizpe, by Saltillo, ships about 95 percent of its output via Laredo on the Monterrey and Saltillo to Chicago and Detroit lane. Stellantis Saltillo Truck Assembly: https://media.stellantisnorthamerica.com/newsrelease.do?id=319."
     }
   ],
   "bridge": {
@@ -56,9 +56,9 @@
     "note": "Story text only. The game never times, charges or crosses the bridge. The Saturday evening pilot hours are left out on purpose.",
     "source": "https://www.cbp.gov/newsroom/local-media-release/laredo-port-entry-announces-extended-saturday-operational-hours-world",
     "commercial_hours": {
-      "weekday": {"open_hour": 7, "close_hour": 24, "spoken": "7 AM to midnight"},
-      "saturday": {"open_hour": 8, "close_hour": 16, "spoken": "8 AM to 4 PM"},
-      "sunday": {"open_hour": 8, "close_hour": 16, "spoken": "8 AM to 4 PM"}
+      "weekday": {"open_hour": 7, "close_hour": 24, "spoken": "it normally takes commercial traffic 7 AM to midnight on weekdays"},
+      "saturday": {"open_hour": 8, "close_hour": 16, "spoken": "it opens to commercial traffic at 8 AM and normally closes at 4 PM on Saturdays"},
+      "sunday": {"open_hour": 8, "close_hour": 16, "spoken": "it normally takes commercial traffic 8 AM to 4 PM on Sundays"}
     }
   },
   "paperwork_wait_minutes": {
@@ -70,7 +70,7 @@
     "load_card": "for consignee {consignee}, delivered to {yard} in {city} for a transfer carrier to take across",
     "yard_drop": "Trailer dropped at {yard}. A transfer carrier takes it across from here to {consignee}.",
     "northbound_wait": "The northbound trailer at {yard} is still on paperwork. About {minutes} minutes before it is released, logged on duty, not driving.",
-    "northbound_wait_after_hours": "The World Trade Bridge is closed to trucks right now; it takes commercial traffic {hours} today. This trailer came across before it closed. About {minutes} minutes of paperwork before it is released, logged on duty, not driving.",
+    "northbound_wait_after_hours": "The World Trade Bridge is closed to trucks right now; {hours}. This trailer came across before it closed. About {minutes} minutes of paperwork before it is released, logged on duty, not driving.",
     "no_load_ready": "No northbound trailer is ready at the Laredo yards right now. The trailer missed the last crossing and will be ready in the morning."
   }
 }

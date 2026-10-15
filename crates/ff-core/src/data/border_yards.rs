@@ -359,6 +359,12 @@ mod tests {
         assert!(!open.contains("closed"), "{open}");
         let sunday_night = data.wait_line(yard, 45, 6, 20);
         assert!(sunday_night.contains("8 AM to 4 PM"), "{sunday_night}");
+        let saturday_evening = data.wait_line(yard, 45, 5, 17);
+        assert!(
+            saturday_evening.contains("normally closes at 4 PM on Saturdays"),
+            "{saturday_evening}"
+        );
+        assert!(!saturday_evening.contains("today"), "{saturday_evening}");
         let weekday_dawn = data.wait_line(yard, 45, 1, 5);
         assert!(weekday_dawn.contains("7 AM to midnight"), "{weekday_dawn}");
     }
