@@ -854,6 +854,15 @@ impl JobBoardState {
             }
             return;
         }
+        // A confirmation belongs to the job it was heard for: another
+        // selection starts over. Both stand until this job is accepted, so
+        // the hours warning is not re-run after the chain reminder.
+        if self.confirm_risky_job.is_some_and(|i| i != index) {
+            self.confirm_risky_job = None;
+        }
+        if self.confirm_chain_job.is_some_and(|i| i != index) {
+            self.confirm_chain_job = None;
+        }
         if self.needs_hos_confirmation(ctx, index) {
             self.confirm_risky_job = Some(index);
             held_load::hold_for_rest(profile_mut(ctx), &job);
@@ -865,7 +874,6 @@ impl JobBoardState {
             ));
             return;
         }
-        self.confirm_risky_job = None;
         if self.confirm_chain_job != Some(index) {
             if let Some(reminder) = chain_reminder_before_accepting(ctx, &job) {
                 self.confirm_chain_job = Some(index);
@@ -874,6 +882,7 @@ impl JobBoardState {
                 return;
             }
         }
+        self.confirm_risky_job = None;
         self.confirm_chain_job = None;
         if job.bobtail {
             self.accept_reposition(ctx, index);

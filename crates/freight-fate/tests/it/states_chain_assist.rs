@@ -798,3 +798,46 @@ fn test_the_pause_menu_and_the_assist_share_the_same_chain_actions() {
     );
     assert!((money(&app) - 1000.0).abs() < 0.01);
 }
+
+#[test]
+fn test_the_hours_and_chain_prompts_each_play_once_and_the_third_enter_accepts() {
+    // Denver to Silverthorne in October, 30 minutes short of the drive limit.
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_planning_hints = true;
+    app.ctx.settings.hos_mode = "realistic".to_string();
+    let mut p = Profile::named_in("Both Prompts", "Denver");
+    p.game_hours = on_day(288.0).unwrap();
+    let drive_limit = ff_core::sim::hos::limits("realistic").expect("limits").0;
+    p.hos.drive(drive_limit - 30.0);
+    app.ctx.profile = Some(p);
+    let job = Job::new(
+        cargo_type("general").expect("general freight"),
+        12.0,
+        "Denver",
+        "Denver Cross-Dock",
+        "Silverthorne",
+        70.0,
+        900.0,
+        9.0,
+    );
+    let mut board = JobBoardState::new(&app.ctx, vec![job]);
+    app.clear_speech();
+    for _ in 0..3 {
+        board.accept(&mut app.ctx, 0);
+        app.ctx.run_deferred();
+    }
+    let lines = app.main_lines();
+    let hours = lines
+        .iter()
+        .filter(|l| l.contains("Needs an extra rest on this shift's hours"))
+        .count();
+    let chains = lines
+        .iter()
+        .filter(|l| l.contains("must carry chains this season"))
+        .count();
+    assert_eq!((hours, chains), (1, 1), "{lines:?}");
+    assert!(
+        app.ctx.profile.as_ref().unwrap().active_trip.is_some(),
+        "the third Enter accepts: {lines:?}"
+    );
+}
