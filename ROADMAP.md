@@ -2933,9 +2933,15 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       published cargo rules, and refused loads take real legal detour legs
       into Boston, around Baltimore on I-695 and over Loveland Pass (see
       docs/road-crossings.md).
-- [ ] **Bridges with truck rules.** Posted weight limits, low clearances,
-      bridge hazmat rules (San Francisco-Oakland Bay Bridge), tolls and wind
-      closures (Chesapeake Bay Bridge-Tunnel) are not modelled yet.
+- [x] **Bridges with truck rules.** The San Francisco-Oakland Bay Bridge
+      hazmat rule, the Mackinac Bridge toll and the published Chesapeake Bay
+      Bridge-Tunnel toll are modelled (see docs/road-crossings.md).
+- [ ] **Bridge wind closures.** The Chesapeake Bay Bridge-Tunnel and
+      Mackinac Bridge wind restrictions need a wind speed in the weather.
+- [ ] **Bridge escorts.** Mackinac placarded, heavy and oversize escorts and
+      Golden Gate explosive-load hours are not modelled.
+- [ ] **Chesapeake Bay Bridge (US 50) toll.** Eastbound toll needs the
+      official truck rate.
 - [ ] **Hazard classes on freight.** The catalog does not name hazard
       classes, so a placarded packaged load is refused wherever any class is
       banned. Naming classes would let some loads through.

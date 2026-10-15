@@ -262,6 +262,51 @@ fn spoken_tunnel_rules_match_the_planned_detour() {
 }
 
 #[test]
+fn bay_bridge_turns_bulk_fuel_south_and_bridge_tolls_are_read() {
+    let world = world();
+    let fuel = CrossingLoad::standard_rig(true).with_cargo("fuel_bulk", true, 40_000);
+    let open = world
+        .supported_route("sacramento_ca_us", "san_francisco_ca_us", None)
+        .unwrap()
+        .expect("open road");
+    assert!(open.legs.iter().any(|leg| leg
+        .crossings
+        .iter()
+        .any(|c| c.kind == "bridge" && c.refusal(&fuel).is_some())));
+    let legal = world
+        .legal_route("sacramento_ca_us", "san_francisco_ca_us", &fuel)
+        .unwrap()
+        .expect("bulk fuel reaches San Francisco without the Bay Bridge");
+    assert!(legal
+        .legs
+        .iter()
+        .all(|leg| leg.crossings.iter().all(|c| c.refusal(&fuel).is_none())));
+    let milk = CrossingLoad::standard_rig(true).with_cargo("milk", true, 40_000);
+    assert!(open
+        .legs
+        .iter()
+        .all(|leg| leg.crossings.iter().all(|c| c.refusal(&milk).is_none())));
+    let toll = |a: &str, b: &str| {
+        world
+            .legs
+            .iter()
+            .find(|leg| leg.a == a && leg.b == b)
+            .expect("leg")
+            .toll_events()
+            .first()
+            .map(|toll| (toll.amount, toll.estimated))
+    };
+    assert_eq!(
+        toll("sault_ste_marie_mi_us", "traverse_city_mi_us"),
+        Some((25.0, false))
+    );
+    assert_eq!(
+        toll("norfolk_va_us", "cape_charles_va_us"),
+        Some((48.0, false))
+    );
+}
+
+#[test]
 fn a_refused_truck_is_rerouted_at_the_crossing_not_held() {
     let world = world();
     let leg = world
