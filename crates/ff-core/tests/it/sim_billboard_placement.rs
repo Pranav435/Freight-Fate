@@ -100,7 +100,7 @@ const PLACE_CLAIMS: &[(&str, &[&str])] = &[
     ("San Antonio, down the road", &["TX"]),
     ("Laredo ahead", &["TX"]),
     ("Tejano", &["TX"]),
-    ("Flattest stretch in Kansas", &["KS", "OK", "MO", "NE"]),
+    ("Flat Kansas", &["KS", "OK", "MO", "NE"]),
     // -- Interstate 5 ------------------------------------------------------
     ("Bakersfield Sound", &["CA"]),
     ("The Grapevine", &["CA"]),
