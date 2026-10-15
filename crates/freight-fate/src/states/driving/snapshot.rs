@@ -250,6 +250,10 @@ impl DrivingState {
         );
         out.insert("engine_on".to_string(), json!(self.trip.truck.engine_on));
         out.insert("chains_on".to_string(), json!(self.trip.truck.chains_on));
+        out.insert(
+            "chain_checkpoint_hold".to_string(),
+            json!(self.chain_checkpoint_hold),
+        );
         out.insert("hos".to_string(), json!(hos_of(ctx).to_dict()));
         out.insert("fatigue".to_string(), json!(profile_of(ctx).fatigue));
         out.insert("hos_fine_count".to_string(), json!(self.hos_fine_count));
@@ -446,6 +450,7 @@ impl DrivingState {
             .unwrap_or_else(|| state.maintenance_wear_levels());
         // Chains stay on the drives across a save; absent on older saves.
         state.trip.truck.chains_on = b(data, "chains_on", false);
+        state.chain_checkpoint_hold = b(data, "chain_checkpoint_hold", false);
         state.trailer_refused = b(data, "trailer_refused", false);
         state.trailer_repaired = b(data, "trailer_repaired", false);
         state.rig_buffs = data

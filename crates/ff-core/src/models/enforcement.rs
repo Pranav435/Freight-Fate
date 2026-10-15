@@ -193,8 +193,29 @@ pub const UNSAFE_DAMAGE_FINE: f64 = 2300.0;
 /// and California and New York both pass 1,000 on a first offense; the federal
 /// exposure standing behind them reaches 10,000.
 pub const WEIGH_STATION_BYPASS_FINE: f64 = 1800.0;
-/// Colorado's chain-law citation: 500 dollars plus a 79-dollar surcharge.
+/// The chain-law citation where no state figure has been sourced (CA, WA,
+/// NV, ID, MT, UT, WY): UNVERIFIED placeholder, the old Colorado figure,
+/// until each state's own schedule is read.
 pub const CHAIN_LAW_FINE: f64 = 580.0;
+/// Colorado: 500 plus 78 (CDOT freight chain-law fact sheet, Aug 2026);
+/// the CSP chain-law page still says 79.
+pub const CHAIN_LAW_FINE_CO: f64 = 578.0;
+/// Oregon: trucks not chaining where required, 880 dollars (ODOT winter
+/// commercial vehicle page).
+pub const CHAIN_LAW_FINE_OR: f64 = 880.0;
+/// Colorado: blocking a lane for not chaining, 1,000 plus 156 (CDOT freight
+/// fact sheet, Aug 2026). For a future stuck-in-the-lane outcome.
+pub const CHAIN_BLOCKING_FINE_CO: f64 = 1156.0;
+
+/// The chain-law citation in `state` (two-letter code). Only Colorado and
+/// Oregon are sourced; every other state keeps the placeholder.
+pub fn chain_law_fine(state: Option<&str>) -> f64 {
+    match state {
+        Some("CO") => CHAIN_LAW_FINE_CO,
+        Some("OR") => CHAIN_LAW_FINE_OR,
+        _ => CHAIN_LAW_FINE,
+    }
+}
 /// Following too closely is a serious traffic violation under 49 CFR 383.51
 /// Table 2 -- two inside three years disqualify the CDL for 60 days -- so it is
 /// priced as one, not as the fender-bender it looks like from the cab.
