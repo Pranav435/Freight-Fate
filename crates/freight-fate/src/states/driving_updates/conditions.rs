@@ -144,22 +144,54 @@ impl DrivingState {
             }
             return;
         }
-        let remaining_mi =
-            if self.ramp_mi.is_some() && ramp_is_facility && !ramp_continues_to_destination_streets
-            {
-                self.ramp_mi
-            } else if !self.trip.finished
-                && self.trip.is_facility_approach_route()
-                && !self.trip.outbound
-            {
-                Some(self.trip.remaining_miles())
-            } else {
-                None
-            };
+        let on_facility_ramp =
+            self.ramp_mi.is_some() && ramp_is_facility && !ramp_continues_to_destination_streets;
+        let remaining_mi = if on_facility_ramp {
+            self.ramp_mi
+        } else if !self.trip.finished
+            && self.trip.is_facility_approach_route()
+            && !self.trip.outbound
+        {
+            Some(self.trip.remaining_miles())
+        } else {
+            None
+        };
         let Some(remaining_mi) = remaining_mi else {
             self.destination_arrival_active = false;
             return;
         };
+        // THE STREETS' CORNERS ARE THE KEEPER'S. On a facility's own street
+        // route the arrival is the final shed to the gate and nothing else;
+        // a judged corner still ahead belongs to the speed keeper, which
+        // slows for it. Latching with one ahead priced the stop at the gate
+        // and ignored the corner: the assist took the pedals at 48 mph with
+        // an 11 mph left turn a sixth of a mile on, paused the keeper that
+        // would have slowed for it, and sailed past the turn; once the truck
+        // was back on the approach the latch held a walk for the last
+        // quarter mile and the truck never reached the yard until the
+        // driver switched the assist off (tester, Elkhart Manufacturing
+        // Plant, 2026-10-14). So no latch while a corner is ahead, and a
+        // latch already made -- a truck put back before a corner -- lets go
+        // and hands the keeper back.
+        let on_streets = !on_facility_ramp && self.ramp_mi.is_none();
+        if on_streets {
+            let position = self.trip.position_mi;
+            let corner_ahead = self
+                .turn_cue_in_play_read()
+                .is_some_and(|cue| cue.at_mi > position);
+            if corner_ahead {
+                if self.destination_arrival_active {
+                    self.destination_arrival_active = false;
+                    self.destination_assist_brake = 0.0;
+                    if self.speed_control_paused_at_stop {
+                        // The arrival's pause is held until departure; this
+                        // one ends as soon as the truck is rolling.
+                        self.speed_control_transit_pause = true;
+                    }
+                }
+                return;
+            }
+        }
         // No margin held back, deliberately. Stopping short is not a safer
         // version of stopping: the dock opens at the END of the ramp, so a
         // truck halted two hundred feet shy of it with the brake held is a
@@ -289,7 +321,14 @@ impl DrivingState {
         // control -- a scale, a freeway-to-freeway ramp, or the dice -- that
         // is the top of the ramp, and the truck crawled the whole half mile
         // at 12 with the lane posted at 15 or more (owner, 2026-09-03).
-        if self.ramp_mi.is_some() && ramp_is_facility && remaining_mi > ARRIVAL_FINAL_CREEP_MI {
+        // And the facility's own streets the same way: the stretch from the
+        // last corner to the gate is road too. Without this a street arrival
+        // fell through to the bare gate creep below, and any truck under the
+        // stop profile when the latch fired -- slowed for the last corner,
+        // or put back on the approach -- coasted down to two miles an hour
+        // and walked the rest of the way in (the same crawl the ramp lost
+        // on 2026-09-03, still alive on the streets).
+        if (on_facility_ramp || on_streets) && remaining_mi > ARRIVAL_FINAL_CREEP_MI {
             let (hold_mph, lane) = self.facility_lane_hold_mph(remaining_m);
             // Road, not a gate: the pedal that runs a chain ramp up to its
             // limit, unless the hold is down at the walk anyway.
@@ -319,7 +358,13 @@ impl DrivingState {
     /// half says which of the two the hold is.
     fn facility_lane_hold_mph(&mut self, remaining_m: f64) -> (f64, LaneHold) {
         let (posted_mph, _) = self.trip.speed_limit_at(self.trip.position_mi);
-        let lane_mph = posted_mph.min(self.armed_ramp_mph(None));
+        // On the facility's streets there is no ramp advisory to cap it;
+        // the street's own posted number is the lane's.
+        let lane_mph = if self.ramp_mi.is_some() {
+            posted_mph.min(self.armed_ramp_mph(None))
+        } else {
+            posted_mph
+        };
         let creep = ARRIVAL_CREEP_MPH / 2.23694;
         let profile_mph =
             (creep * creep + 2.0 * APPROACH_DECEL_MPS2 * remaining_m.max(0.0)).sqrt() * 2.23694;

@@ -5116,6 +5116,9 @@ msgid "buff {buff_id}: help and purchased speech are required"
 msgstr ""
 "mejora {buff_id}: se necesitan la ayuda y el texto hablado de compra"
 
+msgid "left"
+msgstr "izquierda"
+
 msgid "motorway"
 msgstr "motorway"
 
@@ -7027,9 +7030,6 @@ msgstr "vía pública sin nombre"
 
 msgid "a side street"
 msgstr "una calle lateral"
-
-msgid "left"
-msgstr "izquierda"
 
 msgid "right"
 msgstr "derecha"

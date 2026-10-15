@@ -11,6 +11,10 @@ use crate::states::driving_core::*;
 
 use crate::states::driving_stops::assist_full_decel_mps2;
 
+/// How much firmer than the bare stopping rate a late corner is braked, for
+/// the distance covered while the pedal builds.
+const CORNER_BRAKE_MARGIN: f64 = 1.25;
+
 use super::pending::{
     KEEPER_EASE_UNDERSHOOT_MPH, KEEPER_OVERRUN_MPH, KEEPER_OVERRUN_S, KEEPER_SNUB_DECEL_MPS2,
     KEEPER_SNUB_MAX_BRAKE, KEEPER_SNUB_MIN_BRAKE, KEEPER_SNUB_OVER_MPH, KEEPER_SNUB_UNDER_MPH,
@@ -620,6 +624,69 @@ impl DrivingState {
         self.trip.truck.throttle = applied;
         self.say_keeper_out_of_truck(ctx, dt, error, applied);
         self.keeper_snub_brakes(ctx, dt, -error, target_mph);
+        self.keeper_corner_brakes();
+    }
+
+    /// Make the next corner as routed when the keeper's own ease cannot.
+    ///
+    /// The keeper sheds for a corner on its comfort law and snubs at
+    /// `KEEPER_SNUB_DECEL_MPS2`, which is right whenever the corner came into
+    /// its window at street speed. It is not when the truck reaches the
+    /// corner's window already fast -- an arrival that had the pedals letting
+    /// go, a driver handing back late -- and then the snub's rate simply runs
+    /// out of road: 48 mph a sixth of a mile short of an 11 mph turn sails
+    /// past it and goes around the block (tester, Elkhart, 2026-10-14). The
+    /// owner's ruling is that the assists take the turn as routed, never a
+    /// loop.
+    ///
+    /// So every judged corner ahead is priced on the real braking left: the
+    /// rate that brings the truck from its speed now to that corner's own
+    /// turn speed (`turn_speed_mph`, the corner model's number, not a copy of
+    /// it) in the distance to the corner. Only when that rate is more than
+    /// the snub gives does this press, and only as hard as the rate plus any
+    /// downgrade asks, mapped onto the pedal by the truck's own brakes. Held
+    /// and only ever firmed, like the snub it rides in, so the air is charged
+    /// once.
+    pub fn keeper_corner_brakes(&mut self) {
+        let position = self.trip.position_mi;
+        let v = self.trip.truck.velocity_mps;
+        let mut needed = 0.0f64;
+        for cue in self.turn_cues_in_play() {
+            let ahead_m = (cue.at_mi - position) * 1609.344;
+            if ahead_m <= 0.0 {
+                continue;
+            }
+            let turn = self.turn_speed_mph(&cue) / 2.23694;
+            if v <= turn {
+                continue;
+            }
+            needed = needed.max((v * v - turn * turn) / (2.0 * ahead_m.max(1.0)));
+        }
+        // Starts only when the snub's own rate would not make the corner,
+        // and once started holds until the truck is down to the corner's
+        // number: letting go and re-pressing every frame the rate dipped
+        // under the snub's was a fresh application each time, and the air
+        // system charges every one.
+        if needed <= 0.0 || (!self.keeper_corner_braking && needed <= KEEPER_SNUB_DECEL_MPS2) {
+            if self.keeper_corner_braking {
+                self.keeper_corner_braking = false;
+                self.keeper_snub = 0.0;
+            }
+            return;
+        }
+        self.keeper_corner_braking = true;
+        let gravity_mps2 = 0.0f64.max(-self.trip.truck.grade) * G;
+        // A margin over the bare rate: the pedal takes a moment to build and
+        // the road it builds over is part of the distance.
+        let pedal = (needed * CORNER_BRAKE_MARGIN + gravity_mps2)
+            / assist_full_decel_mps2(&self.trip.truck);
+        self.keeper_snub = self.keeper_snub.max(pedal.min(1.0));
+        if pedal < 1.0 {
+            // Firmer than a snub on purpose and with the corner still made:
+            // not the keeper losing the truck, so no "can't hold" warning.
+            self.keeper_overrun_s = 0.0;
+        }
+        self.apply_keeper_snub();
     }
 
     /// Say plainly when the hill has beaten the speed keeper.
@@ -751,7 +818,7 @@ impl DrivingState {
             (KEEPER_SNUB_DECEL_MPS2 + gravity_mps2) / assist_full_decel_mps2(&self.trip.truck),
         ));
         if self.keeper_snub > 0.0 {
-            if over <= -KEEPER_SNUB_UNDER_MPH {
+            if over <= -KEEPER_SNUB_UNDER_MPH && !self.keeper_corner_braking {
                 self.keeper_snub = 0.0; // under the number: let it go
             } else {
                 // Only ever firmer while the snub lasts. Easing and re-pressing

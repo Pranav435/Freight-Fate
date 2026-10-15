@@ -5042,6 +5042,10 @@ msgstr ""
 msgid "buff {buff_id}: help and purchased speech are required"
 msgstr ""
 
+#: crates/ff-core/src/data/corners.rs crates/ff-core/src/data/world_services.rs crates/ff-core/src/sim/cross_traffic.rs crates/ff-core/src/sim/lane.rs
+msgid "left"
+msgstr ""
+
 #: crates/ff-core/src/data/curves.rs
 msgid "motorway"
 msgstr ""
@@ -7200,10 +7204,6 @@ msgstr ""
 
 #: crates/ff-core/src/data/world_services.rs
 msgid "a side street"
-msgstr ""
-
-#: crates/ff-core/src/data/world_services.rs crates/ff-core/src/sim/cross_traffic.rs crates/ff-core/src/sim/lane.rs crates/ff-core/src/sim/trip/limits.rs
-msgid "left"
 msgstr ""
 
 #: crates/ff-core/src/data/world_services.rs crates/ff-core/src/sim/cross_traffic.rs crates/ff-core/src/sim/lane.rs crates/ff-core/src/sim/trip/limits.rs
