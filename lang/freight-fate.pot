@@ -19914,6 +19914,34 @@ msgstr ""
 msgid "Your pay about {grouped} dollars."
 msgstr ""
 
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/city/board.rs
+msgid "Enter again to accept."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/city/board.rs
+msgid "The garage here sells them."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/city/board.rs
+msgid "You have no chains."
+msgstr ""
+
+#. placeholders: {highway}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/city/board.rs
+msgid "{highway} on this route must carry chains this season."
+msgstr ""
+
+#. placeholders: {highway}
+#: crates/freight-fate/src/states/city/board.rs
+msgid ""
+"{highway} on this route must carry chains this season. You have no chains. "
+"The garage here sells them. Enter again to accept."
+msgstr ""
+
 #: crates/freight-fate/src/states/city/board.rs crates/freight-fate/src/states/city/terminal.rs
 msgid "Dispatch board"
 msgstr ""
@@ -34863,14 +34891,9 @@ msgstr ""
 msgid "Chain law ahead on {highway}."
 msgstr ""
 
-#. placeholders: {highway}, {store}
+#. placeholders: {highway}
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Chain law ahead on {highway}. You have no chains. {store}"
-msgstr ""
-
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "You have no chains."
+msgid "Chain law ahead on {highway}. You have no chains."
 msgstr ""
 
 #. placeholders: {highway}, {exit}
@@ -34879,39 +34902,9 @@ msgstr ""
 msgid "Chain law ahead on {highway} at {exit}."
 msgstr ""
 
-#. placeholders: {highway}, {exit}, {store}
+#. placeholders: {highway}, {exit}
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Chain law ahead on {highway} at {exit}. You have no chains. {store}"
-msgstr ""
-
-#. placeholders: {city}, {distance}
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Chains are sold at the garage in {city}, {distance}."
-msgstr ""
-
-#. placeholders: {city}, {distance}
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid ""
-"The nearest garage that sells them is behind you, in {city}, {distance} "
-"back."
-msgstr ""
-
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "The garage here sells them."
-msgstr ""
-
-#. placeholders: {highway}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "{highway} has a chain law in season on this route."
-msgstr ""
-
-#. placeholders: {highway}
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid ""
-"{highway} has a chain law in season on this route. You have no chains. The "
-"garage here sells them."
+msgid "Chain law ahead on {highway} at {exit}. You have no chains."
 msgstr ""
 
 #. placeholders: {need}
@@ -37732,8 +37725,11 @@ msgid ""
 "next hours warning. The driving time readout gives full hours and route "
 "details. Quiet and Urgent only keep the automatic hint silent. Your "
 "required hours warnings and readout controls still work when this is off. "
-"It also reminds you before a chain-law road in season if you have no "
-"chains, and says where to buy them. It never buys anything."
+"It also reminds you before a chain-law road if you have no chains: on the "
+"dispatch board when the load crosses a road that must carry chains this "
+"season, while the terminal garage can still sell you a set, and on the road "
+"when a posted chain law requires chains on your truck. It never buys "
+"anything."
 msgstr ""
 
 #. placeholders: {else}

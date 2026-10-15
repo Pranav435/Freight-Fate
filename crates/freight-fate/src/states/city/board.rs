@@ -28,6 +28,9 @@ use ff_core::models::trailers::{
 use ff_core::playtest_levers::forced_dispatch_destination;
 use ff_core::pyfmt::{fmt_f, fmt_grouped};
 use ff_core::sim::hos::limits;
+use ff_core::sim::trip::{Trip, TripOptions};
+use ff_core::sim::vehicle::TruckState;
+use ff_core::sim::weather::WeatherSystem;
 
 use crate::app::{GameContext, Say, SharedState};
 use crate::impl_state_for_menu;
@@ -217,6 +220,41 @@ fn market_preview(business: &BusinessSettlement) -> String {
     )
 }
 
+/// Stop planning's no-chains reminder, while the driver is still at the
+/// terminal and its garage is open: the loaded route crosses a carry-rule
+/// corridor in season (`Trip::chain_carry_corridors`) and no usable chains
+/// are aboard. Speech only; a second Enter accepts as usual.
+fn chain_reminder_before_accepting(ctx: &GameContext, job: &Job) -> Option<String> {
+    let p = profile(ctx);
+    if !ctx.settings.hos_planning_hints
+        || job.bobtail
+        || (p.chains_owned() && p.chain_wear_pct() < 100.0)
+    {
+        return None;
+    }
+    let route = ctx
+        .world
+        .supported_route(&job.origin, &job.destination, None)
+        .ok()??;
+    let trip = Trip::new(
+        route,
+        TruckState::default(),
+        WeatherSystem::new("", Some(1), None, None, false),
+        TripOptions {
+            seed: Some(1),
+            career_hours: Some(p.game_hours),
+            world: Some(ctx.world),
+            ..Default::default()
+        },
+    );
+    let ahead = trip.chain_carry_corridors().into_iter().next()?;
+    let highway = ahead.highway;
+    Some(format!(
+        "{highway} on this route must carry chains this season. You have no chains. The \
+         garage here sells them. Enter again to accept."
+    ))
+}
+
 // -- JobBoardState ------------------------------------------------------------------------
 
 pub struct JobBoardState {
@@ -224,6 +262,8 @@ pub struct JobBoardState {
     pub jobs: Vec<Job>,
     /// Index of the job whose hours warning was already heard once.
     confirm_risky_job: Option<usize>,
+    /// Index of the job whose no-chains reminder was already heard once.
+    confirm_chain_job: Option<usize>,
     session_declined: HashSet<usize>,
     assigned_queue: Vec<usize>,
 }
@@ -234,6 +274,7 @@ impl JobBoardState {
             menu: MenuCore::new("Dispatch board").with_intro_help(JOB_BOARD_INTRO_HELP),
             jobs,
             confirm_risky_job: None,
+            confirm_chain_job: None,
             session_declined: HashSet::new(),
             assigned_queue: Vec::new(),
         };
@@ -758,6 +799,15 @@ impl JobBoardState {
             return;
         }
         self.confirm_risky_job = None;
+        if self.confirm_chain_job != Some(index) {
+            if let Some(reminder) = chain_reminder_before_accepting(ctx, &job) {
+                self.confirm_chain_job = Some(index);
+                ctx.audio.play("ui/warning");
+                ctx.say(&reminder);
+                return;
+            }
+        }
+        self.confirm_chain_job = None;
         if job.bobtail {
             self.accept_reposition(ctx, index);
             return;

@@ -4,8 +4,11 @@
 
 use ff_core::sim::weather::WeatherKind;
 
+use ff_core::models::jobs::{cargo_type, Job};
+use ff_core::models::profile::Profile;
 use freight_fate::app::testing::TestApp;
 use freight_fate::app::SharedState;
+use freight_fate::states::city::JobBoardState;
 
 use crate::states_driving_menus_support::*;
 
@@ -14,7 +17,7 @@ fn on_day(doy: f64) -> Option<f64> {
     Some((doy - 80.0) * 24.0 + 12.0)
 }
 
-/// A Denver-Silverthorne run on I-70 under a clear sky, at mile `at`, with a
+/// A Denver-Silverthorne run on I-70 on ice (a posted Level 2), at mile `at`, with a
 /// chain-law area over `areas`, on a day of the career year.
 fn i70_drive(
     app: &mut TestApp,
@@ -32,7 +35,8 @@ fn i70_drive(
         p.set_chain_repair_links(2);
     }
     with_drive(&drive, |d| {
-        d.trip.weather.current = WeatherKind::Clear;
+        // Ice posts Level 2, which chains every rig in Colorado.
+        d.trip.weather.current = WeatherKind::Ice;
         d.trip.career_hours = on_day(doy);
         d.trip.game_minutes = 0.0;
         d.trip.chain_law_areas = areas;
@@ -66,27 +70,88 @@ fn reminders(app: &TestApp) -> Vec<String> {
         .collect()
 }
 
+/// The board's first Enter on a Denver to Silverthorne load, on a day of
+/// the career year: the last spoken line, and whether a trip launched.
+fn accept_once(hints: bool, chains: bool, doy: f64) -> (String, bool) {
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_planning_hints = hints;
+    let mut p = Profile::named_in("Chain Board", "Denver");
+    p.game_hours = on_day(doy).unwrap();
+    p.set_chains_owned(chains);
+    p.set_chain_wear_pct(0.0);
+    p.set_money(1000.0);
+    app.ctx.profile = Some(p);
+    let job = Job::new(
+        cargo_type("general").expect("general freight"),
+        12.0,
+        "Denver",
+        "Denver Cross-Dock",
+        "Silverthorne",
+        70.0,
+        900.0,
+        9.0,
+    );
+    let mut board = JobBoardState::new(&app.ctx, vec![job]);
+    app.clear_speech();
+    board.accept(&mut app.ctx, 0);
+    app.ctx.run_deferred();
+    let p = app.ctx.profile.as_ref().expect("a career");
+    assert!((p.money() - 1000.0).abs() < 0.01, "never spends");
+    assert_eq!(p.chains_owned(), chains, "never buys");
+    (
+        app.main_lines().last().cloned().unwrap_or_default(),
+        p.active_trip.is_some(),
+    )
+}
+
 #[test]
-fn test_departure_names_a_chain_law_in_season_and_the_garage_here() {
+fn test_the_board_names_a_carry_corridor_and_the_garage_here_before_accepting() {
+    let (line, launched) = accept_once(true, false, 288.0); // October 15
+    assert_eq!(
+        line,
+        "I-70 on this route must carry chains this season. You have no chains. The garage here \
+         sells them. Enter again to accept."
+    );
+    assert!(!launched, "the first Enter only reminds");
+    // Off, chains aboard, or out of Colorado's carry season: no reminder.
+    for (hints, chains, doy, why) in [
+        (false, false, 288.0, "stop planning off"),
+        (true, true, 288.0, "chains aboard"),
+        (true, false, 196.0, "July"),
+    ] {
+        let (line, _) = accept_once(hints, chains, doy);
+        assert!(!line.contains("carry chains"), "{why}: {line}");
+    }
+}
+
+#[test]
+fn test_a_second_enter_accepts_past_the_chain_reminder() {
     let mut app = TestApp::new();
     app.ctx.settings.hos_planning_hints = true;
-    let drive = i70_drive(&mut app, 288.0, false, 0.0, vec![(20.0, 26.0)]);
-    let line = drive_and_ctx(&drive, &mut app, |d, ctx| d.departure_chain_reminder(ctx));
-    assert_eq!(
-        line.as_deref(),
-        Some(
-            "I-70 has a chain law in season on this route. You have no chains. The garage here \
-             sells them."
-        )
+    let mut p = Profile::named_in("Chain Board", "Denver");
+    p.game_hours = on_day(288.0).unwrap();
+    app.ctx.profile = Some(p);
+    let job = Job::new(
+        cargo_type("general").expect("general freight"),
+        12.0,
+        "Denver",
+        "Denver Cross-Dock",
+        "Silverthorne",
+        70.0,
+        900.0,
+        9.0,
     );
-    assert!((money(&app) - 1000.0).abs() < 0.01);
-    assert!(!owned(&app));
-    // Off, or with chains aboard, or in July: nothing.
-    app.ctx.settings.hos_planning_hints = false;
-    assert!(drive_and_ctx(&drive, &mut app, |d, ctx| d.departure_chain_reminder(ctx)).is_none());
-    app.ctx.settings.hos_planning_hints = true;
-    with_drive(&drive, |d| d.trip.career_hours = on_day(196.0));
-    assert!(drive_and_ctx(&drive, &mut app, |d, ctx| d.departure_chain_reminder(ctx)).is_none());
+    let mut board = JobBoardState::new(&app.ctx, vec![job]);
+    board.accept(&mut app.ctx, 0);
+    app.ctx.run_deferred();
+    app.clear_speech();
+    board.accept(&mut app.ctx, 0);
+    app.ctx.run_deferred();
+    assert!(
+        app.main_lines().iter().all(|l| !l.contains("carry chains")),
+        "{:?}",
+        app.main_lines()
+    );
 }
 
 #[test]
@@ -110,8 +175,11 @@ fn test_the_road_reminder_plays_once_per_corridor_and_never_spends() {
         said[0].starts_with("Chain law ahead on I-70 at exit 254."),
         "{said:?}"
     );
-    assert!(said[0].contains("You have no chains"), "{said:?}");
-    assert!(said[0].contains("in Denver, 5 miles back."), "{said:?}");
+    // No store: no garage is open between here and the delivery.
+    assert_eq!(
+        said[0],
+        "Chain law ahead on I-70 at exit 254. You have no chains."
+    );
     // Ticking on through the approach doesn't repeat it.
     for at in [6.0, 10.0, 15.0, 19.0] {
         with_drive(&drive, |d| d.trip.position_mi = at);
@@ -137,7 +205,7 @@ fn test_the_road_reminder_plays_once_per_corridor_and_never_spends() {
     drop(drive);
     drop(app);
 
-    // No mapped exit before the area: no exit clause, and metric distances.
+    // No mapped exit before the area: no exit clause.
     let mut app = TestApp::new();
     app.ctx.settings.hos_planning_hints = true;
     app.ctx.settings.imperial_units = false;
@@ -146,19 +214,16 @@ fn test_the_road_reminder_plays_once_per_corridor_and_never_spends() {
     let said = reminders(&app);
     assert_eq!(said.len(), 1, "{said:?}");
     assert!(!said[0].contains("exit"), "{said:?}");
-    assert!(
-        said[0].starts_with("Chain law ahead on I-70. You have no chains."),
-        "{said:?}"
-    );
-    assert!(said[0].contains("kilometers back."), "{said:?}");
+    assert_eq!(said[0], "Chain law ahead on I-70. You have no chains.");
 }
 
 #[test]
 fn test_the_reminder_is_silent_when_it_has_nothing_to_say() {
-    let quiet = |hints: bool, chains: bool, doy: f64, buy: bool| {
+    let quiet = |hints: bool, chains: bool, sky: WeatherKind, buy: bool| {
         let mut app = TestApp::new();
         app.ctx.settings.hos_planning_hints = hints;
-        let drive = i70_drive(&mut app, doy, chains, 5.0, vec![(20.0, 26.0)]);
+        let drive = i70_drive(&mut app, 288.0, chains, 5.0, vec![(20.0, 26.0)]);
+        with_drive(&drive, |d| d.trip.weather.current = sky);
         if buy {
             app.ctx.profile.as_mut().unwrap().set_chains_owned(true);
         }
@@ -166,17 +231,29 @@ fn test_the_reminder_is_silent_when_it_has_nothing_to_say() {
         reminders(&app)
     };
     assert!(
-        quiet(false, false, 288.0, false).is_empty(),
+        quiet(false, false, WeatherKind::Ice, false).is_empty(),
         "stop planning off"
     );
-    assert!(quiet(true, true, 288.0, false).is_empty(), "chains aboard");
     assert!(
-        quiet(true, false, 288.0, true).is_empty(),
+        quiet(true, true, WeatherKind::Ice, false).is_empty(),
+        "chains aboard"
+    );
+    assert!(
+        quiet(true, false, WeatherKind::Ice, true).is_empty(),
         "chains bought first"
     );
-    assert!(quiet(true, false, 196.0, false).is_empty(), "July");
+    // A dry October day is in the carry season, but the board reminded
+    // about that; on the road only a posted law that chains the rig counts.
+    assert!(
+        quiet(true, false, WeatherKind::Clear, false).is_empty(),
+        "no law posted"
+    );
+    assert!(
+        quiet(true, false, WeatherKind::Snow, false).is_empty(),
+        "Colorado Level 1 lets a tandem drive on"
+    );
     assert_eq!(
-        quiet(true, false, 288.0, false).len(),
+        quiet(true, false, WeatherKind::Ice, false).len(),
         1,
         "the control case"
     );

@@ -613,23 +613,21 @@ pub struct ChainCorridorAhead {
 /// How far before a chain-law area its approach exit is looked for.
 pub const CHAIN_CORRIDOR_EXIT_LOOKBACK_MI: f64 = 5.0;
 
-/// Whether `month` is in chain season for a reminder in `state`. October
-/// to April is only a reminder window, not a law, except for the carry
-/// laws: Colorado September 1 to May 31 (CSP chain-law page), Montana
-/// October 1 to April 30 (MCA 61-9-436) and Washington November 1 to
-/// April 1 on its listed routes (WAC 204-24-050). Elsewhere chains are
-/// required only while a chain law is posted (Caltrans chain controls,
-/// NRS 484D.520, ORS 815.140, Idaho Code 49-948(5), UDOT R920-6, W.S.
-/// 31-5-956(e)), so `chain_corridors_between` also reminds whenever a law
-/// is active, in any month. Washington's April 1 is read at month
-/// precision, so April is out.
-pub fn in_chain_reminder_season(state: &str, month: u32) -> bool {
-    if state == "CO" {
-        in_co_chain_carry_season(month)
-    } else if state == "WA" {
-        !(4..=10).contains(&month)
-    } else {
-        in_mt_chain_carry_season(month)
+/// Whether a carry law requires chains aboard on `highway` in `state` in
+/// `month`, whatever the weather: Colorado's carry corridors September 1
+/// to May 31 (CSP chain-law page), Montana October 1 to April 30 (MCA
+/// 61-9-436) and Washington's listed routes November 1 to April 1 (WAC
+/// 204-24-050; April 1 is read at month precision, so April is out).
+/// Everywhere else chains are required only while a chain law is posted
+/// and the rig must chain under it (Caltrans chain controls, NRS 484D.520,
+/// ORS 815.140, Idaho Code 49-948(5), UDOT R920-6, W.S. 31-5-956(e)), so
+/// there is no dry-day season to remind about.
+pub fn in_chain_carry_season(state: &str, highway: &str, month: u32) -> bool {
+    match state {
+        "CO" => CO_CHAIN_CARRY_CORRIDORS.contains(&highway) && in_co_chain_carry_season(month),
+        "MT" => in_mt_chain_carry_season(month),
+        "WA" => !(4..=10).contains(&month),
+        _ => false,
     }
 }
 

@@ -290,12 +290,13 @@ fn on_day(doy: f64) -> Option<f64> {
 }
 
 #[test]
-fn test_upcoming_chain_corridor_follows_the_season_and_the_corridor() {
-    // Colorado I-70: October has a corridor ahead, July none.
+fn test_carry_corridors_follow_the_carry_laws_and_the_corridor() {
+    // Colorado I-70 is a carry corridor: October yes, July no.
     // The grade from mile 12 puts the chain-up area at 11, past exit 263.
     let mut co = trip(Some((12.0, 16.0)));
     co.career_hours = on_day(288.0); // October 15
-    let ahead = co.upcoming_chain_corridor(15.0).expect("I-70 in October");
+    let carry = co.chain_carry_corridors();
+    let ahead = carry.first().expect("I-70 in October");
     assert_eq!(ahead.highway, "I-70");
     assert_eq!(ahead.state, "CO");
     assert_eq!(
@@ -311,9 +312,10 @@ fn test_upcoming_chain_corridor_follows_the_season_and_the_corridor() {
     assert!(mapped, "the Denver-Silverthorne leg maps its exits");
     assert_eq!(ahead.exit_label, co.chain_area_exit_label(ahead.start_mi));
     assert_eq!(ahead.exit_label, "exit 263", "{ahead:?}");
-    // Out of reach, or behind the truck: nothing.
-    assert!(co.upcoming_chain_corridor(1.0).is_none());
     co.career_hours = on_day(196.0); // July 15
+    assert!(co.chain_carry_corridors().is_empty());
+    // A dry October day posts no law, so nothing to remind on the road.
+    co.career_hours = on_day(288.0);
     assert!(co.upcoming_chain_corridor(15.0).is_none());
 
     // Montana: April yes, May no.
@@ -321,22 +323,30 @@ fn test_upcoming_chain_corridor_follows_the_season_and_the_corridor() {
     mt.chain_law_areas = vec![(5.0, 10.0)];
     assert_eq!(mt.state_code_at(6.0).as_deref(), Some("MT"));
     mt.career_hours = on_day(100.0); // April 10
-    assert!(mt.upcoming_chain_corridor(15.0).is_some());
+    assert_eq!(mt.chain_carry_corridors().len(), 1);
     mt.career_hours = on_day(135.0); // May 15
-    assert!(mt.upcoming_chain_corridor(15.0).is_none());
+    assert!(mt.chain_carry_corridors().is_empty());
 
-    // Idaho: I-84 is not a chain corridor; I-90 in January is.
+    // Idaho has no carry law: a dry January on I-90 is quiet, a snowy one
+    // reminds on the road; I-84 is not a chain corridor at all.
     let mut i84 = trip_on("Twin Falls", "Boise", None);
     assert_eq!(i84.route.legs[0].highway, "I-84");
     i84.chain_law_areas = vec![(5.0, 10.0)];
     i84.career_hours = on_day(15.0 + 365.0);
+    i84.weather.current = WeatherKind::Snow;
     assert!(i84.upcoming_chain_corridor(15.0).is_none());
     let mut i90 = trip_on("Coeur d'Alene", "Kellogg", None);
     assert_eq!(i90.route.legs[0].highway, "I-90");
     i90.chain_law_areas = vec![(5.0, 10.0)];
     i90.career_hours = on_day(15.0 + 365.0); // January 15
     assert_eq!(i90.state_code_at(6.0).as_deref(), Some("ID"));
+    assert!(i90.chain_carry_corridors().is_empty());
+    i90.weather.current = WeatherKind::Clear;
+    assert!(i90.upcoming_chain_corridor(15.0).is_none());
+    i90.weather.current = WeatherKind::Snow;
     assert!(i90.upcoming_chain_corridor(15.0).is_some());
+    // Out of reach: nothing.
+    assert!(i90.upcoming_chain_corridor(1.0).is_none());
 
     // A leg with no numbered interchange gives an empty label.
     let w = world();
@@ -357,9 +367,8 @@ fn test_upcoming_chain_corridor_follows_the_season_and_the_corridor() {
     );
     none.chain_law_areas = vec![(9.0, 14.0)];
     none.career_hours = on_day(288.0);
-    let ahead = none
-        .upcoming_chain_corridor(15.0)
-        .expect("still a corridor");
+    let carry = none.chain_carry_corridors();
+    let ahead = carry.first().expect("still a corridor");
     assert_eq!(ahead.exit_label, "");
 }
 
@@ -380,10 +389,30 @@ fn test_an_early_storm_reminds_out_of_season_and_a_bare_day_does_not() {
 }
 
 #[test]
-fn test_washington_carries_chains_november_to_march() {
-    use ff_core::sim::trip_models::in_chain_reminder_season;
-    assert!(in_chain_reminder_season("WA", 11));
-    assert!(in_chain_reminder_season("WA", 3));
-    assert!(!in_chain_reminder_season("WA", 10));
-    assert!(!in_chain_reminder_season("WA", 4));
+fn test_a_tandem_rig_is_not_reminded_where_level_1_lets_it_drive_on() {
+    // Colorado Level 1 lets a commercial rig on with good tires.
+    let mut co = trip(Some((12.0, 16.0)));
+    co.career_hours = on_day(196.0); // July: no carry season either
+    co.weather.current = WeatherKind::Snow;
+    assert_eq!(co.chain_law_level(), 1);
+    assert!(co.upcoming_chain_corridor(15.0).is_none());
+    co.weather.current = WeatherKind::Ice;
+    assert_eq!(co.chain_law_level(), 2);
+    assert!(co.upcoming_chain_corridor(15.0).is_some());
+}
+
+#[test]
+fn test_carry_seasons_are_colorado_montana_and_washington_only() {
+    use ff_core::sim::trip_models::in_chain_carry_season;
+    assert!(in_chain_carry_season("WA", "I-90", 11));
+    assert!(in_chain_carry_season("WA", "I-90", 3));
+    assert!(!in_chain_carry_season("WA", "I-90", 10));
+    assert!(!in_chain_carry_season("WA", "I-90", 4));
+    assert!(in_chain_carry_season("CO", "I-70", 9));
+    assert!(!in_chain_carry_season("CO", "I-70", 7));
+    assert!(in_chain_carry_season("MT", "I-90", 10));
+    assert!(!in_chain_carry_season("MT", "I-90", 5));
+    for state in ["CA", "OR", "ID", "NV", "UT", "WY"] {
+        assert!(!in_chain_carry_season(state, "I-80", 1), "{state}");
+    }
 }

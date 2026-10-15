@@ -760,13 +760,7 @@ pub fn launch_driving(ctx: &mut GameContext, launch: DrivingLaunch) {
             let next_context = driving
                 .trip
                 .next_navigation_context(ctx.settings.imperial_units);
-            let mut line =
-                loaded_departure_line(ctx, &lead, &route_for_line, engine_on, &next_context);
-            if let Some(reminder) = driving.departure_chain_reminder(ctx) {
-                line.push(' ');
-                line.push_str(&reminder);
-            }
-            line
+            loaded_departure_line(ctx, &lead, &route_for_line, engine_on, &next_context)
         }
     };
     ctx.say(&format!("{line}{deadline_note}"));

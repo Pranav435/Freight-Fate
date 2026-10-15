@@ -606,8 +606,10 @@ impl DrivingState {
         self.chains_fast_active = chains_fast;
     }
 
-    /// Stop planning's no-chains reminder: before a chain-law corridor in
-    /// season, with no usable chains aboard, say once where chains are sold.
+    /// Stop planning's no-chains reminder: before a chain-law area where the
+    /// posted law chains this rig, with no usable chains aboard, say so once.
+    /// No store is named: garages open only from a city terminal, so the
+    /// place to buy chains is the board's pre-acceptance reminder.
     /// Speech only: it never stops the truck, changes the route or spends.
     pub fn update_chain_reminder(&mut self, ctx: &mut GameContext) {
         if !ctx.settings.hos_planning_hints
@@ -623,74 +625,18 @@ impl DrivingState {
         if !self.chain_reminder_said.insert(ahead.key.clone()) {
             return;
         }
-        let store = self.chain_store_text(ctx, ahead.start_mi);
         let highway = ahead.highway;
         let line = if ahead.exit_label.is_empty() {
-            format!("Chain law ahead on {highway}. You have no chains. {store}")
+            format!("Chain law ahead on {highway}. You have no chains.")
         } else {
             let exit = ahead.exit_label;
-            format!("Chain law ahead on {highway} at {exit}. You have no chains. {store}")
+            format!("Chain law ahead on {highway} at {exit}. You have no chains.")
         };
         // Advice, not a warning: queued behind whatever is speaking.
         ctx.say_event_with(
             line,
             SayEvent::queued().category(SpeechCategory::Navigation),
         );
-    }
-
-    /// Where chains can be bought, from real game data only: city garages
-    /// sell them, road stops don't. The next route city before `before_mi`,
-    /// with its distance in the player's units, or the last one behind.
-    pub fn chain_store_text(&self, ctx: &GameContext, before_mi: f64) -> String {
-        let here = self.trip.position_mi;
-        let cities = &self.trip.route.cities;
-        let city_mi = |i: usize| -> f64 {
-            if i == 0 {
-                0.0
-            } else {
-                self.trip.leg_starts.get(i - 1).copied().unwrap_or(0.0)
-                    + self.trip.route.legs.get(i - 1).map_or(0.0, |leg| leg.miles)
-            }
-        };
-        let name = |key: &str| {
-            ctx.world
-                .city(key)
-                .map(|city| city.name.clone())
-                .unwrap_or_else(|_| key.to_string())
-        };
-        let ahead = (1..cities.len()).find(|&i| city_mi(i) > here && city_mi(i) <= before_mi);
-        if let Some(i) = ahead {
-            let city = name(&cities[i]);
-            let distance = ctx.settings.distance_text(city_mi(i) - here, false);
-            return format!("Chains are sold at the garage in {city}, {distance}.");
-        }
-        let behind = (0..cities.len())
-            .rev()
-            .find(|&i| city_mi(i) <= here)
-            .unwrap_or(0);
-        let city = cities.get(behind).map(|key| name(key)).unwrap_or_default();
-        let distance = ctx.settings.distance_text(here - city_mi(behind), false);
-        format!("The nearest garage that sells them is behind you, in {city}, {distance} back.")
-    }
-
-    /// The departure half of the reminder, for the loaded departure line:
-    /// with stop planning on and no usable chains, a chain corridor in
-    /// season anywhere on the route is named once. At a terminal, so the
-    /// garage here is a real store.
-    pub fn departure_chain_reminder(&self, ctx: &GameContext) -> Option<String> {
-        if !ctx.settings.hos_planning_hints || self.chains_aboard(ctx) {
-            return None;
-        }
-        let ahead = self
-            .trip
-            .chain_corridors_between(0.0, self.trip.route.miles())
-            .into_iter()
-            .next()?;
-        let highway = ahead.highway;
-        Some(format!(
-            "{highway} has a chain law in season on this route. You have no chains. The garage \
-             here sells them."
-        ))
     }
 
     /// Warn once per area, then run the deterministic checkpoint.

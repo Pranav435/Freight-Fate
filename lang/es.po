@@ -17959,6 +17959,33 @@ msgstr ""
 msgid "Your pay about {grouped} dollars."
 msgstr "Tu pago: unos {grouped} dólares."
 
+#. one sentence of a longer line
+msgid "Enter again to accept."
+msgstr "Pulsa Enter otra vez para aceptar."
+
+#. one sentence of a longer line
+msgid "The garage here sells them."
+msgstr "El taller de aquí las vende."
+
+#. one sentence of a longer line
+msgid "You have no chains."
+msgstr "No llevas cadenas."
+
+#. placeholders: {highway}
+#. one sentence of a longer line
+msgid "{highway} on this route must carry chains this season."
+msgstr ""
+"En esta temporada hay que llevar cadenas en la {highway} de esta ruta."
+
+#. placeholders: {highway}
+msgid ""
+"{highway} on this route must carry chains this season. You have no chains. "
+"The garage here sells them. Enter again to accept."
+msgstr ""
+"En esta temporada hay que llevar cadenas en la {highway} de esta ruta. No "
+"llevas cadenas. El taller de aquí las vende. Pulsa Enter otra vez para "
+"aceptar."
+
 msgid "Dispatch board"
 msgstr "Tablón de trabajos"
 
@@ -31504,53 +31531,20 @@ msgstr "Vas demasiado rápido para llevar cadenas. No pases de {speed_text}."
 msgid "Chain law ahead on {highway}."
 msgstr "Ley de cadenas más adelante en la {highway}."
 
-#. placeholders: {highway}, {store}
-msgid "Chain law ahead on {highway}. You have no chains. {store}"
-msgstr ""
-"Ley de cadenas más adelante en la {highway}. No llevas cadenas. {store}"
-
-#. one sentence of a longer line
-msgid "You have no chains."
-msgstr "No llevas cadenas."
+#. placeholders: {highway}
+msgid "Chain law ahead on {highway}. You have no chains."
+msgstr "Ley de cadenas más adelante en la {highway}. No llevas cadenas."
 
 #. placeholders: {highway}, {exit}
 #. one sentence of a longer line
 msgid "Chain law ahead on {highway} at {exit}."
 msgstr "Ley de cadenas más adelante en la {highway}, en la {exit}."
 
-#. placeholders: {highway}, {exit}, {store}
-msgid "Chain law ahead on {highway} at {exit}. You have no chains. {store}"
+#. placeholders: {highway}, {exit}
+msgid "Chain law ahead on {highway} at {exit}. You have no chains."
 msgstr ""
 "Ley de cadenas más adelante en la {highway}, en la {exit}. No llevas "
-"cadenas. {store}"
-
-#. placeholders: {city}, {distance}
-msgid "Chains are sold at the garage in {city}, {distance}."
-msgstr "Venden cadenas en el taller de {city}, a {distance}."
-
-#. placeholders: {city}, {distance}
-msgid ""
-"The nearest garage that sells them is behind you, in {city}, {distance} "
-"back."
-msgstr ""
-"El taller más cercano que las vende queda atrás, en {city}, a {distance}."
-
-#. one sentence of a longer line
-msgid "The garage here sells them."
-msgstr "El taller de aquí las vende."
-
-#. placeholders: {highway}
-#. one sentence of a longer line
-msgid "{highway} has a chain law in season on this route."
-msgstr "La {highway} tiene ley de cadenas en temporada en esta ruta."
-
-#. placeholders: {highway}
-msgid ""
-"{highway} has a chain law in season on this route. You have no chains. The "
-"garage here sells them."
-msgstr ""
-"La {highway} tiene ley de cadenas en temporada en esta ruta. No llevas "
-"cadenas. El taller de aquí las vende."
+"cadenas."
 
 #. placeholders: {need}
 msgid "Rolling into an active chain law without {need}."
@@ -34218,8 +34212,11 @@ msgid ""
 "next hours warning. The driving time readout gives full hours and route "
 "details. Quiet and Urgent only keep the automatic hint silent. Your "
 "required hours warnings and readout controls still work when this is off. "
-"It also reminds you before a chain-law road in season if you have no "
-"chains, and says where to buy them. It never buys anything."
+"It also reminds you before a chain-law road if you have no chains: on the "
+"dispatch board when the load crosses a road that must carry chains this "
+"season, while the terminal garage can still sell you a set, and on the road "
+"when a posted chain law requires chains on your truck. It never buys "
+"anything."
 msgstr ""
 "Consejo opcional y anticipado para una parada de pausa o de sueño con "
 "tiempo de sobra. Si cabe una parada anterior, el consejo también nombra la "
@@ -34230,8 +34227,11 @@ msgstr ""
 "las horas completas y los detalles de la ruta. Silencioso y Solo urgentes "
 "dejan el consejo automático en silencio. Los avisos obligatorios de horas y "
 "los controles de lectura siguen funcionando cuando esto está desactivado. "
-"También te avisa antes de una carretera con ley de cadenas en temporada si "
-"no llevas cadenas, y te dice dónde comprarlas. Nunca compra nada."
+"También te avisa antes de una carretera con ley de cadenas si no llevas "
+"cadenas: en el tablero de despacho, cuando la carga cruza una carretera en "
+"la que hay que llevar cadenas en esta temporada, mientras el taller de la "
+"terminal todavía puede venderte un juego, y en la carretera, cuando una ley "
+"de cadenas vigente exige cadenas en tu camión. Nunca compra nada."
 
 #. placeholders: {else}
 msgid "Weather source: {else}"
@@ -40263,6 +40263,57 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "Chain law ahead on {highway}. You have no chains. {store}"
+#~ msgstr ""
+#~ "Ley de cadenas más adelante en la {highway}. No llevas cadenas. {store}"
+
+#~ msgid "Chain law ahead on {highway} at {exit}. You have no chains. {store}"
+#~ msgstr ""
+#~ "Ley de cadenas más adelante en la {highway}, en la {exit}. No llevas "
+#~ "cadenas. {store}"
+
+#~ msgid "Chains are sold at the garage in {city}, {distance}."
+#~ msgstr "Venden cadenas en el taller de {city}, a {distance}."
+
+#~ msgid ""
+#~ "The nearest garage that sells them is behind you, in {city}, {distance} "
+#~ "back."
+#~ msgstr ""
+#~ "El taller más cercano que las vende queda atrás, en {city}, a {distance}."
+
+#~ msgid "{highway} has a chain law in season on this route."
+#~ msgstr "La {highway} tiene ley de cadenas en temporada en esta ruta."
+
+#~ msgid ""
+#~ "{highway} has a chain law in season on this route. You have no chains. The "
+#~ "garage here sells them."
+#~ msgstr ""
+#~ "La {highway} tiene ley de cadenas en temporada en esta ruta. No llevas "
+#~ "cadenas. El taller de aquí las vende."
+
+#~ msgid ""
+#~ "Optional early advice for a break or sleep stop with time to spare. If an "
+#~ "earlier stop fits, the hint also names the last legally reachable fallback. "
+#~ "While rolling, use the Rest control to select the recommended stop; use it "
+#~ "again to cancel. Standard driving speech speaks one suggestion before the "
+#~ "next hours warning. The driving time readout gives full hours and route "
+#~ "details. Quiet and Urgent only keep the automatic hint silent. Your "
+#~ "required hours warnings and readout controls still work when this is off. "
+#~ "It also reminds you before a chain-law road in season if you have no "
+#~ "chains, and says where to buy them. It never buys anything."
+#~ msgstr ""
+#~ "Consejo opcional y anticipado para una parada de pausa o de sueño con "
+#~ "tiempo de sobra. Si cabe una parada anterior, el consejo también nombra la "
+#~ "última alternativa a la que se puede llegar legalmente. En marcha, usa el "
+#~ "control Descansar para seleccionar la parada recomendada; úsalo otra vez "
+#~ "para cancelar. Con avisos de conducción en estándar se dice una sugerencia "
+#~ "antes del próximo aviso de horas. La lectura del tiempo de conducción da "
+#~ "las horas completas y los detalles de la ruta. Silencioso y Solo urgentes "
+#~ "dejan el consejo automático en silencio. Los avisos obligatorios de horas y "
+#~ "los controles de lectura siguen funcionando cuando esto está desactivado. "
+#~ "También te avisa antes de una carretera con ley de cadenas en temporada si "
+#~ "no llevas cadenas, y te dice dónde comprarlas. Nunca compra nada."
 
 #~ msgid ""
 #~ "On the final approach, after any exit, it works the throttle and brakes: up "

@@ -953,20 +953,18 @@ impl Trip {
             && in_co_chain_carry_season(month)
     }
 
-    /// The chain-law areas starting between route miles `from_mi` and
-    /// `to_mi` that sit on a chain corridor (`on_chain_corridor`) of a
-    /// chain-control state in that state's season
-    /// (`in_chain_reminder_season`) or under an active chain law, in route
-    /// order. Empty without a career calendar.
-    pub fn chain_corridors_between(&self, from_mi: f64, to_mi: f64) -> Vec<ChainCorridorAhead> {
-        use chrono::Datelike;
-        let Some(hours) = self.current_career_hours() else {
-            return Vec::new();
-        };
+    /// The chain-law areas on chain corridors (`on_chain_corridor`) of
+    /// chain-control states starting between route miles `from_mi` and
+    /// `to_mi`, in route order, that `keep(state, highway)` accepts.
+    fn chain_corridor_areas(
+        &self,
+        from_mi: f64,
+        to_mi: f64,
+        keep: impl Fn(&str, &str) -> bool,
+    ) -> Vec<ChainCorridorAhead> {
         if self.route.legs.is_empty() {
             return Vec::new();
         }
-        let month = crate::sim::season::calendar_date(hours).month();
         let mut out = Vec::new();
         for &(start, end) in &self.chain_law_areas {
             if start < from_mi || start > to_mi {
@@ -981,8 +979,7 @@ impl Trip {
                 continue;
             }
             let highway = self.route.legs[self.leg_at_mile(probe).0].highway.clone();
-            let in_season = in_chain_reminder_season(&state, month) || self.chain_law_level() > 0;
-            if !on_chain_corridor(&state, &highway) || !in_season {
+            if !on_chain_corridor(&state, &highway) || !keep(&state, &highway) {
                 continue;
             }
             out.push(ChainCorridorAhead {
@@ -996,13 +993,34 @@ impl Trip {
         out
     }
 
-    /// The first chain corridor in season starting within `within_mi` ahead
-    /// of the truck (`chain_corridors_between`).
+    /// Carry-rule corridors in season anywhere on the route
+    /// (`in_chain_carry_season`): where chains must be aboard whatever the
+    /// weather. Empty without a career calendar.
+    pub fn chain_carry_corridors(&self) -> Vec<ChainCorridorAhead> {
+        use chrono::Datelike;
+        let Some(hours) = self.current_career_hours() else {
+            return Vec::new();
+        };
+        let month = crate::sim::season::calendar_date(hours).month();
+        self.chain_corridor_areas(0.0, self.route.miles(), |state, highway| {
+            in_chain_carry_season(state, highway, month)
+        })
+    }
+
+    /// The first chain-law area within `within_mi` ahead of the truck where
+    /// the posted law chains this rig (`rig_must_chain`): no reminder for
+    /// Colorado or Wyoming Level 1 on a tandem drive, or with no law posted.
     pub fn upcoming_chain_corridor(&self, within_mi: f64) -> Option<ChainCorridorAhead> {
+        let level = self.chain_law_level();
+        if level <= 0 {
+            return None;
+        }
         let here = self.position_mi;
-        self.chain_corridors_between(here, here + within_mi)
-            .into_iter()
-            .next()
+        self.chain_corridor_areas(here, here + within_mi, |state, _| {
+            crate::sim::trip_models::rig_must_chain(Some(state), level)
+        })
+        .into_iter()
+        .next()
     }
 
     /// The real exit label of the nearest numbered interchange at or before
