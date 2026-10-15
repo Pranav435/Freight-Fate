@@ -58,7 +58,7 @@
 
 ### Changed
 
-- **Trucks must chain under every chain law; winter tires no longer count for a semi.** California, Washington and Oregon chain trucks at every level. Colorado Level 1 chains only single-drive-axle trucks, so your tandem-drive rig chains there at Level 2. The signs, the help and the checkpoint all follow this rule.
+- **Trucks must chain under every chain law; winter tires no longer count for a semi.** California, Washington and Oregon chain trucks at every level. Colorado Level 1 chains only single-drive-axle trucks, so your tandem-drive rig chains there at Level 2. Wyoming Level 1 accepts snow tires or chains, and Wyoming Level 2 requires chains on two tires of one drive axle. The signs, the help and the checkpoint all follow this rule.
 - **Going too fast with chains on now says "Too fast for chains. Keep under 30 miles per hour."** In metric it gives kilometers per hour. The chain install, garage and help lines are clearer too.
 - **Hours of service, rest stop, settlement and dispatch lines are shorter.** The hours readout names the 30-minute break and the 14-hour window, stop planning gives each stop, its distance and minutes, delivery and dock paperwork read the money as plain figures, and sleep previews end with "Select again to sleep." The open weigh station notice says to pull in; the reminder nearer the scale says to signal.
 

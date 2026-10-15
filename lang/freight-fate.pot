@@ -15198,18 +15198,6 @@ msgid "destination approach"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/zones.rs
-msgid "level 2: chains required on all trucks"
-msgstr ""
-
-#: crates/ff-core/src/sim/trip/zones.rs
-msgid "level 1: chains required on single-drive-axle trucks"
-msgstr ""
-
-#: crates/ff-core/src/sim/trip/zones.rs
-msgid "level 1: chains required on trucks"
-msgstr ""
-
-#: crates/ff-core/src/sim/trip/zones.rs
 msgid " Chain-up area on the right."
 msgstr ""
 
@@ -15228,6 +15216,26 @@ msgstr ""
 
 #: crates/ff-core/src/sim/trip_models.rs
 msgid "max"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 2: chains required on two tires of one drive axle"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 2: chains required on all trucks"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 1: chains required on single-drive-axle trucks"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 1: snow tires or chains required"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip_models.rs
+msgid "level 1: chains required on trucks"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip_models.rs
@@ -39916,9 +39924,9 @@ msgstr ""
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
 "Chain laws require chains on a truck at every level. Winter tires don't "
-"count for a semi. The one exception is Colorado level one, which chains "
-"only single-drive-axle trucks, so your tandem-drive rig chains there at "
-"level two. Signs announce the requirement before the chain-up area."
+"count for a semi. The exceptions are level one in Colorado, which chains "
+"only single-drive-axle trucks, and in Wyoming, which accepts snow tires. "
+"Signs announce the requirement before the chain-up area."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
