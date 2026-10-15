@@ -31919,9 +31919,11 @@ msgid "Stop and sleep before you wreck."
 msgstr "Para a dormir antes de tener un accidente."
 
 #. one sentence of a longer line
-msgid "Hours of service reset, and the delivery deadline kept counting."
+msgid ""
+"Driving and duty clocks reset, and the delivery deadline kept counting."
 msgstr ""
-"Horas de servicio reiniciadas, y el plazo de entrega siguió corriendo."
+"Relojes de conducción y de servicio reiniciados, y el plazo de entrega "
+"siguió corriendo."
 
 #. placeholders: {FATIGUE_OUT_OF_SERVICE_HOURS}
 #. one sentence of a longer line
@@ -31934,12 +31936,12 @@ msgstr ""
 #. placeholders: {FATIGUE_OUT_OF_SERVICE_HOURS}, {clock_text}
 msgid ""
 "Out of service for fatigue, {FATIGUE_OUT_OF_SERVICE_HOURS} hours off duty. "
-"It is now {clock_text}. Hours of service reset, and the delivery deadline "
-"kept counting."
+"It is now {clock_text}. Driving and duty clocks reset, and the delivery "
+"deadline kept counting."
 msgstr ""
 "Fuera de servicio por fatiga, {FATIGUE_OUT_OF_SERVICE_HOURS} horas fuera de "
-"servicio. Ahora son las {clock_text}. Horas de servicio reiniciadas, y el "
-"plazo de entrega siguió corriendo."
+"servicio. Ahora son las {clock_text}. Relojes de conducción y de servicio "
+"reiniciados, y el plazo de entrega siguió corriendo."
 
 #. placeholders: {mode}
 msgid "Transmission changed to {mode}."
@@ -40316,6 +40318,19 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "Hours of service reset, and the delivery deadline kept counting."
+#~ msgstr ""
+#~ "Horas de servicio reiniciadas, y el plazo de entrega siguió corriendo."
+
+#~ msgid ""
+#~ "Out of service for fatigue, {FATIGUE_OUT_OF_SERVICE_HOURS} hours off duty. "
+#~ "It is now {clock_text}. Hours of service reset, and the delivery deadline "
+#~ "kept counting."
+#~ msgstr ""
+#~ "Fuera de servicio por fatiga, {FATIGUE_OUT_OF_SERVICE_HOURS} horas fuera de "
+#~ "servicio. Ahora son las {clock_text}. Horas de servicio reiniciadas, y el "
+#~ "plazo de entrega siguió corriendo."
 
 #~ msgid ""
 #~ "Hours of service reset, but you are still tired.{wake_air_instruction}"

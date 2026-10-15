@@ -35065,7 +35065,8 @@ msgstr ""
 
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/fatigue.rs
-msgid "Hours of service reset, and the delivery deadline kept counting."
+msgid ""
+"Driving and duty clocks reset, and the delivery deadline kept counting."
 msgstr ""
 
 #. placeholders: {FATIGUE_OUT_OF_SERVICE_HOURS}
@@ -35079,8 +35080,8 @@ msgstr ""
 #: crates/freight-fate/src/states/driving_updates/fatigue.rs
 msgid ""
 "Out of service for fatigue, {FATIGUE_OUT_OF_SERVICE_HOURS} hours off duty. "
-"It is now {clock_text}. Hours of service reset, and the delivery deadline "
-"kept counting."
+"It is now {clock_text}. Driving and duty clocks reset, and the delivery "
+"deadline kept counting."
 msgstr ""
 
 #. placeholders: {mode}

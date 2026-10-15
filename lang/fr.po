@@ -27851,7 +27851,8 @@ msgid "Stop and sleep before you wreck."
 msgstr ""
 
 #. one sentence of a longer line
-msgid "Hours of service reset, and the delivery deadline kept counting."
+msgid ""
+"Driving and duty clocks reset, and the delivery deadline kept counting."
 msgstr ""
 
 #. placeholders: {FATIGUE_OUT_OF_SERVICE_HOURS}
@@ -27863,8 +27864,8 @@ msgstr ""
 #. placeholders: {FATIGUE_OUT_OF_SERVICE_HOURS}, {clock_text}
 msgid ""
 "Out of service for fatigue, {FATIGUE_OUT_OF_SERVICE_HOURS} hours off duty. "
-"It is now {clock_text}. Hours of service reset, and the delivery deadline "
-"kept counting."
+"It is now {clock_text}. Driving and duty clocks reset, and the delivery "
+"deadline kept counting."
 msgstr ""
 
 #. placeholders: {mode}

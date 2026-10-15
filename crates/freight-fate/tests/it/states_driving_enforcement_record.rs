@@ -824,6 +824,15 @@ fn test_the_fatigue_out_of_service_actually_holds_the_truck() {
         "{:#?}",
         spoken(&app)
     );
+    // The 70-hour limit does not reset on ten hours off: only the driving
+    // and duty clocks do, and the line says so.
+    assert!(
+        spoken(&app)
+            .iter()
+            .any(|line| line.contains("Driving and duty clocks reset, and the delivery deadline")),
+        "{:#?}",
+        spoken(&app)
+    );
 }
 
 #[test]
