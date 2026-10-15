@@ -215,10 +215,18 @@ fn test_chain_corridor_table() {
     assert!(!on_chain_corridor("CA", "I-10"));
     // Unlisted states keep the grade-only rule.
     assert!(on_chain_corridor("NV", "I-80"));
+    assert!(on_chain_corridor("ID", "I-90"));
+    assert!(on_chain_corridor("ID", "US-12"));
+    assert!(!on_chain_corridor("ID", "I-84"));
     assert!(in_co_chain_carry_season(9));
     assert!(in_co_chain_carry_season(5));
     assert!(!in_co_chain_carry_season(6));
     assert!(!in_co_chain_carry_season(8));
+    use ff_core::sim::trip_models::in_mt_chain_carry_season;
+    assert!(in_mt_chain_carry_season(10));
+    assert!(in_mt_chain_carry_season(4));
+    assert!(!in_mt_chain_carry_season(5));
+    assert!(!in_mt_chain_carry_season(9));
 }
 
 #[test]

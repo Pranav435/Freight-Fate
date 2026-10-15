@@ -729,7 +729,21 @@ impl DrivingState {
     /// at the same seeded checkpoint chance as the chain law.
     pub fn update_chain_carry(&mut self, ctx: &mut GameContext) {
         let at = self.trip.position_mi;
-        if self.trip.truck.speed_mph() < 3.0 || !self.trip.on_co_chain_carry_corridor(at) {
+        if self.trip.truck.speed_mph() < 3.0 {
+            return;
+        }
+        if !self.chain_carry_mt_warned
+            && self.trip.on_mt_chain_carry_run(at)
+            && !(profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0)
+        {
+            self.chain_carry_mt_warned = true;
+            ctx.say_event_with(
+                "Montana requires trucks to carry chains from October 1 to April 30. You have \
+                 none.",
+                SayEvent::new().category(SpeechCategory::Navigation),
+            );
+        }
+        if !self.trip.on_co_chain_carry_corridor(at) {
             return;
         }
         let aboard = profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0;

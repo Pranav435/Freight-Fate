@@ -501,7 +501,17 @@ fn test_california_always_staffs_its_checkpoints() {
 /// A Denver-Silverthorne run on I-70 with a clear sky, inside a chain area,
 /// past its midpoint, on a given day of the career year (day 80 is March 21).
 fn carry_drive(app: &mut TestApp, day_of_year: f64, chains: bool) -> SharedState {
-    let drive = a_drive_between(app, "Denver", "Silverthorne", "Carrier");
+    carry_drive_between(app, "Denver", "Silverthorne", day_of_year, chains)
+}
+
+fn carry_drive_between(
+    app: &mut TestApp,
+    origin: &str,
+    destination: &str,
+    day_of_year: f64,
+    chains: bool,
+) -> SharedState {
+    let drive = a_drive_between(app, origin, destination, "Carrier");
     {
         let p = app.ctx.profile.as_mut().expect("a career");
         p.set_money(1000.0);
@@ -574,5 +584,34 @@ fn test_the_carry_rule_is_quiet_in_july_and_with_chains_aboard() {
     let drive = carry_drive(&mut app, 288.0, true);
     with_drive(&drive, |d| d.trip_seed = carry_seed());
     carry_tick(&mut app, &drive);
+    assert!(spoken(&app).is_empty(), "{:?}", spoken(&app));
+}
+
+#[test]
+fn test_montana_warns_about_carrying_chains_in_season_without_a_fine() {
+    let mut app = TestApp::new();
+    let drive = carry_drive_between(&mut app, "Missoula", "Butte", 288.0, false);
+    with_drive(&drive, |d| d.trip_seed = carry_seed());
+    assert_eq!(
+        with_drive(&drive, |d| d.trip.state_code_at(6.0)).as_deref(),
+        Some("MT")
+    );
+    carry_tick(&mut app, &drive);
+    carry_tick(&mut app, &drive);
+    let lines = spoken(&app);
+    let warned = lines
+        .iter()
+        .filter(|s| {
+            *s == "Montana requires trucks to carry chains from October 1 to April 30. You have none."
+        })
+        .count();
+    assert_eq!(warned, 1, "{lines:?}");
+    assert!((money(&app) - 1000.0).abs() < 0.01);
+    drop(app);
+
+    // July: nothing to say.
+    let mut app = TestApp::new();
+    let _drive = carry_drive_between(&mut app, "Missoula", "Butte", 196.0, false);
+    carry_tick(&mut app, &_drive);
     assert!(spoken(&app).is_empty(), "{:?}", spoken(&app));
 }

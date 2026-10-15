@@ -31722,6 +31722,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"Montana requires trucks to carry chains from October 1 to April 30. You "
+"have none."
+msgstr ""
+
+msgid ""
 "Colorado requires chains aboard on this road from September 1 to May 31. "
 "You have none."
 msgstr ""

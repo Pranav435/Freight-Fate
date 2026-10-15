@@ -953,6 +953,19 @@ impl Trip {
             && in_co_chain_carry_season(month)
     }
 
+    /// The truck is on a Montana chain-law area (the mountain run) between
+    /// October 1 and April 30 (`in_mt_chain_carry_season`).
+    pub fn on_mt_chain_carry_run(&self, mile: f64) -> bool {
+        use chrono::Datelike;
+        let Some(hours) = self.current_career_hours() else {
+            return false;
+        };
+        let month = crate::sim::season::calendar_date(hours).month();
+        self.chain_law_area_at(mile).is_some()
+            && self.state_code_at(mile).as_deref() == Some("MT")
+            && crate::sim::trip_models::in_mt_chain_carry_season(month)
+    }
+
     /// Index of the chain-law area containing this milepost, or None.
     pub fn chain_law_area_at(&self, mile: f64) -> Option<usize> {
         self.chain_law_areas
