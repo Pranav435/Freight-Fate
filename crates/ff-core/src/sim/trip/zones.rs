@@ -318,8 +318,12 @@ impl Trip {
         self.steep_runs()
             .into_iter()
             .filter(|&(start, end)| {
-                self.state_code_at((start + end) / 2.0)
-                    .is_some_and(|code| CHAIN_CONTROL_STATES.contains(&code.as_str()))
+                let mid = (start + end) / 2.0;
+                let highway = &self.route.legs[self.leg_at_mile(mid).0].highway;
+                self.state_code_at(mid).is_some_and(|code| {
+                    CHAIN_CONTROL_STATES.contains(&code.as_str())
+                        && on_chain_corridor(&code, highway)
+                })
             })
             .collect()
     }
@@ -383,11 +387,7 @@ impl Trip {
                 continue;
             }
             self.announced_chain_law.insert(key);
-            let rule = if level >= 2 {
-                "level 2: chains required"
-            } else {
-                "level 1: winter tires or chains required"
-            };
+            let rule = chain_law_sign_rule(self.state_code_at(start.max(0.0)).as_deref(), level);
             let (where_, pullout) = if inside {
                 ("", "")
             } else {

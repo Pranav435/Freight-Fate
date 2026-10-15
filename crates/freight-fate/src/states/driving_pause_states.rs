@@ -9,7 +9,9 @@ use crate::controller::{ControllerAction, ControllerButton};
 use crate::discord_presence::PresenceState;
 use crate::impl_state_for_menu;
 use crate::online_presence::PAUSED_ACTIVITY;
-use crate::states::base::{end_sentence, InputEvent, Menu, MenuCore, MenuItem, SimpleMenuState};
+use crate::states::base::{
+    end_sentence, InputEvent, Label, Menu, MenuCore, MenuItem, SimpleMenuState,
+};
 use crate::states::city::CityMenuState;
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::{
@@ -17,8 +19,9 @@ use crate::states::driving_core::{
     player_pays_operating_costs, profile_mut_of, profile_of, road_repair_cost,
     secure_truck_for_stopped_menu, CHAIN_INSTALL_FATIGUE, CHAIN_INSTALL_MIN,
     CHAIN_INSTALL_NIGHT_FATIGUE, CHAIN_INSTALL_NIGHT_MULT, CHAIN_REMOVE_FATIGUE, CHAIN_REMOVE_MIN,
-    CHAIN_SAFE_MPH, DRIVE_PHASE_PICKUP, FIELD_REPAIR_DAMAGE_PCT, MECHANIC_CALLOUT_FEE,
-    MECHANIC_WAIT_MIN,
+    CHAIN_REPAIR_MIN, CHAIN_REPAIR_WEAR_RESTORE, CHAIN_SAFE_MPH, CHAIN_SLAP_WARN_PCT,
+    CHAIN_TIGHTEN_MIN, CHAIN_TIGHTEN_WEAR_RESTORE, DRIVE_PHASE_PICKUP, FIELD_REPAIR_DAMAGE_PCT,
+    MECHANIC_CALLOUT_FEE, MECHANIC_WAIT_MIN,
 };
 use crate::states::driving_dispatch_call::DispatchCallState;
 use crate::states::driving_menu_states::{keep_rows, push_over_drive, DriveRef};
@@ -147,6 +150,42 @@ impl PauseMenuState {
                 .help("Report a delay, hours, road conditions, truck trouble, or load trouble."),
             );
         }
+        let stopped = d.trip.truck.speed_mph() <= 3.0;
+        if stopped
+            && d.trip.truck.chains_on
+            && d.trip.truck.chain_wear_pct >= CHAIN_SLAP_WARN_PCT
+            && !d.chain_tightened
+        {
+            items.push(
+                MenuItem::new(
+                    format!(
+                        "Tighten chains: about {} minutes",
+                        fmt_f(CHAIN_TIGHTEN_MIN, 0)
+                    ),
+                    |s: &mut Self, ctx| s.tighten_chains(ctx),
+                )
+                .help("A loose chain slaps the fender and wears out fast. Tightening helps once."),
+            );
+        }
+        if stopped
+            && !d.trip.truck.chains_on
+            && profile_of(ctx).chains_owned()
+            && d.trip.truck.chain_wear_pct >= 100.0
+        {
+            items.push(
+                MenuItem::new(
+                    format!(
+                        "Repair the broken chain: about {} minutes",
+                        fmt_f(CHAIN_REPAIR_MIN, 0)
+                    ),
+                    |s: &mut Self, ctx| s.repair_chain(ctx),
+                )
+                .help(format!(
+                    "Uses a spare repair link. {} left.",
+                    profile_of(ctx).chain_repair_links()
+                )),
+            );
+        }
         if d.trip.truck.chains_on {
             items.push(
                 MenuItem::new(
@@ -175,11 +214,14 @@ impl PauseMenuState {
                 MenuItem::new(install_chains_label(d), |s: &mut Self, ctx| {
                     s.install_chains(ctx)
                 })
-                .help(
-                    "Chains bite snow and ice. Chain speed is about thirty miles per hour. Pull \
-                     them once the road is bare. In the dark, installing takes longer and more \
-                     out of you.",
-                ),
+                .help(Label::dynamic(|_s: &Self, ctx| {
+                    format!(
+                        "Chains bite snow and ice. Keep under {} with chains on. Take them off \
+                         once the road is bare. In the dark, installing takes longer and more \
+                         out of you.",
+                        ctx.settings.speed_text(CHAIN_SAFE_MPH)
+                    )
+                })),
             );
         }
         items.push(
@@ -262,6 +304,8 @@ impl PauseMenuState {
             }
             d.trip.truck.chains_on = true;
             d.chains_fast_active = false;
+            d.chain_slap_said = false;
+            d.chain_tightened = false;
             ctx.audio.play("ui/notify");
             let effort = if night {
                 "In the dark, it took more out of you. "
@@ -269,18 +313,93 @@ impl PauseMenuState {
                 ""
             };
             let bare = if d.trip.truck.surface != "snow" && d.trip.truck.surface != "ice" {
-                " The road here is bare, they grind fast until the snow."
+                " The road here is bare. Chains wear out fast until you reach snow."
             } else {
                 ""
             };
             let text = format!(
-                "Chains on in {} minutes. {effort}Chain speed {}.{bare} It is {}. {}",
+                "Chains on in {} minutes. {effort}Keep under {}.{bare} It is {}. {}",
                 fmt_f(minutes, 0),
                 ctx.settings.speed_text(CHAIN_SAFE_MPH),
                 clock_text(d.trip.local_hour()),
                 deadline_text(d, ctx)
             );
             Some(text)
+        });
+        let Some(Some(text)) = done else {
+            return;
+        };
+        self.refresh(ctx, true);
+        ctx.say(&text);
+    }
+
+    /// Fix a broken chain with a spare link on the shoulder (on duty).
+    fn repair_chain(&mut self, ctx: &mut GameContext) {
+        let done = self.driving.clone().call(self, ctx, |_s, ctx, d| {
+            if d.trip.truck.speed_mph() > 3.0 {
+                ctx.say("Come to a complete stop first.");
+                return None;
+            }
+            let links = profile_of(ctx).chain_repair_links();
+            if links <= 0 {
+                ctx.audio.play("ui/error");
+                return Some("No repair links left. The chain stays off.".to_string());
+            }
+            advance_rest_clock(
+                d,
+                ctx,
+                CHAIN_REPAIR_MIN,
+                Some("on_duty_not_driving"),
+                "repair chain",
+            );
+            hos_mut_of(ctx).on_duty(CHAIN_REPAIR_MIN);
+            profile_mut_of(ctx).set_chain_repair_links(links - 1);
+            d.trip.truck.chain_wear_pct = 100.0 - CHAIN_REPAIR_WEAR_RESTORE;
+            d.trip.truck.chains_on = true;
+            d.chains_fast_active = false;
+            d.chain_slap_said = false;
+            d.chain_tightened = false;
+            ctx.audio.play("ui/notify");
+            Some(format!(
+                "Chain repaired with a spare link. Back on in {} minutes. Check it again soon. \
+                 It is {}. {}",
+                fmt_f(CHAIN_REPAIR_MIN, 0),
+                clock_text(d.trip.local_hour()),
+                deadline_text(d, ctx)
+            ))
+        });
+        let Some(Some(text)) = done else {
+            return;
+        };
+        self.refresh(ctx, true);
+        ctx.say(&text);
+    }
+
+    /// Take up the slack in a slapping chain, once per install (on duty).
+    fn tighten_chains(&mut self, ctx: &mut GameContext) {
+        let done = self.driving.clone().call(self, ctx, |_s, ctx, d| {
+            if d.trip.truck.speed_mph() > 3.0 {
+                ctx.say("Come to a complete stop first.");
+                return None;
+            }
+            advance_rest_clock(
+                d,
+                ctx,
+                CHAIN_TIGHTEN_MIN,
+                Some("on_duty_not_driving"),
+                "tighten chains",
+            );
+            hos_mut_of(ctx).on_duty(CHAIN_TIGHTEN_MIN);
+            d.trip.truck.chain_wear_pct =
+                (d.trip.truck.chain_wear_pct - CHAIN_TIGHTEN_WEAR_RESTORE).max(0.0);
+            d.chain_tightened = true;
+            ctx.audio.play("ui/notify");
+            Some(format!(
+                "Chains tightened in {} minutes. It is {}. {}",
+                fmt_f(CHAIN_TIGHTEN_MIN, 0),
+                clock_text(d.trip.local_hour()),
+                deadline_text(d, ctx)
+            ))
         });
         let Some(Some(text)) = done else {
             return;

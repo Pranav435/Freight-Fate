@@ -290,6 +290,15 @@ pub struct DrivingState {
     pub chains_fast_active: bool, // spoken chains-over-speed warning edge tracking
     pub chain_law_warned: HashSet<(i64, i64)>, // (area, level) spoken warnings
     pub chain_law_cited: HashSet<(i64, i64)>, // checkpoint rolls already taken
+    /// Cited with chains aboard: held on the apron until they are on.
+    pub chain_checkpoint_hold: bool,
+    /// Colorado chain-carry rule: warned once, and rolled once, per drive.
+    pub chain_carry_warned: bool,
+    pub chain_carry_rolled: bool,
+    /// "A chain is slapping the fender" is said once per install.
+    pub chain_slap_said: bool,
+    /// The chains were tightened once since they went on.
+    pub chain_tightened: bool,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,

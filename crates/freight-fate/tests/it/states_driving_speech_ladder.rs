@@ -788,7 +788,10 @@ fn test_a_tire_chain_release_speaks_at_urgent_only_as_safety() {
     let last = lines
         .last()
         .unwrap_or_else(|| panic!("the chain let go in silence"));
-    assert_eq!(last, "A tire chain broke.");
+    assert_eq!(
+        last,
+        "A tire chain broke and is flailing. Slow down and pull over to check it."
+    );
     app.shutdown();
 }
 
