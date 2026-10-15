@@ -134,7 +134,7 @@
 - **"Into the yard" is said once, when you actually turn in.** Overrunning the driveway no longer announces the yard before the missed turn and again after it.
 - **A full brake stop with the engine brake on no longer damages your load.**
 
-- **An engine brake stage you pick now stays picked.** Cruise and the bend assist no longer turn it off when their reason ends.
+- **An engine brake stage you pick now stays picked.** Cruise and the bend assist no longer switch it off after they finish slowing you.
 
 - **Turning automatic engine brake off with Alt J now lasts between drives.** It used to switch back on at every dispatch.
 
