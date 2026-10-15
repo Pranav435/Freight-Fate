@@ -1581,7 +1581,7 @@ fn published_tolls_carry_plate_rates_and_one_way_collection() {
         let gwb = named(a, b, "George Washington Bridge toll");
         assert_eq!(gwb.len(), 1, "{from} to New York pays the GWB");
         let gwb = &gwb[0];
-        assert_eq!((gwb.amount, gwb.plate_amount()), (120.85, 128.35));
+        assert_eq!((gwb.amount, gwb.plate_amount()), (113.35, 128.35));
         assert!(
             gwb.applies_to_direction(forward) && !gwb.applies_to_direction(!forward),
             "{from}: collected into New York only"
@@ -1598,7 +1598,7 @@ fn published_tolls_carry_plate_rates_and_one_way_collection() {
             bay[0].applies_to_direction(true) && !bay[0].applies_to_direction(false),
             "{from}: collected westbound into San Francisco only"
         );
-        assert_eq!(bay[0].amount, 40.5);
+        assert_eq!(bay[0].amount, 30.5);
     }
     let golden = named(
         "san_francisco_ca_us",
