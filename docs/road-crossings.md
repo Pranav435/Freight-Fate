@@ -167,10 +167,19 @@ start against the sky's sustained wind.
 | Every truck refused | 50 mph | 50 mph (partial closure, high-profile vehicles) |
 | Closed to all traffic | 60 mph | 65 mph |
 
-- **Where the wind comes from.** With live weather on, it is the NWS
-  station's sustained wind. Otherwise each simulated condition carries a
-  typical wind: high winds 45 mph, thunderstorms 35, heavy rain and snow
-  25, anything else 10. These are game figures, not readings.
+- **Where the wind comes from.** With live weather on, it is the
+  sustained wind at the NWS station nearest the crossing, located at the
+  leg's toll point for it (St. Ignace for the Mackinac Bridge, the
+  bridge-tunnel's plaza for the CBBT); until that station answers, the
+  truck's own station stands in. A station far from the crossing is read
+  as it is (see ROADMAP.md). With simulated weather, each high wind peaks
+  at a sustained 25 to 55 mph and each thunderstorm at gusts of 30 to 45
+  mph, then eases linearly toward 15 mph over 4 hours, never below 25 for
+  high winds or 30 for a storm while the condition lasts. A storm's gusts
+  stand in for sustained wind, so a storm is judged on the high side.
+  Heavy rain and snow carry 25 mph, anything else 10. These are game
+  figures, not readings; an empty trailer held at the CBBT by a simulated
+  high wind crosses within the 4-hour wait, usually within 2 hours.
 - **A refused truck waits it out, on duty.** It re-checks every 30 minutes
   for up to 4 hours as the weather moves on. Still closed, dispatch
   re-plans from the crossing's city around it if a legal road exists within

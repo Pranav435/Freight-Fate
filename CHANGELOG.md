@@ -10,6 +10,7 @@
 - **Hazardous and heavy loads now wait for an escort across the Mackinac Bridge.** The 20-minute wait counts as on duty.
 - **Tunnels and bridges now refuse only the hazardous loads they actually ban.** Explosives wait out weekday rush hours at the Golden Gate Bridge.
 - **Job details now name a hazardous load's material.** For example: Gasoline, UN1203, Class 3.
+- **Simulated high winds now vary and ease off over a few hours.** Live weather reads the wind at the bridge itself.
 - **Toll roads you could drive for free now charge.** These include the New York Thruway and the George Washington, Bay and Golden Gate bridges.
 
 - **Dispatch now routes hazardous and tank loads around real tunnels that ban them.** They take the legal road instead, such as Loveland Pass or the Baltimore Beltway.
