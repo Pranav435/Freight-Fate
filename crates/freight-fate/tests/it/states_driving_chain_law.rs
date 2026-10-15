@@ -698,3 +698,121 @@ fn test_wyoming_level_1_warns_and_cites_a_truck_on_all_season_tires() {
     tick(&mut app, &drive);
     assert!(spoken(&app).is_empty(), "{:?}", spoken(&app));
 }
+
+/// Held on the apron with chains aboard, then the set wears out there: the
+/// truck has nothing to put on.
+fn held_with_a_worn_out_set(app: &mut TestApp) -> SharedState {
+    let drive = law_drive(
+        app,
+        Law {
+            seed: cited_seed(),
+            ..Law::default()
+        },
+    );
+    {
+        let p = app.ctx.profile.as_mut().expect("a career");
+        p.set_chains_owned(true);
+        p.set_chain_wear_pct(0.0);
+    }
+    with_drive(&drive, |d| d.trip.truck.chain_wear_pct = 0.0);
+    tick(app, &drive);
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
+    with_drive(&drive, |d| {
+        d.trip.truck.chain_wear_pct = 100.0;
+        d.trip.truck.parking_brake = false;
+        d.trip.truck.velocity_mps = 5.0;
+    });
+    app.clear_speech();
+    drive_and_ctx(&drive, app, |d, ctx| d.update_chain_checkpoint_hold(ctx));
+    app.ctx.run_deferred();
+    drive
+}
+
+fn pause_labels(app: &mut TestApp, drive: &SharedState) -> Vec<String> {
+    use freight_fate::states::base::Menu;
+    use freight_fate::states::driving_pause_states::PauseMenuState;
+    let mut pause = PauseMenuState::with_drive(drive_ref(drive));
+    pause
+        .build_items(&mut app.ctx)
+        .iter()
+        .map(|item| item.text(&pause, &app.ctx))
+        .collect()
+}
+
+#[test]
+fn test_a_held_truck_with_no_chains_to_put_on_hears_the_ways_out() {
+    let mut app = TestApp::new();
+    let drive = held_with_a_worn_out_set(&mut app);
+    assert!(
+        spoken(&app).iter().any(|s| s
+            == "Held at the chain checkpoint. You have no chains. Wait here until the chain law \
+                lifts, or turn back."),
+        "{:?}",
+        spoken(&app)
+    );
+    let labels = pause_labels(&mut app, &drive);
+    assert!(
+        labels.iter().any(|l| l.starts_with("Turn back to ")),
+        "{labels:?}"
+    );
+    assert!(
+        !labels.iter().any(|l| l.starts_with("Install snow chains")),
+        "{labels:?}"
+    );
+}
+
+#[test]
+fn test_turning_back_from_the_checkpoint_ends_the_hold_at_the_last_city() {
+    let mut app = TestApp::new();
+    let drive = held_with_a_worn_out_set(&mut app);
+    let (minutes_before, cities) = with_drive(&drive, |d| {
+        (d.trip.game_minutes, d.trip.route.cities.clone())
+    });
+    let line = drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.turn_back_from_chain_checkpoint(ctx)
+    })
+    .expect("held, so it turns back");
+    let origin = app.ctx.world.city(&cities[0]).expect("a city").name.clone();
+    assert!(
+        line.starts_with(&format!("You turned back to {origin}, ")),
+        "{line}"
+    );
+    assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
+    assert_eq!(with_drive(&drive, |d| d.trip.position_mi), 0.0);
+    assert!(with_drive(&drive, |d| d.trip.game_minutes) > minutes_before);
+    // Released from the hold, the truck can drive again.
+    with_drive(&drive, |d| {
+        d.trip.truck.parking_brake = false;
+        d.trip.truck.velocity_mps = 5.0;
+    });
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.update_chain_checkpoint_hold(ctx)
+    });
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.velocity_mps), 5.0);
+    // Not held, nothing to turn back from.
+    assert!(drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.turn_back_from_chain_checkpoint(ctx)
+    })
+    .is_none());
+}
+
+#[test]
+fn test_waiting_at_the_checkpoint_ends_the_hold_when_the_law_lifts() {
+    let mut app = TestApp::new();
+    let drive = held_with_a_worn_out_set(&mut app);
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
+    with_drive(&drive, |d| d.trip.weather.current = WeatherKind::Clear);
+    app.clear_speech();
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.update_chain_checkpoint_hold(ctx)
+    });
+    app.ctx.run_deferred();
+    assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
+    assert!(
+        spoken(&app)
+            .iter()
+            .any(|s| s.starts_with("The chain law has lifted.")),
+        "{:?}",
+        spoken(&app)
+    );
+}

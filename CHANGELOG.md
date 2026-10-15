@@ -140,6 +140,7 @@
 
 ### Fixed
 
+- **A chain checkpoint no longer holds a truck with no chains forever.** Held with no set to put on, or one worn out on the apron, the game says "Held at the chain checkpoint. You have no chains. Wait here until the chain law lifts, or turn back." The hold ends when the law lifts, and the pause menu offers "Turn back to" the last city on the route, a drive back that costs the time, hours and fuel of the trip.
 - **Snow chains that broke or wore down on a drive stay that way after you quit and resume.** A broken set no longer comes back whole, and the pause menu no longer offers it again.
 - **Sleeping on the shoulder or at a rest stop now says "Driving and duty clocks reset"** instead of "Hours of service reset", matching the motel and lot lines, because the 70-hour limit does not reset.
 - **With every assist on, the truck finishes the drive into the yard again.** Facility stopping assistance no longer takes the pedals while a street corner is still ahead, so the speed keeper slows for the last turn instead of the truck sailing past it, and after the last corner the assist drives the street at its posted speed instead of walking the truck in at 2 miles per hour. When a corner comes up with the truck still fast, the speed keeper now brakes as firmly as the remaining distance needs to make the turn as routed, rather than missing it and going around the block.

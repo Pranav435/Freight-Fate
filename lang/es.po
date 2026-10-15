@@ -28309,6 +28309,17 @@ msgstr "Con cadenas, no pases de {speed_text}."
 msgid "Take them off once the road is bare."
 msgstr "Quítalas cuando la carretera esté despejada."
 
+#. placeholders: {city}
+msgid "Turn back to {city}"
+msgstr "Volver a {city}"
+
+msgid ""
+"No chains to put on. Drive back to the last city on the route and wait "
+"there. Waiting here instead lets you go once the chain law lifts."
+msgstr ""
+"No tienes cadenas que poner. Vuelve a la última ciudad de la ruta y espera "
+"allí. Si esperas aquí, puedes seguir en cuanto se levante la ley de cadenas."
+
 msgid "Drivers on duty"
 msgstr "Conductores en servicio"
 
@@ -31426,9 +31437,42 @@ msgid "Chains on. The officer waves you back onto the highway."
 msgstr "Cadenas puestas. El agente te indica que vuelvas a la carretera."
 
 msgid ""
+"The chain law has lifted. The officer waves you back onto the highway."
+msgstr ""
+"Se ha levantado la ley de cadenas. El agente te indica que vuelvas a la "
+"carretera."
+
+msgid ""
 "Held at the chain checkpoint. Put your chains on from the pause menu."
 msgstr ""
 "Retenido en el control de cadenas. Pon las cadenas desde el menú de pausa."
+
+msgid ""
+"Held at the chain checkpoint. You have no chains. Wait here until the chain "
+"law lifts, or turn back."
+msgstr ""
+"Retenido en el control de cadenas. No llevas cadenas. Espera aquí hasta que "
+"se levante la ley de cadenas, o da la vuelta."
+
+#. one sentence of a longer line
+msgid "The chain law ahead still stands."
+msgstr "La ley de cadenas más adelante sigue vigente."
+
+#. placeholders: {city}, {distance_text}, {f}
+#. one sentence of a longer line
+msgid ""
+"You turned back to {city}, {distance_text} behind the checkpoint, in {f} "
+"minutes."
+msgstr ""
+"Volviste a {city}, {distance_text} antes del control, en {f} minutos."
+
+#. placeholders: {city}, {distance_text}, {f}
+msgid ""
+"You turned back to {city}, {distance_text} behind the checkpoint, in {f} "
+"minutes. The chain law ahead still stands."
+msgstr ""
+"Volviste a {city}, {distance_text} antes del control, en {f} minutos. La "
+"ley de cadenas más adelante sigue vigente."
 
 msgid ""
 "Montana requires trucks to carry chains from October 1 to April 30. You "

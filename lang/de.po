@@ -24854,6 +24854,15 @@ msgstr ""
 msgid "Take them off once the road is bare."
 msgstr ""
 
+#. placeholders: {city}
+msgid "Turn back to {city}"
+msgstr ""
+
+msgid ""
+"No chains to put on. Drive back to the last city on the route and wait "
+"there. Waiting here instead lets you go once the chain law lifts."
+msgstr ""
+
 msgid "Drivers on duty"
 msgstr ""
 
@@ -27577,7 +27586,33 @@ msgid "Chains on. The officer waves you back onto the highway."
 msgstr ""
 
 msgid ""
+"The chain law has lifted. The officer waves you back onto the highway."
+msgstr ""
+
+msgid ""
 "Held at the chain checkpoint. Put your chains on from the pause menu."
+msgstr ""
+
+msgid ""
+"Held at the chain checkpoint. You have no chains. Wait here until the chain "
+"law lifts, or turn back."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The chain law ahead still stands."
+msgstr ""
+
+#. placeholders: {city}, {distance_text}, {f}
+#. one sentence of a longer line
+msgid ""
+"You turned back to {city}, {distance_text} behind the checkpoint, in {f} "
+"minutes."
+msgstr ""
+
+#. placeholders: {city}, {distance_text}, {f}
+msgid ""
+"You turned back to {city}, {distance_text} behind the checkpoint, in {f} "
+"minutes. The chain law ahead still stands."
 msgstr ""
 
 msgid ""

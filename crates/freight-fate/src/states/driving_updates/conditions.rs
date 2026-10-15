@@ -2,7 +2,7 @@
 //! assist, the traction states, and the chain law.
 
 use ff_core::models::enforcement::{chain_law_fine, CHAIN_CARRY_FINE_CO};
-use ff_core::pyfmt::fmt_grouped;
+use ff_core::pyfmt::{fmt_f, fmt_grouped};
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::vehicle::MIN_STOPPING_DECEL_MPS2;
 use ff_core::speech_pacing::{EventPriority, SpeechCategory};
@@ -11,6 +11,11 @@ use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::*;
 use crate::states::driving_stops::arrival_servo_brake;
+
+/// The pace of the scripted drive back from a chain checkpoint.
+pub const CHAIN_TURN_BACK_MPH: f64 = 45.0;
+/// The shortest turn back: finding a place to turn a rig around.
+pub const CHAIN_TURN_BACK_MIN_MIN: f64 = 5.0;
 
 /// Which number a facility-lane hold is keeping: see
 /// `DrivingState::facility_lane_hold_mph`.
@@ -711,6 +716,10 @@ impl DrivingState {
 
     /// Keep a held truck on the apron until its chains are on, or the law
     /// lifts. Releasing the brake to drive off sets it again and says why.
+    /// With no usable set aboard (none, or one worn out on the apron) there
+    /// is nothing to put on, so the line names the two ways out: wait for
+    /// the law to lift, which releases the hold here, or turn back
+    /// (`turn_back_from_chain_checkpoint`).
     pub fn update_chain_checkpoint_hold(&mut self, ctx: &mut GameContext) {
         if !self.chain_checkpoint_hold {
             return;
@@ -722,16 +731,79 @@ impl DrivingState {
                     "Chains on. The officer waves you back onto the highway.",
                     SayEvent::new().category(SpeechCategory::Navigation),
                 );
+            } else {
+                ctx.say_event_with(
+                    "The chain law has lifted. The officer waves you back onto the highway.",
+                    SayEvent::new().category(SpeechCategory::Navigation),
+                );
             }
             return;
         }
         if !self.trip.truck.parking_brake || self.trip.truck.velocity_mps > 0.0 {
             self.hold_at_chain_checkpoint(ctx);
-            ctx.say_event_with(
-                "Held at the chain checkpoint. Put your chains on from the pause menu.",
-                SayEvent::new().category(SpeechCategory::Navigation),
-            );
+            let line = if self.usable_chains_aboard(ctx) {
+                "Held at the chain checkpoint. Put your chains on from the pause menu."
+            } else {
+                "Held at the chain checkpoint. You have no chains. Wait here until the chain \
+                 law lifts, or turn back."
+            };
+            ctx.say_event_with(line, SayEvent::new().category(SpeechCategory::Navigation));
         }
+    }
+
+    /// A set aboard that can still go on: owned and not worn out.
+    pub fn usable_chains_aboard(&self, ctx: &GameContext) -> bool {
+        profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0
+    }
+
+    /// The last route city at or behind the truck: its index in the route's
+    /// cities and its route mile.
+    pub fn last_route_city_behind(&self) -> (usize, f64) {
+        let here = self.trip.position_mi;
+        let count = self.trip.route.cities.len();
+        (0..count.min(self.trip.leg_starts.len().max(1)))
+            .rev()
+            .map(|i| (i, self.trip.leg_starts.get(i).copied().unwrap_or(0.0)))
+            .find(|&(_, mile)| mile <= here)
+            .unwrap_or((0, 0.0))
+    }
+
+    /// Held at a checkpoint with no chains to put on: the scripted drive
+    /// back to the last route city, charged like the facility-gate
+    /// turnaround (hours, fatigue and fuel move with the clock). The hold
+    /// ends, and the truck waits at that city with the parking brake set.
+    /// Returns the line to speak, or None when the truck is not held.
+    pub fn turn_back_from_chain_checkpoint(&mut self, ctx: &mut GameContext) -> Option<String> {
+        if !self.chain_checkpoint_hold {
+            return None;
+        }
+        let (index, city_mi) = self.last_route_city_behind();
+        let miles = (self.trip.position_mi - city_mi).max(0.0);
+        let minutes = (miles / CHAIN_TURN_BACK_MPH * 60.0).max(CHAIN_TURN_BACK_MIN_MIN);
+        self.trip.game_minutes += minutes;
+        self.charge_scripted_loop(ctx, minutes);
+        self.trip.position_mi = city_mi;
+        self.chain_checkpoint_hold = false;
+        let truck = &mut self.trip.truck;
+        truck.velocity_mps = 0.0;
+        truck.throttle = 0.0;
+        truck.set_parking_brake();
+        self.cancel_cruise(ctx, false);
+        let key = self
+            .trip
+            .route
+            .cities
+            .get(index)
+            .cloned()
+            .unwrap_or_default();
+        let city = ctx.world.city(&key).map(|c| c.name.clone()).unwrap_or(key);
+        ctx.audio.play("ui/warning");
+        Some(format!(
+            "You turned back to {city}, {} behind the checkpoint, in {} minutes. The chain law \
+             ahead still stands.",
+            ctx.settings.distance_text(miles, false),
+            fmt_f(minutes, 0)
+        ))
     }
 
     /// Colorado's carry rule: no chains aboard on a carry corridor's
