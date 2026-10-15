@@ -356,11 +356,64 @@ impl DrivingState {
         if self.is_driveway_turn(cue) {
             return street.min(ff_core::data::corners::DRIVEWAY_TURN_MPH);
         }
+        // A gentle bend that stays on the same road is no turn at all: it
+        // keeps the posted limit, and the curve model prices a real curve.
+        // The bend cap is for a routed turn onto another road (a fork or a
+        // slight turn at a junction).
+        if self.is_same_road_bend(cue) {
+            return street;
+        }
         street.min(ff_core::data::corners::corner_speed_side_mph(
             measured,
             ff_core::data::corners::CornerSide::from_direction(&cue.direction),
             self.trip.truck.roll_load_fraction(),
         ))
+    }
+
+    /// Whether `cue` is a bend of [`BEND_MAX_DEG`] or less that carries on
+    /// along the same named road, not a turn onto another one.
+    ///
+    /// [`BEND_MAX_DEG`]: ff_core::data::corners::BEND_MAX_DEG
+    pub fn is_same_road_bend(&self, cue: &NavigationCue) -> bool {
+        let index = self.turn_leg_index(cue);
+        let legs = &self.trip.route.legs;
+        let (Some(leg), Some(prev)) = (
+            legs.get(index),
+            index.checked_sub(1).and_then(|i| legs.get(i)),
+        ) else {
+            return false;
+        };
+        let deg = leg.local_turn_deg;
+        deg > 0.0
+            && deg <= ff_core::data::corners::BEND_MAX_DEG
+            && !leg.highway.trim().is_empty()
+            && leg.highway.trim().eq_ignore_ascii_case(prev.highway.trim())
+    }
+
+    /// Each corner ahead, nearest first, with the speed the truck must be at
+    /// when it reaches that corner: its own turn speed, lowered only when a
+    /// later, slower corner comes too soon after it to brake for once this
+    /// one is cleared (the keeper's ordinary shed, from this corner's number
+    /// to the later one's, needs more road than the gap between them).
+    pub fn corner_targets_ahead(&mut self) -> Vec<(NavigationCue, f64)> {
+        let cues = self.turn_cues_in_play();
+        let mut out: Vec<(NavigationCue, f64)> = cues
+            .into_iter()
+            .map(|cue| {
+                let own = self.turn_speed_mph(&cue);
+                (cue, own)
+            })
+            .collect();
+        let decel = crate::states::driving_events::pending::KEEPER_SNUB_DECEL_MPS2;
+        for i in (0..out.len().saturating_sub(1)).rev() {
+            let (later_at, later_mps) = (out[i + 1].0.at_mi, out[i + 1].1 / 2.23694);
+            let gap_m = ((later_at - out[i].0.at_mi) * 1609.344).max(0.0);
+            let reachable = (later_mps * later_mps + 2.0 * decel * gap_m).sqrt() * 2.23694;
+            if reachable < out[i].1 {
+                out[i].1 = reachable;
+            }
+        }
+        out
     }
 
     /// `_turn_window_mi()`: how far out the corner is called -- a full spoken
