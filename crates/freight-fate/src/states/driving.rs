@@ -745,6 +745,9 @@ pub struct DrivingState {
     // and how long it has been out of authority with the truck still over
     // the number -- past which it owns up rather than riding it out.
     pub keeper_snub: f64,
+    /// The keeper is braking a late corner down to its number
+    /// (`keeper_corner_brakes`); the held snub stays on until it is there.
+    pub keeper_corner_braking: bool,
     /// The number the held snub is bringing the truck down to -- the
     /// keeper's WORKING target, which on an approach is the corner or zone
     /// ahead and not the set speed. The release rule reads this.

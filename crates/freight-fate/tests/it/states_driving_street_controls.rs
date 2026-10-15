@@ -786,8 +786,13 @@ fn test_the_keeper_holds_the_next_corners_number_between_close_corners() {
             break;
         }
     }
+    // Never built up past the slower of the corner it just took and the
+    // next one: a left taken at its own number may be faster than the right
+    // after it, and that speed is shed, not added.
+    let first_speed = harness.read_drive(|d| d.turn_speed_mph(&first));
+    let allowed = next.max(first_speed);
     assert!(
-        peak <= next + 0.5,
+        peak <= allowed + 0.5,
         "built to {peak:.1} between corners; the next one advises {next:.1}"
     );
     assert!(

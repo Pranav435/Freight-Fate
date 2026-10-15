@@ -71,6 +71,7 @@ pub fn secure_truck_for_stopped_menu_at(
     driving.destination_arrival_active = false;
     driving.destination_assist_brake = 0.0;
     driving.keeper_snub = 0.0;
+    driving.keeper_corner_braking = false;
     driving.aeb_brake = 0.0;
     driving.curve_servo = None;
     true
