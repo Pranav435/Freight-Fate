@@ -6,9 +6,13 @@ use ff_core::sim::weather::WeatherKind;
 
 use ff_core::models::jobs::{cargo_type, Job};
 use ff_core::models::profile::Profile;
+use ff_core::sim::real_weather::{Observation, RealWeatherProvider};
+use ff_core::sim::real_weather_alerts::{WeatherAlert, WeatherAlertsProvider};
+use ff_core::sim::trip_models::rig_must_chain;
 use freight_fate::app::testing::TestApp;
 use freight_fate::app::SharedState;
 use freight_fate::states::city::JobBoardState;
+use std::sync::Arc;
 
 use crate::states_driving_menus_support::*;
 
@@ -109,7 +113,7 @@ fn test_the_board_names_a_carry_corridor_and_the_garage_here_before_accepting() 
     let (line, launched) = accept_once(true, false, 288.0); // October 15
     assert_eq!(
         line,
-        "I-70 on this route must carry chains this season. You have no chains. The garage here \
+        "Trucks on I-70 must carry chains this season. You have no chains. The garage here \
          sells them. Enter again to accept."
     );
     assert!(!launched, "the first Enter only reminds");
@@ -122,6 +126,113 @@ fn test_the_board_names_a_carry_corridor_and_the_garage_here_before_accepting() 
         let (line, _) = accept_once(hints, chains, doy);
         assert!(!line.contains("carry chains"), "{why}: {line}");
     }
+}
+
+/// The board's first Enter on a load from `origin` to `destination` in
+/// July (no carry season anywhere), with a stop-planning driver and no
+/// chains, and `event` posted by the Weather Service over every route city
+/// (none when empty). The last spoken line.
+fn accept_under_alert(origin: &str, destination: &str, event: &str) -> String {
+    let sky = RealWeatherProvider::new(Arc::new(|_lat, _lon| Err("offline".to_string())))
+        .with_threaded(false);
+    accept_under(origin, destination, event, sky)
+}
+
+/// `accept_under_alert` with `sky` as the live weather.
+fn accept_under(origin: &str, destination: &str, event: &str, sky: RealWeatherProvider) -> String {
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_planning_hints = true;
+    let mut p = Profile::named_in("Chain Alert", origin);
+    p.game_hours = on_day(196.0).unwrap(); // July 15
+    p.set_chains_owned(false);
+    app.ctx.profile = Some(p);
+    let alerts = Arc::new(WeatherAlertsProvider::offline());
+    if !event.is_empty() {
+        let route = app
+            .ctx
+            .world
+            .supported_route(origin, destination, None)
+            .expect("a route")
+            .expect("a supported route");
+        for key in &route.cities {
+            let city = app.ctx.world.cities.get(key).expect("a route city");
+            alerts.seed(
+                city.lat,
+                city.lon,
+                vec![WeatherAlert {
+                    id: format!("alert-{key}"),
+                    event: event.to_string(),
+                    severity: "Severe".to_string(),
+                    headline: format!("{event} issued"),
+                    area: city.name.clone(),
+                    description: "* WHAT...Heavy snow.".to_string(),
+                }],
+            );
+        }
+    }
+    // Alerts ride the real weather toggle; the provider is the seeded
+    // offline one.
+    app.ctx.settings.real_weather = true;
+    app.ctx.set_weather_alerts_provider(alerts);
+    app.ctx.set_real_weather_provider(Arc::new(sky));
+    let job = Job::new(
+        cargo_type("general").expect("general freight"),
+        12.0,
+        origin,
+        &format!("{origin} Cross-Dock"),
+        destination,
+        100.0,
+        900.0,
+        9.0,
+    );
+    let mut board = JobBoardState::new(&app.ctx, vec![job]);
+    app.clear_speech();
+    board.accept(&mut app.ctx, 0);
+    app.ctx.run_deferred();
+    app.main_lines().last().cloned().unwrap_or_default()
+}
+
+#[test]
+fn test_the_board_names_a_chain_law_in_effect_on_the_route() {
+    let line = accept_under_alert("Sacramento", "Reno", "Winter Storm Warning");
+    assert_eq!(
+        line,
+        "A chain law is in effect on I-80 on this route. You have no chains. The garage here \
+         sells them. Enter again to accept."
+    );
+    let line = accept_under_alert("Sacramento", "Reno", "");
+    assert!(!line.contains("chain"), "no alert, no law: {line}");
+}
+
+#[test]
+fn test_live_snow_at_a_route_city_posts_the_law_on_the_board() {
+    // Every station along the way reports heavy snow; no alert is posted.
+    let sky = RealWeatherProvider::new(Arc::new(|_lat, _lon| {
+        Ok(Observation::new("Heavy Snow", 10.0, Some(-5.0), Some(0.5)))
+    }))
+    .with_threaded(false);
+    let line = accept_under("Sacramento", "Reno", "", sky);
+    assert!(line.contains("chain law is in effect on I-80"), "{line}");
+}
+
+#[test]
+fn test_a_level_1_alert_where_a_tandem_drives_on_stays_quiet_on_the_board() {
+    // A winter storm posts Level 1; Colorado lets a tandem drive on.
+    let line = accept_under_alert("Denver", "Silverthorne", "Winter Storm Warning");
+    assert!(!line.contains("chain"), "Colorado Level 1: {line}");
+    // An ice storm posts Level 2 on the same road, which chains every rig.
+    let line = accept_under_alert("Denver", "Silverthorne", "Ice Storm Warning");
+    assert!(line.contains("chain law is in effect on I-70"), "{line}");
+    let line = accept_under_alert("Pendleton", "La Grande", "Ice Storm Warning");
+    assert!(line.contains("chain law is in effect on I-84"), "{line}");
+    // Oregon Level 1 follows rig_must_chain the same way.
+    let line = accept_under_alert("Pendleton", "La Grande", "Winter Storm Warning");
+    let chains = rig_must_chain(Some("OR"), 1);
+    assert_eq!(
+        line.contains("chain law is in effect"),
+        chains,
+        "Oregon Level 1: {line}"
+    );
 }
 
 #[test]

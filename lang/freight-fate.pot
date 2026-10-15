@@ -13298,7 +13298,7 @@ msgstr ""
 msgid "glaze"
 msgstr ""
 
-#: crates/ff-core/src/sim/real_weather.rs crates/ff-core/src/sim/weather/tables.rs
+#: crates/ff-core/src/sim/real_weather.rs crates/ff-core/src/sim/weather/tables.rs crates/freight-fate/src/states/city/board.rs
 msgid "ice"
 msgstr ""
 
@@ -13322,7 +13322,7 @@ msgstr ""
 msgid "frost"
 msgstr ""
 
-#: crates/ff-core/src/sim/real_weather.rs crates/ff-core/src/sim/real_weather_alerts.rs crates/ff-core/src/sim/weather/tables.rs
+#: crates/ff-core/src/sim/real_weather.rs crates/ff-core/src/sim/real_weather_alerts.rs crates/ff-core/src/sim/weather/tables.rs crates/freight-fate/src/states/city/board.rs
 msgid "snow"
 msgstr ""
 
@@ -19914,6 +19914,19 @@ msgstr ""
 msgid "Your pay about {grouped} dollars."
 msgstr ""
 
+#. placeholders: {highway}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/city/board.rs
+msgid "A chain law is in effect on {highway} on this route."
+msgstr ""
+
+#. placeholders: {highway}
+#: crates/freight-fate/src/states/city/board.rs
+msgid ""
+"A chain law is in effect on {highway} on this route. You have no chains. "
+"The garage here sells them. Enter again to accept."
+msgstr ""
+
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/city/board.rs
 msgid "Enter again to accept."
@@ -19932,14 +19945,14 @@ msgstr ""
 #. placeholders: {highway}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/city/board.rs
-msgid "{highway} on this route must carry chains this season."
+msgid "Trucks on {highway} must carry chains this season."
 msgstr ""
 
 #. placeholders: {highway}
 #: crates/freight-fate/src/states/city/board.rs
 msgid ""
-"{highway} on this route must carry chains this season. You have no chains. "
-"The garage here sells them. Enter again to accept."
+"Trucks on {highway} must carry chains this season. You have no chains. The "
+"garage here sells them. Enter again to accept."
 msgstr ""
 
 #: crates/freight-fate/src/states/city/board.rs crates/freight-fate/src/states/city/terminal.rs
@@ -37726,10 +37739,11 @@ msgid ""
 "details. Quiet and Urgent only keep the automatic hint silent. Your "
 "required hours warnings and readout controls still work when this is off. "
 "It also reminds you before a chain-law road if you have no chains: on the "
-"dispatch board when the load crosses a road that must carry chains this "
-"season, while the terminal garage can still sell you a set, and on the road "
-"when a posted chain law requires chains on your truck. It never buys "
-"anything."
+"dispatch board when the load crosses a road where trucks must carry chains "
+"this season, or where live weather or a weather alert puts a chain law in "
+"effect for your truck, while the terminal garage can still sell you a set, "
+"and on the road when a posted chain law requires chains on your truck. It "
+"never buys anything."
 msgstr ""
 
 #. placeholders: {else}

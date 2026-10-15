@@ -956,7 +956,7 @@ impl Trip {
     /// The chain-law areas on chain corridors (`on_chain_corridor`) of
     /// chain-control states starting between route miles `from_mi` and
     /// `to_mi`, in route order, that `keep(state, highway)` accepts.
-    fn chain_corridor_areas(
+    pub fn chain_corridor_areas(
         &self,
         from_mi: f64,
         to_mi: f64,
