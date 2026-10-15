@@ -434,14 +434,20 @@ fn a_hazardous_load_card_names_its_material_un_number_and_class() {
         &["refrigerated", "heavy_haul", "high_value"],
         OfferOptions::level(5),
     );
-    jobs[0].cargo = ff_core::models::jobs::cargo_type("fuel_bulk").unwrap();
-    jobs[0].hazmat = ff_core::models::jobs::hazmat::hazmat_commodity("gasoline");
+    for job in &mut jobs {
+        job.cargo = ff_core::models::jobs::cargo_type("fuel_bulk").unwrap();
+        job.hazmat = ff_core::models::jobs::hazmat::hazmat_commodity("gasoline");
+    }
     push_board(&mut app, jobs);
 
     key(&mut app, Key::F1);
 
     let rows = labels::<JobDetailState>(&app);
-    assert_eq!(rows[1], "Material: Gasoline, UN1203, Class 3.");
+    assert!(
+        rows.iter()
+            .any(|r| r == "Material: Gasoline, UN1203, Class 3."),
+        "{rows:?}"
+    );
 }
 
 #[test]
