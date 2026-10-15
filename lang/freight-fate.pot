@@ -15198,11 +15198,15 @@ msgid "destination approach"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/zones.rs
-msgid "level 2: chains required"
+msgid "level 2: chains required on all trucks"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/zones.rs
-msgid "level 1: winter tires or chains required"
+msgid "level 1: chains required on single-drive-axle trucks"
+msgstr ""
+
+#: crates/ff-core/src/sim/trip/zones.rs
+msgid "level 1: chains required on trucks"
 msgstr ""
 
 #: crates/ff-core/src/sim/trip/zones.rs
@@ -22662,8 +22666,8 @@ msgstr ""
 
 #: crates/freight-fate/src/states/city_garage.rs
 msgid ""
-"Chains go on from the pause menu when stopped in snow or ice. They grind "
-"apart on bare pavement. Company drivers bill the carrier."
+"Put chains on from the pause menu once you're stopped in snow or ice. They "
+"wear out fast on bare pavement. Company drivers bill the carrier."
 msgstr ""
 
 #: crates/freight-fate/src/states/city_garage.rs
@@ -31522,9 +31526,9 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs
 msgid ""
-"Chains bite snow and ice. Chain speed is about thirty miles per hour. Pull "
-"them once the road is bare. In the dark, installing takes longer and more "
-"out of you."
+"Chains bite snow and ice. Keep under 30 miles per hour with chains on. Take "
+"them off once the road is bare. In the dark, installing takes longer and "
+"more out of you."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs crates/freight-fate/src/states/online_hub.rs crates/freight-fate/src/states/online_states/board.rs
@@ -31573,7 +31577,7 @@ msgid "In the dark, it took more out of you. "
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs
-msgid " The road here is bare, they grind fast until the snow."
+msgid " The road here is bare. Chains wear out fast until you reach snow."
 msgstr ""
 
 #. placeholders: {f}
@@ -31585,14 +31589,14 @@ msgstr ""
 #. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
 #: crates/freight-fate/src/states/driving_pause_states.rs
 msgid ""
-"Chains on in {f} minutes. {effort}Chain speed {speed_text}.{bare} It is "
+"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
 "{clock_text}. {deadline_text}"
 msgstr ""
 
 #. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_pause_states.rs
-msgid "{effort}Chain speed {speed_text}.{bare} It is {clock_text}."
+msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_pause_states.rs
@@ -34786,22 +34790,24 @@ msgstr ""
 msgid "A tire chain broke."
 msgstr ""
 
-#. placeholders: {CHAIN_SAFE_MPH}
+#. placeholders: {speed_text}
+#. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Chains: keep under {CHAIN_SAFE_MPH}."
+msgid "Keep under {speed_text}."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Too fast for chains."
+msgstr ""
+
+#. placeholders: {speed_text}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Too fast for chains. Keep under {speed_text}."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "chains"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "winter-rated tires or chains"
-msgstr ""
-
-#. placeholders: {need}
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Rolling into an active chain law without {need}."
+msgid "Rolling into an active chain law without chains."
 msgstr ""
 
 #. placeholders: {level}
@@ -39909,14 +39915,16 @@ msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
-"Level one chain law accepts winter tires or chains. Level two requires "
-"drive-axle chains. Signs announce the requirement before its checkpoint."
+"Chain laws require chains on a truck at every level. Winter tires don't "
+"count for a semi. The one exception is Colorado level one, which chains "
+"only single-drive-axle trucks, so your tandem-drive rig chains there at "
+"level two. Signs announce the requirement before the chain-up area."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
 "Chain work uses on-duty time and adds fatigue, especially at night. Keep "
-"near thirty miles per hour and remove chains on bare pavement before they "
+"under 30 miles per hour and remove chains on bare pavement before they "
 "break."
 msgstr ""
 

@@ -149,6 +149,7 @@ fn test_chain_law_sign_speaks_on_approach_and_escalates() {
     let spoken = signs(&trip);
     assert_eq!(spoken.len(), 1, "{spoken:?}");
     assert!(spoken[0].contains("level 1"), "{}", spoken[0]);
+    assert!(!spoken[0].contains("winter tires"), "{}", spoken[0]);
     assert!(spoken[0].contains("Chain-up area"), "{}", spoken[0]);
     // The same sign does not repeat, but an escalation to ice speaks again.
     trip.check_chain_law();
@@ -171,4 +172,19 @@ fn trip_clear() -> Trip {
     let mut trip = trip(None);
     trip.weather.current = WeatherKind::Clear;
     trip
+}
+
+#[test]
+fn test_trucks_chain_at_every_level_except_colorado_level_1() {
+    use ff_core::sim::trip_models::rig_must_chain;
+    for state in ["CA", "WA", "OR", "NV", "ID", "MT", "UT", "WY"] {
+        assert!(!rig_must_chain(Some(state), 0), "{state}");
+        assert!(rig_must_chain(Some(state), 1), "{state}");
+        assert!(rig_must_chain(Some(state), 2), "{state}");
+    }
+    // Colorado Level 1 chains single-drive-axle combinations only; the
+    // player's tandem-drive rig chains at Level 2.
+    assert!(!rig_must_chain(Some("CO"), 1));
+    assert!(rig_must_chain(Some("CO"), 2));
+    assert!(rig_must_chain(None, 1));
 }

@@ -383,10 +383,13 @@ impl Trip {
                 continue;
             }
             self.announced_chain_law.insert(key);
+            let colorado = self.state_code_at(start.max(0.0)).as_deref() == Some("CO");
             let rule = if level >= 2 {
-                "level 2: chains required"
+                "level 2: chains required on all trucks"
+            } else if colorado {
+                "level 1: chains required on single-drive-axle trucks"
             } else {
-                "level 1: winter tires or chains required"
+                "level 1: chains required on trucks"
             };
             let (where_, pullout) = if inside {
                 ("", "")

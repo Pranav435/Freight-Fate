@@ -296,19 +296,25 @@ fn test_compliance_ends_the_matter() {
     assert!((money(&app) - 1000.0).abs() < 0.01);
     drop(app);
 
-    // Winter tires satisfy Level 1 but not Level 2.
+    // Winter tires never excuse a semi, at Level 1 or Level 2: Caltrans,
+    // WSDOT and ODOT chain trucks regardless of tires.
     let mut app = TestApp::new();
     let drive = law_drive(
         &mut app,
         Law {
             seed: 1,
             level: 1,
+            position: 2.0,
             tire_type: TIRE_WINTER,
             ..Law::default()
         },
     );
     tick(&mut app, &drive);
-    assert!(spoken(&app).is_empty(), "{:?}", spoken(&app));
+    assert!(
+        spoken(&app).iter().any(|s| s.contains("without chains")),
+        "{:?}",
+        spoken(&app)
+    );
     drop(app);
 
     let mut app = TestApp::new();
@@ -346,4 +352,61 @@ fn test_no_post_sees_a_chain_law_off_the_posted_grade() {
     };
     assert!(sample_at(6.0), "on the posted grade the law applies");
     assert!(!sample_at(20.0), "ten miles past the grade it does not");
+}
+
+#[test]
+fn test_winter_tires_on_a_level_1_law_still_get_the_checkpoint() {
+    let mut app = TestApp::new();
+    let seed = (0..40)
+        .find(|seed| {
+            PyRandom::new_from_str(&format!("{seed}:chain-law:0:1")).random()
+                < CHAIN_LAW_CHECKPOINT_CHANCE
+        })
+        .expect("some seed is caught");
+    let drive = law_drive(
+        &mut app,
+        Law {
+            seed,
+            level: 1,
+            tire_type: TIRE_WINTER,
+            ..Law::default()
+        },
+    );
+    tick(&mut app, &drive);
+    assert!(
+        spoken(&app)
+            .iter()
+            .any(|s| s.contains("chain-law citation")),
+        "{:?}",
+        spoken(&app)
+    );
+    assert!(money(&app) < 1000.0);
+}
+
+fn over_speed_line(imperial: bool) -> String {
+    let mut app = TestApp::new();
+    app.ctx.settings.imperial_units = imperial;
+    let drive = a_drive(&mut app);
+    with_drive(&drive, |d| {
+        d.trip.truck.chains_on = true;
+        d.trip.truck.velocity_mps = 45.0 * 0.44704;
+        d.chains_fast_active = false;
+    });
+    app.clear_speech();
+    drive_and_ctx(&drive, &mut app, |d, ctx| d.update_traction_cues(ctx));
+    app.ctx.run_deferred();
+    spoken(&app)
+        .into_iter()
+        .find(|s| s.starts_with("Too fast for chains"))
+        .unwrap_or_else(|| panic!("no over-speed line in {:?}", spoken(&app)))
+}
+
+#[test]
+fn test_the_chain_over_speed_line_is_a_sentence_with_its_unit() {
+    assert_eq!(
+        over_speed_line(true),
+        "Too fast for chains. Keep under 30 miles per hour."
+    );
+    let metric = over_speed_line(false);
+    assert!(metric.contains("kilometers per hour"), "{metric}");
 }

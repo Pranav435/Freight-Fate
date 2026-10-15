@@ -11986,10 +11986,13 @@ msgstr ""
 msgid "destination approach"
 msgstr ""
 
-msgid "level 2: chains required"
+msgid "level 2: chains required on all trucks"
 msgstr ""
 
-msgid "level 1: winter tires or chains required"
+msgid "level 1: chains required on single-drive-axle trucks"
+msgstr ""
+
+msgid "level 1: chains required on trucks"
 msgstr ""
 
 msgid " Chain-up area on the right."
@@ -17894,8 +17897,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Chains go on from the pause menu when stopped in snow or ice. They grind "
-"apart on bare pavement. Company drivers bill the carrier."
+"Put chains on from the pause menu once you're stopped in snow or ice. They "
+"wear out fast on bare pavement. Company drivers bill the carrier."
 msgstr ""
 
 msgid ""
@@ -24992,9 +24995,9 @@ msgid "Chains grind apart fast on bare pavement."
 msgstr ""
 
 msgid ""
-"Chains bite snow and ice. Chain speed is about thirty miles per hour. Pull "
-"them once the road is bare. In the dark, installing takes longer and more "
-"out of you."
+"Chains bite snow and ice. Keep under 30 miles per hour with chains on. Take "
+"them off once the road is bare. In the dark, installing takes longer and "
+"more out of you."
 msgstr ""
 
 msgid "Drivers on duty"
@@ -25033,7 +25036,7 @@ msgstr ""
 msgid "In the dark, it took more out of you. "
 msgstr ""
 
-msgid " The road here is bare, they grind fast until the snow."
+msgid " The road here is bare. Chains wear out fast until you reach snow."
 msgstr ""
 
 #. placeholders: {f}
@@ -25043,13 +25046,13 @@ msgstr ""
 
 #. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
 msgid ""
-"Chains on in {f} minutes. {effort}Chain speed {speed_text}.{bare} It is "
+"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
 "{clock_text}. {deadline_text}"
 msgstr ""
 
 #. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
 #. one sentence of a longer line
-msgid "{effort}Chain speed {speed_text}.{bare} It is {clock_text}."
+msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
 msgstr ""
 
 msgid "remove chains"
@@ -27629,18 +27632,20 @@ msgstr ""
 msgid "A tire chain broke."
 msgstr ""
 
-#. placeholders: {CHAIN_SAFE_MPH}
-msgid "Chains: keep under {CHAIN_SAFE_MPH}."
+#. placeholders: {speed_text}
+#. one sentence of a longer line
+msgid "Keep under {speed_text}."
 msgstr ""
 
-msgid "chains"
+#. one sentence of a longer line
+msgid "Too fast for chains."
 msgstr ""
 
-msgid "winter-rated tires or chains"
+#. placeholders: {speed_text}
+msgid "Too fast for chains. Keep under {speed_text}."
 msgstr ""
 
-#. placeholders: {need}
-msgid "Rolling into an active chain law without {need}."
+msgid "Rolling into an active chain law without chains."
 msgstr ""
 
 #. placeholders: {level}
@@ -31807,13 +31812,15 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Level one chain law accepts winter tires or chains. Level two requires "
-"drive-axle chains. Signs announce the requirement before its checkpoint."
+"Chain laws require chains on a truck at every level. Winter tires don't "
+"count for a semi. The one exception is Colorado level one, which chains "
+"only single-drive-axle trucks, so your tandem-drive rig chains there at "
+"level two. Signs announce the requirement before the chain-up area."
 msgstr ""
 
 msgid ""
 "Chain work uses on-duty time and adds fatigue, especially at night. Keep "
-"near thirty miles per hour and remove chains on bare pavement before they "
+"under 30 miles per hour and remove chains on bare pavement before they "
 "break."
 msgstr ""
 

@@ -908,7 +908,8 @@ impl Trip {
         Zone::new(gate_start, total, FACILITY_GATE_LIMIT_MPH, "facility gate")
     }
 
-    /// 0 = no law, 1 = winter-rated tires or chains, 2 = chains required.
+    /// 0 = no law, 1 = Level 1 (cars may use winter tires; trucks chain,
+    /// except tandem-drive trucks in Colorado), 2 = chains on every truck.
     ///
     /// The sky the truck is under sets the floor; an active Weather Service
     /// warning for this stretch (a winter storm, a blizzard, an ice storm)
@@ -923,6 +924,16 @@ impl Trip {
         from_sky.max(crate::sim::real_weather_alerts::alerts_chain_law_level(
             &self.live_alerts,
         ))
+    }
+
+    /// Whether the rig must chain at this milepost under the active law
+    /// (`rig_must_chain`): every level in every state except Colorado
+    /// Level 1, which chains single-drive-axle trucks only.
+    pub fn rig_must_chain_at(&self, mile: f64) -> bool {
+        crate::sim::trip_models::rig_must_chain(
+            self.state_code_at(mile).as_deref(),
+            self.chain_law_level(),
+        )
     }
 
     /// Index of the chain-law area containing this milepost, or None.

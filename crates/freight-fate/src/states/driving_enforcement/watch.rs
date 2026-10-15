@@ -60,7 +60,10 @@ impl DrivingState {
         // the entry citation makes (`update_chain_law`). Snow anywhere used
         // to let a scale or a patrol in Chicago write "running the chain
         // control without chains" (seasonal audit, 2026-10-01).
-        let chain_level = if self.trip.chain_law_area_at(position).is_some() {
+        // Colorado Level 1 leaves a tandem-drive truck unchained.
+        let chain_level = if self.trip.chain_law_area_at(position).is_some()
+            && self.trip.rig_must_chain_at(position)
+        {
             self.trip.chain_law_level()
         } else {
             0

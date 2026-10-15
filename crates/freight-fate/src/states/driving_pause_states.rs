@@ -176,9 +176,9 @@ impl PauseMenuState {
                     s.install_chains(ctx)
                 })
                 .help(
-                    "Chains bite snow and ice. Chain speed is about thirty miles per hour. Pull \
-                     them once the road is bare. In the dark, installing takes longer and more \
-                     out of you.",
+                    "Chains bite snow and ice. Keep under 30 miles per hour with chains on. Take \
+                     them off once the road is bare. In the dark, installing takes longer and \
+                     more out of you.",
                 ),
             );
         }
@@ -269,12 +269,12 @@ impl PauseMenuState {
                 ""
             };
             let bare = if d.trip.truck.surface != "snow" && d.trip.truck.surface != "ice" {
-                " The road here is bare, they grind fast until the snow."
+                " The road here is bare. Chains wear out fast until you reach snow."
             } else {
                 ""
             };
             let text = format!(
-                "Chains on in {} minutes. {effort}Chain speed {}.{bare} It is {}. {}",
+                "Chains on in {} minutes. {effort}Keep under {}.{bare} It is {}. {}",
                 fmt_f(minutes, 0),
                 ctx.settings.speed_text(CHAIN_SAFE_MPH),
                 clock_text(d.trip.local_hour()),

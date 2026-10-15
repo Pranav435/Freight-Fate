@@ -492,6 +492,24 @@ pub const CHAIN_LAW_MIN_GRADE: f64 = 0.05;
 /// program, so a steep mile in Texas or Wisconsin is only a steep mile
 /// (seasonal audit, 2026-10-01: 218 legs in 35 states had chain areas).
 pub const CHAIN_CONTROL_STATES: [&str; 9] = ["CA", "CO", "ID", "MT", "NV", "OR", "UT", "WA", "WY"];
+/// Whether the player's rig (a five-axle tractor-trailer on a tandem drive)
+/// must chain under a chain law at `level` in `state`. Heavy trucks get no
+/// winter-tire exemption: Caltrans R-1 to R-3 ("no exemption for heavy-duty
+/// commercial vehicles ... equipped with snow tires", dot.ca.gov chain
+/// requirements), WSDOT over 10,000 lb (WAC 204-24-050) and ODOT snow zones
+/// (traction tires substitute only at 10,000 lb or less) all chain trucks.
+/// Colorado is the one split: Level 1 chains single-drive-axle combinations
+/// only, and Level 2 chains every truck (CDOT Commercial Vehicle Chain Law,
+/// csp.colorado.gov/chain-law-information). ID, MT, NV, UT and WY are
+/// UNVERIFIED and follow the general rule: trucks chain.
+pub fn rig_must_chain(state: Option<&str>, level: i64) -> bool {
+    match level {
+        ..=0 => false,
+        1 => state != Some("CO"),
+        _ => true,
+    }
+}
+
 pub const CHAIN_LAW_MIN_RUN_MI: f64 = 1.0;
 pub const CHAIN_LAW_JOIN_GAP_MI: f64 = 2.0;
 pub const CHAIN_LAW_LEAD_MI: f64 = 0.5;
