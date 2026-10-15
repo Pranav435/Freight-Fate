@@ -4021,6 +4021,9 @@ msgstr ""
 msgid "buff {buff_id}: help and purchased speech are required"
 msgstr ""
 
+msgid "left"
+msgstr ""
+
 msgid "motorway"
 msgstr ""
 
@@ -5704,9 +5707,6 @@ msgid "unnamed public road"
 msgstr ""
 
 msgid "a side street"
-msgstr ""
-
-msgid "left"
 msgstr ""
 
 msgid "right"
