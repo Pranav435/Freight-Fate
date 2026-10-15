@@ -894,8 +894,8 @@ impl Menu for GarageState {
                 |s: &mut Self, ctx| s.buy_chains(ctx),
             )
             .help(
-                "Chains go on from the pause menu when stopped in snow or ice. They grind \
-                 apart on bare pavement. Company drivers bill the carrier.",
+                "Put chains on from the pause menu once you're stopped in snow or ice. They \
+                 wear out fast on bare pavement. Company drivers bill the carrier.",
             ),
             MenuItem::new(
                 Label::dynamic(|_s: &Self, ctx| Self::brake_label(ctx)),

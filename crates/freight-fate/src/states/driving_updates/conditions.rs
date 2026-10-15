@@ -585,7 +585,10 @@ impl DrivingState {
             self.trip.truck.chains_on && self.trip.truck.speed_mph() > CHAIN_SAFE_MPH + 2.0;
         if chains_fast && !self.chains_fast_active {
             ctx.say_event_with(
-                format!("Chains: keep under {CHAIN_SAFE_MPH:.0}."),
+                format!(
+                    "Too fast for chains. Keep under {}.",
+                    ctx.settings.speed_text(CHAIN_SAFE_MPH)
+                ),
                 SayEvent::new().category(SpeechCategory::Coaching),
             );
         }
@@ -607,19 +610,16 @@ impl DrivingState {
         let Some(area) = self.trip.chain_law_area_at(self.trip.position_mi) else {
             return;
         };
-        let compliant =
-            self.trip.truck.chains_on || (level == 1 && self.trip.truck.tire_type == TIRE_WINTER);
-        if compliant {
+        // Winter tires never excuse a semi, except at Wyoming Level 1;
+        // Colorado's Level 1 leaves a tandem-drive truck unchained
+        // (`rig_compliant_at`).
+        if self.trip.rig_compliant_at(self.trip.position_mi) {
             return;
         }
         let key = (area as i64, level);
         if !self.chain_law_warned.contains(&key) {
             self.chain_law_warned.insert(key);
-            let need = if level >= 2 {
-                "chains"
-            } else {
-                "winter-rated tires or chains"
-            };
+            let need = self.trip.chain_law_need_at(self.trip.position_mi);
             ctx.say_event_with(
                 format!("Rolling into an active chain law without {need}."),
                 SayEvent::new().category(SpeechCategory::Navigation),

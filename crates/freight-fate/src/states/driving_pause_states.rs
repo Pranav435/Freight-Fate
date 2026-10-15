@@ -9,7 +9,9 @@ use crate::controller::{ControllerAction, ControllerButton};
 use crate::discord_presence::PresenceState;
 use crate::impl_state_for_menu;
 use crate::online_presence::PAUSED_ACTIVITY;
-use crate::states::base::{end_sentence, InputEvent, Menu, MenuCore, MenuItem, SimpleMenuState};
+use crate::states::base::{
+    end_sentence, InputEvent, Label, Menu, MenuCore, MenuItem, SimpleMenuState,
+};
 use crate::states::city::CityMenuState;
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::{
@@ -175,11 +177,14 @@ impl PauseMenuState {
                 MenuItem::new(install_chains_label(d), |s: &mut Self, ctx| {
                     s.install_chains(ctx)
                 })
-                .help(
-                    "Chains bite snow and ice. Chain speed is about thirty miles per hour. Pull \
-                     them once the road is bare. In the dark, installing takes longer and more \
-                     out of you.",
-                ),
+                .help(Label::dynamic(|_s: &Self, ctx| {
+                    format!(
+                        "Chains bite snow and ice. Keep under {} with chains on. Take them off \
+                         once the road is bare. In the dark, installing takes longer and more \
+                         out of you.",
+                        ctx.settings.speed_text(CHAIN_SAFE_MPH)
+                    )
+                })),
             );
         }
         items.push(
@@ -269,12 +274,12 @@ impl PauseMenuState {
                 ""
             };
             let bare = if d.trip.truck.surface != "snow" && d.trip.truck.surface != "ice" {
-                " The road here is bare, they grind fast until the snow."
+                " The road here is bare. Chains wear out fast until you reach snow."
             } else {
                 ""
             };
             let text = format!(
-                "Chains on in {} minutes. {effort}Chain speed {}.{bare} It is {}. {}",
+                "Chains on in {} minutes. {effort}Keep under {}.{bare} It is {}. {}",
                 fmt_f(minutes, 0),
                 ctx.settings.speed_text(CHAIN_SAFE_MPH),
                 clock_text(d.trip.local_hour()),

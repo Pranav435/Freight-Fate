@@ -38,7 +38,7 @@ pub fn chains_on_dry_interstate_at_70() -> Outcome {
         if rig.said("chain broke") == 0 {
             findings.push("chain snap happened silently".to_string());
         }
-        if rig.said("Chains: keep under") == 0 {
+        if rig.said("Too fast for chains") == 0 {
             findings.push("no overspeed-chain warning before the snap".to_string());
         }
         // 0.2 %/mi x40 bare x6 overspeed = 48 %/mi -> ~2.1 miles to scrap.

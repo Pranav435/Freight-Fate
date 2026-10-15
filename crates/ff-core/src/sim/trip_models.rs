@@ -492,6 +492,38 @@ pub const CHAIN_LAW_MIN_GRADE: f64 = 0.05;
 /// program, so a steep mile in Texas or Wisconsin is only a steep mile
 /// (seasonal audit, 2026-10-01: 218 legs in 35 states had chain areas).
 pub const CHAIN_CONTROL_STATES: [&str; 9] = ["CA", "CO", "ID", "MT", "NV", "OR", "UT", "WA", "WY"];
+/// Whether the player's rig (a five-axle tractor-trailer on a tandem drive)
+/// must chain under a chain law at `level` in `state`. Heavy trucks get no
+/// winter-tire exemption: Caltrans R-1 to R-3 ("no exemption for heavy-duty
+/// commercial vehicles ... equipped with snow tires", dot.ca.gov chain
+/// requirements), WSDOT over 10,000 lb (WAC 204-24-050) and ODOT snow zones
+/// (traction tires substitute only at 10,000 lb or less) all chain trucks.
+/// Colorado is the one split: Level 1 chains single-drive-axle combinations
+/// only, and Level 2 chains every truck (CDOT Commercial Vehicle Chain Law,
+/// csp.colorado.gov/chain-law-information). Wyoming Level 1 accepts snow
+/// tires or chains, and Level 2 requires chains on two tires of one drive
+/// axle (WYDOT chain law; W.S. 31-5-956(e)). ID, MT, NV and UT are
+/// UNVERIFIED and follow the general rule: trucks chain.
+pub fn rig_must_chain(state: Option<&str>, level: i64) -> bool {
+    match level {
+        ..=0 => false,
+        1 => !matches!(state, Some("CO") | Some("WY")),
+        _ => true,
+    }
+}
+
+/// The rule a chain-law sign speaks for `state` (two-letter code) at
+/// `level` (`rig_must_chain`).
+pub fn chain_law_sign_rule(state: Option<&str>, level: i64) -> &'static str {
+    match (state, level >= 2) {
+        (Some("WY"), true) => "level 2: chains required on two tires of one drive axle",
+        (_, true) => "level 2: chains required on all trucks",
+        (Some("CO"), false) => "level 1: chains required on single-drive-axle trucks",
+        (Some("WY"), false) => "level 1: snow tires or chains required",
+        (_, false) => "level 1: chains required on trucks",
+    }
+}
+
 pub const CHAIN_LAW_MIN_RUN_MI: f64 = 1.0;
 pub const CHAIN_LAW_JOIN_GAP_MI: f64 = 2.0;
 pub const CHAIN_LAW_LEAD_MI: f64 = 0.5;
