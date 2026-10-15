@@ -167,7 +167,7 @@ impl DrivingState {
     /// the audio pass, which `_update_turn_commitment` has already run ahead
     /// of in the same frame (`driving_updates.py`: 577 before 595), so the
     /// re-seed has always happened by then.
-    fn turn_cue_in_play_read(&self) -> Option<NavigationCue> {
+    pub(crate) fn turn_cue_in_play_read(&self) -> Option<NavigationCue> {
         let position = self.trip.position_mi;
         self.trip
             .navigation_cues

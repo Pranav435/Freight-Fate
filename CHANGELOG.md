@@ -126,6 +126,7 @@
 
 ### Fixed
 
+- **With every assist on, the truck finishes the drive into the yard again.** Facility stopping assistance no longer takes the pedals while a street corner is still ahead, so the speed keeper slows for the last turn instead of the truck sailing past it, and after the last corner the assist drives the street at its posted speed instead of walking the truck in at 2 miles per hour.
 - **A full brake stop with the engine brake on no longer damages your load.**
 
 - **An engine brake stage you pick now stays picked.** Cruise and the bend assist no longer turn it off when their reason ends.
