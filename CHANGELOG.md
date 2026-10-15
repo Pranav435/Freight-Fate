@@ -4,6 +4,14 @@
 
 ### Added
 
+- **The game window now shows the road, your truck and the traffic around it.** Signs, bends, hills and weather show as you drive.
+
+- **The dashboard in the game window shows speed, the limit, gear, fuel, air, damage and traffic.** Your next turn and bend show above it.
+
+- **Captions show what the game says for a few seconds.** Menus appear as a large-print panel with the choice highlighted.
+
+- **A Visual display setting turns the window's drawing off to save battery.** It is under Settings, Gameplay, Controls; speech and sound stay the same.
+
 - **The game can speak Spanish.** Choose Español under Settings, Speech, Language; the radio stays in English.
 
 - **Key and button practice says what each key or button does at the wheel.** Shift F1 or Back plus Start opens it anywhere.
@@ -57,6 +65,8 @@
 - **Favorite stations now play from anywhere.** A saved local station keeps playing after you leave its area, with no fade or static.
 
 ### Changed
+
+- **The game uses much less memory and power.** Music loads track by track, and the window draws only when it changes.
 
 - **Nine of the longest billboards are shorter, so they finish while you pass them.** The Bakersfield board no longer says the Crystal Palace has closed.
 
