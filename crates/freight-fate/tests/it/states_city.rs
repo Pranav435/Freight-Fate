@@ -978,6 +978,42 @@ fn test_a_relayed_load_replaces_a_board_slot_and_leads_the_assignment() {
 }
 
 #[test]
+fn test_a_level_1_board_in_tonopah_gets_no_relay_and_stays_full() {
+    // Reno and Las Vegas are past the level 1 relay range, so the same
+    // thin board a level 5 driver gets a relay on stays all local, and the
+    // missing relay leaves no gap: the board still shows every slot.
+    let mut app = TestApp::new();
+    let mut p = Profile::named_in("Relay Tonopah L1", "Tonopah");
+    p.market.seed = 11;
+    p.career.deliveries = 1;
+    assert_eq!(p.career.level(), 1);
+    app.ctx.profile = Some(p.clone());
+    open_freight_market(&mut app.ctx);
+    app.ctx.run_deferred();
+    let here = app.ctx.world.resolve_city_key(&p.current_city);
+    let origins = with_state::<JobBoardState, _>(&app, |b, ctx| {
+        b.jobs
+            .iter()
+            .filter(|j| !j.bobtail)
+            .map(|j| ctx.world.resolve_city_key(&j.origin))
+            .collect::<Vec<_>>()
+    });
+    assert!(
+        origins.iter().all(|origin| *origin == here),
+        "no relay at level 1: {origins:?}"
+    );
+    let expected = enforcement::board_offers_for_band(
+        board_offer_count(p.career.level()) as i64,
+        enforcement::standing_band(&p),
+    ) as usize;
+    assert_eq!(
+        with_state::<JobBoardState, _>(&app, |b, _| b.jobs.len()),
+        expected,
+        "the local board stays full"
+    );
+}
+
+#[test]
 fn test_assigned_reposition_pays_reduced_rate_and_awards_mileage_xp() {
     // The settlement half needs ArrivalState; the pay the board offers is
     // what the city screens own, so that is what is pinned here.
