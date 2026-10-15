@@ -64,6 +64,12 @@ pub struct LaneLook {
     pub urban: bool,
     /// How hard the rumble strip is buzzing, 0..1.
     pub rumble: f32,
+    /// Traffic holds the lane to the left / right beside the truck: the
+    /// blind-spot lights. Read through the same check the game uses for a
+    /// sideswipe and for the spoken "lane open" cue, so a lane drawn clear
+    /// is one the truck can move into.
+    pub blocked_left: bool,
+    pub blocked_right: bool,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -486,6 +492,9 @@ fn lane_look(d: &DrivingState) -> LaneLook {
     } else {
         d.lane.lane_count.clamp(1, 6) as i32
     };
+    let lane = d.lane.lane;
+    let blocked =
+        |other: i64| (0..d.lane.lane_count).contains(&other) && d.lane_gap_blocker(other).is_some();
     LaneLook {
         count,
         truck_lane: (d.lane.lane as i32).clamp(0, count - 1),
@@ -500,6 +509,8 @@ fn lane_look(d: &DrivingState) -> LaneLook {
         street,
         urban: street || trip.near_city(trip.position_mi),
         rumble: d.lane.rumble_level() as f32,
+        blocked_left: blocked(lane + 1),
+        blocked_right: blocked(lane - 1),
     }
 }
 

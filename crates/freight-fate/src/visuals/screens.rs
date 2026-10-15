@@ -63,6 +63,8 @@ pub fn showcase() -> DriveView {
             street: false,
             urban: false,
             rumble: 0.0,
+            blocked_left: false,
+            blocked_right: false,
         },
         traffic: vec![
             TrafficView {

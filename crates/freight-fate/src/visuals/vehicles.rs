@@ -683,6 +683,36 @@ pub fn draw_truck(p: &mut Painter, f: &RoadFrame) {
         &lamps,
         true,
     );
+    blind_spot_lights(p, f, front);
+}
+
+/// Amber warning lights at the cab's mirrors when traffic holds the lane on
+/// that side, the way a truck's blind-spot monitor lights.
+fn blind_spot_lights(p: &mut Painter, f: &RoadFrame, u: f32) {
+    let lanes = &f.view.lanes;
+    let amber = Rgba::rgb(255, 170, 30);
+    for (blocked, side) in [(lanes.blocked_left, -1.0f32), (lanes.blocked_right, 1.0)] {
+        if !blocked {
+            continue;
+        }
+        let Some((x, y, b, _)) = f.cam.project(-14.0, u + side * 6.2, 9.5) else {
+            continue;
+        };
+        let r = (1.8 * b).max(6.0);
+        p.set_layer(Layer::Glow);
+        p.glow(x, y, r * 2.6, amber.alpha(0.7));
+        p.set_layer(Layer::World);
+        let tri = [(x - r, y + r * 0.8), (x + r, y + r * 0.8), (x, y - r)];
+        p.convex(&tri, amber);
+        p.rect(
+            x - r * 0.12,
+            y - r * 0.35,
+            r * 0.24,
+            r * 0.65,
+            Rgba::rgb(40, 24, 0),
+        );
+        p.circle(x, y + r * 0.52, r * 0.13, Rgba::rgb(40, 24, 0));
+    }
 }
 
 /// Mist thrown up off a wet or snowy road behind the wheels at speed.

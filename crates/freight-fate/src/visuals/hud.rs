@@ -587,6 +587,12 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
     if hud.truck_damage >= 60.0 {
         lights.push(("CHECK ENGINE".into(), AMBER));
     }
+    match (view.lanes.blocked_left, view.lanes.blocked_right) {
+        (true, true) => lights.push(("TRAFFIC BOTH SIDES".into(), AMBER)),
+        (true, false) => lights.push(("TRAFFIC LEFT".into(), AMBER)),
+        (false, true) => lights.push(("TRAFFIC RIGHT".into(), AMBER)),
+        _ => {}
+    }
     let lane_line = format!(
         "{} lane  ·  lane keeping {}",
         hud.lane_name, hud.lane_assist
@@ -790,6 +796,25 @@ fn radar(p: &mut Painter, view: &DriveView, x: f32, y: f32, w: f32, h: f32, u: f
         let vw = (lane_w * 0.42).min(8.0 * u);
         let c = if v.braking { RED } else { c };
         p.round_rect(vx - vw * 0.5, vy - len, vw, len, 2.0 * u, c);
+    }
+    // A lane beside the rig that traffic holds: shaded beside it,
+    // matching the blind-spot lights on the mirrors.
+    for (blocked, lane) in [
+        (view.lanes.blocked_left, view.lanes.truck_lane + 1),
+        (view.lanes.blocked_right, view.lanes.truck_lane - 1),
+    ] {
+        if blocked && (0..lanes).contains(&lane) {
+            let cx = lane_x(lane);
+            let top = truck_y - 14.0 * u;
+            p.round_rect(
+                cx - lane_w * 0.46,
+                top,
+                lane_w * 0.92,
+                (y + h - 4.0 * u - top).min(40.0 * u),
+                3.0 * u,
+                AMBER.alpha(0.35),
+            );
+        }
     }
     // The rig: cab at the marker, trailer behind it.
     let tx = lane_x(view.lanes.truck_lane) + view.lanes.offset_ft / 12.0 * lane_w;

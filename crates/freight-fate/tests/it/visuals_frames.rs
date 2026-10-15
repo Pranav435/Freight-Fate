@@ -138,7 +138,7 @@ fn a_menu_over_the_drive_is_an_overlay_and_freezes_the_road() {
 }
 
 /// Draw `scene` at `size` through the software renderer and save it.
-fn shoot(
+pub(crate) fn shoot(
     visuals: &mut Visuals,
     scene: Scene,
     log: &MessageLog,

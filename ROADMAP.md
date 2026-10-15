@@ -2971,6 +2971,15 @@ the display only reads the game state; it never feeds anything back.
   nothing is drawn while the window is minimized or, on a Mac, fully
   covered (AppKit's occlusion state; SDL 2.26 does not report it). The
   display can be turned off outright.
+- Playable by sight: `visuals_play` drives two real stretches with speech
+  ignored and every assist off (lane keeping off, curve assist off,
+  emergency braking off), deciding every key press from the display's
+  capture alone -- a 40 mph mountain bend behind a slow car, and a pass on
+  a two-lane interstate. It found one thing the picture lacked: the game
+  holds a quarter-mile footprint behind each vehicle for sideswipes, so a
+  car drawn a few hundred feet back still blocked the lane. Blind-spot
+  lights on the mirrors and a shaded radar lane now read that same
+  clearance check.
 - Memory: `music.pak` (about 380 MB in the Mac download) was read whole
   into memory at launch. It is now opened like `channel3000.pak` and each
   track is read when it starts.

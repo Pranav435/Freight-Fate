@@ -8,6 +8,8 @@
 
 - **The dashboard in the game window shows speed, the limit, gear, fuel, air, damage and traffic.** Your next turn and bend show above it.
 
+- **Amber lights on the truck's mirrors show when traffic holds the lane beside you.** Change lanes once the light on that side goes out.
+
 - **Captions show what the game says for a few seconds.** Menus appear as a large-print panel with the choice highlighted.
 
 - **A Visual display setting turns the window's drawing off to save battery.** It is under Settings, Gameplay, Controls; speech and sound stay the same.
