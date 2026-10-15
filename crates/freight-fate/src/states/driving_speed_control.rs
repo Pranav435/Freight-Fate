@@ -727,7 +727,20 @@ impl DrivingState {
             // milepost puts the throttle back on mid-turn, so a run of corners
             // at one number holds to the far side of the last of them.
             let until = cue.at_mi + TURN_COMMIT_TAIL_MI;
-            if in_window {
+            // A hold left over from a corner the truck is already past
+            // (its tail runs on so the throttle stays off mid-turn) gives way
+            // to the next corner's own number, higher or lower: a 792 ft tail
+            // holding a right's 9.6 through a left 633 ft on coasted the
+            // truck to 8.7 for a 13.4 corner.
+            let past_held_corner = demand.as_ref().is_some_and(|held| {
+                held.2 == "turn"
+                    && position >= held.0 - TURN_COMMIT_TAIL_MI
+                    && cue.at_mi < held.0
+                    && held.0 < until
+            });
+            if past_held_corner {
+                demand = Some((until, advise, "turn".to_string()));
+            } else if in_window {
                 match demand.as_mut() {
                     None => demand = Some((until, advise, "turn".to_string())),
                     Some(current) => {

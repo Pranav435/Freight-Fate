@@ -921,6 +921,20 @@ fn left_then_right(
     ff_core::sim::trip_models::NavigationCue,
     ff_core::sim::trip_models::NavigationCue,
 ) {
+    two_corners(harness, "left", gap_mi, "right", second_deg)
+}
+
+/// [`left_then_right`] with the sides given.
+fn two_corners(
+    harness: &mut PlaytestHarness,
+    first_side: &str,
+    gap_mi: f64,
+    second_side: &str,
+    second_deg: f64,
+) -> (
+    ff_core::sim::trip_models::NavigationCue,
+    ff_core::sim::trip_models::NavigationCue,
+) {
     harness.with_drive(|d, _| {
         let city = d.trip.route.cities[0].clone();
         let legs = vec![
@@ -936,7 +950,7 @@ fn left_then_right(
                 &city,
                 gap_mi,
                 "North Michigan Street",
-                "Turn left onto North Michigan Street.",
+                &format!("Turn {first_side} onto North Michigan Street."),
                 30.0,
             )
             .with_turn_deg(90.0)
@@ -945,7 +959,7 @@ fn left_then_right(
                 &city,
                 0.6,
                 "West Sample Street",
-                "Turn right onto West Sample Street.",
+                &format!("Turn {second_side} onto West Sample Street."),
                 30.0,
             )
             .with_turn_deg(second_deg)
@@ -1135,4 +1149,31 @@ fn test_a_same_road_bend_keeps_the_posted_limit_and_a_slight_turn_is_capped() {
             assert_eq!(speed, ff_core::data::corners::BEND_CAP_MPH);
         }
     }
+}
+
+#[test]
+fn test_a_left_600_ft_after_a_right_runs_its_own_number() {
+    // The right's hold runs 792 ft past it; a left 600 ft on must still get
+    // its own, higher number rather than coast under the right's.
+    let mut harness = keeper_drive("Right Then Left");
+    let (right, left) = two_corners(&mut harness, "right", 600.0 / 5280.0, "left", 90.0);
+    press(&mut harness, Key::K, None);
+    let (right_target, left_target) =
+        harness.read_drive(|d| (d.turn_speed_mph(&right), d.turn_speed_mph(&left)));
+    let speeds = speeds_at(&mut harness, &[right.at_mi, left.at_mi], left.at_mi + 0.01);
+    println!(
+        "right target {right_target:.1} actual {:.1}; left target {left_target:.1} actual {:.1}",
+        speeds[0], speeds[1]
+    );
+    assert!(
+        speeds[0] <= right_target + 1.0,
+        "took the right at {:.1}",
+        speeds[0]
+    );
+    assert!(
+        (speeds[1] - left_target).abs() <= 1.0,
+        "took the left at {:.1} against its {left_target:.1}",
+        speeds[1]
+    );
+    assert_eq!(harness.read_drive(|d| d.turn_miss_count), 0);
 }
