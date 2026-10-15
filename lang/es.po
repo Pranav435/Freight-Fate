@@ -31387,6 +31387,16 @@ msgstr "El control de velocidad se reanuda."
 msgid "turn"
 msgstr "turn"
 
+msgid "Cruise"
+msgstr ""
+
+msgid "Speed keeper"
+msgstr "Limitador de velocidad"
+
+#. placeholders: {system}, {held}
+msgid "{system} held to {held} for chains."
+msgstr ""
+
 msgid ""
 "Up and down arrows review each line; Home and End jump to the first and "
 "last. Enter repeats a line or activates a button. Escape returns to the map."
@@ -33948,9 +33958,6 @@ msgstr ""
 #. one sentence of a longer line
 msgid "Press {control_upcoming} to list the next few either way."
 msgstr "Pulsa {control_upcoming} para oír las próximas de todos modos."
-
-msgid "Speed keeper"
-msgstr "Limitador de velocidad"
 
 #. placeholders: {control_cruise}
 #. one sentence of a longer line

@@ -27357,6 +27357,16 @@ msgstr ""
 msgid "turn"
 msgstr ""
 
+msgid "Cruise"
+msgstr ""
+
+msgid "Speed keeper"
+msgstr ""
+
+#. placeholders: {system}, {held}
+msgid "{system} held to {held} for chains."
+msgstr ""
+
 msgid ""
 "Up and down arrows review each line; Home and End jump to the first and "
 "last. Enter repeats a line or activates a button. Escape returns to the map."
@@ -29605,9 +29615,6 @@ msgstr ""
 #. placeholders: {control_upcoming}
 #. one sentence of a longer line
 msgid "Press {control_upcoming} to list the next few either way."
-msgstr ""
-
-msgid "Speed keeper"
 msgstr ""
 
 #. placeholders: {control_cruise}
