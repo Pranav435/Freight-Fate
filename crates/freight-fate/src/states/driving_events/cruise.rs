@@ -651,12 +651,12 @@ impl DrivingState {
         let position = self.trip.position_mi;
         let v = self.trip.truck.velocity_mps;
         let mut needed = 0.0f64;
-        for cue in self.turn_cues_in_play() {
+        for (cue, target) in self.corner_targets_ahead() {
             let ahead_m = (cue.at_mi - position) * 1609.344;
             if ahead_m <= 0.0 {
                 continue;
             }
-            let turn = self.turn_speed_mph(&cue) / 2.23694;
+            let turn = target / 2.23694;
             if v <= turn {
                 continue;
             }
