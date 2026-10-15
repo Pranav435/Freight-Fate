@@ -299,6 +299,8 @@ pub struct DrivingState {
     pub chain_slap_said: bool,
     /// The chains were tightened once since they went on.
     pub chain_tightened: bool,
+    /// Montana carry rule: warned once per drive (no fine is verified).
+    pub chain_carry_mt_warned: bool,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,

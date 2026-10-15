@@ -500,13 +500,27 @@ pub const CHAIN_CONTROL_STATES: [&str; 9] = ["CA", "CO", "ID", "MT", "NV", "OR",
 /// (traction tires substitute only at 10,000 lb or less) all chain trucks.
 /// Colorado is the one split: Level 1 chains single-drive-axle combinations
 /// only, and Level 2 chains every truck (CDOT Commercial Vehicle Chain Law,
-/// csp.colorado.gov/chain-law-information). ID, MT, NV, UT and WY are
+/// csp.colorado.gov/chain-law-information). Wyoming Level 1 accepts snow
+/// tires or chains, and Level 2 requires chains on two tires of one drive
+/// axle (WYDOT chain law; W.S. 31-5-956(e)). ID, MT, NV and UT are
 /// UNVERIFIED and follow the general rule: trucks chain.
 pub fn rig_must_chain(state: Option<&str>, level: i64) -> bool {
     match level {
         ..=0 => false,
-        1 => state != Some("CO"),
+        1 => !matches!(state, Some("CO") | Some("WY")),
         _ => true,
+    }
+}
+
+/// The rule a chain-law sign speaks for `state` (two-letter code) at
+/// `level` (`rig_must_chain`).
+pub fn chain_law_sign_rule(state: Option<&str>, level: i64) -> &'static str {
+    match (state, level >= 2) {
+        (Some("WY"), true) => "level 2: chains required on two tires of one drive axle",
+        (_, true) => "level 2: chains required on all trucks",
+        (Some("CO"), false) => "level 1: chains required on single-drive-axle trucks",
+        (Some("WY"), false) => "level 1: snow tires or chains required",
+        (_, false) => "level 1: chains required on trucks",
     }
 }
 
@@ -518,7 +532,7 @@ pub const CHAIN_LAW_LEAD_MI: f64 = 1.0;
 
 /// The highways each sourced state runs commercial chain controls on. A
 /// steep run in one of these states makes a chain-law area only on one of
-/// its listed highways; a state not listed (ID, MT, NV, UT, WY) keeps the
+/// its listed highways; a state not listed (MT, NV, UT, WY) keeps the
 /// grade-only rule, UNVERIFIED until their own route lists are read. Leg
 /// highways carry no mileposts, so the listed mileposts below are matched by
 /// highway plus the steep-grade rule, not by milepost.
@@ -531,9 +545,10 @@ pub const CHAIN_LAW_LEAD_MI: f64 = 1.0;
 /// - WA: WAC 204-24-050(2)(i): I-90 MP 32-101, I-82 MP 3-26, US-2 MP 36-108,
 ///   US-12 MP 135-187, US-97 (two stretches), SR-410, SR-20, SR-155, SR-970,
 ///   SR-14 and SR-542.
+/// - ID: I-90 (Fourth of July and Lookout passes) and US-12 (Lolo Pass).
 /// - OR: ODOT snow zones on I-84 Cabbage Hill, I-5 Siskiyou, US-26 and
 ///   OR-58 (Willamette Pass).
-pub const CHAIN_CORRIDORS: [(&str, &[&str]); 4] = [
+pub const CHAIN_CORRIDORS: [(&str, &[&str]); 5] = [
     (
         "CO",
         &[
@@ -549,6 +564,7 @@ pub const CHAIN_CORRIDORS: [(&str, &[&str]); 4] = [
         ],
     ),
     ("OR", &["I-84", "I-5", "US-26", "OR-58"]),
+    ("ID", &["I-90", "US-12"]),
 ];
 
 /// Whether `highway` in `state` can carry a chain law (`CHAIN_CORRIDORS`).
@@ -565,6 +581,12 @@ pub fn on_chain_corridor(state: &str, highway: &str) -> bool {
 pub const CO_CHAIN_CARRY_CORRIDORS: [&str; 7] = [
     "I-70", "CO-9", "US-40", "US-50", "US-160", "US-285", "US-550",
 ];
+
+/// Montana: trucks of 26,001 lb or more must carry chains from October 1 to
+/// April 30 (MCA 61-9-436). No fine is verified, so the game only warns.
+pub fn in_mt_chain_carry_season(month: u32) -> bool {
+    !(5..=9).contains(&month)
+}
 
 /// September 1 to May 31: Colorado's chain-carry season.
 pub fn in_co_chain_carry_season(month: u32) -> bool {

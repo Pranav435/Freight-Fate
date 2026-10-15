@@ -13998,15 +13998,6 @@ msgstr "aproximación a la instalación"
 msgid "destination approach"
 msgstr "aproximación al destino"
 
-msgid "level 2: chains required on all trucks"
-msgstr ""
-
-msgid "level 1: chains required on single-drive-axle trucks"
-msgstr ""
-
-msgid "level 1: chains required on trucks"
-msgstr ""
-
 msgid " Chain-up area on the right."
 msgstr " Zona para poner cadenas a la derecha."
 
@@ -14022,6 +14013,21 @@ msgstr "default"
 
 msgid "max"
 msgstr "max"
+
+msgid "level 2: chains required on two tires of one drive axle"
+msgstr ""
+
+msgid "level 2: chains required on all trucks"
+msgstr ""
+
+msgid "level 1: chains required on single-drive-axle trucks"
+msgstr ""
+
+msgid "level 1: snow tires or chains required"
+msgstr ""
+
+msgid "level 1: chains required on trucks"
+msgstr ""
 
 msgid "hazard"
 msgstr "peligro"
@@ -31809,6 +31815,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"Montana requires trucks to carry chains from October 1 to April 30. You "
+"have none."
+msgstr ""
+
+msgid ""
 "Colorado requires chains aboard on this road from September 1 to May 31. "
 "You have none."
 msgstr ""
@@ -36960,9 +36971,9 @@ msgstr ""
 
 msgid ""
 "Chain laws require chains on a truck at every level. Winter tires don't "
-"count for a semi. The one exception is Colorado level one, which chains "
-"only single-drive-axle trucks, so your tandem-drive rig chains there at "
-"level two. Signs announce the requirement before the chain-up area."
+"count for a semi. The exceptions are level one in Colorado, which chains "
+"only single-drive-axle trucks, and in Wyoming, which accepts snow tires. "
+"Signs announce the requirement before the chain-up area."
 msgstr ""
 
 msgid ""
