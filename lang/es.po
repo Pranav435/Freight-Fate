@@ -25403,6 +25403,115 @@ msgstr ""
 msgid "{state_word} It is {clock_text}."
 msgstr "{state_word} Son las {clock_text}."
 
+#. one sentence of a longer line
+msgid "Chain broke."
+msgstr "Se ha roto una cadena."
+
+#. placeholders: {f}
+msgid ""
+"Chain broke. Pulling over to fix it with a spare link, about {f} minutes on "
+"duty."
+msgstr ""
+"Se ha roto una cadena. Te detienes en el arcén para arreglarla con un "
+"eslabón de repuesto, unos {f} minutos de servicio."
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Pulling over to fix it with a spare link, about {f} minutes on duty."
+msgstr ""
+"Te detienes en el arcén para arreglarla con un eslabón de repuesto, unos "
+"{f} minutos de servicio."
+
+#. one sentence of a longer line
+msgid "Chain slapping."
+msgstr "Una cadena golpea."
+
+#. placeholders: {f}
+msgid "Chain slapping. Pulling over to tighten, about {f} minutes on duty."
+msgstr ""
+"Una cadena golpea. Te detienes en el arcén para tensarla, unos {f} minutos "
+"de servicio."
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Pulling over to tighten, about {f} minutes on duty."
+msgstr ""
+"Te detienes en el arcén para tensarla, unos {f} minutos de servicio."
+
+msgid "No chains aboard. Facility stopping can't chain you up."
+msgstr "No llevas cadenas. La asistencia de parada no puede ponértelas."
+
+#. placeholders: {f}, {f2}
+#. one sentence of a longer line
+msgid ""
+"Chain-up needs about {f} minutes and your 14-hour window has {f2} left."
+msgstr ""
+"Poner las cadenas lleva unos {f} minutos y a tu jornada de 14 horas le "
+"quedan {f2}."
+
+#. placeholders: {f}, {f2}
+msgid ""
+"Chain-up needs about {f} minutes and your 14-hour window has {f2} left. "
+"Find a place to stop."
+msgstr ""
+"Poner las cadenas lleva unos {f} minutos y a tu jornada de 14 horas le "
+"quedan {f2}. Busca un sitio para parar."
+
+#. one sentence of a longer line
+msgid "Find a place to stop."
+msgstr "Busca un sitio para parar."
+
+#. one sentence of a longer line
+msgid "Chain-up area ahead."
+msgstr "Zona para poner cadenas más adelante."
+
+#. placeholders: {f}
+msgid ""
+"Chain-up area ahead. Stopping to put chains on, about {f} minutes on duty."
+msgstr ""
+"Zona para poner cadenas más adelante. Te detienes para ponerlas, unos {f} "
+"minutos de servicio."
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Stopping to put chains on, about {f} minutes on duty."
+msgstr "Te detienes para ponerlas, unos {f} minutos de servicio."
+
+#. placeholders: {distance_text}
+#. one sentence of a longer line
+msgid "Another chain area in {distance_text}."
+msgstr "Otra zona de cadenas a {distance_text}."
+
+#. one sentence of a longer line
+msgid "Leaving chains on."
+msgstr "Dejas las cadenas puestas."
+
+#. placeholders: {distance_text}
+msgid "Leaving chains on. Another chain area in {distance_text}."
+msgstr "Dejas las cadenas puestas. Otra zona de cadenas a {distance_text}."
+
+#. one sentence of a longer line
+msgid "Chain-off area."
+msgstr "Zona para quitar cadenas."
+
+#. placeholders: {f}
+msgid "Chain-off area. Taking chains off, about {f} minutes on duty."
+msgstr ""
+"Zona para quitar cadenas. Te detienes para quitarlas, unos {f} minutos de "
+"servicio."
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Taking chains off, about {f} minutes on duty."
+msgstr "Te detienes para quitarlas, unos {f} minutos de servicio."
+
+msgid "Chain stop canceled. Chains are yours."
+msgstr "Parada para cadenas cancelada. Las cadenas quedan en tus manos."
+
+#. placeholders: {text}
+msgid "{text} Release the parking brake to go on."
+msgstr "{text} Suelta el freno de estacionamiento para seguir."
+
 #. placeholders: {street}, {first_corner}, {distance_text}
 msgid "{street}.{first_corner} {distance_text} to the facility gate."
 msgstr ""

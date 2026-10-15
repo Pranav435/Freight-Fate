@@ -576,6 +576,7 @@ impl DrivingState {
         self.jake_slip_active = slipping;
         if self.trip.truck.chains_just_snapped {
             self.trip.truck.chains_just_snapped = false;
+            self.chain_assist_snapped = true;
             ctx.say_event_with(
                 "A tire chain broke and is flailing. Slow down and pull over to check it.",
                 SayEvent::new().category(SpeechCategory::Safety),

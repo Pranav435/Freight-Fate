@@ -288,6 +288,11 @@ impl DrivingState {
             .keeper_snub
             .max(self.aeb_brake)
             .max(self.destination_assist_brake)
+            .max(if self.chain_stop.is_some() {
+                self.chain_stop_brake
+            } else {
+                0.0
+            })
             .max(ramp_terminal_brake)
             .max(decel_lane_brake)
             .max(self.curve_servo.as_ref().map_or(0.0, |servo| servo.brake))
@@ -485,6 +490,9 @@ impl DrivingState {
         // while the assist's own bookkeeping said 0.40. Every earlier fix to
         // this assist tuned a number against a pedal the truck never felt.
         self.update_destination_approach_assist(ctx);
+        // Facility stopping assistance's roadside chain stops, for the same
+        // reason: the brake it holds has to reach the physics.
+        self.update_chain_stop_assist(ctx, braking_key || emergency || hand_accelerating);
         // Curve assistance's approach servo, for the same reason: its
         // pedal has to be set where the physics will see it, and after cruise
         // and the keeper so the max it applies is the one that stands.

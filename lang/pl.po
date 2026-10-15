@@ -22163,6 +22163,100 @@ msgstr ""
 msgid "{state_word} It is {clock_text}."
 msgstr ""
 
+#. one sentence of a longer line
+msgid "Chain broke."
+msgstr ""
+
+#. placeholders: {f}
+msgid ""
+"Chain broke. Pulling over to fix it with a spare link, about {f} minutes on "
+"duty."
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Pulling over to fix it with a spare link, about {f} minutes on duty."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Chain slapping."
+msgstr ""
+
+#. placeholders: {f}
+msgid "Chain slapping. Pulling over to tighten, about {f} minutes on duty."
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Pulling over to tighten, about {f} minutes on duty."
+msgstr ""
+
+msgid "No chains aboard. Facility stopping can't chain you up."
+msgstr ""
+
+#. placeholders: {f}, {f2}
+#. one sentence of a longer line
+msgid ""
+"Chain-up needs about {f} minutes and your 14-hour window has {f2} left."
+msgstr ""
+
+#. placeholders: {f}, {f2}
+msgid ""
+"Chain-up needs about {f} minutes and your 14-hour window has {f2} left. "
+"Find a place to stop."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Find a place to stop."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Chain-up area ahead."
+msgstr ""
+
+#. placeholders: {f}
+msgid ""
+"Chain-up area ahead. Stopping to put chains on, about {f} minutes on duty."
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Stopping to put chains on, about {f} minutes on duty."
+msgstr ""
+
+#. placeholders: {distance_text}
+#. one sentence of a longer line
+msgid "Another chain area in {distance_text}."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Leaving chains on."
+msgstr ""
+
+#. placeholders: {distance_text}
+msgid "Leaving chains on. Another chain area in {distance_text}."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Chain-off area."
+msgstr ""
+
+#. placeholders: {f}
+msgid "Chain-off area. Taking chains off, about {f} minutes on duty."
+msgstr ""
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Taking chains off, about {f} minutes on duty."
+msgstr ""
+
+msgid "Chain stop canceled. Chains are yours."
+msgstr ""
+
+#. placeholders: {text}
+msgid "{text} Release the parking brake to go on."
+msgstr ""
+
 #. placeholders: {street}, {first_corner}, {distance_text}
 msgid "{street}.{first_corner} {distance_text} to the facility gate."
 msgstr ""
