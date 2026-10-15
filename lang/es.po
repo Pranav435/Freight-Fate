@@ -31283,30 +31283,45 @@ msgstr "Entrando en una zona con obligación de cadenas activa sin {need}."
 msgid "No chains under a level {level} chain law"
 msgstr "Sin cadenas con obligación de cadenas de nivel {level}"
 
-#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+msgid ""
+"You can't go on until your chains are on. Put them on from the pause menu."
+msgstr ""
+"No puedes seguir hasta que pongas las cadenas. Ponlas desde el menú de "
+"pausa."
+
+msgid "You have no chains aboard. Buy a set at the next garage."
+msgstr "No llevas cadenas. Compra un juego en el próximo taller."
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
 #. one sentence of a longer line
 msgid ""
-"An officer waves you onto the scale apron and writes a chain-law citation, "
-"{grouped} dollars.{construction_zone_fine_clause} You have {grouped2} "
-"dollars."
+"An officer stops you and writes a chain-law citation, {grouped} "
+"dollars.{construction_zone_fine_clause} {after} You have {grouped2} dollars."
 msgstr ""
-"Un agente te hace pasar a la explanada de la báscula y te pone una multa "
-"por no llevar cadenas, {grouped} dólares.{construction_zone_fine_clause} "
-"Tienes {grouped2} dólares."
+"Un agente te detiene y te multa por la ley de cadenas: {grouped} "
+"dólares.{construction_zone_fine_clause} {after} Tienes {grouped2} dólares."
 
 #. one sentence of a longer line
 msgid "Chain checkpoint."
 msgstr "Control de cadenas."
 
-#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
 msgid ""
-"Chain checkpoint. An officer waves you onto the scale apron and writes a "
-"chain-law citation, {grouped} dollars.{construction_zone_fine_clause} You "
-"have {grouped2} dollars."
+"Chain checkpoint. An officer stops you and writes a chain-law citation, "
+"{grouped} dollars.{construction_zone_fine_clause} {after} You have "
+"{grouped2} dollars."
 msgstr ""
-"Control de cadenas. Un agente te hace pasar a la explanada de la báscula y "
-"te pone una multa por no llevar cadenas, {grouped} "
-"dólares.{construction_zone_fine_clause} Tienes {grouped2} dólares."
+"Control de cadenas. Un agente te detiene y te multa por la ley de cadenas: "
+"{grouped} dólares.{construction_zone_fine_clause} {after} Tienes {grouped2} "
+"dólares."
+
+msgid "Chains on. The officer waves you back onto the highway."
+msgstr "Cadenas puestas. El agente te indica que vuelvas a la carretera."
+
+msgid ""
+"Held at the chain checkpoint. Put your chains on from the pause menu."
+msgstr ""
+"Retenido en el control de cadenas. Pon las cadenas desde el menú de pausa."
 
 msgid "Across the centerline, in the oncoming lane!"
 msgstr "¡Has cruzado la línea central, estás en el carril contrario!"
@@ -39917,6 +39932,24 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid ""
+#~ "An officer waves you onto the scale apron and writes a chain-law citation, "
+#~ "{grouped} dollars.{construction_zone_fine_clause} You have {grouped2} "
+#~ "dollars."
+#~ msgstr ""
+#~ "Un agente te hace pasar a la explanada de la báscula y te pone una multa "
+#~ "por no llevar cadenas, {grouped} dólares.{construction_zone_fine_clause} "
+#~ "Tienes {grouped2} dólares."
+
+#~ msgid ""
+#~ "Chain checkpoint. An officer waves you onto the scale apron and writes a "
+#~ "chain-law citation, {grouped} dollars.{construction_zone_fine_clause} You "
+#~ "have {grouped2} dollars."
+#~ msgstr ""
+#~ "Control de cadenas. Un agente te hace pasar a la explanada de la báscula y "
+#~ "te pone una multa por no llevar cadenas, {grouped} "
+#~ "dólares.{construction_zone_fine_clause} Tienes {grouped2} dólares."
 
 #~ msgid "level 2: chains required"
 #~ msgstr "nivel 2: cadenas obligatorias"

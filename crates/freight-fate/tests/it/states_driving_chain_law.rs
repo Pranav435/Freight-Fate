@@ -412,6 +412,93 @@ fn test_the_chain_over_speed_line_is_a_sentence_with_its_unit() {
 }
 
 #[test]
+fn test_a_cited_truck_with_chains_aboard_is_held_until_they_are_on() {
+    let mut app = TestApp::new();
+    let drive = law_drive(
+        &mut app,
+        Law {
+            seed: cited_seed(),
+            ..Law::default()
+        },
+    );
+    {
+        let p = app.ctx.profile.as_mut().expect("a career");
+        p.set_chains_owned(true);
+        p.set_chain_wear_pct(0.0);
+    }
+    with_drive(&drive, |d| d.trip.truck.chain_wear_pct = 0.0);
+    tick(&mut app, &drive);
+    assert!(
+        spoken(&app)
+            .iter()
+            .any(|s| s.contains("can't go on until your chains are on")),
+        "{:?}",
+        spoken(&app)
+    );
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
+    assert!(with_drive(&drive, |d| d.trip.truck.parking_brake));
+
+    // Releasing the brake and rolling: held again.
+    with_drive(&drive, |d| {
+        d.trip.truck.parking_brake = false;
+        d.trip.truck.velocity_mps = 5.0;
+    });
+    app.clear_speech();
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.update_chain_checkpoint_hold(ctx)
+    });
+    app.ctx.run_deferred();
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.velocity_mps), 0.0);
+    assert!(with_drive(&drive, |d| d.trip.truck.parking_brake));
+    assert!(spoken(&app)
+        .iter()
+        .any(|s| s.starts_with("Held at the chain checkpoint")));
+
+    // Chains on: waved through.
+    with_drive(&drive, |d| d.trip.truck.chains_on = true);
+    drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.update_chain_checkpoint_hold(ctx)
+    });
+    assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
+}
+
+#[test]
+fn test_a_cited_truck_with_no_chains_aboard_is_not_held() {
+    let mut app = TestApp::new();
+    let drive = law_drive(
+        &mut app,
+        Law {
+            seed: cited_seed(),
+            ..Law::default()
+        },
+    );
+    app.ctx
+        .profile
+        .as_mut()
+        .expect("a career")
+        .set_chains_owned(false);
+    tick(&mut app, &drive);
+    assert!(
+        spoken(&app)
+            .iter()
+            .any(|s| s.contains("You have no chains aboard")),
+        "{:?}",
+        spoken(&app)
+    );
+    assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
+}
+
+#[test]
+fn test_california_always_staffs_its_checkpoints() {
+    use freight_fate::states::driving_core::chain_law_checkpoint_chance;
+    assert_eq!(chain_law_checkpoint_chance(Some("CA")), 1.0);
+    assert_eq!(
+        chain_law_checkpoint_chance(Some("CO")),
+        CHAIN_LAW_CHECKPOINT_CHANCE
+    );
+}
+
+#[test]
 fn test_wyoming_level_1_warns_and_cites_a_truck_on_all_season_tires() {
     let mut app = TestApp::new();
     let drive = a_drive_between(&mut app, "Cheyenne", "Laramie", "Wyoming");
@@ -446,7 +533,9 @@ fn test_wyoming_level_1_warns_and_cites_a_truck_on_all_season_tires() {
         "{lines:?}"
     );
     assert!(
-        lines.iter().any(|s| s.contains("chain-law citation")),
+        lines
+            .iter()
+            .any(|s| s.contains("chain-law citation, 250 dollars")),
         "{lines:?}"
     );
     drop(app);

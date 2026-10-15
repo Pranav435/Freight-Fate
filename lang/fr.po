@@ -27455,23 +27455,36 @@ msgstr ""
 msgid "No chains under a level {level} chain law"
 msgstr ""
 
-#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+msgid ""
+"You can't go on until your chains are on. Put them on from the pause menu."
+msgstr ""
+
+msgid "You have no chains aboard. Buy a set at the next garage."
+msgstr ""
+
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
 #. one sentence of a longer line
 msgid ""
-"An officer waves you onto the scale apron and writes a chain-law citation, "
-"{grouped} dollars.{construction_zone_fine_clause} You have {grouped2} "
-"dollars."
+"An officer stops you and writes a chain-law citation, {grouped} "
+"dollars.{construction_zone_fine_clause} {after} You have {grouped2} dollars."
 msgstr ""
 
 #. one sentence of a longer line
 msgid "Chain checkpoint."
 msgstr ""
 
-#. placeholders: {grouped}, {construction_zone_fine_clause}, {grouped2}
+#. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
 msgid ""
-"Chain checkpoint. An officer waves you onto the scale apron and writes a "
-"chain-law citation, {grouped} dollars.{construction_zone_fine_clause} You "
-"have {grouped2} dollars."
+"Chain checkpoint. An officer stops you and writes a chain-law citation, "
+"{grouped} dollars.{construction_zone_fine_clause} {after} You have "
+"{grouped2} dollars."
+msgstr ""
+
+msgid "Chains on. The officer waves you back onto the highway."
+msgstr ""
+
+msgid ""
+"Held at the chain checkpoint. Put your chains on from the pause menu."
 msgstr ""
 
 msgid "Across the centerline, in the oncoming lane!"

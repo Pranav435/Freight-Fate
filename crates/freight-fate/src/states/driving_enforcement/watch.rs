@@ -2,7 +2,7 @@
 //! per-frame draw that turns an observation into a pull-over.
 
 use ff_core::models::enforcement::{
-    CHAIN_LAW_FINE, FOLLOWING_TOO_CLOSE_FINE, LANE_MISUSE_FINE, LIGHTS_FINE, UNSAFE_DAMAGE_FINE,
+    chain_law_fine, FOLLOWING_TOO_CLOSE_FINE, LANE_MISUSE_FINE, LIGHTS_FINE, UNSAFE_DAMAGE_FINE,
 };
 use ff_core::pyfmt::{py_str_float, round_py_n};
 use ff_core::pyrandom::PyRandom;
@@ -547,7 +547,7 @@ impl DrivingState {
                     "A trooper on this {reason} saw you running the chain control without chains \
                      on the drives."
                 ),
-                CHAIN_LAW_FINE,
+                chain_law_fine(self.trip.state_code_at(self.trip.position_mi).as_deref()),
                 "Back on the highway. Chain up before the next control.".to_string(),
             );
         }

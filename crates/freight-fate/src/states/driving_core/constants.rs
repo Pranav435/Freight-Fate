@@ -66,6 +66,19 @@ pub const CHAIN_REMOVE_FATIGUE: f64 = 2.0;
 // bottom of the grade is staffed often enough that gambling is a bad trade.
 // What the citation costs is priced in models/enforcement with every other fine.
 pub const CHAIN_LAW_CHECKPOINT_CHANCE: f64 = 0.6;
+// California staffs every active R-control at a fixed checkpoint, and
+// screening ("TS" on the Caltrans chain-control chart) stops every truck.
+// The other states' staffing is UNVERIFIED and keeps the 0.6 roll.
+pub const CHAIN_LAW_CHECKPOINT_CHANCE_CA: f64 = 1.0;
+
+/// How often the checkpoint chance for `state` (two-letter code).
+pub fn chain_law_checkpoint_chance(state: Option<&str>) -> f64 {
+    if state == Some("CA") {
+        CHAIN_LAW_CHECKPOINT_CHANCE_CA
+    } else {
+        CHAIN_LAW_CHECKPOINT_CHANCE
+    }
+}
 // Running the ramp-end red or stop sign is seen when someone is watching the
 // crossroad -- a patrol car on the corner, a camera on the mast arm -- and
 // most of the time nobody is. Same shape as CHAIN_LAW_CHECKPOINT_CHANCE: a

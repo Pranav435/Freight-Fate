@@ -1,7 +1,7 @@
 //! Standing physical conditions: hot brakes, the destination approach
 //! assist, the traction states, and the chain law.
 
-use ff_core::models::enforcement::CHAIN_LAW_FINE;
+use ff_core::models::enforcement::chain_law_fine;
 use ff_core::pyfmt::fmt_grouped;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::vehicle::MIN_STOPPING_DECEL_MPS2;
@@ -632,12 +632,13 @@ impl DrivingState {
         self.chain_law_cited.insert(key);
         let mut rng =
             PyRandom::new_from_str(&format!("{}:chain-law:{area}:{level}", self.trip_seed));
-        if rng.random() >= CHAIN_LAW_CHECKPOINT_CHANCE {
+        let state = self.trip.state_code_at(self.trip.position_mi);
+        if rng.random() >= chain_law_checkpoint_chance(state.as_deref()) {
             return;
         }
         let zone = self.trip.in_construction_zone();
         let fine = citation_fine(
-            CHAIN_LAW_FINE,
+            chain_law_fine(state.as_deref()),
             career_citations(profile_of(ctx)),
             zone,
             None,
@@ -660,12 +661,23 @@ impl DrivingState {
             &format!("No chains under a level {level} chain law"),
         );
         ctx.audio.play("ui/error");
+        // A real checkpoint doesn't fine and wave you on: California
+        // prohibits entering a control without devices (13 CCR 1072(h)) and
+        // screening stops every truck. With a set aboard, the truck is held
+        // on the apron until it is on (`update_chain_checkpoint_hold`).
+        let aboard = profile_of(ctx).chains_owned() && self.trip.truck.chain_wear_pct < 100.0;
+        let after = if aboard {
+            self.hold_at_chain_checkpoint(ctx);
+            "You can't go on until your chains are on. Put them on from the pause menu."
+        } else {
+            "You have no chains aboard. Buy a set at the next garage."
+        };
         // A citation is money, not an act-now warning: ROUTE's never-dropped
         // queue instead of an interrupt that could erase one.
         ctx.say_event_with(
             format!(
-                "Chain checkpoint. An officer waves you onto the scale apron and writes a \
-                 chain-law citation, {} dollars.{} You have {} dollars.",
+                "Chain checkpoint. An officer stops you and writes a chain-law citation, {} \
+                 dollars.{} {after} You have {} dollars.",
                 fmt_grouped(fine, 0),
                 construction_zone_fine_clause(zone),
                 fmt_grouped(money, 0)
@@ -674,5 +686,41 @@ impl DrivingState {
                 .priority(EventPriority::Route)
                 .category(SpeechCategory::Money),
         );
+    }
+
+    /// Stop the truck on the checkpoint apron with the parking brake set.
+    pub fn hold_at_chain_checkpoint(&mut self, ctx: &mut GameContext) {
+        self.chain_checkpoint_hold = true;
+        let truck = &mut self.trip.truck;
+        truck.velocity_mps = 0.0;
+        truck.throttle = 0.0;
+        truck.brake = 1.0;
+        truck.set_parking_brake();
+        self.cancel_cruise_for_parking_brake(ctx);
+    }
+
+    /// Keep a held truck on the apron until its chains are on, or the law
+    /// lifts. Releasing the brake to drive off sets it again and says why.
+    pub fn update_chain_checkpoint_hold(&mut self, ctx: &mut GameContext) {
+        if !self.chain_checkpoint_hold {
+            return;
+        }
+        if self.trip.truck.chains_on || self.trip.chain_law_level() == 0 {
+            self.chain_checkpoint_hold = false;
+            if self.trip.truck.chains_on {
+                ctx.say_event_with(
+                    "Chains on. The officer waves you back onto the highway.",
+                    SayEvent::new().category(SpeechCategory::Navigation),
+                );
+            }
+            return;
+        }
+        if !self.trip.truck.parking_brake || self.trip.truck.velocity_mps > 0.0 {
+            self.hold_at_chain_checkpoint(ctx);
+            ctx.say_event_with(
+                "Held at the chain checkpoint. Put your chains on from the pause menu.",
+                SayEvent::new().category(SpeechCategory::Navigation),
+            );
+        }
     }
 }
