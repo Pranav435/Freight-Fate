@@ -42843,9 +42843,9 @@
             "road": "I-95 George Washington Bridge upper level",
             "authority": "Port Authority of New York and New Jersey",
             "method": "open_road",
-            "amount": 120.85,
+            "amount": 113.35,
             "estimated": false,
-            "source": "Port Authority of New York and New Jersey commercial toll rates effective July 2026, 5 axles, E-ZPass peak 120.85 (off-peak 108.35, overnight 100.85), Tolls by Mail 128.35; collected entering New York only; read 2026-10-14: https://www.panynj.gov/bridges-tunnels/en/tolls.html",
+            "source": "Port Authority of New York and New Jersey commercial toll rates effective July 2026, 5 axles, E-ZPass peak 113.35 (off-peak 108.35, overnight 100.85; 120.85 is the Mid-Tier rate), Tolls by Mail 128.35, matching the April 2026 Truckers' Guide; collected entering New York only; read 2026-10-14: https://www.panynj.gov/bridges-tunnels/en/tolls.html",
             "amount_plate": 128.35,
             "directions": [
               "reverse"
