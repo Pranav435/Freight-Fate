@@ -464,6 +464,7 @@ impl DrivingState {
         self.trip.traffic_manager.player_lane_target = self.lane_change_target;
         self.update_exit_preparation(ctx, dt);
         self.resume_speed_control_if_ready(ctx, braking);
+        self.apply_chain_speed_cap(ctx);
         self.update_cruise(ctx, dt, braking, hand_accelerating, clutch_disengaged);
         self.update_keeper(ctx, dt, braking, hand_accelerating, clutch_disengaged);
         // The keeper's held snub, for the same reason and by the same rule:

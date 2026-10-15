@@ -34368,6 +34368,16 @@ msgstr ""
 msgid "turn"
 msgstr ""
 
+#. placeholders: {held}
+#: crates/freight-fate/src/states/driving_speed_control.rs
+msgid "Cruise held to {held} for chains."
+msgstr ""
+
+#. placeholders: {held}
+#: crates/freight-fate/src/states/driving_speed_control.rs
+msgid "Speed keeper held to {held} for chains."
+msgstr ""
+
 #: crates/freight-fate/src/states/driving_stop_detail.rs
 msgid ""
 "Up and down arrows review each line; Home and End jump to the first and "
