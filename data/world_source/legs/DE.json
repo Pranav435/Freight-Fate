@@ -4181,7 +4181,25 @@
         }
       ],
       "divided": true,
-      "lanes": 3
+      "lanes": 3,
+      "crossings": [
+        {
+          "kind": "tunnel",
+          "name": "Fort McHenry Tunnel",
+          "hazmat": "all",
+          "bulk_flammable_banned": true,
+          "tank_banned": false,
+          "regulated_lb_limit": null,
+          "max_length_ft": null,
+          "max_width_ft": null,
+          "max_height_ft": null,
+          "hazmat_text": "Bulk gasoline, flammable liquids, explosives, radioactive and other hazardous materials may not use the Fort McHenry Tunnel.",
+          "size_text": "",
+          "source_url": "https://www.mdta.maryland.gov/TunnelRestrictionsAndVehiclePermits",
+          "access_date": "2026-10-11",
+          "basis": "Read: the MDTA tunnel restriction page bans placarded and other hazardous materials from the Fort McHenry and Baltimore Harbor tunnels. Derived: the legs are the ones whose archived road geometry passes through the tunnel's FHWA National Tunnel Inventory location. Assumed: unplacarded packaged chemicals are not refused, because the game does not model the propane container limits."
+        }
+      ]
     },
     {
       "from": "wilmington_de_us",

@@ -2904,10 +2904,17 @@ branch. The older Phase A/B plan checklists are not a live completion list.
       then a truck that arrives after the tunnel closes is logged as
       sleeper-berth time (a wait of ten hours or more as a full reset), even
       though overnight staging parking is unverified.
-- [ ] **Tunnel gate cues.** After a refusal the truck still hears the toll cue
-      and "Merge onto the tunnel" while it sits at the gate, and no cue is
+- [ ] **Tunnel gate cues.** No cue is
       spoken when the gate opens after a wait. The HOS logging for waits has
       unit tests in the tunnel module but no driving-state test yet.
+- [ ] **Event-voice reissues read as repeats.** (Found along the way,
+      2026-10-11.) When a route line flushes the event voice while an
+      earlier route line is still waiting unheard, the pacer reissues that
+      line, interrupting; the voice hears it once, but the event log shows
+      it twice (the Whittier gate line before "Speed limit reduced to 25").
+      Hampton's merge cue replaying after a Clock readout is the sibling
+      rescue: an info key cut the cue mid-sentence on a shared voice, so it
+      is handed back by design. Both are pacer policy, not tunnel code.
 - [ ] **Tunnel combination length.** The 73.5 ft combination convention should
       be revisited if tractor lengths vary: a long-sleeper tractor with a
       53 ft trailer can exceed the 75 ft tunnel limit.
@@ -2917,8 +2924,34 @@ branch. The older Phase A/B plan checklists are not a live completion list.
 - [ ] **Whittier is not yet reachable in a career.** With no freight it gets
       no jobs, and Bear Valley and Whittier are not offered as home cities,
       so only tests drive the tunnel until a verified facility lands.
-- [ ] **Tunnel refusal hold.** A refused truck is held at the staging end
-      for the rest of the trip with no turn-around or reroute.
+- [x] **Tunnel refusal hold.** Fixed: dispatch plans regulated loads
+      around tunnels that refuse them, departure offers only legal roads, and
+      a truck that still reaches one is re-planned from that city.
+- [x] **Tunnels with truck rules across the map.** Eisenhower-Johnson, Fort
+      McHenry, the Boston tunnels, Hampton Roads and Chesapeake Bay
+      bridge-tunnels and the Pennsylvania Turnpike tunnels carry their
+      published cargo rules, and refused loads take real legal detour legs
+      into Boston, around Baltimore on I-695 and over Loveland Pass (see
+      docs/road-crossings.md).
+- [ ] **Bridges with truck rules.** Posted weight limits, low clearances,
+      bridge hazmat rules (San Francisco-Oakland Bay Bridge), tolls and wind
+      closures (Chesapeake Bay Bridge-Tunnel) are not modelled yet.
+- [ ] **Hazard classes on freight.** The catalog does not name hazard
+      classes, so a placarded packaged load is refused wherever any class is
+      banned. Naming classes would let some loads through.
+- [x] **Loveland Pass for placarded loads.** A Silverthorne to Denver leg
+      over US 6 carries the Eisenhower tunnel's required detour.
+- [ ] **Loveland Pass closures.** The pass is treated as always open to
+      placarded loads; CDOT closes it in storms.
+- [ ] **I-90 Lake Washington flammable-cargo rule.** Left out: the only
+      source is a WSDOT closure notice. Model it if WSDOT publishes a
+      standing rule.
+- [ ] **Curve classes on the detour legs.** Their curves mark interchange
+      ramps only near each end, by position. The OSM curve-class reading the
+      rest of the map has needs `curve_osm.jsonl`, whose builder is not in
+      the repo.
+- [ ] **Board estimates on detoured loads.** The board's hours and route
+      readouts still use the open road; departure uses the legal one.
 - [ ] **Whittier tunnel cold-weather and train disruption rules.** The
       sub-freezing five-minute opening rule and unscheduled-train delays are
       not modeled.

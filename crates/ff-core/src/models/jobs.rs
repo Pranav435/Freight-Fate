@@ -8,6 +8,7 @@ use serde_json::{json, Map, Value};
 
 use crate::data::world::World;
 use crate::data::world_constants::{lookup, LOCATION_TYPE_LABELS};
+use crate::data::world_models::CrossingLoad;
 use crate::models::career::JobView;
 use crate::models::market::market_condition;
 use crate::models::save_migration::json_f64;
@@ -175,6 +176,15 @@ pub struct DescribeOptions<'a> {
 }
 
 impl Job {
+    /// The load as a tunnel or bridge judges it, on a stock rig.
+    pub fn crossing_load(&self) -> CrossingLoad {
+        if self.bobtail {
+            return CrossingLoad::standard_rig(false);
+        }
+        let cargo_lb = (self.weight_tons * 2000.0).round().max(0.0) as u32;
+        CrossingLoad::standard_rig(true).with_cargo(self.cargo.key, self.cargo.tank, cargo_lb)
+    }
+
     /// `Job(cargo, weight_tons, origin, origin_location, destination,
     /// distance_mi, pay, deadline_game_h)` with every other field at its
     /// default.

@@ -788,15 +788,40 @@ impl PickupFacilityState {
             ctx.say("Load the cargo before departing.");
             return;
         }
-        let routes = ctx
+        let load = self.job.crossing_load();
+        let open = ctx
             .world
             .supported_route_options(&self.job.origin, &self.job.destination, 3)
             .unwrap_or_default();
+        // A tunnel or bridge whose rules turn this load away is planned
+        // around before the truck leaves; with no legal road the load stays.
+        let refused_on_open = open.first().and_then(|best| {
+            best.legs
+                .iter()
+                .flat_map(|leg| leg.crossings.iter())
+                .find_map(|c| {
+                    c.refusal(&load)
+                        .map(|reason| (c.name.clone(), reason.to_string()))
+                })
+        });
+        let routes = if load.regulated() {
+            ctx.world
+                .legal_route_options(&self.job.origin, &self.job.destination, 3, &load)
+                .unwrap_or_default()
+        } else {
+            open
+        };
         if routes.is_empty() {
             ctx.audio.play("ui/error");
-            ctx.say("Dispatch cannot find a route for this load.");
+            match &refused_on_open {
+                Some((_, reason)) => ctx.say(&format!(
+                    "Dispatch cannot find a legal route for this load. {reason}"
+                )),
+                None => ctx.say("Dispatch cannot find a route for this load."),
+            }
             return;
         }
+        let crossing_note = refused_on_open.map(|(name, _)| format!("Routed around the {name}."));
         // STAA twin trailers: refuse ALCAN / Canada / Alaska by policy, then
         // keep only National Network / reasonable-access lanes. Dropping some
         // options is a reroute; dropping all refuses with the matching line.
@@ -889,6 +914,15 @@ impl PickupFacilityState {
             }
         };
         let mut reroute_note = staa_note.map(str::to_string);
+        if let Some(crossing) = crossing_note {
+            match &mut reroute_note {
+                Some(note) => {
+                    note.push(' ');
+                    note.push_str(&crossing);
+                }
+                None => reroute_note = Some(crossing),
+            }
+        }
         if seasonal_routes_removed {
             match &mut reroute_note {
                 Some(note) => {

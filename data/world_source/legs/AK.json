@@ -5592,22 +5592,6 @@
             "source_url": "https://dot.alaska.gov/creg/whittiertunnel/schedule.shtml",
             "access_date": "2026-10-09"
           },
-          "limits": {
-            "length_ft": 75.0,
-            "width_ft": 11.0,
-            "normal_width_ft": 10.0,
-            "height_ft": 15.0,
-            "normal_height_ft": 14.0,
-            "placarded_hazmat_banned": true,
-            "non_placarded_hazmat_lb": 400,
-            "source_url": "https://dot.alaska.gov/creg/whittiertunnel/vehiclesize.shtml",
-            "access_date": "2026-10-09",
-            "length_text": "The tunnel limit is 75 feet. Your rig is {n} feet.",
-            "width_text": "Over 10 feet wide needs a permit.",
-            "height_text": "Over 14 feet high needs a permit.",
-            "placarded_text": "Placarded hazardous materials cannot go through the tunnel. They move by Alaska Railroad.",
-            "non_placarded_text": "Non-placarded hazardous materials are limited to 400 pounds."
-          },
           "speed_mph": 25,
           "length_mi": 2.5,
           "speed_source_url": "https://dot.alaska.gov/creg/whittiertunnel/faq.shtml",
@@ -5621,7 +5605,25 @@
         "lane_segments": [],
         "traffic_aadt": [],
         "state_crossings": []
-      }
+      },
+      "crossings": [
+        {
+          "kind": "tunnel",
+          "name": "Anton Anderson Memorial Tunnel",
+          "hazmat": "all",
+          "bulk_flammable_banned": true,
+          "tank_banned": false,
+          "regulated_lb_limit": 400,
+          "max_length_ft": 75.0,
+          "max_width_ft": 10.0,
+          "max_height_ft": 14.0,
+          "hazmat_text": "Placarded hazardous materials cannot go through the Whittier tunnel; they move by Alaska Railroad. Other hazardous materials are limited to 400 pounds.",
+          "size_text": "The Whittier tunnel takes rigs up to 75 feet long, 10 feet wide and 14 feet high without a permit.",
+          "source_url": "https://dot.alaska.gov/creg/whittiertunnel/vehiclesize.shtml",
+          "access_date": "2026-10-11",
+          "basis": "Read: length, width, height without permit, placarded ban and 400-pound non-placarded limit from the Alaska DOT&PF vehicle size page. The permit-only extra width and height are left out because the game has no oversize permits."
+        }
+      ]
     },
     {
       "from": "coldfoot_ak_us",

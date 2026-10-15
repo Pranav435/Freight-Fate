@@ -72,6 +72,10 @@ pub struct RawLeg {
     #[serde(default)]
     pub truck_advisory: Value,
     #[serde(default)]
+    pub crossings: Value,
+    #[serde(default)]
+    pub detour_for: Value,
+    #[serde(default)]
     pub route_via: Value,
 }
 

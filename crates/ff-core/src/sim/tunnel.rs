@@ -2,9 +2,10 @@
 
 use chrono::{Duration, NaiveDate, NaiveDateTime, NaiveTime, Timelike};
 
-use crate::data::world_models::TunnelData;
+use crate::data::world_models::{CrossingLoad, Route, TunnelData};
+use crate::models::jobs::cargo_type;
 use crate::sim::hos::HosClock;
-use crate::sim::trip::Trip;
+use crate::sim::trip::{compute_leg_starts, Trip};
 use crate::sim::trip_models::{TripEventData, TripEventKind};
 use crate::sim::vehicle::KG_PER_LB;
 use crate::speech_text::SpokenMessage;
@@ -21,44 +22,6 @@ pub enum TunnelDecision {
     Wait { minutes: i64, spoken: String },
     Closed { minutes: i64, spoken: String },
     HoursNotPublished { spoken: String },
-}
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub struct RigForTunnel {
-    pub length_ft: f64,
-    pub width_ft: f64,
-    pub height_ft: f64,
-    pub placarded_hazmat: bool,
-    pub hazmat_lb: u32,
-}
-
-/// Size is always evaluated before hazardous material and the gate state.
-pub fn refusal(data: &TunnelData, rig: RigForTunnel) -> Option<String> {
-    let l = &data.limits;
-    if rig.length_ft > l.length_ft {
-        return Some(l.length_text.replace("{n}", &format_number(rig.length_ft)));
-    }
-    if rig.width_ft > l.width_ft || rig.width_ft > l.normal_width_ft {
-        return Some(l.width_text.clone());
-    }
-    if rig.height_ft > l.height_ft || rig.height_ft > l.normal_height_ft {
-        return Some(l.height_text.clone());
-    }
-    if rig.placarded_hazmat {
-        return Some(l.placarded_text.clone());
-    }
-    if rig.hazmat_lb > l.non_placarded_hazmat_lb {
-        return Some(l.non_placarded_text.clone());
-    }
-    None
-}
-
-fn format_number(n: f64) -> String {
-    if n.fract() == 0.0 {
-        format!("{n:.0}")
-    } else {
-        format!("{n:.1}")
-    }
 }
 
 fn record_at(
@@ -197,20 +160,36 @@ pub fn gate_decision(
     }
 }
 
-/// Translate the career calendar into a dated schedule lookup.  Tunnel
-/// schedules are published for the 2026 season, while the career calendar is
-/// cyclic, so retain the game's month/day and use the published season year.
+/// Translate the career calendar into a dated schedule lookup on a place's
+/// wall clock. The trip clock (`start_hour`, `game_minutes`) and career
+/// hours run on the Eastern reference clock, so the moment is shifted into
+/// `zone` before the date and time are read. Tunnel schedules are published
+/// for the 2026 season while the career calendar is cyclic, so the game's
+/// month and day are kept on the published season year.
 pub fn career_datetime(
     career_hours: Option<f64>,
     start_hour: f64,
     game_minutes: f64,
+    zone: crate::sim::timezones::TimeZone,
 ) -> NaiveDateTime {
-    let hours = career_hours.unwrap_or(0.0) + game_minutes / 60.0;
-    let day = crate::sim::season::day_of_year(hours).floor() as u32 + 1;
-    let date = NaiveDate::from_yo_opt(2026, day.min(365)).expect("valid calendar day");
-    let minute = ((start_hour + game_minutes / 60.0).rem_euclid(24.0) * 60.0).floor() as u32;
+    let local = career_local_hours(career_hours, start_hour, game_minutes, zone);
+    let day = crate::sim::season::day_of_year(local).floor() as u32;
+    let date = NaiveDate::from_yo_opt(2026, day.clamp(1, 365)).expect("valid calendar day");
+    let minute = (local.rem_euclid(24.0) * 60.0).floor() as u32;
     date.and_hms_opt(minute / 60, minute % 60, 0)
         .expect("valid clock time")
+}
+
+/// The career clock on `zone`'s wall clock, in career hours: the day comes
+/// from the career calendar, the time of day from the trip's start hour.
+pub fn career_local_hours(
+    career_hours: Option<f64>,
+    start_hour: f64,
+    game_minutes: f64,
+    zone: crate::sim::timezones::TimeZone,
+) -> f64 {
+    let day_start = (career_hours.unwrap_or(0.0) / 24.0).floor() * 24.0;
+    crate::sim::timezones::to_local(day_start + start_hour + game_minutes / 60.0, zone)
 }
 
 /// A short gate wait in the staging line is duty time.  A closure for the
@@ -228,20 +207,65 @@ pub fn log_wait_to_hos(clock: &mut HosClock, wait_minutes: i64, closed: bool) {
     }
 }
 
-/// Placarding and regulated weight for the load on the truck.  The catalog's
-/// packaged chemicals ride without placards, so the tunnel's 400-pound limit
-/// on non-placarded regulated materials is what turns them away.
-pub fn hazmat_for_cargo(cargo_key: &str, cargo_lb: u32, truck_placarded: bool) -> (bool, u32) {
-    let regulated = matches!(cargo_key, "hazardous" | "fuel_bulk" | "chemicals");
-    let lb = if regulated { cargo_lb } else { 0 };
-    (truck_placarded, lb)
-}
-
 impl Trip {
-    /// Process a controlled tunnel at its staging-end boundary.  The gate is
-    /// part of the route, not a UI prompt: it advances the game clock and
-    /// reports through ordinary trip events, so headless drives and the live
-    /// driving screen hear the exact same result.
+    /// The time zone of the city a leg starts from: the wall clock its
+    /// crossings keep. Eastern, the reference clock, when the city is unknown.
+    pub(crate) fn leg_start_zone(&self, leg_index: usize) -> crate::sim::timezones::TimeZone {
+        self.route
+            .cities
+            .get(leg_index)
+            .and_then(|id| self.world.cities.get(id))
+            .filter(|city| city.lat != 0.0 || city.lon != 0.0)
+            .map_or(crate::sim::timezones::EASTERN, |city| {
+                crate::sim::timezones::city_zone(city)
+            })
+    }
+
+    /// The truck and load as a crossing judges them: the whole combination
+    /// with a trailer on, the tractor alone without one.
+    pub fn crossing_load(&self) -> CrossingLoad {
+        let length_ft = if self.truck.trailer_attached {
+            self.truck.rig_length_ft
+        } else {
+            crate::sim::cross_traffic::TRACTOR_LENGTH_FT
+        };
+        let cargo_lb = (self.truck.cargo_kg / KG_PER_LB).round().max(0.0) as u32;
+        let key = self.truck.cargo_key.as_str();
+        let tank = cargo_type(key).is_some_and(|cargo| cargo.tank);
+        CrossingLoad::plain(length_ft, self.truck.rig_width_ft, self.truck.rig_height_ft)
+            .with_cargo(key, tank, cargo_lb)
+    }
+
+    /// Swap in a road that shares everything behind the truck and differs
+    /// ahead, and re-place what the road carries the way `Trip::new` does.
+    pub fn reroute_ahead(&mut self, route: Route) {
+        self.route = route;
+        self.leg_starts = compute_leg_starts(&self.route);
+        let mut mileposts = self.leg_starts.clone();
+        mileposts.push(self.route.miles());
+        self.city_mileposts = mileposts;
+        self.traffic_manager
+            .set_route(&self.route, &self.leg_starts);
+        let (_, crossings) = self.compute_timezone_crossings();
+        self.timezone_crossings = crossings;
+        self.stops = self.place_stops();
+        self.zones = self.place_zones();
+        self.traffic_pressures = self.place_traffic_pressures();
+        let (navigation_cues, border_booths) = self.build_navigation_cues_and_border_booths();
+        self.navigation_cues = navigation_cues;
+        self.border_booths = border_booths;
+        self.landmarks = self.place_landmarks();
+        self.billboards = self.place_billboards();
+        self.chain_law_areas = self.place_chain_law_areas();
+        self.posts = self.place_enforcement_posts();
+        self.curves = self.place_curves();
+    }
+
+    /// Judge a leg's crossings and tunnel gate at the city where the leg
+    /// starts. A crossing that refuses the load re-plans the road from that
+    /// city, so the truck never waits at a portal it may not enter. A
+    /// scheduled tunnel advances the clock to its opening. True holds the
+    /// truck short of the leg.
     pub fn process_tunnel_gate(&mut self, leg_index: usize) -> bool {
         if self.processed_tunnel_gates.contains(&leg_index) {
             return self.refused_tunnel_gates.contains(&leg_index);
@@ -249,42 +273,67 @@ impl Trip {
         let Some(leg) = self.route.legs.get(leg_index) else {
             return false;
         };
+        let load = self.crossing_load();
+        if leg.crossings.iter().any(|c| c.refusal(&load).is_some()) {
+            let start = self.leg_starts.get(leg_index).copied().unwrap_or(0.0);
+            let city = self
+                .route
+                .cities
+                .get(leg_index)
+                .cloned()
+                .unwrap_or_default();
+            match self.world.legalize_route_ahead(&self.route, start, &load) {
+                Some((route, reason)) => {
+                    self.reroute_ahead(route);
+                    self.processed_tunnel_gates.retain(|i| *i < leg_index);
+                    self.refused_tunnel_gates.retain(|i| *i < leg_index);
+                    let spoken = format!(
+                        "{reason} Dispatch reroutes you from {}.",
+                        self.world.spoken_city(&city, None)
+                    );
+                    self.emit(
+                        TripEventKind::GpsCue,
+                        SpokenMessage::new(spoken),
+                        TripEventData {
+                            context: Some("crossing_reroute".to_string()),
+                            ..Default::default()
+                        },
+                    );
+                    return false;
+                }
+                None => {
+                    // Unreachable for a load dispatch planned: the origin
+                    // had a legal road, so a way back to it always exists.
+                    self.processed_tunnel_gates.insert(leg_index);
+                    self.refused_tunnel_gates.insert(leg_index);
+                    let reason = leg
+                        .crossings
+                        .iter()
+                        .find_map(|c| c.refusal(&load))
+                        .unwrap_or_default()
+                        .to_string();
+                    self.emit(
+                        TripEventKind::GpsCue,
+                        SpokenMessage::new(reason),
+                        TripEventData {
+                            context: Some("crossing_refused".to_string()),
+                            ..Default::default()
+                        },
+                    );
+                    return true;
+                }
+            }
+        }
         let Some(data) = leg.corridor().tunnel.clone() else {
+            self.processed_tunnel_gates.insert(leg_index);
             return false;
         };
         let leg_from = leg.a.clone();
         self.processed_tunnel_gates.insert(leg_index);
-        self.emit(
-            TripEventKind::GpsCue,
-            SpokenMessage::new(data.planning_text.clone()),
-            TripEventData::default(),
-        );
-        let cargo_lb = (self.truck.cargo_kg / KG_PER_LB).round().max(0.0) as u32;
-        let (placarded_hazmat, hazmat_lb) = hazmat_for_cargo(
-            self.truck.cargo_key.as_str(),
-            cargo_lb,
-            self.truck.placarded_hazmat,
-        );
-        let rig = RigForTunnel {
-            length_ft: if self.truck.trailer_attached {
-                self.truck.rig_length_ft
-            } else {
-                crate::sim::cross_traffic::TRACTOR_LENGTH_FT
-            },
-            width_ft: self.truck.rig_width_ft,
-            height_ft: self.truck.rig_height_ft,
-            placarded_hazmat,
-            hazmat_lb,
-        };
-        if let Some(spoken) = refusal(&data, rig) {
-            self.refused_tunnel_gates.insert(leg_index);
-            self.emit(
-                TripEventKind::GpsCue,
-                SpokenMessage::new(spoken),
-                TripEventData::default(),
-            );
-            return true;
-        }
+        // The tunnel's name and the gate's verdict are one line. Two route
+        // lines in one tick made the pacer flush the first and replay it in
+        // front of the second, so the name was delivered twice.
+        let gate_line = |verdict: &str| format!("{} {verdict}", data.planning_text);
         let forward = self.route.cities.get(leg_index) == Some(&leg_from);
         let direction = if forward {
             TunnelDirection::ToWhittier
@@ -293,16 +342,34 @@ impl Trip {
         };
         match gate_decision(
             &data,
-            career_datetime(self.career_hours, self.start_hour, self.game_minutes),
+            career_datetime(
+                self.career_hours,
+                self.start_hour,
+                self.game_minutes,
+                self.leg_start_zone(leg_index),
+            ),
             direction,
         ) {
-            TunnelDecision::Cross => false,
+            TunnelDecision::Cross => {
+                self.emit(
+                    TripEventKind::GpsCue,
+                    SpokenMessage::new(data.planning_text.clone()),
+                    TripEventData {
+                        context: Some("tunnel_planning".to_string()),
+                        ..Default::default()
+                    },
+                );
+                false
+            }
             TunnelDecision::HoursNotPublished { spoken } => {
                 self.refused_tunnel_gates.insert(leg_index);
                 self.emit(
                     TripEventKind::GpsCue,
-                    SpokenMessage::new(spoken),
-                    TripEventData::default(),
+                    SpokenMessage::new(gate_line(&spoken)),
+                    TripEventData {
+                        context: Some("tunnel_hours_not_published".to_string()),
+                        ..Default::default()
+                    },
                 );
                 true
             }
@@ -310,7 +377,7 @@ impl Trip {
                 self.game_minutes += minutes as f64;
                 self.emit(
                     TripEventKind::GpsCue,
-                    SpokenMessage::new(spoken),
+                    SpokenMessage::new(gate_line(&spoken)),
                     TripEventData {
                         amount: Some(minutes as f64),
                         context: Some("tunnel_wait".to_string()),
@@ -323,7 +390,7 @@ impl Trip {
                 self.game_minutes += minutes as f64;
                 self.emit(
                     TripEventKind::GpsCue,
-                    SpokenMessage::new(spoken),
+                    SpokenMessage::new(gate_line(&spoken)),
                     TripEventData {
                         amount: Some(minutes as f64),
                         context: Some("tunnel_closed".to_string()),
@@ -340,10 +407,10 @@ impl Trip {
 mod tests {
     use super::*;
     fn data() -> TunnelData {
-        serde_json::from_str(r#"{"source_url":"x","access_date":"2026-10-09","planning_text":"p","toll_text":"t","closed_text":"c","hours_not_published_text":"Hours not published","hours":[{"valid_from":"2026-05-01","valid_to":"2026-09-30","opens":"05:30","closes":"23:15","source_url":"x","access_date":"2026-10-09"}],"schedule":{"opening_minutes":15,"interval_minutes":30,"source_url":"x","access_date":"2026-10-09"},"limits":{"length_ft":75,"width_ft":11,"normal_width_ft":10,"height_ft":15,"normal_height_ft":14,"placarded_hazmat_banned":true,"non_placarded_hazmat_lb":400,"source_url":"x","access_date":"2026-10-09","length_text":"The tunnel limit is 75 feet. Your rig is {n} feet.","width_text":"Over 10 feet wide needs a permit.","height_text":"Over 14 feet high needs a permit.","placarded_text":"Placarded hazardous materials cannot go through the tunnel. They move by Alaska Railroad.","non_placarded_text":"Non-placarded hazardous materials are limited to 400 pounds."},"speed_mph":25,"length_mi":2.5,"speed_source_url":"x","speed_access_date":"2026-10-09","length_source_url":"x","length_access_date":"2026-10-09"}"#).unwrap()
+        serde_json::from_str(r#"{"source_url":"x","access_date":"2026-10-09","planning_text":"p","toll_text":"t","closed_text":"c","hours_not_published_text":"Hours not published","hours":[{"valid_from":"2026-01-01","valid_to":"2026-04-30","opens":"07:00","closes":"22:30","source_url":"x","access_date":"2026-10-09"},{"valid_from":"2026-10-01","valid_to":"2026-12-31","opens":"07:00","closes":"22:30","source_url":"x","access_date":"2026-10-09"},{"valid_from":"2026-05-01","valid_to":"2026-09-30","opens":"05:30","closes":"23:15","source_url":"x","access_date":"2026-10-09"}],"schedule":{"opening_minutes":15,"interval_minutes":30,"source_url":"x","access_date":"2026-10-09"},"speed_mph":25,"length_mi":2.5,"speed_source_url":"x","speed_access_date":"2026-10-09","length_source_url":"x","length_access_date":"2026-10-09"}"#).unwrap()
     }
     #[test]
-    fn schedule_edges_and_refusals() {
+    fn schedule_edges() {
         let d = data();
         let t = NaiveDateTime::parse_from_str("2026-05-01 05:35", "%F %R").unwrap();
         assert_eq!(
@@ -355,29 +422,6 @@ mod tests {
             gate_decision(&d, edge, TunnelDirection::ToWhittier),
             TunnelDecision::Wait { .. }
         ));
-        assert!(refusal(
-            &d,
-            RigForTunnel {
-                length_ft: 75.1,
-                width_ft: 8.5,
-                height_ft: 13.5,
-                placarded_hazmat: false,
-                hazmat_lb: 0
-            }
-        )
-        .unwrap()
-        .contains("75.1"));
-        assert!(refusal(
-            &d,
-            RigForTunnel {
-                length_ft: 75.,
-                width_ft: 8.5,
-                height_ft: 13.5,
-                placarded_hazmat: false,
-                hazmat_lb: 400
-            }
-        )
-        .is_none());
     }
     #[test]
     fn hours_and_hos_are_accounted() {
@@ -418,7 +462,7 @@ mod tests {
         d.hours.clear();
         assert!(d.validate("test").is_err());
         let mut d = data();
-        d.limits.source_url.clear();
+        d.speed_source_url.clear();
         assert!(d.validate("test").is_err());
     }
     fn at(s: &str) -> NaiveDateTime {
@@ -514,39 +558,29 @@ mod tests {
         assert_eq!(long.driving_min, 0.0);
     }
     #[test]
-    fn packaged_chemicals_over_400_lb_hit_the_weight_limit() {
-        let d = data();
-        let (placarded, lb) = hazmat_for_cargo("chemicals", 40_000, false);
-        assert!(!placarded);
-        let rig = RigForTunnel {
-            length_ft: 73.5,
-            width_ft: 8.5,
-            height_ft: 13.5,
-            placarded_hazmat: placarded,
-            hazmat_lb: lb,
-        };
-        assert_eq!(
-            refusal(&d, rig).as_deref(),
-            Some("Non-placarded hazardous materials are limited to 400 pounds.")
-        );
-        let (placarded, lb) = hazmat_for_cargo("chemicals", 400, false);
-        assert!(!placarded);
-        assert_eq!(lb, 400);
-        assert!(hazmat_for_cargo("chemicals", 0, true).0);
+    fn career_datetime_reads_the_career_calendar_day_not_the_next_one() {
+        use crate::sim::season::calendar_date;
+        use crate::sim::timezones::EASTERN;
+        use chrono::Datelike;
+        for hours in [0.0, 30.0, 24.0 * 100.0 + 7.0] {
+            let at = career_datetime(Some(hours), hours.rem_euclid(24.0), 0.0, EASTERN);
+            let shown = calendar_date(hours);
+            assert_eq!((at.month(), at.day()), (shown.month(), shown.day()));
+        }
     }
+
     #[test]
-    fn height_refusal_reads_as_a_permit() {
-        let d = data();
-        let rig = RigForTunnel {
-            length_ft: 70.0,
-            width_ft: 8.5,
-            height_ft: 14.5,
-            placarded_hazmat: false,
-            hazmat_lb: 0,
-        };
-        assert_eq!(
-            refusal(&d, rig).as_deref(),
-            Some("Over 14 feet high needs a permit.")
-        );
+    fn career_datetime_is_the_crossing_wall_clock() {
+        use crate::sim::timezones::{ALASKA, EASTERN, PACIFIC};
+        let monday_eight = Some(24.0 * 5.0 + 8.0);
+        let eastern = career_datetime(monday_eight, 8.0, 30.0, EASTERN);
+        let pacific = career_datetime(monday_eight, 8.0, 30.0, PACIFIC);
+        let alaska = career_datetime(monday_eight, 8.0, 30.0, ALASKA);
+        assert_eq!(eastern.time(), NaiveTime::from_hms_opt(8, 30, 0).unwrap());
+        assert_eq!(pacific.time(), NaiveTime::from_hms_opt(5, 30, 0).unwrap());
+        assert_eq!(alaska.time(), NaiveTime::from_hms_opt(4, 30, 0).unwrap());
+        assert_eq!(eastern.date(), alaska.date());
+        let after_midnight = career_datetime(Some(24.0 * 5.0 + 1.0), 1.0, 0.0, ALASKA);
+        assert_eq!(after_midnight.date() + Duration::days(1), eastern.date());
     }
 }

@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use crate::sim_support::*;
 use chrono::NaiveDate;
 use ff_core::data::state_welcome::welcome_sign;
-use ff_core::data::world_models::Route;
+use ff_core::data::world_models::{CrossingLoad, Route};
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::traffic_manager::{BrakingZone, TrafficManager, TrafficVehicle};
 use ff_core::sim::trip::{Trip, TripOptions, ZONE_WARNING_MIN_MI};
@@ -64,7 +64,7 @@ fn whittier_tunnel_gate_runs_in_the_trip_and_toll_is_one_way() {
         },
     );
     let events = trip.update(1.0);
-    assert!(events.iter().any(|event| event.text() == "Anton Anderson Memorial Tunnel. One lane shared with the railroad. Gates run on a published schedule."));
+    assert!(events.iter().any(|event| event.text().starts_with("Anton Anderson Memorial Tunnel. One lane shared with the railroad. Gates run on a published schedule.")));
     assert!(
         trip.game_minutes > 0.0,
         "the physical tunnel drive advances game time"
@@ -103,6 +103,267 @@ fn whittier_tunnel_gate_runs_in_the_trip_and_toll_is_one_way() {
         spoken_tolls(&trip),
         1,
         "the toll cue is spoken toward Whittier"
+    );
+}
+
+fn hazmat_load() -> CrossingLoad {
+    CrossingLoad::standard_rig(true).with_cargo("hazardous", false, 30_000)
+}
+
+fn refused_by_none(route: &Route, load: &CrossingLoad) -> bool {
+    route
+        .legs
+        .iter()
+        .all(|leg| leg.crossings.iter().all(|c| c.refusal(load).is_none()))
+}
+
+#[test]
+fn crossings_wall_off_refused_legs_and_leave_plain_freight_alone() {
+    let world = world();
+    let plain = CrossingLoad::standard_rig(true).with_cargo("general", false, 30_000);
+    assert!(world.crossing_blocks(&plain).is_empty());
+    let fuel = CrossingLoad::standard_rig(true).with_cargo("fuel_bulk", true, 40_000);
+    let route = world
+        .legal_route("hartford_ct_us", "boston_ma_us", &fuel)
+        .unwrap()
+        .expect("bulk fuel has a legal road to Boston");
+    assert!(refused_by_none(&route, &fuel));
+    assert!(world
+        .legal_route_options("hartford_ct_us", "boston_ma_us", 3, &fuel)
+        .unwrap()
+        .iter()
+        .all(|r| refused_by_none(r, &fuel)));
+    assert_eq!(
+        world
+            .legal_route("hartford_ct_us", "boston_ma_us", &plain)
+            .unwrap()
+            .map(|r| r.cities),
+        world
+            .supported_route("hartford_ct_us", "boston_ma_us", None)
+            .unwrap()
+            .map(|r| r.cities),
+    );
+    assert!(
+        world
+            .legal_route("bear_valley_ak_us", "whittier_ak_us", &hazmat_load())
+            .unwrap()
+            .is_none(),
+        "the tunnel is the only road to Whittier, so no placarded load is planned there"
+    );
+}
+
+/// Each tunnel with a published legal detour is planned onto that detour at
+/// close to normal miles, so the freight stays on the board.
+#[test]
+fn restricted_tunnels_detour_by_their_real_legal_roads() {
+    let world = world();
+    let fuel = CrossingLoad::standard_rig(true).with_cargo("fuel_bulk", true, 40_000);
+    let packaged = hazmat_load();
+    let cases = [
+        ("worcester_ma_us", "boston_ma_us", 8.0),
+        ("providence_ri_us", "boston_ma_us", 8.0),
+        ("portsmouth_nh_us", "boston_ma_us", 8.0),
+        ("boston_ma_us", "portsmouth_nh_us", 8.0),
+        ("manchester_nh_us", "boston_ma_us", 8.0),
+        ("boston_ma_us", "manchester_nh_us", 8.0),
+        ("boston_ma_us", "worcester_ma_us", 8.0),
+        ("wilmington_de_us", "baltimore_md_us", 15.0),
+        ("philadelphia_pa_us", "baltimore_md_us", 15.0),
+        ("denver_co_us", "silverthorne_co_us", 15.0),
+    ];
+    for (from, to, extra) in cases {
+        let open = world
+            .supported_route(from, to, None)
+            .unwrap()
+            .expect("open road");
+        for load in [&fuel, &packaged] {
+            let legal = world
+                .legal_route(from, to, load)
+                .unwrap()
+                .unwrap_or_else(|| panic!("{from} to {to} has a legal road"));
+            assert!(refused_by_none(&legal, load), "{from} to {to}");
+            assert!(
+                legal.miles() <= open.miles() + extra,
+                "{from} to {to}: {} legal miles against {} open",
+                legal.miles(),
+                open.miles()
+            );
+            assert!(
+                legal.miles() <= ff_core::data::world::max_alternate_miles(open.miles()),
+                "{from} to {to} stays on the job board"
+            );
+            assert!(
+                legal
+                    .legs
+                    .iter()
+                    .map(|leg| leg.id)
+                    .ne(open.legs.iter().map(|leg| leg.id)),
+                "{from} to {to} leaves the tunnel leg"
+            );
+            if from == "boston_ma_us" || to == "boston_ma_us" {
+                assert!(
+                    legal
+                        .legs
+                        .iter()
+                        .any(|leg| leg.detour_for == "Boston tunnels"),
+                    "{from} to {to} drives the Boston tunnels detour"
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn spoken_tunnel_rules_match_the_planned_detour() {
+    let world = world();
+    let eisenhower = world
+        .legs
+        .iter()
+        .flat_map(|leg| leg.crossings.iter())
+        .find(|c| c.name == "Eisenhower-Johnson Memorial Tunnel")
+        .expect("EJMT is on the map");
+    assert!(eisenhower.hazmat_text.contains("US 6 over Loveland Pass"));
+    let over_the_pass = world
+        .legal_route("denver_co_us", "silverthorne_co_us", &hazmat_load())
+        .unwrap()
+        .expect("Loveland Pass is open to placarded loads");
+    assert_eq!(over_the_pass.legs.len(), 1);
+    assert_eq!(over_the_pass.legs[0].highway, "US-6");
+    assert!(over_the_pass.legs[0].crossings.is_empty());
+    // No standing WSDOT rule bans flammable cargo from the I-90 tunnels, and
+    // no leg reaches the Holland or Lincoln tunnels: New York legs cross the
+    // George Washington Bridge, whose upper level takes placarded loads.
+    for leg in &world.legs {
+        for crossing in &leg.crossings {
+            assert!(!crossing.name.contains("Lake Washington"));
+            assert!(!crossing.name.contains("Holland"));
+            assert!(!crossing.name.contains("Lincoln"));
+        }
+    }
+    let fuel = CrossingLoad::standard_rig(true).with_cargo("fuel_bulk", true, 40_000);
+    for from in ["allentown_pa_us", "newark_nj_us", "spokane_wa_us"] {
+        let to = if from == "spokane_wa_us" {
+            "seattle_wa_us"
+        } else {
+            "new_york_ny_us"
+        };
+        assert_eq!(
+            world
+                .legal_route(from, to, &fuel)
+                .unwrap()
+                .map(|r| r.cities),
+            world
+                .supported_route(from, to, None)
+                .unwrap()
+                .map(|r| r.cities),
+            "{from} to {to} keeps its normal road for bulk fuel"
+        );
+    }
+}
+
+#[test]
+fn a_refused_truck_is_rerouted_at_the_crossing_not_held() {
+    let world = world();
+    let leg = world
+        .legs
+        .iter()
+        .find(|leg| leg.a == "denver_co_us" && leg.b == "salt_lake_city_ut_us")
+        .expect("Denver to Salt Lake City leg")
+        .as_ref()
+        .clone();
+    assert!(leg
+        .crossings
+        .iter()
+        .any(|c| c.refusal(&hazmat_load()).is_some()));
+    let route = Route::from_legs(
+        vec!["denver_co_us".into(), "salt_lake_city_ut_us".into()],
+        vec![leg],
+    );
+    let mut truck = TruckState::default();
+    truck.start_engine();
+    truck.cargo_key = "hazardous".into();
+    truck.cargo_kg = 13_600.0;
+    truck.placarded_hazmat = true;
+    truck.velocity_mps = 10.0;
+    let mut trip = Trip::new(
+        route,
+        truck,
+        default_weather(),
+        TripOptions {
+            world: Some(world),
+            ..TripOptions::seeded(93)
+        },
+    );
+    let events = trip.update(1.0);
+    assert!(events
+        .iter()
+        .any(|e| e.data.context.as_deref() == Some("crossing_reroute")
+            && e.text().contains("Loveland Pass")
+            && e.text().contains("Dispatch reroutes you from")));
+    assert_eq!(
+        trip.route.cities.first().map(String::as_str),
+        Some("denver_co_us")
+    );
+    assert_eq!(
+        trip.route.cities.last().map(String::as_str),
+        Some("salt_lake_city_ut_us")
+    );
+    assert!(trip.route.legs.iter().all(|leg| leg
+        .crossings
+        .iter()
+        .all(|c| c.refusal(&hazmat_load()).is_none())));
+    assert_eq!(trip.leg_starts.len(), trip.route.legs.len());
+    for _ in 0..30 {
+        trip.update(1.0);
+    }
+    assert!(
+        trip.position_mi > 0.0,
+        "the truck drives on instead of holding"
+    );
+    assert!(trip.refused_tunnel_gates.is_empty());
+}
+
+#[test]
+fn whittier_tunnel_schedule_keeps_alaska_time() {
+    let world = world();
+    let leg = world
+        .legs
+        .iter()
+        .find(|leg| leg.a == "bear_valley_ak_us" && leg.b == "whittier_ak_us")
+        .expect("Whittier tunnel leg")
+        .as_ref()
+        .clone();
+    let route = Route::from_legs(
+        vec!["bear_valley_ak_us".into(), "whittier_ak_us".into()],
+        vec![leg],
+    );
+    let mut truck = TruckState::default();
+    truck.start_engine();
+    truck.velocity_mps = 25.0 * 1609.344 / 3600.0;
+    // 8:00 AM Eastern on May 1 is 4:00 AM in Alaska: the tunnel is shut for
+    // the night until the 5:30 AM opening.
+    let may = ff_core::sim::season::real_clock_game_hours(Some(
+        NaiveDate::from_ymd_opt(2026, 5, 1)
+            .unwrap()
+            .and_hms_opt(8, 0, 0)
+            .unwrap(),
+    ));
+    let mut trip = Trip::new(
+        route,
+        truck,
+        default_weather(),
+        TripOptions {
+            world: Some(world),
+            career_hours: Some(may),
+            start_hour: 8.0,
+            ..TripOptions::seeded(93)
+        },
+    );
+    trip.update(1.0);
+    assert!(
+        trip.game_minutes >= 90.0,
+        "an Eastern 8 AM start waits out the Alaska night closure: {} minutes",
+        trip.game_minutes
     );
 }
 
@@ -888,3 +1149,51 @@ fn test_the_status_browse_says_how_much_to_the_next_level() {}
 #[test]
 #[ignore = "wrong crate: ff-core cannot see the game crate, so this case belongs in crates/freight-fate/tests/ -- AbandonJobConfirmationState"]
 fn test_abandoning_a_bobtail_costs_nothing() {}
+
+#[test]
+fn a_saved_trip_resumes_on_the_detour_its_load_was_planned_on() {
+    let world = world();
+    let fuel = CrossingLoad::standard_rig(true).with_cargo("fuel_bulk", true, 40_000);
+    let plain = CrossingLoad::standard_rig(true);
+    for (from, to) in [
+        ("worcester_ma_us", "boston_ma_us"),
+        ("boston_ma_us", "worcester_ma_us"),
+        ("baltimore_md_us", "wilmington_de_us"),
+        ("wilmington_de_us", "baltimore_md_us"),
+    ] {
+        let planned = world
+            .legal_route(from, to, &fuel)
+            .unwrap()
+            .expect("legal road");
+        let resumed = world
+            .route_from_cities_for(&planned.cities, &fuel)
+            .expect("resumes");
+        assert!(
+            resumed
+                .legs
+                .iter()
+                .map(|l| l.id)
+                .eq(planned.legs.iter().map(|l| l.id)),
+            "{from} to {to} resumes on the road it was planned on"
+        );
+        let open = world
+            .supported_route(from, to, None)
+            .unwrap()
+            .expect("open road");
+        assert!(
+            open.legs.iter().all(|l| l.detour_for.is_empty()),
+            "{from} to {to}"
+        );
+        let plain_resumed = world
+            .route_from_cities_for(&open.cities, &plain)
+            .expect("resumes");
+        assert!(
+            plain_resumed
+                .legs
+                .iter()
+                .map(|l| l.id)
+                .eq(open.legs.iter().map(|l| l.id)),
+            "{from} to {to} plain freight stays on the main road"
+        );
+    }
+}
