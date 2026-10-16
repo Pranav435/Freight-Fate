@@ -54,6 +54,12 @@ bookmarks usable.
       plural forms and English number separators until a maintainer adds
       its rules to `l10n::plural`. Every download carries `lang/` as a
       `translations` folder (template, language files, glossaries, guide).
+- [x] Places visited (player request, 2026-10-14): Career stats counts the
+      states and cities delivered to and lists each state's cities; the
+      public profile on orinks.net and the in-game driver profile list them
+      too, from the snapshot's `visitedPlaces`, which a career gains at its
+      next backup. Only delivery destinations count, as the counts always
+      did (`cities_delivered`).
 - [ ] (Found along the way) Lines the game assembles from pieces the
       extractor cannot see (turn-by-turn street instructions, some stop
       announcements) stay partly English until each shape is added to

@@ -17709,6 +17709,14 @@ msgstr "Entregas: {deliveries}, {f} por ciento a tiempo"
 msgid "Lifetime {distance_unit_text}: {distance_value}"
 msgstr "{distance_unit_text} en total: {distance_value}"
 
+#. placeholders: {states}
+msgid "States visited: {states}"
+msgstr ""
+
+#. placeholders: {cities}
+msgid "Cities visited: {cities}"
+msgstr ""
+
 #. placeholders: {grouped}
 msgid "Lifetime earnings: {grouped} dollars"
 msgstr "Ganancias totales: {grouped} dólares"
@@ -17724,6 +17732,12 @@ msgstr "Horas: {summary}"
 msgid "Repeat this status line."
 msgstr "Repetir esta línea de estado."
 
+msgid "Places visited"
+msgstr ""
+
+msgid "Open the list of states you have delivered to, each with its cities."
+msgstr ""
+
 msgid "Citations and violations"
 msgstr "Multas e infracciones"
 
@@ -17733,6 +17747,9 @@ msgid ""
 msgstr ""
 "Abre la lista, de la más reciente a la más antigua: qué fue, por qué, "
 "cuánto costó, cuándo y dónde."
+
+msgid "No deliveries yet."
+msgstr ""
 
 msgid "Serious violation"
 msgstr "Infracción grave"
@@ -38576,6 +38593,10 @@ msgstr "No se pudo acceder al perfil"
 
 msgid "Checking the profile"
 msgstr "Consultando el perfil"
+
+msgid ""
+"Open the list of states this driver has delivered to, each with its cities."
+msgstr ""
 
 msgid "Save file changed outside the game"
 msgstr "Archivo de partida modificado fuera del juego"
