@@ -198,6 +198,17 @@ bookmarks usable.
       longer runs the arrival check; the right lane's clearance counts a
       vehicle on the ramp beside it; and a ramp vehicle relabelled cruising
       at road speed now joins the lane instead of riding the ramp for good.
+- [x] Traffic in the open lane of a lane closure lets the truck in (player
+      report relayed by the owner, 2026-10-16: with the right lane coned off,
+      cars in the left lane kept the truck stopped dead in the closed one, and
+      "Left lane open" read from the stop led to a sideswipe once the truck
+      got rolling). While the truck is in the coned-off lane, vehicles behind
+      the sideswipe window in the lane beside it ease in and wait outside the
+      window the L key reads, at the truck's pace; past the merge, the one open lane
+      queues behind the truck the way a one-lane road does
+      (`traffic_manager/work_zone.rs`).
+- [ ] (Found along the way) Bubble vehicles in a coned-off lane drive on
+      through the closure instead of merging out of it.
 - [ ] (Found along the way) Re-bake the lane segments with each matched
       way's direction against the leg's, so a passing lane our side comes
       back (`tools/bake_lane_segments.py`; needs the Overpass corridor
