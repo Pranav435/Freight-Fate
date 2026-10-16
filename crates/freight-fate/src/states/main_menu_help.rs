@@ -85,7 +85,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
     (
         "Driving information keys",
         &[
-            "{{speed}} speaks your speed, gear, RPM, active speed-control mode, open-road target, air pressure, and brake state. With an exit signal set, it adds distance to that exit.",
+            "{{speed}} speaks your speed, gear, and speed-control mode. It adds RPM with a manual transmission, air or brakes when they need attention, and the distance to an exit you signaled for.",
             "{{speed_limit}} speaks the posted speed limit, zone, and how far over you are. {{safe_speed}} gives the current safe speed; {{grade}} reads the current and next relevant grade.",
             "{{fuel}} reads fuel and range. {{clock}} reads the clock, deadline, and nearest hours limit.",
             "{{hos_wheel}} speaks time at the wheel and on duty. {{hos_break}} reads when the break is due. {{hos_drive}} reads what ends the shift and reachable legal rest.",
@@ -199,8 +199,8 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
         "Winter equipment",
         &[
             "Winter tires improve snow and ice grip. Chains are carried until you install them while stopped through the pause menu.",
-            "Level one chain law accepts winter tires or chains. Level two requires drive-axle chains. Signs announce the requirement before its checkpoint.",
-            "Chain work uses on-duty time and adds fatigue, especially at night. Keep near thirty miles per hour and remove chains on bare pavement before they break.",
+            "Chain laws require chains on a truck at every level. Winter tires don't count for a semi. The exceptions are level one in Colorado and Oregon, which chain only single-drive-axle trucks, and in Wyoming, which accepts snow tires. Signs announce the requirement before the chain-up area.",
+            "Chain work uses on-duty time and adds fatigue, especially at night. Keep under chain speed, 30 miles per hour or 48 kilometers per hour, and remove chains on bare pavement before they break.",
             "Worn tires and strong engine braking make slippery roads harder to control. Stop for rest or safer conditions when necessary.",
         ],
     ),
@@ -259,7 +259,7 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "Use an activation code in your browser to connect an existing account and enable profile sharing and backup. You can turn either off afterward.",
             "Profile sharing includes your activity, achievements, and road journal. Public profiles omit current cash, full saves, coordinates, and precise location. Career statistics need an accepted private backup.",
             "Cloud backup keeps ten accepted revisions per career and up to ten careers. Restore checks the signed backup and keeps the replaced local save as a fallback. Back up this career now uploads immediately.",
-            "Mastodon can share deliveries that earn an achievement, level, or perfect streak after you link an account. Discord shows broad activity and clears it after half an hour idle.",
+            "Discord shows broad activity and clears it after half an hour idle.",
             "Online services switches sharing services off together while remembering your choices. Live weather, traffic, and parking keep their separate settings.",
         ],
     ),
@@ -279,7 +279,6 @@ pub static HELP_PAGES: &[(&str, &[&str])] = &[
             "How do I know when a hill ends? {{grade}} reads the grade under the wheels and the next one worth planning for.",
             "How do I change stations or play my own music? With the engine running, {{radio}} switches the radio on, and Page Up or Page Down tunes. Put playlist files in the Playlists folder inside your saves folder; Radio status says where it is.",
             "Can I hear a weather warning again? With live weather on, the Weather app under Driver apps lists active alerts. Comma also steps back through recent messages.",
-            "Why did a delivery not post to Mastodon? Only deliveries that earn an achievement, a level, or a perfect streak are shared.",
             "Can I steer myself? Yes. Choose the Realistic preset, or set lane keeping to off, under Settings, Gameplay, Driving assistance.",
             "Can I play in braille only? Set Output to braille only under Settings, Speech. It needs NVDA or JAWS.",
         ],

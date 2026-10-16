@@ -5,7 +5,8 @@
 ### Added
 
 - **Career stats and driver profiles now list the places you have delivered to.** Career stats also counts your states and cities; Places visited lists each state's cities.
-
+- **A broken snow chain can be fixed on the shoulder.** Each chain set comes with two spare repair links. Stopped with a broken chain, the pause menu offers "Repair the broken chain: about 15 minutes", which puts the set back on at 80 percent worn, under the slap warning. The garage restocks the links for 25 dollars.
+- **A worn chain warns you before it breaks.** At 85 percent wear the game says "A chain is slapping the fender. Stop soon and tighten it." Tightening takes about 5 minutes and buys back a little wear, once each time the chains go on.
 - **The game can speak Spanish.** Choose Español under Settings, Speech, Language; the radio stays in English.
 
 - **Key and button practice says what each key or button does at the wheel.** Shift F1 or Back plus Start opens it anywhere.
@@ -60,6 +61,38 @@
 
 ### Changed
 
+- **Oregon's lower chain level no longer chains your truck.** "Chains or traction tires required" chains only single-drive-axle trucks over 10,000 pounds, so your tandem-drive rig chains in Oregon at the "Chains required" level. The Oregon level 1 sign and the chain help say so, in Spanish too.
+- **Cruise and the speed keeper hold 30 miles per hour while chains are on.** The game says so once, and your own set speed comes back when the chains come off, so resuming cruise no longer tears up a set. If you cancel cruise while chained, Shift K brings back your own speed once the chains are off. The new lines are in Spanish.
+- **A chain set is now seven chains: four for the drive tires, one for a trailer tire, and two spares,** so putting them on takes about 30 minutes. When a chain breaks, the game now says "A tire chain broke and is flailing. Slow down and pull over to check it."
+- **Chain laws post only on real chain-control highways in Colorado, California, Washington, Oregon and Idaho,** not on any steep grade in those states. Chain-law signs now come about a mile before the chain-up area.
+- **Colorado's chain-carry rule is enforced.** From September 1 to May 31, a truck with no chains aboard on a Colorado mountain corridor is warned once and can be cited 132 dollars, whatever the weather.
+- **Montana reminds you to carry chains.** From October 1 to April 30, a truck with no chains aboard on a Montana mountain run hears it once a season, even across drives and a quit and resume. There's no fine. The carry lines are in Spanish.
+- **A chain checkpoint now holds you on the apron until your chains are on.** If you have no chains aboard, the officer tells you to buy a set at the next garage.
+- **Chain-law fines follow the state.** Colorado is 579 dollars, Oregon is 880 and Wyoming is 250. Other states keep 580 until their own figures are confirmed. California checks every truck at an active chain control. The checkpoint and hold lines are in Spanish.
+- **Trucks must chain under every chain law; winter tires no longer count for a semi.** California, Washington and Oregon chain trucks at every level. Colorado Level 1 chains only single-drive-axle trucks, so your tandem-drive rig chains there at Level 2. Wyoming Level 1 accepts snow tires or chains, and Wyoming Level 2 requires chains on two tires of one drive axle. The signs, the help and the checkpoint all follow this rule.
+- **Going too fast with chains on now says "Too fast for chains. Keep under 30 miles per hour."** In metric it gives kilometers per hour. The chain install, garage and help lines are clearer too. The install help gives chain speed in your units, and the new chain lines are in Spanish. In Wyoming at Level 1, a truck on all-season tires with no chains is warned and can be cited.
+- **Achievement descriptions are about half as long.** Each badge's description is now one or two short sentences, so the unlock line and the achievements menu finish quickly. A few facts are corrected too: air pressure builds to the governor's cut-out, the flatbed badge names the 50-mile chain re-check, and the brake smoke badge says the brakes started to fade. Spanish is updated; other languages show these lines in English until they are translated again.
+
+- **Nine of the longest billboards are shorter, so they finish while you pass them.** The Bakersfield board no longer says the Crystal Palace has closed.
+
+- **Hours of service, rest stop, settlement and dispatch lines are shorter.** The hours readout names the 30-minute break and the 14-hour window, stop planning gives each stop, its distance and minutes, delivery and dock paperwork read the money as plain figures, and sleep previews end with "Select again to sleep." The open weigh station notice says to pull in; the reminder nearer the scale says to signal.
+
+- **Player text uses US spelling.** License, canceled, signaled, traveled, recognize and windshield replace the British forms.
+
+- **Space now says only what is on the dash and needs you.** RPM comes with a manual transmission, and air or brakes only when they need attention.
+
+- **Missed exit and gate lines are shorter, and so are the warnings when cruise or the speed keeper loses speed on a grade.**
+
+- **Exit and rest stop calls name the exit and stop there.** What lane keeping, cruise and stopping assistance will do is left to the manual.
+
+- **Spoken weather no longer says how old the live observation is.** The Weather app still lists it.
+
+- **Spoken lines across the game are shorter.** Driving, the terminal, dispatch and pickup drop assist explanations and facts you just heard, and key reminders stop after a few uses; menu help keeps the explanations.
+
+- **Cruise no longer narrates how it drives.** It eases off and builds for hills in silence, and its traffic and weather lines are a few words.
+
+- **Downhill grade calls stop naming the engine brake key once you have used it a few times.** Uphill grade calls no longer add "Expect to lose speed."
+
 - **Radio stations now see Freight Fate as the player when you tune in.** Their listener statistics used to show only the sound library's name.
 
 - **Every street corner is now called with its distance and the speed to take it at.** The turn's chime plays with that call, on the side you turn.
@@ -110,9 +143,17 @@
 
 ### Fixed
 
+- **Dispatch no longer relays a new driver hundreds of miles empty.** A relayed load's deadhead now grows with your level: up to 75 miles at level 1, 125 at level 2, 200 at level 3, 300 at level 4 and 400 from level 5. It's also never more than a quarter of the loaded miles. Dispatch looks at the nearest freight towns first instead of the biggest. A level-1 driver in North Carolina had been sent about 300 empty miles to Virginia.
+- **Snow chains that broke or wore down on a drive stay that way after you quit and resume.** A broken set no longer comes back whole, and the pause menu no longer offers it again.
+- **Sleeping on the shoulder or at a rest stop now says "Driving and duty clocks reset"** instead of "Hours of service reset", matching the motel and lot lines, because the 70-hour limit does not reset.
+- **With every assist on, the truck finishes the drive into the yard again.** Facility stopping assistance no longer takes the pedals while a street corner is still ahead, so the speed keeper slows for the last turn instead of the truck sailing past it, and after the last corner the assist drives the street at its posted speed instead of walking the truck in at 2 miles per hour. When a corner comes up with the truck still fast, the speed keeper now brakes as firmly as the remaining distance needs to make the turn as routed, rather than missing it and going around the block.
+- **Street corners use realistic loaded-truck speeds.** Right turns: 9 mph at 90 degrees, 13 at 60, 7 from 105 to 120, and 5 past that. Left turns: 13 at 90, 16 at 60, and 10 from 105 to 120. A bend of 45 degrees or less is not slowed for, beyond the street limit up to 28 mph. The turn into a facility driveway is 6 mph, and an empty trailer takes a corner up to 2 mph faster.
+- **The speed keeper no longer coasts under a corner that comes right after another one, or brakes below a corner's speed and then speeds back up.** A left 600 feet after a right is taken at the left's own speed. Late braking for a corner now eases off as it reaches the corner's speed.
+- **The speed keeper takes each corner at that corner's own speed.** A left turn is no longer slowed to the speed of a sharper right turn further on. The keeper slows early for a later corner only when it comes too soon to brake for after the one before. A gentle bend that stays on the same road keeps the posted limit, and the 28 mph cap now applies only to a slight turn onto another road.
+- **"Into the yard" is said once, when you actually turn in.** Overrunning the driveway no longer announces the yard before the missed turn and again after it.
 - **A full brake stop with the engine brake on no longer damages your load.**
 
-- **An engine brake stage you pick now stays picked.** Cruise and the bend assist no longer turn it off when their reason ends.
+- **An engine brake stage you pick now stays picked.** Cruise and the bend assist no longer switch it off after they finish slowing you.
 
 - **Turning automatic engine brake off with Alt J now lasts between drives.** It used to switch back on at every dispatch.
 
@@ -136,6 +177,7 @@
 
 - **Resume speed control now brings back the speed keeper's speed after you brake out of it.**
 
+- **Snapped snow chains are no longer offered again on the same drive.** A broken set stays off until you buy a new one at a garage.
 
 - **Switching screen readers is now silent, and ZDSR no longer repeats "Speech is now using ZDSR" on every key press.**
 - **The jump to Freight Fate stations now lands on the Night Line, not Channel 3000.** Channel 3000 sits at the end of the category.

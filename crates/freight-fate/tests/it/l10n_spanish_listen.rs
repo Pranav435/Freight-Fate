@@ -47,7 +47,7 @@ fn every_yard_arrival_is_whole_spanish() {
         for first_day_done in [false, true] {
             let lines = arrival(city, first_day_done);
             let said = lines.join(" ");
-            assert!(said.contains("objective:"), "{said}");
+            assert!(said.contains(" dollars."), "{said}");
             for line in &lines {
                 assert_eq!(english_left(&es, line), Vec::<String>::new(), "{line}");
                 let spanish = es.translate(line);
@@ -135,14 +135,6 @@ fn a_called_off_lane_keeping_move_is_whole_spanish() {
         (
             "Staying in the middle lane.",
             "Sigues en el carril central.",
-        ),
-        (
-            "Easing off to let the box truck by.",
-            "Reduciendo la velocidad para dejar pasar al camión de caja.",
-        ),
-        (
-            "Easing off to let traffic by.",
-            "Reduciendo la velocidad para dejar pasar el tráfico.",
         ),
         (
             "The road narrows to two lanes.",

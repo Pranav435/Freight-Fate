@@ -38,6 +38,9 @@ impl DrivingState {
             ctx.say("Jake off.");
             return;
         }
+        // Turning it on is what retires the downgrade call's "set the engine
+        // brake" advice (`descend_advice`).
+        self.note_instruction_demonstrated(ctx, "engine_brake");
         if self.trip.truck.transmission.automatic && self.auto_jake_enabled {
             self.auto_jake = true;
             self.auto_jake_hold_mph = Some(5.0f64.max(self.trip.truck.speed_mph()));
@@ -136,12 +139,18 @@ impl DrivingState {
         if self.trip.truck.engine_on {
             if self.trip.truck.speed_mph() > ENGINE_SHUTDOWN_SAFE_MPH {
                 ctx.audio.play("ui/error");
-                let speed = ctx.settings.speed_text(self.trip.truck.speed_mph());
-                let text = format!(
-                    "Unsafe to shut the engine off at {speed}. Brake below 5 miles per hour first."
-                );
                 self.set_status("Engine shutdown blocked: slow down first.");
-                ctx.say(&text);
+                // Retired with the engine key: a driver who has started it a
+                // few times hears the short form.
+                if self.instruction_retired(ctx, "engine") {
+                    ctx.say("Too fast to shut down.");
+                } else {
+                    let speed = ctx.settings.speed_text(self.trip.truck.speed_mph());
+                    let limit = ctx.settings.speed_text(ENGINE_SHUTDOWN_SAFE_MPH);
+                    ctx.say(&format!(
+                        "Unsafe to shut the engine off at {speed}. Brake below {limit} first."
+                    ));
+                }
                 return;
             }
             self.trip.truck.stop_engine();
@@ -188,24 +197,28 @@ impl DrivingState {
     }
 
     /// `_air_start_instruction()`.
+    ///
+    /// Names the parking brake key (and, with the brake off, the accelerator)
+    /// until the player has released the brake a few times; then just the air.
     pub fn air_start_instruction(&self, ctx: &mut GameContext) -> String {
         let psi = self.trip.truck.air_pressure_psi();
-        if self.terse_speech(ctx) {
-            return format!("Air pressure {psi:.0} psi.");
+        if self.terse_speech(ctx) || self.instruction_retired(ctx, "parking_brake") {
+            if self.trip.truck.air_ready() {
+                return "Air ready.".to_string();
+            }
+            return format!("Air {psi:.0} psi.");
         }
         let brake_hint = ctx.control_hint("parking_brake");
         if self.trip.truck.parking_brake {
             if self.trip.truck.air_ready() {
-                return format!(
-                    "Air pressure ready. Press {brake_hint} to release the parking brake."
-                );
+                return format!("Air ready. {brake_hint} releases the parking brake.");
             }
             return format!(
-                "Air pressure {psi:.0} psi. At 100 psi, {brake_hint} releases the parking brake."
+                "Air {psi:.0} psi. At 100 psi, {brake_hint} releases the parking brake."
             );
         }
         format!(
-            "Air pressure ready. Hold {} to drive.",
+            "Air ready. Hold {} to drive.",
             ctx.control_hint("accelerate")
         )
     }
@@ -218,6 +231,7 @@ impl DrivingState {
             self.trip.waiting = false;
             if self.trip.truck.release_parking_brake() {
                 ctx.audio.play_with("vehicle/brake_release", 0.65, 0.0);
+                self.note_instruction_demonstrated(ctx, "parking_brake");
                 self.set_status("Parking brake released.");
                 let psi = self.trip.truck.air_pressure_psi();
                 ctx.say_with(
@@ -237,10 +251,7 @@ impl DrivingState {
                         Say::new().category(SpeechCategory::Confirmation),
                     );
                 } else {
-                    ctx.say(&format!(
-                        "Parking brake stays set. Air pressure {psi:.0} psi. It releases at 100 \
-                         psi with the engine running."
-                    ));
+                    ctx.say(&format!("Parking brake set. Air {psi:.0} psi."));
                 }
             }
             return;

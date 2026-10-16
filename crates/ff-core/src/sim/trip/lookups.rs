@@ -908,7 +908,8 @@ impl Trip {
         Zone::new(gate_start, total, FACILITY_GATE_LIMIT_MPH, "facility gate")
     }
 
-    /// 0 = no law, 1 = winter-rated tires or chains, 2 = chains required.
+    /// 0 = no law, 1 = Level 1 (cars may use winter tires; trucks chain,
+    /// except tandem-drive trucks in Colorado), 2 = chains on every truck.
     ///
     /// The sky the truck is under sets the floor; an active Weather Service
     /// warning for this stretch (a winter storm, a blizzard, an ice storm)
@@ -923,6 +924,72 @@ impl Trip {
         from_sky.max(crate::sim::real_weather_alerts::alerts_chain_law_level(
             &self.live_alerts,
         ))
+    }
+
+    /// Whether the rig must chain at this milepost under the active law
+    /// (`rig_must_chain`): every level in every state except Colorado
+    /// Level 1, which chains single-drive-axle trucks only.
+    pub fn rig_must_chain_at(&self, mile: f64) -> bool {
+        crate::sim::trip_models::rig_must_chain(
+            self.state_code_at(mile).as_deref(),
+            self.chain_law_level(),
+        )
+    }
+
+    /// The truck is on a Colorado chain-carry corridor's mountain run in
+    /// carry season (`CO_CHAIN_CARRY_CORRIDORS`), with the career calendar
+    /// known. Weather doesn't matter: the rule is to carry, not to chain.
+    pub fn on_co_chain_carry_corridor(&self, mile: f64) -> bool {
+        use crate::sim::trip_models::{in_co_chain_carry_season, CO_CHAIN_CARRY_CORRIDORS};
+        use chrono::Datelike;
+        let Some(hours) = self.current_career_hours() else {
+            return false;
+        };
+        let month = crate::sim::season::calendar_date(hours).month();
+        let highway = &self.route.legs[self.leg_at_mile(mile).0].highway;
+        self.chain_law_area_at(mile).is_some()
+            && self.state_code_at(mile).as_deref() == Some("CO")
+            && CO_CHAIN_CARRY_CORRIDORS.contains(&highway.as_str())
+            && in_co_chain_carry_season(month)
+    }
+
+    /// The truck is on a Montana chain-law area (the mountain run) between
+    /// October 1 and April 30 (`in_mt_chain_carry_season`).
+    pub fn on_mt_chain_carry_run(&self, mile: f64) -> bool {
+        use chrono::Datelike;
+        let Some(hours) = self.current_career_hours() else {
+            return false;
+        };
+        let month = crate::sim::season::calendar_date(hours).month();
+        self.chain_law_area_at(mile).is_some()
+            && self.state_code_at(mile).as_deref() == Some("MT")
+            && crate::sim::trip_models::in_mt_chain_carry_season(month)
+    }
+
+    /// Whether the truck meets the active chain law at this milepost: chains
+    /// on, or a law that doesn't chain the rig here (`rig_must_chain`).
+    /// Wyoming Level 1 asks for snow tires or chains (W.S. 31-5-956(e)), so
+    /// there winter tires count and all-season tires without chains don't.
+    pub fn rig_compliant_at(&self, mile: f64) -> bool {
+        let level = self.chain_law_level();
+        if self.truck.chains_on || level <= 0 {
+            return true;
+        }
+        let state = self.state_code_at(mile);
+        if state.as_deref() == Some("WY") && level == 1 {
+            return self.truck.tire_type == crate::sim::vehicle::TIRE_WINTER;
+        }
+        !crate::sim::trip_models::rig_must_chain(state.as_deref(), level)
+    }
+
+    /// The chain-law warning's missing equipment: "snow tires or chains" at
+    /// Wyoming Level 1, "chains" everywhere else.
+    pub fn chain_law_need_at(&self, mile: f64) -> &'static str {
+        if self.state_code_at(mile).as_deref() == Some("WY") && self.chain_law_level() == 1 {
+            "snow tires or chains"
+        } else {
+            "chains"
+        }
     }
 
     /// Index of the chain-law area containing this milepost, or None.

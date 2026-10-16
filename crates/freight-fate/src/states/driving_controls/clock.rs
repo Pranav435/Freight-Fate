@@ -122,9 +122,7 @@ impl DrivingState {
             let remaining = ctx
                 .settings
                 .distance_text(self.trip.remaining_miles(), false);
-            ctx.say(&format!(
-                "{now} Pickup at {facility}, {remaining} to go, {hours_used:.1} hours used.{tail}"
-            ));
+            ctx.say(&format!("{now} Pickup {facility}, {remaining}.{tail}"));
             return;
         }
         let remaining = self.job.deadline_game_h - hours_used;
@@ -156,7 +154,7 @@ impl DrivingState {
         } + highway_hours;
         if remaining <= 0.0 {
             ctx.say(&format!(
-                "{now} {:.1} hours past the deadline. The pay is shrinking.{tail}",
+                "{now} {:.1} hours late. Pay is dropping.{tail}",
                 -remaining
             ));
             return;
@@ -183,8 +181,8 @@ impl DrivingState {
         };
         let appointment = deadline_appointment(self, ctx);
         ctx.say(&format!(
-            "{now} {verdict}: arrival in {eta:.1} hours {basis}, deadline in {remaining:.1}, due \
-             {appointment}. {hours_used:.1} hours on the road.{tail}"
+            "{now} {verdict}. Arrival {eta:.1} hours {basis}. Deadline {remaining:.1}, due \
+             {appointment}.{tail}"
         ));
     }
 
@@ -212,7 +210,7 @@ impl DrivingState {
         }
         let left = hos::duration_text(limit.remaining_min / 60.0);
         match limit.kind {
-            "break" => format!("Break due in {left}."),
+            "break" => format!("30-minute break due in {left}."),
             "drive" => format!("Driving time left: {left}."),
             _ => format!("Duty window closes in {left}."),
         }

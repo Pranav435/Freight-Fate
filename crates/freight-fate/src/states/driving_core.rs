@@ -595,7 +595,7 @@ impl Instructor for Tutorial {
             let text = if ctx.settings.automatic_transmission {
                 format!(
                     "At air ready, press {} to release the parking brake, then hold {} to \
-                     accelerate. The transmission shifts for you.",
+                     accelerate.",
                     ctx.control_hint("parking_brake"),
                     ctx.control_hint("accelerate")
                 )
@@ -651,7 +651,7 @@ impl Instructor for Tutorial {
             self.stage = 3;
             let text = format!(
                 "Rolling. {} for your speed, {} for a full report, {} for all the controls. Brake \
-                 hard at a hazard warning; {} stops fast. Safe travels.",
+                 hard at a hazard warning; {} stops fast.",
                 ctx.control_hint("speed"),
                 ctx.control_hint("status_menu"),
                 ctx.control_hint("help"),

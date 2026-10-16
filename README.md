@@ -256,7 +256,7 @@ Speed control:
 | Key | Action |
 | --- | --- |
 | K | Automatic speed control on / off. Parked with the brake set, it latches a high idle instead |
-| Shift+K | Resume the last speed after braking cancelled it |
+| Shift+K | Resume the last speed after braking canceled it |
 | Plus / minus (keypad too) | Raise / lower the remembered open-road target by 5 |
 
 Route actions:

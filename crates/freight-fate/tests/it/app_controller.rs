@@ -740,11 +740,11 @@ fn test_controller_speed_control_handoff_status_adjustment_and_brake() {
     app.dispatch_controller(&button(ControllerButton::B, 0));
     let said = app.main_lines().last().cloned().unwrap_or_default();
     assert!(
-        said.contains("speed keeper holding 25 miles per hour"),
+        said.contains("Speed keeper holding 25 miles per hour"),
         "{said}"
     );
     assert!(
-        said.contains("open-road target 60 miles per hour"),
+        said.contains("Open-road target 60 miles per hour."),
         "{said}"
     );
 

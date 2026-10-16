@@ -181,7 +181,7 @@ fn test_approach_call_names_the_side_street_distance_and_speed() {
     assert_eq!(spoken.len(), 1);
     assert_eq!(
         spoken[0],
-        "Left turn onto North Michigan Street, a quarter mile. Advise 11 miles per hour."
+        "Left turn onto North Michigan Street, a quarter mile. Advise 14 miles per hour."
     );
     assert!(d.turn_grace_s > 0.0);
     d.update_turn_commitment(&mut app.ctx, 0.016);
@@ -241,7 +241,7 @@ fn test_a_turn_call_after_the_route_lead_adds_only_the_advisory() {
     d.update_turn_commitment(&mut app.ctx, 0.016);
     assert_eq!(
         app.event_lines().last().map(String::as_str),
-        Some("Advise 11 miles per hour."),
+        Some("Advise 14 miles per hour."),
         "{:?}",
         app.event_lines()
     );
@@ -263,7 +263,7 @@ fn test_terse_keeps_the_advise_speed() {
     let spoken = app.event_lines();
     assert_eq!(
         spoken[0],
-        "Left turn onto North Michigan Street, a quarter mile. Advise 11 miles per hour."
+        "Left turn onto North Michigan Street, a quarter mile. Advise 14 miles per hour."
     );
     // Never a bare "Right now": the verb always leads.
     assert!(!spoken[0].contains("Right now"));
@@ -287,7 +287,7 @@ fn test_a_turn_the_truck_is_already_slow_for_is_still_called_with_its_speed() {
     assert_eq!(
         app.event_lines(),
         vec![
-            "Left turn onto North Michigan Street, a quarter mile. Advise 11 miles per hour."
+            "Left turn onto North Michigan Street, a quarter mile. Advise 14 miles per hour."
                 .to_string()
         ]
     );
@@ -308,7 +308,7 @@ fn test_the_approach_call_says_the_speed_keeper_is_taking_the_corner() {
     d.update_turn_commitment(&mut app.ctx, 0.016);
     assert_eq!(
         app.event_lines()[0],
-        "Left turn onto North Michigan Street, a quarter mile. Advise 11 miles per hour. \
+        "Left turn onto North Michigan Street, a quarter mile. Advise 14 miles per hour. \
          Speed keeper easing."
     );
 }
@@ -323,7 +323,7 @@ fn test_the_approach_call_stays_quiet_about_a_keeper_with_nothing_to_shed() {
     // Manual speed control leaves the call exactly as it was.
     mph(&mut d, 30.0);
     d.update_turn_commitment(&mut app.ctx, 0.016);
-    assert!(app.event_lines()[0].ends_with("Advise 11 miles per hour."));
+    assert!(app.event_lines()[0].ends_with("Advise 14 miles per hour."));
     // So does a keeper already under the corner speed: there is nothing
     // for it to shed, so there is nothing to say about it.
     mph(&mut d, 8.0);
@@ -331,7 +331,7 @@ fn test_the_approach_call_stays_quiet_about_a_keeper_with_nothing_to_shed() {
     let cue = d.turn_cue_in_play().expect("a corner is in play");
     assert!(d
         .turn_approach_text(&app.ctx, &cue, 0.2)
-        .ends_with("Advise 11 miles per hour."));
+        .ends_with("Advise 14 miles per hour."));
 }
 
 #[test]
@@ -348,19 +348,20 @@ fn test_the_planner_sees_past_the_corner_it_is_already_easing_for() {
     street_chain(&mut d, 1.0, 0.08);
     let cues = d.turn_cues_in_play();
     let (first, second) = (cues[0].clone(), cues[1].clone());
-    assert_eq!(d.turn_speed_mph(&first), corner_speed_mph(Some(90.0), load));
-    assert_eq!(
-        d.turn_speed_mph(&second),
-        corner_speed_mph(Some(105.0), load)
-    );
+    assert_eq!(d.turn_speed_mph(&first), side_speed(&first, 90.0, load));
+    assert_eq!(d.turn_speed_mph(&second), side_speed(&second, 105.0, load));
     assert!(second.at_mi - first.at_mi < 0.15); // inside the first corner's tail
 
-    // Easing for the first corner, well before the second one is close.
+    // Easing for the first corner, well before the second one is close. The
+    // first corner's number is lowered only if the second is too close to
+    // brake for after it.
     d.trip.position_mi = first.at_mi - 0.05;
     mph(&mut d, 25.0);
+    let first_target = d.corner_targets_ahead()[0].1;
+    assert!(first_target <= side_speed(&first, 90.0, load));
     assert_eq!(
         d.keeper_speed_ahead(&mut app.ctx),
-        Some((corner_speed_mph(Some(90.0), load), "turn".to_string()))
+        Some((first_target, "turn".to_string()))
     );
 
     // One block on, with the second corner's own window open, the planner
@@ -369,7 +370,7 @@ fn test_the_planner_sees_past_the_corner_it_is_already_easing_for() {
     mph(&mut d, 19.0);
     assert_eq!(
         d.keeper_speed_ahead(&mut app.ctx),
-        Some((corner_speed_mph(Some(105.0), load), "turn".to_string()))
+        Some((side_speed(&second, 105.0, load), "turn".to_string()))
     );
 }
 
@@ -656,8 +657,8 @@ fn test_turn_speed_comes_from_the_corners_own_angle() {
     // point of the change. Both come from the angle, not the 25 mph street.
     let square = d.turn_speed_mph(&cues[0]);
     let sharp = d.turn_speed_mph(&cues[1]);
-    assert_eq!(square, corner_speed_mph(Some(90.0), load));
-    assert_eq!(sharp, corner_speed_mph(Some(105.0), load));
+    assert_eq!(square, side_speed(&cues[0], 90.0, load));
+    assert_eq!(sharp, side_speed(&cues[1], 105.0, load));
     assert!(sharp < square, "{sharp} should be under {square}");
     // And neither is the old flat clamp any more.
     assert!(square < TURN_CORNER_MAX_MPH);
@@ -1638,7 +1639,7 @@ fn test_the_curve_pause_resumes_at_the_remembered_target_past_the_bend() {
     assert!(
         lines
             .iter()
-            .any(|line| line.contains("Adaptive cruise resuming at 60 miles per hour")),
+            .any(|line| line.contains("Cruise resuming, 60")),
         "{lines:#?}"
     );
 }
@@ -2199,9 +2200,7 @@ fn test_a_manual_driver_off_the_pedals_is_braked_to_the_advisory() {
     // The reactive line inside the bend is the bare sentence; the servo owns
     // this bend, so it never fires on top of the approach clause.
     assert!(
-        !run.lines
-            .iter()
-            .any(|line| line == "Curve assistance slowing."),
+        !run.lines.iter().any(|line| line == "Slowing for the bend."),
         "the reactive line must not double the approach line: {:#?}",
         run.lines
     );
@@ -2268,7 +2267,7 @@ fn test_a_bend_under_cruises_floor_is_braked_down_and_cruise_comes_back() {
     assert!(
         lines
             .iter()
-            .any(|line| line.contains("Adaptive cruise resuming at 60 miles per hour")),
+            .any(|line| line.contains("Cruise resuming, 60")),
         "{lines:#?}"
     );
 }
@@ -2596,4 +2595,13 @@ fn test_the_approach_servo_says_nothing_with_curve_callouts_off() {
         "callouts off means no words: {:#?}",
         run.lines
     );
+}
+
+/// The corner model's speed for `cue`'s own side at `deg`.
+fn side_speed(cue: &ff_core::sim::trip_models::NavigationCue, deg: f64, load: f64) -> f64 {
+    ff_core::data::corners::corner_speed_side_mph(
+        Some(deg),
+        ff_core::data::corners::CornerSide::from_direction(&cue.direction),
+        load,
+    )
 }

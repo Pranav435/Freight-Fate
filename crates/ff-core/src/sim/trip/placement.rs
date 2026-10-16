@@ -306,25 +306,25 @@ impl Trip {
                     "checkpoint",
                     start + offset,
                     &format!("{place}{state} on {highway}"),
-                    &format!("Passing {place}{state} on {highway}."),
+                    &format!("Passing {place}{state}."),
                 ));
             }
             for toll in leg.toll_events() {
                 let offset = stop_offset_for_direction(toll.at_mi, leg.miles, forward);
                 // A sentence of its own after the point's name, so it starts
-                // like one: "...ticket entry. Estimated toll 18 dollars..."
-                // (agent playtest, 2026-09-02).
-                // Two whole sentences rather than one spliced "{T}oll", so a
-                // translation can match either.
+                // like one: "...ticket entry. Toll about 18 dollars."
+                // (agent playtest, 2026-09-02). Who pays is the career's
+                // standing arrangement, not news at every booth, and an
+                // entry with no amount yet says nothing past its name.
                 let toll_text = if toll.amount > 0.0 {
                     let amount = fmt_f(toll.amount, 0);
                     if toll.estimated {
-                        format!("Estimated toll {amount} dollars, billed to carrier settlement.")
+                        format!(" Toll about {amount} dollars.")
                     } else {
-                        format!("Toll {amount} dollars, billed to carrier settlement.")
+                        format!(" Toll {amount} dollars.")
                     }
                 } else {
-                    "Entry recorded for carrier settlement.".to_string()
+                    String::new()
                 };
                 cues.push(NavigationCue::new(
                     &format!("toll:{i}:{}:{}", py_str_float(toll.at_mi), toll.name),
@@ -332,7 +332,7 @@ impl Trip {
                     start + offset,
                     &format!("toll road ahead: {}", toll.road),
                     &format!(
-                        "{} toll point ahead, {}. {toll_text}",
+                        "{} toll point ahead, {}.{toll_text}",
                         toll.method_label(),
                         toll.name
                     ),
@@ -593,7 +593,7 @@ impl Trip {
         match anchor {
             SignAnchor::Corridor => true,
             SignAnchor::States(states) => match self.state_code_at(at) {
-                // An unbaked state is not a licence to claim a place. The
+                // An unbaked state is not a license to claim a place. The
                 // roadside falls back to signs that are true anywhere.
                 None => false,
                 Some(code) => states.contains(&code.as_str()),
@@ -642,7 +642,7 @@ impl Trip {
 
     /// The two-letter state code at a trip milepost, or None where the bake is
     /// silent and the route names no city we can fall back on.
-    pub(crate) fn state_code_at(&self, at: f64) -> Option<String> {
+    pub fn state_code_at(&self, at: f64) -> Option<String> {
         let name = self.state_at(Some(at));
         if !name.is_empty() {
             if let Some(code) = self.state_codes.get(&name) {
@@ -832,7 +832,7 @@ impl Trip {
         false
     }
 
-    /// True while a signalled exit is inside the road the truck must shed,
+    /// True while a signaled exit is inside the road the truck must shed,
     /// sized from the exit's own ramp speed (Shane, 2026-08-15).
     pub fn armed_exit_decompression(&self) -> bool {
         let Some(ahead) = self.exit_approach_mi else {

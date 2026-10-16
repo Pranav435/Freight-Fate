@@ -53,7 +53,7 @@ fn test_hazard_warning_and_outcome_replay_on_a_comma_and_period() {
     let mut app = TestApp::new();
     let drive = drive_support::a_drive(&mut app);
     let warning = "Brake now! A slow vehicle ahead.";
-    let outcome = "Hazard avoided. Well done.";
+    let outcome = "Clear.";
     let mut event = TripEvent {
         kind: TripEventKind::Hazard,
         message: SpokenMessage::new(warning),
@@ -105,7 +105,7 @@ fn test_collision_outcome_replays_on_a_and_message_review() {
         d.hazard_deadline = Some(0.0);
         d.update_hazard(&mut app.ctx, 1.0 / 60.0);
         format!(
-            "Collision! The truck took damage. Total damage {} percent.",
+            "Collision! Damage {} percent.",
             ff_core::pyfmt::fmt_f(d.trip.truck.damage_pct, 0)
         )
     });
