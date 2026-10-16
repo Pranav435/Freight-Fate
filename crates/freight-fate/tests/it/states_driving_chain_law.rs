@@ -962,3 +962,113 @@ fn test_turning_back_is_driven_miles_and_the_drive_goes_on() {
     assert_eq!(with_drive(&drive, |d| d.trip.truck.velocity_mps), 20.0);
     assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
 }
+
+/// The Weather Service with its warnings lifted: every point answers with
+/// no alerts.
+struct ClearedFeed;
+
+impl ff_core::sim::real_traffic::HttpTransport for ClearedFeed {
+    fn get(
+        &self,
+        _: &str,
+        _: &[(&str, &str)],
+        _: f64,
+    ) -> Result<Vec<u8>, ff_core::sim::real_traffic::TransportError> {
+        Ok(br#"{"features": []}"#.to_vec())
+    }
+
+    fn post(
+        &self,
+        url: &str,
+        _: &[u8],
+        _: &[(&str, &str)],
+        _: f64,
+    ) -> Result<Vec<u8>, ff_core::sim::real_traffic::TransportError> {
+        Err(ff_core::sim::real_traffic::TransportError::new(format!(
+            "no post to {url}"
+        )))
+    }
+}
+
+#[test]
+fn test_a_live_alert_that_expires_mid_wait_lifts_the_hold() {
+    use ff_core::sim::real_weather_alerts::{WeatherAlert, WeatherAlertsProvider};
+    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::sync::Arc;
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "off".to_string();
+    let drive = held_with_no_chains(&mut app);
+    // A clear sky; only the Winter Storm Warning posts the law.
+    let (lat, lon) = with_drive(&drive, |d| {
+        d.trip.weather.forced = Some(WeatherKind::Clear);
+        d.trip.weather.current = WeatherKind::Clear;
+        d.trip.latlon_at(None)
+    });
+    assert!(lat != 0.0 || lon != 0.0, "the route has geometry");
+    // Each look at the clock is four minutes on, so the cached warning goes
+    // stale partway through the wait and the feed is asked again.
+    let ticks = Arc::new(AtomicU64::new(0));
+    let clock_ticks = Arc::clone(&ticks);
+    let alerts = Arc::new(
+        WeatherAlertsProvider::new(Arc::new(ClearedFeed))
+            .with_threaded(false)
+            .with_clock(Arc::new(move || {
+                clock_ticks.fetch_add(1, Ordering::SeqCst) as f64 * 240.0
+            })),
+    );
+    let storm = WeatherAlert {
+        id: "storm".to_string(),
+        event: "Winter Storm Warning".to_string(),
+        severity: "Severe".to_string(),
+        headline: "Winter Storm Warning issued".to_string(),
+        area: "Here".to_string(),
+        description: "* WHAT...Heavy snow.".to_string(),
+    };
+    alerts.seed(lat, lon, vec![storm.clone()]);
+    app.ctx.settings.real_weather = true;
+    app.ctx.set_weather_alerts_provider(alerts);
+    with_drive(&drive, |d| d.trip.live_alerts = vec![storm]);
+    assert!(with_drive(&drive, |d| d.trip.chain_law_level()) > 0);
+    let line = drive_and_ctx(&drive, &mut app, |d, ctx| d.wait_for_chain_law_to_lift(ctx))
+        .expect("held, so it waits");
+    assert!(line.starts_with("The chain law lifted after "), "{line}");
+    assert!(!line.contains("8 hours"), "{line}");
+    assert!(!with_drive(&drive, |d| d.chain_checkpoint_hold));
+    assert!(ticks.load(Ordering::SeqCst) > 0);
+}
+
+#[test]
+fn test_turning_back_past_the_drive_limit_is_refused() {
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "realistic".to_string();
+    let drive = held_with_no_chains(&mut app);
+    let drive_limit = ff_core::sim::hos::limits("realistic").expect("limits").0;
+    app.ctx
+        .profile
+        .as_mut()
+        .unwrap()
+        .hos
+        .drive(drive_limit - 1.0);
+    let (position, odometer) =
+        with_drive(&drive, |d| (d.trip.position_mi, d.trip.truck.odometer_mi));
+    let line = drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.turn_back_from_chain_checkpoint(ctx)
+    })
+    .expect("held, so it answers");
+    assert_eq!(
+        line,
+        "Turning back takes 8 minutes of driving, more than your hours allow. Wait here for the \
+         chain law to lift, or sleep on the shoulder from the pause menu."
+    );
+    assert!(
+        with_drive(&drive, |d| d.chain_checkpoint_hold),
+        "still held"
+    );
+    assert_eq!(with_drive(&drive, |d| d.trip.position_mi), position);
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.odometer_mi), odometer);
+    assert_eq!(
+        app.ctx.profile.as_ref().unwrap().hos.driving_min,
+        drive_limit - 1.0,
+        "no driving logged"
+    );
+}

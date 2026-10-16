@@ -34845,6 +34845,11 @@ msgstr ""
 
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Sleep on the shoulder from the pause menu, or turn back."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid "The chain law still stands."
 msgstr ""
 
@@ -34859,7 +34864,8 @@ msgstr ""
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid ""
 "You waited {duration_text}, and your 14-hour duty window is nearly used up. "
-"The chain law still stands."
+"The chain law still stands. Sleep on the shoulder from the pause menu, or "
+"turn back."
 msgstr ""
 
 #. one sentence of a longer line
@@ -34882,6 +34888,28 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid "chain checkpoint"
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Turning back takes {duration_text} of driving, more than your hours allow."
+msgstr ""
+
+#. placeholders: {duration_text}
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Turning back takes {duration_text} of driving, more than your hours allow. "
+"Wait here for the chain law to lift, or sleep on the shoulder from the "
+"pause menu."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Wait here for the chain law to lift, or sleep on the shoulder from the "
+"pause menu."
 msgstr ""
 
 #. one sentence of a longer line

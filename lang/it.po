@@ -27632,6 +27632,10 @@ msgid "The officer waves you back onto the highway."
 msgstr ""
 
 #. one sentence of a longer line
+msgid "Sleep on the shoulder from the pause menu, or turn back."
+msgstr ""
+
+#. one sentence of a longer line
 msgid "The chain law still stands."
 msgstr ""
 
@@ -27644,7 +27648,8 @@ msgstr ""
 #. placeholders: {duration_text}
 msgid ""
 "You waited {duration_text}, and your 14-hour duty window is nearly used up. "
-"The chain law still stands."
+"The chain law still stands. Sleep on the shoulder from the pause menu, or "
+"turn back."
 msgstr ""
 
 #. one sentence of a longer line
@@ -27663,6 +27668,25 @@ msgid ""
 msgstr ""
 
 msgid "chain checkpoint"
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid ""
+"Turning back takes {duration_text} of driving, more than your hours allow."
+msgstr ""
+
+#. placeholders: {duration_text}
+msgid ""
+"Turning back takes {duration_text} of driving, more than your hours allow. "
+"Wait here for the chain law to lift, or sleep on the shoulder from the "
+"pause menu."
+msgstr ""
+
+#. one sentence of a longer line
+msgid ""
+"Wait here for the chain law to lift, or sleep on the shoulder from the "
+"pause menu."
 msgstr ""
 
 #. one sentence of a longer line

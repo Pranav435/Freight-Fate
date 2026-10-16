@@ -796,7 +796,7 @@ impl DrivingState {
             if duty_limit.is_some_and(|limit| hos_of(ctx).duty_min + CHAIN_WAIT_STEP_MIN > limit) {
                 return Some(format!(
                     "You waited {}, and your 14-hour duty window is nearly used up. The chain \
-                     law still stands.",
+                     law still stands. Sleep on the shoulder from the pause menu, or turn back.",
                     ff_core::sim::hos::duration_text(waited / 60.0)
                 ));
             }
@@ -815,6 +815,10 @@ impl DrivingState {
             );
             hos_mut_of(ctx).on_duty(CHAIN_WAIT_STEP_MIN);
             waited += CHAIN_WAIT_STEP_MIN;
+            // The sky is re-polled by `advance_rest_clock` (live weather
+            // included); the warnings need asking again here, since they are
+            // otherwise only re-read after the truck moves.
+            self.refresh_weather_alerts_here(ctx);
         }
     }
 
@@ -847,6 +851,21 @@ impl DrivingState {
         let (index, city_mi) = self.last_route_city_behind();
         let miles = (self.trip.position_mi - city_mi).max(0.0);
         let minutes = (miles / CHAIN_TURN_BACK_MPH * 60.0).max(CHAIN_TURN_BACK_MIN_MIN);
+        // The drive back is driving time: refused when it would run past the
+        // driving limit or the duty window, rather than logging a violation.
+        if let Some((drive_limit, duty_limit, _)) =
+            ff_core::sim::hos::limits(&ctx.settings.hos_mode)
+        {
+            let hos = hos_of(ctx);
+            if hos.driving_min + minutes > drive_limit || hos.duty_min + minutes > duty_limit {
+                ctx.audio.play("ui/error");
+                return Some(format!(
+                    "Turning back takes {} of driving, more than your hours allow. Wait here \
+                     for the chain law to lift, or sleep on the shoulder from the pause menu.",
+                    ff_core::sim::hos::duration_text(minutes / 60.0)
+                ));
+            }
+        }
         self.trip.game_minutes += minutes;
         self.charge_scripted_hours(ctx, minutes);
         // A real drive back: on the odometer, at the highway burn.

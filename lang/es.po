@@ -31494,6 +31494,10 @@ msgid "The officer waves you back onto the highway."
 msgstr "El agente te indica que vuelvas a la carretera."
 
 #. one sentence of a longer line
+msgid "Sleep on the shoulder from the pause menu, or turn back."
+msgstr "Duerme en el arcén desde el menú de pausa, o da la vuelta."
+
+#. one sentence of a longer line
 msgid "The chain law still stands."
 msgstr "La ley de cadenas sigue vigente."
 
@@ -31508,10 +31512,12 @@ msgstr ""
 #. placeholders: {duration_text}
 msgid ""
 "You waited {duration_text}, and your 14-hour duty window is nearly used up. "
-"The chain law still stands."
+"The chain law still stands. Sleep on the shoulder from the pause menu, or "
+"turn back."
 msgstr ""
 "Esperaste {duration_text}, y tu ventana de servicio de 14 horas está casi "
-"agotada. La ley de cadenas sigue vigente."
+"agotada. La ley de cadenas sigue vigente. Duerme en el arcén desde el menú "
+"de pausa, o da la vuelta."
 
 #. one sentence of a longer line
 msgid "Wait again, or turn back."
@@ -31532,6 +31538,32 @@ msgstr ""
 
 msgid "chain checkpoint"
 msgstr "chain checkpoint"
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid ""
+"Turning back takes {duration_text} of driving, more than your hours allow."
+msgstr ""
+"Dar la vuelta supone {duration_text} de conducción, más de lo que te "
+"permiten tus horas."
+
+#. placeholders: {duration_text}
+msgid ""
+"Turning back takes {duration_text} of driving, more than your hours allow. "
+"Wait here for the chain law to lift, or sleep on the shoulder from the "
+"pause menu."
+msgstr ""
+"Dar la vuelta supone {duration_text} de conducción, más de lo que te "
+"permiten tus horas. Espera aquí a que se levante la ley de cadenas, o "
+"duerme en el arcén desde el menú de pausa."
+
+#. one sentence of a longer line
+msgid ""
+"Wait here for the chain law to lift, or sleep on the shoulder from the "
+"pause menu."
+msgstr ""
+"Espera aquí a que se levante la ley de cadenas, o duerme en el arcén desde "
+"el menú de pausa."
 
 #. one sentence of a longer line
 msgid "The chain law ahead still stands."
@@ -40207,6 +40239,13 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid ""
+#~ "You waited {duration_text}, and your 14-hour duty window is nearly used up. "
+#~ "The chain law still stands."
+#~ msgstr ""
+#~ "Esperaste {duration_text}, y tu ventana de servicio de 14 horas está casi "
+#~ "agotada. La ley de cadenas sigue vigente."
 
 #~ msgid "You have no chains aboard. Buy a set at the next garage."
 #~ msgstr "No llevas cadenas. Compra un juego en el próximo taller."
