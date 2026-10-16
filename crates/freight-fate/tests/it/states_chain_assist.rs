@@ -8,7 +8,6 @@ use ff_core::models::jobs::{cargo_type, Job};
 use ff_core::models::profile::Profile;
 use ff_core::sim::real_weather::{Observation, RealWeatherProvider};
 use ff_core::sim::real_weather_alerts::{WeatherAlert, WeatherAlertsProvider};
-use ff_core::sim::trip_models::rig_must_chain;
 use freight_fate::app::testing::TestApp;
 use freight_fate::app::SharedState;
 use freight_fate::states::city::JobBoardState;
@@ -225,14 +224,10 @@ fn test_a_level_1_alert_where_a_tandem_drives_on_stays_quiet_on_the_board() {
     assert!(line.contains("chain law is in effect on I-70"), "{line}");
     let line = accept_under_alert("Pendleton", "La Grande", "Ice Storm Warning");
     assert!(line.contains("chain law is in effect on I-84"), "{line}");
-    // Oregon Level 1 follows rig_must_chain the same way.
+    // Oregon Level 1 chains only single-drive-axle trucks: a tandem hears
+    // nothing about chains.
     let line = accept_under_alert("Pendleton", "La Grande", "Winter Storm Warning");
-    let chains = rig_must_chain(Some("OR"), 1);
-    assert_eq!(
-        line.contains("chain law is in effect"),
-        chains,
-        "Oregon Level 1: {line}"
-    );
+    assert!(!line.contains("chain"), "Oregon Level 1: {line}");
 }
 
 #[test]

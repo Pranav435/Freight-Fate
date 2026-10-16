@@ -812,6 +812,7 @@ impl JobBoardState {
         profile_mut(ctx).dispatch_board_cache = None;
         self.jobs.remove(index);
         self.confirm_risky_job = None;
+        self.confirm_chain_job = None;
         self.assigned_queue = if dispatch_policy(profile(ctx)).assigns_load {
             self.assignment_queue(ctx)
         } else {
@@ -1202,3 +1203,39 @@ impl Menu for JobBoardState {
 }
 
 impl_state_for_menu!(JobBoardState);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::app::testing::TestApp;
+    use ff_core::models::jobs::cargo_type;
+
+    fn load(pickup: &str) -> Job {
+        Job::new(
+            cargo_type("general").expect("general freight"),
+            12.0,
+            "Denver",
+            pickup,
+            "Silverthorne",
+            70.0,
+            900.0,
+            9.0,
+        )
+    }
+
+    #[test]
+    fn test_dropping_a_dead_offer_clears_both_confirmations() {
+        // The rows shift up, so a confirmation heard for one row must not
+        // let the load that moves into it skip its own warning.
+        let mut app = TestApp::new();
+        app.ctx.profile = Some(Profile::named_in("Chain Board", "Denver"));
+        let jobs = vec![load("Denver Gone-Away Storage"), load("Denver Cross-Dock")];
+        let mut board = JobBoardState::new(&app.ctx, jobs);
+        board.confirm_risky_job = Some(0);
+        board.confirm_chain_job = Some(0);
+        board.drop_dead_offer(&mut app.ctx, 0);
+        assert_eq!(board.jobs.len(), 1);
+        assert_eq!(board.confirm_risky_job, None);
+        assert_eq!(board.confirm_chain_job, None);
+    }
+}
