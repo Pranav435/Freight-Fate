@@ -288,8 +288,14 @@ pub struct DrivingState {
     // -- the setting every driver leaves it on until ice says otherwise.
     pub jake_selected_stage: i32,
     pub chains_fast_active: bool, // spoken chains-over-speed warning edge tracking
+    /// The cruise and keeper set speeds held down to chain speed while the
+    /// chains are on, given back when they come off (`apply_chain_speed_cap`).
+    pub chain_cap_cruise_mph: Option<f64>,
+    pub chain_cap_keeper_mph: Option<f64>,
+    /// "Cruise held to 30 miles per hour for chains." is said once per set.
+    pub chain_cap_said: bool,
     pub chain_law_warned: HashSet<(i64, i64)>, // (area, level) spoken warnings
-    pub chain_law_cited: HashSet<(i64, i64)>, // (area, level) already fined
+    pub chain_law_cited: HashSet<(i64, i64)>,  // (area, level) already fined
     /// (area, level) -> whether its checkpoint is staffed, rolled once.
     pub chain_checkpoint_staffed: HashMap<(i64, i64), bool>,
     /// Cited with chains aboard: held on the apron until they are on.

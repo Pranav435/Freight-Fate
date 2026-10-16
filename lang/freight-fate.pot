@@ -4871,7 +4871,7 @@ msgstr ""
 msgid "interstate"
 msgstr ""
 
-#: crates/ff-core/src/data/grades.rs crates/ff-core/src/sim/truck_parking.rs crates/freight-fate/src/community_stations.rs
+#: crates/ff-core/src/data/grades.rs crates/ff-core/src/sim/truck_parking.rs crates/freight-fate/src/community_stations.rs crates/freight-fate/src/states/online_states/profile.rs
 msgid "state"
 msgstr ""
 
@@ -10863,7 +10863,7 @@ msgstr ""
 msgid "loyalty"
 msgstr ""
 
-#: crates/ff-core/src/models/profile/serialize.rs crates/ff-core/src/models/profile/tests_compat.rs crates/ff-core/src/models/profile.rs crates/freight-fate/src/states/driving_menu_states/arrival.rs
+#: crates/ff-core/src/models/profile/serialize.rs crates/ff-core/src/models/profile/tests_compat.rs crates/ff-core/src/models/profile.rs
 msgid "achievements"
 msgstr ""
 
@@ -19190,18 +19190,10 @@ msgid "payload"
 msgstr ""
 
 #: crates/freight-fate/src/online_journal.rs
-msgid "mastodon"
-msgstr ""
-
-#: crates/freight-fate/src/online_journal.rs
-msgid "reasons"
-msgstr ""
-
-#: crates/freight-fate/src/online_journal.rs
 msgid "achievement"
 msgstr ""
 
-#: crates/freight-fate/src/online_journal.rs crates/freight-fate/src/states/city.rs crates/freight-fate/src/states/driving_menu_states/arrival.rs crates/freight-fate/src/states/online_states/profile.rs
+#: crates/freight-fate/src/online_journal.rs crates/freight-fate/src/states/city.rs crates/freight-fate/src/states/online_states/profile.rs
 msgid "level"
 msgstr ""
 
@@ -19648,6 +19640,16 @@ msgstr ""
 msgid "Lifetime {distance_unit_text}: {distance_value}"
 msgstr ""
 
+#. placeholders: {states}
+#: crates/freight-fate/src/states/career_stats.rs
+msgid "States visited: {states}"
+msgstr ""
+
+#. placeholders: {cities}
+#: crates/freight-fate/src/states/career_stats.rs
+msgid "Cities visited: {cities}"
+msgstr ""
+
 #. placeholders: {grouped}
 #: crates/freight-fate/src/states/career_stats.rs
 msgid "Lifetime earnings: {grouped} dollars"
@@ -19667,6 +19669,14 @@ msgstr ""
 msgid "Repeat this status line."
 msgstr ""
 
+#: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/online_states/profile.rs
+msgid "Places visited"
+msgstr ""
+
+#: crates/freight-fate/src/states/career_stats.rs
+msgid "Open the list of states you have delivered to, each with its cities."
+msgstr ""
+
 #: crates/freight-fate/src/states/career_stats.rs
 msgid "Citations and violations"
 msgstr ""
@@ -19675,6 +19685,10 @@ msgstr ""
 msgid ""
 "Open the list, newest first: what it was, why, what it cost, when, and "
 "where."
+msgstr ""
+
+#: crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/online_states/profile.rs
+msgid "No deliveries yet."
 msgstr ""
 
 #: crates/freight-fate/src/states/career_stats.rs
@@ -19773,7 +19787,7 @@ msgstr ""
 msgid "endorsements"
 msgstr ""
 
-#: crates/freight-fate/src/states/city.rs crates/freight-fate/src/states/driving_menu_states/arrival.rs
+#: crates/freight-fate/src/states/city.rs
 msgid "count"
 msgstr ""
 
@@ -30533,18 +30547,6 @@ msgstr ""
 msgid "Unlock: {unlock}"
 msgstr ""
 
-#: crates/freight-fate/src/states/driving_menu_states/arrival.rs
-msgid "type"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_menu_states/arrival.rs
-msgid "names"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving_menu_states/arrival.rs
-msgid "streak"
-msgstr ""
-
 #. placeholders: {names}
 #: crates/freight-fate/src/states/driving_menu_states/arrival.rs
 msgid "New achievement! {names}."
@@ -34389,6 +34391,16 @@ msgstr ""
 msgid "turn"
 msgstr ""
 
+#. placeholders: {held}
+#: crates/freight-fate/src/states/driving_speed_control.rs
+msgid "Cruise held to {held} for chains."
+msgstr ""
+
+#. placeholders: {held}
+#: crates/freight-fate/src/states/driving_speed_control.rs
+msgid "Speed keeper held to {held} for chains."
+msgstr ""
+
 #: crates/freight-fate/src/states/driving_stop_detail.rs
 msgid ""
 "Up and down arrows review each line; Home and End jump to the first and "
@@ -36227,7 +36239,7 @@ msgstr ""
 #: crates/freight-fate/src/states/main_menu.rs
 msgid ""
 "Drivers on duty, your orinks.net account, cloud backup and restore, and "
-"sharing choices like Mastodon and Discord."
+"Discord presence."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu.rs
@@ -40053,9 +40065,9 @@ msgstr ""
 #: crates/freight-fate/src/states/main_menu_help.rs
 msgid ""
 "Chain laws require chains on a truck at every level. Winter tires don't "
-"count for a semi. The exceptions are level one in Colorado, which chains "
-"only single-drive-axle trucks, and in Wyoming, which accepts snow tires. "
-"Signs announce the requirement before the chain-up area."
+"count for a semi. The exceptions are level one in Colorado and Oregon, "
+"which chain only single-drive-axle trucks, and in Wyoming, which accepts "
+"snow tires. Signs announce the requirement before the chain-up area."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
@@ -40404,10 +40416,7 @@ msgid ""
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
-msgid ""
-"Mastodon can share deliveries that earn an achievement, level, or perfect "
-"streak after you link an account. Discord shows broad activity and clears "
-"it after half an hour idle."
+msgid "Discord shows broad activity and clears it after half an hour idle."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
@@ -40608,12 +40617,6 @@ msgid ""
 "Can I hear a weather warning again? With live weather on, the Weather app "
 "under Driver apps lists active alerts. Comma also steps back through recent "
 "messages."
-msgstr ""
-
-#: crates/freight-fate/src/states/main_menu_help.rs
-msgid ""
-"Why did a delivery not post to Mastodon? Only deliveries that earn an "
-"achievement, a level, or a perfect streak are shared."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu_help.rs
@@ -40972,32 +40975,6 @@ msgid ""
 "overwritten until you choose. {base}"
 msgstr ""
 
-#: crates/freight-fate/src/states/online_hub.rs
-msgid ""
-"Sharing to Mastodon needs your orinks.net account. Choose Set up orinks.net "
-"account first."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid ""
-"Sharing to Mastodon needs a linked Mastodon account. Choose Link a Mastodon "
-"account first."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid ""
-"Only deliveries that earn an achievement, a level, or a perfect streak are "
-"posted. Posts are public on your own Mastodon account and carry the Freight "
-"Fate Runs hashtag, which is separate from the Freight Fate tag players use "
-"to talk about the game."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid ""
-"Linking Mastodon needs your orinks.net account. Choose Set up orinks.net "
-"account first."
-msgstr ""
-
 #: crates/freight-fate/src/states/online_hub.rs crates/freight-fate/src/states/online_states/directory.rs
 msgid "Driver directory"
 msgstr ""
@@ -41045,9 +41022,9 @@ msgstr ""
 #: crates/freight-fate/src/states/online_hub.rs
 msgid ""
 "Master switch for the orinks.net and sharing services. Off stops the "
-"drivers list, profile sharing, cloud backup, Mastodon sharing, station "
-"suggestions, and Discord presence without losing their settings. Live "
-"weather, traffic, and parking have their own toggles under Settings."
+"drivers list, profile sharing, cloud backup, station suggestions, and "
+"Discord presence without losing their settings. Live weather, traffic, and "
+"parking have their own toggles under Settings."
 msgstr ""
 
 #: crates/freight-fate/src/states/online_hub.rs
@@ -41112,46 +41089,6 @@ msgid ""
 "computer. Backups are private and never public downloads. Comes on when you "
 "connect the account. Public profile statistics are read from these backups, "
 "so turning this off empties them."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid "Share notable deliveries to Mastodon: not set up"
-msgstr ""
-
-#. placeholders: {on_off}
-#: crates/freight-fate/src/states/online_hub.rs
-msgid "Share notable deliveries to Mastodon: {on_off}"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid "Share notable deliveries to Mastodon: not linked"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid ""
-"A delivery that earns an achievement, a level, or a perfect streak posts a "
-"short public summary to your Mastodon account with the Freight Fate Runs "
-"hashtag. Routine deliveries are never posted. Needs a linked Mastodon "
-"account."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid "Mastodon account: linked"
-msgstr ""
-
-#. placeholders: {mastodon_linked_handle}
-#: crates/freight-fate/src/states/online_hub.rs
-msgid "Mastodon account: linked as {mastodon_linked_handle}"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid "Link a Mastodon account"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_hub.rs
-msgid ""
-"Opens the orinks.net page that authorizes your Mastodon server. Unlinking "
-"happens there too."
 msgstr ""
 
 #. placeholders: {on_off}
@@ -41649,151 +41586,6 @@ msgstr ""
 msgid "{count} on duty. {current}"
 msgstr ""
 
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Mastodon account"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Checking the Mastodon link"
-msgstr ""
-
-#. placeholders: {mastodon_linked_handle}
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid " as {mastodon_linked_handle}"
-msgstr ""
-
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Check link status."
-msgstr ""
-
-#. placeholders: {spoken}
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Check link status. Last known: linked{spoken}"
-msgstr ""
-
-#. placeholders: {spoken}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Last known: linked{spoken}"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Check link status"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "The browser could not be opened. The link is on your clipboard."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid ""
-"The browser could not be opened and the clipboard did not take the link. In "
-"your browser, go to orinks.net, then Freight Fate, then Online, then "
-"Mastodon."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid " The link is also on your clipboard."
-msgstr ""
-
-#. placeholders: {clipboard_note}
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Opening the Mastodon link page in your browser.{clipboard_note}"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid ""
-"This needs your orinks.net account. Choose Set up orinks.net account on the "
-"Online menu."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Checking with orinks.net."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "mastodon-status"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Open the Mastodon link page in my browser"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid ""
-"Sign in on orinks.net, enter your Mastodon server, and authorize Freight "
-"Fate there."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Asks orinks.net whether a Mastodon account is linked to your driver."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "a Mastodon account"
-msgstr ""
-
-#. placeholders: {spoken}
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Last I checked, {spoken} was linked."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "No Mastodon account linked yet."
-msgstr ""
-
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Linking happens in your browser on orinks.net."
-msgstr ""
-
-#. placeholders: {TITLE}, {known}, {current}
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid ""
-"{TITLE}. Linking happens in your browser on orinks.net. {known} {current}"
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Back in Freight Fate. Checking your Mastodon link."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Still checking."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Could not reach orinks.net to check the Mastodon link."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "your Mastodon account"
-msgstr ""
-
-#. placeholders: {spoken}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Linked: {spoken}."
-msgstr ""
-
-#. placeholders: {spoken}
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid ""
-"Linked: {spoken}. Share notable deliveries to Mastodon can go on from the "
-"Online menu."
-msgstr ""
-
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid "Share notable deliveries to Mastodon can go on from the Online menu."
-msgstr ""
-
-#: crates/freight-fate/src/states/online_states/board.rs
-msgid ""
-"No Mastodon account linked yet. Open the link page, authorize there, then "
-"check again."
-msgstr ""
-
 #: crates/freight-fate/src/states/online_states/directory.rs
 msgid "Last on duty less than an hour ago"
 msgstr ""
@@ -42139,6 +41931,11 @@ msgstr ""
 
 #: crates/freight-fate/src/states/online_states/profile.rs
 msgid "Checking the profile"
+msgstr ""
+
+#: crates/freight-fate/src/states/online_states/profile.rs
+msgid ""
+"Open the list of states this driver has delivered to, each with its cities."
 msgstr ""
 
 #: crates/freight-fate/src/states/save_notice.rs

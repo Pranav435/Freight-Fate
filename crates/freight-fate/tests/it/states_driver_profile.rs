@@ -12,7 +12,7 @@ use freight_fate::app::testing::TestApp;
 use freight_fate::app::SharedState;
 use freight_fate::net::testing::FakeTransport;
 use freight_fate::net::NetError;
-use freight_fate::states::base::{Key, Menu};
+use freight_fate::states::base::{Key, Menu, SimpleMenuState};
 use freight_fate::states::online_hub::OnlineHubState;
 use freight_fate::states::online_states::{profile_rows, DriverProfileState, DriversOnlineState};
 use serde_json::{json, Value};
@@ -357,4 +357,50 @@ fn test_your_profile_on_the_online_menu_opens_your_own() {
     with_state::<DriverProfileState, _>(&top, |s| {
         assert_eq!(s.driver_id(), me.driver_id);
     });
+}
+
+#[test]
+fn test_places_visited_opens_from_the_row_after_the_city_count() {
+    let mut app = TestApp::new();
+    let mut profile = full_profile();
+    profile["snapshot"]["visitedPlaces"] = json!([
+        {"state": "Illinois", "cities": ["Chicago", "Rockford"]},
+        {"state": "Nevada", "cities": ["Reno"]},
+    ]);
+    let transport = FakeTransport::replying(profile);
+    let _guard = install_transport(transport.clone());
+    let shared = open_profile(&mut app, "road-star-1234", None, false);
+    tick(&mut app, &shared);
+
+    let listed = rows(&app, &shared);
+    let count = listed
+        .iter()
+        .position(|r| r == "Cities visited: 40")
+        .expect("the city count is listed");
+    assert_eq!(listed[count + 1], "Places visited", "{listed:?}");
+
+    move_to::<DriverProfileState>(&mut app, &shared, "Places visited");
+    press(&mut app, Key::Return);
+    app.ctx.run_deferred();
+    let top = app.state().expect("the list is open");
+    assert_eq!(
+        labels::<SimpleMenuState>(&top, &app.ctx),
+        ["Illinois: Chicago, Rockford", "Nevada: Reno", "Back"]
+    );
+}
+
+#[test]
+fn test_a_profile_without_the_places_list_offers_no_row_for_it() {
+    // A snapshot from before the site sent the list: the counts stand alone.
+    let mut app = TestApp::new();
+    let transport = FakeTransport::replying(full_profile());
+    let _guard = install_transport(transport.clone());
+    let shared = open_profile(&mut app, "road-star-1234", None, false);
+    tick(&mut app, &shared);
+    let listed = rows(&app, &shared);
+    assert!(
+        listed.iter().any(|r| r == "Cities visited: 40"),
+        "{listed:?}"
+    );
+    assert!(!listed.iter().any(|r| r == "Places visited"), "{listed:?}");
 }
