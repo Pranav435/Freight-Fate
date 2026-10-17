@@ -13,9 +13,9 @@
 use ff_core::message_log::MessageCategory;
 use ff_core::speech_pacing::{Disposition, SpeechCategory};
 use ff_core::speech_text::SpokenMessage;
-use hearken::speech::{Cut, EventPriority, PacerConfig, Protect, Valid};
 
 use crate::audio::SPEECH_DUCK_LEVEL;
+use crate::speech::{Cut, EventPriority, PacerConfig, Protect, Valid};
 
 use super::GameContext;
 
@@ -896,7 +896,7 @@ impl GameContext {
         self.event_pacer.speaking_critical()
     }
 
-    pub fn event_delivery_status(&mut self, key: &str) -> Option<hearken::speech::DeliveryStatus> {
+    pub fn event_delivery_status(&mut self, key: &str) -> Option<crate::speech::DeliveryStatus> {
         self.event_pacer.delivery_status(key)
     }
 

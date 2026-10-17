@@ -40,7 +40,6 @@ use ff_core::sim::real_weather::RealWeatherProvider;
 use ff_core::sim::real_weather_alerts::WeatherAlertsProvider;
 use ff_core::sim::truck_parking::TruckParkingProvider;
 use ff_core::speech_text::achievement_announced;
-use hearken::speech::EventSpeechPacer;
 
 use crate::account_achievements::AccountAchievements;
 use crate::audio::{Audio, VolumeUpdate};
@@ -54,7 +53,7 @@ use crate::meaningful_play::MeaningfulPlayReason;
 use crate::net::UreqTransport;
 use crate::online_journal::{queue_achievement, JournalOutbox};
 use crate::online_presence::{OnlineIdentity, OnlinePresence};
-use crate::speech::{apply_speech_settings, SpeechSink};
+use crate::speech::{apply_speech_settings, EventSpeechPacer, SpeechSink};
 use crate::states::base::State;
 
 use super::held_keys::HeldKeys;

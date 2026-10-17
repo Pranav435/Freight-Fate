@@ -150,6 +150,17 @@ jobs:
       - name: Test targets
         run: python3 tools/check_test_targets.py
 
+      # The game keeps its own state stack, menus and speech delivery and
+      # takes only Hearken's services and leaf types. Hearken's `Ctx`
+      # carries an inherent `say` that would silently shadow the game's
+      # `Say` trait, so no game code may reach its app shell.
+      - name: Hearken leaf types only
+        run: |
+          if grep -rnE "hearken::(Ctx|App|ctx|app|screens|run|menu|state|speech_delivery)\b" crates/; then
+            echo "::error::Freight Fate uses Hearken's app shell; take the leaf type instead"
+            exit 1
+          fi
+
   clippy:
     # Workspace-wide and every target, so test and bench code is linted
     # too; warnings are errors. `--locked`: Cargo.lock is committed (it also

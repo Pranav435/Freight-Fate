@@ -66,16 +66,20 @@
 //! re-exported here at the paths the game and its tests always used
 //! (`crate::speech::capture`, `crate::speech::fakes`, ...). What stays in
 //! Freight Fate: the environment variable names ([`env`]), the settings side
-//! ([`apply_speech_settings`] over `ff_core`'s `Settings`) and the event pacer
-//! re-export from `ff_core`.
+//! ([`apply_speech_settings`] over `ff_core`'s `Settings`). The event pacer
+//! is Hearken's too, re-exported here with its types, so the app shell takes
+//! every speech service through this one module.
 
 use ff_core::settings::Settings;
 
 pub use hearken::speech::{backend, capture, fakes, live, threaded};
 
 // The event-voice pacer is Hearken's, run with `app::FF_PACER`; re-exported
-// here because it is part of what a caller means by "the speech channel".
-pub use hearken::speech::{EventPriority, EventSpeechPacer};
+// here because it is part of what a caller means by "the speech channel",
+// and so the app shell names no `hearken::speech` path of its own.
+pub use hearken::speech::{
+    Cut, DeliveryStatus, EventPriority, EventSpeechPacer, PacerConfig, Protect, Valid,
+};
 
 pub use hearken::speech::backend::{
     narrator_running, pick_backend, pick_backend_gated, pick_event_backend,

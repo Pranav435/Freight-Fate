@@ -1424,7 +1424,7 @@ pub fn smoke_audio_checks() -> Result<(), String> {
     const KEY: &str = "ui/menu_select";
     let (bytes, ext) = crate::audio::hearken_clips::FfClips::sfx(KEY)
         .ok_or_else(|| format!("smoke: {KEY} is not in the packed sounds"))?;
-    let info = hearken::audio::probe_clip(bytes)
+    let info = crate::audio::probe_clip(bytes)
         .map_err(|e| format!("smoke: {KEY}.{ext} does not decode through Hearken: {e}"))?;
     log::info!("Smoke: {KEY}.{ext} decodes at {} Hz", info.sample_rate);
     Ok(())

@@ -52,6 +52,8 @@ pub use engine::AudioEngine;
 pub use ff_core::assets_pack::{generated_sound_keys, register_generated_sound};
 pub use ff_core::audio_loops::{to_seconds, LoopUnits, SustainLoopSpec};
 pub use hearken_backend::{headless_requested, HearkenBackend, HearkenEngineBand};
+// The device-free decode check, used by the smoke run and the music picker.
+pub use hearken::audio::{probe_clip, ClipInfo};
 pub use hearken_radio::radio_stream_options;
 pub use null::NullBackend;
 

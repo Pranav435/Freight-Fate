@@ -78,7 +78,7 @@ impl HearkenBackend {
         // Hearken has no tracker player, and a file it cannot decode must
         // fail here whatever the device (the silent one takes any bytes),
         // so the playlist skips the entry.
-        if is_module(ext) || hearken::audio::probe_clip(data.clone()).is_err() {
+        if is_module(ext) || super::probe_clip(data.clone()).is_err() {
             return Err(AudioError::new(format!("could not decode {path}")));
         }
         let start = Start::ONCE.volume(0.0);

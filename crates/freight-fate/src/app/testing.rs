@@ -25,10 +25,9 @@ use std::sync::{Mutex, MutexGuard, TryLockError};
 use std::time::{Duration, Instant};
 
 use ff_core::settings::Settings;
-use hearken::speech::EventSpeechPacer;
 
 use crate::audio::{Audio, AudioError, SustainLoopSpec, VolumeUpdate};
-use crate::speech::CaptureSpeech;
+use crate::speech::{CaptureSpeech, EventSpeechPacer};
 
 use super::App;
 
