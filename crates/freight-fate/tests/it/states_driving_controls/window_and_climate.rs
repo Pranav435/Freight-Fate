@@ -1,6 +1,6 @@
 // -- the driver window and the climate keys: Z, Alt Z, Shift Z ------------------------
 //
-// Mark Noorlander's ask (2026-10-17): pure ambience, so what is asserted is
+// A player's ask (2026-10-17): pure ambience, so what is asserted is
 // the confirmation and the sound, never an effect on the drive.
 
 fn shift(k: Key) -> InputEvent {

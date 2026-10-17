@@ -1,6 +1,6 @@
 //! The driver window and the cab climate: pure ambience.
 //!
-//! Mark Noorlander asked to open the window and run the heater or the air
+//! A player asked to open the window and run the heater or the air
 //! conditioning (2026-10-17). Nothing here touches the drive: no fuel cost,
 //! no fatigue effect, no warning about rain coming in. A comfort mechanic
 //! would add a new way to be wrong and new spoken warnings, and neither the
