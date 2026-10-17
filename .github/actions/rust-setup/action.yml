@@ -57,7 +57,8 @@ runs:
     - shell: bash
       run: |
         rustup show
-        echo "CARGO_BUILD_JOBS=$(nproc)" >> "$GITHUB_ENV"
+        # macOS has no nproc; it reports cores through sysctl.
+        echo "CARGO_BUILD_JOBS=$(nproc 2>/dev/null || sysctl -n hw.ncpu)" >> "$GITHUB_ENV"
     # sccache caches compiled crates by content, so a commit that leaves
     # ff-core alone does not rebuild it although its files are new.
     # rust-cache keeps the dependencies' artefacts in the target directory,
