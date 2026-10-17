@@ -719,13 +719,17 @@ Everything found before 2026-09-25 moved to
 - [ ] Release prep for M6 (owner): push Hearken's branch and merge it to
       `main`, `cargo update -p hearken` so `Cargo.lock` pins that commit, a
       manual `rust.yml` run on Windows, Linux and macOS, the listening pass
-      above, then the tag. Until Hearken is public, the `HEARKEN_TOKEN`
-      secret must be set or the Rust jobs cannot fetch it.
+      above, then the tag. Hearken is public (2026-10-17), so CI fetches it
+      with no secret.
 - [ ] HE-AAC through the system decoder (owner, 2026-10-17: AAC+ stays on
       its base layer for 1.9, since `fdk-aac`'s licence needs AAC patent
       licences). BASS decoded AAC through Media Foundation on Windows and
       Core Audio on macOS, whose platforms carry the licences; a Hearken
       radio decoder on each would match it. Linux stays on the base layer.
+- [x] CI back on GitHub's hosted runners (owner, 2026-10-17: Blacksmith's
+      paid minutes stay with the private repositories), with the nightly's
+      tests beside its packaging rather than before it, and the Spanish keys
+      help no longer the 2.5-minute tail of every test run.
 - [x] Fragmented-MP4 (CMAF) HLS segments and `EXT-X-MEDIA` audio
       renditions in Hearken's radio (2026-10-17).
 - [ ] Tracker modules in personal playlists, if a small pure-Rust player

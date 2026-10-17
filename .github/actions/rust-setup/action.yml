@@ -1,16 +1,13 @@
 name: Rust build setup
-description: Hearken access, the platform's build dependencies, the pinned toolchain and the compile caches.
+description: The platform's build dependencies, the pinned toolchain and the compile caches.
 inputs:
-  token:
-    description: The HEARKEN_TOKEN secret (may be empty; see hearken-access).
-    required: false
-    default: ""
   cache-key:
     description: >-
-      Keeps this job's build cache apart from jobs that build differently
-      (clippy, tests, a release). A rust-cache entry holds one job's
-      artefacts, so two jobs saving under one key take turns evicting each
-      other.
+      The build cache this job shares: `clippy`, `test` or `release`. Jobs
+      that build the same way share one entry across workflows (the
+      nightly's test legs reuse the per-push tests' cache), and jobs that
+      build differently keep apart, since one entry holds one kind of
+      build. rust-cache adds the OS, Cargo.lock and RUSTFLAGS to the key.
     required: true
   linux-packages:
     description: Extra apt packages for the Linux dependencies step.
@@ -21,16 +18,14 @@ inputs:
       Whether this run saves the rust-cache entry. The default saves from
       pushes, the nightly and manual runs, not from pull requests: a PR
       restores its base branch's entry, and saving one per PR would push
-      dev's out of the cache budget. sccache still records a PR's own
-      crates, so a second push to the PR is warm where it matters.
+      dev's out of the repository's 10 GB cache budget. sccache still
+      records a PR's own crates, so a second push to the PR is warm where
+      it matters.
     required: false
     default: ${{ github.event_name != 'pull_request' }}
 runs:
   using: composite
   steps:
-    - uses: ./.github/actions/hearken-access
-      with:
-        token: ${{ inputs.token }}
     - uses: ./.github/actions/linux-deps
       if: runner.os == 'Linux'
       with:
@@ -71,6 +66,6 @@ runs:
         echo "SCCACHE_GHA_ENABLED=true" >> "$GITHUB_ENV"
     - uses: Swatinem/rust-cache@v2
       with:
-        key: ${{ inputs.cache-key }}
+        shared-key: ${{ inputs.cache-key }}
         cache-on-failure: true
         save-if: ${{ inputs.save-cache }}

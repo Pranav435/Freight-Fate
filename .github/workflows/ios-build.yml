@@ -8,11 +8,10 @@
 #
 # This is a compile check, not a release. It runs the same `cargo build` that
 # `tools/build_ios.py` does, and stops there: no app bundle, no signing, no
-# artifacts. Its one secret is HEARKEN_TOKEN, for the engine's git
-# dependency while that repository is private.
+# artifacts, and no secrets.
 #
-# GitHub's hosted macos-26, not Blacksmith: this repository is public, so
-# those minutes are free, and the iOS SDK is the image's own Xcode.
+# GitHub's hosted macos-26: this repository is public, so those minutes are
+# free, and the iOS SDK is the image's own Xcode.
 #
 # Not a required check. It is path filtered, and a required check that is
 # path filtered waits forever on a PR that skips it (see rust.yml).
@@ -39,7 +38,6 @@ on:
       - "Cargo.lock"
       - "rust-toolchain.toml"
       - ".github/workflows/ios-build.yml"
-      - ".github/actions/hearken-access/**"
   workflow_dispatch:
 
 concurrency:
@@ -75,12 +73,6 @@ jobs:
       CC_ENABLE_DEBUG_OUTPUT: "1"
     steps:
       - uses: actions/checkout@v6
-
-      - name: Hearken access
-        # The engine is a private git dependency for now; see the action.
-        uses: ./.github/actions/hearken-access
-        with:
-          token: ${{ secrets.HEARKEN_TOKEN }}
 
       - name: Install the pinned Rust toolchain and the iOS target
         run: |

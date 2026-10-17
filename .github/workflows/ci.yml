@@ -34,7 +34,7 @@ jobs:
     # guards parse, and a few files outside those trees. A Rust-only change
     # leaves it false; rust.yml covers that. The changelog gate is NOT gated
     # here: it lives in changelog.yml and runs on every change.
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
       # A manual run, or a filter that could not decide (a force push whose
@@ -93,17 +93,17 @@ jobs:
     if: ${{ !cancelled() }}
     # The check names are what branch protection requires on dev and main
     # ("test (ubuntu-latest)", "test (windows-latest)"), so they keep the
-    # GitHub-hosted labels they were born with although the jobs now run on
-    # Blacksmith. Rename one only together with the protection rule.
+    # GitHub-hosted labels they were born with although the jobs run on
+    # pinned images. Rename one only together with the protection rule.
     name: test (${{ matrix.check }})
     strategy:
       fail-fast: false
       matrix:
         include:
           - check: windows-latest
-            os: blacksmith-4vcpu-windows-2025
+            os: windows-2025
           - check: ubuntu-latest
-            os: blacksmith-4vcpu-ubuntu-2404
+            os: ubuntu-24.04
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     env:

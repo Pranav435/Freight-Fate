@@ -6,22 +6,21 @@
 # a path filter skips stays "expected -- waiting for status" forever, so
 # nothing here may be made required while the filter stays.
 #
-# The game is built on the Hearken engine (crates from the private
-# orinks-games/hearken repository, a git dependency pinned by Cargo.lock).
-# Every job that compiles goes through .github/actions/rust-setup, whose
-# first step, hearken-access, lets Cargo fetch it with the HEARKEN_TOKEN
-# secret and does nothing once Hearken is public.
+# The game is built on the Hearken engine (crates from the public
+# orinks-games/hearken repository, a git dependency pinned by Cargo.lock),
+# which Cargo fetches anonymously.
 #
-# Layout (2026-10-17, the same shape as Hearken's and Echo Parlor's CI): every
-# job starts at once on a Blacksmith runner, and the slowest, the Windows
+# Runners (2026-10-17): GitHub's hosted runners. Freight Fate is public, so
+# they cost nothing; the paid Blacksmith minutes are kept for the private
+# repositories. Every job starts at once, and the slowest, the Windows
 # tests, sets the wall time.
 #
-#   checks   fmt, the translation files, the test-target layout. No build,
-#            a sparse checkout, a 2 vCPU runner: well under a minute.
+#   checks   fmt, the translation files, the test-target layout. No build
+#            and a sparse checkout: well under a minute.
 #   clippy   once, on Linux, with warnings denied. The Windows-only code is
-#            linted by the nightly's Windows job, every night.
+#            linted by the nightly's Windows test leg, every night.
 #   test     the game on Windows and Linux in parallel; ff-core on Linux
-#            only. ff-core is headless, so the cheap runner proves it as
+#            only. ff-core is headless, so the Linux runner proves it as
 #            well as Windows does, and its test binaries stay off the slow
 #            Windows compile.
 #   test-macos  the game and ff-core on macOS, for a manual run and a `v*`
@@ -30,13 +29,15 @@
 #            the Kira/CoreAudio build before a release; the nightly's Mac
 #            job tests it every night as well.
 #
-# Caches: each compiling job keeps its own rust-cache entry (`clippy`,
-# `test`, `test-macos`). rust-cache already folds the OS (the rustc host),
-# Cargo.lock and RUSTFLAGS into the key, so Windows and Linux never collide,
-# and a manual full run never overwrites the quick set's entry. Clippy does
-# not share the tests' entry on purpose: it builds check-only metadata and no
-# test binaries, so one shared key would hold whichever job saved first and
-# leave the other cold. sccache, keyed by content, is shared by all of them.
+# Caches: rust-cache entries are shared by kind of build (`clippy`, `test`),
+# and the nightly's test legs use the same `test` entries. rust-cache folds
+# the OS (the rustc host), Cargo.lock and RUSTFLAGS into the key, so Windows
+# and Linux never collide, and a manual full run never overwrites the quick
+# set's entry. Clippy does not share the tests' entry on purpose: it builds
+# check-only metadata and no test binaries, so one shared key would hold
+# whichever job saved first and leave the other cold. sccache, keyed by
+# content, is shared by all of them. Everything lives in the repository's
+# 10 GB of GitHub cache, and only pushes save (see rust-setup).
 #
 # The runner is plain `cargo test`, not nextest. nextest runs every test in
 # a process of its own, and each game test process loads the world data
@@ -48,7 +49,7 @@
 # Those are the whole-map sweeps -- a 500-mile delivery per state line, every
 # facility exit, every kind of destination, ~96 job origins -- and they cost
 # as much as the other 2,400 game-crate tests together. They run in full on
-# the nightly (build-career-1.9.yml's Windows job), on a manual
+# the nightly (build-career-1.9.yml's Linux x86_64 test leg), on a manual
 # `workflow_dispatch` of this workflow, and in any local `cargo test`.
 #
 # Each crate builds its integration tests as one binary, `it`, plus a few
@@ -134,11 +135,11 @@ jobs:
   checks:
     # Seconds-long checks that need no build and no dependency fetch
     # (`cargo fmt` reads the workspace manifests only, so it needs no
-    # Hearken access either). The checkout is sparse and blobless: the
+    # Hearken either). The checkout is sparse and blobless: the
     # 330 MB of world data under data/ is not needed here, only the one
     # file the translation extractor reads.
     name: fmt, translations and test targets
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
@@ -188,14 +189,13 @@ jobs:
     # pins the Hearken commit), so a dependency change that was not locked
     # in fails here loudly instead of resolving to something no developer
     # has run.
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
 
       - uses: ./.github/actions/rust-setup
         with:
-          token: ${{ secrets.HEARKEN_TOKEN }}
           cache-key: clippy
 
       - name: cargo clippy
@@ -208,10 +208,10 @@ jobs:
       matrix:
         include:
           - name: Windows
-            os: blacksmith-4vcpu-windows-2025
+            os: windows-2025
             packages: -p freight-fate
           - name: Linux
-            os: blacksmith-4vcpu-ubuntu-2404
+            os: ubuntu-24.04
             packages: -p ff-core -p freight-fate
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
@@ -232,7 +232,6 @@ jobs:
 
       - uses: ./.github/actions/rust-setup
         with:
-          token: ${{ secrets.HEARKEN_TOKEN }}
           cache-key: test
 
       - name: Build the test binaries
@@ -261,10 +260,10 @@ jobs:
           if-no-files-found: ignore
 
   test-macos:
-    # A manual run or a release tag only: the Mac minutes are the dearest,
-    # and nothing per push touches Mac-only code that the nightly's Mac job
-    # would not catch by morning. GitHub's hosted macos-26, as the nightly
-    # and the iOS jobs use: this repository is public, so it costs nothing.
+    # A manual run or a release tag only: Mac runners are the slowest and
+    # the fewest at once, and nothing per push touches Mac-only code that
+    # the nightly's Mac job would not catch by morning. GitHub's hosted
+    # macos-26, as the nightly and the iOS jobs use.
     name: test (macOS)
     if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
     runs-on: macos-26
@@ -284,8 +283,7 @@ jobs:
       # run time. SDL2 is compiled in from source with the runner's cmake.
       - uses: ./.github/actions/rust-setup
         with:
-          token: ${{ secrets.HEARKEN_TOKEN }}
-          cache-key: test-macos
+          cache-key: test
 
       - name: Build the test binaries
         run: cargo test -p ff-core -p freight-fate --no-run --locked --timings

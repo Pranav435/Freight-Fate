@@ -169,18 +169,18 @@ def _all_workflows() -> list[Path]:
     return sorted(WORKFLOWS.glob("*.yml"))
 
 
-def test_the_required_check_names_survive_the_move_to_blacksmith() -> None:
+def test_the_required_check_names_survive_the_runner_moves() -> None:
     """Branch protection on dev and main requires these contexts by name.
-    The Python jobs moved to Blacksmith runners but keep the names the
-    GitHub-hosted labels gave them; a renamed check would leave every PR
-    waiting on one that never reports."""
+    The Python jobs keep the names the GitHub-hosted labels first gave them
+    although they now run on pinned images; a renamed check would leave
+    every PR waiting on one that never reports."""
     python = _load(CI_WORKFLOW)["jobs"]["test"]
     assert python["name"] == "test (${{ matrix.check }})"
     names = {f"test ({leg['check']})" for leg in python["strategy"]["matrix"]["include"]}
     gate = _load(CHANGELOG_WORKFLOW)["jobs"]["changelog"]["name"]
     assert names | {gate} == REQUIRED_CHECKS
     oses = {leg["os"] for leg in python["strategy"]["matrix"]["include"]}
-    assert oses == {"blacksmith-4vcpu-windows-2025", "blacksmith-4vcpu-ubuntu-2404"}
+    assert oses == {"windows-2025", "ubuntu-24.04"}
 
 
 def test_bass_is_gone_from_ci() -> None:
@@ -192,60 +192,62 @@ def test_bass_is_gone_from_ci() -> None:
         assert "bass-" not in text.lower(), path.name
 
 
-def test_hearken_access_is_a_no_op_without_the_token() -> None:
-    """Freight Fate is public and Hearken is private for now. The action
-    rewrites the Hearken URL only when the secret is set, and otherwise
-    leaves the runner alone, so CI keeps working unchanged once Hearken is
-    public. It never prints the token."""
-    action = _load(ACTIONS / "hearken-access" / "action.yml")
-    assert action["inputs"]["token"]["required"] == "false"
-    (step,) = action["runs"]["steps"]
-    run = step["run"]
-    assert step["env"]["HEARKEN_TOKEN"] == "${{ inputs.token }}"
-    lines = run.splitlines()
-    guard = lines.index('if [ -z "$HEARKEN_TOKEN" ]; then')
-    assert lines[guard + 2].strip() == "exit 0"
-    rewrite = next(i for i, ln in enumerate(lines) if "insteadOf" in ln)
-    assert guard < rewrite
-    assert 'insteadOf "https://github.com/orinks-games/hearken"' in run
-    assert "CARGO_NET_GIT_FETCH_WITH_CLI=true" in run
-    for line in lines:
-        if line.strip().startswith("echo"):
-            assert "HEARKEN_TOKEN}" not in line and "$authed" not in line, line
+def _runners(job: dict) -> list[str]:
+    runs_on = job.get("runs-on", "")
+    matrix = job.get("strategy", {}).get("matrix", {})
+    legs = [leg for leg in matrix.get("include", []) if isinstance(leg, dict)]
+    return [runs_on] + [str(v) for leg in legs for v in leg.values()]
 
 
-def test_every_job_that_compiles_can_fetch_hearken() -> None:
-    """A job that runs cargo build, test or clippy needs the engine, so it
-    goes through rust-setup (or hearken-access directly) with the secret.
-    `cargo fmt` reads only the workspace manifests and needs neither."""
+def test_every_job_runs_on_github_hosted_runners() -> None:
+    """Freight Fate is public, so GitHub's runners cost nothing; the owner
+    keeps the paid Blacksmith minutes for the private repositories
+    (2026-10-17)."""
+    for path in _all_workflows():
+        for name, job in _load(path)["jobs"].items():
+            for runner in _runners(job):
+                assert "blacksmith" not in runner, (path.name, name)
+                assert "self-hosted" not in runner, (path.name, name)
+
+
+def test_no_job_needs_a_secret_to_fetch_hearken() -> None:
+    """Hearken is public, so Cargo fetches it anonymously and a fork's pull
+    request builds like any other."""
+    assert not (ACTIONS / "hearken-access").exists()
+    for path in _all_workflows() + sorted(ACTIONS.glob("*/action.yml")):
+        text = path.read_text(encoding="utf-8")
+        assert "HEARKEN_TOKEN" not in text, path.name
+        assert "hearken-access" not in text, path.name
+
+
+def test_every_desktop_job_that_compiles_sets_up_through_rust_setup() -> None:
+    """A job that runs cargo build, test or clippy for the desktop goes
+    through rust-setup (dependencies, toolchain, caches) first. The iOS
+    workflows install their own target and need none of it. `cargo fmt`
+    reads only the workspace manifests and needs neither."""
     compiling = (
         "cargo build",
         "cargo test",
         "cargo clippy",
         "build-release.ps1",
         "build_release.py --rust",
-        "tools/build_ios.py",
     )
     for path in _all_workflows():
+        if path.name.startswith("ios-"):
+            continue
         for name, job in _load(path)["jobs"].items():
             steps = job.get("steps", [])
             if not any(any(c in s.get("run", "") for c in compiling) for s in steps):
                 continue
-            access = [
-                s
-                for s in steps
-                if s.get("uses")
-                in ("./.github/actions/rust-setup", "./.github/actions/hearken-access")
-            ]
-            assert access, (path.name, name)
-            assert access[0]["with"]["token"] == "${{ secrets.HEARKEN_TOKEN }}", (path.name, name)
+            setup = [s for s in steps if s.get("uses") == "./.github/actions/rust-setup"]
+            assert setup, (path.name, name)
             first_cargo = next(
                 i for i, s in enumerate(steps) if any(c in s.get("run", "") for c in compiling)
             )
-            assert steps.index(access[0]) < first_cargo, (path.name, name)
+            assert steps.index(setup[0]) < first_cargo, (path.name, name)
 
 
-def test_rust_ci_runs_its_jobs_side_by_side_on_blacksmith() -> None:
+def test_rust_ci_runs_its_jobs_side_by_side() -> None:
     """The same shape as Hearken's and Echo Parlor's CI: quick checks on a
     small runner, clippy once on Linux, the tests on Windows and Linux in
     parallel, nothing waiting on anything else."""
@@ -254,7 +256,7 @@ def test_rust_ci_runs_its_jobs_side_by_side_on_blacksmith() -> None:
     assert all("needs" not in job for job in jobs.values())
 
     checks = jobs["checks"]
-    assert checks["runs-on"] == "blacksmith-2vcpu-ubuntu-2404"
+    assert checks["runs-on"] == "ubuntu-24.04"
     runs = "\n".join(s.get("run", "") for s in checks["steps"])
     assert "cargo fmt --all --check" in runs
     assert "tools/l10n/extract.py --check" in runs
@@ -264,7 +266,7 @@ def test_rust_ci_runs_its_jobs_side_by_side_on_blacksmith() -> None:
     assert "sparse-checkout" in _checkout_step(checks)["with"]
 
     clippy = jobs["clippy"]
-    assert clippy["runs-on"] == "blacksmith-4vcpu-ubuntu-2404"
+    assert clippy["runs-on"] == "ubuntu-24.04"
     assert any(
         s.get("run") == "cargo clippy --workspace --all-targets --locked -- -D warnings"
         for s in clippy["steps"]
@@ -272,8 +274,8 @@ def test_rust_ci_runs_its_jobs_side_by_side_on_blacksmith() -> None:
 
     test = jobs["test"]
     legs = {leg["name"]: leg for leg in test["strategy"]["matrix"]["include"]}
-    assert legs["Windows"]["os"] == "blacksmith-4vcpu-windows-2025"
-    assert legs["Linux"]["os"] == "blacksmith-4vcpu-ubuntu-2404"
+    assert legs["Windows"]["os"] == "windows-2025"
+    assert legs["Linux"]["os"] == "ubuntu-24.04"
     # ff-core is headless, so it is proved once, on Linux.
     assert legs["Windows"]["packages"] == "-p freight-fate"
     assert legs["Linux"]["packages"] == "-p ff-core -p freight-fate"

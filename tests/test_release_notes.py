@@ -736,9 +736,9 @@ def test_career_19_snapshot_workflow_contract():
     assert "tag=1.9-tester-$(date -u +%Y%m%d)" in workflow
     assert "commit_sha: ${{ steps.check.outputs.commit_sha }}" in workflow
     assert 'echo "commit_sha=$(git rev-parse HEAD)"' in workflow
-    # Format, Windows, macOS, Linux build, the Linux distro smoke, and the
-    # release.
-    assert workflow.count("ref: ${{ needs.prepare.outputs.commit_sha }}") == 6
+    # Format, the test legs, Windows, macOS, Linux build, the Linux distro
+    # smoke, and the release.
+    assert workflow.count("ref: ${{ needs.prepare.outputs.commit_sha }}") == 7
     assert 'git tag --list "1.9-tester-*"' in workflow
     assert "tools/release_notes.py should-build-nightly" in workflow
     assert "tools/release_notes.py nightly" in workflow
@@ -772,11 +772,11 @@ def test_career_19_snapshot_builds_and_boots_a_linux_release():
     assert "tools/build_appimage.py --rust" in workflow
     assert "bash /work/tools/linux_smoke.sh" in workflow
     # One build job, two native legs: the PC one on 22.04 and the ARM64 one
-    # (the Blazie BT Speak and BT Braille, Raspberry Pi) on Blacksmith's
+    # (the Blazie BT Speak and BT Braille, Raspberry Pi) on GitHub's
     # ARM runner of the same release, so both carry the same glibc floor.
     # Each leg uploads its own pair of downloads.
-    assert "            runner: blacksmith-4vcpu-ubuntu-2204\n" in workflow
-    assert "            runner: blacksmith-4vcpu-ubuntu-2204-arm\n" in workflow
+    assert "            runner: ubuntu-22.04\n" in workflow
+    assert "            runner: ubuntu-22.04-arm\n" in workflow
     assert "            tarball: linux-x64\n" in workflow
     assert "            tarball: linux-arm64\n" in workflow
     assert "name: Linux-${{ matrix.arch }}" in workflow
@@ -786,8 +786,8 @@ def test_career_19_snapshot_builds_and_boots_a_linux_release():
     # (Docker Hub's archlinux image is amd64 only).
     assert "arch: [x86_64, aarch64]" in workflow
     assert (
-        "runs-on: ${{ matrix.arch == 'aarch64' && 'blacksmith-2vcpu-ubuntu-2404-arm'"
-        " || 'blacksmith-2vcpu-ubuntu-2404' }}" in workflow
+        "runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm'"
+        " || 'ubuntu-24.04' }}" in workflow
     )
     assert (
         "        exclude:\n          - arch: aarch64\n            image: archlinux:latest\n"
@@ -841,9 +841,8 @@ def test_career_19_snapshot_builds_an_apple_silicon_macos_release():
         step["name"]: (index, step) for index, step in enumerate(steps) if "name" in step
     }
     assert any(step.get("uses") == "astral-sh/setup-uv@v8.2.0" for step in steps)
-    setup = named_steps["Set up Rust, Hearken access and the build caches"][1]
+    setup = named_steps["Set up Rust and the build caches"][1]
     assert setup["uses"] == "./.github/actions/rust-setup"
-    assert setup["with"]["token"] == "${{ secrets.HEARKEN_TOKEN }}"
     # No brewed SDL anywhere in the job: Homebrew's sdl2 is sdl2-compat,
     # which loads SDL3 at runtime and dies on player Macs. SDL2 is compiled
     # into the executable instead.
@@ -851,11 +850,9 @@ def test_career_19_snapshot_builds_an_apple_silicon_macos_release():
         "brew install" not in step.get("run", "") or "sdl" not in step.get("run", "")
         for step in steps
     )
-    assert (
-        named_steps["Lint Rust targets"][1]["run"]
-        == "cargo clippy --all-targets --locked -- -D warnings"
-    )
-    assert named_steps["Test Rust workspace"][1]["run"] == "cargo test -p ff-core -p freight-fate"
+    # Lint and tests run beside the package, in the Mac test leg.
+    assert "Lint Rust targets" not in named_steps
+    assert "Test Rust workspace" not in named_steps
     # The launch smoke is BACK on macOS: the hang that forced non-launch
     # verification was the boot probes, moved off the boot path 2026-08-30.
     # A packaged app that cannot boot must fail the build, not ship.
@@ -881,12 +878,14 @@ def test_career_19_release_requires_and_verifies_every_platform_archive():
     assert release["needs"] == [
         "prepare",
         "format",
+        "test",
         "build_windows",
         "build_macos",
         "build_linux",
         "smoke_linux",
     ]
     assert "needs.format.result == 'success'" in release["if"]
+    assert "needs.test.result == 'success'" in release["if"]
     assert "needs.build_windows.result == 'success'" in release["if"]
     assert "needs.build_macos.result == 'success'" in release["if"]
     assert "needs.build_linux.result == 'success'" in release["if"]
@@ -961,32 +960,49 @@ def test_readme_names_both_linux_architectures():
     assert "BT Speak" in " ".join(readme.split())
 
 
-def test_career_19_snapshot_sets_up_hearken_before_rust_validation():
-    """BASS is gone (Hearken's audio replaced it), so nothing fetches it; what
-    every compiling job needs first is the engine itself, fetched through
-    rust-setup's Hearken access while the engine repository is private."""
+def test_career_19_snapshot_tests_beside_its_packaging():
+    """BASS is gone (Hearken's audio replaced it), so nothing fetches it.
+    Each platform's tests run in a `Test` leg beside its `Build` job, not
+    before the package in the same job: a test build and a release build
+    are different compiles, so in one job their times only added up. Every
+    compiling job sets up through rust-setup first."""
     workflow_path = (
         Path(__file__).resolve().parents[1] / ".github" / "workflows" / "build-career-1.9.yml"
     )
     text = workflow_path.read_text(encoding="utf-8")
     assert "fetch_bass" not in text
     assert "BASS" not in text
-    workflow = yaml.load(text, Loader=yaml.BaseLoader)
+    jobs = yaml.load(text, Loader=yaml.BaseLoader)["jobs"]
     for job_name, build_step_name in (
         ("build_windows", "Build the portable release"),
         ("build_macos", "Build the macOS release"),
         ("build_linux", "Build the Linux release"),
     ):
-        steps = workflow["jobs"][job_name]["steps"]
+        steps = jobs[job_name]["steps"]
         named_steps = {
             step["name"]: (index, step) for index, step in enumerate(steps) if "name" in step
         }
-        setup_index, setup = named_steps["Set up Rust, Hearken access and the build caches"]
+        setup_index, setup = named_steps["Set up Rust and the build caches"]
         assert setup["uses"] == "./.github/actions/rust-setup"
-        assert setup["with"]["token"] == "${{ secrets.HEARKEN_TOKEN }}"
-        assert setup_index < named_steps["Lint Rust targets"][0]
-        assert setup_index < named_steps["Test Rust workspace"][0]
-        assert named_steps["Test Rust workspace"][0] < named_steps[build_step_name][0]
+        assert setup["with"]["cache-key"] == "release"
+        assert setup_index < named_steps[build_step_name][0]
+        assert not any("cargo test" in s.get("run", "") for s in steps), job_name
+        assert "test" not in jobs[job_name].get("needs", ""), job_name
+
+    test = jobs["test"]
+    assert test["needs"] == "prepare"
+    legs = {leg["name"]: leg for leg in test["strategy"]["matrix"]["include"]}
+    assert {leg["os"] for leg in legs.values()} == {
+        "windows-2025",
+        "macos-26",
+        "ubuntu-24.04",
+        "ubuntu-24.04-arm",
+    }
+    steps = {s.get("name"): s for s in test["steps"]}
+    assert steps["Set up Rust and the build caches"]["with"]["cache-key"] == "test"
+    assert steps["Lint Rust targets"]["run"] == "cargo clippy --all-targets --locked -- -D warnings"
+    assert steps["Test Rust workspace"]["run"] == "cargo test -p ff-core -p freight-fate --locked"
+    assert test["env"]["RUSTFLAGS"] == "${{ matrix.rustflags }}"
 
 
 def test_career_19_snapshot_runs_each_platform_independent_check_once():
@@ -997,31 +1013,25 @@ def test_career_19_snapshot_runs_each_platform_independent_check_once():
     )
     jobs = yaml.load(workflow_path.read_text(encoding="utf-8"), Loader=yaml.BaseLoader)["jobs"]
 
-    def step(job, name):
-        return next(s for s in jobs[job]["steps"] if s.get("name") == name)
-
     fmt_jobs = [
         name
         for name, job in jobs.items()
         if any("cargo fmt" in s.get("run", "") for s in job.get("steps", []))
     ]
     assert fmt_jobs == ["format"]
-    assert jobs["format"]["runs-on"] == "blacksmith-2vcpu-ubuntu-2404"
-    assert step("format", "Check Rust formatting")["run"] == "cargo fmt --all --check"
+    assert jobs["format"]["runs-on"] == "ubuntu-24.04"
+    fmt = next(s for s in jobs["format"]["steps"] if s.get("name") == "Check Rust formatting")
+    assert fmt["run"] == "cargo fmt --all --check"
 
-    # The sweeps run once, on Windows; the other runners take the quick set,
-    # with clippy on the same RUSTFLAGS so the debug native builds are shared.
-    assert "RUSTFLAGS" not in step("build_windows", "Test Rust workspace").get("env", {})
-    for job in ("build_macos", "build_linux"):
-        for name in ("Lint Rust targets", "Test Rust workspace"):
-            assert step(job, name)["env"]["RUSTFLAGS"] == "--cfg ci_quick", (job, name)
-        assert "RUSTFLAGS" not in jobs[job].get("env", {})
-
-    # rust.yml lints on Linux only, so every platform lints on every run
-    # here, the schedule included: this is where the `cfg(windows)` code is
-    # linted.
+    # The sweeps run once, on the fastest runner (Linux x86_64); the other
+    # legs take the quick set, with clippy on the same RUSTFLAGS so the
+    # debug native builds are shared.
+    legs = {leg["name"]: leg for leg in jobs["test"]["strategy"]["matrix"]["include"]}
+    assert legs["Linux x86_64"]["rustflags"] == ""
+    for name in ("Windows", "macOS", "Linux aarch64"):
+        assert legs[name]["rustflags"] == "--cfg ci_quick", name
     for job in ("build_windows", "build_macos", "build_linux"):
-        assert "if" not in step(job, "Lint Rust targets"), job
+        assert "RUSTFLAGS" not in jobs[job].get("env", {}), job
 
 
 def test_career_19_retry_is_bounded_to_one_delayed_attempt():

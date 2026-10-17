@@ -12,14 +12,20 @@ name: Career 1.9 snapshot
 # takes the version from the tag, and writes notes via
 # `tools/release_notes.py stable`. Do not tag from this workflow.
 #
-# Runners (2026-10-17): Blacksmith for Linux (x86_64 and ARM64, 22.04 for the
-# glibc floor) and Windows, as in rust.yml. The Mac job stays on GitHub's
-# hosted macos-26: this repository is public, so those minutes are free, and
-# the job spends up to 45 of them idle waiting on Apple's notary queue.
+# Runners (2026-10-17): GitHub's hosted runners, as in rust.yml. This
+# repository is public, so they cost nothing; Linux packages on 22.04 (x86_64
+# and ARM64) for the glibc floor.
 #
-# The game is built on the Hearken engine, a private git dependency for now;
-# every job that compiles goes through .github/actions/rust-setup, whose
-# hearken-access step uses the HEARKEN_TOKEN secret when it is set.
+# Shape: the tests and the packaging run side by side. Each platform's
+# `Test` leg lints and runs the suite while its `Build` job compiles the
+# release profile and packages; they share nothing a job could hand the
+# other (a test build and a release build are different compiles), so
+# running them one after the other only added the two. Release waits on
+# both. The whole-map sweeps run once, on the Linux x86_64 leg, the fastest
+# runner; the other legs run the quick set.
+#
+# The game is built on the Hearken engine, a public git dependency; every
+# job that compiles goes through .github/actions/rust-setup.
 
 on:
   schedule:
@@ -81,7 +87,7 @@ env:
 jobs:
   prepare:
     name: Prepare
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     outputs:
       should_build: ${{ steps.check.outputs.should_build }}
@@ -199,7 +205,7 @@ jobs:
     name: Format
     needs: prepare
     if: needs.prepare.outputs.should_build == 'true'
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
@@ -212,11 +218,73 @@ jobs:
       - name: Check Rust formatting
         run: cargo fmt --all --check
 
+  test:
+    # Lint and test each platform, side by side with its packaging job.
+    # clippy runs here on every platform, the schedule included: rust.yml
+    # lints on Linux only, so this is where the `cfg(windows)` and
+    # `cfg(target_os)` code gets linted.
+    name: Test (${{ matrix.name }})
+    needs: prepare
+    if: needs.prepare.outputs.should_build == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            os: windows-2025
+            rustflags: --cfg ci_quick
+          - name: macOS
+            os: macos-26
+            rustflags: --cfg ci_quick
+          # The FULL suite: no `--cfg ci_quick`, so the whole-map sweeps the
+          # per-push workflow (rust.yml) leaves out run here, and only here.
+          # They are headless driving logic, so one platform proves them.
+          - name: Linux x86_64
+            os: ubuntu-24.04
+            rustflags: ""
+          - name: Linux aarch64
+            os: ubuntu-24.04-arm
+            rustflags: --cfg ci_quick
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    env:
+      FREIGHT_FATE_NO_SPEECH: "1"
+      HEARKEN_TEST_NO_SPEECH: "1"
+      SDL_VIDEODRIVER: dummy
+      SDL_AUDIODRIVER: dummy
+      CARGO_TERM_COLOR: always
+      RUST_BACKTRACE: "1"
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      CMAKE_POLICY_VERSION_MINIMUM: "3.5"
+      # clippy and the tests on the same RUSTFLAGS, so both share one debug
+      # build of the native dependencies (SDL2, Prism).
+      RUSTFLAGS: ${{ matrix.rustflags }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.prepare.outputs.commit_sha }}
+
+      - name: Set up Rust and the build caches
+        # The same `test` cache rust.yml's test jobs keep, so a night after
+        # a day of pushes starts warm.
+        uses: ./.github/actions/rust-setup
+        with:
+          cache-key: test
+
+      - name: Lint Rust targets
+        run: cargo clippy --all-targets --locked -- -D warnings
+
+      - name: Test Rust workspace
+        run: cargo test -p ff-core -p freight-fate --locked
+
+      - name: Test the agent server
+        run: cargo test -p freight-fate --test agent_server --locked
+
   build_windows:
     name: Build (Windows)
     needs: prepare
     if: needs.prepare.outputs.should_build == 'true'
-    runs-on: blacksmith-4vcpu-windows-2025
+    runs-on: windows-2025
     timeout-minutes: 60
     env:
       FREIGHT_FATE_NO_SPEECH: "1"
@@ -228,32 +296,18 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ needs.prepare.outputs.commit_sha }}
-          fetch-depth: 0
 
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Set up Rust, Hearken access and the build caches
-        # Hearken access, CMake and ATL for Prism, the pinned toolchain,
-        # sccache and rust-cache: the same setup rust.yml's jobs use.
+      - name: Set up Rust and the build caches
+        # CMake and ATL for Prism, the pinned toolchain, sccache and
+        # rust-cache: the same setup rust.yml's jobs use.
         uses: ./.github/actions/rust-setup
         with:
-          token: ${{ secrets.HEARKEN_TOKEN }}
-          cache-key: snapshot
-
-      - name: Lint Rust targets
-        # Every run, the schedule included: rust.yml lints on Linux only, so
-        # this is where the `cfg(windows)` code (console, keyring, the
-        # Windows half of the shell) gets linted.
-        run: cargo clippy --all-targets --locked -- -D warnings
-
-      - name: Test Rust workspace
-        # The FULL suite: no `--cfg ci_quick`, so the whole-map sweeps the
-        # per-push workflow (rust.yml) leaves out run here, and only here.
-        # They are headless driving logic, so the other runners skip them.
-        run: cargo test -p ff-core -p freight-fate
+          cache-key: release
 
       - name: Ship the accepted community stations
         uses: actions/download-artifact@v7
@@ -303,38 +357,22 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ needs.prepare.outputs.commit_sha }}
-          fetch-depth: 0
 
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Set up Rust, Hearken access and the build caches
+      - name: Set up Rust and the build caches
         uses: ./.github/actions/rust-setup
         with:
-          token: ${{ secrets.HEARKEN_TOKEN }}
-          cache-key: snapshot
+          cache-key: release
 
       # No brewed SDL: Homebrew's sdl2 is sdl2-compat, which loads SDL3 at
       # runtime and dies on player Macs without Homebrew. SDL2 is compiled
       # from source into the executable (`bundled` + `static-link`) using
       # the runner's preinstalled cmake; the staging step fails the build
       # if the executable links any SDL dynamically.
-
-      - name: Lint Rust targets
-        # Kept for the `cfg(target_os)` code only this runner compiles. Same
-        # RUSTFLAGS as the tests below, so both share one debug build of the
-        # native dependencies (SDL2, Prism) instead of compiling them twice.
-        env:
-          RUSTFLAGS: --cfg ci_quick
-        run: cargo clippy --all-targets --locked -- -D warnings
-
-      - name: Test Rust workspace
-        # The quick set: the whole-map sweeps run once, on the Windows job.
-        env:
-          RUSTFLAGS: --cfg ci_quick
-        run: cargo test -p ff-core -p freight-fate
 
       - name: Import the Developer ID signing credentials
         # Signs as "Developer ID Application: Joshua Tubbs" and notarizes
@@ -441,7 +479,7 @@ jobs:
     # Two native builds, one per CPU: x86_64 for PCs and aarch64 for the
     # Blazie BT Speak and BT Braille (Debian on a Raspberry Pi Compute
     # Module 4 and 5), Raspberry Pi desktops and other ARM64 Linux. Both
-    # are Blacksmith's 22.04 images, x86_64 and ARM64, so both carry the
+    # are GitHub's 22.04 images, x86_64 and ARM64, so both carry the
     # same glibc floor. The steps are identical: build_release.py and
     # build_appimage.py each pick their architecture from `uname -m`.
     runs-on: ${{ matrix.runner }}
@@ -451,10 +489,10 @@ jobs:
       matrix:
         include:
           - arch: x86_64
-            runner: blacksmith-4vcpu-ubuntu-2204
+            runner: ubuntu-22.04
             tarball: linux-x64
           - arch: aarch64
-            runner: blacksmith-4vcpu-ubuntu-2204-arm
+            runner: ubuntu-22.04-arm
             tarball: linux-arm64
     env:
       FREIGHT_FATE_NO_SPEECH: "1"
@@ -470,14 +508,13 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ needs.prepare.outputs.commit_sha }}
-          fetch-depth: 0
 
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Set up Rust, Hearken access and the build caches
+      - name: Set up Rust and the build caches
         # .github/actions/linux-deps installs what SDL2 and Prism compile
         # against: the whole desktop set of SDL2 backends (a backend whose
         # headers are missing is compiled out for every player), gcc 13 from
@@ -489,21 +526,8 @@ jobs:
         # the AppImage's launcher entry.
         uses: ./.github/actions/rust-setup
         with:
-          token: ${{ secrets.HEARKEN_TOKEN }}
-          cache-key: snapshot
+          cache-key: release
           linux-packages: file desktop-file-utils
-
-      - name: Lint Rust targets
-        # See the Mac job: platform lints, RUSTFLAGS shared with the tests.
-        env:
-          RUSTFLAGS: --cfg ci_quick
-        run: cargo clippy --all-targets --locked -- -D warnings
-
-      - name: Test Rust workspace
-        # The quick set: the whole-map sweeps run once, on the Windows job.
-        env:
-          RUSTFLAGS: --cfg ci_quick
-        run: cargo test -p ff-core -p freight-fate
 
       - name: Ship the accepted community stations
         uses: actions/download-artifact@v7
@@ -553,7 +577,7 @@ jobs:
     # (Arch Linux ARM is a separate project with no official image). The
     # Debian containers there are the nearest stand-in for the BT Speak and
     # BT Braille, which are Debian on a Raspberry Pi Compute Module.
-    runs-on: ${{ matrix.arch == 'aarch64' && 'blacksmith-2vcpu-ubuntu-2404-arm' || 'blacksmith-2vcpu-ubuntu-2404' }}
+    runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -587,9 +611,9 @@ jobs:
 
   release:
     name: Release
-    needs: [prepare, format, build_windows, build_macos, build_linux, smoke_linux]
-    if: always() && needs.prepare.outputs.should_build == 'true' && needs.format.result == 'success' && needs.build_windows.result == 'success' && needs.build_macos.result == 'success' && needs.build_linux.result == 'success' && needs.smoke_linux.result == 'success'
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    needs: [prepare, format, test, build_windows, build_macos, build_linux, smoke_linux]
+    if: always() && needs.prepare.outputs.should_build == 'true' && needs.format.result == 'success' && needs.test.result == 'success' && needs.build_windows.result == 'success' && needs.build_macos.result == 'success' && needs.build_linux.result == 'success' && needs.smoke_linux.result == 'success'
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
         with:

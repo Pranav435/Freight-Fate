@@ -96,12 +96,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Hearken access
-        # The engine is a private git dependency for now; see the action.
-        uses: ./.github/actions/hearken-access
-        with:
-          token: ${{ secrets.HEARKEN_TOKEN }}
-
       - name: Show and guard the commit being built
         shell: bash
         env:

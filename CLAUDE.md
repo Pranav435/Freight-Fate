@@ -276,21 +276,24 @@ cleanup](https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.ht
   services. Codex's restricted shell can block initialization even when the
   same check passes with normal Windows access. Use the authorized elevated
   tool path for that verification; keep the game's save sandbox enabled.
-- Rust CI (`.github/workflows/rust.yml`) runs on Blacksmith runners in
-  Hearken's and Echo Parlor's shape: a no-build checks job (fmt, the
+- Rust CI (`.github/workflows/rust.yml`) runs on GitHub's hosted runners
+  (free for this public repository; owner rule 2026-10-17: Blacksmith's paid
+  minutes are for the private repositories) in Hearken's and Echo Parlor's
+  shape: a no-build checks job (fmt, the
   translation files, `tools/check_test_targets.py`, the Hearken leaf-type
   grep) that finishes in well under a minute, clippy once on Linux, and the
   game's tests on Windows and Linux in parallel (ff-core, which is headless,
   on Linux only). A manual dispatch or a `v*` tag adds the tests on macOS.
-  Every compiling job goes through `.github/actions/rust-setup` (Hearken
-  access through the optional `HEARKEN_TOKEN` secret, the platform's build
-  dependencies, the pinned toolchain, sccache and rust-cache). SDL2 is
+  Every compiling job goes through `.github/actions/rust-setup` (the
+  platform's build dependencies, the pinned toolchain, sccache and rust-cache). SDL2 is
   vendored for `windows-x86_64` alone. macOS and Linux build from
   source (Hearken comes through Cargo, Prism is compiled from source, and SDL2 is compiled
   in statically via the crate's `bundled` + `static-link` features -- NEVER
   Homebrew's sdl2, which is sdl2-compat and loads SDL3 at runtime, dying on
   player Macs; on Linux a system libSDL2 differs per distro). The nightly
-  Career 1.9 snapshot workflow builds, tests and packages all three, and
+  Career 1.9 snapshot workflow tests and packages all three side by side
+  (a `Test` leg per platform next to each `Build` job; the whole-map sweeps
+  on the Linux x86_64 leg), and
   also boots the Linux tarball and AppImage on seven distributions
   through `tools/linux_smoke.sh`. The Linux release build runs on `ubuntu-22.04`
   on purpose: the executable's glibc floor is its build host's. Locally,
