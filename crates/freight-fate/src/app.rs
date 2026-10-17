@@ -1460,7 +1460,9 @@ pub fn main_with(options: CliOptions) -> i32 {
     if options.controller_diagnostics {
         return crate::controller::diagnostics::run_controller_diagnostics();
     }
-    let mut guard = crate::single_instance::SingleInstanceGuard::new();
+    let mut guard = crate::single_instance::SingleInstanceGuard::new(
+        crate::single_instance::SINGLE_INSTANCE_MUTEX_NAME,
+    );
     if !guard.acquire() {
         log::warn!("Freight Fate is already running.");
         return 0;

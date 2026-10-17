@@ -10,6 +10,7 @@
 use std::{env, fs, path::PathBuf};
 
 fn main() {
+    pass_on_hearken_link_args();
     link_prism_system_libraries();
     build_ios_bridge();
     let manifest = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
@@ -41,6 +42,28 @@ fn main() {
                 let _ = fs::copy(&p, profile.join(p.file_name().unwrap()));
             }
         }
+    }
+}
+
+/// Apply the link arguments Prism needs, as Hearken publishes them, to the
+/// game's final link (copied from Echo Parlor's build.rs).
+/// hearken-speech works out the arguments (none since Prism 0.1.4) and the
+/// `hearken` facade passes them on; a link argument only reaches the final
+/// link, which is this crate's, so a future argument reaches it with no
+/// change here.
+fn pass_on_hearken_link_args() {
+    println!("cargo:rerun-if-env-changed=DEP_HEARKEN_LINK_ARGS");
+    match env::var("DEP_HEARKEN_LINK_ARGS") {
+        Ok(args) => {
+            for arg in args.split(';').filter(|arg| !arg.is_empty()) {
+                println!("cargo:rustc-link-arg={arg}");
+            }
+        }
+        // Cargo hands a build script this list only from a direct dependency.
+        Err(_) => println!(
+            "cargo:warning=Prism's link arguments are missing. Fix: add hearken to this \
+             package's [dependencies]."
+        ),
     }
 }
 

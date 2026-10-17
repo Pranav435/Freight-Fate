@@ -47,6 +47,7 @@ ff-core = { path = "../ff-core" }
 # overrun the caller's stack in Prism::new (0.1.2; trypsynth/prismer#2).
 prismer = { version = "0.1.4", features = ["static"] }
 bass-sys = { path = "../bass-sys" }
+hearken.workspace = true
 anyhow.workspace = true
 thiserror.workspace = true
 log.workspace = true

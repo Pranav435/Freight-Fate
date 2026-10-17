@@ -1061,7 +1061,9 @@ fn boot(
         ));
     }
     eprintln!("Agent sandbox: {}", dir.display());
-    let mut guard = crate::single_instance::SingleInstanceGuard::new();
+    let mut guard = crate::single_instance::SingleInstanceGuard::new(
+        crate::single_instance::SINGLE_INSTANCE_MUTEX_NAME,
+    );
     if !guard.acquire() {
         match holder::judge(holder::read(&holder::path()), pid_alive, std::process::id()) {
             HolderVerdict::DeadRecord { .. } => {
