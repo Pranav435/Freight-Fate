@@ -166,7 +166,9 @@ frameworks it and SDL2 need, plus clang's iOS runtime for `@available` checks.
   key on a hardware keyboard, or a controller button, switches them back to
   key or button names until the screen is touched again.
 - Game audio in the Simulator has not been checked since Hearken replaced
-  BASS (which had no Simulator device); speech is heard there.
+  BASS (which had no Simulator device); speech is heard there. Neither the
+  game nor Hearken sets an `AVAudioSession` category yet, so on a device
+  the ring/silent switch may mute game sound until one is set (Playback).
 
 ## Manual VoiceOver test checklist
 

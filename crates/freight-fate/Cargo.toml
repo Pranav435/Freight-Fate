@@ -80,8 +80,10 @@ sdl2 = { workspace = true, features = ["bundled", "static-link"] }
 # ships a libSDL2-2.0.so.0, but not the same one, and a tarball that has to
 # run on Fedora, Arch and Debian alike cannot pick which. The static build
 # still opens X11, Wayland, PulseAudio, PipeWire and ALSA through dlopen at
-# run time, so what the player's machine lacks is skipped rather than fatal,
-# and the executable itself depends on nothing but libc.
+# run time, so what the player's machine lacks is skipped rather than fatal.
+# The executable does link libc, D-Bus, and ALSA's libasound.so.2, which
+# Hearken's audio engine (cpal) links to reach the sound server: a machine
+# without libasound2 cannot start the game.
 [target.'cfg(target_os = "linux")'.dependencies]
 sdl2 = { workspace = true, features = ["bundled", "static-link"] }
 

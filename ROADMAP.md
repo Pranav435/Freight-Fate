@@ -680,7 +680,29 @@ Everything found before 2026-09-25 moved to
       are fragmented MP4 (CMAF), or that carry audio only in an
       `EXT-X-MEDIA` rendition, do not play yet. And Hearken verifies a
       station's TLS certificate where BASS did not, so an HTTPS station
-      with a self-signed or expired certificate now fails to tune.
+      with a self-signed or expired certificate now fails to tune. On
+      macOS, Kira reopens the output only when the old device disappears,
+      so game sound stays on the device it opened on when the player
+      switches outputs (BASS followed the system default; speech still
+      does). On Linux the executable now links ALSA (`libasound.so.2`, via
+      cpal), so a machine without it fails to start instead of running
+      silent; the README names it. Hearken clamps a sound's volume at 1.0,
+      and an engine band at full volume asks for up to about 1.06 (level
+      times band weight times the gain walk), so the loudest band loses up
+      to about 0.5 dB at the top settings.
+- [ ] (Found along the way) Hearken follow-ups from the M6 review: poll the
+      default output device on macOS and swap the backend when it changes;
+      let the engine bands' gain go above 1.0 (or rescale them); set the
+      iOS `AVAudioSession` category to Playback before Kira opens (cpal
+      0.18 sets none, so under the default SoloAmbient the ring/silent
+      switch would mute the game; unverified on a device) and run
+      `ios-build.yml` on the ported tree; consider bundling `libasound` in
+      the AppImage.
+- [ ] (Found along the way) Before release, run
+      `test_hearken_music_never_loops_catalog_tracks` with `music.pak`
+      present: no M6 run had the pack, so no shipped catalog track has been
+      opened through Hearken yet (including whether any is HE-AAC or a
+      tracker module).
 - [x] Hearken milestone M6 (2026-10-17): every engine service under the
       game runs on Hearken. That is the speech sink stack, the event-voice
       pacer (the priority ladder stays in `ff-core`), sound, music and the
@@ -959,10 +981,11 @@ Everything found before 2026-09-25 moved to
       cruise, engine and parking brake from a held pedal are covered only by
       the headless tests.
 - [ ] iOS runs from TestFlight on a real iPhone (2026-10-03) but still
-      needs a real controller, BASS sound on hardware (the Simulator has no
-      audio device), and VoiceOver's scrub and on-screen-keyboard typing on
-      hardware. For the App Store: a real app icon (TestFlight has a
-      placeholder), a privacy manifest, BASS licensing for iOS, and a title
+      needs a real controller, Hearken sound on hardware (no iOS build of
+      the Hearken-based tree has run yet, and the audio session category
+      is still unset; see the M6 follow-ups), and VoiceOver's scrub and
+      on-screen-keyboard typing on hardware. For the App Store: a real app
+      icon (TestFlight has a placeholder), a privacy manifest, and a title
       screen or review note for the blank game screen.
 
 ### Release gate record

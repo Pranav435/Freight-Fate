@@ -95,7 +95,9 @@ Score display in Settings, Speech can read reputation and dispatch trust as both
    `-linux-x86_64.AppImage`) and for ARM64 machines such as the Blazie BT
    Speak and BT Braille or a Raspberry Pi (`-linux-arm64.tar.gz`,
    `-linux-aarch64.AppImage`). Choose the archive for your machine's
-   processor. AppImages run directly; tarballs need extracting.
+   processor. AppImages run directly; tarballs need extracting. Both need
+   the ALSA sound library (`libasound2` on Debian and Ubuntu, `alsa-lib` on
+   Fedora and Arch), which nearly every Linux desktop already has.
 4. Extract the zip file. On Windows, open the extracted `FreightFate` folder
    and run `FreightFate.exe`. On an Apple Silicon Mac, move `FreightFate.app`
    to Applications. If macOS blocks the first launch, open System Settings,
