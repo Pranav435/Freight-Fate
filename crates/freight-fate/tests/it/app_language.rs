@@ -22,14 +22,18 @@ fn with_override(app: &TestApp) {
     let _ = app;
 }
 
+/// Only a catalog that translates something is compiled in (`build.rs`):
+/// an empty one would never be offered and only weighs down the download.
 #[test]
-fn every_built_in_catalog_loads_cleanly() {
+fn every_built_in_catalog_loads_cleanly_and_translates_something() {
+    assert!(built_in_catalog("es").is_some(), "Spanish is built in");
     for lang in l10n::LANGUAGES
         .iter()
         .filter(|lang| lang.code != l10n::ENGLISH)
     {
-        let text = built_in_catalog(lang.code)
-            .unwrap_or_else(|| panic!("no built-in catalog for {}", lang.code));
+        let Some(text) = built_in_catalog(lang.code) else {
+            continue;
+        };
         let catalog = Catalog::from_po(lang.code, text)
             .unwrap_or_else(|err| panic!("{} does not parse: {err}", lang.code));
         assert!(
@@ -37,6 +41,11 @@ fn every_built_in_catalog_loads_cleanly() {
             "{}: {:?}",
             lang.code,
             catalog.problems
+        );
+        assert!(
+            !catalog.is_empty(),
+            "{} is built in with no translations",
+            lang.code
         );
     }
     assert_eq!(offered_languages()[0].code, l10n::ENGLISH);

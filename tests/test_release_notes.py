@@ -805,9 +805,11 @@ def test_career_19_snapshot_builds_and_boots_a_linux_release():
         assert f"- {image}\n" in workflow, image
     assert (
         "FreightFate-*-linux-x64.tar.gz FreightFate-*-linux-x86_64.AppImage "
-        "FreightFate-*-linux-arm64.tar.gz FreightFate-*-linux-aarch64.AppImage > checksums.txt"
-        in workflow
+        "FreightFate-*-linux-arm64.tar.gz FreightFate-*-linux-aarch64.AppImage "
+        "FreightFate-*-translation-kit.zip > checksums.txt" in workflow
     )
+    # The translator's kit is one release asset, not a folder in each archive.
+    assert 'python3 tools/translation_kit.py --label "$TAG" --out release-assets' in workflow
 
     smoke = (Path(__file__).resolve().parents[1] / "tools" / "linux_smoke.sh").read_text(
         encoding="utf-8"
