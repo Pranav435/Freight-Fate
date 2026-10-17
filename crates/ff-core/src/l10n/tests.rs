@@ -980,3 +980,29 @@ fn every_facility_kind_and_market_class_has_its_phrases() {
         }
     }
 }
+
+#[test]
+fn a_long_line_of_commas_is_matched_without_retrying_every_cut() {
+    // The Spanish keyboard help is one 5,600-character line, and
+    // "{a}, {b} to {c}, {d}, {e}{f}." tried every way of cutting it at its
+    // commas: a minute on the game thread for one key press. A line like
+    // it, which the template cannot fill, must be turned down at once; the
+    // old search would not finish this before the heat death of the run.
+    let template = Template::new(
+        parse_source("{a}, {b} to {c}, {d}, {e}{f}."),
+        parse_translation("{a}, {b} a {c}, {d}, {e}{f}."),
+    )
+    .expect("the template has literal letters");
+    let line = "one, two to three, ".repeat(200) + "no full stop";
+    assert!(template.captures(&line).is_none());
+    // And one it can fill still is, the same way as before.
+    let caps = template
+        .captures("Up, Down to brake, Left, Right.")
+        .expect("filled");
+    assert_eq!(caps["a"], "Up");
+    assert_eq!(caps["b"], "Down");
+    assert_eq!(caps["c"], "brake");
+    assert_eq!(caps["d"], "Left");
+    assert_eq!(caps["e"], "");
+    assert_eq!(caps["f"], "Right");
+}
