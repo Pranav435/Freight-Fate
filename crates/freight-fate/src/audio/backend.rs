@@ -235,17 +235,23 @@ impl Buses {
 
 /// What a backend offers the facade: the Python `_BassBackend` /
 /// `_NullBackend` surface. Every method has a no-op default so a test
-/// double implements only what it observes; [`super::BassBackend`]
-/// implements all of them.
+/// double implements only what it observes;
+/// [`HearkenBackend`](super::HearkenBackend) implements all of them.
 pub trait AudioBackend {
-    /// `"bass"` or `"none"`.
+    /// `"hearken"` or `"none"`.
     fn name(&self) -> &'static str;
-    /// False for the null backend, and for BASS after `shutdown`.
+    /// False for the null backend, and for Hearken after `shutdown`.
     fn enabled(&self) -> bool;
     fn buses(&self) -> &Buses;
     fn buses_mut(&mut self) -> &mut Buses;
     fn as_any(&self) -> &dyn Any;
     fn as_any_mut(&mut self) -> &mut dyn Any;
+
+    /// True once when the sound device, opened off the game loop, would not
+    /// open after all: the facade's cue to tell the player.
+    fn take_device_notice(&mut self) -> bool {
+        false
+    }
 
     // -- one-shots and loops ----------------------------------------------------
     fn play_if_idle(&mut self, key: &str, volume: f64, pan: f64) {

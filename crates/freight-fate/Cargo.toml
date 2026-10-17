@@ -39,7 +39,6 @@ workspace = true
 
 [dependencies]
 ff-core = { path = "../ff-core" }
-bass-sys = { path = "../bass-sys" }
 hearken.workspace = true
 anyhow.workspace = true
 thiserror.workspace = true

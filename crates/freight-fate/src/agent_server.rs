@@ -3,7 +3,7 @@
 //!
 //! This is deliberately NOT built on the headless playtest harness. The
 //! harness runs the game's own states, but not the game's own runtime: it
-//! fakes the pacer clock, records audio instead of running BASS, captures
+//! fakes the pacer clock, records audio instead of running the sound device, captures
 //! speech instead of speaking, and never executes the real startup path --
 //! which is exactly where bugs like the deaf-for-sixteen-seconds menu live.
 //! Here the agent connects to the game itself: the real window loop, real

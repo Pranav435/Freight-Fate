@@ -35,9 +35,6 @@ SEPARATE_BINARIES = {
         "frame_time": "times frames against the wall clock, which sibling tests would contend for",
         "agent_server.rs": "agent tooling, `test = false`; CI runs it by name",
     },
-    "bass-sys": {
-        "smoke.rs": "the BASS smoke test; goes with the crate when Hearken's audio replaces it",
-    },
 }
 
 PATH_ATTR = re.compile(r'#\[path\s*=\s*"([^"]+)"\]')

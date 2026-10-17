@@ -1,9 +1,7 @@
-//! The Hearken implementation of [`AudioBackend`]: the same sounds BASS
-//! plays, through Hearken's pool of sounds over Kira.
-//!
-//! Selected by `FREIGHT_FATE_AUDIO_BACKEND=hearken`; BASS stays the default
-//! until the listening pass. Everything the facade asks is answered the way
-//! [`BassBackend`](super::BassBackend) answers it:
+//! The Hearken implementation of [`AudioBackend`]: Freight Fate's sounds,
+//! music and radio through Hearken's pool of sounds over Kira. It replaced
+//! BASS, and everything the facade asks is answered the way BASS answered
+//! it:
 //!
 //! * **Levels are computed here, bit for bit as BASS computed them.** Every
 //!   Hearken bus stays at 1.0 and each sound is sent its absolute level,
@@ -15,12 +13,15 @@
 //!   fade in) is the one it asked for.
 //! * **Clips come from the game's own lookup** ([`FfClips`]), as bytes, and
 //!   a missing key plays nothing rather than a stand-in tone.
+//! * **The device opens off the game loop** ([`HearkenBackend::deferred`]):
+//!   the game starts on Hearken's silent stand-in and the pool swaps the
+//!   device in when it opens, carrying every loop across; a music track
+//!   started meanwhile is played again from the top.
 //!
-//! Split over three files like the BASS backend: this one (construction,
-//! one-shots, loops, the sustain loop, volumes, shutdown, inspection),
-//! `hearken_engine` (the engine ring, the ignition crossfade, `update`) and
-//! `hearken_music` (music tracks and playlist files). Radio is the next
-//! step; until then this backend refuses a stream like the null backend.
+//! Split over four files: this one (construction, one-shots, loops, the
+//! sustain loop, volumes, shutdown, inspection), `hearken_engine` (the
+//! engine ring, the ignition crossfade, `update`), `hearken_music` (music
+//! tracks and playlist files) and `hearken_radio` (live stations).
 
 use std::cell::Cell;
 use std::collections::{HashMap, HashSet};
@@ -36,8 +37,8 @@ use hearken::audio::{
 };
 
 use super::backend::{loop_category, one_shot_category, Buses, Category, VolumeUpdate};
-use super::bass::BassBackend;
 use super::hearken_clips::{clip_sample_rate, FfClips};
+use super::hearken_radio::{RadioConnect, RadioPlaying};
 use super::{KeyProbe, CH_REVERSE, CH_ROAD, ENGINE_RPM_IDLE};
 
 /// The bus a category rides. Every bus stays at 1.0 (levels are computed
@@ -88,6 +89,31 @@ pub struct HearkenEngineBand {
     pub last_volume: f64,
 }
 
+/// The music request to play again when the sound device opens: a track or
+/// a file started on the silent stand-in was a one-shot the swap let go.
+pub(super) enum MusicReplay {
+    Track { track: String, fade_ms: u32 },
+    File { path: String, fade_ms: u32 },
+}
+
+/// Whether this run asked for no sound (`SDL_AUDIODRIVER=dummy`: headless
+/// CI, the playtest harness, the release smoke check).
+pub fn headless_requested() -> bool {
+    std::env::var("SDL_AUDIODRIVER")
+        .map(|v| v.eq_ignore_ascii_case("dummy"))
+        .unwrap_or(false)
+}
+
+/// Kira on the default output device, shaped like BASS: linear-amplitude
+/// fades and ramps, and a balance pan law.
+fn open_kira() -> Result<Box<dyn Backend>, String> {
+    let kira = KiraBackend::open()?;
+    Ok(Box::new(
+        kira.with_gain_curve(GainCurve::Linear)
+            .with_pan_law(PanLaw::Balance),
+    ))
+}
+
 pub struct HearkenBackend {
     pub(super) audio: Pool,
     pub(super) buses: Buses,
@@ -105,6 +131,18 @@ pub struct HearkenBackend {
     pub(super) music_sound: Option<Sound>,
     /// The playing track's length, read when it started.
     pub(super) music_length: Option<f64>,
+    /// The track or file on the music channel, to play again if the sound
+    /// device opens under it.
+    pub(super) music_request: Option<MusicReplay>,
+    /// The station on the music channel, when it is a station.
+    pub(super) radio: Option<RadioPlaying>,
+    /// A station still connecting.
+    pub(super) radio_connect: Option<RadioConnect>,
+    pub(super) radio_failed_url: Option<String>,
+    /// The device is still opening behind the silent stand-in.
+    pub(super) opening: bool,
+    /// A deferred open failed and the facade has not been told.
+    pub(super) device_notice: bool,
     pub(super) engine_pan: f64,
     pub(super) engine_running: bool,
     /// The legacy single pitched loop, when that model is running.
@@ -132,19 +170,17 @@ pub struct HearkenBackend {
 }
 
 impl HearkenBackend {
-    /// Open the default sound device through Kira, shaped like BASS; the
-    /// silent backend when `SDL_AUDIODRIVER=dummy` asks for no sound, or
-    /// when no device will open (then [`Self::no_device`] says so).
+    /// Open the default sound device through Kira, shaped like BASS, on
+    /// this thread; the silent backend when `SDL_AUDIODRIVER=dummy` asks for
+    /// no sound, or when no device will open (then [`Self::no_device`] says
+    /// so).
     pub fn new() -> Self {
-        if BassBackend::headless_requested() {
+        if headless_requested() {
             log::info!("Audio output: Hearken's silent backend, as asked for by this run");
             return Self::with_backend(Box::new(SilentBackend::default()));
         }
-        match KiraBackend::open() {
-            Ok(kira) => Self::with_backend(Box::new(
-                kira.with_gain_curve(GainCurve::Linear)
-                    .with_pan_law(PanLaw::Balance),
-            )),
+        match open_kira() {
+            Ok(kira) => Self::with_backend(kira),
             Err(err) => {
                 log::warn!("No audio device ({err}); Hearken is running silent");
                 let mut backend = Self::with_backend(Box::new(SilentBackend::default()));
@@ -154,10 +190,33 @@ impl HearkenBackend {
         }
     }
 
+    /// Like [`new`](Self::new), but the device opens on its own thread
+    /// while the game starts on the silent stand-in, so a driver that hangs
+    /// in its open never holds up the boot. Asked-for silence opens nothing.
+    pub fn deferred() -> Self {
+        if headless_requested() {
+            return Self::new();
+        }
+        Self::deferred_with(open_kira)
+    }
+
+    /// [`deferred`](Self::deferred) over any opener: a test's gated
+    /// recording backend, or one that fails.
+    pub fn deferred_with(
+        open: impl FnOnce() -> Result<Box<dyn Backend>, String> + Send + 'static,
+    ) -> Self {
+        let mut backend = Self::from_pool(Pool::deferred(open, Box::new(FfClips)));
+        backend.opening = backend.audio.opening();
+        backend
+    }
+
     /// The backend over any Hearken backend: Kira, the silent one, or a
     /// test's recorder.
     pub fn with_backend(backend: Box<dyn Backend>) -> Self {
-        let mut audio = Pool::new(backend, Box::new(FfClips));
+        Self::from_pool(Pool::new(backend, Box::new(FfClips)))
+    }
+
+    fn from_pool(mut audio: Pool) -> Self {
         // Freight Fate is silent where a sound is missing, and registers
         // generated sounds as it runs.
         audio.set_default_fallback(false);
@@ -174,6 +233,12 @@ impl HearkenBackend {
             music_track: None,
             music_sound: None,
             music_length: None,
+            music_request: None,
+            radio: None,
+            radio_connect: None,
+            radio_failed_url: None,
+            opening: false,
+            device_notice: false,
             engine_pan: 0.0,
             engine_running: false,
             engine_sound: None,
@@ -201,6 +266,33 @@ impl HearkenBackend {
     /// Whether the sound device would not open (the pool is silent).
     pub fn no_device(&self) -> bool {
         self.no_device
+    }
+
+    /// Whether the device is still opening behind the silent stand-in.
+    pub fn opening(&self) -> bool {
+        self.opening
+    }
+
+    /// Follow a deferred open, first thing in `update` after the pool's own:
+    /// once the device is in, a music track is played again; once it has
+    /// failed, the notice is armed. Hearken's own notice text is never
+    /// spoken: the facade's flag drives the game's line.
+    pub(super) fn follow_open(&mut self) {
+        if !self.opening || self.audio.opening() {
+            return;
+        }
+        self.opening = false;
+        if self.audio.take_notice().is_some() {
+            self.no_device = true;
+            self.device_notice = true;
+            return;
+        }
+        self.replay_music_after_open();
+    }
+
+    /// True once, when a deferred open has failed and nobody has said so.
+    pub fn take_device_notice(&mut self) -> bool {
+        std::mem::take(&mut self.device_notice)
     }
 
     // -- assets -------------------------------------------------------------
@@ -489,6 +581,7 @@ impl HearkenBackend {
         }
         self.engine_stop(false);
         self.stop_music(0);
+        self.radio_connect = None;
         self.exclusive_cues.clear();
         self.releasing.clear();
         self.audio.shutdown();

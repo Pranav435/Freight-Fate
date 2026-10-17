@@ -2,11 +2,11 @@
 //! `audio_backends.rs`, `audio_backend_cues.rs` and `audio_loops.rs`, run
 //! over Hearken's recording backend and asserted on the calls it saw.
 //!
-//! The BASS versions skip on a machine without the library; these run
-//! everywhere. Where a BASS test read a channel attribute, this one reads the
-//! mix the pool sent; where it read `requested_keys`, the list must be the
-//! one BASS's code asks for, in the same order, because the backend is meant
-//! to be invisible to the game.
+//! They were written beside BASS versions that skipped on a machine without
+//! the library; these run everywhere. Where a BASS test read a channel
+//! attribute, this one reads the mix the pool sent; where it read
+//! `requested_keys`, the list is the one BASS's code asked for, in the same
+//! order, because the swap was meant to be invisible to the game.
 
 use ff_core::lane_guide_tone::{register_lane_guide_tone, LANE_GUIDE_TONE_KEY};
 use ff_core::pyrandom::PyRandom;
@@ -69,7 +69,7 @@ fn play_count(r: &HearkenRig) -> usize {
 }
 
 #[test]
-fn test_hearken_backend_is_opt_in_and_safe_everywhere() {
+fn test_hearken_backend_is_the_default_and_safe_everywhere() {
     let _guard = audio_lock();
     // Asked for by name, it comes up (silent here: the run is headless).
     let mut a = AudioEngine::from_preference("hearken");
@@ -77,9 +77,9 @@ fn test_hearken_backend_is_opt_in_and_safe_everywhere() {
     assert!(a.enabled());
     assert!(!a.hearken().unwrap().no_device());
     exercise(&mut a);
-    // The default is still BASS (or nothing, where BASS will not load).
+    // It is the default too.
     let default = AudioEngine::from_preference("");
-    assert_ne!(default.backend_name(), "hearken");
+    assert_eq!(default.backend_name(), "hearken");
     // And over the recording backend, the whole surface is safe too.
     let mut r = hearken_rig();
     exercise(&mut r.engine);
@@ -228,7 +228,7 @@ fn test_hearken_engine_falls_back_to_pitched_loop_without_cuts() {
 }
 
 #[test]
-fn test_hearken_requested_keys_match_bass_for_a_start_and_a_drive() {
+fn test_hearken_requested_keys_keep_their_order_for_a_start_and_a_drive() {
     if !shipped_sounds() {
         return;
     }
@@ -557,6 +557,81 @@ fn test_hearken_hears_a_sound_registered_after_a_miss() {
     register_generated_sound(key, sine_wav(0.05, 1), "wav");
     r.engine.play(key);
     assert_eq!(r.rec.played(), vec![key.to_string()]);
+}
+
+/// The gain last sent to `channel`, and the ramp it was sent over.
+fn last_gain(r: &HearkenRig, channel: u64) -> (f32, u32) {
+    r.rec
+        .calls()
+        .into_iter()
+        .rev()
+        .find_map(|call| match call {
+            Call::SetMixRamped {
+                channel: c,
+                mix,
+                ramps,
+            } if c == channel => Some((mix.gain, ramps.gain_ms)),
+            Call::SetMix {
+                channel: c,
+                mix,
+                ramp_ms,
+            } if c == channel => Some((mix.gain, ramp_ms)),
+            Call::Play {
+                channel: c, mix, ..
+            } if c == channel => Some((mix.gain, 0)),
+            _ => None,
+        })
+        .expect("a mix for the channel")
+}
+
+#[test]
+fn test_hearken_speech_duck_halves_engine_weather_and_music_at_once() {
+    // The event voice ducks the engine, the weather and the music channel
+    // to SPEECH_DUCK_LEVEL the instant it speaks, and lets them back up the
+    // instant it is done: no ramp either way, and nothing else moves.
+    let music = "test/hearken_duck_music";
+    register_generated_sound(&format!("music/{music}"), sine_wav(0.5, 1), "wav");
+    register_generated_sound("test/hearken_duck_rain", sine_wav(0.5, 1), "wav");
+    register_generated_sound("test/hearken_duck_cue", sine_wav(0.5, 1), "wav");
+    let mut r = hearken_rig();
+    r.engine.set_engine_voice(true); // the classic loop, which ships
+    r.engine.engine_start_with(false);
+    r.engine
+        .start_loop_with(CH_WEATHER, "test/hearken_duck_rain", 0.8, 0);
+    r.engine
+        .start_loop_with(CH_ALERT, "test/hearken_duck_cue", 0.8, 0);
+    r.engine.play_music_with(music, 0);
+    for _ in 0..30 {
+        r.engine.update(0.05); // past the engine's resume fade
+    }
+    let engine = r.channel(ENGINE_CLASSIC_LOOP_KEY);
+    let rain = r.channel("test/hearken_duck_rain");
+    let cue = r.channel("test/hearken_duck_cue");
+    let track = r.channel(music);
+    let before: Vec<f32> = [engine, rain, cue, track]
+        .iter()
+        .map(|c| last_gain(&r, *c).0)
+        .collect();
+    assert!(before.iter().all(|g| *g > 0.0), "{before:?}");
+
+    r.engine.set_speech_duck(SPEECH_DUCK_LEVEL);
+    for (i, channel) in [engine, rain, track].into_iter().enumerate() {
+        let (gain, ramp) = last_gain(&r, channel);
+        let want = before[[0, 1, 3][i]] * SPEECH_DUCK_LEVEL as f32;
+        assert!(
+            (gain - want).abs() < 1e-6,
+            "channel {channel}: {gain} vs {want}"
+        );
+        assert_eq!(ramp, 0, "the duck is instant");
+    }
+    assert_eq!(last_gain(&r, cue).0, before[2], "an effect is not ducked");
+
+    r.engine.set_speech_duck(1.0);
+    for (i, channel) in [engine, rain, cue, track].into_iter().enumerate() {
+        let (gain, ramp) = last_gain(&r, channel);
+        assert!((gain - before[i]).abs() < 1e-6, "channel {channel}");
+        assert_eq!(ramp, 0);
+    }
 }
 
 #[path = "audio_hearken_cues.rs"]

@@ -144,6 +144,14 @@
 
 - **A slower vehicle ahead now plays the slowing-traffic sound, not a passing sound.**
 
+- **The game now plays all its sound through its own audio engine.** Everything should sound as before; please report anything that does not.
+
+- **Some AAC radio stations and playlist tracks now sound muffled.** High-efficiency AAC plays without its highest frequencies for now.
+
+- **A few internet radio stations that stream in a newer HLS format no longer play for now.**
+
+- **Internet radio stations with an expired or self-signed security certificate no longer play.**
+
 ### Fixed
 
 - **A chain checkpoint holds a truck with no chains, and lets it wait or turn back.** A checkpoint used to fine a chainless truck and wave it on. Now every truck without chains is held, as the law requires: "You can't go on without chains. Wait here until the chain law lifts, or turn back." The pause menu offers "Wait for the chain law to lift", which waits on duty half an hour at a time, up to 8 hours or until your 14-hour window runs out, and "Turn back to" the last city on the route, a drive that goes on the odometer and burns fuel at highway rate, and is refused when it would run past your driving or duty hours or your 8 hours of driving before a 30-minute break. While held, "Sleep at the checkpoint (10 hours)" is always in the pause menu, even with a stop nearby, and the checkpoint brings no parking ticket. A sleep there rechecks live weather alerts on waking, so a chain law that lifted overnight releases the truck. A wait rechecks live weather alerts every half hour, so it ends when an alert's chain law lifts. Coming back to the same checkpoint holds you again but never fines you twice. Held with chains aboard, you still put them on from the pause menu.
@@ -222,6 +230,12 @@
 - **The update check no longer offers a preview snapshot that is the same as your copy.**
 
 - **What's new, when updating from an older preview snapshot, now lists every change since your copy.**
+
+- **Radio stations whose address is a .pls or .m3u playlist link now play.**
+
+### Removed
+
+- **Tracker music files (MOD, XM, S3M, IT and MO3) in your playlists no longer play.**
 
 ## 1.9.3 - 2026-10-06
 

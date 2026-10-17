@@ -1,7 +1,7 @@
 //! The Hearken backend's truck engine: the multisample ring with per-band
 //! rate tracking, the legacy single pitched loop, the ignition crossfade,
-//! and the per-frame `update` -- `bass_engine.rs` line for line, with a
-//! playback rate where BASS slid a frequency.
+//! and the per-frame `update` -- ported line for line from the BASS
+//! backend it replaced, with a playback rate where BASS slid a frequency.
 
 use std::rc::Rc;
 
@@ -196,6 +196,8 @@ impl HearkenBackend {
         // First, so `is_playing` and every handle below answer for this
         // frame.
         self.audio.update(&|_| false);
+        self.follow_open();
+        self.collect_radio_stream();
         self.fades.update(dt);
         let crank = self.crank_gain.get();
         if crank != self.crank_applied {

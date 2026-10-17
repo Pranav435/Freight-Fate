@@ -1,6 +1,5 @@
 //! `impl AudioBackend for HearkenBackend`: delegation to the inherent
-//! methods, as `bass_backend.rs` is for BASS. Radio is not here yet, so a
-//! stream is refused with the trait's default, as the null backend does.
+//! methods.
 
 use std::any::Any;
 
@@ -15,6 +14,10 @@ impl AudioBackend for HearkenBackend {
 
     fn enabled(&self) -> bool {
         self.enabled
+    }
+
+    fn take_device_notice(&mut self) -> bool {
+        HearkenBackend::take_device_notice(self)
     }
 
     fn buses(&self) -> &Buses {
@@ -149,6 +152,14 @@ impl AudioBackend for HearkenBackend {
 
     fn play_music_file(&mut self, path: &str, fade_ms: u32) -> Result<(), AudioError> {
         HearkenBackend::play_music_file(self, path, fade_ms)
+    }
+
+    fn play_radio_stream(&mut self, url: &str, fade_ms: u32) -> Result<(), AudioError> {
+        HearkenBackend::play_radio_stream(self, url, fade_ms)
+    }
+
+    fn radio_now_playing(&self) -> Option<String> {
+        HearkenBackend::radio_now_playing(self)
     }
 
     fn music_playing(&self) -> bool {

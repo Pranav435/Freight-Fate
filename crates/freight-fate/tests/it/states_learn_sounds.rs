@@ -447,7 +447,7 @@ fn test_the_pause_menu_offers_learn_game_sounds() {
 }
 
 #[test]
-#[ignore = "needs a BASS-backed engine to inspect the alert loop's key"]
+#[ignore = "the Python original inspected the BASS alert loop's key; not ported yet"]
 fn test_jake_stage_demo_resolves_through_the_jake_voice_setting() {}
 
 #[test]

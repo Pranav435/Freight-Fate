@@ -100,9 +100,6 @@ fn link_prism_system_libraries() {
         println!("cargo:rustc-link-lib=objc");
         println!("cargo:rustc-link-lib=iconv");
         println!("cargo:rustc-link-lib=c++");
-        // BASS and its add-ons ship as embedded frameworks in the app's
-        // own Frameworks folder.
-        println!("cargo:rustc-link-arg=-Wl,-rpath,@executable_path/Frameworks");
         link_clang_runtime();
     }
 }

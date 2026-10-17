@@ -661,16 +661,26 @@ Everything found before 2026-09-25 moved to
       and "facility gate" zones over the chain, not each street's own limit
       and the yard: the street-detail zones, and the other layers gated on
       a pure facility route, do not yet look at a joined route's streets.
-- [ ] The Hearken sound backend (`FREIGHT_FATE_AUDIO_BACKEND=hearken`,
-      opt-in, BASS still the default) plays every effect, loop, the horn,
-      the engine and music. Before it becomes the default: radio streams
-      (it refuses them for now), the owner's listening pass on fades, pan
-      and loop seams, and two playlist gaps it brings. HE-AAC files
-      (AAC+ stations' kind of `.m4a`) play muffled, as their base layer
-      only, because the patent-encumbered decoder stays off; and tracker
-      modules (`.mod`, `.xm`, `.it`, `.s3m`) do not play at all, since no
-      small pure-Rust player exists. Both need a CHANGELOG line when the
-      default flips.
+- [x] The Hearken sound backend is the default and only real backend
+      (2026-10-17): every effect, loop, the horn, the engine, music and
+      radio streams play through it, the sound device opens off the game
+      thread, and BASS, `bass-sys` and every BASS fetch and staging step are
+      gone. A saved or environment `bass` preference gets Hearken. Stations
+      are called as `FreightFate/<version>`, Hearken's own reconnects are
+      off (the driving state's re-tune and the playlist hold stay the only
+      retry), and titles go through the game's own ICY, Ogg and HLS parsers.
+- [ ] The owner's listening pass before any stable release: the menu and a
+      drive, an engine rev sweep, the horn, blinker pan, a radio tune-in and
+      a Channel 3000 seek, listening for fade, pan and loop-seam drift.
+- [ ] Known Hearken gaps, each with a CHANGELOG line. HE-AAC (AAC+
+      stations and their kind of `.m4a`) plays muffled, as its base layer
+      only, because the patent-encumbered decoder (`fdk-aac`) stays off.
+      Tracker modules (`.mod`, `.xm`, `.it`, `.s3m`, `.mo3`) are refused,
+      since no small pure-Rust player exists. HLS stations whose segments
+      are fragmented MP4 (CMAF), or that carry audio only in an
+      `EXT-X-MEDIA` rendition, do not play yet. And Hearken verifies a
+      station's TLS certificate where BASS did not, so an HTTPS station
+      with a self-signed or expired certificate now fails to tune.
 
 - [x] Low fuel warning could also fire when remaining range is shorter than
       the distance to the next fuel-capable stop (issue #272 shipped the
