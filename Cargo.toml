@@ -48,11 +48,13 @@ aho-corasick = "1"
 sys-locale = "0.3"
 sdl2 = "0.38"
 # The engine: speech, audio, radio and the input leaf types, as one facade
-# crate. Pinned to main; to build against a local checkout, add an untracked
+# crate. Pinned to the Hearken commit this port was built against, until
+# orinks-games/hearken#4 merges; then this goes back to `branch = "main"`.
+# To build against a local checkout, add an untracked
 #   [patch."https://github.com/orinks-games/hearken"]
 #   hearken = { path = "../hearken/crates/hearken" }
 # to a cargo config (never commit it).
-hearken = { git = "https://github.com/orinks-games/hearken", branch = "main", default-features = false, features = ["kira", "radio"] }
+hearken = { git = "https://github.com/orinks-games/hearken", rev = "e863439b5b74b733af1ce9a45fb5af76d73791b9", default-features = false, features = ["kira", "radio"] }
 raw-window-handle = "0.6"
 url = "2"
 webbrowser = "1"

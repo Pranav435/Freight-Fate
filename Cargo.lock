@@ -991,6 +991,7 @@ checksum = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
 [[package]]
 name = "hearken"
 version = "0.1.0"
+source = "git+https://github.com/orinks-games/hearken?rev=e863439b5b74b733af1ce9a45fb5af76d73791b9#e863439b5b74b733af1ce9a45fb5af76d73791b9"
 dependencies = [
  "hearken-app",
  "hearken-radio",
@@ -1000,6 +1001,7 @@ dependencies = [
 [[package]]
 name = "hearken-app"
 version = "0.1.0"
+source = "git+https://github.com/orinks-games/hearken?rev=e863439b5b74b733af1ce9a45fb5af76d73791b9#e863439b5b74b733af1ce9a45fb5af76d73791b9"
 dependencies = [
  "dirs",
  "env_logger",
@@ -1016,6 +1018,7 @@ dependencies = [
 [[package]]
 name = "hearken-audio"
 version = "0.1.0"
+source = "git+https://github.com/orinks-games/hearken?rev=e863439b5b74b733af1ce9a45fb5af76d73791b9#e863439b5b74b733af1ce9a45fb5af76d73791b9"
 dependencies = [
  "hearken-synth",
  "kira",
@@ -1027,6 +1030,7 @@ dependencies = [
 [[package]]
 name = "hearken-radio"
 version = "0.1.0"
+source = "git+https://github.com/orinks-games/hearken?rev=e863439b5b74b733af1ce9a45fb5af76d73791b9#e863439b5b74b733af1ce9a45fb5af76d73791b9"
 dependencies = [
  "hearken-audio",
  "icy-metadata",
@@ -1042,6 +1046,7 @@ dependencies = [
 [[package]]
 name = "hearken-speech"
 version = "0.1.0"
+source = "git+https://github.com/orinks-games/hearken?rev=e863439b5b74b733af1ce9a45fb5af76d73791b9#e863439b5b74b733af1ce9a45fb5af76d73791b9"
 dependencies = [
  "log",
  "prismer",
@@ -1052,6 +1057,7 @@ dependencies = [
 [[package]]
 name = "hearken-synth"
 version = "0.1.0"
+source = "git+https://github.com/orinks-games/hearken?rev=e863439b5b74b733af1ce9a45fb5af76d73791b9#e863439b5b74b733af1ce9a45fb5af76d73791b9"
 dependencies = [
  "fundsp",
  "log",
