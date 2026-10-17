@@ -15941,6 +15941,40 @@ msgstr "扣除{grouped2}美元费用后带回家约{grouped}美元。"
 msgid "Your pay about {grouped} dollars."
 msgstr "你的工资约为{grouped}美元。"
 
+#. placeholders: {highway}
+#. one sentence of a longer line
+msgid "A chain law is in effect on {highway} on this route."
+msgstr "这条路线上的{highway}正在实施防滑链法规。"
+
+#. placeholders: {highway}
+msgid ""
+"A chain law is in effect on {highway} on this route. You have no chains. "
+"The garage here sells them. Enter again to accept."
+msgstr "这条路线上的{highway}正在实施防滑链法规。你没有防滑链。这里的修理厂有售。再次按Enter接受。"
+
+#. one sentence of a longer line
+msgid "Enter again to accept."
+msgstr "再次按Enter接受。"
+
+#. one sentence of a longer line
+msgid "The garage here sells them."
+msgstr "这里的修理厂有售。"
+
+#. one sentence of a longer line
+msgid "You have no chains."
+msgstr "你没有防滑链。"
+
+#. placeholders: {highway}
+#. one sentence of a longer line
+msgid "Trucks on {highway} must carry chains this season."
+msgstr "本季节在{highway}行驶的卡车必须携带防滑链。"
+
+#. placeholders: {highway}
+msgid ""
+"Trucks on {highway} must carry chains this season. You have no chains. The "
+"garage here sells them. Enter again to accept."
+msgstr "本季节在{highway}行驶的卡车必须携带防滑链。你没有防滑链。这里的修理厂有售。再次按Enter接受。"
+
 msgid "Dispatch board"
 msgstr "调度板"
 
@@ -22459,6 +22493,194 @@ msgstr "时钟：{clock_text} {clock_zone_label}，{time_of_day}   疲劳：百�
 msgid "Billboard: {line}"
 msgstr "广告牌：{line}"
 
+msgid "Come to a complete stop first."
+msgstr "先完全停下。"
+
+msgid "chain up"
+msgstr "装防滑链"
+
+msgid "In the dark, it took more out of you. "
+msgstr "天黑了，这次更累人。 "
+
+msgid " The road here is bare. Chains wear out fast until you reach snow."
+msgstr "这里是无冰雪路面。在到达积雪路段前，防滑链会快速磨损。"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains on in {f} minutes."
+msgstr "用{f}分钟装好了防滑链。"
+
+#. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
+msgid ""
+"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
+"{clock_text}. {deadline_text}"
+msgstr ""
+"{f} 分钟内接通。{effort}保留在{speed_text}.{bare}下，即{clock_text}。{deadline_text}"
+
+#. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
+#. one sentence of a longer line
+msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
+msgstr "{effort}保留在{speed_text}.{bare}下，即{clock_text}。"
+
+msgid "No repair links left. The chain stays off."
+msgstr "没有维修链节了，无法重新安装这条防滑链。"
+
+msgid "repair chain"
+msgstr "修理链"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Back on in {f} minutes."
+msgstr "{f} 分钟后恢复。"
+
+#. one sentence of a longer line
+msgid "Chain repaired with a spare link."
+msgstr "用备用链节修复链条。"
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid ""
+"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
+"soon. It is {clock_text}. {deadline_text}"
+msgstr "用备用链节修复链条。{f} 分钟后恢复。很快再检查一次。它是{clock_text}。{deadline_text}"
+
+#. one sentence of a longer line
+msgid "Check it again soon."
+msgstr "很快再检查一次。"
+
+msgid "tighten chains"
+msgstr "收紧链条"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains tightened in {f} minutes."
+msgstr "链条在 {f} 分钟内收紧。"
+
+#. placeholders: {f}, {clock_text}, {deadline_text}
+msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
+msgstr "链条在 {f} 分钟内收紧。它是{clock_text}。{deadline_text}"
+
+msgid "remove chains"
+msgstr "卸防滑链"
+
+msgid "The set is about done."
+msgstr "这副链子快不行了。"
+
+#. placeholders: {f}
+msgid "The set is {f} percent worn."
+msgstr "这副链子已磨损百分之{f}。"
+
+msgid "The set is still fresh."
+msgstr "这副链子还很新。"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Chains off in {f} minutes."
+msgstr "用{f}分钟卸下了防滑链。"
+
+#. placeholders: {f}, {state_word}, {clock_text}, {deadline_text}
+msgid ""
+"Chains off in {f} minutes. {state_word} It is {clock_text}. {deadline_text}"
+msgstr "用{f}分钟卸下了防滑链。{state_word}现在是{clock_text}。{deadline_text}"
+
+#. placeholders: {state_word}, {clock_text}
+#. one sentence of a longer line
+msgid "{state_word} It is {clock_text}."
+msgstr "{state_word}现在是{clock_text}。"
+
+#. one sentence of a longer line
+msgid "Chain broke."
+msgstr "防滑链断了。"
+
+#. placeholders: {f}
+msgid ""
+"Chain broke. Pulling over to fix it with a spare link, about {f} minutes on "
+"duty."
+msgstr "防滑链断了。正在靠边用备用链节修理，大约占用{f}分钟在岗时间。"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Pulling over to fix it with a spare link, about {f} minutes on duty."
+msgstr "正在靠边用备用链节修理，大约占用{f}分钟在岗时间。"
+
+#. one sentence of a longer line
+msgid "Chain slapping."
+msgstr "防滑链正在拍打车身。"
+
+#. placeholders: {f}
+msgid "Chain slapping. Pulling over to tighten, about {f} minutes on duty."
+msgstr "防滑链正在拍打车身。正在靠边收紧，大约占用{f}分钟在岗时间。"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Pulling over to tighten, about {f} minutes on duty."
+msgstr "正在靠边收紧，大约占用{f}分钟在岗时间。"
+
+msgid "No chains aboard. Facility stopping can't chain you up."
+msgstr "车上没有防滑链。厂区停车辅助无法替你安装。"
+
+#. placeholders: {f}, {f2}
+#. one sentence of a longer line
+msgid ""
+"Chain-up needs about {f} minutes and your 14-hour window has {f2} left."
+msgstr "安装防滑链大约需要{f}分钟，而你的14小时工作窗口只剩{f2}。"
+
+#. placeholders: {f}, {f2}
+msgid ""
+"Chain-up needs about {f} minutes and your 14-hour window has {f2} left. "
+"Find a place to stop."
+msgstr "安装防滑链大约需要{f}分钟，而你的14小时工作窗口只剩{f2}。找个地方停车。"
+
+#. one sentence of a longer line
+msgid "Find a place to stop."
+msgstr "找个地方停车。"
+
+#. one sentence of a longer line
+msgid "Chain-up area ahead."
+msgstr "前方是防滑链安装区。"
+
+#. placeholders: {f}
+msgid ""
+"Chain-up area ahead. Stopping to put chains on, about {f} minutes on duty."
+msgstr "前方是防滑链安装区。正在停车安装防滑链，大约占用{f}分钟在岗时间。"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Stopping to put chains on, about {f} minutes on duty."
+msgstr "正在停车安装防滑链，大约占用{f}分钟在岗时间。"
+
+#. placeholders: {distance_text}
+#. one sentence of a longer line
+msgid "Another chain area in {distance_text}."
+msgstr "{distance_text}后还有一个防滑链管制区。"
+
+#. one sentence of a longer line
+msgid "Leaving chains on."
+msgstr "暂不拆除防滑链。"
+
+#. placeholders: {distance_text}
+msgid "Leaving chains on. Another chain area in {distance_text}."
+msgstr "暂不拆除防滑链。{distance_text}后还有一个防滑链管制区。"
+
+#. one sentence of a longer line
+msgid "Chain-off area."
+msgstr "防滑链拆卸区。"
+
+#. placeholders: {f}
+msgid "Chain-off area. Taking chains off, about {f} minutes on duty."
+msgstr "防滑链拆卸区。正在拆除防滑链，大约占用{f}分钟在岗时间。"
+
+#. placeholders: {f}
+#. one sentence of a longer line
+msgid "Taking chains off, about {f} minutes on duty."
+msgstr "正在拆除防滑链，大约占用{f}分钟在岗时间。"
+
+msgid "Chain stop canceled. Chains are yours."
+msgstr "已取消防滑链停车辅助。防滑链由你接管。"
+
+#. placeholders: {text}
+msgid "{text} Release the parking brake to go on."
+msgstr "{text}松开驻车制动即可继续行驶。"
+
 #. placeholders: {street}, {first_corner}, {distance_text}
 msgid "{street}.{first_corner} {distance_text} to the facility gate."
 msgstr "{street}。{first_corner}离厂区大门还有{distance_text}。"
@@ -23317,9 +23539,6 @@ msgstr "在去{name}的匝道上。在称重站停车，然后按{rest_hint}报�
 #. one sentence of a longer line
 msgid "Stop at the scale, then press {rest_hint} to check in."
 msgstr "在称重站停车，然后按{rest_hint}报到。"
-
-msgid "Come to a complete stop first."
-msgstr "先完全停下。"
 
 msgid "Emergency shoulder sleep is not available here. Use a route stop."
 msgstr "这里不能紧急路肩睡觉。去路线停靠点。"
@@ -25289,97 +25508,6 @@ msgid ""
 "possible ticket, possible minor truck damage, and the deadline keeps "
 "running."
 msgstr "在路肩上睡不好。重置驾驶工时。疲劳仍在，可能会收到罚单，卡车可能有轻微损坏，截止时间也照样在走。"
-
-msgid "chain up"
-msgstr "装防滑链"
-
-msgid "In the dark, it took more out of you. "
-msgstr "天黑了，这次更累人。 "
-
-msgid " The road here is bare. Chains wear out fast until you reach snow."
-msgstr "这里是无冰雪路面。在到达积雪路段前，防滑链会快速磨损。"
-
-#. placeholders: {f}
-#. one sentence of a longer line
-msgid "Chains on in {f} minutes."
-msgstr "用{f}分钟装好了防滑链。"
-
-#. placeholders: {f}, {effort}, {speed_text}, {bare}, {clock_text}, {deadline_text}
-msgid ""
-"Chains on in {f} minutes. {effort}Keep under {speed_text}.{bare} It is "
-"{clock_text}. {deadline_text}"
-msgstr ""
-"{f} 分钟内接通。{effort}保留在{speed_text}.{bare}下，即{clock_text}。{deadline_text}"
-
-#. placeholders: {effort}, {speed_text}, {bare}, {clock_text}
-#. one sentence of a longer line
-msgid "{effort}Keep under {speed_text}.{bare} It is {clock_text}."
-msgstr "{effort}保留在{speed_text}.{bare}下，即{clock_text}。"
-
-msgid "No repair links left. The chain stays off."
-msgstr "没有维修链节了，无法重新安装这条防滑链。"
-
-msgid "repair chain"
-msgstr "修理链"
-
-#. placeholders: {f}
-#. one sentence of a longer line
-msgid "Back on in {f} minutes."
-msgstr "{f} 分钟后恢复。"
-
-#. one sentence of a longer line
-msgid "Chain repaired with a spare link."
-msgstr "用备用链节修复链条。"
-
-#. placeholders: {f}, {clock_text}, {deadline_text}
-msgid ""
-"Chain repaired with a spare link. Back on in {f} minutes. Check it again "
-"soon. It is {clock_text}. {deadline_text}"
-msgstr "用备用链节修复链条。{f} 分钟后恢复。很快再检查一次。它是{clock_text}。{deadline_text}"
-
-#. one sentence of a longer line
-msgid "Check it again soon."
-msgstr "很快再检查一次。"
-
-msgid "tighten chains"
-msgstr "收紧链条"
-
-#. placeholders: {f}
-#. one sentence of a longer line
-msgid "Chains tightened in {f} minutes."
-msgstr "链条在 {f} 分钟内收紧。"
-
-#. placeholders: {f}, {clock_text}, {deadline_text}
-msgid "Chains tightened in {f} minutes. It is {clock_text}. {deadline_text}"
-msgstr "链条在 {f} 分钟内收紧。它是{clock_text}。{deadline_text}"
-
-msgid "remove chains"
-msgstr "卸防滑链"
-
-msgid "The set is about done."
-msgstr "这副链子快不行了。"
-
-#. placeholders: {f}
-msgid "The set is {f} percent worn."
-msgstr "这副链子已磨损百分之{f}。"
-
-msgid "The set is still fresh."
-msgstr "这副链子还很新。"
-
-#. placeholders: {f}
-#. one sentence of a longer line
-msgid "Chains off in {f} minutes."
-msgstr "用{f}分钟卸下了防滑链。"
-
-#. placeholders: {f}, {state_word}, {clock_text}, {deadline_text}
-msgid ""
-"Chains off in {f} minutes. {state_word} It is {clock_text}. {deadline_text}"
-msgstr "用{f}分钟卸下了防滑链。{state_word}现在是{clock_text}。{deadline_text}"
-
-#. placeholders: {state_word}, {clock_text}
-#. one sentence of a longer line
-msgid "{state_word} It is {clock_text}."
-msgstr "{state_word}现在是{clock_text}。"
 
 msgid "Emergency shoulder sleep is not available."
 msgstr "不能紧急路肩睡觉。"
@@ -28000,6 +28128,24 @@ msgstr "安装防滑链后速度过快。"
 msgid "Too fast for chains. Keep under {speed_text}."
 msgstr "安装防滑链后速度过快。请保持在{speed_text}以下。"
 
+#. placeholders: {highway}
+#. one sentence of a longer line
+msgid "Chain law ahead on {highway}."
+msgstr "前方{highway}实施防滑链法规。"
+
+#. placeholders: {highway}
+msgid "Chain law ahead on {highway}. You have no chains."
+msgstr "前方{highway}实施防滑链法规。你没有防滑链。"
+
+#. placeholders: {highway}, {exit}
+#. one sentence of a longer line
+msgid "Chain law ahead on {highway} at {exit}."
+msgstr "前方{highway}在{exit}处开始实施防滑链法规。"
+
+#. placeholders: {highway}, {exit}
+msgid "Chain law ahead on {highway} at {exit}. You have no chains."
+msgstr "前方{highway}在{exit}处开始实施防滑链法规。你没有防滑链。"
+
 #. placeholders: {need}
 msgid "Rolling into an active chain law without {need}."
 msgstr "没有{need}就驶入了生效中的防滑链法规路段。"
@@ -29977,11 +30123,15 @@ msgid ""
 "On the final approach, after any exit, it works the throttle and brakes: up "
 "to 12 miles per hour through the facility lane, creeping the last 200 feet, "
 "then stopping at pickup and delivery facilities, rest stops, and required "
-"weigh stations. It never chooses an exit, enters a yard, or docks. "
-"Realistic leaves it off; Balanced and All assists turn it on."
+"weigh stations. It never chooses an exit, enters a yard, or docks. In a "
+"chain-law area it stops to put snow chains on and take them off, and it may "
+"spend on-duty minutes on chains: about 30 to chain up, 10 to take them off. "
+"It never buys chains. Realistic leaves it off; Balanced and All assists "
+"turn it on."
 msgstr ""
 "最后接近阶段，驶出任何出口之后，它会操作油门和刹车：在厂区车道里最高每小时12英里，最后200英尺慢慢挪，然后在装货和送货厂区、休息区和必须进入的称重站"
-"停下。它从不替你选择出口、进入场院或靠上装卸口。写实预设不开启它；均衡和全部辅助会开启。"
+"停下。它从不替你选择出口、进入场院或靠上装卸口。在防滑链管制区，它会停车安装和拆除防滑链，并可能占用在岗时间：安装约30分钟，拆除约10分钟。它从不购买"
+"防滑链。写实预设不开启它；均衡和全部辅助会开启。"
 
 msgid "Curve assistance"
 msgstr "弯道辅助"
@@ -30341,11 +30491,19 @@ msgid ""
 "again to cancel. Standard driving speech speaks one suggestion before the "
 "next hours warning. The driving time readout gives full hours and route "
 "details. Quiet and Urgent only keep the automatic hint silent. Your "
-"required hours warnings and readout controls still work when this is off."
+"required hours warnings and readout controls still work when this is off. "
+"It also reminds you before a chain-law road if you have no chains: on the "
+"dispatch board when the load crosses a road where trucks must carry chains "
+"this season, or where live weather or a weather alert puts a chain law in "
+"effect for your truck, while the terminal garage can still sell you a set, "
+"and on the road when a posted chain law requires chains on your truck. It "
+"never buys anything."
 msgstr ""
 "可选的提前建议，在时间充裕时为中途休息或睡觉找停靠点。如果有更早的停靠点合适，提示还会说出最后一个合法能到达的备选。行驶中用“休息”控制键选择推荐的停靠"
 "点；再用一次即可取消。标准驾驶播报会在下一次工时警告之前说一条建议。驾驶时间查询会给出完整的工时和路线详情。安静和仅紧急模式下自动提示保持静音。关闭这一"
-"项时，必要的工时警告和查询控制仍然有效。"
+"项时，必要的工时警告和查询控制仍然有效。如果你没有防滑链，它还会在防滑链法规路段前提醒你：当任务经过本季节要求卡车携带防滑链的道路，或实时天气或天气警报"
+"使你的卡车需要遵守防滑链法规时，会在场站修理厂还能出售防滑链的情况下于调度板提醒你；在路上，当已发布的防滑链法规要求你的卡车安装防滑链时也会提醒。它从不"
+"购买任何东西。"
 
 #. placeholders: {else}
 msgid "Weather source: {else}"
@@ -35184,6 +35342,29 @@ msgstr "分开，你这边一条车道。"
 
 msgid "Mostly divided, one lane your side."
 msgstr "大部分都是分开的，你这​​边有一条车道。"
+
+#~ msgid ""
+#~ "On the final approach, after any exit, it works the throttle and brakes: up "
+#~ "to 12 miles per hour through the facility lane, creeping the last 200 feet, "
+#~ "then stopping at pickup and delivery facilities, rest stops, and required "
+#~ "weigh stations. It never chooses an exit, enters a yard, or docks. "
+#~ "Realistic leaves it off; Balanced and All assists turn it on."
+#~ msgstr ""
+#~ "最后接近阶段，驶出任何出口之后，它会操作油门和刹车：在厂区车道里最高每小时12英里，最后200英尺慢慢挪，然后在装货和送货厂区、休息区和必须进入的称重站"
+#~ "停下。它从不替你选择出口、进入场院或靠上装卸口。写实预设不开启它；均衡和全部辅助会开启。"
+
+#~ msgid ""
+#~ "Optional early advice for a break or sleep stop with time to spare. If an "
+#~ "earlier stop fits, the hint also names the last legally reachable fallback. "
+#~ "While rolling, use the Rest control to select the recommended stop; use it "
+#~ "again to cancel. Standard driving speech speaks one suggestion before the "
+#~ "next hours warning. The driving time readout gives full hours and route "
+#~ "details. Quiet and Urgent only keep the automatic hint silent. Your "
+#~ "required hours warnings and readout controls still work when this is off."
+#~ msgstr ""
+#~ "可选的提前建议，在时间充裕时为中途休息或睡觉找停靠点。如果有更早的停靠点合适，提示还会说出最后一个合法能到达的备选。行驶中用“休息”控制键选择推荐的停靠"
+#~ "点；再用一次即可取消。标准驾驶播报会在下一次工时警告之前说一条建议。驾驶时间查询会给出完整的工时和路线详情。安静和仅紧急模式下自动提示保持静音。关闭这一"
+#~ "项时，必要的工时警告和查询控制仍然有效。"
 
 #~ msgid ""
 #~ "Some badges don't announce themselves until you've earned them. Keep "

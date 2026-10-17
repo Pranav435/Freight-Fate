@@ -576,6 +576,7 @@ impl DrivingState {
         self.jake_slip_active = slipping;
         if self.trip.truck.chains_just_snapped {
             self.trip.truck.chains_just_snapped = false;
+            self.chain_assist_snapped = true;
             ctx.say_event_with(
                 "A tire chain broke and is flailing. Slow down and pull over to check it.",
                 SayEvent::new().category(SpeechCategory::Safety),
@@ -603,6 +604,39 @@ impl DrivingState {
             );
         }
         self.chains_fast_active = chains_fast;
+    }
+
+    /// Stop planning's no-chains reminder: before a chain-law area where the
+    /// posted law chains this rig, with no usable chains aboard, say so once.
+    /// No store is named: garages open only from a city terminal, so the
+    /// place to buy chains is the board's pre-acceptance reminder.
+    /// Speech only: it never stops the truck, changes the route or spends.
+    pub fn update_chain_reminder(&mut self, ctx: &mut GameContext) {
+        if !ctx.settings.hos_planning_hints
+            || self.departure_chain
+            || self.stop_chain.is_some()
+            || self.chains_aboard(ctx)
+        {
+            return;
+        }
+        let Some(ahead) = self.trip.upcoming_chain_corridor(CHAIN_REMINDER_LEAD_MI) else {
+            return;
+        };
+        if !self.chain_reminder_said.insert(ahead.key.clone()) {
+            return;
+        }
+        let highway = ahead.highway;
+        let line = if ahead.exit_label.is_empty() {
+            format!("Chain law ahead on {highway}. You have no chains.")
+        } else {
+            let exit = ahead.exit_label;
+            format!("Chain law ahead on {highway} at {exit}. You have no chains.")
+        };
+        // Advice, not a warning: queued behind whatever is speaking.
+        ctx.say_event_with(
+            line,
+            SayEvent::queued().category(SpeechCategory::Navigation),
+        );
     }
 
     /// Warn once per area, then run the deterministic checkpoint.
