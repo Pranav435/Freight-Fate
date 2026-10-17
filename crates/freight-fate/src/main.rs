@@ -521,7 +521,7 @@ fn list_speech_backends() -> i32 {
                 (usable(backend.as_ref()), note.to_string())
             }
             // The ordinary case for every reader this machine does not have.
-            Err(prismer::Error::BackendNotAvailable) => {
+            Err(freight_fate::speech::backend::SpeechError::BackendNotAvailable) => {
                 (false, "not installed or not running here".to_string())
             }
             Err(err) => (false, err.to_string()),
@@ -675,7 +675,9 @@ fn playtest_road(args: &[String]) -> i32 {
         // `road::plan` answers off the world data and returns before any app
         // is built. Refusing a search because a drive is open cost the tool
         // its one use during a playtest: finding where to go next.
-        let mut guard = freight_fate::single_instance::SingleInstanceGuard::new();
+        let mut guard = freight_fate::single_instance::SingleInstanceGuard::new(
+            freight_fate::single_instance::SINGLE_INSTANCE_MUTEX_NAME,
+        );
         if !guard.acquire() {
             eprintln!(
                 "Freight Fate is already running. Close it first. A second window would \

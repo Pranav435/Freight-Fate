@@ -19,11 +19,12 @@
 //! compression a distance alone is unbeatable. HOS, the clock, and fuel keep
 //! running through every loop; the lost time is the consequence, never a fine.
 
+use crate::speech::EventPriority;
 use ff_core::sim::trip_models::{
     APPROACH_DECEL_MPS2, APPROACH_REACTION_S, FACILITY_ACCESS_TAIL_MI, FACILITY_GATE_LIMIT_MPH,
     FACILITY_GATE_ZONE_MI, METERS_PER_MILE, MPH_PER_MPS,
 };
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
@@ -214,7 +215,7 @@ impl DrivingState {
         ctx.say_event_with(
             message,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Navigation),
         );
     }

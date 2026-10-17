@@ -385,7 +385,7 @@ impl DrivingState {
         ctx.say_event_with(
             message,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Confirmation),
         );
     }
@@ -427,7 +427,7 @@ impl DrivingState {
         ctx.say_event_with(
             format!("No engine brake zone in {distance}, coming into {spoken}."),
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Navigation),
         );
     }

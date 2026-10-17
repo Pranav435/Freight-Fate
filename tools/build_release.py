@@ -60,13 +60,10 @@ BUILD = ROOT / "build"
 APP_NAME = "FreightFate"
 # The checkout root stands in for the installed ``freight_fate/`` package:
 # ``data/`` and ``assets/sounds/`` stage to the same relative paths under it.
-# The packs and add-ons sit under ``assets/`` here but at the package top
-# level (packs) and in ``lib/`` (add-ons) in a release.
+# The packs sit under ``assets/`` here but at the package top level in a
+# release.
 PACKAGE_DIR = ROOT
 SOURCE_ASSETS = "assets"
-# Game-shipped BASS addon plugins (e.g. basshls for HLS radio streams),
-# staged beside the executable with the rest of BASS.
-ADDON_LIB_DIR = PACKAGE_DIR / SOURCE_ASSETS / "lib"
 # Production, so a release no longer pulls its music through the staging host.
 #
 # This took two goes. The route is a 307 to FREIGHT_FATE_MUSIC_BLOB_URL, and
@@ -548,17 +545,12 @@ def verify_archive(out: Path) -> None:
     )
     missing = [name for name in required if f"{payload_root}/{name}" not in entries]
     if macos_archive:
-        bundle_required = (
-            f"{APP_NAME}.app/Contents/Info.plist",
-            *(f"{APP_NAME}.app/Contents/Frameworks/{name}" for name in MACOS_REQUIRED_LIBRARIES),
-        )
-        missing.extend(name for name in bundle_required if name not in entries)
-        # No libSDL2 requirement: SDL2 ships compiled into the executable.
+        if f"{APP_NAME}.app/Contents/Info.plist" not in entries:
+            missing.append(f"{APP_NAME}.app/Contents/Info.plist")
+        # No native library requirement: SDL2, Prism and the audio engine
+        # are compiled into the executable.
     elif out.name.endswith(LINUX_TARBALL_SUFFIXES):
-        # Same libraries as the Mac bundle, flat beside the executable.
-        missing.extend(
-            f"{root}/{name}" for name in LINUX_REQUIRED_LIBRARIES if f"{root}/{name}" not in entries
-        )
+        pass  # Likewise: the Linux executable carries everything it links.
     else:
         # The delivered ZIP, not only the build runner, must carry the CRT.
         folded = {name.lower(): metadata for name, metadata in entries.items()}
@@ -611,9 +603,9 @@ def archive(build_dir: Path, label: str) -> Path:
 # ``FreightFate(.exe)``, ``build_info.json``, the docs, and a ``freight_fate/``
 # folder with the packs and the baked data container
 # (``ff_core::data::data_resources::data_root`` looks for
-# ``<exe dir>/freight_fate/data``). The native libraries (SDL2, BASS and its
-# plugins) sit flat beside the executable; Prism is linked into it, which is where the crates'
-# build scripts stage them and where their loaders look first.
+# ``<exe dir>/freight_fate/data``). Any native library the crates' build
+# scripts stage (SDL2 on Windows) sits flat beside the executable; Prism and
+# the audio engine are linked into it.
 
 # ``[[bin]] name`` in crates/freight-fate/Cargo.toml. The staged copy is
 # renamed to APP_NAME: ``updater::is_frozen`` (both ports) accepts the stem
@@ -672,19 +664,6 @@ LFS_POINTER_PREFIX = b"version https://git-lfs"
 # Build-only leftovers in the Cargo profile directory that are not runtime
 # libraries even though they carry a native suffix on some platforms.
 CARGO_NON_RUNTIME_SUFFIXES = {".pdb", ".d", ".rlib", ".lib", ".exp"}
-MACOS_REQUIRED_LIBRARIES = (
-    "libbass.dylib",
-    "libbassopus.dylib",
-    "libbasshls.dylib",
-    "libbassflac.dylib",
-)
-# The Linux tarball's equivalents, flat beside the executable.
-LINUX_REQUIRED_LIBRARIES = (
-    "libbass.so",
-    "libbassopus.so",
-    "libbasshls.so",
-    "libbassflac.so",
-)
 
 
 def rust_exe_name(platform_name: str = sys.platform) -> str:
@@ -1150,15 +1129,6 @@ def plan_rust_layout(
         plan.append((package_dir / relative, package / relative))
     for relative in rust_loose_sound_files(package_dir):
         plan.append((package_dir / relative, package / relative))
-    # The game's fallback location for BASS add-on plugins
-    # (``audio::assets::plugin_lib_dir`` is ``<exe dir>/freight_fate/lib``);
-    # the copy beside bass.dll is what normally loads, this one covers a
-    # player who swaps in their own BASS.
-    if ADDON_LIB_DIR.is_dir():
-        suffixes = native_exts or platform_native_exts(platform_name)
-        for path in sorted(ADDON_LIB_DIR.iterdir()):
-            if path.is_file() and path.suffix.lower() in suffixes:
-                plan.append((path, package / "lib" / path.name))
     return plan
 
 
@@ -1168,14 +1138,8 @@ def run_cargo(target_dir: Path | None = None) -> Path:
     return cargo_profile_dir(target_dir)
 
 
-def fetch_bass_command() -> list[str]:
-    """Return the checkout-local BASS preparation command."""
-    return [sys.executable, str(TOOLS / "fetch_bass.py")]
-
-
 def prepare_rust_release_dependencies() -> None:
-    """Restore native audio and the verified music pack before Cargo runs."""
-    subprocess.run(fetch_bass_command(), cwd=ROOT, check=True)
+    """Restore the verified music and Channel 3000 packs before Cargo runs."""
     ensure_music_pack()
     ensure_channel3000_pack()
 
@@ -1188,19 +1152,6 @@ def stage_rust_build(
     label: str | None = None,
 ) -> Path:
     """Assemble the Rust release folder from the plan plus the packs and docs."""
-    if platform_name == "darwin":
-        for name in MACOS_REQUIRED_LIBRARIES:
-            if not (profile_dir / name).is_file():
-                raise RuntimeError(f"Rust build is missing macOS player library {name}")
-    elif platform_name == "linux":
-        for name in LINUX_REQUIRED_LIBRARIES:
-            if not (profile_dir / name).is_file():
-                hint = (
-                    " Run `uv run python tools/fetch_bass.py` and build again."
-                    if name.startswith("libbass")
-                    else ""
-                )
-                raise RuntimeError(f"Rust build is missing Linux player library {name}.{hint}")
     require_real_pack(PACKAGE_DIR / SOURCE_ASSETS / "sounds.pak")
     require_real_pack(PACKAGE_DIR / SOURCE_ASSETS / "music.pak")
     require_real_pack(PACKAGE_DIR / SOURCE_ASSETS / "channel3000.pak")
@@ -1411,40 +1362,16 @@ def verify_rust_payload(build_dir: Path, platform_name: str = sys.platform) -> N
 
     if platform_name == "win32":
         verify_windows_runtime(executable_root)
-        for name in ("SDL2.dll", "bass.dll"):
-            if not (root / name).exists():
-                # BASS is fetched rather than committed, so a checkout that
-                # skipped the fetch would otherwise build a silent release and
-                # say nothing about why.
-                hint = (
-                    " Run `uv run python tools/fetch_bass.py` and build again."
-                    if name.startswith("bass")
-                    else ""
-                )
-                raise RuntimeError(f"Rust payload is missing the native library {name}.{hint}")
-    elif platform_name == "darwin":
-        frameworks = build_dir / "Contents" / "Frameworks"
-        # SDL2 is deliberately absent: it is compiled into the executable
-        # (`bundled` + `static-link`), and staging refuses a dynamic link.
-        missing_macos = [
-            name for name in MACOS_REQUIRED_LIBRARIES if not (frameworks / name).exists()
-        ]
-        if missing_macos:
-            raise RuntimeError(
-                "Rust macOS payload is missing native libraries: " + ", ".join(missing_macos)
-            )
-    elif platform_name == "linux":
-        # SDL2 and Prism are compiled in here too; what must be beside the
-        # executable is BASS with its decoders.
-        missing_linux = [name for name in LINUX_REQUIRED_LIBRARIES if not (root / name).exists()]
-        if missing_linux:
-            raise RuntimeError(
-                "Rust Linux payload is missing native libraries: " + ", ".join(missing_linux)
-            )
+        if not (root / "SDL2.dll").exists():
+            raise RuntimeError("Rust payload is missing the native library SDL2.dll.")
+    elif platform_name in ("darwin", "linux"):
+        # SDL2 (`bundled` + `static-link`), Prism and the audio engine are
+        # compiled into the executable; staging refuses a dynamic SDL2 link.
+        pass
     elif not native_files(root):
         print(
             "Warning: no native libraries staged beside the executable; the game "
-            "will need system SDL2/BASS on this platform."
+            "will need system SDL2 on this platform."
         )
 
     verify_sound_packs(build_dir)

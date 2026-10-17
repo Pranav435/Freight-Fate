@@ -1,11 +1,12 @@
 //! Standing physical conditions: hot brakes, the destination approach
 //! assist, the traction states, and the chain law.
 
+use crate::speech::EventPriority;
 use ff_core::models::enforcement::{chain_law_fine, CHAIN_CARRY_FINE_CO};
 use ff_core::pyfmt::{fmt_f, fmt_grouped};
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::vehicle::MIN_STOPPING_DECEL_MPS2;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
@@ -285,7 +286,7 @@ impl DrivingState {
                 ctx.say_event_with(
                     "Slowing for the entrance.",
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Confirmation),
                 );
             }
@@ -555,7 +556,7 @@ impl DrivingState {
         ctx.say_event_with(
             format!("Pull ahead {whither}."),
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Confirmation),
         );
     }
@@ -712,7 +713,7 @@ impl DrivingState {
             ctx.say_event_with(
                 format!("Chain checkpoint. The officer stops you again. {after}"),
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Navigation),
             );
             return;
@@ -753,7 +754,7 @@ impl DrivingState {
                 fmt_grouped(money, 0)
             ),
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Money),
         );
     }
@@ -1073,7 +1074,7 @@ impl DrivingState {
                 fmt_grouped(money, 0)
             ),
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Money),
         );
     }

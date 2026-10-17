@@ -10,8 +10,9 @@
 //! and the exit speed (the ramp's advisory, MUTCD W13-2, which stands along
 //! this lane) governs the curve that follows it, not the gore.
 
+use crate::speech::EventPriority;
 use ff_core::data::curves::min_radius_ft;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 
 use crate::app::{GameContext, SayEvent};
 use crate::bindings::Action;
@@ -170,7 +171,7 @@ impl DrivingState {
         ctx.say_event_with(
             "Slowing for the ramp.",
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Confirmation),
         );
     }

@@ -47,6 +47,7 @@ mod app_speech_ducking;
 mod app_state_stack;
 mod app_touch_gestures;
 mod audio_backends;
+mod audio_hearken;
 mod audio_loops;
 mod audio_radio_now_playing;
 mod audio_sound_pack;

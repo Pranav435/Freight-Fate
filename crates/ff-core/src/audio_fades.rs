@@ -3,7 +3,7 @@
 //! Nothing here touches an audio backend directly. A [`Fade`] is just a
 //! timed ramp between two numbers with a chosen easing curve; it calls a
 //! supplied `apply(value)` setter each frame. This keeps the fade machinery
-//! independent of whether the volume ultimately lands on a BASS stream, a
+//! independent of whether the volume ultimately lands on a Hearken sound, a
 //! null backend, or a plain multiplier -- the caller wires that up.
 //!
 //! Typical use for a crossfade:

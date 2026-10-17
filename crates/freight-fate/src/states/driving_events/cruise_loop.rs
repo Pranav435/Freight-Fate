@@ -1,9 +1,10 @@
 //! The adaptive-cruise loop itself: the gap, the posted-limit lookahead, the
 //! grade preview, and holding the target from above.
 
+use crate::speech::EventPriority;
 use ff_core::sim::transmission::JAKE_MAX_RPM;
 use ff_core::sim::trip::LIMIT_WARNING_MAX_LEAD_MI;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::SpokenMessage;
 
 use crate::app::{GameContext, SayEvent};
@@ -655,7 +656,7 @@ impl DrivingState {
                 // Handing the truck back is the least droppable line the
                 // assist has: a driver who does not hear it believes the
                 // cruise is still holding the gap.
-                let mut opts = SayEvent::queued().priority(EventPriority::Route);
+                let mut opts = SayEvent::queued().priority(EventPriority::Important);
                 opts.category = Some(SpeechCategory::Safety);
                 ctx.say_event_with("Stopped traffic ahead; adaptive cruise canceled.", opts);
                 return;

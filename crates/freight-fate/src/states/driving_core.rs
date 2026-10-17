@@ -67,6 +67,7 @@ pub use state_helpers::*;
 // used without importing it themselves. Kept explicit so a mixin port reads
 // the same way as its Python source; anything else comes from `ff_core`
 // directly.
+pub use crate::speech::EventPriority;
 pub use ff_core::achievements::{add_unique_stat, reset_stat};
 pub use ff_core::data::amenities::classify_brand;
 pub use ff_core::data::buffs::buffs_for_stop;
@@ -121,7 +122,6 @@ pub use ff_core::sim::vehicle::{
 pub use ff_core::sim::weather::{WeatherKind, WeatherSystem};
 pub use ff_core::sim::{hos, trip_models};
 pub use ff_core::sound_catalog::BAR_SOLID_VOLUME;
-pub use ff_core::speech_pacing::EventPriority;
 
 // -- the profile the drive runs on -------------------------------------------------------
 

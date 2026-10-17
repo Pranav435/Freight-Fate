@@ -33,10 +33,14 @@ use crate::controller::ControllerButton;
 use crate::states::base::{Key, Mods};
 use crate::touch::Gesture;
 
-mod names;
 mod touch;
 
-pub use names::{key_saved_name, key_spoken_name, pad_button_short_name, parse_key_name};
+/// Chords, pad chords and the key and button names are Hearken's; the
+/// table of driving actions, the reserved keys and the saved strings are
+/// Freight Fate's.
+pub use hearken::bindings::{
+    key_saved_name, key_spoken_name, pad_button_short_name, parse_key_name, Chord, PadChord,
+};
 pub use touch::{touch_gesture_name, touch_gesture_noun, touch_slots, TouchCommand};
 
 /// One discrete driving control a player can move to another key or button.
@@ -107,139 +111,6 @@ pub enum Action {
     RadioCategoryPrev,
     RadioStatus,
     RadioNowPlaying,
-}
-
-/// A key with the modifiers held with it.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct Chord {
-    pub key: Key,
-    pub mods: Mods,
-}
-
-impl Chord {
-    pub const fn plain(key: Key) -> Chord {
-        Chord {
-            key,
-            mods: Mods::NONE,
-        }
-    }
-
-    pub const fn shift(key: Key) -> Chord {
-        Chord {
-            key,
-            mods: Mods::SHIFT,
-        }
-    }
-
-    pub const fn alt(key: Key) -> Chord {
-        Chord {
-            key,
-            mods: Mods::ALT,
-        }
-    }
-
-    /// The chord as a player hears it: "Alt J", "the Up arrow", "T".
-    pub fn spoken(&self) -> String {
-        let mut out = String::new();
-        if self.mods.ctrl {
-            out.push_str("Control ");
-        }
-        if self.mods.alt {
-            out.push_str("Alt ");
-        }
-        if self.mods.shift {
-            out.push_str("Shift ");
-        }
-        out.push_str(&key_spoken_name(self.key));
-        out
-    }
-
-    /// The chord as the settings file stores it: "alt+j", "up", "shift+k".
-    pub fn saved(&self) -> Option<String> {
-        let key = key_saved_name(self.key)?;
-        let mut out = String::new();
-        if self.mods.ctrl {
-            out.push_str("ctrl+");
-        }
-        if self.mods.alt {
-            out.push_str("alt+");
-        }
-        if self.mods.shift {
-            out.push_str("shift+");
-        }
-        out.push_str(key);
-        Some(out)
-    }
-
-    pub fn parse(text: &str) -> Option<Chord> {
-        let mut mods = Mods::NONE;
-        let mut key = None;
-        for part in text.split('+') {
-            match part {
-                "ctrl" => mods.ctrl = true,
-                "alt" => mods.alt = true,
-                "shift" => mods.shift = true,
-                name => key = Some(parse_key_name(name)?),
-            }
-        }
-        key.map(|key| Chord { key, mods })
-    }
-}
-
-/// A pad button, on the plain layer or with the right bumper held.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct PadChord {
-    pub button: ControllerButton,
-    pub modified: bool,
-}
-
-impl PadChord {
-    pub const fn plain(button: ControllerButton) -> PadChord {
-        PadChord {
-            button,
-            modified: false,
-        }
-    }
-
-    pub const fn modified(button: ControllerButton) -> PadChord {
-        PadChord {
-            button,
-            modified: true,
-        }
-    }
-
-    /// As a hint names it: "the A button", "D-pad down", "right bumper plus
-    /// Y".
-    pub fn spoken(&self) -> String {
-        let short = pad_button_short_name(self.button);
-        if self.modified {
-            format!("right bumper plus {short}")
-        } else if matches!(
-            self.button,
-            ControllerButton::A | ControllerButton::B | ControllerButton::X | ControllerButton::Y
-        ) {
-            format!("the {short} button")
-        } else {
-            short.to_string()
-        }
-    }
-
-    pub fn saved(&self) -> String {
-        let name = names::pad_button_saved_name(self.button);
-        if self.modified {
-            format!("mod+{name}")
-        } else {
-            name.to_string()
-        }
-    }
-
-    pub fn parse(text: &str) -> Option<PadChord> {
-        let (modified, name) = match text.strip_prefix("mod+") {
-            Some(rest) => (true, rest),
-            None => (false, text),
-        };
-        names::parse_pad_button_name(name).map(|button| PadChord { button, modified })
-    }
 }
 
 /// `(action, saved id, spoken label, default keyboard chords, default pad
@@ -674,6 +545,17 @@ const TABLE: &[Row] = &[
     ),
 ];
 
+/// [`Action::all`] as a slice, for Hearken's [`hearken::bindings::Action`].
+static ALL: [Action; TABLE.len()] = {
+    let mut out = [Action::Accelerate; TABLE.len()];
+    let mut i = 0;
+    while i < TABLE.len() {
+        out[i] = TABLE[i].0;
+        i += 1;
+    }
+    out
+};
+
 fn row(action: Action) -> &'static Row {
     TABLE
         .iter()
@@ -684,7 +566,7 @@ fn row(action: Action) -> &'static Row {
 impl Action {
     /// Every action, in screen order.
     pub fn all() -> impl Iterator<Item = Action> {
-        TABLE.iter().map(|(a, ..)| *a)
+        ALL.iter().copied()
     }
 
     /// The id the settings file stores.
@@ -732,6 +614,36 @@ impl Action {
                 | Action::Straighten
                 | Action::Horn
         )
+    }
+}
+
+/// Hearken's binding table runs on these. Every reserved key is Freight
+/// Fate's own, worded its own way, so the engine's list is off: modified
+/// Start and Back stay free for the second layer, as they always were.
+impl hearken::bindings::Action for Action {
+    fn all() -> &'static [Self] {
+        &ALL
+    }
+    fn id(self) -> &'static str {
+        row(self).1
+    }
+    fn label(self) -> &'static str {
+        row(self).2
+    }
+    fn default_keys(self) -> &'static [Chord] {
+        row(self).3
+    }
+    fn default_pad(self) -> &'static [PadChord] {
+        row(self).4
+    }
+    fn reserved_key(chord: &Chord) -> Option<&'static str> {
+        reserved_key_reason(chord)
+    }
+    fn reserved_pad(chord: &PadChord) -> Option<&'static str> {
+        reserved_pad_reason(chord)
+    }
+    fn keeps_engine_reserved() -> bool {
+        false
     }
 }
 
@@ -799,22 +711,16 @@ pub fn reserved_pad_reason(chord: &PadChord) -> Option<&'static str> {
     }
 }
 
-/// The result of asking for a new binding.
-#[derive(Debug, PartialEq, Eq)]
-pub enum Rebind {
-    Done,
-    /// The chord already belongs to this action.
-    Unchanged,
-    Reserved(&'static str),
-    /// Another action has the chord.
-    Taken(Action),
-}
+/// The result of asking for a new binding: `Done`, `Unchanged` (the chord
+/// already belongs to this action), `Reserved(reason)` or `Taken(other)`.
+pub type Rebind = hearken::bindings::Rebind<Action>;
 
-/// The live table: defaults plus what the player moved.
+/// The live table: defaults plus what the player moved. The keyboard and
+/// pad tables are Hearken's; the touch table and the `"id=chord;..."`
+/// strings in `Settings` are Freight Fate's.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct KeyBindings {
-    keys: HashMap<Action, Chord>,
-    pad: HashMap<Action, PadChord>,
+    inner: hearken::bindings::KeyBindings<Action>,
     touch: HashMap<Gesture, TouchCommand>,
 }
 
@@ -822,37 +728,29 @@ impl KeyBindings {
     /// The table `settings` describes; unreadable entries are ignored, so
     /// one bad line never costs the rest.
     pub fn from_settings(settings: &Settings) -> KeyBindings {
-        let mut out = KeyBindings::default();
-        for (id, value) in entries(&settings.key_bindings) {
-            if let (Some(action), Some(chord)) = (Action::from_id(id), Chord::parse(value)) {
-                if action.on_keyboard() {
-                    out.keys.insert(action, chord);
-                }
-            }
+        let keys = entries(&settings.key_bindings)
+            .filter_map(|(id, value)| Some((Action::from_id(id)?, Chord::parse(value)?)));
+        let pad = entries(&settings.pad_bindings)
+            .filter_map(|(id, value)| Some((Action::from_id(id)?, PadChord::parse(value)?)));
+        KeyBindings {
+            // Keeps a move only for a control the device has, as before.
+            inner: hearken::bindings::KeyBindings::from_parts(keys, pad),
+            touch: touch::parse_touch(&settings.touch_bindings),
         }
-        for (id, value) in entries(&settings.pad_bindings) {
-            if let (Some(action), Some(chord)) = (Action::from_id(id), PadChord::parse(value)) {
-                if action.on_pad() {
-                    out.pad.insert(action, chord);
-                }
-            }
-        }
-        out.touch = touch::parse_touch(&settings.touch_bindings);
-        out
     }
 
     /// Write the moved controls back into `settings`.
     pub fn store(&self, settings: &mut Settings) {
-        let mut keys: Vec<String> = Vec::new();
-        let mut pad: Vec<String> = Vec::new();
-        for action in Action::all() {
-            if let Some(saved) = self.keys.get(&action).and_then(Chord::saved) {
-                keys.push(format!("{}={saved}", action.id()));
-            }
-            if let Some(chord) = self.pad.get(&action) {
-                pad.push(format!("{}={}", action.id(), chord.saved()));
-            }
-        }
+        let keys: Vec<String> = self
+            .inner
+            .moved_keys()
+            .filter_map(|(action, chord)| Some(format!("{}={}", action.id(), chord.saved()?)))
+            .collect();
+        let pad: Vec<String> = self
+            .inner
+            .moved_pad()
+            .map(|(action, chord)| format!("{}={}", action.id(), chord.saved()))
+            .collect();
         settings.key_bindings = keys.join(";");
         settings.pad_bindings = pad.join(";");
         settings.touch_bindings = touch::saved_touch(&self.touch);
@@ -860,21 +758,20 @@ impl KeyBindings {
 
     /// True when nothing has been moved from its default.
     pub fn is_default(&self) -> bool {
-        self.keys.is_empty() && self.pad.is_empty() && self.touch.is_empty()
+        self.inner.is_default() && self.touch.is_empty()
     }
 
     pub fn reset(&mut self) {
-        self.keys.clear();
-        self.pad.clear();
+        self.inner.reset();
         self.touch.clear();
     }
 
     pub fn reset_keys(&mut self) {
-        self.keys.clear();
+        self.inner.reset_keys();
     }
 
     pub fn reset_pad(&mut self) {
-        self.pad.clear();
+        self.inner.reset_pad();
     }
 
     // -- keyboard ----------------------------------------------------------------
@@ -885,114 +782,47 @@ impl KeyBindings {
     /// that control: a default added in an update (Straighten on slash) must
     /// never take over a key the player bound before it existed.
     pub fn chords(&self, action: Action) -> Vec<Chord> {
-        match self.keys.get(&action) {
-            Some(chord) => vec![*chord],
-            None => action
-                .default_chords()
-                .iter()
-                .copied()
-                .filter(|chord| !self.keys.values().any(|moved| moved == chord))
-                .collect(),
-        }
+        self.inner.chords(action)
     }
 
     /// The control's name for a spoken prompt, first chord only.
     pub fn spoken(&self, action: Action) -> String {
-        self.chords(action)
-            .first()
-            .map(Chord::spoken)
-            .unwrap_or_else(|| action.label().to_string())
+        self.inner.spoken(action)
     }
 
     /// The action a key press means: the exact chord if one is bound, else
     /// the bare key's action.
     pub fn action_for(&self, key: Key, mods: Mods) -> Option<Action> {
-        self.exact_action(&Chord { key, mods }).or_else(|| {
-            if mods == Mods::NONE {
-                None
-            } else {
-                self.exact_action(&Chord::plain(key))
-            }
-        })
-    }
-
-    fn exact_action(&self, chord: &Chord) -> Option<Action> {
-        Action::all().find(|action| self.chords(*action).contains(chord))
+        self.inner.action_for(key, mods)
     }
 
     /// Whether `action`'s key is down right now, modifiers included.
     pub fn pressed(&self, input: &HeldKeys, action: Action) -> bool {
-        let held = input.mods();
-        self.chords(action).iter().any(|chord| {
-            input.is_pressed(chord.key)
-                && (!chord.mods.shift || held.shift)
-                && (!chord.mods.ctrl || held.ctrl)
-                && (!chord.mods.alt || held.alt)
-        })
+        self.inner.pressed(input, action)
     }
 
     /// Move `action` to `chord`.
     pub fn set_chord(&mut self, action: Action, chord: Chord) -> Rebind {
-        if let Some(reason) = reserved_key_reason(&chord) {
-            return Rebind::Reserved(reason);
-        }
-        if self.chords(action).contains(&chord) {
-            return Rebind::Unchanged;
-        }
-        if let Some(other) = self.exact_action(&chord) {
-            return Rebind::Taken(other);
-        }
-        if action.default_chords() == [chord] {
-            self.keys.remove(&action);
-        } else {
-            self.keys.insert(action, chord);
-        }
-        Rebind::Done
+        self.inner.set_chord(action, chord)
     }
 
     // -- pad ---------------------------------------------------------------------
 
     /// Same rule as [`Self::chords`]: a player's binding outranks a default.
     pub fn pad_chords(&self, action: Action) -> Vec<PadChord> {
-        match self.pad.get(&action) {
-            Some(chord) => vec![*chord],
-            None => action
-                .default_pad_chords()
-                .iter()
-                .copied()
-                .filter(|chord| !self.pad.values().any(|moved| moved == chord))
-                .collect(),
-        }
+        self.inner.pad_chords(action)
     }
 
     pub fn pad_spoken(&self, action: Action) -> String {
-        self.pad_chords(action)
-            .first()
-            .map(PadChord::spoken)
-            .unwrap_or_else(|| action.label().to_string())
+        self.inner.pad_spoken(action)
     }
 
     pub fn pad_action_for(&self, button: ControllerButton, modified: bool) -> Option<Action> {
-        let chord = PadChord { button, modified };
-        Action::all().find(|action| self.pad_chords(*action).contains(&chord))
+        self.inner.pad_action_for(button, modified)
     }
 
     pub fn set_pad_chord(&mut self, action: Action, chord: PadChord) -> Rebind {
-        if let Some(reason) = reserved_pad_reason(&chord) {
-            return Rebind::Reserved(reason);
-        }
-        if self.pad_chords(action).contains(&chord) {
-            return Rebind::Unchanged;
-        }
-        if let Some(other) = self.pad_action_for(chord.button, chord.modified) {
-            return Rebind::Taken(other);
-        }
-        if action.default_pad_chords() == [chord] {
-            self.pad.remove(&action);
-        } else {
-            self.pad.insert(action, chord);
-        }
-        Rebind::Done
+        self.inner.set_pad_chord(action, chord)
     }
 
     // -- spoken hints -------------------------------------------------------------
@@ -1017,7 +847,7 @@ impl KeyBindings {
     /// buttons") until one of the pair moves.
     pub fn hint_pad_phrase(&self, hint: &str) -> Option<String> {
         let pair = |a: Action, b: Action, joiner: &str| {
-            if self.pad.contains_key(&a) || self.pad.contains_key(&b) {
+            if self.inner.pad_override(a).is_some() || self.inner.pad_override(b).is_some() {
                 Some(format!(
                     "{} {joiner} {}",
                     self.pad_spoken(a),
@@ -1250,5 +1080,158 @@ mod tests {
         assert_eq!(b.hint_key_phrase("engine").as_deref(), Some("Z"));
         b.set_pad_chord(Action::Engine, PadChord::plain(ControllerButton::Paddle2));
         assert_eq!(b.hint_pad_phrase("engine").as_deref(), Some("paddle 2"));
+    }
+
+    /// Saved strings as today's builds write them (every field in
+    /// `Action::all` order, `;` between entries), read back and written out
+    /// byte for byte.
+    #[test]
+    fn todays_saved_strings_round_trip_byte_for_byte() {
+        let key_bindings = "accelerate=f5;straighten=ctrl+alt+s;engine=alt+z;\
+                            horn=slash;cruise_resume=shift+backspace;\
+                            copy_last_spoken=ctrl+shift+v;place_state=alt+kp_9;\
+                            radio_now_playing=f12";
+        let pad_bindings = "engine=paddle_3;horn=mod+paddle_1;status=mod+back;\
+                            route=mod+touchpad;radio_tune_next=paddle_2;\
+                            radio_volume_up=mod+rstick_up;radio_category_prev=rstick_down";
+        let settings = Settings {
+            key_bindings: key_bindings.to_string(),
+            pad_bindings: pad_bindings.to_string(),
+            ..Settings::default()
+        };
+        let b = KeyBindings::from_settings(&settings);
+        let mut out = Settings::default();
+        b.store(&mut out);
+        assert_eq!(out.key_bindings, key_bindings);
+        assert_eq!(out.pad_bindings, pad_bindings);
+        assert_eq!(out.touch_bindings, settings.touch_bindings);
+        assert_eq!(
+            b.pad_action_for(ControllerButton::RightStickDown, false),
+            Some(Action::RadioCategoryPrev)
+        );
+        assert_eq!(b.action_for(Key::Slash, Mods::NONE), Some(Action::Horn));
+        assert!(b
+            .chords(Action::Straighten)
+            .iter()
+            .all(|c| c.key != Key::Slash));
+    }
+
+    /// A saved move onto a key that became reserved later (or a hand-edited
+    /// one) is kept, as it always was: only the rebinding screen refuses
+    /// reserved keys. Moves for a control the device lacks are dropped.
+    #[test]
+    fn a_saved_move_onto_a_reserved_key_is_kept_and_one_off_the_device_dropped() {
+        let settings = Settings {
+            key_bindings: "horn=comma;cruise_up=f6".to_string(),
+            pad_bindings: "horn=start;lane=paddle_1".to_string(),
+            ..Settings::default()
+        };
+        let b = KeyBindings::from_settings(&settings);
+        assert_eq!(b.action_for(Key::Comma, Mods::NONE), Some(Action::Horn));
+        assert_eq!(
+            b.pad_action_for(ControllerButton::Start, false),
+            Some(Action::Horn)
+        );
+        let mut out = Settings::default();
+        b.store(&mut out);
+        assert_eq!(out.key_bindings, "horn=comma");
+        assert_eq!(out.pad_bindings, "horn=start");
+    }
+
+    #[test]
+    fn every_reserved_reason_reads_as_it_always_has() {
+        let mut b = KeyBindings::default();
+        for (chord, reason) in [
+            (Chord::plain(Key::Escape), "Escape is the pause menu"),
+            (Chord::shift(Key::Escape), "Escape is the pause menu"),
+            (Chord::plain(Key::Return), "Enter confirms"),
+            (Chord::plain(Key::KpEnter), "Enter confirms"),
+            (Chord::plain(Key::F1), "F1 is help"),
+            (Chord::plain(Key::F2), "F2 lists the driving commands"),
+            (Chord::alt(Key::F2), "F2 lists the driving commands"),
+            (
+                Chord::plain(Key::LShift),
+                "a modifier key on its own cannot be a shortcut",
+            ),
+            (
+                Chord::plain(Key::Equals),
+                "plus and minus set the cruise target",
+            ),
+            (Chord::plain(Key::PageUp), "the radio dial keys are fixed"),
+            (
+                Chord::plain(Key::Comma),
+                "the message review keys are fixed",
+            ),
+            (Chord::plain(Key::Other(7)), "that key cannot be used"),
+            (
+                Chord {
+                    key: Key::C,
+                    mods: Mods::CTRL,
+                },
+                "Control C copies the message in review",
+            ),
+        ] {
+            assert_eq!(
+                b.set_chord(Action::Horn, chord),
+                Rebind::Reserved(reason),
+                "{chord:?}"
+            );
+        }
+        // Enter and the review keys are only kept bare.
+        assert_eq!(
+            b.set_chord(Action::Horn, Chord::alt(Key::Return)),
+            Rebind::Done
+        );
+        assert_eq!(
+            b.set_chord(Action::Horn, Chord::alt(Key::Comma)),
+            Rebind::Done
+        );
+        for (chord, reason) in [
+            (
+                PadChord::plain(ControllerButton::LeftShoulder),
+                "the left bumper is the clutch",
+            ),
+            (
+                PadChord::modified(ControllerButton::RightShoulder),
+                "the right bumper is the second layer",
+            ),
+            (
+                PadChord::plain(ControllerButton::Guide),
+                "the guide button belongs to the system",
+            ),
+            (PadChord::plain(ControllerButton::Start), "Start is pause"),
+            (
+                PadChord::plain(ControllerButton::Back),
+                "Back stops the driving voice and reads help",
+            ),
+        ] {
+            assert_eq!(
+                b.set_pad_chord(Action::Horn, chord),
+                Rebind::Reserved(reason),
+                "{chord:?}"
+            );
+        }
+        // Start and Back are free on the second layer (they are Status's and
+        // the radio's there by default).
+        assert_eq!(
+            b.set_pad_chord(Action::Horn, PadChord::modified(ControllerButton::Start)),
+            Rebind::Taken(Action::Status)
+        );
+        assert_eq!(
+            b.set_pad_chord(Action::Horn, PadChord::modified(ControllerButton::Back)),
+            Rebind::Taken(Action::RadioNowPlaying)
+        );
+        b.reset();
+        assert_eq!(
+            b.set_pad_chord(
+                Action::Status,
+                PadChord::modified(ControllerButton::Paddle4)
+            ),
+            Rebind::Done
+        );
+        assert_eq!(
+            b.set_pad_chord(Action::Horn, PadChord::modified(ControllerButton::Start)),
+            Rebind::Done
+        );
     }
 }

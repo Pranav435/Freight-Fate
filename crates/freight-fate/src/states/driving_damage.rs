@@ -45,6 +45,7 @@
 //! business statuses part company, and they part sharply -- see
 //! [`DrivingState::recover_out_of_service`].
 
+use crate::speech::EventPriority;
 use ff_core::achievements::increment_stat;
 use ff_core::models::business::player_pays_operating_costs;
 use ff_core::models::cargo_condition::{
@@ -56,7 +57,7 @@ use ff_core::pyfmt::fmt_grouped;
 use ff_core::settings::Settings;
 use ff_core::sim::trip_models::FACILITY_GATE_ZONE_MI;
 use ff_core::sim::vehicle::{TruckState, COMPONENT_SERVICE_LIMIT_PCT};
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
@@ -586,7 +587,7 @@ impl DrivingState {
         ctx.say_event_with(
             message,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Status),
         );
     }

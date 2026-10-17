@@ -144,8 +144,7 @@ uv run python tools/build_ios.py --device \
 ```
 
 The script builds the Rust game for the iOS target, bakes the world data,
-downloads and verifies the BASS iOS frameworks (never committed), stages the
-sound and music packs, writes `Info.plist`, and signs `build/ios/<sdk>/FreightFate.app`.
+stages the sound and music packs, writes `Info.plist`, and signs `build/ios/<sdk>/FreightFate.app`.
 
 Prism compiles its VoiceOver/AVSpeech backend from source for iOS; the
 `freight-fate` build script links the UIKit, AVFoundation and GameController
@@ -166,7 +165,10 @@ frameworks it and SDL2 need, plus clang's iOS runtime for `@available` checks.
   on the three-finger tap command list when no gesture runs it. Pressing a
   key on a hardware keyboard, or a controller button, switches them back to
   key or button names until the screen is touched again.
-- The Simulator has no BASS audio device, so only speech is heard there.
+- Game audio in the Simulator has not been checked since Hearken replaced
+  BASS (which had no Simulator device); speech is heard there. Neither the
+  game nor Hearken sets an `AVAudioSession` category yet, so on a device
+  the ring/silent switch may mute game sound until one is set (Playback).
 
 ## Manual VoiceOver test checklist
 

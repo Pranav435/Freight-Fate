@@ -1,12 +1,23 @@
-use super::*;
+//! `impl AudioBackend for HearkenBackend`: delegation to the inherent
+//! methods.
 
-impl AudioBackend for BassBackend {
+use std::any::Any;
+
+use super::super::backend::{AudioBackend, Buses, VolumeUpdate};
+use super::super::{AudioError, SustainLoopSpec};
+use super::HearkenBackend;
+
+impl AudioBackend for HearkenBackend {
     fn name(&self) -> &'static str {
-        "bass"
+        "hearken"
     }
 
     fn enabled(&self) -> bool {
         self.enabled
+    }
+
+    fn take_device_notice(&mut self) -> bool {
+        HearkenBackend::take_device_notice(self)
     }
 
     fn buses(&self) -> &Buses {
@@ -26,53 +37,39 @@ impl AudioBackend for BassBackend {
     }
 
     fn play_if_idle(&mut self, key: &str, volume: f64, pan: f64) {
-        BassBackend::play_if_idle(self, key, volume, pan);
+        HearkenBackend::play_if_idle(self, key, volume, pan);
     }
 
     fn update_cue(&mut self, key: &str, volume: f64, pan: f64) {
-        if let Some(stream) = self.exclusive_cues.get(key) {
-            let level =
-                (volume * self.buses.category_volume(one_shot_category(key)) * self.buses.master)
-                    .clamp(0.0, 1.0);
-            let result = set_volume(stream.handle(), level).and_then(|()| {
-                safe::channel_set_attribute(
-                    stream.handle(),
-                    BASS_ATTRIB_PAN,
-                    pan.clamp(-1.0, 1.0) as f32,
-                )
-            });
-            if let Err(err) = result {
-                log::debug!("Could not update cue {key} ({err})");
-            }
-        }
+        HearkenBackend::update_cue(self, key, volume, pan);
     }
 
     fn stop_cue(&mut self, key: &str) {
-        self.exclusive_cues.remove(key);
+        HearkenBackend::stop_cue(self, key);
     }
 
     fn play(&mut self, key: &str, volume: f64, pan: f64) {
-        BassBackend::play(self, key, volume, pan);
+        HearkenBackend::play(self, key, volume, pan);
     }
 
     fn start_loop(&mut self, channel: u32, key: &str, volume: f64, fade_ms: u32) {
-        BassBackend::start_loop(self, channel, key, volume, fade_ms);
+        HearkenBackend::start_loop(self, channel, key, volume, fade_ms);
     }
 
     fn set_loop_volume(&mut self, channel: u32, volume: f64) {
-        BassBackend::set_loop_volume(self, channel, volume);
+        HearkenBackend::set_loop_volume(self, channel, volume);
     }
 
     fn set_loop_pan(&mut self, channel: u32, pan: f64) {
-        BassBackend::set_loop_pan(self, channel, pan);
+        HearkenBackend::set_loop_pan(self, channel, pan);
     }
 
     fn set_loop_rate(&mut self, channel: u32, rate: f64) {
-        BassBackend::set_loop_rate(self, channel, rate);
+        HearkenBackend::set_loop_rate(self, channel, rate);
     }
 
     fn stop_loop(&mut self, channel: u32, fade_ms: u32) {
-        BassBackend::stop_loop(self, channel, fade_ms);
+        HearkenBackend::stop_loop(self, channel, fade_ms);
     }
 
     fn loop_entry(&self, channel: u32) -> Option<(String, f64)> {
@@ -82,47 +79,47 @@ impl AudioBackend for BassBackend {
     }
 
     fn start_sustain_loop(&mut self, channel: u32, key: &str, spec: SustainLoopSpec, volume: f64) {
-        BassBackend::start_sustain_loop(self, channel, key, spec, volume);
+        HearkenBackend::start_sustain_loop(self, channel, key, spec, volume);
     }
 
     fn release_sustain_loop(&mut self, channel: u32, fade_ms: u32) {
-        BassBackend::release_sustain_loop(self, channel, fade_ms);
+        HearkenBackend::release_sustain_loop(self, channel, fade_ms);
     }
 
     fn engine_start(&mut self, play_start_sound: bool) {
-        BassBackend::engine_start(self, play_start_sound);
+        HearkenBackend::engine_start(self, play_start_sound);
     }
 
     fn engine_stop(&mut self, shutdown_sound: bool) {
-        BassBackend::engine_stop(self, shutdown_sound);
+        HearkenBackend::engine_stop(self, shutdown_sound);
     }
 
     fn set_engine_pan(&mut self, pan: f64) {
-        BassBackend::set_engine_pan(self, pan);
+        HearkenBackend::set_engine_pan(self, pan);
     }
 
     fn set_engine_rpm(&mut self, rpm: f64, throttle: f64) {
-        BassBackend::set_engine_rpm(self, rpm, throttle);
+        HearkenBackend::set_engine_rpm(self, rpm, throttle);
     }
 
     fn set_engine_duck(&mut self, duck: f64) {
-        BassBackend::set_engine_duck(self, duck);
+        HearkenBackend::set_engine_duck(self, duck);
     }
 
     fn set_road_noise(&mut self, speed_mps: f64) {
-        BassBackend::set_road_noise(self, speed_mps);
+        HearkenBackend::set_road_noise(self, speed_mps);
     }
 
     fn update(&mut self, dt: f64) {
-        BassBackend::update(self, dt);
+        HearkenBackend::update(self, dt);
     }
 
     fn reverse_start(&mut self) {
-        BassBackend::reverse_start(self);
+        HearkenBackend::reverse_start(self);
     }
 
     fn reverse_stop(&mut self) {
-        BassBackend::reverse_stop(self);
+        HearkenBackend::reverse_stop(self);
     }
 
     fn engine_running(&self) -> bool {
@@ -146,42 +143,42 @@ impl AudioBackend for BassBackend {
     }
 
     fn play_music(&mut self, track: &str, fade_ms: u32) {
-        BassBackend::play_music(self, track, fade_ms);
+        HearkenBackend::play_music(self, track, fade_ms);
     }
 
     fn play_music_at(&mut self, track: &str, fade_ms: u32, start_s: f64) {
-        BassBackend::play_music_at(self, track, fade_ms, start_s);
-    }
-
-    fn play_radio_stream(&mut self, url: &str, fade_ms: u32) -> Result<(), AudioError> {
-        BassBackend::play_radio_stream(self, url, fade_ms)
-    }
-
-    fn radio_now_playing(&self) -> Option<String> {
-        BassBackend::radio_now_playing(self)
+        HearkenBackend::play_music_at(self, track, fade_ms, start_s);
     }
 
     fn play_music_file(&mut self, path: &str, fade_ms: u32) -> Result<(), AudioError> {
-        BassBackend::play_music_file(self, path, fade_ms)
+        HearkenBackend::play_music_file(self, path, fade_ms)
+    }
+
+    fn play_radio_stream(&mut self, url: &str, fade_ms: u32) -> Result<(), AudioError> {
+        HearkenBackend::play_radio_stream(self, url, fade_ms)
+    }
+
+    fn radio_now_playing(&self) -> Option<String> {
+        HearkenBackend::radio_now_playing(self)
     }
 
     fn music_playing(&self) -> bool {
-        BassBackend::music_playing(self)
+        HearkenBackend::music_playing(self)
     }
 
     fn music_length_s(&self) -> Option<f64> {
-        BassBackend::music_length_s(self)
+        HearkenBackend::music_length_s(self)
     }
 
     fn stop_music(&mut self, fade_ms: u32) {
-        BassBackend::stop_music(self, fade_ms);
+        HearkenBackend::stop_music(self, fade_ms);
     }
 
     fn set_volumes(&mut self, volumes: &VolumeUpdate) {
-        BassBackend::set_volumes(self, volumes);
+        HearkenBackend::set_volumes(self, volumes);
     }
 
     fn shutdown(&mut self) {
-        BassBackend::shutdown(self);
+        HearkenBackend::shutdown(self);
     }
 }

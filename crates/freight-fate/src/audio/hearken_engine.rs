@@ -1,14 +1,16 @@
-//! The BASS backend's truck engine: the multisample ring with per-band rate
-//! tracking, the legacy single pitched loop, the ignition crossfade, and
-//! the per-frame `update`.
+//! The Hearken backend's truck engine: the multisample ring with per-band
+//! rate tracking, the legacy single pitched loop, the ignition crossfade,
+//! and the per-frame `update` -- ported line for line from the BASS
+//! backend it replaced, with a playback rate where BASS slid a frequency.
 
 use std::rc::Rc;
 
-use bass_sys::safe;
-use bass_sys::{BASS_ATTRIB_FREQ, BASS_ATTRIB_PAN};
 use ff_core::audio_fades::{curve, Fade};
+use hearken::audio::Start;
 
-use super::bass::{get_frequency, set_volume, slide, BassBackend, EngineBand};
+use super::assets::asset_length_s;
+use super::backend::Category;
+use super::hearken_backend::{bus_of, level, EngineBand, HearkenBackend};
 use super::{
     advance_engine_wobble, engine_band_weights, engine_freq_mult, engine_load_gain, ENGINE_BANDS,
     ENGINE_BAND_RATE_MAX, ENGINE_BAND_RATE_MIN, ENGINE_CLASSIC_LOOP_KEY, ENGINE_LOOP_GAIN,
@@ -18,9 +20,9 @@ use super::{
     ENGINE_START_SETTLE_S, ENGINE_START_TAIL_ANCHOR,
 };
 
-impl BassBackend {
+impl HearkenBackend {
     /// A fade that drives the engine loop's intro gain (0 = silent under the
-    /// crank, 1 = full), presenting `start` at once as the Python `Fade` did.
+    /// crank, 1 = full), presenting `start` at once.
     fn intro_gain_fade(
         &self,
         start: f64,
@@ -48,14 +50,20 @@ impl BassBackend {
         )
     }
 
+    /// One engine loop, silent, at the engine's pan.
+    fn start_engine_loop(&mut self, key: &str) -> Option<hearken::audio::Sound> {
+        let start = Start::LOOP.volume(0.0).pan(self.engine_pan as f32);
+        self.start_sfx(key, bus_of(Category::Engine), start)
+    }
+
     pub(super) fn engine_start(&mut self, play_start_sound: bool) {
         if self.engine_running {
             return;
         }
         self.engine_running = true;
         self.fades.clear();
-        // Hold the loop silent while the ignition one-shot plays; crossfade it
-        // up at the tail. A silent (resume) start skips the crank.
+        // Hold the loop silent while the ignition one-shot plays; crossfade
+        // it up at the tail. A silent (resume) start skips the crank.
         self.engine_intro_gain.set(0.0);
         self.engine_intro_load.set(0.0);
         if play_start_sound {
@@ -75,106 +83,75 @@ impl BassBackend {
         self.engine_wobble.clear();
         if !self.engine_voice_classic {
             for (key, native) in ENGINE_BANDS {
-                let Some(stream) = self.sfx_stream(key, true) else {
-                    continue;
-                };
-                let handle = stream.handle();
-                let started = get_frequency(handle).and_then(|base_freq| {
-                    safe::channel_set_attribute(handle, BASS_ATTRIB_PAN, self.engine_pan as f32)?;
-                    set_volume(handle, 0.0)?;
-                    safe::channel_play(handle, false)?;
-                    Ok(base_freq)
-                });
-                let Ok(base_freq) = started else {
+                let Some(sound) = self.start_engine_loop(key) else {
                     continue;
                 };
                 self.engine_bands.push(EngineBand {
                     native,
-                    stream,
-                    base_freq,
-                    last_rate_target: base_freq,
+                    sound,
+                    last_rate: 1.0,
                     last_volume: 0.0,
                 });
                 self.engine_wobble.push([0.0, 0.0]); // [rate walk, gain walk]
             }
         }
         if self.engine_bands.len() < 2 {
-            // Not enough cuts for a crossfade ring (a clean clone carries only
-            // the synthesized engine/idle): legacy single pitched loop.
+            // Not enough cuts for a crossfade ring (a clean clone carries
+            // only the synthesized engine/idle): legacy single pitched loop.
             for band in self.engine_bands.drain(..) {
-                let _ = safe::channel_stop(band.stream.handle());
-                // Dropped here: the stream is freed.
+                self.audio.stop(band.sound, 0);
             }
-            let mut stream = None;
+            let mut sound = None;
             if self.engine_voice_classic {
-                stream = self.sfx_stream(ENGINE_CLASSIC_LOOP_KEY, true);
-                if stream.is_none() {
+                sound = self.start_engine_loop(ENGINE_CLASSIC_LOOP_KEY);
+                if sound.is_none() {
                     log::warn!(
                         "Classic engine cut {ENGINE_CLASSIC_LOOP_KEY} is not in this build; using {ENGINE_LOOP_KEY} pitched instead"
                     );
                 }
             }
-            if stream.is_none() {
-                stream = self.sfx_stream(ENGINE_LOOP_KEY, true);
+            if sound.is_none() {
+                sound = self.start_engine_loop(ENGINE_LOOP_KEY);
             }
-            if let Some(loop_stream) = &stream {
-                let handle = loop_stream.handle();
-                match get_frequency(handle).and_then(|base_freq| {
-                    safe::channel_set_attribute(handle, BASS_ATTRIB_PAN, self.engine_pan as f32)?;
-                    set_volume(handle, 0.0)?;
-                    safe::channel_play(handle, false)?;
-                    Ok(base_freq)
-                }) {
-                    Ok(base_freq) => self.engine_base_freq = base_freq,
-                    Err(_) => stream = None,
-                }
-            }
-            self.engine_stream = stream;
+            self.engine_sound = sound;
         }
         self.set_engine_rpm(ENGINE_RPM_IDLE, 0.0);
     }
 
-    /// Play `engine/start` at full volume and blend into the loop at its tail.
+    /// Play `engine/start` at full volume and blend into the loop at its
+    /// tail.
     fn begin_engine_start_crossfade(&mut self) {
         self.engine_starting.set(true);
-        let Some(stream) = self.sfx_stream("engine/start", false) else {
-            // No crank available: bring the loop up promptly so the engine is
-            // still audible.
+        let base = level(&self.buses, Category::Engine, 1.0);
+        let start = Start::ONCE.volume(base);
+        let Some(sound) = self.start_sfx("engine/start", bus_of(Category::Engine), start) else {
+            // No crank available: bring the loop up promptly so the engine
+            // is still audible.
             let fade = self.intro_gain_fade(0.0, 1.0, ENGINE_RESUME_FADE_S, "linear", 0.0, true);
             self.fades.add(fade);
             return;
         };
-        let handle = stream.handle();
-        let base = (self.buses.category_volume(super::backend::Category::Engine)
-            * self.buses.master)
-            .clamp(0.0, 1.0);
-        if let Err(err) = set_volume(handle, base).and_then(|()| safe::channel_play(handle, false))
-        {
-            log::warn!("Could not play engine/start ({err})");
-            let fade = self.intro_gain_fade(0.0, 1.0, ENGINE_RESUME_FADE_S, "linear", 0.0, true);
-            self.fades.add(fade);
-            return;
-        }
-        self.retain(stream);
-        self.engine_intro_stream = Some(handle);
-        let clip_len = Self::stream_length_s(handle);
+        self.engine_intro_sound = Some(sound);
+        self.crank_base = base;
+        self.crank_gain.set(1.0);
+        self.crank_applied = 1.0;
+        let clip_len = self.crank_length_s(sound);
         let delay = if ENGINE_START_TAIL_ANCHOR {
             (clip_len - ENGINE_START_CROSSFADE_S).max(0.0)
         } else {
             0.0
         };
-        // Boost the loop to full (crank) load through the handoff so it meets
-        // the crank tail at the same level instead of the quieter off-throttle
-        // idle.
+        // Boost the loop to full (crank) load through the handoff so it
+        // meets the crank tail at the same level instead of the quieter
+        // off-throttle idle.
         self.engine_intro_load.set(1.0);
 
-        // The crank itself: a dying stream ignores the slide, like the Python
-        // `contextlib.suppress(BassError)`.
-        let fade_crank = move |m: f64| {
-            let _ = set_volume(handle, base * m);
-        };
+        // The crank itself: the fade writes the multiplier and `update`
+        // applies it, since a closure cannot borrow the pool it lives
+        // beside.
+        let crank = Rc::clone(&self.crank_gain);
         self.fades.add(Fade::with_options(
-            fade_crank,
+            move |m| crank.set(m),
             1.0,
             0.0,
             ENGINE_START_CROSSFADE_S,
@@ -205,23 +182,40 @@ impl BassBackend {
         ));
     }
 
-    /// Length of a stream in seconds, or a safe fallback.
-    pub(super) fn stream_length_s(handle: u32) -> f64 {
-        safe::channel_length_seconds(handle).unwrap_or(ENGINE_START_ASSUMED_LEN_S)
+    /// The crank's length: what the output decoded, else the clip's own
+    /// headers, else a safe fallback.
+    fn crank_length_s(&mut self, sound: hearken::audio::Sound) -> f64 {
+        self.audio
+            .length_s(sound)
+            .filter(|s| *s > 0.0)
+            .or_else(|| Some(asset_length_s("engine/start")).filter(|s| *s > 0.0))
+            .unwrap_or(ENGINE_START_ASSUMED_LEN_S)
     }
 
     pub(super) fn update(&mut self, dt: f64) {
+        // First, so `is_playing` and every handle below answer for this
+        // frame.
+        self.audio.update(&|_| false);
+        self.follow_open();
         self.collect_radio_stream();
         self.fades.update(dt);
-        // The ignition fades moved the intro gain or load boost: re-apply the
-        // engine level at the last known rpm, as the Python fade callbacks
-        // did on every tick.
+        let crank = self.crank_gain.get();
+        if crank != self.crank_applied {
+            self.crank_applied = crank;
+            if let Some(sound) = self.engine_intro_sound {
+                // A dying sound ignores it, like BASS's suppressed error.
+                let volume = self.crank_base * crank as f32;
+                self.audio.set_volume_over(sound, volume, 0);
+            }
+        }
+        // The ignition fades moved the intro gain or load boost: re-apply
+        // the engine level at the last known rpm.
         let intro = (self.engine_intro_gain.get(), self.engine_intro_load.get());
         if self.engine_running && intro != self.intro_applied {
             self.set_engine_rpm(self.engine_last_rpm, self.engine_last_throttle);
         }
-        // Advance the per-band anti-repetition walks; set_engine_rpm applies
-        // them.
+        // Advance the per-band anti-repetition walks; set_engine_rpm
+        // applies them.
         advance_engine_wobble(&mut self.engine_wobble, dt, &mut self.wobble_rng);
     }
 
@@ -235,14 +229,15 @@ impl BassBackend {
         self.engine_intro_gain.set(1.0);
         self.engine_intro_load.set(0.0);
         self.engine_starting.set(false);
-        self.engine_intro_stream = None;
-        let bands = std::mem::take(&mut self.engine_bands);
-        for band in bands {
-            self.fade_out(band.stream, 250);
+        self.engine_intro_sound = None;
+        self.crank_gain.set(1.0);
+        self.crank_applied = 1.0;
+        for band in std::mem::take(&mut self.engine_bands) {
+            self.audio.stop(band.sound, 250);
         }
         self.engine_wobble.clear();
-        if let Some(stream) = self.engine_stream.take() {
-            self.fade_out(stream, 250);
+        if let Some(sound) = self.engine_sound.take() {
+            self.audio.stop(sound, 250);
         }
         if shutdown_sound {
             self.play("engine/shutdown", 1.0, 0.0);
@@ -252,14 +247,14 @@ impl BassBackend {
     /// Update only pan; retain it across stops and voice changes.
     pub(super) fn set_engine_pan(&mut self, pan: f64) {
         self.engine_pan = pan.clamp(-1.0, 1.0);
-        for handle in self
+        let sounds: Vec<_> = self
             .engine_bands
             .iter()
-            .map(|band| band.stream.handle())
-            .chain(self.engine_stream.as_ref().map(|stream| stream.handle()))
-        {
-            // Match loop panning: a dying stream must not interrupt the drive.
-            let _ = safe::channel_set_attribute(handle, BASS_ATTRIB_PAN, self.engine_pan as f32);
+            .map(|band| band.sound)
+            .chain(self.engine_sound)
+            .collect();
+        for sound in sounds {
+            self.audio.set_pan_over(sound, self.engine_pan as f32, 0);
         }
     }
 
@@ -269,7 +264,7 @@ impl BassBackend {
     /// `rpm / native_rpm` (clamped) so the pitch is continuous through a
     /// crossfade instead of stepping between the cuts' recorded speeds.
     pub(super) fn set_engine_rpm(&mut self, rpm: f64, throttle: f64) {
-        if !(self.engine_running && (!self.engine_bands.is_empty() || self.engine_stream.is_some()))
+        if !(self.engine_running && (!self.engine_bands.is_empty() || self.engine_sound.is_some()))
         {
             return;
         }
@@ -301,22 +296,19 @@ impl BassBackend {
             let weights = engine_band_weights(rpm, &natives);
             let mut failed = false;
             for (i, band) in self.engine_bands.iter_mut().enumerate() {
+                if !self.audio.is_playing(band.sound) {
+                    failed = true;
+                    break;
+                }
                 let w = weights[i];
                 let wob = self.engine_wobble.get(i).copied().unwrap_or([0.0, 0.0]);
                 let mut rate =
                     (rpm / band.native).clamp(ENGINE_BAND_RATE_MIN, ENGINE_BAND_RATE_MAX);
                 rate *= 1.0 + wob[0];
-                let handle = band.stream.handle();
-                let target = band.base_freq * rate;
                 let volume = level * w * (1.0 + wob[1]);
-                if slide(handle, BASS_ATTRIB_FREQ, target, slide_ms)
-                    .and_then(|()| set_volume(handle, volume))
-                    .is_err()
-                {
-                    failed = true;
-                    break;
-                }
-                band.last_rate_target = target;
+                self.audio.set_pitch_over(band.sound, rate as f32, slide_ms);
+                self.audio.set_volume_over(band.sound, volume as f32, 0);
+                band.last_rate = rate;
                 band.last_volume = volume;
             }
             if failed {
@@ -324,17 +316,16 @@ impl BassBackend {
             }
             return;
         }
-        let Some(stream) = &self.engine_stream else {
+        let Some(sound) = self.engine_sound else {
             return;
         };
-        let handle = stream.handle();
-        let target = self.engine_base_freq * engine_freq_mult(rpm);
-        if slide(handle, BASS_ATTRIB_FREQ, target, slide_ms)
-            .and_then(|()| set_volume(handle, level))
-            .is_err()
-        {
-            self.engine_stream = None;
+        if !self.audio.is_playing(sound) {
+            self.engine_sound = None;
+            return;
         }
+        self.audio
+            .set_pitch_over(sound, engine_freq_mult(rpm) as f32, slide_ms);
+        self.audio.set_volume_over(sound, level as f32, 0);
     }
 
     /// Shift-gap disengage: scale the engine bed below the load floor.

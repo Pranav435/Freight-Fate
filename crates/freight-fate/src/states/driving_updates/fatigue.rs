@@ -1,7 +1,8 @@
 //! Hours of service, fatigue, and the microsleeps severe fatigue brings on.
 
+use crate::speech::EventPriority;
 use ff_core::models::enforcement;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 
 use crate::app::{GameContext, SayEvent};
 use crate::bindings::Action;
@@ -36,7 +37,7 @@ impl DrivingState {
                     .priority(if urgent {
                         EventPriority::Critical
                     } else {
-                        EventPriority::Route
+                        EventPriority::Important
                     })
                     .category(if urgent {
                         SpeechCategory::Safety
@@ -110,7 +111,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Getting drowsy.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Safety),
             );
         }
@@ -231,7 +232,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "You caught it.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         }

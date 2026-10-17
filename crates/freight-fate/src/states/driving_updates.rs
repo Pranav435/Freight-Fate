@@ -54,8 +54,6 @@ pub mod stops;
 
 use std::cell::Cell;
 
-use ff_core::speech_pacing::{EventPriority, EventSpeechPacer};
-
 /// `LIMIT_DROP_SPEECH_LATENCY_S`.
 ///
 /// The zone-entry line rides ROUTE now (queued, willing to wait this long
@@ -64,7 +62,7 @@ use ff_core::speech_pacing::{EventPriority, EventSpeechPacer};
 /// has told the driver anything, and speech latency must never masquerade as
 /// defiance (the research doc's coupled invariant on the R1 demotion).
 pub fn limit_drop_speech_latency_s() -> f64 {
-    EventSpeechPacer::wait_budget_s(EventPriority::Route)
+    crate::app::FF_PACER.important_wait_s
 }
 
 /// Spoken word for a lane count, used by the road-narrows call

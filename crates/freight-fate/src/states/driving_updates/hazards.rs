@@ -2,11 +2,12 @@
 //! horn's one real power, the routine speed announcement, and the grade
 //! advisory.
 
+use crate::speech::EventPriority;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::driving_modes::tuning_for_time_scale;
 use ff_core::sim::trip_models::HAZARDS;
 use ff_core::sim::vehicle::BrakeApplication;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::terse_silent;
 
 use crate::app::{GameContext, SayEvent};
@@ -441,7 +442,7 @@ impl DrivingState {
             .trim_end()
             .to_string(),
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Navigation),
         );
     }
@@ -566,7 +567,7 @@ impl DrivingState {
         ctx.say_event_with(
             message,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Confirmation),
         );
         ctx.award_driving_achievement("hazard_avoided");
@@ -635,7 +636,7 @@ impl DrivingState {
             ctx.say_event_with(
                 hint,
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Safety),
             );
         }

@@ -1,12 +1,13 @@
 //! Arriving: the facility gate, the missed destination exit, the dock menu,
 //! and the state's own visible lines and presence.
 
+use crate::speech::EventPriority;
 use ff_core::models::business::player_pays_operating_costs;
 use ff_core::models::trucks::TRUCK_CATALOG;
 use ff_core::pyfmt::{fmt_grouped, round_py_int};
 use ff_core::sim::hos::{clock_text, time_of_day};
 use ff_core::sim::trip_models::Zone;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 
 use crate::app::{GameContext, SayEvent};
 use crate::discord_presence::{driving_presence, PresenceState};
@@ -157,7 +158,7 @@ impl DrivingState {
         // to a stop: nothing act-now left, so it queues on ROUTE's
         // never-dropped contract instead of purging the channel.
         let engine = ctx.control_hint("engine");
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Some(SpeechCategory::Safety);
         ctx.say_event_with(
             format!(
