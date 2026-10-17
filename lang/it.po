@@ -20671,6 +20671,20 @@ msgstr ""
 #. placeholders: {engine_off}
 #. one sentence of a longer line
 msgid ""
+"{engine_off}You sleep poorly on the checkpoint apron, woken again and again "
+"by passing trucks."
+msgstr ""
+
+#. placeholders: {engine_off}, {clock_text}, {wake_air_instruction}
+msgid ""
+"{engine_off}You sleep poorly on the checkpoint apron, woken again and again "
+"by passing trucks. It is {clock_text}. Driving and duty clocks reset, but "
+"you are still tired.{wake_air_instruction}"
+msgstr ""
+
+#. placeholders: {engine_off}
+#. one sentence of a longer line
+msgid ""
 "{engine_off}You sleep poorly on the shoulder, woken again and again by "
 "passing trucks."
 msgstr ""
@@ -25074,6 +25088,23 @@ msgstr ""
 msgid "Take them off once the road is bare."
 msgstr ""
 
+msgid "Wait for the chain law to lift"
+msgstr ""
+
+msgid ""
+"Waits on duty, not driving, half an hour at a time, up to 8 hours or until "
+"your 14-hour window runs out."
+msgstr ""
+
+#. placeholders: {city}
+msgid "Turn back to {city}"
+msgstr ""
+
+msgid ""
+"No chains to put on. Drive back to the last city on the route and wait "
+"there. Waiting here instead lets you go once the chain law lifts."
+msgstr ""
+
 msgid "Drivers on duty"
 msgstr ""
 
@@ -25093,6 +25124,14 @@ msgstr ""
 msgid ""
 "Saves happen only at a stop. The drive resumes from the last stop. Abandon "
 "job drops the load."
+msgstr ""
+
+msgid "Sleep at the checkpoint (10 hours)"
+msgstr ""
+
+msgid ""
+"Poor sleep on the checkpoint apron. Resets hours of service. Fatigue "
+"remains, and the deadline keeps running."
 msgstr ""
 
 msgid "Emergency shoulder sleep"
@@ -27099,6 +27138,23 @@ msgstr ""
 msgid "Continue from the city terminal."
 msgstr ""
 
+msgid "Held at the chain checkpoint."
+msgstr ""
+
+msgid "Sleep at the checkpoint"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Back without sleeping."
+msgstr ""
+
+msgid ""
+"Poor rest on the checkpoint apron. Resets hours of service; the deadline "
+"keeps running."
+msgstr ""
+
 msgid "Cancel and keep looking for a safe stop"
 msgstr ""
 
@@ -27111,6 +27167,21 @@ msgstr ""
 msgid ""
 "Poor rest, possible ticket, possible minor truck damage, and deadline time "
 "lost."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The deadline keeps running."
+msgstr ""
+
+#. placeholders: {reason}
+#. one sentence of a longer line
+msgid "{reason} 10 hours of poor rest, HOS reset if enforced."
+msgstr ""
+
+#. placeholders: {title}, {reason}, {current}
+msgid ""
+"{title}. {reason} 10 hours of poor rest, HOS reset if enforced. The "
+"deadline keeps running. {current}"
 msgstr ""
 
 #. one sentence of a longer line
@@ -27700,15 +27771,29 @@ msgstr ""
 msgid "Rolling into an active chain law without {need}."
 msgstr ""
 
-#. placeholders: {level}
-msgid "No chains under a level {level} chain law"
-msgstr ""
-
 msgid ""
 "You can't go on until your chains are on. Put them on from the pause menu."
 msgstr ""
 
-msgid "You have no chains aboard. Buy a set at the next garage."
+msgid ""
+"You can't go on without chains. Wait here until the chain law lifts, or "
+"turn back."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Chain checkpoint."
+msgstr ""
+
+#. placeholders: {after}
+msgid "Chain checkpoint. The officer stops you again. {after}"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The officer stops you again."
+msgstr ""
+
+#. placeholders: {level}
+msgid "No chains under a level {level} chain law"
 msgstr ""
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
@@ -27716,10 +27801,6 @@ msgstr ""
 msgid ""
 "An officer stops you and writes a chain-law citation, {grouped} "
 "dollars.{construction_zone_fine_clause} {after} You have {grouped2} dollars."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Chain checkpoint."
 msgstr ""
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
@@ -27733,7 +27814,147 @@ msgid "Chains on. The officer waves you back onto the highway."
 msgstr ""
 
 msgid ""
+"The chain law has lifted. The officer waves you back onto the highway."
+msgstr ""
+
+msgid ""
 "Held at the chain checkpoint. Put your chains on from the pause menu."
+msgstr ""
+
+msgid ""
+"Held at the chain checkpoint. You have no chains. Wait here until the chain "
+"law lifts, or turn back."
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid "The chain law lifted after {duration_text}."
+msgstr ""
+
+#. placeholders: {duration_text}
+msgid ""
+"The chain law lifted after {duration_text}. The officer waves you back onto "
+"the highway."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The officer waves you back onto the highway."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Sleep at the checkpoint from the pause menu, or turn back."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The chain law still stands."
+msgstr ""
+
+#. placeholders: {waited_text}
+#. one sentence of a longer line
+msgid ""
+"You waited {waited_text}, and your 14-hour duty window is nearly used up."
+msgstr ""
+
+#. placeholders: {waited_text}
+msgid ""
+"You waited {waited_text}, and your 14-hour duty window is nearly used up. "
+"The chain law still stands. Sleep at the checkpoint from the pause menu, or "
+"turn back."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Sleep at the checkpoint from the pause menu."
+msgstr ""
+
+#. placeholders: {waited_text}
+msgid ""
+"You waited {waited_text}, and your 14-hour duty window is nearly used up. "
+"The chain law still stands. Sleep at the checkpoint from the pause menu."
+msgstr ""
+
+msgid ""
+"Your 14-hour duty window is nearly used up. The chain law still stands. "
+"Sleep at the checkpoint from the pause menu, or turn back."
+msgstr ""
+
+msgid ""
+"Your 14-hour duty window is nearly used up. The chain law still stands. "
+"Sleep at the checkpoint from the pause menu."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Wait again, or turn back."
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid "You waited {duration_text}."
+msgstr ""
+
+#. placeholders: {duration_text}
+msgid ""
+"You waited {duration_text}. The chain law still stands. Wait again, or turn "
+"back."
+msgstr ""
+
+msgid "chain checkpoint"
+msgstr ""
+
+msgid ""
+"The chain law lifted overnight. The officer waves you back onto the highway."
+msgstr ""
+
+#. placeholders: {drive}
+#. one sentence of a longer line
+msgid ""
+"Turning back takes {drive}, more driving than you have before your "
+"30-minute break."
+msgstr ""
+
+#. placeholders: {drive}
+msgid ""
+"Turning back takes {drive}, more driving than you have before your "
+"30-minute break. Wait here half an hour for your break, or sleep at the "
+"checkpoint."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+msgstr ""
+
+#. placeholders: {drive}
+#. one sentence of a longer line
+msgid "Turning back takes {drive} of driving, more than your hours allow."
+msgstr ""
+
+#. placeholders: {drive}
+msgid ""
+"Turning back takes {drive} of driving, more than your hours allow. Wait "
+"here for the chain law to lift, or sleep at the checkpoint from the pause "
+"menu."
+msgstr ""
+
+#. one sentence of a longer line
+msgid ""
+"Wait here for the chain law to lift, or sleep at the checkpoint from the "
+"pause menu."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The chain law ahead still stands."
+msgstr ""
+
+#. placeholders: {city}, {distance_text}, {f}
+#. one sentence of a longer line
+msgid ""
+"You turned back to {city}, {distance_text} behind the checkpoint, in {f} "
+"minutes."
+msgstr ""
+
+#. placeholders: {city}, {distance_text}, {f}
+msgid ""
+"You turned back to {city}, {distance_text} behind the checkpoint, in {f} "
+"minutes. The chain law ahead still stands."
 msgstr ""
 
 msgid ""
@@ -33035,9 +33256,6 @@ msgid "Puts the activation code on the clipboard."
 msgstr ""
 
 msgid "Hear what gets shared"
-msgstr ""
-
-msgid "Cancel"
 msgstr ""
 
 msgid "Leave without connecting this account."

@@ -295,7 +295,9 @@ pub struct DrivingState {
     /// "Cruise held to 30 miles per hour for chains." is said once per set.
     pub chain_cap_said: bool,
     pub chain_law_warned: HashSet<(i64, i64)>, // (area, level) spoken warnings
-    pub chain_law_cited: HashSet<(i64, i64)>,  // checkpoint rolls already taken
+    pub chain_law_cited: HashSet<(i64, i64)>,  // (area, level) already fined
+    /// (area, level) -> whether its checkpoint is staffed, rolled once.
+    pub chain_checkpoint_staffed: HashMap<(i64, i64), bool>,
     /// Cited with chains aboard: held on the apron until they are on.
     pub chain_checkpoint_hold: bool,
     /// Colorado chain-carry rule: warned once, and rolled once, per drive.

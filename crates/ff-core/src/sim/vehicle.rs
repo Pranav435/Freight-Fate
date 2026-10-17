@@ -490,6 +490,10 @@ impl Default for TruckSpecs {
     }
 }
 
+/// Miles per gallon at a 60 mph cruise, the figure `update_fuel` is
+/// calibrated to (6.5 to 7).
+pub const CRUISE_MPG: f64 = 6.5;
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct TruckState {
     pub specs: TruckSpecs,

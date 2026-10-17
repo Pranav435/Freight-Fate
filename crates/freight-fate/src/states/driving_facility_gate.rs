@@ -286,6 +286,15 @@ impl DrivingState {
     /// those apply. Shared by the missed facility gate and the missed
     /// destination exit, whose loops are the same maneuver.
     pub fn charge_scripted_loop(&mut self, ctx: &mut GameContext, minutes: f64) {
+        self.charge_scripted_hours(ctx, minutes);
+        self.trip
+            .truck
+            .burn_idle_fuel_over_game_time(minutes * 60.0);
+    }
+
+    /// The hours and fatigue half of `charge_scripted_loop`, for a scripted
+    /// drive that burns its own fuel (the chain checkpoint turn back).
+    pub fn charge_scripted_hours(&mut self, ctx: &mut GameContext, minutes: f64) {
         // A turnaround is driving time on every commercial reposition.
         hos_mut_of(ctx).drive(minutes);
         let fatigue_mult = tuning_for_time_scale(self.trip.time_scale).fatigue_rate;
@@ -301,9 +310,6 @@ impl DrivingState {
                         * p.fatigue_buff_rate(now_h),
             );
         }
-        self.trip
-            .truck
-            .burn_idle_fuel_over_game_time(minutes * 60.0);
     }
 
     /// `_handle_missed_facility_gate()`: the scripted loop-back through the
