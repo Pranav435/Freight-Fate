@@ -24,6 +24,24 @@
 #            only. ff-core is headless, so the cheap runner proves it as
 #            well as Windows does, and its test binaries stay off the slow
 #            Windows compile.
+#   test-macos  the game and ff-core on macOS, for a manual run and a `v*`
+#            tag only, not per push or PR (Hearken's CI does the same). It
+#            proves the Mac link (Prism's frameworks, the clang runtime) and
+#            the Kira/CoreAudio build before a release; the nightly's Mac
+#            job tests it every night as well.
+#
+# Caches: each compiling job keeps its own rust-cache entry (`clippy`,
+# `test`, `test-macos`). rust-cache already folds the OS (the rustc host),
+# Cargo.lock and RUSTFLAGS into the key, so Windows and Linux never collide,
+# and a manual full run never overwrites the quick set's entry. Clippy does
+# not share the tests' entry on purpose: it builds check-only metadata and no
+# test binaries, so one shared key would hold whichever job saved first and
+# leave the other cold. sccache, keyed by content, is shared by all of them.
+#
+# The runner is plain `cargo test`, not nextest. nextest runs every test in
+# a process of its own, and each game test process loads the world data
+# once (ff_core::data::world's OnceCell), so ~3,300 game-crate tests would
+# each pay that load; `frame_time` also needs the machine to itself.
 #
 # Pushes and PRs pass `--cfg ci_quick`, which turns every
 # `#[cfg_attr(ci_quick, ignore = "sweep: ...")]` test into an ignored one.
@@ -48,6 +66,9 @@ on:
     # Alongside main and dev, the Rust release lines take direct pushes instead
     # of PRs, so each needs its own entry for this CI to run.
     branches: [main, dev, feat/career-1.9, feat/rust-port]
+    # A release tag runs everything below plus the macOS tests. GitHub does
+    # not apply the path filter to a tag push, so a tag always runs.
+    tags: ["v*"]
     # What the build or the tests read. Docs, the README, the roadmap and
     # the Python tooling skip this workflow entirely.
     paths:
@@ -236,5 +257,53 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: cargo-timing-${{ matrix.name }}
+          path: target/cargo-timings/cargo-timing.html
+          if-no-files-found: ignore
+
+  test-macos:
+    # A manual run or a release tag only: the Mac minutes are the dearest,
+    # and nothing per push touches Mac-only code that the nightly's Mac job
+    # would not catch by morning. GitHub's hosted macos-26, as the nightly
+    # and the iOS jobs use: this repository is public, so it costs nothing.
+    name: test (macOS)
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      FREIGHT_FATE_NO_SPEECH: "1"
+      HEARKEN_TEST_NO_SPEECH: "1"
+      SDL_VIDEODRIVER: dummy
+      SDL_AUDIODRIVER: dummy
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      # A tag runs the quick set, as a push does; a manual run, everything.
+      RUSTFLAGS: ${{ github.event_name == 'push' && '--cfg ci_quick' || '' }}
+    steps:
+      - uses: actions/checkout@v6
+
+      # No brewed SDL: Homebrew's sdl2 is sdl2-compat, which loads SDL3 at
+      # run time. SDL2 is compiled in from source with the runner's cmake.
+      - uses: ./.github/actions/rust-setup
+        with:
+          token: ${{ secrets.HEARKEN_TOKEN }}
+          cache-key: test-macos
+
+      - name: Build the test binaries
+        run: cargo test -p ff-core -p freight-fate --no-run --locked --timings
+
+      - name: cargo test
+        run: cargo test -p ff-core -p freight-fate --locked
+
+      - name: cargo test (agent server)
+        run: cargo test -p freight-fate --test agent_server --locked
+
+      - name: Compiler cache statistics
+        if: always()
+        run: sccache --show-stats
+
+      - name: Upload the build timing report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cargo-timing-macOS
           path: target/cargo-timings/cargo-timing.html
           if-no-files-found: ignore

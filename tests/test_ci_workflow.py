@@ -250,7 +250,7 @@ def test_rust_ci_runs_its_jobs_side_by_side_on_blacksmith() -> None:
     small runner, clippy once on Linux, the tests on Windows and Linux in
     parallel, nothing waiting on anything else."""
     jobs = _load(RUST_WORKFLOW)["jobs"]
-    assert set(jobs) == {"checks", "clippy", "test"}
+    assert set(jobs) == {"checks", "clippy", "test", "test-macos"}
     assert all("needs" not in job for job in jobs.values())
 
     checks = jobs["checks"]
@@ -285,6 +285,29 @@ def test_rust_ci_runs_its_jobs_side_by_side_on_blacksmith() -> None:
     assert "cargo test ${{ matrix.packages }} --locked" in runs
     assert "cargo test -p freight-fate --test agent_server --locked" in runs
     assert not any("lfs" in (s.get("with") or {}) for s in test["steps"])
+
+
+def test_macos_tests_run_on_a_manual_run_or_a_release_tag_only() -> None:
+    """The Mac link (Prism's frameworks, the clang runtime) and the
+    CoreAudio build are proved before a release, as Hearken's CI does, but
+    the dearest runner is not spent on every push or PR."""
+    workflow = _load(RUST_WORKFLOW)
+    assert "v*" in workflow["on"]["push"]["tags"]
+    mac = workflow["jobs"]["test-macos"]
+    assert mac["if"] == (
+        "github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')"
+    )
+    assert mac["runs-on"].startswith("macos-")
+    assert mac["env"]["SDL_AUDIODRIVER"] == "dummy"
+    runs = [s.get("run", "") for s in mac["steps"]]
+    assert "cargo test -p ff-core -p freight-fate --locked" in runs
+    assert "cargo test -p freight-fate --test agent_server --locked" in runs
+
+
+def test_linux_builds_get_the_alsa_headers_hearken_plays_through() -> None:
+    """Hearken plays through Kira and cpal, which link ALSA on Linux."""
+    action = (ACTIONS / "linux-deps" / "action.yml").read_text(encoding="utf-8")
+    assert "libasound2-dev" in action
 
 
 def test_the_test_target_guard_passes() -> None:
