@@ -23704,6 +23704,25 @@ msgstr ""
 #. placeholders: {engine_off}
 #. one sentence of a longer line
 msgid ""
+"{engine_off}You sleep poorly on the checkpoint apron, woken again and again "
+"by passing trucks."
+msgstr ""
+"{engine_off}Duermes mal en la explanada del control; los camiones que pasan "
+"te despiertan una y otra vez."
+
+#. placeholders: {engine_off}, {clock_text}, {wake_air_instruction}
+msgid ""
+"{engine_off}You sleep poorly on the checkpoint apron, woken again and again "
+"by passing trucks. It is {clock_text}. Driving and duty clocks reset, but "
+"you are still tired.{wake_air_instruction}"
+msgstr ""
+"{engine_off}Duermes mal en la explanada del control; los camiones que pasan "
+"te despiertan una y otra vez. Son las {clock_text}. Relojes de conducción y "
+"de servicio reiniciados, pero sigues cansado.{wake_air_instruction}"
+
+#. placeholders: {engine_off}
+#. one sentence of a longer line
+msgid ""
 "{engine_off}You sleep poorly on the shoulder, woken again and again by "
 "passing trucks."
 msgstr ""
@@ -28606,6 +28625,16 @@ msgstr ""
 "Solo se guarda en una parada. La conducción se reanuda desde la última "
 "parada. Abandonar el trabajo deja la carga."
 
+msgid "Sleep at the checkpoint (10 hours)"
+msgstr "Dormir en el control (10 horas)"
+
+msgid ""
+"Poor sleep on the checkpoint apron. Resets hours of service. Fatigue "
+"remains, and the deadline keeps running."
+msgstr ""
+"Sueño de mala calidad en la explanada del control. Reinicia las horas de "
+"servicio. El cansancio sigue, y el plazo de entrega sigue corriendo."
+
 msgid "Emergency shoulder sleep"
 msgstr "Dormir en el arcén de emergencia"
 
@@ -30929,6 +30958,25 @@ msgstr "{load_text} Quedas libre para volver a {terminal}."
 msgid "Continue from the city terminal."
 msgstr "Continúa desde la terminal de la ciudad."
 
+msgid "Held at the chain checkpoint."
+msgstr "Retenido en el control de cadenas."
+
+msgid "Sleep at the checkpoint"
+msgstr "Dormir en el control"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Back without sleeping."
+msgstr "Volver sin dormir."
+
+msgid ""
+"Poor rest on the checkpoint apron. Resets hours of service; the deadline "
+"keeps running."
+msgstr ""
+"Descanso de mala calidad en la explanada del control. Reinicia las horas de "
+"servicio; el plazo de entrega sigue corriendo."
+
 msgid "Cancel and keep looking for a safe stop"
 msgstr "Cancelar y seguir buscando una parada segura"
 
@@ -30944,6 +30992,26 @@ msgid ""
 msgstr ""
 "Mal descanso, posible multa, posibles daños leves en el camión y tiempo "
 "perdido del plazo de entrega."
+
+#. one sentence of a longer line
+msgid "The deadline keeps running."
+msgstr "El plazo de entrega sigue corriendo."
+
+#. placeholders: {reason}
+#. one sentence of a longer line
+msgid "{reason} 10 hours of poor rest, HOS reset if enforced."
+msgstr ""
+"{reason} 10 horas de descanso de mala calidad; las horas de servicio se "
+"reinician si se aplican."
+
+#. placeholders: {title}, {reason}, {current}
+msgid ""
+"{title}. {reason} 10 hours of poor rest, HOS reset if enforced. The "
+"deadline keeps running. {current}"
+msgstr ""
+"{title}. {reason} 10 horas de descanso de mala calidad; las horas de "
+"servicio se reinician si se aplican. El plazo de entrega sigue corriendo. "
+"{current}"
 
 #. one sentence of a longer line
 msgid "Ticket and light damage possible; the deadline keeps running."
@@ -31673,30 +31741,41 @@ msgid "The officer waves you back onto the highway."
 msgstr "El agente te indica que vuelvas a la carretera."
 
 #. one sentence of a longer line
-msgid "Sleep on the shoulder from the pause menu, or turn back."
-msgstr "Duerme en el arcén desde el menú de pausa, o da la vuelta."
+msgid "Sleep at the checkpoint from the pause menu, or turn back."
+msgstr "Duerme en el control desde el menú de pausa, o da la vuelta."
 
 #. one sentence of a longer line
 msgid "The chain law still stands."
 msgstr "La ley de cadenas sigue vigente."
 
-#. placeholders: {duration_text}
+#. placeholders: {waited}
 #. one sentence of a longer line
-msgid ""
-"You waited {duration_text}, and your 14-hour duty window is nearly used up."
+msgid "You waited {waited}, and your 14-hour duty window is nearly used up."
 msgstr ""
-"Esperaste {duration_text}, y tu ventana de servicio de 14 horas está casi "
-"agotada."
+"Esperaste {waited}, y tu ventana de servicio de 14 horas está casi agotada."
 
-#. placeholders: {duration_text}
+#. placeholders: {waited}
 msgid ""
-"You waited {duration_text}, and your 14-hour duty window is nearly used up. "
-"The chain law still stands. Sleep on the shoulder from the pause menu, or "
+"You waited {waited}, and your 14-hour duty window is nearly used up. The "
+"chain law still stands. Sleep at the checkpoint from the pause menu, or "
 "turn back."
 msgstr ""
-"Esperaste {duration_text}, y tu ventana de servicio de 14 horas está casi "
-"agotada. La ley de cadenas sigue vigente. Duerme en el arcén desde el menú "
-"de pausa, o da la vuelta."
+"Esperaste {waited}, y tu ventana de servicio de 14 horas está casi agotada. "
+"La ley de cadenas sigue vigente. Duerme en el control desde el menú de "
+"pausa, o da la vuelta."
+
+#. one sentence of a longer line
+msgid "Sleep at the checkpoint from the pause menu."
+msgstr "Duerme en el control desde el menú de pausa."
+
+#. placeholders: {waited}
+msgid ""
+"You waited {waited}, and your 14-hour duty window is nearly used up. The "
+"chain law still stands. Sleep at the checkpoint from the pause menu."
+msgstr ""
+"Esperaste {waited}, y tu ventana de servicio de 14 horas está casi agotada. "
+"La ley de cadenas sigue vigente. Duerme en el control desde el menú de "
+"pausa."
 
 #. one sentence of a longer line
 msgid "Wait again, or turn back."
@@ -31718,31 +31797,51 @@ msgstr ""
 msgid "chain checkpoint"
 msgstr "chain checkpoint"
 
-#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid "Take a break, wait, or sleep at the checkpoint."
+msgstr "Haz una pausa, espera, o duerme en el control."
+
+#. placeholders: {drive}
 #. one sentence of a longer line
 msgid ""
-"Turning back takes {duration_text} of driving, more than your hours allow."
+"Turning back takes {drive}, more driving than you have before your "
+"30-minute break."
 msgstr ""
-"Dar la vuelta supone {duration_text} de conducción, más de lo que te "
-"permiten tus horas."
+"Dar la vuelta supone {drive}, más conducción de la que te queda antes de tu "
+"pausa de 30 minutos."
 
-#. placeholders: {duration_text}
+#. placeholders: {drive}
 msgid ""
-"Turning back takes {duration_text} of driving, more than your hours allow. "
-"Wait here for the chain law to lift, or sleep on the shoulder from the "
-"pause menu."
+"Turning back takes {drive}, more driving than you have before your "
+"30-minute break. Take a break, wait, or sleep at the checkpoint."
 msgstr ""
-"Dar la vuelta supone {duration_text} de conducción, más de lo que te "
-"permiten tus horas. Espera aquí a que se levante la ley de cadenas, o "
-"duerme en el arcén desde el menú de pausa."
+"Dar la vuelta supone {drive}, más conducción de la que te queda antes de tu "
+"pausa de 30 minutos. Haz una pausa, espera, o duerme en el control."
+
+#. placeholders: {drive}
+#. one sentence of a longer line
+msgid "Turning back takes {drive} of driving, more than your hours allow."
+msgstr ""
+"Dar la vuelta supone {drive} de conducción, más de lo que te permiten tus "
+"horas."
+
+#. placeholders: {drive}
+msgid ""
+"Turning back takes {drive} of driving, more than your hours allow. Wait "
+"here for the chain law to lift, or sleep at the checkpoint from the pause "
+"menu."
+msgstr ""
+"Dar la vuelta supone {drive} de conducción, más de lo que te permiten tus "
+"horas. Espera aquí a que se levante la ley de cadenas, o duerme en el "
+"control desde el menú de pausa."
 
 #. one sentence of a longer line
 msgid ""
-"Wait here for the chain law to lift, or sleep on the shoulder from the "
+"Wait here for the chain law to lift, or sleep at the checkpoint from the "
 "pause menu."
 msgstr ""
-"Espera aquí a que se levante la ley de cadenas, o duerme en el arcén desde "
-"el menú de pausa."
+"Espera aquí a que se levante la ley de cadenas, o duerme en el control "
+"desde el menú de pausa."
 
 #. one sentence of a longer line
 msgid "The chain law ahead still stands."
@@ -38487,9 +38586,6 @@ msgstr "Pone el código de activación en el portapapeles."
 msgid "Hear what gets shared"
 msgstr "Escuchar qué se comparte"
 
-msgid "Cancel"
-msgstr "Cancelar"
-
 msgid "Leave without connecting this account."
 msgstr "Salir sin conectar esta cuenta."
 
@@ -40224,6 +40320,46 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#~ msgid "Sleep on the shoulder from the pause menu, or turn back."
+#~ msgstr "Duerme en el arcén desde el menú de pausa, o da la vuelta."
+
+#~ msgid ""
+#~ "You waited {duration_text}, and your 14-hour duty window is nearly used up."
+#~ msgstr ""
+#~ "Esperaste {duration_text}, y tu ventana de servicio de 14 horas está casi "
+#~ "agotada."
+
+#~ msgid ""
+#~ "You waited {duration_text}, and your 14-hour duty window is nearly used up. "
+#~ "The chain law still stands. Sleep on the shoulder from the pause menu, or "
+#~ "turn back."
+#~ msgstr ""
+#~ "Esperaste {duration_text}, y tu ventana de servicio de 14 horas está casi "
+#~ "agotada. La ley de cadenas sigue vigente. Duerme en el arcén desde el menú "
+#~ "de pausa, o da la vuelta."
+
+#~ msgid ""
+#~ "Turning back takes {duration_text} of driving, more than your hours allow."
+#~ msgstr ""
+#~ "Dar la vuelta supone {duration_text} de conducción, más de lo que te "
+#~ "permiten tus horas."
+
+#~ msgid ""
+#~ "Turning back takes {duration_text} of driving, more than your hours allow. "
+#~ "Wait here for the chain law to lift, or sleep on the shoulder from the "
+#~ "pause menu."
+#~ msgstr ""
+#~ "Dar la vuelta supone {duration_text} de conducción, más de lo que te "
+#~ "permiten tus horas. Espera aquí a que se levante la ley de cadenas, o "
+#~ "duerme en el arcén desde el menú de pausa."
+
+#~ msgid ""
+#~ "Wait here for the chain law to lift, or sleep on the shoulder from the "
+#~ "pause menu."
+#~ msgstr ""
+#~ "Espera aquí a que se levante la ley de cadenas, o duerme en el arcén desde "
+#~ "el menú de pausa."
 
 #~ msgid "You have no chains aboard. Buy a set at the next garage."
 #~ msgstr "No llevas cadenas. Compra un juego en el próximo taller."

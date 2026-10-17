@@ -268,7 +268,25 @@ impl PauseMenuState {
                  drops the load.",
             ),
         );
-        if d.emergency_shoulder_sleep_reason(ctx).is_some() {
+        if d.chain_checkpoint_hold {
+            // Held, the truck can always sleep where it stands: waiting and
+            // turning back can both be out of hours, and a stop within the
+            // usual 1.5 miles does not matter to an officer holding it here.
+            let settings_index = items
+                .iter()
+                .position(|item| item.text(self, ctx) == "Settings")
+                .unwrap_or(items.len());
+            items.insert(
+                settings_index,
+                MenuItem::new("Sleep at the checkpoint (10 hours)", |s: &mut Self, ctx| {
+                    s.sleep_at_chain_checkpoint(ctx)
+                })
+                .help(
+                    "Poor sleep on the checkpoint apron. Resets hours of service. Fatigue \
+                     remains, and the deadline keeps running.",
+                ),
+            );
+        } else if d.emergency_shoulder_sleep_reason(ctx).is_some() {
             let settings_index = items
                 .iter()
                 .position(|item| item.text(self, ctx) == "Settings")
@@ -379,6 +397,30 @@ impl PauseMenuState {
         };
         self.refresh(ctx, true);
         ctx.say(&text);
+    }
+
+    fn sleep_at_chain_checkpoint(&mut self, ctx: &mut GameContext) {
+        let held = self
+            .driving
+            .read(|d| d.chain_checkpoint_hold)
+            .unwrap_or(false);
+        if !held {
+            self.refresh(ctx, true);
+            return;
+        }
+        let secured = self
+            .driving
+            .with(ctx, secure_truck_for_stopped_menu)
+            .unwrap_or(false);
+        if !secured {
+            ctx.say("Come to a complete stop first.");
+            self.refresh(ctx, true);
+            return;
+        }
+        let anchor = self.driving.read(|d| d.trip.position_mi).unwrap_or(0.0);
+        let state =
+            ShoulderSleepConfirmationState::at_chain_checkpoint(self.driving.clone(), anchor);
+        ctx.push_state(state);
     }
 
     fn emergency_shoulder_sleep(&mut self, ctx: &mut GameContext) {

@@ -140,6 +140,7 @@ pub fn perform_shoulder_sleep(
     driving: &mut DrivingState,
     ctx: &mut GameContext,
     anchor_mi: f64,
+    at_chain_checkpoint: bool,
 ) -> String {
     let engine_off = shut_down_engine(driving, ctx);
     advance_rest_clock(driving, ctx, hos::SLEEP_MIN, None, "");
@@ -148,13 +149,24 @@ pub fn perform_shoulder_sleep(
         let p = profile_mut_of(ctx);
         p.fatigue = hos::rest_shoulder(p.fatigue);
     }
-    let mut parts = vec![format!(
-        "{engine_off}You sleep poorly on the shoulder, woken again and again by passing trucks. \
-         It is {}. Driving and duty clocks reset, but you are still tired.{}",
-        clock_text(driving.trip.local_hour()),
-        wake_air_instruction(driving)
-    )];
-    if hos::shoulder_fine_due(driving.trip_seed, anchor_mi) {
+    let mut parts = vec![if at_chain_checkpoint {
+        format!(
+            "{engine_off}You sleep poorly on the checkpoint apron, woken again and again by \
+             passing trucks. It is {}. Driving and duty clocks reset, but you are still tired.{}",
+            clock_text(driving.trip.local_hour()),
+            wake_air_instruction(driving)
+        )
+    } else {
+        format!(
+            "{engine_off}You sleep poorly on the shoulder, woken again and again by passing \
+             trucks. It is {}. Driving and duty clocks reset, but you are still tired.{}",
+            clock_text(driving.trip.local_hour()),
+            wake_air_instruction(driving)
+        )
+    }];
+    // Held at a chain checkpoint, the officer keeps the truck there: no
+    // parking ticket and no shoulder debris.
+    if !at_chain_checkpoint && hos::shoulder_fine_due(driving.trip_seed, anchor_mi) {
         let zone = driving.trip.in_construction_zone();
         let fine = citation_fine(
             hos::SHOULDER_FINE,
@@ -175,7 +187,7 @@ pub fn perform_shoulder_sleep(
             fmt_grouped(money, 0)
         ));
     }
-    if hos::shoulder_damage_due(driving.trip_seed, anchor_mi) {
+    if !at_chain_checkpoint && hos::shoulder_damage_due(driving.trip_seed, anchor_mi) {
         driving
             .trip
             .truck

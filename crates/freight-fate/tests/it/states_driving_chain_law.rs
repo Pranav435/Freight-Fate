@@ -1043,12 +1043,11 @@ fn test_turning_back_past_the_drive_limit_is_refused() {
     app.ctx.settings.hos_mode = "realistic".to_string();
     let drive = held_with_no_chains(&mut app);
     let drive_limit = ff_core::sim::hos::limits("realistic").expect("limits").0;
-    app.ctx
-        .profile
-        .as_mut()
-        .unwrap()
-        .hos
-        .drive(drive_limit - 1.0);
+    // A 30-minute break partway, so the 11-hour limit is the nearest.
+    let hos = &mut app.ctx.profile.as_mut().unwrap().hos;
+    hos.drive(400.0);
+    hos.take_break(30.0);
+    hos.drive(drive_limit - 401.0);
     let (position, odometer) =
         with_drive(&drive, |d| (d.trip.position_mi, d.trip.truck.odometer_mi));
     let line = drive_and_ctx(&drive, &mut app, |d, ctx| {
@@ -1058,7 +1057,7 @@ fn test_turning_back_past_the_drive_limit_is_refused() {
     assert_eq!(
         line,
         "Turning back takes 8 minutes of driving, more than your hours allow. Wait here for the \
-         chain law to lift, or sleep on the shoulder from the pause menu."
+         chain law to lift, or sleep at the checkpoint from the pause menu."
     );
     assert!(
         with_drive(&drive, |d| d.chain_checkpoint_hold),
@@ -1070,5 +1069,97 @@ fn test_turning_back_past_the_drive_limit_is_refused() {
         app.ctx.profile.as_ref().unwrap().hos.driving_min,
         drive_limit - 1.0,
         "no driving logged"
+    );
+}
+
+#[test]
+fn test_a_held_truck_out_of_hours_can_always_sleep_at_the_checkpoint() {
+    use freight_fate::states::base::Menu;
+    use freight_fate::states::driving_rest_states::ShoulderSleepConfirmationState;
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "realistic".to_string();
+    let drive = held_with_no_chains(&mut app);
+    with_drive(&drive, |d| d.trip.weather.forced = Some(WeatherKind::Ice));
+    // The 14-hour window nearly used, and a route stop right beside the
+    // truck, which would hide the emergency shoulder sleep row.
+    app.ctx.profile.as_mut().unwrap().hos.on_duty(830.0);
+    with_drive(&drive, |d| {
+        let mut stop = d.trip.stops.first().cloned().expect("the route has stops");
+        stop.at_mi = d.trip.position_mi + 1.0;
+        d.trip.stops.push(stop);
+        assert!(d.trip.nearest_stop_within(1.5).is_some());
+    });
+    let labels = pause_labels(&mut app, &drive);
+    assert!(
+        labels
+            .iter()
+            .any(|l| l == "Sleep at the checkpoint (10 hours)"),
+        "{labels:?}"
+    );
+    let (money_before, damage_before) =
+        (money(&app), with_drive(&drive, |d| d.trip.truck.damage_pct));
+    let anchor = with_drive(&drive, |d| d.trip.position_mi);
+    let mut confirm =
+        ShoulderSleepConfirmationState::at_chain_checkpoint(drive_ref(&drive), anchor);
+    let items = confirm.build_items(&mut app.ctx);
+    let index = items
+        .iter()
+        .position(|item| item.text(&confirm, &app.ctx) == "Sleep at the checkpoint")
+        .expect("the sleep row");
+    confirm.menu_mut().items = items;
+    confirm.menu_mut().index = index;
+    confirm.activate(&mut app.ctx);
+    let hos = &app.ctx.profile.as_ref().unwrap().hos;
+    assert_eq!(hos.duty_min, 0.0);
+    assert_eq!(hos.driving_min, 0.0);
+    assert_eq!(
+        money(&app),
+        money_before,
+        "no parking ticket at a checkpoint"
+    );
+    assert_eq!(
+        with_drive(&drive, |d| d.trip.truck.damage_pct),
+        damage_before
+    );
+}
+
+#[test]
+fn test_turning_back_past_the_8_hour_break_limit_is_refused() {
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "realistic".to_string();
+    let drive = held_with_no_chains(&mut app);
+    // 15 miles back at 45 mph: a 20-minute drive.
+    with_drive(&drive, |d| {
+        let (_, city_mi) = d.last_route_city_behind();
+        d.trip.position_mi = city_mi + 15.0;
+    });
+    assert_eq!(with_drive(&drive, |d| d.chain_turn_back_drive().1), 20.0);
+    app.ctx.profile.as_mut().unwrap().hos.drive(470.0);
+    let position = with_drive(&drive, |d| d.trip.position_mi);
+    let line = drive_and_ctx(&drive, &mut app, |d, ctx| {
+        d.turn_back_from_chain_checkpoint(ctx)
+    })
+    .expect("held, so it answers");
+    assert_eq!(
+        line,
+        "Turning back takes 20 minutes, more driving than you have before your 30-minute break. \
+         Take a break, wait, or sleep at the checkpoint."
+    );
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
+    assert_eq!(with_drive(&drive, |d| d.trip.position_mi), position);
+}
+
+#[test]
+fn test_an_expired_window_does_not_offer_a_turn_back_that_would_be_refused() {
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "realistic".to_string();
+    let drive = held_with_no_chains(&mut app);
+    with_drive(&drive, |d| d.trip.weather.forced = Some(WeatherKind::Ice));
+    app.ctx.profile.as_mut().unwrap().hos.on_duty(835.0);
+    let line = drive_and_ctx(&drive, &mut app, |d, ctx| d.wait_for_chain_law_to_lift(ctx))
+        .expect("held, so it answers");
+    assert!(
+        line.ends_with("The chain law still stands. Sleep at the checkpoint from the pause menu."),
+        "{line}"
     );
 }

@@ -828,11 +828,22 @@ impl DrivingState {
                 ));
             }
             if duty_limit.is_some_and(|limit| hos_of(ctx).duty_min + CHAIN_WAIT_STEP_MIN > limit) {
-                return Some(format!(
-                    "You waited {}, and your 14-hour duty window is nearly used up. The chain \
-                     law still stands. Sleep on the shoulder from the pause menu, or turn back.",
-                    ff_core::sim::hos::duration_text(waited / 60.0)
-                ));
+                let waited = ff_core::sim::hos::duration_text(waited / 60.0);
+                // Turning back is offered only when the drive back still
+                // fits the hours; otherwise it would just be refused.
+                return Some(if self.chain_turn_back_refusal(ctx).is_none() {
+                    format!(
+                        "You waited {waited}, and your 14-hour duty window is nearly used up. \
+                         The chain law still stands. Sleep at the checkpoint from the pause \
+                         menu, or turn back."
+                    )
+                } else {
+                    format!(
+                        "You waited {waited}, and your 14-hour duty window is nearly used up. \
+                         The chain law still stands. Sleep at the checkpoint from the pause \
+                         menu."
+                    )
+                });
             }
             if waited >= CHAIN_WAIT_MAX_MIN {
                 return Some(format!(
@@ -873,6 +884,38 @@ impl DrivingState {
             .unwrap_or((0, 0.0))
     }
 
+    /// The drive back to the last route city: its miles and driving minutes.
+    pub fn chain_turn_back_drive(&self) -> (f64, f64) {
+        let (_, city_mi) = self.last_route_city_behind();
+        let miles = (self.trip.position_mi - city_mi).max(0.0);
+        let minutes = (miles / CHAIN_TURN_BACK_MPH * 60.0).max(CHAIN_TURN_BACK_MIN_MIN);
+        (miles, minutes)
+    }
+
+    /// Why the drive back from a checkpoint would break the hours, as the
+    /// line to speak, or None when it fits. Gated on the nearest limit, so
+    /// the 8-hour drive before the 30-minute break counts as well as the
+    /// 11-hour driving limit and the 14-hour window.
+    pub fn chain_turn_back_refusal(&self, ctx: &GameContext) -> Option<String> {
+        let (_, minutes) = self.chain_turn_back_drive();
+        let limit = hos_of(ctx).next_limit(&ctx.settings.hos_mode)?;
+        if limit.remaining_min >= minutes {
+            return None;
+        }
+        let drive = ff_core::sim::hos::duration_text(minutes / 60.0);
+        Some(if limit.kind == "break" {
+            format!(
+                "Turning back takes {drive}, more driving than you have before your 30-minute \
+                 break. Take a break, wait, or sleep at the checkpoint."
+            )
+        } else {
+            format!(
+                "Turning back takes {drive} of driving, more than your hours allow. Wait here \
+                 for the chain law to lift, or sleep at the checkpoint from the pause menu."
+            )
+        })
+    }
+
     /// Held at a checkpoint with no chains to put on: the scripted drive
     /// back to the last route city, charged like the facility-gate
     /// turnaround (hours, fatigue and fuel move with the clock). The hold
@@ -882,24 +925,12 @@ impl DrivingState {
         if !self.chain_checkpoint_hold {
             return None;
         }
-        let (index, city_mi) = self.last_route_city_behind();
-        let miles = (self.trip.position_mi - city_mi).max(0.0);
-        let minutes = (miles / CHAIN_TURN_BACK_MPH * 60.0).max(CHAIN_TURN_BACK_MIN_MIN);
-        // The drive back is driving time: refused when it would run past the
-        // driving limit or the duty window, rather than logging a violation.
-        if let Some((drive_limit, duty_limit, _)) =
-            ff_core::sim::hos::limits(&ctx.settings.hos_mode)
-        {
-            let hos = hos_of(ctx);
-            if hos.driving_min + minutes > drive_limit || hos.duty_min + minutes > duty_limit {
-                ctx.audio.play("ui/error");
-                return Some(format!(
-                    "Turning back takes {} of driving, more than your hours allow. Wait here \
-                     for the chain law to lift, or sleep on the shoulder from the pause menu.",
-                    ff_core::sim::hos::duration_text(minutes / 60.0)
-                ));
-            }
+        if let Some(line) = self.chain_turn_back_refusal(ctx) {
+            ctx.audio.play("ui/error");
+            return Some(line);
         }
+        let (index, city_mi) = self.last_route_city_behind();
+        let (miles, minutes) = self.chain_turn_back_drive();
         self.trip.game_minutes += minutes;
         self.charge_scripted_hours(ctx, minutes);
         // A real drive back: on the odometer, at the highway burn.
