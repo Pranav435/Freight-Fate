@@ -305,6 +305,24 @@ pub struct DrivingState {
     pub chain_slap_said: bool,
     /// The chains were tightened once since they went on.
     pub chain_tightened: bool,
+    /// Stop planning's no-chains reminder, said once per corridor approach
+    /// (`ChainCorridorAhead::key`). Not saved: a resume may repeat it once.
+    pub chain_reminder_said: HashSet<String>,
+    /// Facility stopping assistance's pending roadside chain stop.
+    pub chain_stop: Option<crate::states::driving_events::chain_stop::ChainStop>,
+    /// Its held brake application, one of the assists' pedal floors.
+    pub chain_stop_brake: f64,
+    /// Chain-law areas the chain-up stop has handled, declined or had
+    /// cancelled: never retried.
+    pub chain_stop_areas_done: HashSet<usize>,
+    /// The last chain-law area each chain-off decision was made after.
+    pub chain_off_done: HashSet<usize>,
+    /// Route mile the bare road began, past the last chain-law area.
+    pub chain_off_bare_from: Option<f64>,
+    /// The slap tighten was offered once since the chains went on.
+    pub chain_assist_tighten_tried: bool,
+    /// A chain broke this drive and the assist hasn't answered it yet.
+    pub chain_assist_snapped: bool,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,

@@ -4,6 +4,8 @@
 
 ### Added
 
+- **Facility stopping assistance now handles snow chains in chain-law areas.** Before an area that chains your truck, it says so and stops at the chain-up pullout to put your chains on, about 30 minutes on duty or 48 at night. On bare road half a mile past the last area it takes them off in about 10 minutes, unless another area starts within 5 miles. It also pulls over to tighten a slapping chain once and to fix a broken one with a spare link. It never buys chains, and with too little left in your 14-hour window it tells you to find a place to stop instead. Your brake or throttle cancels a stop. The cruise cap of 30 miles per hour with chains on still applies. The lines are in Spanish.
+- **Stop planning reminds you before a chain-law road if you have no chains.** With Hours of service planning hints on, the dispatch board says so before you accept a load that crosses a road where chains must be carried this season (Colorado's chain corridors, Montana and Washington), or, with live weather on, where a weather alert or observed snow or ice puts a chain law on your truck now, while the terminal garage can still sell you a set; Enter again accepts. On the road it speaks about 15 miles before a chain-up area only when a posted chain law requires chains on your truck, and names the exit when the map has one. It never buys anything. The lines are in Spanish.
 - **Career stats and driver profiles now list the places you have delivered to.** Career stats also counts your states and cities; Places visited lists each state's cities.
 - **A broken snow chain can be fixed on the shoulder.** Each chain set comes with two spare repair links. Stopped with a broken chain, the pause menu offers "Repair the broken chain: about 15 minutes", which puts the set back on at 80 percent worn, under the slap warning. The garage restocks the links for 25 dollars.
 - **A worn chain warns you before it breaks.** At 85 percent wear the game says "A chain is slapping the fender. Stop soon and tighten it." Tightening takes about 5 minutes and buys back a little wear, once each time the chains go on.
@@ -61,6 +63,7 @@
 
 ### Changed
 
+- **The Facility stopping assistance and Hours of service planning hints help now covers chains.** Facility stopping says it may spend on-duty minutes on chains and never buys them; planning hints say they remind you about chains and never buy anything. The help is in Spanish.
 - **Oregon's lower chain level no longer chains your truck.** "Chains or traction tires required" chains only single-drive-axle trucks over 10,000 pounds, so your tandem-drive rig chains in Oregon at the "Chains required" level. The Oregon level 1 sign and the chain help say so, in Spanish too.
 - **Cruise and the speed keeper hold 30 miles per hour while chains are on.** The game says so once, and your own set speed comes back when the chains come off, so resuming cruise no longer tears up a set. If you cancel cruise while chained, Shift K brings back your own speed once the chains are off. The new lines are in Spanish.
 - **A chain set is now seven chains: four for the drive tires, one for a trailer tire, and two spares,** so putting them on takes about 30 minutes. When a chain breaks, the game now says "A tire chain broke and is flailing. Slow down and pull over to check it."
