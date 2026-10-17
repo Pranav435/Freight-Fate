@@ -2,6 +2,7 @@
 //! the cross-traffic bubble, the stop bar's countdown and its held tone, the
 //! route-transition assist, and the crossing itself.
 
+use crate::speech::EventPriority;
 use ff_core::data::world_models::Interchange;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::cross_traffic::{CrossTraffic, CrossVehicle};
@@ -9,7 +10,6 @@ use ff_core::sim::trip_models::RoadStop;
 use ff_core::sim::trip_route_helpers::INTERCHANGE_IDENTITY_MI;
 use ff_core::speech_pacing::SpeechCategory;
 use ff_core::units::spoken_feet_or_meters;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, IntoSpoken, SayEvent};
 use crate::states::driving::DrivingState;

@@ -4,7 +4,7 @@
 
 use ff_core::speech_pacing::SpeechCategory;
 
-use hearken::speech::EventPriority;
+use crate::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;

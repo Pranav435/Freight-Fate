@@ -1,12 +1,12 @@
 //! Standing physical conditions: hot brakes, the destination approach
 //! assist, the traction states, and the chain law.
 
+use crate::speech::EventPriority;
 use ff_core::models::enforcement::{chain_law_fine, CHAIN_CARRY_FINE_CO};
 use ff_core::pyfmt::{fmt_f, fmt_grouped};
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::vehicle::MIN_STOPPING_DECEL_MPS2;
 use ff_core::speech_pacing::SpeechCategory;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;

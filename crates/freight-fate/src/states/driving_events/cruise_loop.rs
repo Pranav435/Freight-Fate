@@ -1,11 +1,11 @@
 //! The adaptive-cruise loop itself: the gap, the posted-limit lookahead, the
 //! grade preview, and holding the target from above.
 
+use crate::speech::EventPriority;
 use ff_core::sim::transmission::JAKE_MAX_RPM;
 use ff_core::sim::trip::LIMIT_WARNING_MAX_LEAD_MI;
 use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::SpokenMessage;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;

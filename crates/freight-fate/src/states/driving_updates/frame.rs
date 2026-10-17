@@ -3,7 +3,7 @@
 
 use ff_core::speech_pacing::SpeechCategory;
 
-use hearken::speech::EventPriority;
+use crate::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent, TRANSCRIPT_TARGET};
 use crate::audio::CH_BRAKE;

@@ -1,8 +1,8 @@
 //! Hours of service, fatigue, and the microsleeps severe fatigue brings on.
 
+use crate::speech::EventPriority;
 use ff_core::models::enforcement;
 use ff_core::speech_pacing::SpeechCategory;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::bindings::Action;

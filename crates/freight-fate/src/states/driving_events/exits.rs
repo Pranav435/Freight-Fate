@@ -1,11 +1,11 @@
 //! Highway exits: arming the signal, the exit lane, the countdown, the exit
 //! speed assist, and the destination exit's own scan and announcement.
 
+use crate::speech::EventPriority;
 use ff_core::sim::trip_models::{
     RoadStop, TrafficPressure, TripEvent, TripEventKind, APPROACH_DECEL_MPS2, APPROACH_REACTION_S,
 };
 use ff_core::speech_pacing::SpeechCategory;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::bindings::Action;

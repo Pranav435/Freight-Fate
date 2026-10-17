@@ -1,12 +1,12 @@
 //! Route advice and advance warnings for the next required rest.
 
 use crate::app::{GameContext, SayEvent};
+use crate::speech::{DeliveryStatus, EventPriority};
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::{hos_mut_of, hos_of};
 use ff_core::models::jobs::hos_stops::{plan_hos_stop, HosStopAdvice, StopPlanningRoute};
 use ff_core::models::jobs::route_drive_hours;
 use ff_core::speech_pacing::SpeechCategory;
-use hearken::speech::{DeliveryStatus, EventPriority};
 
 impl DrivingState {
     /// One opt-in suggestion before the normal 60-minute HOS warning. The

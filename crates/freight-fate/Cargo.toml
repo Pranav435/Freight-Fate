@@ -40,8 +40,6 @@ workspace = true
 [dependencies]
 ff-core = { path = "../ff-core" }
 hearken.workspace = true
-anyhow.workspace = true
-thiserror.workspace = true
 log.workspace = true
 env_logger.workspace = true
 serde.workspace = true
@@ -57,11 +55,9 @@ ureq.workspace = true
 keyring.workspace = true
 discord-rich-presence.workspace = true
 once_cell.workspace = true
-parking_lot.workspace = true
 regex.workspace = true
 sdl2 = { workspace = true, features = ["raw-window-handle"] }
 url.workspace = true
-form_urlencoded.workspace = true
 webbrowser.workspace = true
 sys-locale.workspace = true
 

@@ -3,12 +3,12 @@
 //! run out of the origin's gate, and the acceleration lane that ends it; and
 //! a road stop's streets from its exit ramp to its lot.
 
+use crate::speech::EventPriority;
 use ff_core::data::world_models::Route;
 use ff_core::sim::trip_models::RoadStop;
 use ff_core::sim::weather::WeatherSystem;
 use ff_core::speech_pacing::SpeechCategory;
 use ff_core::units::spoken_feet_or_meters;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;

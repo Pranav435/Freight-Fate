@@ -1,6 +1,7 @@
 //! `_handle_trip_event` and everything that decides whether a trip event
 //! speaks at all, in what category, and at what priority.
 
+use crate::speech::EventPriority;
 use ff_core::data::state_welcome::welcome_sign;
 use ff_core::data::world_parsing::crc32;
 use ff_core::models::trailer_yard::pickup_plan;
@@ -12,7 +13,6 @@ use ff_core::speech_text::{
     cruise_curve_easing, cruise_curve_paused, cruise_curve_paused_assisted, curve_assist_slowing,
     roadside_chatter, stop_callout, SpokenMessage, StopCalloutParts,
 };
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, Say, SayEvent};
 use crate::states::driving::DrivingState;

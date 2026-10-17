@@ -2,13 +2,13 @@
 //! horn's one real power, the routine speed announcement, and the grade
 //! advisory.
 
+use crate::speech::EventPriority;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::driving_modes::tuning_for_time_scale;
 use ff_core::sim::trip_models::HAZARDS;
 use ff_core::sim::vehicle::BrakeApplication;
 use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::terse_silent;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;

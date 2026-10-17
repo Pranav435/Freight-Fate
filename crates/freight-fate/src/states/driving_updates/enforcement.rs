@@ -2,6 +2,7 @@
 //! bypassed scale, unsafe equipment), and the weigh-station machinery.
 //! The stop's own lifecycle, once the lights are on, is in `stops.rs`.
 
+use crate::speech::EventPriority;
 use ff_core::models::business::has_weigh_station_transponder;
 use ff_core::models::enforcement::{UNSAFE_DAMAGE_FINE, WEIGH_STATION_BYPASS_FINE};
 use ff_core::pyrandom::PyRandom;
@@ -9,7 +10,6 @@ use ff_core::settings::short_distance_text_for;
 use ff_core::sim::trip_models::RoadStop;
 use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::overspeed_nag;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;

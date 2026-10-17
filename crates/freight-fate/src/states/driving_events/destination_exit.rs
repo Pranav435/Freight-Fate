@@ -1,9 +1,9 @@
 //! The destination exit: finding it on the baked interchanges, naming it, and
 //! announcing it while there is still road to take it with.
 
+use crate::speech::EventPriority;
 use ff_core::sim::trip_models::RoadStop;
 use ff_core::speech_pacing::SpeechCategory;
-use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
