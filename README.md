@@ -497,6 +497,3 @@ provenance are tracked in
 **Audio:** playback, decoding and the radio use Hearken, Freight Fate's own
 Rust audio engine (MIT or Apache-2.0), built on Kira and Symphonia. Earlier
 releases used the proprietary BASS library; nothing of it ships any more.
-High-efficiency AAC radio is decoded by the Fraunhofer FDK AAC Codec Library
-for Android, under the Software License for The Fraunhofer FDK AAC Codec
-Library for Android, which grants no patent licence.

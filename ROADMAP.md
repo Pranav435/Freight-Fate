@@ -672,12 +672,19 @@ Everything found before 2026-09-25 moved to
 - [ ] The owner's listening pass before any stable release: the menu and a
       drive, an engine rev sweep, the horn, blinker pan, a radio tune-in and
       a Channel 3000 seek, listening for fade, pan and loop-seam drift.
-- [ ] Known Hearken gaps, each with a CHANGELOG line. Tracker modules (`.mod`, `.xm`, `.it`, `.s3m`, `.mo3`) are refused,
-      since no small pure-Rust player exists. HLS stations whose segments
-      are fragmented MP4 (CMAF), or that carry audio only in an
-      `EXT-X-MEDIA` rendition, do not play yet. And Hearken verifies a
-      station's TLS certificate where BASS did not, so an HTTPS station
-      with a self-signed or expired certificate now fails to tune. On
+- [ ] Known Hearken gaps. The owner rule (2026-10-17) is that the
+      changelog does not announce the engine change or its side effects;
+      only a change a player must act on (Linux's ALSA) gets a line.
+      HE-AAC (AAC+ stations and their kind of `.m4a`) plays muffled, as
+      its base layer only: Fraunhofer's licence permits `fdk-aac` only
+      under AAC patent licences the game does not hold, so it stays off.
+      Tracker modules (`.mod`, `.xm`, `.it`, `.s3m`, `.mo3`) are refused,
+      since no small pure-Rust player exists. Hearken checks a station's
+      TLS certificate with the operating system's verifier, as a browser
+      does, where BASS did not check at all: a station whose server leaves
+      out an intermediate plays on Windows and macOS (the OS fetches it),
+      and one with a self-signed, expired or wrong-name certificate fails
+      to tune. On
       macOS, Kira reopens the output only when the old device disappears,
       so game sound stays on the device it opened on when the player
       switches outputs (BASS followed the system default; speech still
@@ -714,12 +721,13 @@ Everything found before 2026-09-25 moved to
       manual `rust.yml` run on Windows, Linux and macOS, the listening pass
       above, then the tag. Until Hearken is public, the `HEARKEN_TOKEN`
       secret must be set or the Rust jobs cannot fetch it.
-- [x] HE-AAC decision (owner, 2026-10-17): Hearken's `fdk-aac` feature is
-      on, so AAC+ stations and `.m4a` files decode in full through
-      Fraunhofer's FDK AAC. Its licence grants no AAC patent licence; the
-      owner accepted that for a free game.
-- [ ] Fragmented-MP4 (CMAF) HLS segments and `EXT-X-MEDIA` audio
-      renditions in Hearken's radio.
+- [ ] HE-AAC through the system decoder (owner, 2026-10-17: AAC+ stays on
+      its base layer for 1.9, since `fdk-aac`'s licence needs AAC patent
+      licences). BASS decoded AAC through Media Foundation on Windows and
+      Core Audio on macOS, whose platforms carry the licences; a Hearken
+      radio decoder on each would match it. Linux stays on the base layer.
+- [x] Fragmented-MP4 (CMAF) HLS segments and `EXT-X-MEDIA` audio
+      renditions in Hearken's radio (2026-10-17).
 - [ ] Tracker modules in personal playlists, if a small pure-Rust player
       (or libopenmpt) becomes worth carrying; `.mo3` stays out either way.
 - [ ] (Optional) Moving the screens onto Hearken's own screen stack. It

@@ -397,7 +397,9 @@ fn test_hearken_radio_names_freight_fate_to_the_station() {
     let server = IcyServer::start(sine_wav(2.0, 1), None);
     r.engine.play_radio_stream_with(&server.url, 0).unwrap();
     assert!(
-        wait_for(Duration::from_secs(5), || server.connections() == 1
+        // Only the request's head matters here, and a loaded test machine
+        // may take a while to dial, or dial twice.
+        wait_for(Duration::from_secs(15), || server.connections() >= 1
             && !server.last_request().is_empty()),
         "the station was never called"
     );

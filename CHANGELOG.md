@@ -144,10 +144,6 @@
 
 - **A slower vehicle ahead now plays the slowing-traffic sound, not a passing sound.**
 
-- **A few internet radio stations that stream in a newer HLS format no longer play for now.**
-
-- **Internet radio stations with an expired or self-signed security certificate no longer play.**
-
 - **On a Mac, game sound now stays on the output it started on when you switch outputs.** Speech still moves; restart the game to move the sound.
 
 - **On Linux, the game now needs the ALSA sound library, libasound2, to start.** Nearly every desktop already has it installed.
@@ -232,10 +228,6 @@
 - **What's new, when updating from an older preview snapshot, now lists every change since your copy.**
 
 - **Radio stations whose address is a .pls or .m3u playlist link now play.**
-
-### Removed
-
-- **Tracker music files (MOD, XM, S3M, IT and MO3) in your playlists no longer play.**
 
 ## 1.9.3 - 2026-10-06
 
