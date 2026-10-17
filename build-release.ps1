@@ -1,8 +1,8 @@
 # Build a standalone Freight Fate copy on Windows.
 #
 # Checks the prerequisites, installs the pinned Rust toolchain and the Python
-# tooling, then hands over to tools/build_release.py, which fetches BASS and
-# the music pack, builds the game, bakes the world, smokes the packaged build
+# tooling, then hands over to tools/build_release.py, which fetches the
+# music pack, builds the game, bakes the world, smokes the packaged build
 # and writes the portable zip to dist/. Extra arguments (for example --tag or
 # --cargo-target-dir) pass through to the builder.
 #

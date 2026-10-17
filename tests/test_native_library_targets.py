@@ -1,21 +1,19 @@
 """Which platforms the Rust build can actually get its native libraries on.
 
-A Mac tester found the port unbuildable for two reasons that no test would
-have caught: `tools/fetch_bass.py` bailed out on anything but Windows, so
-there was no BASS to load, and the `sdl2` crate linked with a bare `-lSDL2`
-that never looks in Homebrew's prefix, so the link failed with SDL2 sitting
-right there. Both are build configuration rather than gameplay, and both are
-invisible from a Windows machine -- which is exactly why they are pinned
-here rather than left to whoever next opens a Mac.
+A Mac tester once found the port unbuildable for two reasons that no test
+would have caught: the audio library fetcher bailed out on anything but
+Windows, and the `sdl2` crate linked with a bare `-lSDL2` that never looks in
+Homebrew's prefix, so the link failed with SDL2 sitting right there. Both are
+build configuration rather than gameplay, and both are invisible from a
+Windows machine -- which is exactly why they are pinned here rather than
+left to whoever next opens a Mac. (The fetcher went with BASS; the audio
+engine is now compiled in.)
 """
 
 from __future__ import annotations
 
-import importlib.util
-import sys
 from pathlib import Path
 
-import pytest
 import tomllib
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -30,89 +28,14 @@ def test_cargo_supplies_current_cmake_compatibility_for_bundled_sdl2():
     }
 
 
-def load_fetch_bass():
-    path = REPO_ROOT / "tools" / "fetch_bass.py"
-    spec = importlib.util.spec_from_file_location("fetch_bass", path)
-    assert spec is not None and spec.loader is not None
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-@pytest.mark.parametrize(
-    "platform, expected",
-    [
-        ("win32", ["windows-x86_64"]),
-        # One universal download serves both, and filling both means a build
-        # targeting either architecture finds its library.
-        ("darwin", ["macos-x86_64", "macos-aarch64"]),
-    ],
-)
-def test_fetch_bass_covers_the_platforms_the_game_ships_on(monkeypatch, platform, expected):
-    fetch_bass = load_fetch_bass()
-    monkeypatch.setattr(sys, "platform", platform)
-    assert fetch_bass.target_keys() == expected
-
-
-def test_every_fetch_bass_target_has_a_pinned_table():
-    fetch_bass = load_fetch_bass()
-    assert set(fetch_bass.TARGETS) == {
-        "windows-x86_64",
-        "macos-x86_64",
-        "macos-aarch64",
-        "linux-x86_64",
-        "linux-aarch64",
-    }
-    for key, files in fetch_bass.TARGETS.items():
-        assert files, f"{key} has no pinned files"
-        for name, (url, member, want) in files.items():
-            assert len(want) == 64, f"{key}/{name} is not a sha256"
-            assert url.startswith("https://"), f"{key}/{name} has no download URL"
-            # No member means the URL is the library itself, not a zip.
-            assert member or url.endswith("/" + name), f"{key}/{name} names no file"
-
-
-@pytest.mark.parametrize(
-    "machine, expected",
-    [
-        ("x86_64", ["linux-x86_64"]),
-        # The Blazie BT Speak and BT Braille, Raspberry Pi and the ARM CI
-        # runner all report aarch64; macOS-style arm64 is accepted too.
-        ("aarch64", ["linux-aarch64"]),
-        ("arm64", ["linux-aarch64"]),
-    ],
-)
-def test_fetch_bass_fills_the_linux_directory_for_its_architecture(monkeypatch, machine, expected):
-    fetch_bass = load_fetch_bass()
-    monkeypatch.setattr(sys, "platform", "linux")
-    monkeypatch.setattr(fetch_bass.platform, "machine", lambda: machine)
-    assert fetch_bass.target_keys() == expected
-
-
-def test_linux_aarch64_pins_the_aarch64_slice_of_the_same_archives():
-    """One un4seen archive per add-on carries every slice, so the two Linux
-    tables must name the same downloads and differ only in slice and hash."""
-    fetch_bass = load_fetch_bass()
-    x86 = fetch_bass.TARGETS["linux-x86_64"]
-    arm = fetch_bass.TARGETS["linux-aarch64"]
-    assert set(x86) == set(arm)
-    for name, (url, member, want) in arm.items():
-        x86_url, x86_member, x86_want = x86[name]
-        assert url == x86_url
-        assert member == x86_member.replace("x86_64", "aarch64")
-        assert member.startswith("libs/aarch64/")
-        assert want != x86_want, f"{name}: the aarch64 pin repeats the x86_64 hash"
-
-
-def test_fetch_bass_refuses_a_platform_it_has_no_pins_for(monkeypatch):
-    """A Linux machine that is neither x86_64 nor aarch64 has no pinned build;
-    guessing an un4seen URL for it would be worse than saying so."""
-    fetch_bass = load_fetch_bass()
-    monkeypatch.setattr(sys, "platform", "linux")
-    monkeypatch.setattr(fetch_bass.platform, "machine", lambda: "riscv64")
-    with pytest.raises(SystemExit) as excinfo:
-        fetch_bass.target_keys()
-    assert "FREIGHT_FATE_BASS_PATH" in str(excinfo.value)
+def test_no_audio_library_is_fetched_or_shipped():
+    """The audio engine is Hearken, compiled into the executable: there is
+    no proprietary audio library to fetch per platform, and no add-on plugin
+    folder to ship beside it."""
+    assert not (REPO_ROOT / "tools" / "fetch_bass.py").exists()
+    assert not (REPO_ROOT / "crates" / "bass-sys").exists()
+    lib = REPO_ROOT / "assets" / "lib"
+    assert not lib.exists() or not any(lib.glob("bass*"))
 
 
 def test_linux_carries_sdl2_statically():

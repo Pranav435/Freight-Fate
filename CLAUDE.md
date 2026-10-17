@@ -6,7 +6,7 @@ blind and low-vision players. Full contributor policy lives in
 authoring time.
 
 **Career 1.9 is a native Rust game.** The Cargo workspace under `crates/`
-(`ff-core`, `freight-fate`, `bass-sys`) is the shipping
+(`ff-core`, `freight-fate`) is the shipping
 runtime, on both `dev` and `main`. The Python game is gone (its last release
 is the `v1.8.8.1` tag, and 1.8 gets no further releases); `tools/` stays
 Python for baking, packaging, and data generation. The world data tree is
@@ -55,14 +55,15 @@ Read this before opening files; the rest is discoverable from `lib.rs` docs.
   which is what a session log with `FREIGHT_FATE_LOG_FILE` set reads as.
 - **Speech and audio are pluggable and optional.** `speech/` has the live
   Prism backend on its own worker thread, a capture sink the tests read
-  transcripts from, and fakes. `audio/` is BASS behind a backend trait with a
-  null fallback. The Prism screen-reader and TTS library comes from the
+  transcripts from, and fakes. `audio/` is the Hearken engine (the
+  `hearken` git dependency: Kira playback, decoding and the radio) behind a
+  backend trait with a null fallback. The Prism screen-reader and TTS library comes from the
   `prismer` crate, compiled from source (CMake and a C++23 compiler) and
   linked into the executable; it opens the screen-reader client DLLs and
   Speech Dispatcher at run time, so a missing reader costs that reader, not
   the game.
-  `bass-sys` declares the BASS C ABI by hand and loads the DLL at run time,
-  so a machine without BASS still starts the game.
+  Hearken opens the sound device off the game thread, so a machine with no
+  device still starts the game, silent, and the menu says so.
 - **Environment variables are two different roots.** `FREIGHT_FATE_DATA_ROOT`
   is where world data comes from; `FREIGHT_FATE_DATA_DIR` is where settings,
   saves and the keyring-backed token go. The playtest harness redirects the
@@ -158,9 +159,8 @@ cleanup](https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.ht
 
 - Setup: install `rustup` (the pinned toolchain and its `rustfmt`/Clippy
   components come from `rust-toolchain.toml` via `rustup show`), then
-  `uv sync` and `uv run python tools/fetch_bass.py` for the licensed BASS
-  runtime. Without BASS the workspace still builds and the audio tests skip
-  themselves, which reads as a green run that proved nothing -- so fetch it.
+  `uv sync`. The audio engine is the `hearken` crate, fetched by Cargo from
+  its git repository; there is no native audio library to install.
 - Run the game: `cargo run --release -p freight-fate`
 - Format: `cargo fmt --all --check`
 - Lint: `cargo clippy --all-targets --locked -- -D warnings`. Warnings are
@@ -257,7 +257,7 @@ cleanup](https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.ht
 - Rust CI (`.github/workflows/rust.yml`) tests the game on **Windows only**,
   deliberately (ff-core, which is headless, runs its tests on Linux in
   parallel): SDL2 is vendored for `windows-x86_64` alone. macOS and Linux build from
-  source (BASS is fetched for both, Prism is vendored, and SDL2 is compiled
+  source (Hearken comes through Cargo, Prism is vendored, and SDL2 is compiled
   in statically via the crate's `bundled` + `static-link` features -- NEVER
   Homebrew's sdl2, which is sdl2-compat and loads SDL3 at runtime, dying on
   player Macs; on Linux a system libSDL2 differs per distro) and are built,
