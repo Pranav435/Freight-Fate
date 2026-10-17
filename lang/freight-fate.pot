@@ -35109,17 +35109,18 @@ msgstr ""
 msgid "The chain law still stands."
 msgstr ""
 
-#. placeholders: {waited}
+#. placeholders: {waited_text}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "You waited {waited}, and your 14-hour duty window is nearly used up."
+msgid ""
+"You waited {waited_text}, and your 14-hour duty window is nearly used up."
 msgstr ""
 
-#. placeholders: {waited}
+#. placeholders: {waited_text}
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid ""
-"You waited {waited}, and your 14-hour duty window is nearly used up. The "
-"chain law still stands. Sleep at the checkpoint from the pause menu, or "
+"You waited {waited_text}, and your 14-hour duty window is nearly used up. "
+"The chain law still stands. Sleep at the checkpoint from the pause menu, or "
 "turn back."
 msgstr ""
 
@@ -35128,11 +35129,23 @@ msgstr ""
 msgid "Sleep at the checkpoint from the pause menu."
 msgstr ""
 
-#. placeholders: {waited}
+#. placeholders: {waited_text}
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid ""
-"You waited {waited}, and your 14-hour duty window is nearly used up. The "
-"chain law still stands. Sleep at the checkpoint from the pause menu."
+"You waited {waited_text}, and your 14-hour duty window is nearly used up. "
+"The chain law still stands. Sleep at the checkpoint from the pause menu."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Your 14-hour duty window is nearly used up. The chain law still stands. "
+"Sleep at the checkpoint from the pause menu, or turn back."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid ""
+"Your 14-hour duty window is nearly used up. The chain law still stands. "
+"Sleep at the checkpoint from the pause menu."
 msgstr ""
 
 #. one sentence of a longer line
@@ -35157,9 +35170,9 @@ msgstr ""
 msgid "chain checkpoint"
 msgstr ""
 
-#. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Take a break, wait, or sleep at the checkpoint."
+msgid ""
+"The chain law lifted overnight. The officer waves you back onto the highway."
 msgstr ""
 
 #. placeholders: {drive}
@@ -35174,7 +35187,13 @@ msgstr ""
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid ""
 "Turning back takes {drive}, more driving than you have before your "
-"30-minute break. Take a break, wait, or sleep at the checkpoint."
+"30-minute break. Wait here half an hour for your break, or sleep at the "
+"checkpoint."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "Wait here half an hour for your break, or sleep at the checkpoint."
 msgstr ""
 
 #. placeholders: {drive}

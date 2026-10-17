@@ -1143,7 +1143,7 @@ fn test_turning_back_past_the_8_hour_break_limit_is_refused() {
     assert_eq!(
         line,
         "Turning back takes 20 minutes, more driving than you have before your 30-minute break. \
-         Take a break, wait, or sleep at the checkpoint."
+         Wait here half an hour for your break, or sleep at the checkpoint."
     );
     assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
     assert_eq!(with_drive(&drive, |d| d.trip.position_mi), position);
@@ -1159,7 +1159,72 @@ fn test_an_expired_window_does_not_offer_a_turn_back_that_would_be_refused() {
     let line = drive_and_ctx(&drive, &mut app, |d, ctx| d.wait_for_chain_law_to_lift(ctx))
         .expect("held, so it answers");
     assert!(
-        line.ends_with("The chain law still stands. Sleep at the checkpoint from the pause menu."),
+        line.starts_with("Your 14-hour duty window is nearly used up.")
+            && line.ends_with(
+                "The chain law still stands. Sleep at the checkpoint from the pause menu."
+            ),
         "{line}"
+    );
+}
+
+#[test]
+fn test_an_alert_that_expires_overnight_lifts_the_hold_after_a_checkpoint_sleep() {
+    use ff_core::sim::real_weather_alerts::{WeatherAlert, WeatherAlertsProvider};
+    use freight_fate::states::base::Menu;
+    use freight_fate::states::driving_rest_states::ShoulderSleepConfirmationState;
+    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::sync::Arc;
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "realistic".to_string();
+    let drive = held_with_no_chains(&mut app);
+    let (lat, lon) = with_drive(&drive, |d| {
+        d.trip.weather.forced = Some(WeatherKind::Clear);
+        d.trip.weather.current = WeatherKind::Clear;
+        d.trip.latlon_at(None)
+    });
+    let ticks = Arc::new(AtomicU64::new(0));
+    let clock_ticks = Arc::clone(&ticks);
+    let alerts = Arc::new(
+        WeatherAlertsProvider::new(Arc::new(ClearedFeed))
+            .with_threaded(false)
+            .with_clock(Arc::new(move || {
+                clock_ticks.fetch_add(1, Ordering::SeqCst) as f64 * 3600.0
+            })),
+    );
+    let storm = WeatherAlert {
+        id: "storm".to_string(),
+        event: "Winter Storm Warning".to_string(),
+        severity: "Severe".to_string(),
+        headline: "Winter Storm Warning issued".to_string(),
+        area: "Here".to_string(),
+        description: "* WHAT...Heavy snow.".to_string(),
+    };
+    alerts.seed(lat, lon, vec![storm.clone()]);
+    app.ctx.settings.real_weather = true;
+    app.ctx.set_weather_alerts_provider(alerts);
+    with_drive(&drive, |d| d.trip.live_alerts = vec![storm]);
+    assert!(with_drive(&drive, |d| d.trip.chain_law_level()) > 0);
+    let anchor = with_drive(&drive, |d| d.trip.position_mi);
+    let mut confirm =
+        ShoulderSleepConfirmationState::at_chain_checkpoint(drive_ref(&drive), anchor);
+    let items = confirm.build_items(&mut app.ctx);
+    let index = items
+        .iter()
+        .position(|item| item.text(&confirm, &app.ctx) == "Sleep at the checkpoint")
+        .expect("the sleep row");
+    confirm.menu_mut().items = items;
+    confirm.menu_mut().index = index;
+    app.clear_speech();
+    confirm.activate(&mut app.ctx);
+    assert!(
+        !with_drive(&drive, |d| d.chain_checkpoint_hold),
+        "the hold lifted"
+    );
+    assert!(
+        app.main_lines()
+            .iter()
+            .any(|s| s.contains("The chain law lifted overnight.")),
+        "{:?}",
+        app.main_lines()
     );
 }

@@ -197,6 +197,11 @@ pub fn perform_shoulder_sleep(
             hos::SHOULDER_DAMAGE_PCT
         ));
     }
+    if at_chain_checkpoint {
+        if let Some(line) = driving.recheck_chain_checkpoint_hold_after_rest(ctx) {
+            parts.push(line.to_string());
+        }
+    }
     let snapshot = driving.snapshot(ctx);
     {
         let p = profile_mut_of(ctx);

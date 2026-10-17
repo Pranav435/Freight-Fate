@@ -828,21 +828,30 @@ impl DrivingState {
                 ));
             }
             if duty_limit.is_some_and(|limit| hos_of(ctx).duty_min + CHAIN_WAIT_STEP_MIN > limit) {
-                let waited = ff_core::sim::hos::duration_text(waited / 60.0);
                 // Turning back is offered only when the drive back still
-                // fits the hours; otherwise it would just be refused.
-                return Some(if self.chain_turn_back_refusal(ctx).is_none() {
-                    format!(
-                        "You waited {waited}, and your 14-hour duty window is nearly used up. \
-                         The chain law still stands. Sleep at the checkpoint from the pause \
+                // fits the hours; otherwise it would just be refused. With
+                // nothing waited yet, no "You waited 0 minutes".
+                let turn_back = self.chain_turn_back_refusal(ctx).is_none();
+                let waited_text = ff_core::sim::hos::duration_text(waited / 60.0);
+                return Some(match (waited > 0.0, turn_back) {
+                    (true, true) => format!(
+                        "You waited {waited_text}, and your 14-hour duty window is nearly used \
+                         up. The chain law still stands. Sleep at the checkpoint from the pause \
                          menu, or turn back."
-                    )
-                } else {
-                    format!(
-                        "You waited {waited}, and your 14-hour duty window is nearly used up. \
-                         The chain law still stands. Sleep at the checkpoint from the pause \
+                    ),
+                    (true, false) => format!(
+                        "You waited {waited_text}, and your 14-hour duty window is nearly used \
+                         up. The chain law still stands. Sleep at the checkpoint from the pause \
                          menu."
-                    )
+                    ),
+                    (false, true) => "Your 14-hour duty window is nearly used up. The chain law \
+                                      still stands. Sleep at the checkpoint from the pause menu, \
+                                      or turn back."
+                        .to_string(),
+                    (false, false) => "Your 14-hour duty window is nearly used up. The chain \
+                                       law still stands. Sleep at the checkpoint from the pause \
+                                       menu."
+                        .to_string(),
                 });
             }
             if waited >= CHAIN_WAIT_MAX_MIN {
@@ -865,6 +874,25 @@ impl DrivingState {
             // otherwise only re-read after the truck moves.
             self.refresh_weather_alerts_here(ctx);
         }
+    }
+
+    /// After a sleep at the checkpoint: ask again for the warnings and the
+    /// live sky where the truck stands, and release the hold when the law
+    /// lifted overnight. Returns the line to add, or None while it stands.
+    pub fn recheck_chain_checkpoint_hold_after_rest(
+        &mut self,
+        ctx: &mut GameContext,
+    ) -> Option<&'static str> {
+        if !self.chain_checkpoint_hold {
+            return None;
+        }
+        self.refresh_weather_alerts_here(ctx);
+        self.trip.weather.update(0.0);
+        if self.trip.chain_law_level() > 0 {
+            return None;
+        }
+        self.chain_checkpoint_hold = false;
+        Some("The chain law lifted overnight. The officer waves you back onto the highway.")
     }
 
     /// A set aboard that can still go on: owned and not worn out.
@@ -906,7 +934,7 @@ impl DrivingState {
         Some(if limit.kind == "break" {
             format!(
                 "Turning back takes {drive}, more driving than you have before your 30-minute \
-                 break. Take a break, wait, or sleep at the checkpoint."
+                 break. Wait here half an hour for your break, or sleep at the checkpoint."
             )
         } else {
             format!(
