@@ -521,7 +521,7 @@ fn list_speech_backends() -> i32 {
                 (usable(backend.as_ref()), note.to_string())
             }
             // The ordinary case for every reader this machine does not have.
-            Err(prismer::Error::BackendNotAvailable) => {
+            Err(freight_fate::speech::backend::SpeechError::BackendNotAvailable) => {
                 (false, "not installed or not running here".to_string())
             }
             Err(err) => (false, err.to_string()),

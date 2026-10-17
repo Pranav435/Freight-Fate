@@ -169,6 +169,12 @@ impl SpeechSink for TeeSpeech {
     fn refresh(&mut self) -> bool {
         self.inner.refresh()
     }
+    fn is_speaking(&self) -> bool {
+        self.inner.is_speaking()
+    }
+    fn startup_hold(&self) -> std::time::Duration {
+        self.inner.startup_hold()
+    }
     fn shutdown(&mut self) {
         self.inner.shutdown();
     }

@@ -828,7 +828,6 @@ dependencies = [
  "log",
  "once_cell",
  "parking_lot",
- "prismer",
  "raw-window-handle",
  "regex",
  "sdl2",

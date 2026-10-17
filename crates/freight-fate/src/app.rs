@@ -415,7 +415,8 @@ impl App {
         // Prism on its own worker thread: a wedged screen-reader or SAPI
         // call costs sentences, never the drive (a synchronous call here
         // froze the whole game at an I-77 merge -- Shane, 2026-08-30).
-        let speech: Box<dyn SpeechSink> = Box::new(crate::speech::ThreadedSpeech::spawn());
+        let speech: Box<dyn SpeechSink> =
+            Box::new(crate::speech::ThreadedSpeech::spawn(crate::speech::env()));
         boot_timing::mark("speech");
         // Deferred: the output-device open runs on a worker thread, so a
         // machine where the probe hangs boots reading input instead of deaf.

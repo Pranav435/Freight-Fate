@@ -28,7 +28,7 @@ use ff_core::settings::Settings;
 use ff_core::speech_pacing::EventSpeechPacer;
 
 use crate::audio::{Audio, AudioError, SustainLoopSpec, VolumeUpdate};
-use crate::speech::{CaptureSpeech, SpeechSink};
+use crate::speech::CaptureSpeech;
 
 use super::App;
 
@@ -355,91 +355,9 @@ impl Drop for TestApp {
 }
 
 /// A `SpeechSink` over a shared `CaptureSpeech`, so the test keeps a handle
-/// to read what the app said while the app owns the sink.
-pub struct SharedCapture(pub Rc<RefCell<CaptureSpeech>>);
-
-impl SpeechSink for SharedCapture {
-    fn say(&mut self, text: &str, interrupt: bool) {
-        self.0.borrow_mut().say(text, interrupt)
-    }
-    fn say_event(&mut self, text: &str, interrupt: bool) {
-        self.0.borrow_mut().say_event(text, interrupt)
-    }
-    fn stop_main(&mut self) {
-        self.0.borrow_mut().stop_main()
-    }
-    fn stop_event(&mut self) {
-        self.0.borrow_mut().stop_event()
-    }
-    fn stop(&mut self) {
-        self.0.borrow_mut().stop()
-    }
-    fn poll(&mut self, dt: f64) {
-        self.0.borrow_mut().poll(dt)
-    }
-    fn request_refresh(&mut self) {
-        self.0.borrow_mut().request_refresh()
-    }
-    fn available(&self) -> bool {
-        self.0.borrow().available()
-    }
-    fn backend_name(&self) -> String {
-        self.0.borrow().backend_name()
-    }
-    fn has_separate_event_voice(&self) -> bool {
-        self.0.borrow().has_separate_event_voice()
-    }
-    fn event_backend_name(&self) -> String {
-        self.0.borrow().event_backend_name()
-    }
-    fn supports_rate(&self) -> bool {
-        self.0.borrow().supports_rate()
-    }
-    fn supports_pitch(&self) -> bool {
-        self.0.borrow().supports_pitch()
-    }
-    fn supports_volume(&self) -> bool {
-        self.0.borrow().supports_volume()
-    }
-    fn event_supports_rate(&self) -> bool {
-        self.0.borrow().event_supports_rate()
-    }
-    fn event_backend_options(&self) -> Vec<String> {
-        self.0.borrow().event_backend_options()
-    }
-    fn select_event_backend(&mut self, name: Option<&str>) {
-        self.0.borrow_mut().select_event_backend(name)
-    }
-    fn set_braille_only(&mut self, on: bool) {
-        self.0.borrow_mut().set_braille_only(on)
-    }
-    fn supports_braille(&self) -> bool {
-        self.0.borrow().supports_braille()
-    }
-    fn voice_names(&self) -> Vec<String> {
-        self.0.borrow().voice_names()
-    }
-    fn configure(
-        &mut self,
-        rate: Option<f64>,
-        pitch: Option<f64>,
-        volume: Option<f64>,
-        voice: Option<&str>,
-    ) {
-        self.0.borrow_mut().configure(rate, pitch, volume, voice)
-    }
-    fn say_adjustment_preview(&mut self, setting: &str, text: &str, interrupt: bool) -> bool {
-        self.0
-            .borrow_mut()
-            .say_adjustment_preview(setting, text, interrupt)
-    }
-    fn refresh(&mut self) -> bool {
-        self.0.borrow_mut().refresh()
-    }
-    fn shutdown(&mut self) {
-        self.0.borrow_mut().shutdown()
-    }
-}
+/// to read what the app said while the app owns the sink. Hearken's, kept at
+/// this path for the tests that name it here.
+pub use crate::speech::SharedCapture;
 
 /// A controllable clock for the pacer (`FakeClock` in the Python tests).
 #[derive(Clone)]
