@@ -247,6 +247,25 @@ fn match_from<'s, 'a>(
                     return false;
                 }
             };
+            // Only a space between this hole and the next ("How to play.
+            // {controls} {page_title}"): a sentence ends at the split, so try
+            // the spaces after a full stop first, farthest first, before
+            // every space nearest first.
+            if next_text.trim().is_empty() {
+                let ends: Vec<usize> = line[pos..]
+                    .match_indices(next_text)
+                    .map(|(at, _)| pos + at)
+                    .filter(|&at| at > pos && line[..at].ends_with(['.', '!', '?']))
+                    .collect();
+                for &at in ends.iter().rev() {
+                    let depth = out.len();
+                    out.push((name, &line[pos..at]));
+                    if match_from(after, line, at + next_text.len(), out) {
+                        return true;
+                    }
+                    out.truncate(depth);
+                }
+            }
             // Try each place the next literal appears, nearest first. A hole
             // may be empty: optional pieces ("{rest}") often are.
             let mut from = pos;

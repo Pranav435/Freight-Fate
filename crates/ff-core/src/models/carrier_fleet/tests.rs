@@ -329,33 +329,16 @@ fn test_owner_operators_are_never_slip_seated() {
 
 #[test]
 fn test_the_assignment_reason_is_spoken_plainly() {
-    // The driver is told why they are in this truck, in driver words.
+    // The driver is told which truck this run is in, in driver words.
     let profile = fleet_driver(6);
     let long_run = job(900.0, 12.0);
-    let text = assignment_reason_text::<FakeProfile, _>(
-        assigned_truck_key(&profile, Some(&long_run)),
-        Some(&long_run),
-        None,
-        false,
-    );
-    assert!(text.contains("bunk"));
+    let text =
+        assignment_reason_text::<FakeProfile>(assigned_truck_key(&profile, Some(&long_run)), None);
     let lowered = text.to_lowercase();
     for marker in ["osm", "_", "spec=", "cab=", "key=", "none"] {
         assert!(!lowered.contains(marker));
     }
-    assert_eq!(
-        text,
-        "Dispatch put you in the mid-roof runner for this run: this one is too far to \
-         finish in a shift, so you need the bunk."
-    );
-    let heavy = job(140.0, 24.0);
-    assert!(assignment_reason_text::<FakeProfile, _>(
-        assigned_truck_key(&profile, Some(&heavy)),
-        Some(&heavy),
-        None,
-        false
-    )
-    .contains("heavy"));
+    assert_eq!(text, "Truck for this run: mid-roof runner.");
 }
 
 #[test]
@@ -405,14 +388,10 @@ fn test_a_dedicated_driver_hears_why_the_yard_held_their_truck_back() {
     );
     assert!(withheld_promotion_text(&profile)
         .starts_with("You keep the standard rig you are in, exactly as it stands. "));
-    let long_run = job(900.0, 12.0);
-    assert!(
-        assignment_reason_text("yard_mule", Some(&long_run), Some(&profile), false)
-            .starts_with("Dispatch has you in the yard mule for this run. Your level earns")
-    );
     assert_eq!(
-        assignment_reason_text("yard_mule", Some(&long_run), Some(&profile), true),
-        "Yard mule. Held back from the long-haul fleet: your dispatch trust is down."
+        assignment_reason_text("yard_mule", Some(&profile)),
+        "Truck for this run: yard mule. Held back from the long-haul fleet: your dispatch \
+         trust is down."
     );
 
     // A driver in good standing at the same level hears nothing -- there is
@@ -424,14 +403,13 @@ fn test_a_dedicated_driver_hears_why_the_yard_held_their_truck_back() {
 }
 
 #[test]
-fn test_fleet_upgrade_announcement_hands_the_truck_over_serviced() {
+fn test_fleet_upgrade_announcement_names_the_new_truck() {
     let text = fleet_upgrade_announcement(&profile_at_level(9, "Driver A"));
     let model = truck_model("highline_sleeper").unwrap();
     assert_eq!(
         text,
         format!(
-            "Dispatch upgraded your assigned tractor. Now running a {}: {} Handed over \
-             fueled, serviced, and washed.",
+            "Dispatch upgraded your assigned tractor. Now running a {}: {}",
             model.label, model.description
         )
     );

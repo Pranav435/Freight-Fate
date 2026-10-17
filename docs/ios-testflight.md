@@ -1,7 +1,8 @@
 # Freight Fate on TestFlight
 
 A manual GitHub Actions workflow builds the iOS game, signs it and uploads it
-to TestFlight for internal testers. The workflow file is
+to TestFlight for internal testers and, by default, the external Friends
+group. The workflow file is
 .github/workflows/ios-testflight.yml. It never runs by itself: no push, tag or
 pull request starts it, and it makes no tag and no release.
 
@@ -14,6 +15,25 @@ Dispatch it from dev. The upload input decides what the run does:
   to TestFlight, changes nothing in App Store Connect, and the run summary says so. The signed ipa is kept
   as a workflow artifact for one day. It holds no key or password.
 - upload=true: the same, then the signed build goes to TestFlight.
+
+Who gets an uploaded build is the testers input:
+
+- testers=friends (the default): the Internal group gets the build as soon as
+  Apple finishes processing it. The run also adds it to the external Friends
+  group (the public TestFlight link) and submits it to Apple's beta review.
+  Friends get it once Apple approves it, usually within a few hours; later
+  builds of an approved version often pass at once.
+- testers=internal: only the Internal group gets it, for a build you want to
+  try yourself first. Send it to Friends later in App Store Connect
+  (TestFlight, the build, Groups) or with
+  `python3 tools/ios_signing.py distribute --build-number N`.
+
+The whats_new input is the "What to Test" note testers read in the TestFlight
+app. Leave it empty and the note is the branch and commit, which means nothing
+to Friends, so write one or two plain sentences for a build that goes to them:
+
+    gh workflow run ios-testflight.yml -R orinks-games/Freight-Fate --ref dev \
+      -f upload=true -f whats_new="New touch controls: a flick is one step."
 
 Recommended first run, verification only:
 
@@ -98,6 +118,8 @@ first time, and reuses it after that.
    finish processing. The export compliance answer ("no non-exempt encryption")
    comes from ITSAppUsesNonExemptEncryption in Info.plist; the workflow does not
    set it again, because Apple rejects a second update with HTTP 409.
+   With testers=friends it then adds the build to the Friends group and submits
+   it for beta review.
 7. Always, even after a failure: deletes the keychain and every key file on the
    runner. Nothing in App Store Connect is deleted or revoked.
 
@@ -113,6 +135,8 @@ Each failure prints one plain error line naming the fix.
   allowed to do this". Give the key App Manager or Admin access.
 - Key rejected (HTTP 401): the three ASC secrets do not belong to one live key.
 - Stored certificate gone or expired: replace it as described above.
+- No Friends group: "There is no external TestFlight group named 'Friends'".
+  The build was still uploaded for internal testers.
 - Keychain refused the .p12: the password secret does not match, or the file
   was written without -legacy.
 

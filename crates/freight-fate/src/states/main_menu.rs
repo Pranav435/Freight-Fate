@@ -233,21 +233,17 @@ pub fn first_day_orientation_message(ctx: &GameContext, prefix: &str) -> String 
     );
     if option.is_owner_operator() {
         return format!(
-            "{prefix}First-day briefing: leased to {}, parked at {location}. You own a new \
-             truck with a full tank and {} dollars of working capital. Fuel, repairs, truck \
-             wear, trailer programs, and business reserves come out of your cash. First \
-             objective: open the dispatch board and choose an unlocked load with a deadline \
-             you can protect.",
+            "{prefix}First-day briefing: leased to {} at {location}. New truck, {} dollars \
+             working capital. Fuel, repairs, wear, trailers, and reserves come from your cash. \
+             Next: dispatch board.",
             option.carrier_name,
             fmt_grouped(p.money(), 0)
         );
     }
     format!(
-        "{prefix}First-day briefing: welcome aboard {}. Your assigned truck is parked at \
-         {location}. The carrier covers fuel, repairs, insurance, and trailer support. \
-         Dispatch style: {}. As a new hire, dispatch assigns your load and route, and \
-         refusing an assignment goes on your service record. First objective: open the \
-         dispatch board, accept the assigned load, and deliver it cleanly.",
+        "{prefix}First-day briefing: {}. Truck at {location}. Carrier covers fuel, repairs, \
+         insurance, and trailers. Dispatch: {}. Assigned loads; a refusal goes on your record. \
+         Next: dispatch board.",
         option.carrier_name,
         option.dispatch.summary()
     )
@@ -259,8 +255,9 @@ pub fn first_state_after_career_creation(ctx: &GameContext) -> SharedState {
         return share(OnlineOfferState::default());
     }
     // The welcome is spoken just before this state is pushed, so its entry
-    // announcement queues behind it rather than cutting it off.
-    share(CityMenuState::new(ctx, true))
+    // announcement queues behind it rather than cutting it off, and leaves
+    // out the location the welcome just gave.
+    share(CityMenuState::after_briefing(ctx))
 }
 
 /// Resume a saved mid-trip delivery if there is one, else the terminal hub.
@@ -624,21 +621,9 @@ impl MainMenuState {
         ctx.profile = Some(latest);
         let lever_notes = apply_continue_levers(ctx);
         let p = ctx.profile.as_ref().expect("just loaded");
-        let welcome = if p.active_trip.is_some() {
-            format!("Welcome back, {}.", p.name)
-        } else {
-            let terminal_name = ctx
-                .world
-                .home_terminal(&p.current_city)
-                .map(|t| t.name)
-                .unwrap_or_default();
-            format!(
-                "Welcome back, {}. You are parked at {terminal_name} in {} with {} dollars.",
-                p.name,
-                ctx.world.spoken_city(&p.current_city, None),
-                fmt_grouped(p.money(), 0)
-            )
-        };
+        // The terminal (or the resumed drive) says where and with what
+        // right behind this line.
+        let welcome = format!("Welcome back, {}.", p.name);
         ctx.say(&welcome);
         // This welcome is spoken first; a resumed drive already queues its own
         // lines, and only the plain city-menu hand-off needs telling not to
@@ -827,7 +812,7 @@ impl Menu for MainMenuState {
             );
         }
         let text = format!(
-            "Welcome to Freight Fate, version {}. An audio trucking adventure across America. {warning}",
+            "Freight Fate {}. {warning}",
             updater::spoken_version(version())
         );
         ctx.say(text.trim_end());
@@ -888,7 +873,7 @@ impl Menu for MainMenuState {
             })
             .help(
                 "Drivers on duty, your orinks.net account, cloud backup \
-                 and restore, and sharing choices like Mastodon and Discord.",
+                 and restore, and Discord presence.",
             ),
         );
         items.push(
@@ -1080,11 +1065,7 @@ impl TextEntry for NameEntryState {
             ));
             return;
         }
-        ctx.say(
-            "New career. Type your driver name, then Enter. Left and Right \
-             arrows review the letters, Home and End jump to the start or \
-             end. Escape cancels.",
-        );
+        ctx.say("New career. Type your driver name, then Enter.");
     }
 
     fn confirm(&mut self, ctx: &mut GameContext) {

@@ -318,6 +318,25 @@ fn test_ff_music_stations_share_the_ff_dial_group() {
 }
 
 #[test]
+fn test_channel_3000_does_not_head_the_ff_stations() {
+    // No call sign used to sort it ahead of FFN and FFR, so the category
+    // jump landed on Channel 3000 (owner, 2026-10-13). It follows the
+    // lettered stations now, and the Roadhouse family leads.
+    let radio = RadioState::new(catalog()).with_position(Some(DALLAS));
+    let ff: Vec<String> = radio
+        .receivable_stations()
+        .into_iter()
+        .filter(|r| dial_group(&r.station) == 1)
+        .map(|r| r.station.id)
+        .collect();
+    assert_eq!(
+        ff.last().map(String::as_str),
+        Some(crate::channel3000::CHANNEL_3000_ID)
+    );
+    assert_eq!(ff.first().map(String::as_str), Some("ff-night-line"));
+}
+
+#[test]
 fn test_no_regional_signal_still_has_safe_and_afn_fallback_choices() {
     // The doubled radio reach (RADIO_REACH_MULT, 2026-08-13) closed the old
     // US-50 Nevada dead zone -- Reno and Las Vegas's community stations now

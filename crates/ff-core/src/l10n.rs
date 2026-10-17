@@ -167,14 +167,42 @@ pub fn resolve(setting: &str, system: Option<&str>) -> &'static str {
     language(setting).map_or(ENGLISH, |lang| lang.code)
 }
 
-/// Placeholder names whose value is a place or a proper name: never sent
+/// Placeholder words whose value is a place or a proper name: never sent
 /// through the catalog, so "Mobile" stays a city in Alabama and never
-/// becomes a phone.
+/// becomes a phone. A hole is a name when one of its words (split at `_`,
+/// trailing digits dropped) starts with one of these: `city2`, `the_city`,
+/// `destination`, `driver_name`. Matched by word, not anywhere in the name,
+/// so `replace` is not a place and `open_road_target` is not a road.
 const PROPER_NAME_HOLES: &[&str] = &[
     "city", "town", "village", "county", "state", "road", "street", "highway", "route", "exit",
     "where", "dest", "origin", "home", "station", "place", "artist", "song", "handle", "driver",
-    "shipper", "receiver", "brand", "chain", "carrier", "company", "landmark",
+    "shipper", "receiver", "brand", "chain", "carrier", "company", "landmark", "rcity",
 ];
+
+/// A last word that makes a hole a value about a place, not its name:
+/// `place_callouts`, `exit_speed`, `road_class`.
+const NOT_NAME_HEADS: &[&str] = &[
+    "callouts",
+    "direction",
+    "class",
+    "step",
+    "summary",
+    "done",
+    "next",
+    "word",
+    "speed",
+    "hint",
+    "note",
+    "clause",
+    "target",
+    "level",
+    "mph",
+    "s",
+    "min",
+];
+
+/// Holes that read like a place but hold a condition ("charged").
+const NOT_NAME_HOLES: &[&str] = &["air_state", "brake_state"];
 
 /// The help's control names (`{{engine}}` in the source, `{control_engine}`
 /// in the catalog): a key or button name, kept as the keyboard reads it.
@@ -182,14 +210,35 @@ const CONTROL_HOLE_PREFIXES: &[&str] = &["control_", "key_", "pad_"];
 
 fn is_proper_name_hole(name: &str) -> bool {
     let name = name.to_ascii_lowercase();
-    PROPER_NAME_HOLES.iter().any(|part| name.contains(part))
-        || CONTROL_HOLE_PREFIXES
-            .iter()
-            .any(|prefix| name.starts_with(prefix))
+    if CONTROL_HOLE_PREFIXES
+        .iter()
+        .any(|prefix| name.starts_with(prefix))
+    {
+        return true;
+    }
+    if NOT_NAME_HOLES.contains(&name.as_str()) {
+        return false;
+    }
+    let words: Vec<&str> = name
+        .split('_')
+        .map(|word| word.trim_end_matches(|c: char| c.is_ascii_digit()))
+        .filter(|word| !word.is_empty())
+        .collect();
+    if words
+        .last()
+        .is_none_or(|last| NOT_NAME_HEADS.contains(last))
+    {
+        return false;
+    }
+    words
+        .iter()
+        .any(|word| PROPER_NAME_HOLES.iter().any(|part| word.starts_with(part)))
 }
 
 /// How deep a line is split and its captures translated in turn.
-const MAX_DEPTH: usize = 3;
+// A drive-start line nests that deep: the line, its objective, the trip
+// progress inside it, and the distance inside that.
+const MAX_DEPTH: usize = 6;
 /// Lines whose translation is remembered (the drive repeats itself).
 const CACHE_LIMIT: usize = 8192;
 
@@ -217,6 +266,7 @@ impl Catalog {
         let mut templates = Vec::new();
         let mut problems = Vec::new();
         let mut position_cue = None;
+        let mut tails = Vec::new();
         for entry in entries {
             // An entry with a msgctxt tells a translator apart a second use
             // of the same English (the controller's Back button beside the
@@ -246,7 +296,11 @@ impl Catalog {
                 exact.insert(entry.msgid, entry.msgstr);
                 continue;
             }
-            let translation = parse_translation(&entry.msgstr);
+            // A template is matched against a trimmed piece, so a piece of a
+            // longer line (" Career objective: {terminal_text}") is compiled
+            // without the spaces that joined it.
+            let segs = parse_source(entry.msgid.trim());
+            let translation = parse_translation(entry.msgstr.trim());
             let unknown: Vec<&str> = translation
                 .iter()
                 .filter_map(|part| match part {
@@ -263,12 +317,29 @@ impl Catalog {
                 ));
                 continue;
             }
+            // "{flavor} Dispatch starts you on a short standard load." is
+            // also the sentence after the lead-in: a line split into
+            // sentences reaches it without its hole.
+            if let ([Seg::Hole(a), Seg::Lit(tail)], [Part::Hole(b), Part::Lit(out)]) =
+                (segs.as_slice(), translation.as_slice())
+            {
+                if a == b
+                    && tail.starts_with(' ')
+                    && out.starts_with(' ')
+                    && tail.trim_start().starts_with(char::is_uppercase)
+                {
+                    tails.push((tail.trim().to_string(), out.trim().to_string()));
+                }
+            }
             match Template::new(segs, translation) {
                 Ok(template) => templates.push(template),
                 // A joiner like "{a}, {b}" is not an error; the splitter
                 // already handles what it would.
                 Err(_) => continue,
             }
+        }
+        for (key, value) in tails {
+            exact.entry(key).or_insert(value);
         }
         // A fragment like "Billboard: " is also found by its bare words,
         // the way a piece reaches it after trimming.
@@ -411,8 +482,16 @@ impl Translator {
                 missed: &mut missed,
             }
             .line(line, 0)
+            .map(|out| {
+                if starts_lowercase(line) {
+                    out
+                } else {
+                    capitalize_first_letter(&out)
+                }
+            })
             .unwrap_or_else(|| line.to_string()),
         };
+        let out = contract_articles(&catalog.language, out);
         if let Some(log) = &self.misses {
             log.lock().record(&missed);
         }
@@ -481,6 +560,18 @@ impl Pass<'_, '_> {
         if let Some(hit) = self.catalog.exact.get(core) {
             return Some(wrap(hit.clone()));
         }
+        // "ELD status on duty not driving" inside "ELD: {summary}" is the
+        // catalog's whole sentence without its full stop. A whole sentence
+        // beats any template a loose fragment of it fills ("{driven} driving").
+        if !core.ends_with(['.', '!', '?', ':', ';', ',']) {
+            if let Some(hit) = self.catalog.exact.get(&format!("{core}.")) {
+                let out = hit
+                    .strip_suffix(['.', '\u{3002}'])
+                    .map(str::to_string)
+                    .unwrap_or_else(|| hit.clone());
+                return Some(wrap(out));
+            }
+        }
         // "In the right lane." is the catalog's exact "In the right lane"
         // with a full stop: that beats any template the stopped line also
         // fills ("{at} the {noun}.").
@@ -524,16 +615,34 @@ impl Pass<'_, '_> {
         if let Some((_, out)) = best {
             return Some(wrap(out));
         }
-        if !split || depth >= MAX_DEPTH {
+        if depth >= MAX_DEPTH {
             return None;
         }
-        if let Some(out) = self.embedded(core, depth) {
-            return Some(wrap(out));
+        // "ELD status on duty not driving" after "ELD: " is the catalog's
+        // sentence without its full stop.
+        if !core.ends_with(['.', '!', '?', ':', ';', ',']) {
+            if let Some((_, out)) = self.lookup(&format!("{core}."), depth) {
+                let out = out
+                    .strip_suffix(['.', '\u{3002}'])
+                    .map(str::to_string)
+                    .unwrap_or(out);
+                return Some(wrap(out));
+            }
+        }
+        if split {
+            if let Some(out) = self.embedded(core, depth) {
+                return Some(wrap(out));
+            }
         }
         for (clauses, splitter) in [
             (false, split_sentences as fn(&str) -> Vec<(&str, &str)>),
             (true, split_clauses),
         ] {
+            // A capture is split into sentences only when it holds several;
+            // clauses always, since they must all translate.
+            if !clauses && !split {
+                continue;
+            }
             let pieces = splitter(core);
             if pieces.len() < 2 {
                 continue;
@@ -548,7 +657,16 @@ impl Pass<'_, '_> {
                         catalog: self.catalog,
                         missed: &mut missed,
                     };
-                    inner.line(piece, depth + 1)
+                    // A sentence is a line of its own; only clauses go deeper.
+                    let deeper = if clauses { depth + 1 } else { depth };
+                    let out = inner.line(piece, deeper);
+                    // A sentence opens with a capital in the translation as
+                    // in English: "451 miles remaining" is "Quedan 451 millas".
+                    if clauses || starts_lowercase(piece) {
+                        out
+                    } else {
+                        out.map(|out| capitalize_first_letter(&out))
+                    }
                 };
                 any |= translated.is_some();
                 whole &= translated.is_some() || !has_words(piece) || is_name_like(piece);
@@ -590,7 +708,7 @@ impl Pass<'_, '_> {
             }
             let gap = &core[last..start];
             if !gap.trim().is_empty() {
-                let translated = self.line(gap, depth + 1);
+                let translated = self.line(gap, depth);
                 out.push_str(translated.as_deref().unwrap_or(gap));
             } else {
                 out.push_str(gap);
@@ -605,7 +723,7 @@ impl Pass<'_, '_> {
         }
         let gap = &core[last..];
         if !gap.trim().is_empty() {
-            let translated = self.line(gap, depth + 1);
+            let translated = self.line(gap, depth);
             out.push_str(translated.as_deref().unwrap_or(gap));
         } else {
             out.push_str(gap);
@@ -672,16 +790,91 @@ impl Pass<'_, '_> {
 
     /// The best template the line fills, rendered with its captures, and
     /// that template's literal weight.
+    /// A name with a catalog frame of its own whose every hole is a name
+    /// ("freight terminal Macon Terminal in Macon"): the frame translated,
+    /// the names kept.
+    fn place_phrase(&self, raw: &str) -> Option<String> {
+        if !raw.contains(' ') {
+            return None;
+        }
+        let (template, captures) = self.catalog.templates.best_match(raw, |template, caps| {
+            // "{place_name} in {city}" has few letters of its own, but here
+            // every hole is a name, so it is a frame around names.
+            template.segs.iter().any(|seg| {
+                    matches!(seg, Seg::Lit(text) if text.ends_with(" in ") || text.contains(" near "))
+                })
+                && caps.iter().all(|(name, value)| {
+                    is_proper_name_hole(name) && reads_as_name(value) && !value.contains(": ")
+                })
+        })?;
+        let mut out = String::new();
+        for part in &template.translation {
+            match part {
+                Part::Lit(text) => out.push_str(text),
+                Part::Hole(name) => {
+                    let raw = captures.get(name.as_str()).copied().unwrap_or_default();
+                    let bare = name
+                        .starts_with("the_")
+                        .then(|| raw.strip_prefix("the ").or(raw.strip_prefix("The ")))
+                        .flatten();
+                    out.push_str(bare.unwrap_or(raw));
+                }
+                Part::Plural(..) => return None,
+            }
+        }
+        Some(out)
+    }
+
     fn template(&mut self, core: &str, depth: usize) -> Option<(usize, String)> {
         // A one-sentence template never swallows several sentences into a
         // hole: "It is {tod}." must not match "It is 9:00. Fuel is low.",
         // which the sentence splitter translates whole.
         let (template, captures) = self.catalog.templates.best_match(core, |template, caps| {
-            if template.numbers_only() && !caps.values().all(|value| is_number(value)) {
+            // "{place}{state} on {highway}" has few letters of its own, but
+            // its holes are names: it matches when what fills them reads as
+            // names ("Groton", ", South Dakota", "US-12"), never words a loose
+            // match would swallow ("ELD status on duty not driving").
+            if template.numbers_only()
+                && !caps.iter().all(|(name, value)| {
+                    is_number(value) || (is_proper_name_hole(name) && reads_as_name(value))
+                })
+            {
                 return false;
             }
-            has_sentence_break(&template.filled)
-                || !caps.values().any(|value| has_sentence_break(value))
+            // A name never holds a lead-in: "{carrier} is looking for ..."
+            // must not take "Career objective: Northstar Freight Lines" as
+            // the carrier and leave the label English; nor does a hole that
+            // opens a template: "{name} Company Yard" must not take
+            // "company yard: Chicago" and say the label twice.
+            if caps.iter().any(|(name, value)| {
+                value.contains(": ")
+                    && (is_proper_name_hole(name)
+                        || (matches!(template.segs.first(), Some(Seg::Hole(first)) if first == name)
+                            && !template.filled.contains(':')))
+            }) {
+                return false;
+            }
+            // A name that opens a template reads as one: "{the_city} metro
+            // freight market" must not take "12 tons of general freight
+            // from Aberdeen yard in Aberdeen to the Fargo" as its city.
+            if let Some(Seg::Hole(first)) = template.segs.first() {
+                if is_proper_name_hole(first)
+                    && caps
+                        .get(first.as_str())
+                        .is_some_and(|value| !reads_as_place(value))
+                {
+                    return false;
+                }
+            }
+            // Only a hole that ends the template or opens a sentence of it
+            // may hold sentences of its own ("ELD: {summary}", "How to play.
+            // {controls} {page_title}"): "{pct} percent {direction}
+            // ahead{length}. {advice}" must not take a whole help text as
+            // its percent and leave it English.
+            let multi = has_sentence_break(&template.filled);
+            !caps.iter().any(|(name, value)| {
+                has_sentence_break(value) && !(multi && holds_sentences(&template.segs, name))
+            })
         })?;
         let mut out = String::new();
         // English words the holes would keep, untranslated, inside the
@@ -692,6 +885,16 @@ impl Pass<'_, '_> {
                 Part::Lit(text) => out.push_str(text),
                 Part::Hole(name) => {
                     let raw = captures.get(name.as_str()).copied().unwrap_or_default();
+                    if is_proper_name_hole(name) && depth < MAX_DEPTH {
+                        // A name hole can hold a place phrase around names:
+                        // "retail distribution hub {place_name} in {city}"
+                        // says its kind and "in" in the language, the names
+                        // as they are.
+                        if let Some(phrase) = self.place_phrase(raw) {
+                            out.push_str(&phrase);
+                            continue;
+                        }
+                    }
                     if is_proper_name_hole(name) || depth >= MAX_DEPTH {
                         // "{the_city}" holds "the Chicago" in English; the
                         // translation brings its own article, if any.
@@ -719,6 +922,18 @@ impl Pass<'_, '_> {
                         if translated.is_none() && !is_name_like(raw) && !is_measure(raw) {
                             kept_english += raw.chars().filter(|c| c.is_alphabetic()).count();
                         }
+                        let translated = match translated {
+                            // A capture that opens a sentence of the frame
+                            // opens with a capital: ". {progress}" is
+                            // ". Quedan 451 millas", not ". quedan".
+                            Some(text)
+                                if !starts_lowercase(raw)
+                                    && out.trim_end().ends_with(['.', '!', '?']) =>
+                            {
+                                Some(capitalize_first_letter(&text))
+                            }
+                            other => other,
+                        };
                         out.push_str(translated.as_deref().unwrap_or(raw));
                     }
                 }
@@ -751,6 +966,30 @@ fn capitalize(text: &str) -> String {
         Some(first) => first.to_uppercase().chain(chars).collect(),
         None => String::new(),
     }
+}
+
+/// The first letter is lowercase ("the Down arrow ..."): English did not
+/// open a sentence with a capital, so the translation need not either.
+fn starts_lowercase(text: &str) -> bool {
+    text.chars()
+        .find(|c| c.is_alphanumeric())
+        .is_some_and(char::is_lowercase)
+}
+
+/// `text` with its first letter (after any digits or marks) capitalized:
+/// "451 millas" stays, "quedan 451 millas" becomes "Quedan 451 millas".
+fn capitalize_first_letter(text: &str) -> String {
+    let Some((at, first)) = text.char_indices().find(|(_, c)| c.is_alphanumeric()) else {
+        return text.to_string();
+    };
+    if !first.is_lowercase() {
+        return text.to_string();
+    }
+    let mut out = String::with_capacity(text.len());
+    out.push_str(&text[..at]);
+    out.extend(first.to_uppercase());
+    out.push_str(&text[at + first.len_utf8()..]);
+    out
 }
 
 /// A number as the game writes one: "3", "1,250", "2.5", "3:15".
@@ -797,6 +1036,32 @@ fn is_name_like(text: &str) -> bool {
     capitalized && (text.split_whitespace().count() > 1 || text.chars().any(|c| c.is_ascii_digit()))
 }
 
+/// What fills a name hole reads as a name: empty, or every word opens with a
+/// capital, a digit or a mark ("Groton", ", South Dakota", "US-12").
+fn reads_as_name(text: &str) -> bool {
+    text.split_whitespace().all(|word| {
+        !word
+            .chars()
+            .find(|c| c.is_alphanumeric())
+            .is_some_and(char::is_lowercase)
+    })
+}
+
+/// Reads as a place's name with its small words: "Amazon Fulfillment
+/// Center KRB1 in Kenosha", "the Fargo", never "12 tons of general freight".
+fn reads_as_place(text: &str) -> bool {
+    const SMALL: &[&str] = &[
+        "the", "of", "in", "near", "and", "at", "on", "de", "la", "du",
+    ];
+    text.split_whitespace().all(|word| {
+        SMALL.contains(&word)
+            || !word
+                .chars()
+                .find(|c| c.is_alphanumeric())
+                .is_some_and(char::is_lowercase)
+    })
+}
+
 /// A number and its unit, as a readout says one: "2 miles", "3:15 PM".
 fn is_measure(text: &str) -> bool {
     text.trim_start().starts_with(|c: char| c.is_ascii_digit())
@@ -805,6 +1070,53 @@ fn is_measure(text: &str) -> bool {
 
 fn has_words(text: &str) -> bool {
     text.chars().filter(|c| c.is_alphabetic()).take(2).count() >= 2
+}
+
+/// Spanish joins a preposition to the article after it, which
+/// two catalog pieces put side by side do not: "por debajo de" + "el
+/// límite" is "por debajo del límite". A capital "El" is a name (El Paso)
+/// and stays apart.
+fn contract_articles(language: &str, out: String) -> String {
+    let pairs: &[(&str, &str)] = match language.split('_').next().unwrap_or_default() {
+        "es" => &[(" de el ", " del "), (" a el ", " al ")],
+        _ => return out,
+    };
+    let mut out = out;
+    for (apart, joined) in pairs {
+        if out.contains(apart) {
+            out = out.replace(apart, joined);
+        }
+    }
+    out
+}
+
+/// The hole may hold whole sentences: it is the template's last part, or
+/// a sentence of the template ends before it or opens after it.
+fn holds_sentences(segs: &[Seg], hole: &str) -> bool {
+    let Some(at) = segs
+        .iter()
+        .position(|seg| matches!(seg, Seg::Hole(name) if name == hole))
+    else {
+        return false;
+    };
+    if at + 1 == segs.len() {
+        return true;
+    }
+    // "{flavor} Dispatch starts you on ...": a sentence of the template
+    // opens right after it.
+    if let Some(Seg::Lit(text)) = segs.get(at + 1) {
+        if text.starts_with(char::is_whitespace)
+            && text.trim_start().starts_with(char::is_uppercase)
+        {
+            return true;
+        }
+    }
+    match at.checked_sub(1).map(|before| &segs[before]) {
+        Some(Seg::Lit(text)) => text
+            .trim_end()
+            .ends_with(['.', '!', '?', '\u{3002}', '\u{FF01}', '\u{FF1F}']),
+        _ => false,
+    }
 }
 
 fn has_sentence_break(text: &str) -> bool {

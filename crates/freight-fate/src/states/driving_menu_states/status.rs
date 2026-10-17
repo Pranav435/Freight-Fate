@@ -20,6 +20,7 @@ use crate::states::driving_core::{
 use crate::states::driving_menu_states::apps::DriverAppsState;
 use crate::states::driving_menu_states::commands::DrivingCommandsState;
 use crate::states::driving_menu_states::DriveRef;
+use crate::states::driving_radio_app::RadioStationListState;
 use crate::states::driving_stop_detail::StopDetailState;
 
 /// Live driving status, grouped into screens you open one at a time.
@@ -196,11 +197,14 @@ impl DrivingStatusScreenState {
                 // is answerable here, on demand, rather than only at pickup.
                 // Empty for other freight.
                 let tank_line = d.liquid_status_clause();
-                let time_line = format!(
-                    "Time: {} {}, {deadline_text}",
+                // The clock and its zone are one reading ("8:02 AM Central
+                // Time"), so a translation finds the zone as a whole.
+                let clock = format!(
+                    "{} {}",
                     clock_text(d.trip.local_hour()),
                     d.clock_zone_label(ctx)
                 );
+                let time_line = format!("Time: {clock}, {deadline_text}");
                 let band =
                     crate::states::driving_damage::damage_band_clause(&ctx.settings, &d.trip.truck);
                 let damage_band_suffix = if band.is_empty() {
@@ -227,8 +231,10 @@ impl DrivingStatusScreenState {
                 } else {
                     String::new()
                 };
+                // Named as the driver's own: a player name is kept as it is.
+                let driver_name = &profile.name;
                 let mut lines = vec![
-                    format!("Driver: {}", profile.name),
+                    format!("Driver: {driver_name}"),
                     format!("Money: {} dollars", fmt_grouped(profile.money(), 0)),
                     format!(
                         "Reputation: {}",
@@ -269,7 +275,8 @@ impl DrivingStatusScreenState {
                 if !trust.is_empty() {
                     lines.push(trust);
                 }
-                lines.push(format!("Hours: {}", hours.trim_end_matches('.')));
+                let summary = hours.trim_end_matches('.');
+                lines.push(format!("Hours: {summary}"));
                 lines.push(time_line);
                 lines
             })
@@ -497,6 +504,9 @@ impl DrivingStatusScreenState {
     }
 }
 
+/// How the Radio screen's favorites count begins; Enter on it opens the list.
+const FAVORITES_SAVED_PREFIX: &str = "Favorites saved:";
+
 enum MapRow {
     Say(String),
     Stop(String, RoadStop),
@@ -524,7 +534,23 @@ impl Menu for DrivingStatusScreenState {
         let mut items = if self.screen == "map" {
             self.map_items(ctx)
         } else {
-            self.lines(ctx).into_iter().map(say_item).collect()
+            let radio = self.screen == "radio";
+            self.lines(ctx)
+                .into_iter()
+                .map(|line| {
+                    if radio && line.starts_with(FAVORITES_SAVED_PREFIX) {
+                        // The count reads like a row you can open, and the
+                        // Radio app's count opens the list, so this one does.
+                        MenuItem::new(line, |s: &mut Self, ctx: &mut GameContext| {
+                            let state = RadioStationListState::new(s.driving.clone(), "favorites");
+                            ctx.push_state(state);
+                        })
+                        .help("Your saved stations. Enter on one tunes it.")
+                    } else {
+                        say_item(line)
+                    }
+                })
+                .collect()
         };
         items.push(
             MenuItem::new("Back", |s: &mut Self, ctx| s.go_back(ctx))

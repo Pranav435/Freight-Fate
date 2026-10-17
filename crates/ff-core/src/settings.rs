@@ -335,9 +335,9 @@ macro_rules! settings_fields {
 
 settings_fields! {
     /// Master switch for the orinks.net and sharing services: the drivers
-    /// board, `online_presence`, `cloud_saves`, Mastodon sharing, and
-    /// Discord presence behave as disabled while it is off, without losing
-    /// their individual settings. Live-data simulation sources
+    /// board, `online_presence`, `cloud_saves`, and Discord presence behave
+    /// as disabled while it is off, without losing their individual
+    /// settings. Live-data simulation sources
     /// (`real_weather`, `real_traffic`, `real_parking`) are deliberately NOT
     /// gated here -- they follow their own Settings toggles (owner ruling,
     /// 2026-08-08: two testers lost real weather to this switch with no
@@ -367,6 +367,10 @@ settings_fields! {
     acc_following_gap: String = "normal" => str_checked,
     /// friendlier default for new players
     automatic_transmission: bool = true => bool_truthy,
+    /// Alt+J: whether J on an automatic box arms the retarder manager.
+    /// Kept between drives, so a driver who stages the jake by hand is not
+    /// handed back to the manager at every dispatch.
+    automatic_jake: bool = true => bool_truthy,
     /// Simple keeps the familiar hold-through-stop behavior. Deliberate
     /// requires a release and second press before an automatic changes
     /// direction.
@@ -639,18 +643,6 @@ settings_fields! {
     /// two only make sense together -- and the Online menu turns it off
     /// again on its own.
     cloud_saves: bool = false => bool_strict,
-    /// Post short public summaries of notable deliveries (new badges, level
-    /// ups, perfect streaks) to the player's own Mastodon account through
-    /// orinks.net. Off by default, separate from Profile sharing, and inert
-    /// until a Mastodon account is linked on the site.
-    mastodon_sharing: bool = false => bool_strict,
-    /// Last-known link state and handle, refreshed on every status check.
-    /// Two fields because a link can exist without a handle (the server
-    /// could not read the account name): linked gates the toggle, the handle
-    /// is only spoken. The server stays the authority; this cache only keeps
-    /// the settings menu from needing the network to read a label.
-    mastodon_linked: bool = false => bool_strict,
-    mastodon_linked_handle: String = "" => str_checked,
     /// accept game-controller input alongside the keyboard
     controller_enabled: bool = true => bool_strict,
     /// rumble/vibration feedback on the controller

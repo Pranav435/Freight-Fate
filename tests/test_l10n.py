@@ -150,8 +150,20 @@ def test_the_template_keeps_the_back_row_and_the_button_apart():
     msgids = {e.msgid for e in entries}
     assert "{position} of {count}." in msgids
     assert "automatic, {name}" in msgids
-    assert "automatic speed control paused" in msgids
+    assert "Automatic speed control paused." in msgids
     for gone in ("browse", "stations", "matches"):
         assert gone not in msgids
     assert not any("PageDown" in m and "{else}" in m for m in msgids)
     assert "{copy_last} copies the last thing the game said." in msgids
+
+
+def test_a_key_and_the_one_word_it_reads_is_extracted():
+    src = 'fn f() { format!("{fuel} fuel.") }'
+    (lit,) = literals_in(src)
+    assert is_player_text(lit.text, lit.is_format, lit.is_key)
+
+
+def test_an_abbreviated_label_leading_into_a_value_is_extracted():
+    src = 'fn f() { format!("ELD: {summary}") }'
+    (lit,) = literals_in(src)
+    assert is_player_text(lit.text, lit.is_format, lit.is_key)

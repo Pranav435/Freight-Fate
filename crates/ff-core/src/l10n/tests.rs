@@ -553,3 +553,430 @@ msgstr "Mantén {up} para acelerar y {down} para frenar."
         "Mantén Up arrow para acelerar y Down arrow para frenar. The throttle key never latches."
     );
 }
+
+/// Lines a Spanish listen heard mixed although the catalog had every
+/// sentence: the matcher, not the catalog, left them English.
+const LISTEN_PO: &str = r#"
+msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "Place callouts: {place_callouts}"
+msgstr "Avisos de lugares: {place_callouts}"
+
+msgid "sparse"
+msgstr "pocos"
+
+msgid "Driving speech: {replace}"
+msgstr "Avisos de conducción: {replace}"
+
+msgid "standard"
+msgstr "estándar"
+
+msgid "Open-road target: {open_road_target}"
+msgstr "Objetivo en carretera abierta: {open_road_target}"
+
+msgid "posted limit when the open road begins"
+msgstr "límite señalizado cuando empiece la carretera abierta"
+
+msgid "How to play. {controls} {page_title}"
+msgstr "Cómo jugar. {controls} {page_title}"
+
+msgid "Left and Right arrows change pages. Escape goes back."
+msgstr "Las flechas izquierda y derecha cambian de página. Escape vuelve atrás."
+
+msgid "Left"
+msgstr "Izquierda"
+
+msgid "Page {page} of {total}: {title}."
+msgstr "Página {page} de {total}: {title}."
+
+msgid "Main menu"
+msgstr "Menú principal"
+
+msgid "It is {tod}."
+msgstr "Son las {tod}."
+
+msgid "{remaining} remaining of {f}"
+msgstr "quedan {remaining} de {f}"
+
+msgid "{place}{state} on {highway}"
+msgstr "{place}{state} en {highway}"
+
+msgid "Next place in {ahead_text}: {text}."
+msgstr "Próximo lugar en {ahead_text}: {text}."
+
+msgid "{carrier} is looking for steady service."
+msgstr "{carrier} busca un servicio constante."
+
+msgid " Career objective: {terminal_text}"
+msgstr " Objetivo de carrera: {terminal_text}"
+
+msgid "You have {grouped} dollars."
+msgstr "Tienes {grouped} dólares."
+
+msgid "ELD: {summary}"
+msgstr "{summary}"
+
+msgid "ELD status on duty not driving."
+msgstr "Estado del ELD: en servicio sin conducir."
+
+msgid "Driver: {driver_name}"
+msgstr "Conductor: {driver_name}"
+
+msgid "Tap the brake to latch it."
+msgstr "Toca el freno para retenerlo."
+
+msgid "the Down arrow"
+msgstr "la flecha abajo"
+
+msgid "{down} once releases it."
+msgstr "{down} una vez lo suelta."
+"#;
+
+fn listen() -> Translator {
+    Translator::new(Catalog::from_po("es", LISTEN_PO).expect("listen catalog parses"))
+}
+
+#[test]
+fn a_value_hole_named_like_a_place_is_still_translated() {
+    let tr = listen();
+    // "place_callouts", "replace" and "open_road_target" hold values, not
+    // names: they were matched as names because "place" and "road" sit
+    // inside them.
+    assert_eq!(
+        tr.translate("Place callouts: sparse."),
+        "Avisos de lugares: pocos."
+    );
+    assert_eq!(
+        tr.translate("Driving speech: standard."),
+        "Avisos de conducción: estándar."
+    );
+    assert_eq!(
+        tr.translate("Open-road target: posted limit when the open road begins."),
+        "Objetivo en carretera abierta: límite señalizado cuando empiece la carretera abierta."
+    );
+}
+
+#[test]
+fn two_holes_split_by_a_space_split_where_a_sentence_ends() {
+    assert_eq!(
+        listen().translate(
+            "How to play. Left and Right arrows change pages. Escape goes back. Page 1 of 19: Main menu."
+        ),
+        "Cómo jugar. Las flechas izquierda y derecha cambian de página. Escape vuelve atrás. \
+         Página 1 de 19: Menú principal."
+    );
+}
+
+#[test]
+fn a_sentence_opens_with_a_capital_and_names_need_few_letters_of_frame() {
+    let tr = listen();
+    assert_eq!(
+        tr.translate("It is 8 AM. 451 miles remaining of 451."),
+        "Son las 8 AM. Quedan 451 miles de 451."
+    );
+    assert_eq!(
+        tr.translate("Next place in 20 miles: Groton, South Dakota on US-12."),
+        "Próximo lugar en 20 miles: Groton, South Dakota en US-12."
+    );
+}
+
+#[test]
+fn a_joined_piece_and_a_name_with_a_label_still_translate() {
+    assert_eq!(
+        listen().translate(
+            "You have 5,000 dollars.  Career objective: Northstar Freight Lines is looking for steady service."
+        ),
+        "Tienes 5.000 dólares.  Objetivo de carrera: Northstar Freight Lines busca un servicio constante."
+    );
+}
+
+#[test]
+fn a_summary_without_its_full_stop_finds_its_sentence() {
+    let tr = listen();
+    assert_eq!(
+        tr.translate("ELD: ELD status on duty not driving."),
+        "Estado del ELD: en servicio sin conducir."
+    );
+    assert_eq!(tr.translate("Driver: Playtest."), "Conductor: Playtest.");
+}
+
+#[test]
+fn help_sentences_after_a_key_name_translate_whole() {
+    assert_eq!(
+        listen().translate("Tap the brake to latch it. The Down arrow once releases it."),
+        "Toca el freno para retenerlo. La flecha abajo una vez lo suelta."
+    );
+}
+
+#[test]
+fn a_clock_and_its_zone_translate_as_one_reading() {
+    let po = r#"
+msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "Time: {clock}, {deadline_text}"
+msgstr "Hora: {clock}, {deadline_text}"
+
+msgid "{clock} Central Time"
+msgstr "{clock} hora del Centro"
+
+msgid "due tomorrow"
+msgstr "vence mañana"
+"#;
+    let tr = Translator::new(Catalog::from_po("es", po).expect("parses"));
+    assert_eq!(
+        tr.translate("Time: 8:02 AM Central Time, due tomorrow."),
+        "Hora: 8:02 AM hora del Centro, vence mañana."
+    );
+}
+
+/// The shipped Spanish catalog, as a player gets it.
+fn shipped_spanish() -> Translator {
+    let po = include_str!("../../../../lang/es.po");
+    Translator::new(Catalog::from_po("es", po).expect("lang/es.po parses"))
+}
+
+#[test]
+fn shipped_spanish_says_every_eld_status_whole() {
+    // The ELD app speaks the summary after "ELD: " and the Driver Hours
+    // row after "Hours: "; both wrappers drop the summary's last stop. A
+    // loose "{driven} driving" once took the stopped line and left
+    // "ELD status en duty not de conducción".
+    let tr = shipped_spanish();
+    let hours = "Hours of service: 11 hours of driving left, 30-minute break due in 8 hours, \
+                 14 hours left in the 14-hour window";
+    let spanish_hours = "Horas de servicio: quedan 11 horas de conducción, la pausa de 30 minutos \
+                         toca en 8 horas y quedan 14 horas de la ventana de 14 horas";
+    for (status, spoken) in [
+        ("driving", "conduciendo"),
+        ("on duty not driving", "en servicio sin conducir"),
+        ("off duty", "fuera de servicio"),
+        ("sleeper berth", "litera"),
+    ] {
+        assert_eq!(
+            tr.translate(&format!("ELD: ELD status {status}. {hours}. 1 of 4.")),
+            format!("Estado del ELD: {spoken}. {spanish_hours}. 1 de 4."),
+            "{status}"
+        );
+        assert_eq!(
+            tr.translate(&format!("Hours: ELD status {status}. {hours}. 10 of 12.")),
+            format!("Horas: Estado del ELD: {spoken}. {spanish_hours}. 10 de 12."),
+            "{status}"
+        );
+    }
+}
+
+#[test]
+fn shipped_spanish_keeps_a_template_hole_to_one_sentence() {
+    // "{pct} percent {direction} ahead{length}. {advice}" once took most of
+    // the F1 help as its percent and left two help sentences English.
+    let tr = shipped_spanish();
+    assert_eq!(
+        tr.translate(
+            "Page Down tunes to the next station, Page Up to the previous; semicolon and \
+             apostrophe do the same. Control with the tuning keys jumps a category; Shift \
+             changes the radio volume in 10 percent steps, on or off. S posted speed limit. \
+             G the grade under the wheels, whether the truck is holding it, and the next \
+             grade ahead. Tab status menu."
+        ),
+        "Page Down sintoniza la emisora siguiente y Page Up la anterior; punto y coma y \
+         apóstrofo hacen lo mismo. Control con las teclas de sintonía salta de categoría; \
+         Mayúsculas cambia el volumen de la radio de 10 en 10 por ciento, o la enciende o \
+         apaga. S el límite de velocidad señalizado. G la pendiente bajo las ruedas, si el \
+         camión la está aguantando, y la próxima pendiente. Tab el menú de estado."
+    );
+}
+
+#[test]
+fn shipped_spanish_says_a_yard_once_and_joins_de_el() {
+    let tr = shipped_spanish();
+    assert_eq!(
+        tr.translate("company yard: Chicago Company Yard in Chicago. 5,000 dollars."),
+        "patio de la empresa: Chicago Company Yard en Chicago. 5.000 dólares."
+    );
+    assert_eq!(
+        tr.translate(
+            "Dropping and hooking took 25 minutes. Hooked to dry van 3890, in good shape."
+        ),
+        "El intercambio de remolque llevó 25 minutos. Enganchado a furgón seco 3890, en buen \
+         estado."
+    );
+    assert_eq!(
+        tr.translate(
+            "On I-94 toward Kenosha, Wisconsin. Next stop in 1 mile: travel center ahead at exit 50B."
+        ),
+        "En I-94 hacia Kenosha, Wisconsin. Próxima parada en 1 milla: área de servicio más \
+         adelante en la salida 50B."
+    );
+}
+
+#[test]
+fn shipped_spanish_says_places_board_rows_and_regions_whole() {
+    // Facility kinds and "in {town}" in Spanish with the names kept; the
+    // market watch, the assigned job row, the region count and the terrain
+    // as whole Spanish sentences.
+    let tr = shipped_spanish();
+    for (english, spanish) in [
+        ("Pulling into freight terminal Bemidji Company Yard in Bemidji.", "Entrando en terminal de carga Bemidji Company Yard en Bemidji."),
+        ("Loaded for freight terminal Macon Terminal in Macon.", "Cargado para terminal de carga Macon Terminal en Macon."),
+        ("Dispatch routed you to retail distribution hub Amazon Fulfillment Center KRB1 in Kenosha, Wisconsin.", "Despacho te ha enviado a centro de distribución comercial Amazon Fulfillment Center KRB1 en Kenosha, Wisconsin."),
+        ("Market watch: automotive tight, farm inputs tight, lumber paper loose, steel loose.", "Vistazo al mercado: automoción al alza, insumos agrícolas al alza, madera y papel a la baja, acero a la baja."),
+        ("16 tons of general freight from Chicago Parcel Hub in Chicago, Illinois to the Fargo metro freight market. 62 miles. Carrier gross 332 dollars. Deadline 3 hours. Equipment: dry van trailer.", "16 toneladas de carga general desde Chicago Parcel Hub en Chicago, Illinois hasta el mercado de carga metropolitano de Fargo. 62 millas. Ingreso bruto de la empresa de transporte: 332 dólares. Plazo de entrega: 3 horas. Equipo: remolque de furgón seco."),
+        ("16 tons of general freight from Chicago Parcel Hub in Chicago, Illinois to Amazon Fulfillment Center KRB1 in Kenosha, Wisconsin. 62 miles. Gross revenue 332 dollars. Deadline 12 hours, includes a 10-hour rest. Equipment: dry van trailer.", "16 toneladas de carga general desde Chicago Parcel Hub en Chicago, Illinois hasta Amazon Fulfillment Center KRB1 en Kenosha, Wisconsin. 62 millas. Ingresos brutos: 332 dólares. Plazo de entrega: 12 horas, incluye un descanso de 10 horas. Equipo: remolque de furgón seco."),
+        (
+            "Accepted. Deadhead 1.1 miles on South Canal Street to pickup at Chicago Parcel Hub in Chicago, Illinois.",
+            "Aceptado. Trayecto en vacío de 1,1 millas por South Canal Street hasta la recogida en Chicago Parcel Hub en Chicago, Illinois.",
+        ),
+        (
+            "Pulling into port Port of Tacoma in Tacoma, Washington.",
+            "Entrando en puerto Port of Tacoma en Tacoma, Washington.",
+        ),
+        (
+            "Loaded for warehouse Acme Storage in Reno, Nevada.",
+            "Cargado para almacén Acme Storage en Reno, Nevada.",
+        ),
+        (
+            "On I-5 toward Portland, Oregon. One lane your side. Current grade 0.1 percent downhill, terrain hills.",
+            "En I-5 hacia Portland, Oregon. Un carril en tu sentido. Pendiente actual 0,1 por ciento de bajada, terreno de colinas.",
+        ),
+        (
+            "On I-5 toward Portland, Oregon. Divided, one lane your side.",
+            "En I-5 hacia Portland, Oregon. Con calzadas separadas, un carril en tu sentido.",
+        ),
+        (
+            "Down to two lanes your side. Road widens to three lanes your side.",
+            "Se reduce a dos carriles en tu sentido. La carretera se ensancha a tres carriles en tu sentido.",
+        ),
+        ("Great Lakes (29 cities). 8 of 16.", "Great Lakes (29 ciudades). 8 de 16."),
+        ("Current grade 2.0 percent downhill, terrain hills.", "Pendiente actual 2,0 por ciento de bajada, terreno de colinas."),
+        ("You have 5,000 dollars. First-day objective: open the dispatch board and accept your assigned trainer-recommended load.", "Tienes 5.000 dólares. Objetivo del primer día: abre el tablón de trabajos y acepta la carga asignada que recomienda el instructor."),
+    ] {
+        assert_eq!(tr.translate(english), spanish);
+    }
+}
+
+#[test]
+fn shipped_spanish_dispatch_trust_bands_agree_in_gender() {
+    // "full" alone is "completo" for lane assist; trust lines must not use it.
+    // Whole per-band openings keep feminine agreement with "confianza".
+    use crate::models::enforcement::{
+        dispatch_trust_line_with_display, trust_text_with_display, TRUST_FULL, TRUST_GUARDED,
+        TRUST_LAST_CHANCE, TRUST_POOR,
+    };
+    use crate::models::solvency::test_profile::FakeProfile;
+    use crate::settings::ScoreDisplay;
+
+    let tr = shipped_spanish();
+    assert_eq!(tr.translate("full"), "completo");
+
+    let bands = [
+        (100.0, TRUST_FULL, "completa"),
+        (35.0, TRUST_GUARDED, "con reservas"),
+        (22.0, TRUST_POOR, "baja"),
+        (10.0, TRUST_LAST_CHANCE, "última oportunidad"),
+    ];
+    for (rep, band, spanish_band) in bands {
+        assert_eq!(crate::models::enforcement::trust_band(rep), band);
+        for mode in [
+            ScoreDisplay::Both,
+            ScoreDisplay::Percent,
+            ScoreDisplay::Description,
+        ] {
+            let mut profile = FakeProfile::new();
+            profile.reputation = rep;
+            let line = dispatch_trust_line_with_display(&profile, mode);
+            let spoken = tr.translate(&line);
+            assert!(
+                spoken.contains(&format!("Confianza de despacho: {spanish_band}")),
+                "mode={mode:?} band={band} english={line:?} spanish={spoken:?}"
+            );
+            assert!(
+                !spoken.contains("Confianza de despacho: completo"),
+                "mode={mode:?} band={band} kept masculine completo: {spoken:?}"
+            );
+            if mode != ScoreDisplay::Description {
+                let head = trust_text_with_display(rep, mode);
+                let head_es = tr.translate(&head);
+                assert!(
+                    head_es.contains(&format!("Confianza de despacho: {spanish_band}")),
+                    "trust_text mode={mode:?} band={band} english={head:?} spanish={head_es:?}"
+                );
+            }
+        }
+    }
+
+    // Debt hold: service is full, money sets the band. No reputation number.
+    let mut debt = FakeProfile::new();
+    debt.reputation = 85.0;
+    debt.money = -5_000.0;
+    for mode in [
+        ScoreDisplay::Both,
+        ScoreDisplay::Percent,
+        ScoreDisplay::Description,
+    ] {
+        let line = dispatch_trust_line_with_display(&debt, mode);
+        assert!(!line.contains("out of 100"), "{line}");
+        let spoken = tr.translate(&line);
+        let band = crate::models::enforcement::standing_band(&debt);
+        let spanish_band = match band {
+            TRUST_GUARDED => "con reservas",
+            TRUST_POOR => "baja",
+            TRUST_LAST_CHANCE => "última oportunidad",
+            other => panic!("debt should hold the band below full, got {other}"),
+        };
+        assert!(
+            spoken.contains(&format!("Confianza de despacho: {spanish_band}")),
+            "debt hold mode={mode:?} band={band} english={line:?} spanish={spoken:?}"
+        );
+        assert!(
+            !spoken.contains("Confianza de despacho: completo"),
+            "debt hold kept masculino completo: {spoken:?}"
+        );
+        assert!(
+            spoken.contains("debes") || spoken.contains("Debes") || spoken.contains("5.000"),
+            "debt hold should name the debt: {spoken:?}"
+        );
+    }
+
+    for (band, spanish_band) in [
+        ("guarded", "con reservas"),
+        ("poor", "baja"),
+        ("last chance", "última oportunidad"),
+    ] {
+        let clause = crate::models::career::xp_rate_clause(band);
+        let spoken = tr.translate(&clause);
+        assert!(
+            spoken.contains(spanish_band),
+            "xp clause band={band} english={clause:?} spanish={spoken:?}"
+        );
+        assert!(!spoken.contains("completo"), "{spoken}");
+    }
+}
+
+#[test]
+fn every_facility_kind_and_market_class_has_its_phrases() {
+    // lang/extra.pot carries a whole phrase per facility kind and per
+    // market class; a new kind or class needs its own.
+    let extra = include_str!("../../../../lang/extra.pot");
+    for (_, label) in crate::data::world_constants::LOCATION_TYPE_LABELS {
+        if *label == "metro freight market" {
+            continue;
+        }
+        for phrase in [
+            format!("{label} {{place_name}} in {{city}}"),
+            format!("{label} {{place_name}} near {{town}} in {{city}}"),
+        ] {
+            assert!(extra.contains(&format!("msgid \"{phrase}\"")), "{phrase}");
+        }
+    }
+    for key in crate::models::market::MARKET_CARGO_KEYS {
+        let class = key.replace('_', " ");
+        for condition in ["tight", "loose"] {
+            let phrase = format!("{class} {condition}");
+            assert!(extra.contains(&format!("msgid \"{phrase}\"")), "{phrase}");
+        }
+    }
+}
