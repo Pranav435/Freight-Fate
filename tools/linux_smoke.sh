@@ -56,7 +56,11 @@ echo "== $PRETTY_NAME ($(uname -m))"
 case "${ID:-}" in
   ubuntu|debian)
     apt-get update -qq >/dev/null
-    apt-get install -y -qq --no-install-recommends libdbus-1-3 libasound2 libstdc++6 >/dev/null
+    # Ubuntu 24.04 and Debian 13 renamed ALSA's library for the 64-bit time
+    # transition (libasound2t64); the older releases keep libasound2.
+    alsa=libasound2t64
+    apt-cache show "$alsa" >/dev/null 2>&1 || alsa=libasound2
+    apt-get install -y -qq --no-install-recommends libdbus-1-3 "$alsa" libstdc++6 >/dev/null
     ;;
   fedora)
     dnf install -y -q dbus-libs alsa-lib libstdc++ speech-dispatcher-libs xorg-x11-server-Xvfb \
