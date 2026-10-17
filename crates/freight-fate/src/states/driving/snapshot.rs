@@ -254,6 +254,18 @@ impl DrivingState {
             "chain_checkpoint_hold".to_string(),
             json!(self.chain_checkpoint_hold),
         );
+        // [area, level] pairs; absent on older saves, which re-roll the same
+        // seeded staffing and find nothing cited.
+        let mut cited: Vec<(i64, i64)> = self.chain_law_cited.iter().copied().collect();
+        cited.sort_unstable();
+        out.insert("chain_law_cited".to_string(), json!(cited));
+        let mut staffed: Vec<(i64, i64, bool)> = self
+            .chain_checkpoint_staffed
+            .iter()
+            .map(|(&(area, level), &on)| (area, level, on))
+            .collect();
+        staffed.sort_unstable();
+        out.insert("chain_checkpoint_staffed".to_string(), json!(staffed));
         out.insert(
             "chain_wear_pct".to_string(),
             json!(self.trip.truck.chain_wear_pct),
@@ -455,6 +467,19 @@ impl DrivingState {
         // Chains stay on the drives across a save; absent on older saves.
         state.trip.truck.chains_on = b(data, "chains_on", false);
         state.chain_checkpoint_hold = b(data, "chain_checkpoint_hold", false);
+        state.chain_law_cited = data
+            .get("chain_law_cited")
+            .and_then(|v| serde_json::from_value::<Vec<(i64, i64)>>(v.clone()).ok())
+            .unwrap_or_default()
+            .into_iter()
+            .collect();
+        state.chain_checkpoint_staffed = data
+            .get("chain_checkpoint_staffed")
+            .and_then(|v| serde_json::from_value::<Vec<(i64, i64, bool)>>(v.clone()).ok())
+            .unwrap_or_default()
+            .into_iter()
+            .map(|(area, level, on)| ((area, level), on))
+            .collect();
         // The chain meter rides with the drive: the profile only catches up
         // at a stop, so a set that snapped (or wore) since then came back as
         // it was at the last stop. An older save keeps the profile's value.

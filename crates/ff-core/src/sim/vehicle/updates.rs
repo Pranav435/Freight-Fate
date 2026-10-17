@@ -7,11 +7,11 @@ use super::{
     TruckState, AMBIENT_C, BRAKE_COOL_BASE_PER_S, BRAKE_COOL_SPEED_PER_S, BRAKE_WEAR_HOT_MULT,
     BRAKE_WEAR_PCT_PER_MJ, CARGO_BRAKE_PCT_PER_G_S, CARGO_CORNER_PCT_PER_G_S, CARGO_HARD_BRAKE_G,
     CHAIN_SAFE_MPH, CHAIN_SNAP_DAMAGE_PCT, CHAIN_WEAR_BARE_MULT, CHAIN_WEAR_OVERSPEED_MULT,
-    CHAIN_WEAR_PCT_PER_MILE, ENGINE_MOTORING_DRAG_FRACTION, ENGINE_ROTATING_INERTIA_KG_M2,
-    ENGINE_WEAR_FUEL_PENALTY, ENGINE_WEAR_LUG_PCT_PER_S, ENGINE_WEAR_OVER_REV_PCT_PER_S,
-    ENGINE_WEAR_PCT_PER_H_FULL_LOAD, ENGINE_WEAR_PCT_PER_H_IDLE, G, LUG_RPM_FRACTION, LUG_THROTTLE,
-    MAX_REVERSE_MPS, OVER_REV_RPM_MULT, ROAD_OVERSPEED_RPM_MULT, ROLL_WARN_SHARE,
-    RUNAWAY_DAMAGE_PCT_PER_S, RUNAWAY_SPEED_MPH, SHIFT_SYNC_BRAKE_FRACTION,
+    CHAIN_WEAR_PCT_PER_MILE, CRUISE_MPG, ENGINE_MOTORING_DRAG_FRACTION,
+    ENGINE_ROTATING_INERTIA_KG_M2, ENGINE_WEAR_FUEL_PENALTY, ENGINE_WEAR_LUG_PCT_PER_S,
+    ENGINE_WEAR_OVER_REV_PCT_PER_S, ENGINE_WEAR_PCT_PER_H_FULL_LOAD, ENGINE_WEAR_PCT_PER_H_IDLE, G,
+    LUG_RPM_FRACTION, LUG_THROTTLE, MAX_REVERSE_MPS, OVER_REV_RPM_MULT, ROAD_OVERSPEED_RPM_MULT,
+    ROLL_WARN_SHARE, RUNAWAY_DAMAGE_PCT_PER_S, RUNAWAY_SPEED_MPH, SHIFT_SYNC_BRAKE_FRACTION,
     SHIFT_SYNC_FUEL_FRACTION, TIRE_WEAR_BRAKING_PCT, TIRE_WEAR_PCT_PER_MILE, TIRE_WINTER,
     WINTER_TREAD_WEAR_MULT,
 };
@@ -245,6 +245,23 @@ impl TruckState {
             return 0.0;
         }
         let burned = self.fuel_gal.min(self.idle_fuel_burn_rate() * game_seconds);
+        self.fuel_gal -= burned;
+        if self.fuel_gal <= 0.0 {
+            self.stop_engine();
+        }
+        burned
+    }
+
+    /// Burn fuel for `miles` of scripted highway driving at the cruise
+    /// rate `update_fuel` is calibrated to (about `CRUISE_MPG` at 60 mph),
+    /// with the same burn factor, wear and damage penalties. Returns gallons
+    /// burned; a no-op with the engine off.
+    pub fn burn_cruise_fuel_over_miles(&mut self, miles: f64) -> f64 {
+        if !self.engine_on || miles <= 0.0 {
+            return 0.0;
+        }
+        let rate = self.specs.fuel_burn_factor * self.fuel_wear_penalty_mult() / CRUISE_MPG;
+        let burned = self.fuel_gal.min(miles * rate);
         self.fuel_gal -= burned;
         if self.fuel_gal <= 0.0 {
             self.stop_engine();

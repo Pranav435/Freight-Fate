@@ -222,6 +222,31 @@ impl PauseMenuState {
                 })),
             );
         }
+        if d.chain_checkpoint_hold && !d.usable_chains_aboard(ctx) {
+            let (index, _) = d.last_route_city_behind();
+            let key = d.trip.route.cities.get(index).cloned().unwrap_or_default();
+            let city = ctx.world.city(&key).map(|c| c.name.clone()).unwrap_or(key);
+            items.insert(
+                1,
+                MenuItem::new("Wait for the chain law to lift", |s: &mut Self, ctx| {
+                    s.wait_for_chain_law(ctx)
+                })
+                .help(
+                    "Waits on duty, not driving, half an hour at a time, up to 8 hours or until \
+                     your 14-hour window runs out.",
+                ),
+            );
+            items.insert(
+                2,
+                MenuItem::new(format!("Turn back to {city}"), |s: &mut Self, ctx| {
+                    s.turn_back_from_chain_checkpoint(ctx)
+                })
+                .help(
+                    "No chains to put on. Drive back to the last city on the route and wait \
+                     there. Waiting here instead lets you go once the chain law lifts.",
+                ),
+            );
+        }
         items.push(
             MenuItem::new("Drivers on duty", |_s: &mut Self, ctx: &mut GameContext| {
                 let state = DriversOnlineState::new(ctx);
@@ -243,7 +268,25 @@ impl PauseMenuState {
                  drops the load.",
             ),
         );
-        if d.emergency_shoulder_sleep_reason(ctx).is_some() {
+        if d.chain_checkpoint_hold {
+            // Held, the truck can always sleep where it stands: waiting and
+            // turning back can both be out of hours, and a stop within the
+            // usual 1.5 miles does not matter to an officer holding it here.
+            let settings_index = items
+                .iter()
+                .position(|item| item.text(self, ctx) == "Settings")
+                .unwrap_or(items.len());
+            items.insert(
+                settings_index,
+                MenuItem::new("Sleep at the checkpoint (10 hours)", |s: &mut Self, ctx| {
+                    s.sleep_at_chain_checkpoint(ctx)
+                })
+                .help(
+                    "Poor sleep on the checkpoint apron. Resets hours of service. Fatigue \
+                     remains, and the deadline keeps running.",
+                ),
+            );
+        } else if d.emergency_shoulder_sleep_reason(ctx).is_some() {
             let settings_index = items
                 .iter()
                 .position(|item| item.text(self, ctx) == "Settings")
@@ -273,6 +316,30 @@ impl PauseMenuState {
         // inside, the rebuild found the drive busy and left the pause menu
         // with no rows at all -- "No options available" after a repair that
         // in fact worked.
+        let Some(Some(text)) = done else {
+            return;
+        };
+        self.refresh(ctx, true);
+        ctx.say(&text);
+    }
+
+    fn wait_for_chain_law(&mut self, ctx: &mut GameContext) {
+        let done = self
+            .driving
+            .clone()
+            .call(self, ctx, |_s, ctx, d| d.wait_for_chain_law_to_lift(ctx));
+        let Some(Some(text)) = done else {
+            return;
+        };
+        self.refresh(ctx, true);
+        ctx.say(&text);
+    }
+
+    fn turn_back_from_chain_checkpoint(&mut self, ctx: &mut GameContext) {
+        let done = self.driving.clone().call(self, ctx, |_s, ctx, d| {
+            d.turn_back_from_chain_checkpoint(ctx)
+        });
+        // Same rule as `mechanic`: rebuild the rows once the drive is free.
         let Some(Some(text)) = done else {
             return;
         };
@@ -330,6 +397,30 @@ impl PauseMenuState {
         };
         self.refresh(ctx, true);
         ctx.say(&text);
+    }
+
+    fn sleep_at_chain_checkpoint(&mut self, ctx: &mut GameContext) {
+        let held = self
+            .driving
+            .read(|d| d.chain_checkpoint_hold)
+            .unwrap_or(false);
+        if !held {
+            self.refresh(ctx, true);
+            return;
+        }
+        let secured = self
+            .driving
+            .with(ctx, secure_truck_for_stopped_menu)
+            .unwrap_or(false);
+        if !secured {
+            ctx.say("Come to a complete stop first.");
+            self.refresh(ctx, true);
+            return;
+        }
+        let anchor = self.driving.read(|d| d.trip.position_mi).unwrap_or(0.0);
+        let state =
+            ShoulderSleepConfirmationState::at_chain_checkpoint(self.driving.clone(), anchor);
+        ctx.push_state(state);
     }
 
     fn emergency_shoulder_sleep(&mut self, ctx: &mut GameContext) {

@@ -21017,6 +21017,22 @@ msgstr "驾驶和值班时钟重置，但你仍然很累。{wake_air_instruction
 #. placeholders: {engine_off}
 #. one sentence of a longer line
 msgid ""
+"{engine_off}You sleep poorly on the checkpoint apron, woken again and again "
+"by passing trucks."
+msgstr "{engine_off}你在检查站的停车区睡得很差，不断被过往卡车吵醒。"
+
+#. placeholders: {engine_off}, {clock_text}, {wake_air_instruction}
+msgid ""
+"{engine_off}You sleep poorly on the checkpoint apron, woken again and again "
+"by passing trucks. It is {clock_text}. Driving and duty clocks reset, but "
+"you are still tired.{wake_air_instruction}"
+msgstr ""
+"{engine_off}你在检查站的停车区睡得很差，不断被过往卡车吵醒。现在是{clock_text}。驾驶和在岗计时已重置，但你仍然疲劳。{wake_"
+"air_instruction}"
+
+#. placeholders: {engine_off}
+#. one sentence of a longer line
+msgid ""
 "{engine_off}You sleep poorly on the shoulder, woken again and again by "
 "passing trucks."
 msgstr "{engine_off}你在路肩上睡得很差，一次又一次被路过的卡车吵醒。"
@@ -25479,6 +25495,23 @@ msgstr "安装防滑链后车速须低于{speed_text}。"
 msgid "Take them off once the road is bare."
 msgstr "驶上无冰雪路面后应拆除防滑链。"
 
+msgid "Wait for the chain law to lift"
+msgstr "等待防滑链法规解除"
+
+msgid ""
+"Waits on duty, not driving, half an hour at a time, up to 8 hours or until "
+"your 14-hour window runs out."
+msgstr "每次等待半小时，计入在岗时间而非驾驶时间，最多等待8小时或直到14小时工作窗口用尽。"
+
+#. placeholders: {city}
+msgid "Turn back to {city}"
+msgstr "掉头返回{city}"
+
+msgid ""
+"No chains to put on. Drive back to the last city on the route and wait "
+"there. Waiting here instead lets you go once the chain law lifts."
+msgstr "没有防滑链可安装。开回路线上的上一座城市并在那里等待。你也可以留在这里，等防滑链法规解除后继续行驶。"
+
 msgid "Drivers on duty"
 msgstr "在岗司机"
 
@@ -25499,6 +25532,14 @@ msgid ""
 "Saves happen only at a stop. The drive resumes from the last stop. Abandon "
 "job drops the load."
 msgstr "只有在停靠点才会存档。驾驶从上一个停靠点继续。放弃任务会丢掉货物。"
+
+msgid "Sleep at the checkpoint (10 hours)"
+msgstr "在检查站睡觉（10小时）"
+
+msgid ""
+"Poor sleep on the checkpoint apron. Resets hours of service. Fatigue "
+"remains, and the deadline keeps running."
+msgstr "在检查站停车区睡不好。重置驾驶工时。疲劳仍在，截止时间继续计时。"
 
 msgid "Emergency shoulder sleep"
 msgstr "紧急路肩睡觉"
@@ -27542,6 +27583,23 @@ msgstr "{load_text}你被放回{terminal}。"
 msgid "Continue from the city terminal."
 msgstr "从城市场站继续。"
 
+msgid "Held at the chain checkpoint."
+msgstr "被防滑链检查站拦下。"
+
+msgid "Sleep at the checkpoint"
+msgstr "在检查站睡觉"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Back without sleeping."
+msgstr "不睡觉，返回。"
+
+msgid ""
+"Poor rest on the checkpoint apron. Resets hours of service; the deadline "
+"keeps running."
+msgstr "在检查站停车区休息不好。重置驾驶工时；截止时间继续计时。"
+
 msgid "Cancel and keep looking for a safe stop"
 msgstr "取消，继续找安全的停靠点"
 
@@ -27555,6 +27613,21 @@ msgid ""
 "Poor rest, possible ticket, possible minor truck damage, and deadline time "
 "lost."
 msgstr "休息不好，可能收到罚单，卡车可能轻微损坏，还会损失截止时间。"
+
+#. one sentence of a longer line
+msgid "The deadline keeps running."
+msgstr "截止时间继续计时。"
+
+#. placeholders: {reason}
+#. one sentence of a longer line
+msgid "{reason} 10 hours of poor rest, HOS reset if enforced."
+msgstr "{reason}休息质量不佳的10小时；如果启用工时规则，则重置驾驶工时。"
+
+#. placeholders: {title}, {reason}, {current}
+msgid ""
+"{title}. {reason} 10 hours of poor rest, HOS reset if enforced. The "
+"deadline keeps running. {current}"
+msgstr "{title}。{reason}休息质量不佳的10小时；如果启用工时规则，则重置驾驶工时。截止时间继续计时。{current}"
 
 #. one sentence of a longer line
 msgid "Ticket and light damage possible; the deadline keeps running."
@@ -28150,16 +28223,30 @@ msgstr "前方{highway}在{exit}处开始实施防滑链法规。你没有防滑
 msgid "Rolling into an active chain law without {need}."
 msgstr "没有{need}就驶入了生效中的防滑链法规路段。"
 
-#. placeholders: {level}
-msgid "No chains under a level {level} chain law"
-msgstr "在{level}级防滑链法规下没装防滑链"
-
 msgid ""
 "You can't go on until your chains are on. Put them on from the pause menu."
 msgstr "安装防滑链后才能继续行驶。请从暂停菜单安装。"
 
-msgid "You have no chains aboard. Buy a set at the next garage."
-msgstr "车上没有防滑链。请在下一个车库购买一套。"
+msgid ""
+"You can't go on without chains. Wait here until the chain law lifts, or "
+"turn back."
+msgstr "没有防滑链就不能继续行驶。在这里等法规解除，或者掉头。"
+
+#. one sentence of a longer line
+msgid "Chain checkpoint."
+msgstr "防滑链检查站。"
+
+#. placeholders: {after}
+msgid "Chain checkpoint. The officer stops you again. {after}"
+msgstr "防滑链检查站。警员再次将你拦下。{after}"
+
+#. one sentence of a longer line
+msgid "The officer stops you again."
+msgstr "警员再次将你拦下。"
+
+#. placeholders: {level}
+msgid "No chains under a level {level} chain law"
+msgstr "在{level}级防滑链法规下没装防滑链"
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
 #. one sentence of a longer line
@@ -28169,10 +28256,6 @@ msgid ""
 msgstr ""
 "警员将你拦下，并因违反防滑链规定开出{grouped}美元罚单。{construction_zone_fine_clause}{after}你还有{gr"
 "ouped2}美元。"
-
-#. one sentence of a longer line
-msgid "Chain checkpoint."
-msgstr "防滑链检查站。"
 
 #. placeholders: {grouped}, {construction_zone_fine_clause}, {after}, {grouped2}
 msgid ""
@@ -28187,8 +28270,148 @@ msgid "Chains on. The officer waves you back onto the highway."
 msgstr "防滑链已装好。警员挥手示意你驶回公路。"
 
 msgid ""
+"The chain law has lifted. The officer waves you back onto the highway."
+msgstr "防滑链法规已解除。警员挥手示意你驶回公路。"
+
+msgid ""
 "Held at the chain checkpoint. Put your chains on from the pause menu."
 msgstr "你被防滑链检查站拦下。请从暂停菜单安装防滑链。"
+
+msgid ""
+"Held at the chain checkpoint. You have no chains. Wait here until the chain "
+"law lifts, or turn back."
+msgstr "你被防滑链检查站拦下。你没有防滑链。在这里等法规解除，或者掉头。"
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid "The chain law lifted after {duration_text}."
+msgstr "防滑链法规在{duration_text}后解除。"
+
+#. placeholders: {duration_text}
+msgid ""
+"The chain law lifted after {duration_text}. The officer waves you back onto "
+"the highway."
+msgstr "防滑链法规在{duration_text}后解除。警员挥手示意你驶回公路。"
+
+#. one sentence of a longer line
+msgid "The officer waves you back onto the highway."
+msgstr "警员挥手示意你驶回公路。"
+
+#. one sentence of a longer line
+msgid "Sleep at the checkpoint from the pause menu, or turn back."
+msgstr "从暂停菜单选择在检查站睡觉，或者掉头。"
+
+#. one sentence of a longer line
+msgid "The chain law still stands."
+msgstr "防滑链法规仍然生效。"
+
+#. placeholders: {waited_text}
+#. one sentence of a longer line
+msgid ""
+"You waited {waited_text}, and your 14-hour duty window is nearly used up."
+msgstr "你已等待{waited_text}，14小时工作窗口即将用尽。"
+
+#. placeholders: {waited_text}
+msgid ""
+"You waited {waited_text}, and your 14-hour duty window is nearly used up. "
+"The chain law still stands. Sleep at the checkpoint from the pause menu, or "
+"turn back."
+msgstr "你已等待{waited_text}，14小时工作窗口即将用尽。防滑链法规仍然生效。从暂停菜单选择在检查站睡觉，或者掉头。"
+
+#. one sentence of a longer line
+msgid "Sleep at the checkpoint from the pause menu."
+msgstr "从暂停菜单选择在检查站睡觉。"
+
+#. placeholders: {waited_text}
+msgid ""
+"You waited {waited_text}, and your 14-hour duty window is nearly used up. "
+"The chain law still stands. Sleep at the checkpoint from the pause menu."
+msgstr "你已等待{waited_text}，14小时工作窗口即将用尽。防滑链法规仍然生效。从暂停菜单选择在检查站睡觉。"
+
+msgid ""
+"Your 14-hour duty window is nearly used up. The chain law still stands. "
+"Sleep at the checkpoint from the pause menu, or turn back."
+msgstr "你的14小时工作窗口即将用尽。防滑链法规仍然生效。从暂停菜单选择在检查站睡觉，或者掉头。"
+
+msgid ""
+"Your 14-hour duty window is nearly used up. The chain law still stands. "
+"Sleep at the checkpoint from the pause menu."
+msgstr "你的14小时工作窗口即将用尽。防滑链法规仍然生效。从暂停菜单选择在检查站睡觉。"
+
+#. one sentence of a longer line
+msgid "Wait again, or turn back."
+msgstr "继续等待，或者掉头。"
+
+#. placeholders: {duration_text}
+#. one sentence of a longer line
+msgid "You waited {duration_text}."
+msgstr "你等待了{duration_text}。"
+
+#. placeholders: {duration_text}
+msgid ""
+"You waited {duration_text}. The chain law still stands. Wait again, or turn "
+"back."
+msgstr "你等待了{duration_text}。防滑链法规仍然生效。继续等待，或者掉头。"
+
+msgid "chain checkpoint"
+msgstr "防滑链检查站"
+
+msgid ""
+"The chain law lifted overnight. The officer waves you back onto the highway."
+msgstr "防滑链法规在夜间解除了。警员挥手示意你驶回公路。"
+
+#. placeholders: {drive}
+#. one sentence of a longer line
+msgid ""
+"Turning back takes {drive}, more driving than you have before your "
+"30-minute break."
+msgstr "掉头返回需要驾驶{drive}，超过你在30分钟休息前剩余的驾驶时间。"
+
+#. placeholders: {drive}
+msgid ""
+"Turning back takes {drive}, more driving than you have before your "
+"30-minute break. Wait here half an hour for your break, or sleep at the "
+"checkpoint."
+msgstr "掉头返回需要驾驶{drive}，超过你在30分钟休息前剩余的驾驶时间。在这里等半小时完成休息，或者在检查站睡觉。"
+
+#. one sentence of a longer line
+msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+msgstr "在这里等半小时完成休息，或者在检查站睡觉。"
+
+#. placeholders: {drive}
+#. one sentence of a longer line
+msgid "Turning back takes {drive} of driving, more than your hours allow."
+msgstr "掉头返回需要驾驶{drive}，超过工时允许的时间。"
+
+#. placeholders: {drive}
+msgid ""
+"Turning back takes {drive} of driving, more than your hours allow. Wait "
+"here for the chain law to lift, or sleep at the checkpoint from the pause "
+"menu."
+msgstr "掉头返回需要驾驶{drive}，超过工时允许的时间。在这里等防滑链法规解除，或者从暂停菜单选择在检查站睡觉。"
+
+#. one sentence of a longer line
+msgid ""
+"Wait here for the chain law to lift, or sleep at the checkpoint from the "
+"pause menu."
+msgstr "在这里等防滑链法规解除，或者从暂停菜单选择在检查站睡觉。"
+
+#. one sentence of a longer line
+msgid "The chain law ahead still stands."
+msgstr "前方的防滑链法规仍然生效。"
+
+#. placeholders: {city}, {distance_text}, {f}
+#. one sentence of a longer line
+msgid ""
+"You turned back to {city}, {distance_text} behind the checkpoint, in {f} "
+"minutes."
+msgstr "你用了{f}分钟掉头返回{city}，这里位于检查站后方{distance_text}。"
+
+#. placeholders: {city}, {distance_text}, {f}
+msgid ""
+"You turned back to {city}, {distance_text} behind the checkpoint, in {f} "
+"minutes. The chain law ahead still stands."
+msgstr "你用了{f}分钟掉头返回{city}，这里位于检查站后方{distance_text}。前方的防滑链法规仍然生效。"
 
 msgid ""
 "Montana requires trucks to carry chains from October 1 to April 30. You "
@@ -33727,9 +33950,6 @@ msgstr "把激活码复制到剪贴板。"
 msgid "Hear what gets shared"
 msgstr "听听会分享什么"
 
-msgid "Cancel"
-msgstr "取消"
-
 msgid "Leave without connecting this account."
 msgstr "不连接这个账户，直接离开。"
 
@@ -35342,6 +35562,9 @@ msgstr "分开，你这边一条车道。"
 
 msgid "Mostly divided, one lane your side."
 msgstr "大部分都是分开的，你这​​边有一条车道。"
+
+#~ msgid "You have no chains aboard. Buy a set at the next garage."
+#~ msgstr "车上没有防滑链。请在下一个车库购买一套。"
 
 #~ msgid ""
 #~ "On the final approach, after any exit, it works the throttle and brakes: up "
