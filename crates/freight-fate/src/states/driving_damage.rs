@@ -56,7 +56,8 @@ use ff_core::pyfmt::fmt_grouped;
 use ff_core::settings::Settings;
 use ff_core::sim::trip_models::FACILITY_GATE_ZONE_MI;
 use ff_core::sim::vehicle::{TruckState, COMPONENT_SERVICE_LIMIT_PCT};
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
+use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
@@ -586,7 +587,7 @@ impl DrivingState {
         ctx.say_event_with(
             message,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Status),
         );
     }

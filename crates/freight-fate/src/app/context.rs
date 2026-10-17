@@ -39,8 +39,8 @@ use ff_core::sim::real_traffic::RealTrafficProvider;
 use ff_core::sim::real_weather::RealWeatherProvider;
 use ff_core::sim::real_weather_alerts::WeatherAlertsProvider;
 use ff_core::sim::truck_parking::TruckParkingProvider;
-use ff_core::speech_pacing::EventSpeechPacer;
 use ff_core::speech_text::achievement_announced;
+use hearken::speech::EventSpeechPacer;
 
 use crate::account_achievements::AccountAchievements;
 use crate::audio::{Audio, VolumeUpdate};
@@ -270,7 +270,7 @@ impl GameContext {
             dispatch_board_seed: None,
             school_sandbox: false,
             school_real_profile: None,
-            event_pacer: EventSpeechPacer::new(),
+            event_pacer: EventSpeechPacer::new(super::FF_PACER),
             clipboard: parts.clipboard,
             services: parts.services,
             input: HeldKeys::default(),

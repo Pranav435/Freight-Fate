@@ -375,7 +375,7 @@ pub struct PlaytestHarness {
     ///
     /// The pacer budgets in REAL seconds because a player can only take in
     /// so many words per second: a queued ambient line that would start
-    /// speaking more than `EventSpeechPacer::STALE_WAIT_S` after the
+    /// speaking more than `FF_PACER.ambient_wait_s` after the
     /// moment it described is dropped, because by then the truck is past the
     /// thing it was about. That is right for a player, whose truck covers
     /// half a mile in those three seconds.

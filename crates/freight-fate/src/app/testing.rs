@@ -25,7 +25,7 @@ use std::sync::{Mutex, MutexGuard, TryLockError};
 use std::time::{Duration, Instant};
 
 use ff_core::settings::Settings;
-use ff_core::speech_pacing::EventSpeechPacer;
+use hearken::speech::EventSpeechPacer;
 
 use crate::audio::{Audio, AudioError, SustainLoopSpec, VolumeUpdate};
 use crate::speech::CaptureSpeech;
@@ -331,7 +331,8 @@ impl TestApp {
     /// = EventSpeechPacer(clock=clock)`).
     pub fn fake_pacer_clock(&mut self) -> FakeClock {
         let clock = FakeClock::new(100.0);
-        self.app.ctx.event_pacer = EventSpeechPacer::with_clock(clock.boxed());
+        self.app.ctx.event_pacer =
+            EventSpeechPacer::with_clock(crate::app::FF_PACER, clock.boxed());
         clock
     }
 

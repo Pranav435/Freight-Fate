@@ -57,7 +57,7 @@ pub use context::{
 pub use held_keys::HeldKeys;
 use key_probe::KeyProbe;
 pub use logging::{active_log_path, configure_logging};
-pub use speech_delivery::{IntoSpoken, Say, SayEvent, Spoken, TRANSCRIPT_TARGET};
+pub use speech_delivery::{IntoSpoken, Say, SayEvent, Spoken, FF_PACER, TRANSCRIPT_TARGET};
 
 use sdl_shell::SdlShell;
 

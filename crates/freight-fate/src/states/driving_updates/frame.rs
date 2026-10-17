@@ -1,7 +1,9 @@
 //! The frame loop itself (`DrivingUpdateMixin.update`), the safety-call
 //! re-speak, and the retarder transcript trace.
 
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
+
+use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent, TRANSCRIPT_TARGET};
 use crate::audio::CH_BRAKE;
@@ -220,7 +222,7 @@ impl DrivingState {
                 ctx.say_event_with(
                     "Jake off.",
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Confirmation),
                 );
             }
@@ -243,7 +245,7 @@ impl DrivingState {
                 ctx.say_event_with(
                     "Jake off.",
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Confirmation),
                 );
             }
@@ -325,7 +327,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Cruise off.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         }

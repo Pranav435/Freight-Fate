@@ -3,7 +3,8 @@
 use ff_core::sim::vehicle::{
     TruckState, COMPONENT_SERVICE_LIMIT_PCT, COMPONENT_SERVICE_WARNING_PCT,
 };
-use ff_core::speech_pacing::{DeliveryStatus, EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
+use hearken::speech::{DeliveryStatus, EventPriority};
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::city_garage::{
@@ -250,7 +251,7 @@ impl DrivingState {
             ctx.say_event_with(
                 message,
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .key(key)
                     .category(SpeechCategory::Safety)
                     .receipt(),

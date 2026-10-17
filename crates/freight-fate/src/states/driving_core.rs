@@ -121,7 +121,7 @@ pub use ff_core::sim::vehicle::{
 pub use ff_core::sim::weather::{WeatherKind, WeatherSystem};
 pub use ff_core::sim::{hos, trip_models};
 pub use ff_core::sound_catalog::BAR_SOLID_VOLUME;
-pub use ff_core::speech_pacing::EventPriority;
+pub use hearken::speech::EventPriority;
 
 // -- the profile the drive runs on -------------------------------------------------------
 

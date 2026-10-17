@@ -6,8 +6,9 @@ use ff_core::data::curves::{advisory_with_bank_mph, superelevation_at};
 use ff_core::pyfmt::fmt_grouped;
 use ff_core::sim::lane::{in_lane_phrase, RoadConditions};
 use ff_core::sim::trip_models::Zone;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::SpokenMessage;
+use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::bindings::Action;
@@ -301,7 +302,7 @@ impl DrivingState {
                 ctx.say_event_with(
                     "Slowing for the bend.",
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Confirmation),
                 );
             }
@@ -317,7 +318,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Curve assistance released.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         } else if !curve_assisting {
@@ -377,7 +378,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Route-transition assistance released.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         }
@@ -628,7 +629,7 @@ impl DrivingState {
             ctx.say_event_with(
                 format!("{}.", in_lane_phrase(lane_index, lane_count)),
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(category),
             );
         }
@@ -884,7 +885,7 @@ impl DrivingState {
             // Money rides ROUTE's never-dropped contract: a busy stretch must
             // not age a citation out of the queue.
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Money),
         );
         // A second serious violation just suspended the CDL: the drive ends

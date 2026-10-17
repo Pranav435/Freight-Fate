@@ -22,8 +22,9 @@ use ff_core::sim::trip_models::{
 };
 use ff_core::sim::vehicle::KG_PER_TON;
 use ff_core::sim::weather::WeatherKind;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::SpokenMessage;
+use hearken::speech::EventPriority;
 
 use freight_fate::app::testing::TestApp;
 use freight_fate::states::driving::DrivingState;
@@ -1111,7 +1112,7 @@ fn test_a_limit_change_may_never_age_out() {
                 ..Default::default()
             },
         );
-        assert_eq!(d.event_priority(&event), EventPriority::Route, "{text}");
+        assert_eq!(d.event_priority(&event), EventPriority::Important, "{text}");
     }
 }
 
@@ -1155,7 +1156,11 @@ fn test_the_act_soon_kinds_ride_routes_never_dropped_queue() {
         TripEventKind::StopAhead,
     ] {
         let event = an_event(kind, "x", TripEventData::default());
-        assert_eq!(d.event_priority(&event), EventPriority::Route, "{kind:?}");
+        assert_eq!(
+            d.event_priority(&event),
+            EventPriority::Important,
+            "{kind:?}"
+        );
     }
 }
 
@@ -1174,7 +1179,11 @@ fn test_a_direction_cue_may_never_age_out() {
                 ..Default::default()
             },
         );
-        assert_eq!(d.event_priority(&event), EventPriority::Route, "{cue_kind}");
+        assert_eq!(
+            d.event_priority(&event),
+            EventPriority::Important,
+            "{cue_kind}"
+        );
     }
 }
 

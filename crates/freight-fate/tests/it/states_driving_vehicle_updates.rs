@@ -304,8 +304,10 @@ fn test_low_air_warning_rearms_after_recovering_above_clear_threshold() {
     // Python stubbed `say_event`; the real pacer would treat an identical
     // repeat inside its own window as a repeat. Step the clock between lines
     // so what is asserted is this module's latch, not the pacer's.
-    app.ctx.event_pacer =
-        ff_core::speech_pacing::EventSpeechPacer::with_clock(stepping_clock(30.0));
+    app.ctx.event_pacer = hearken::speech::EventSpeechPacer::with_clock(
+        freight_fate::app::FF_PACER,
+        stepping_clock(30.0),
+    );
     d.trip.truck.engine_on = true;
     d.trip.truck.set_air_pressure_psi(125.0);
     d.low_air_said = false;
@@ -334,8 +336,10 @@ fn test_spring_brake_warning_bypasses_low_air_cooldown() {
     // Python stubbed `say_event`; the real pacer would treat an identical
     // repeat inside its own window as a repeat. Step the clock between lines
     // so what is asserted is this module's latch, not the pacer's.
-    app.ctx.event_pacer =
-        ff_core::speech_pacing::EventSpeechPacer::with_clock(stepping_clock(30.0));
+    app.ctx.event_pacer = hearken::speech::EventSpeechPacer::with_clock(
+        freight_fate::app::FF_PACER,
+        stepping_clock(30.0),
+    );
     d.trip.truck.engine_on = true;
     d.trip.truck.set_air_pressure_psi(125.0);
     d.low_air_said = false;
@@ -377,8 +381,10 @@ fn test_sustained_redline_speaks_the_wear_it_is_actually_causing() {
     // Python stubbed `say_event`; the real pacer would treat an identical
     // repeat inside its own window as a repeat. Step the clock between lines
     // so what is asserted is this module's latch, not the pacer's.
-    app.ctx.event_pacer =
-        ff_core::speech_pacing::EventSpeechPacer::with_clock(stepping_clock(30.0));
+    app.ctx.event_pacer = hearken::speech::EventSpeechPacer::with_clock(
+        freight_fate::app::FF_PACER,
+        stepping_clock(30.0),
+    );
     app.clear_speech();
 
     d.update_overrev(&mut app.ctx, 1.0); // inside the grace period: a shift flare

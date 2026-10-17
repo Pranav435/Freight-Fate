@@ -4,7 +4,8 @@
 use ff_core::sim::trip_models::{
     RoadStop, TrafficPressure, TripEvent, TripEventKind, APPROACH_DECEL_MPS2, APPROACH_REACTION_S,
 };
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
+use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::bindings::Action;
@@ -260,7 +261,7 @@ impl DrivingState {
             let exit_mi = stop.at_mi;
             self.refresh_live_facts();
             let mut opts = SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .valid(move || live::position_mi() < exit_mi);
             opts.category = Some(SpeechCategory::Navigation);
             ctx.say_event_with(message, opts);
@@ -583,7 +584,7 @@ impl DrivingState {
             }
         }
         ctx.audio.play_with("ui/notify", 0.6, 0.0);
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Some(SpeechCategory::Navigation);
         ctx.say_event_with(format!("{name} in {distance}.{owed}"), opts);
     }
@@ -764,7 +765,7 @@ impl DrivingState {
         };
         // Never "confirm": there is no confirm action, and an X pressed to
         // obey it cancels the signal instead.
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Some(SpeechCategory::Confirmation);
         ctx.say_event_with(format!("Slowing.{lane_text}"), opts);
     }

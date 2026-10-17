@@ -73,10 +73,9 @@ use ff_core::settings::Settings;
 
 pub use hearken::speech::{backend, capture, fakes, live, threaded};
 
-// The event-voice pacer moved to its own module when it grew repeat
-// suppression and priority; re-exported here because it is part of what a
-// caller means by "the speech channel", and every existing import says so.
-pub use ff_core::speech_pacing::{EventPriority, EventSpeechPacer};
+// The event-voice pacer is Hearken's, run with `app::FF_PACER`; re-exported
+// here because it is part of what a caller means by "the speech channel".
+pub use hearken::speech::{EventPriority, EventSpeechPacer};
 
 pub use hearken::speech::backend::{
     narrator_running, pick_backend, pick_backend_gated, pick_event_backend,

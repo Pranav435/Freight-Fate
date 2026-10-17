@@ -10,7 +10,8 @@ use ff_core::sim::cross_traffic::{
     yield_crossing_times_s, CrossVehicle, COMBINATION_LENGTH_FT, TRACTOR_LENGTH_FT,
     YIELD_LINE_TO_CROSSROAD_FT,
 };
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
+use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
@@ -708,7 +709,7 @@ impl DrivingState {
                 fmt_grouped(money, 0)
             ),
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Money),
         );
     }

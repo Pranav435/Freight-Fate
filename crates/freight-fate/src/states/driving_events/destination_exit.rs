@@ -2,7 +2,8 @@
 //! announcing it while there is still road to take it with.
 
 use ff_core::sim::trip_models::RoadStop;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
+use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
@@ -193,7 +194,7 @@ impl DrivingState {
             // truck is about to leave the highway. Left at the AMBIENT default
             // it was dropped whenever another line landed in the same moment,
             // and the exit read as taking itself (Sarah A, 2026-08-15).
-            let mut opts = SayEvent::queued().priority(EventPriority::Route);
+            let mut opts = SayEvent::queued().priority(EventPriority::Important);
             opts.category = Some(SpeechCategory::Navigation);
             ctx.say_event_with(announcement, opts);
         }

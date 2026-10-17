@@ -241,7 +241,7 @@ impl DrivingState {
         ctx.say_event_with(
             text,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Navigation)
                 .valid(move || live::position_mi() < scale_mi),
         );
@@ -340,7 +340,7 @@ impl DrivingState {
         ctx.say_event_with(
             format!("{lead}{name} is still ahead, open, {announced}.{instruction}"),
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Navigation)
                 // The same gate as the notice: a distance is a claim about
                 // now, and the line dies once its own words stop being true.
@@ -375,7 +375,7 @@ impl DrivingState {
         ctx.say_event_with(
             text,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Navigation),
         );
         true

@@ -44,7 +44,8 @@ use ff_core::data::corners::{corner_radius_ft, ASSUMED_TURN_DEG};
 use ff_core::data::curves::RouteCurve;
 use ff_core::sim::trip_models::{NavigationCue, FACILITY_ACCESS_LIMIT_MPH};
 use ff_core::sim::turn_guide::{TurnShape, TurnSide};
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
+use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
@@ -635,7 +636,7 @@ impl DrivingState {
                 ctx.say_event_with(
                     message,
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Navigation),
                 );
             } else {

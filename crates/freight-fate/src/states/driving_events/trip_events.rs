@@ -7,11 +7,12 @@ use ff_core::models::trailer_yard::pickup_plan;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::driving_modes::tuning_for_time_scale;
 use ff_core::sim::trip_models::{TripEvent, TripEventKind};
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::{
     cruise_curve_easing, cruise_curve_paused, cruise_curve_paused_assisted, curve_assist_slowing,
     roadside_chatter, stop_callout, SpokenMessage, StopCalloutParts,
 };
+use hearken::speech::EventPriority;
 
 use crate::app::{GameContext, Say, SayEvent};
 use crate::states::driving::DrivingState;
@@ -183,7 +184,7 @@ impl DrivingState {
                 if !silenced {
                     ctx.audio.play(sound.unwrap_or("ui/notify"));
                 }
-                let mut opts = SayEvent::queued().priority(EventPriority::Route);
+                let mut opts = SayEvent::queued().priority(EventPriority::Important);
                 opts.category = category;
                 ctx.say_event_with(message, opts);
                 ctx.award_driving_achievement("toll_paid");
@@ -480,7 +481,7 @@ impl DrivingState {
             Ambient::new()
                 .sound(sound)
                 .category(category)
-                .priority(EventPriority::Route),
+                .priority(EventPriority::Important),
         );
         ctx.award_driving_achievement("state_crossing");
     }
@@ -1081,11 +1082,11 @@ impl DrivingState {
             event.kind,
             TripEventKind::ZoneEnter | TripEventKind::Checkpoint | TripEventKind::TollCharged
         ) {
-            return EventPriority::Route;
+            return EventPriority::Important;
         }
         if event.kind == TripEventKind::GpsCue {
             if event.data.zone.is_some() {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
             // A limit change is what enforcement reads, and each one is said
             // once: the advance "drops to 55" marks 55 as announced, so when
@@ -1093,7 +1094,7 @@ impl DrivingState {
             // too and the truck ran a 55 it never heard of (agent drive, exit
             // 286A into Abilene, 2026-09-23).
             if event.data.limit_change.unwrap_or(false) {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
             let cue_kind = event
                 .data
@@ -1102,10 +1103,10 @@ impl DrivingState {
                 .map(|cue| cue.kind.as_str())
                 .unwrap_or("");
             if cue_kind == "traffic" {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
             if Self::is_lane_closure_pressure(event) {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
             // The direction itself: which way onto the highway, which way
             // through an interchange, which way down a street. Lose one and
@@ -1119,11 +1120,11 @@ impl DrivingState {
             if !event.data.advance.unwrap_or(false)
                 && matches!(cue_kind, "onramp" | "maneuver" | "local_turn")
             {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
         }
         if event.kind == TripEventKind::StopAhead || event.data.planned.unwrap_or(false) {
-            return EventPriority::Route;
+            return EventPriority::Important;
         }
         EventPriority::Ambient
     }
@@ -1187,7 +1188,7 @@ impl DrivingState {
             ctx.play_event_cue(category, "ui/notify", 1.0, 0.0);
             let keeper = ctx.settings.speed_text(self.keeper_mph.unwrap_or(0.0));
             let message = message.plus(&format!("Speed keeper holding {keeper}."));
-            let mut opts = SayEvent::queued().priority(EventPriority::Route);
+            let mut opts = SayEvent::queued().priority(EventPriority::Important);
             opts.category = category;
             ctx.say_event_with(message, opts);
             return;
@@ -1204,7 +1205,7 @@ impl DrivingState {
         // whole, and the cruise let go without a word; quiet now says it
         // short.
         let message = message.plus("Cruise off.");
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Some(SpeechCategory::Safety);
         ctx.say_event_with(message, opts);
     }
@@ -1238,7 +1239,7 @@ impl DrivingState {
         match event.data.context.as_deref() {
             // CB heads-up, not a stop: Roadcheck week is on.
             Some("roadcheck_notice") => {
-                let mut opts = SayEvent::queued().priority(EventPriority::Route);
+                let mut opts = SayEvent::queued().priority(EventPriority::Important);
                 opts.category = Self::event_category(event);
                 ctx.say_event_with(event.text(), opts);
                 return;
@@ -1325,7 +1326,7 @@ impl DrivingState {
         );
         // A fine is money, not an act-now warning: ROUTE's never-dropped
         // queue instead of an interrupt that could erase one.
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Self::event_category(event);
         ctx.say_event_with(message, opts);
     }
