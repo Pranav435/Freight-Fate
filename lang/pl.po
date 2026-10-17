@@ -13572,8 +13572,12 @@ msgstr ""
 msgid "Secret store unreachable in this build: {store_detail}"
 msgstr ""
 
-#. placeholders: {e}
-msgid "smoke: packaged BASS runtime could not initialize: {e}"
+#. placeholders: {KEY}
+msgid "smoke: {KEY} is not in the packed sounds"
+msgstr ""
+
+#. placeholders: {KEY}, {ext}, {e}
+msgid "smoke: {KEY}.{ext} does not decode through Hearken: {e}"
 msgstr ""
 
 msgid "start up"
@@ -13798,13 +13802,13 @@ msgstr ""
 msgid "audio disabled"
 msgstr ""
 
+msgid "pygame"
+msgstr ""
+
 msgid "dummy"
 msgstr ""
 
-msgid "bass"
-msgstr ""
-
-msgid "radio-connect"
+msgid "hearken"
 msgstr ""
 
 #. placeholders: {path}
@@ -13813,34 +13817,6 @@ msgstr ""
 
 #. placeholders: {path}
 msgid "could not decode {path}"
-msgstr ""
-
-#. placeholders: {path}
-msgid "could not play {path}"
-msgstr ""
-
-msgid "audio-probe"
-msgstr ""
-
-#. placeholders: {err}
-msgid "BASS refused the loop sync: {err}"
-msgstr ""
-
-msgid "Control "
-msgstr ""
-
-msgid "Alt "
-msgstr ""
-
-msgid "Shift "
-msgstr ""
-
-#. placeholders: {short}
-msgid "right bumper plus {short}"
-msgstr ""
-
-#. placeholders: {short}
-msgid "the {short} button"
 msgstr ""
 
 msgid "Accelerate"
@@ -14073,208 +14049,6 @@ msgid "{spoken} and {spoken2}"
 msgstr ""
 
 msgid "or"
-msgstr ""
-
-msgid "keypad 0"
-msgstr ""
-
-msgid "keypad 1"
-msgstr ""
-
-msgid "keypad 2"
-msgstr ""
-
-msgid "keypad 3"
-msgstr ""
-
-msgid "keypad 4"
-msgstr ""
-
-msgid "keypad 5"
-msgstr ""
-
-msgid "keypad 6"
-msgstr ""
-
-msgid "keypad 7"
-msgstr ""
-
-msgid "keypad 8"
-msgstr ""
-
-msgid "keypad 9"
-msgstr ""
-
-msgid "keypad Enter"
-msgstr ""
-
-msgid "keypad plus"
-msgstr ""
-
-msgid "keypad minus"
-msgstr ""
-
-msgid "enter"
-msgstr ""
-
-msgid "escape"
-msgstr ""
-
-msgid "space"
-msgstr ""
-
-msgid "tab"
-msgstr ""
-
-msgid "backspace"
-msgstr ""
-
-msgid "the Left arrow"
-msgstr ""
-
-msgid "the Right arrow"
-msgstr ""
-
-msgid "Home"
-msgstr ""
-
-msgid "home"
-msgstr ""
-
-msgid "End"
-msgstr ""
-
-msgid "end"
-msgstr ""
-
-msgid "Page Up"
-msgstr ""
-
-msgid "Page Down"
-msgstr ""
-
-msgid "Insert"
-msgstr ""
-
-msgid "insert"
-msgstr ""
-
-msgid "Delete"
-msgstr ""
-
-msgid "delete"
-msgstr ""
-
-msgid "comma"
-msgstr ""
-
-msgid "period"
-msgstr ""
-
-msgid "slash"
-msgstr ""
-
-msgid "backslash"
-msgstr ""
-
-msgid "grave"
-msgstr ""
-
-msgid "grave accent"
-msgstr ""
-
-msgid "equals"
-msgstr ""
-
-msgid "plus"
-msgstr ""
-
-msgid "minus"
-msgstr ""
-
-msgid "semicolon"
-msgstr ""
-
-msgid "apostrophe"
-msgstr ""
-
-msgid "left bracket"
-msgstr ""
-
-msgid "right bracket"
-msgstr ""
-
-msgid "Left Control"
-msgstr ""
-
-msgid "Right Control"
-msgstr ""
-
-msgid "Right Shift"
-msgstr ""
-
-msgid "Left Alt"
-msgstr ""
-
-msgid "Right Alt"
-msgstr ""
-
-msgid "an unnamed key"
-msgstr ""
-
-msgctxt "controller button"
-msgid "Back"
-msgstr ""
-
-msgid "back"
-msgstr ""
-
-msgid "guide"
-msgstr ""
-
-msgid "the guide button"
-msgstr ""
-
-msgid "the right bumper"
-msgstr ""
-
-msgid "misc"
-msgstr ""
-
-msgid "the extra button"
-msgstr ""
-
-msgid "paddle 1"
-msgstr ""
-
-msgid "paddle 2"
-msgstr ""
-
-msgid "paddle 3"
-msgstr ""
-
-msgid "paddle 4"
-msgstr ""
-
-msgid "the touchpad"
-msgstr ""
-
-msgid "touchpad"
-msgstr ""
-
-msgid "right stick up"
-msgstr ""
-
-msgid "right stick down"
-msgstr ""
-
-msgid "right stick left"
-msgstr ""
-
-msgid "right stick right"
-msgstr ""
-
-msgid "an unnamed button"
 msgstr ""
 
 msgid "Pause"
@@ -14709,6 +14483,18 @@ msgstr ""
 msgid "Start button"
 msgstr ""
 
+msgid "right stick up"
+msgstr ""
+
+msgid "right stick down"
+msgstr ""
+
+msgid "right stick left"
+msgstr ""
+
+msgid "right stick right"
+msgstr ""
+
 msgid "a button"
 msgstr ""
 
@@ -15076,24 +14862,6 @@ msgstr ""
 msgid "level"
 msgstr ""
 
-msgid "main"
-msgstr ""
-
-msgid "David"
-msgstr ""
-
-msgid "Zira"
-msgstr ""
-
-msgid "rate"
-msgstr ""
-
-msgid "pitch"
-msgstr ""
-
-msgid "volume"
-msgstr ""
-
 msgid ""
 "Enter opens a category. Inside one, Enter repeats the achievement and "
 "Escape returns to the categories. From the categories, Escape returns to "
@@ -15236,49 +15004,6 @@ msgstr ""
 msgid "Keeps the assists you set one by one."
 msgstr ""
 
-msgid "colon"
-msgstr ""
-
-msgid "dot"
-msgstr ""
-
-msgid "underscore"
-msgstr ""
-
-msgid "question mark"
-msgstr ""
-
-msgid "exclamation mark"
-msgstr ""
-
-msgid "percent"
-msgstr ""
-
-msgid "number sign"
-msgstr ""
-
-msgid "at"
-msgstr ""
-
-msgid "tilde"
-msgstr ""
-
-msgid "star"
-msgstr ""
-
-msgid "quote"
-msgstr ""
-
-msgid "left paren"
-msgstr ""
-
-msgid "right paren"
-msgstr ""
-
-#. placeholders: {ch}
-msgid "cap {ch}"
-msgstr ""
-
 msgid "Message copied to clipboard."
 msgstr ""
 
@@ -15302,9 +15027,6 @@ msgstr ""
 msgid "Ready in {remaining} seconds."
 msgstr ""
 
-msgid "Back"
-msgstr ""
-
 msgid "Enter selects, Escape goes back. Control stops the current speech."
 msgstr ""
 
@@ -15321,6 +15043,9 @@ msgid "{position} of {count}."
 msgstr ""
 
 msgid "Repeat this line."
+msgstr ""
+
+msgid "Back"
 msgstr ""
 
 msgid "Return to the previous menu."
@@ -24472,6 +24197,12 @@ msgstr ""
 msgid "Minus"
 msgstr ""
 
+msgid "Page Down"
+msgstr ""
+
+msgid "Page Up"
+msgstr ""
+
 msgid "Driving commands"
 msgstr ""
 
@@ -26676,6 +26407,9 @@ msgid "label"
 msgstr ""
 
 msgid "group"
+msgstr ""
+
+msgid "rate"
 msgstr ""
 
 msgid "Free with your loyalty reward."
@@ -29202,6 +28936,9 @@ msgid ""
 msgstr ""
 
 msgid "reset"
+msgstr ""
+
+msgid "delete"
 msgstr ""
 
 msgid "Career actions"
@@ -33852,6 +33589,9 @@ msgid ""
 "cancel."
 msgstr ""
 
+msgid "End"
+msgstr ""
+
 msgid "Empty."
 msgstr ""
 
@@ -34803,4 +34543,249 @@ msgid "Divided, one lane your side."
 msgstr ""
 
 msgid "Mostly divided, one lane your side."
+msgstr ""
+
+#. Key and controller button names, as Hearken's bindings say them
+#. (hearken-app src/bindings/names.rs). The lowercase words are the ids
+#. the settings file stores; they stay here so their translations are kept.
+msgid "keypad 0"
+msgstr ""
+
+msgid "keypad 1"
+msgstr ""
+
+msgid "keypad 2"
+msgstr ""
+
+msgid "keypad 3"
+msgstr ""
+
+msgid "keypad 4"
+msgstr ""
+
+msgid "keypad 5"
+msgstr ""
+
+msgid "keypad 6"
+msgstr ""
+
+msgid "keypad 7"
+msgstr ""
+
+msgid "keypad 8"
+msgstr ""
+
+msgid "keypad 9"
+msgstr ""
+
+msgid "keypad Enter"
+msgstr ""
+
+msgid "keypad plus"
+msgstr ""
+
+msgid "keypad minus"
+msgstr ""
+
+msgid "enter"
+msgstr ""
+
+msgid "escape"
+msgstr ""
+
+msgid "space"
+msgstr ""
+
+msgid "tab"
+msgstr ""
+
+msgid "backspace"
+msgstr ""
+
+msgid "the Left arrow"
+msgstr ""
+
+msgid "the Right arrow"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "home"
+msgstr ""
+
+msgid "end"
+msgstr ""
+
+msgid "Insert"
+msgstr ""
+
+msgid "insert"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "comma"
+msgstr ""
+
+msgid "period"
+msgstr ""
+
+msgid "slash"
+msgstr ""
+
+msgid "backslash"
+msgstr ""
+
+msgid "grave"
+msgstr ""
+
+msgid "grave accent"
+msgstr ""
+
+msgid "equals"
+msgstr ""
+
+msgid "plus"
+msgstr ""
+
+msgid "minus"
+msgstr ""
+
+msgid "semicolon"
+msgstr ""
+
+msgid "apostrophe"
+msgstr ""
+
+msgid "left bracket"
+msgstr ""
+
+msgid "right bracket"
+msgstr ""
+
+msgid "Left Control"
+msgstr ""
+
+msgid "Right Control"
+msgstr ""
+
+msgid "Right Shift"
+msgstr ""
+
+msgid "Left Alt"
+msgstr ""
+
+msgid "Right Alt"
+msgstr ""
+
+msgid "an unnamed key"
+msgstr ""
+
+msgctxt "controller button"
+msgid "Back"
+msgstr ""
+
+msgid "back"
+msgstr ""
+
+msgid "guide"
+msgstr ""
+
+msgid "the guide button"
+msgstr ""
+
+msgid "the right bumper"
+msgstr ""
+
+msgid "misc"
+msgstr ""
+
+msgid "the extra button"
+msgstr ""
+
+msgid "paddle 1"
+msgstr ""
+
+msgid "paddle 2"
+msgstr ""
+
+msgid "paddle 3"
+msgstr ""
+
+msgid "paddle 4"
+msgstr ""
+
+msgid "the touchpad"
+msgstr ""
+
+msgid "touchpad"
+msgstr ""
+
+msgid "an unnamed button"
+msgstr ""
+
+#. The pieces Hearken's bindings join into a shortcut's spoken name
+#. (hearken-app src/bindings.rs).
+msgid "Control "
+msgstr ""
+
+msgid "Alt "
+msgstr ""
+
+msgid "Shift "
+msgstr ""
+
+#. placeholders: {short}
+msgid "right bumper plus {short}"
+msgstr ""
+
+#. placeholders: {short}
+msgid "the {short} button"
+msgstr ""
+
+#. A typed character as text entry says it, from Hearken's spoken_char
+#. (hearken-app src/text.rs).
+msgid "colon"
+msgstr ""
+
+msgid "dot"
+msgstr ""
+
+msgid "underscore"
+msgstr ""
+
+msgid "question mark"
+msgstr ""
+
+msgid "exclamation mark"
+msgstr ""
+
+msgid "percent"
+msgstr ""
+
+msgid "number sign"
+msgstr ""
+
+msgid "at"
+msgstr ""
+
+msgid "tilde"
+msgstr ""
+
+msgid "star"
+msgstr ""
+
+msgid "quote"
+msgstr ""
+
+msgid "left paren"
+msgstr ""
+
+msgid "right paren"
+msgstr ""
+
+#. placeholders: {ch}
+msgid "cap {ch}"
 msgstr ""

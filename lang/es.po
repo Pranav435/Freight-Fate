@@ -15663,9 +15663,13 @@ msgid "Secret store unreachable in this build: {store_detail}"
 msgstr ""
 "No se puede acceder al almacén de secretos en esta versión: {store_detail}"
 
-#. placeholders: {e}
-msgid "smoke: packaged BASS runtime could not initialize: {e}"
-msgstr "smoke: packaged BASS runtime could not initialize: {e}"
+#. placeholders: {KEY}
+msgid "smoke: {KEY} is not in the packed sounds"
+msgstr ""
+
+#. placeholders: {KEY}, {ext}, {e}
+msgid "smoke: {KEY}.{ext} does not decode through Hearken: {e}"
+msgstr ""
 
 msgid "start up"
 msgstr "start up"
@@ -15912,14 +15916,14 @@ msgstr "emisión de radio no disponible"
 msgid "audio disabled"
 msgstr "audio desactivado"
 
+msgid "pygame"
+msgstr ""
+
 msgid "dummy"
 msgstr "dummy"
 
-msgid "bass"
-msgstr "bass"
-
-msgid "radio-connect"
-msgstr "radio-connect"
+msgid "hearken"
+msgstr ""
 
 #. placeholders: {path}
 msgid "could not read {path}"
@@ -15928,34 +15932,6 @@ msgstr "no se pudo leer {path}"
 #. placeholders: {path}
 msgid "could not decode {path}"
 msgstr "no se pudo decodificar {path}"
-
-#. placeholders: {path}
-msgid "could not play {path}"
-msgstr "no se pudo reproducir {path}"
-
-msgid "audio-probe"
-msgstr "audio-probe"
-
-#. placeholders: {err}
-msgid "BASS refused the loop sync: {err}"
-msgstr "BASS rechazó la sincronización del bucle: {err}"
-
-msgid "Control "
-msgstr "Control "
-
-msgid "Alt "
-msgstr "Alt "
-
-msgid "Shift "
-msgstr "Shift "
-
-#. placeholders: {short}
-msgid "right bumper plus {short}"
-msgstr "botón superior derecho más {short}"
-
-#. placeholders: {short}
-msgid "the {short} button"
-msgstr "el botón {short}"
 
 msgid "Accelerate"
 msgstr "Acelerar"
@@ -16188,208 +16164,6 @@ msgstr "{spoken} y {spoken2}"
 
 msgid "or"
 msgstr "o"
-
-msgid "keypad 0"
-msgstr "teclado numérico 0"
-
-msgid "keypad 1"
-msgstr "teclado numérico 1"
-
-msgid "keypad 2"
-msgstr "teclado numérico 2"
-
-msgid "keypad 3"
-msgstr "teclado numérico 3"
-
-msgid "keypad 4"
-msgstr "teclado numérico 4"
-
-msgid "keypad 5"
-msgstr "teclado numérico 5"
-
-msgid "keypad 6"
-msgstr "teclado numérico 6"
-
-msgid "keypad 7"
-msgstr "teclado numérico 7"
-
-msgid "keypad 8"
-msgstr "teclado numérico 8"
-
-msgid "keypad 9"
-msgstr "teclado numérico 9"
-
-msgid "keypad Enter"
-msgstr "Enter del teclado numérico"
-
-msgid "keypad plus"
-msgstr "más del teclado numérico"
-
-msgid "keypad minus"
-msgstr "menos del teclado numérico"
-
-msgid "enter"
-msgstr "enter"
-
-msgid "escape"
-msgstr "escape"
-
-msgid "space"
-msgstr "space"
-
-msgid "tab"
-msgstr "tab"
-
-msgid "backspace"
-msgstr "backspace"
-
-msgid "the Left arrow"
-msgstr "la flecha izquierda"
-
-msgid "the Right arrow"
-msgstr "la flecha derecha"
-
-msgid "Home"
-msgstr "Home"
-
-msgid "home"
-msgstr "home"
-
-msgid "End"
-msgstr "End"
-
-msgid "end"
-msgstr "end"
-
-msgid "Page Up"
-msgstr "Page Up"
-
-msgid "Page Down"
-msgstr "Page Down"
-
-msgid "Insert"
-msgstr "Insert"
-
-msgid "insert"
-msgstr "insert"
-
-msgid "Delete"
-msgstr "Delete"
-
-msgid "delete"
-msgstr "borrado"
-
-msgid "comma"
-msgstr "coma"
-
-msgid "period"
-msgstr "punto"
-
-msgid "slash"
-msgstr "barra"
-
-msgid "backslash"
-msgstr "barra invertida"
-
-msgid "grave"
-msgstr "acento grave"
-
-msgid "grave accent"
-msgstr "acento grave"
-
-msgid "equals"
-msgstr "igual"
-
-msgid "plus"
-msgstr "más"
-
-msgid "minus"
-msgstr "menos"
-
-msgid "semicolon"
-msgstr "punto y coma"
-
-msgid "apostrophe"
-msgstr "apóstrofo"
-
-msgid "left bracket"
-msgstr "corchete izquierdo"
-
-msgid "right bracket"
-msgstr "corchete derecho"
-
-msgid "Left Control"
-msgstr "Control izquierdo"
-
-msgid "Right Control"
-msgstr "Control derecho"
-
-msgid "Right Shift"
-msgstr "Shift derecho"
-
-msgid "Left Alt"
-msgstr "Alt izquierdo"
-
-msgid "Right Alt"
-msgstr "Alt derecho"
-
-msgid "an unnamed key"
-msgstr "una tecla sin nombre"
-
-msgctxt "controller button"
-msgid "Back"
-msgstr "Back"
-
-msgid "back"
-msgstr "back"
-
-msgid "guide"
-msgstr "guide"
-
-msgid "the guide button"
-msgstr "el botón guía"
-
-msgid "the right bumper"
-msgstr "el botón superior derecho"
-
-msgid "misc"
-msgstr "misc"
-
-msgid "the extra button"
-msgstr "el botón extra"
-
-msgid "paddle 1"
-msgstr "palanca trasera 1"
-
-msgid "paddle 2"
-msgstr "palanca trasera 2"
-
-msgid "paddle 3"
-msgstr "palanca trasera 3"
-
-msgid "paddle 4"
-msgstr "palanca trasera 4"
-
-msgid "the touchpad"
-msgstr "el panel táctil"
-
-msgid "touchpad"
-msgstr "panel táctil"
-
-msgid "right stick up"
-msgstr "stick derecho arriba"
-
-msgid "right stick down"
-msgstr "stick derecho abajo"
-
-msgid "right stick left"
-msgstr "stick derecho izquierda"
-
-msgid "right stick right"
-msgstr "stick derecho derecha"
-
-msgid "an unnamed button"
-msgstr "un botón sin nombre"
 
 msgid "Pause"
 msgstr "Pausa"
@@ -16890,6 +16664,18 @@ msgstr "botón Back"
 msgid "Start button"
 msgstr "botón Start"
 
+msgid "right stick up"
+msgstr "stick derecho arriba"
+
+msgid "right stick down"
+msgstr "stick derecho abajo"
+
+msgid "right stick left"
+msgstr "stick derecho izquierda"
+
+msgid "right stick right"
+msgstr "stick derecho derecha"
+
 msgid "a button"
 msgstr "un botón"
 
@@ -17329,24 +17115,6 @@ msgstr "achievement"
 msgid "level"
 msgstr "level"
 
-msgid "main"
-msgstr "main"
-
-msgid "David"
-msgstr "David"
-
-msgid "Zira"
-msgstr "Zira"
-
-msgid "rate"
-msgstr "rate"
-
-msgid "pitch"
-msgstr "pitch"
-
-msgid "volume"
-msgstr "volume"
-
 msgid ""
 "Enter opens a category. Inside one, Enter repeats the achievement and "
 "Escape returns to the categories. From the categories, Escape returns to "
@@ -17513,49 +17281,6 @@ msgstr "Mantener mis asistencias personalizadas"
 msgid "Keeps the assists you set one by one."
 msgstr "Mantiene las asistencias que configuraste una a una."
 
-msgid "colon"
-msgstr "dos puntos"
-
-msgid "dot"
-msgstr "punto"
-
-msgid "underscore"
-msgstr "guion bajo"
-
-msgid "question mark"
-msgstr "signo de interrogación"
-
-msgid "exclamation mark"
-msgstr "signo de exclamación"
-
-msgid "percent"
-msgstr "por ciento"
-
-msgid "number sign"
-msgstr "almohadilla"
-
-msgid "at"
-msgstr "arroba"
-
-msgid "tilde"
-msgstr "virgulilla"
-
-msgid "star"
-msgstr "asterisco"
-
-msgid "quote"
-msgstr "comillas"
-
-msgid "left paren"
-msgstr "abre paréntesis"
-
-msgid "right paren"
-msgstr "cierra paréntesis"
-
-#. placeholders: {ch}
-msgid "cap {ch}"
-msgstr "mayúscula {ch}"
-
 msgid "Message copied to clipboard."
 msgstr "Mensaje copiado al portapapeles."
 
@@ -17579,9 +17304,6 @@ msgstr " {hidden} {plural} más recientes fuera de este filtro."
 msgid "Ready in {remaining} seconds."
 msgstr "Listo en {remaining} segundos."
 
-msgid "Back"
-msgstr "Atrás"
-
 msgid "Enter selects, Escape goes back. Control stops the current speech."
 msgstr ""
 "Enter selecciona, Escape vuelve atrás. Control detiene la voz actual."
@@ -17600,6 +17322,9 @@ msgstr "{position} de {count}."
 
 msgid "Repeat this line."
 msgstr "Repetir esta línea."
+
+msgid "Back"
+msgstr "Atrás"
 
 msgid "Return to the previous menu."
 msgstr "Volver al menú anterior."
@@ -27895,6 +27620,12 @@ msgstr "Más"
 msgid "Minus"
 msgstr "Menos"
 
+msgid "Page Down"
+msgstr "Page Down"
+
+msgid "Page Up"
+msgstr "Page Up"
+
 msgid "Driving commands"
 msgstr "Órdenes de conducción"
 
@@ -30416,6 +30147,9 @@ msgstr "label"
 
 msgid "group"
 msgstr "group"
+
+msgid "rate"
+msgstr "rate"
 
 msgid "Free with your loyalty reward."
 msgstr "Gratis con tu recompensa de fidelidad."
@@ -33311,6 +33045,9 @@ msgstr ""
 
 msgid "reset"
 msgstr "reinicio"
+
+msgid "delete"
+msgstr "borrado"
 
 msgid "Career actions"
 msgstr "Acciones de la carrera"
@@ -39285,6 +39022,9 @@ msgstr ""
 "repasan las letras que has escrito; Home y End saltan al principio o al "
 "final. Pulsa Escape para cancelar."
 
+msgid "End"
+msgstr "End"
+
 msgid "Empty."
 msgstr "Vacío."
 
@@ -40344,6 +40084,284 @@ msgstr "Con calzadas separadas, un carril en tu sentido."
 
 msgid "Mostly divided, one lane your side."
 msgstr "En su mayoría con calzadas separadas, un carril en tu sentido."
+
+#. Key and controller button names, as Hearken's bindings say them
+#. (hearken-app src/bindings/names.rs). The lowercase words are the ids
+#. the settings file stores; they stay here so their translations are kept.
+msgid "keypad 0"
+msgstr "teclado numérico 0"
+
+msgid "keypad 1"
+msgstr "teclado numérico 1"
+
+msgid "keypad 2"
+msgstr "teclado numérico 2"
+
+msgid "keypad 3"
+msgstr "teclado numérico 3"
+
+msgid "keypad 4"
+msgstr "teclado numérico 4"
+
+msgid "keypad 5"
+msgstr "teclado numérico 5"
+
+msgid "keypad 6"
+msgstr "teclado numérico 6"
+
+msgid "keypad 7"
+msgstr "teclado numérico 7"
+
+msgid "keypad 8"
+msgstr "teclado numérico 8"
+
+msgid "keypad 9"
+msgstr "teclado numérico 9"
+
+msgid "keypad Enter"
+msgstr "Enter del teclado numérico"
+
+msgid "keypad plus"
+msgstr "más del teclado numérico"
+
+msgid "keypad minus"
+msgstr "menos del teclado numérico"
+
+msgid "enter"
+msgstr "enter"
+
+msgid "escape"
+msgstr "escape"
+
+msgid "space"
+msgstr "space"
+
+msgid "tab"
+msgstr "tab"
+
+msgid "backspace"
+msgstr "backspace"
+
+msgid "the Left arrow"
+msgstr "la flecha izquierda"
+
+msgid "the Right arrow"
+msgstr "la flecha derecha"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "home"
+msgstr "home"
+
+msgid "end"
+msgstr "end"
+
+msgid "Insert"
+msgstr "Insert"
+
+msgid "insert"
+msgstr "insert"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "comma"
+msgstr "coma"
+
+msgid "period"
+msgstr "punto"
+
+msgid "slash"
+msgstr "barra"
+
+msgid "backslash"
+msgstr "barra invertida"
+
+msgid "grave"
+msgstr "acento grave"
+
+msgid "grave accent"
+msgstr "acento grave"
+
+msgid "equals"
+msgstr "igual"
+
+msgid "plus"
+msgstr "más"
+
+msgid "minus"
+msgstr "menos"
+
+msgid "semicolon"
+msgstr "punto y coma"
+
+msgid "apostrophe"
+msgstr "apóstrofo"
+
+msgid "left bracket"
+msgstr "corchete izquierdo"
+
+msgid "right bracket"
+msgstr "corchete derecho"
+
+msgid "Left Control"
+msgstr "Control izquierdo"
+
+msgid "Right Control"
+msgstr "Control derecho"
+
+msgid "Right Shift"
+msgstr "Shift derecho"
+
+msgid "Left Alt"
+msgstr "Alt izquierdo"
+
+msgid "Right Alt"
+msgstr "Alt derecho"
+
+msgid "an unnamed key"
+msgstr "una tecla sin nombre"
+
+msgctxt "controller button"
+msgid "Back"
+msgstr "Back"
+
+msgid "back"
+msgstr "back"
+
+msgid "guide"
+msgstr "guide"
+
+msgid "the guide button"
+msgstr "el botón guía"
+
+msgid "the right bumper"
+msgstr "el botón superior derecho"
+
+msgid "misc"
+msgstr "misc"
+
+msgid "the extra button"
+msgstr "el botón extra"
+
+msgid "paddle 1"
+msgstr "palanca trasera 1"
+
+msgid "paddle 2"
+msgstr "palanca trasera 2"
+
+msgid "paddle 3"
+msgstr "palanca trasera 3"
+
+msgid "paddle 4"
+msgstr "palanca trasera 4"
+
+msgid "the touchpad"
+msgstr "el panel táctil"
+
+msgid "touchpad"
+msgstr "panel táctil"
+
+msgid "an unnamed button"
+msgstr "un botón sin nombre"
+
+#. The pieces Hearken's bindings join into a shortcut's spoken name
+#. (hearken-app src/bindings.rs).
+msgid "Control "
+msgstr "Control "
+
+msgid "Alt "
+msgstr "Alt "
+
+msgid "Shift "
+msgstr "Shift "
+
+#. placeholders: {short}
+msgid "right bumper plus {short}"
+msgstr "botón superior derecho más {short}"
+
+#. placeholders: {short}
+msgid "the {short} button"
+msgstr "el botón {short}"
+
+#. A typed character as text entry says it, from Hearken's spoken_char
+#. (hearken-app src/text.rs).
+msgid "colon"
+msgstr "dos puntos"
+
+msgid "dot"
+msgstr "punto"
+
+msgid "underscore"
+msgstr "guion bajo"
+
+msgid "question mark"
+msgstr "signo de interrogación"
+
+msgid "exclamation mark"
+msgstr "signo de exclamación"
+
+msgid "percent"
+msgstr "por ciento"
+
+msgid "number sign"
+msgstr "almohadilla"
+
+msgid "at"
+msgstr "arroba"
+
+msgid "tilde"
+msgstr "virgulilla"
+
+msgid "star"
+msgstr "asterisco"
+
+msgid "quote"
+msgstr "comillas"
+
+msgid "left paren"
+msgstr "abre paréntesis"
+
+msgid "right paren"
+msgstr "cierra paréntesis"
+
+#. placeholders: {ch}
+msgid "cap {ch}"
+msgstr "mayúscula {ch}"
+
+#~ msgid "smoke: packaged BASS runtime could not initialize: {e}"
+#~ msgstr "smoke: packaged BASS runtime could not initialize: {e}"
+
+#~ msgid "bass"
+#~ msgstr "bass"
+
+#~ msgid "radio-connect"
+#~ msgstr "radio-connect"
+
+#~ msgid "could not play {path}"
+#~ msgstr "no se pudo reproducir {path}"
+
+#~ msgid "audio-probe"
+#~ msgstr "audio-probe"
+
+#~ msgid "BASS refused the loop sync: {err}"
+#~ msgstr "BASS rechazó la sincronización del bucle: {err}"
+
+#~ msgid "main"
+#~ msgstr "main"
+
+#~ msgid "David"
+#~ msgstr "David"
+
+#~ msgid "Zira"
+#~ msgstr "Zira"
+
+#~ msgid "pitch"
+#~ msgstr "pitch"
+
+#~ msgid "volume"
+#~ msgstr "volume"
 
 #~ msgid "You waited {waited}, and your 14-hour duty window is nearly used up."
 #~ msgstr ""

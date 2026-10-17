@@ -2479,7 +2479,7 @@ msgstr ""
 msgid "seek before the start of the pack payload"
 msgstr ""
 
-#: crates/ff-core/src/audio_fades.rs crates/freight-fate/src/audio/bass_engine.rs
+#: crates/ff-core/src/audio_fades.rs crates/freight-fate/src/audio/hearken_engine.rs
 msgid "linear"
 msgstr ""
 
@@ -4773,7 +4773,7 @@ msgstr ""
 msgid "truck"
 msgstr ""
 
-#: crates/ff-core/src/data/buffs.rs crates/ff-core/src/input_hints.rs crates/freight-fate/src/audio/backend.rs crates/freight-fate/src/bindings.rs
+#: crates/ff-core/src/data/buffs.rs crates/ff-core/src/input_hints.rs crates/freight-fate/src/audio/backend.rs crates/freight-fate/src/audio/hearken_backend.rs
 msgid "engine"
 msgstr ""
 
@@ -5578,7 +5578,7 @@ msgstr ""
 msgid "america"
 msgstr ""
 
-#: crates/ff-core/src/data/stop_twins.rs crates/freight-fate/src/bindings.rs crates/freight-fate/src/states/base.rs
+#: crates/ff-core/src/data/stop_twins.rs crates/freight-fate/src/bindings.rs
 msgid "and"
 msgstr ""
 
@@ -7120,7 +7120,7 @@ msgstr ""
 msgid "help"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "the Up arrow"
 msgstr ""
 
@@ -7128,7 +7128,7 @@ msgstr ""
 msgid "the right trigger"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "the Down arrow"
 msgstr ""
 
@@ -7140,7 +7140,7 @@ msgstr ""
 msgid "the left trigger fully"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "Left Shift"
 msgstr ""
 
@@ -7148,7 +7148,7 @@ msgstr ""
 msgid "clutch"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "the left bumper"
 msgstr ""
 
@@ -7168,7 +7168,7 @@ msgstr ""
 msgid "the A and X buttons"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "Backspace"
 msgstr ""
 
@@ -7188,7 +7188,7 @@ msgstr ""
 msgid "right bumper plus Y"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "Enter"
 msgstr ""
 
@@ -7196,7 +7196,7 @@ msgstr ""
 msgid "controller A"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/controller.rs
 msgid "D-pad down"
 msgstr ""
 
@@ -7220,7 +7220,7 @@ msgstr ""
 msgid "right bumper plus D-pad left or right"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "Space"
 msgstr ""
 
@@ -7232,7 +7232,7 @@ msgstr ""
 msgid "the B button"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "Tab"
 msgstr ""
 
@@ -7244,7 +7244,7 @@ msgstr ""
 msgid "right bumper plus B"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/controller.rs
 msgid "D-pad right"
 msgstr ""
 
@@ -7252,7 +7252,7 @@ msgstr ""
 msgid "clock"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/controller.rs
 msgid "D-pad up"
 msgstr ""
 
@@ -7260,11 +7260,11 @@ msgstr ""
 msgid "route"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/controller.rs
 msgid "D-pad left"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/audio/backend.rs crates/freight-fate/src/bindings.rs crates/freight-fate/src/states/driving_events/ambient.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/audio/backend.rs crates/freight-fate/src/audio/hearken_backend.rs crates/freight-fate/src/bindings.rs
 msgid "weather"
 msgstr ""
 
@@ -7276,19 +7276,19 @@ msgstr ""
 msgid "the left stick"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "the left stick click"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/input_hints.rs
 msgid "the right stick click"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/main_menu/input_practice.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/states/main_menu/input_practice.rs
 msgid "Escape"
 msgstr ""
 
-#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/main_menu/input_practice.rs crates/freight-fate/src/states/text_entry.rs
+#: crates/ff-core/src/input_hints.rs crates/freight-fate/src/states/main_menu/input_practice.rs crates/freight-fate/src/states/text_entry.rs
 msgid "Start"
 msgstr ""
 
@@ -7304,7 +7304,7 @@ msgstr ""
 msgid "wav"
 msgstr ""
 
-#: crates/ff-core/src/message_log.rs crates/ff-core/src/models/exchange.rs crates/ff-core/src/sim/real_weather_alerts.rs crates/freight-fate/src/speech/capture.rs
+#: crates/ff-core/src/message_log.rs crates/ff-core/src/models/exchange.rs crates/ff-core/src/sim/real_weather_alerts.rs
 msgid "event"
 msgstr ""
 
@@ -15634,7 +15634,7 @@ msgstr ""
 msgid "draw"
 msgstr ""
 
-#: crates/ff-core/src/sim/truck_parking.rs crates/freight-fate/src/app/testing.rs crates/freight-fate/src/bindings/names.rs
+#: crates/ff-core/src/sim/truck_parking.rs crates/freight-fate/src/app/testing.rs
 msgid "start"
 msgstr ""
 
@@ -17149,7 +17149,7 @@ msgstr ""
 msgid "window"
 msgstr ""
 
-#: crates/freight-fate/src/app.rs crates/freight-fate/src/speech/threaded.rs crates/freight-fate/src/states/main_menu/settings.rs
+#: crates/freight-fate/src/app.rs crates/freight-fate/src/states/main_menu/settings.rs
 msgid "speech"
 msgstr ""
 
@@ -17273,9 +17273,14 @@ msgstr ""
 msgid "Secret store unreachable in this build: {store_detail}"
 msgstr ""
 
-#. placeholders: {e}
+#. placeholders: {KEY}
 #: crates/freight-fate/src/app.rs
-msgid "smoke: packaged BASS runtime could not initialize: {e}"
+msgid "smoke: {KEY} is not in the packed sounds"
+msgstr ""
+
+#. placeholders: {KEY}, {ext}, {e}
+#: crates/freight-fate/src/app.rs
+msgid "smoke: {KEY}.{ext} does not decode through Hearken: {e}"
 msgstr ""
 
 #: crates/freight-fate/src/app.rs
@@ -17331,11 +17336,11 @@ msgstr ""
 msgid " [same frame]"
 msgstr ""
 
-#: crates/freight-fate/src/app/key_probe.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller/diagnostics.rs
+#: crates/freight-fate/src/app/key_probe.rs crates/freight-fate/src/controller/diagnostics.rs
 msgid "down"
 msgstr ""
 
-#: crates/freight-fate/src/app/key_probe.rs crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller/diagnostics.rs
+#: crates/freight-fate/src/app/key_probe.rs crates/freight-fate/src/controller/diagnostics.rs
 msgid "up"
 msgstr ""
 
@@ -17539,7 +17544,7 @@ msgstr ""
 msgid "ui"
 msgstr ""
 
-#: crates/freight-fate/src/audio/backend.rs
+#: crates/freight-fate/src/audio/backend.rs crates/freight-fate/src/audio/hearken_backend.rs
 msgid "siren"
 msgstr ""
 
@@ -17551,7 +17556,7 @@ msgstr ""
 msgid "master"
 msgstr ""
 
-#: crates/freight-fate/src/audio/backend.rs crates/freight-fate/src/audio/bass_radio.rs
+#: crates/freight-fate/src/audio/backend.rs crates/freight-fate/src/audio/hearken_radio.rs
 msgid "radio stream unavailable"
 msgstr ""
 
@@ -17559,62 +17564,26 @@ msgstr ""
 msgid "audio disabled"
 msgstr ""
 
-#: crates/freight-fate/src/audio/bass.rs crates/freight-fate/src/main.rs
+#: crates/freight-fate/src/audio/engine.rs
+msgid "pygame"
+msgstr ""
+
+#: crates/freight-fate/src/audio/hearken_backend.rs crates/freight-fate/src/main.rs
 msgid "dummy"
 msgstr ""
 
-#: crates/freight-fate/src/audio/bass_backend.rs
-msgid "bass"
-msgstr ""
-
-#: crates/freight-fate/src/audio/bass_radio.rs
-msgid "radio-connect"
+#: crates/freight-fate/src/audio/hearken_backend_impl.rs
+msgid "hearken"
 msgstr ""
 
 #. placeholders: {path}
-#: crates/freight-fate/src/audio/bass_radio.rs
+#: crates/freight-fate/src/audio/hearken_music.rs
 msgid "could not read {path}"
 msgstr ""
 
 #. placeholders: {path}
-#: crates/freight-fate/src/audio/bass_radio.rs
+#: crates/freight-fate/src/audio/hearken_music.rs
 msgid "could not decode {path}"
-msgstr ""
-
-#. placeholders: {path}
-#: crates/freight-fate/src/audio/bass_radio.rs
-msgid "could not play {path}"
-msgstr ""
-
-#: crates/freight-fate/src/audio/engine.rs
-msgid "audio-probe"
-msgstr ""
-
-#. placeholders: {err}
-#: crates/freight-fate/src/audio/sustain.rs
-msgid "BASS refused the loop sync: {err}"
-msgstr ""
-
-#: crates/freight-fate/src/bindings.rs
-msgid "Control "
-msgstr ""
-
-#: crates/freight-fate/src/bindings.rs
-msgid "Alt "
-msgstr ""
-
-#: crates/freight-fate/src/bindings.rs
-msgid "Shift "
-msgstr ""
-
-#. placeholders: {short}
-#: crates/freight-fate/src/bindings.rs
-msgid "right bumper plus {short}"
-msgstr ""
-
-#. placeholders: {short}
-#: crates/freight-fate/src/bindings.rs
-msgid "the {short} button"
 msgstr ""
 
 #: crates/freight-fate/src/bindings.rs
@@ -17924,275 +17893,6 @@ msgstr ""
 
 #: crates/freight-fate/src/bindings.rs
 msgid "or"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 0"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 1"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 2"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 3"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 4"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 5"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 6"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 7"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 8"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad 9"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad Enter"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad plus"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "keypad minus"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "enter"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "escape"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/base.rs
-msgid "space"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "tab"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "backspace"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "the Left arrow"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "the Right arrow"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "Home"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "home"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/text_entry.rs
-msgid "End"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "end"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/driving_menu_states/commands.rs
-msgid "Page Up"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/driving_menu_states/commands.rs
-msgid "Page Down"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "Insert"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "insert"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "Delete"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/main_menu/careers.rs
-msgid "delete"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/base.rs
-msgid "comma"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "period"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/base.rs
-msgid "slash"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/base.rs
-msgid "backslash"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "grave"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "grave accent"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/base.rs
-msgid "equals"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/base.rs
-msgid "plus"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "minus"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/base.rs
-msgid "semicolon"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/states/base.rs
-msgid "apostrophe"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "left bracket"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "right bracket"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "Left Control"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "Right Control"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "Right Shift"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "Left Alt"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "Right Alt"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "an unnamed key"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgctxt "controller button"
-msgid "Back"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "back"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "guide"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "the guide button"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "the right bumper"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "misc"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "the extra button"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "paddle 1"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "paddle 2"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "paddle 3"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "paddle 4"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "the touchpad"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "touchpad"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller.rs
-msgid "right stick up"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller.rs
-msgid "right stick down"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller.rs
-msgid "right stick left"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs crates/freight-fate/src/controller.rs
-msgid "right stick right"
-msgstr ""
-
-#: crates/freight-fate/src/bindings/names.rs
-msgid "an unnamed button"
 msgstr ""
 
 #: crates/freight-fate/src/bindings/touch.rs
@@ -18742,6 +18442,22 @@ msgid "Start button"
 msgstr ""
 
 #: crates/freight-fate/src/controller.rs
+msgid "right stick up"
+msgstr ""
+
+#: crates/freight-fate/src/controller.rs
+msgid "right stick down"
+msgstr ""
+
+#: crates/freight-fate/src/controller.rs
+msgid "right stick left"
+msgstr ""
+
+#: crates/freight-fate/src/controller.rs
+msgid "right stick right"
+msgstr ""
+
+#: crates/freight-fate/src/controller.rs
 msgid "a button"
 msgstr ""
 
@@ -19141,7 +18857,7 @@ msgstr ""
 msgid "zero"
 msgstr ""
 
-#: crates/freight-fate/src/online_activation.rs crates/freight-fate/src/states/base.rs
+#: crates/freight-fate/src/online_activation.rs
 msgid "dash"
 msgstr ""
 
@@ -19195,30 +18911,6 @@ msgstr ""
 
 #: crates/freight-fate/src/online_journal.rs crates/freight-fate/src/states/city.rs crates/freight-fate/src/states/online_states/profile.rs
 msgid "level"
-msgstr ""
-
-#: crates/freight-fate/src/speech/capture.rs
-msgid "main"
-msgstr ""
-
-#: crates/freight-fate/src/speech/capture.rs
-msgid "David"
-msgstr ""
-
-#: crates/freight-fate/src/speech/capture.rs
-msgid "Zira"
-msgstr ""
-
-#: crates/freight-fate/src/speech/live.rs crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
-msgid "rate"
-msgstr ""
-
-#: crates/freight-fate/src/speech/live.rs
-msgid "pitch"
-msgstr ""
-
-#: crates/freight-fate/src/speech/live.rs
-msgid "volume"
 msgstr ""
 
 #: crates/freight-fate/src/states/account_achievements.rs
@@ -19397,63 +19089,6 @@ msgid "Keeps the assists you set one by one."
 msgstr ""
 
 #: crates/freight-fate/src/states/base.rs
-msgid "colon"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "dot"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "underscore"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "question mark"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "exclamation mark"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "percent"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "number sign"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "at"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "tilde"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "star"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "quote"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "left paren"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
-msgid "right paren"
-msgstr ""
-
-#. placeholders: {ch}
-#: crates/freight-fate/src/states/base.rs
-msgid "cap {ch}"
-msgstr ""
-
-#: crates/freight-fate/src/states/base.rs
 msgid "Message copied to clipboard."
 msgstr ""
 
@@ -19483,10 +19118,6 @@ msgstr ""
 msgid "Ready in {remaining} seconds."
 msgstr ""
 
-#: crates/freight-fate/src/states/base/menu.rs crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/city/extras.rs crates/freight-fate/src/states/city/truck_status.rs
-msgid "Back"
-msgstr ""
-
 #: crates/freight-fate/src/states/base/menu.rs
 msgid "Enter selects, Escape goes back. Control stops the current speech."
 msgstr ""
@@ -19508,6 +19139,10 @@ msgstr ""
 
 #: crates/freight-fate/src/states/base/menu.rs crates/freight-fate/src/states/career_setback.rs
 msgid "Repeat this line."
+msgstr ""
+
+#: crates/freight-fate/src/states/base/menu.rs crates/freight-fate/src/states/career_stats.rs crates/freight-fate/src/states/city/extras.rs crates/freight-fate/src/states/city/truck_status.rs
+msgid "Back"
 msgstr ""
 
 #: crates/freight-fate/src/states/base/menu.rs crates/freight-fate/src/states/logbook.rs
@@ -30918,6 +30553,14 @@ msgstr ""
 msgid "Minus"
 msgstr ""
 
+#: crates/freight-fate/src/states/driving_menu_states/commands.rs
+msgid "Page Down"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_menu_states/commands.rs
+msgid "Page Up"
+msgstr ""
+
 #: crates/freight-fate/src/states/driving_menu_states/commands.rs crates/freight-fate/src/states/driving_menu_states/status.rs
 msgid "Driving commands"
 msgstr ""
@@ -33660,6 +33303,10 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
 msgid "group"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
+msgid "rate"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
@@ -36777,6 +36424,10 @@ msgstr ""
 
 #: crates/freight-fate/src/states/main_menu/careers.rs
 msgid "reset"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/careers.rs
+msgid "delete"
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu/careers.rs
@@ -42445,6 +42096,10 @@ msgid ""
 msgstr ""
 
 #: crates/freight-fate/src/states/text_entry.rs
+msgid "End"
+msgstr ""
+
+#: crates/freight-fate/src/states/text_entry.rs
 msgid "Empty."
 msgstr ""
 
@@ -43663,4 +43318,327 @@ msgstr ""
 
 #: lang/extra.pot
 msgid "Mostly divided, one lane your side."
+msgstr ""
+
+#. Key and controller button names, as Hearken's bindings say them
+#. (hearken-app src/bindings/names.rs). The lowercase words are the ids
+#. the settings file stores; they stay here so their translations are kept.
+#: lang/extra.pot
+msgid "keypad 0"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 1"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 2"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 3"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 4"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 5"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 6"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 7"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 8"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad 9"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad Enter"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad plus"
+msgstr ""
+
+#: lang/extra.pot
+msgid "keypad minus"
+msgstr ""
+
+#: lang/extra.pot
+msgid "enter"
+msgstr ""
+
+#: lang/extra.pot
+msgid "escape"
+msgstr ""
+
+#: lang/extra.pot
+msgid "space"
+msgstr ""
+
+#: lang/extra.pot
+msgid "tab"
+msgstr ""
+
+#: lang/extra.pot
+msgid "backspace"
+msgstr ""
+
+#: lang/extra.pot
+msgid "the Left arrow"
+msgstr ""
+
+#: lang/extra.pot
+msgid "the Right arrow"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Home"
+msgstr ""
+
+#: lang/extra.pot
+msgid "home"
+msgstr ""
+
+#: lang/extra.pot
+msgid "end"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Insert"
+msgstr ""
+
+#: lang/extra.pot
+msgid "insert"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Delete"
+msgstr ""
+
+#: lang/extra.pot
+msgid "comma"
+msgstr ""
+
+#: lang/extra.pot
+msgid "period"
+msgstr ""
+
+#: lang/extra.pot
+msgid "slash"
+msgstr ""
+
+#: lang/extra.pot
+msgid "backslash"
+msgstr ""
+
+#: lang/extra.pot
+msgid "grave"
+msgstr ""
+
+#: lang/extra.pot
+msgid "grave accent"
+msgstr ""
+
+#: lang/extra.pot
+msgid "equals"
+msgstr ""
+
+#: lang/extra.pot
+msgid "plus"
+msgstr ""
+
+#: lang/extra.pot
+msgid "minus"
+msgstr ""
+
+#: lang/extra.pot
+msgid "semicolon"
+msgstr ""
+
+#: lang/extra.pot
+msgid "apostrophe"
+msgstr ""
+
+#: lang/extra.pot
+msgid "left bracket"
+msgstr ""
+
+#: lang/extra.pot
+msgid "right bracket"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Left Control"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Right Control"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Right Shift"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Left Alt"
+msgstr ""
+
+#: lang/extra.pot
+msgid "Right Alt"
+msgstr ""
+
+#: lang/extra.pot
+msgid "an unnamed key"
+msgstr ""
+
+#: lang/extra.pot
+msgctxt "controller button"
+msgid "Back"
+msgstr ""
+
+#: lang/extra.pot
+msgid "back"
+msgstr ""
+
+#: lang/extra.pot
+msgid "guide"
+msgstr ""
+
+#: lang/extra.pot
+msgid "the guide button"
+msgstr ""
+
+#: lang/extra.pot
+msgid "the right bumper"
+msgstr ""
+
+#: lang/extra.pot
+msgid "misc"
+msgstr ""
+
+#: lang/extra.pot
+msgid "the extra button"
+msgstr ""
+
+#: lang/extra.pot
+msgid "paddle 1"
+msgstr ""
+
+#: lang/extra.pot
+msgid "paddle 2"
+msgstr ""
+
+#: lang/extra.pot
+msgid "paddle 3"
+msgstr ""
+
+#: lang/extra.pot
+msgid "paddle 4"
+msgstr ""
+
+#: lang/extra.pot
+msgid "the touchpad"
+msgstr ""
+
+#: lang/extra.pot
+msgid "touchpad"
+msgstr ""
+
+#: lang/extra.pot
+msgid "an unnamed button"
+msgstr ""
+
+#. The pieces Hearken's bindings join into a shortcut's spoken name
+#. (hearken-app src/bindings.rs).
+#: lang/extra.pot
+msgid "Control "
+msgstr ""
+
+#: lang/extra.pot
+msgid "Alt "
+msgstr ""
+
+#: lang/extra.pot
+msgid "Shift "
+msgstr ""
+
+#. placeholders: {short}
+#: lang/extra.pot
+msgid "right bumper plus {short}"
+msgstr ""
+
+#. placeholders: {short}
+#: lang/extra.pot
+msgid "the {short} button"
+msgstr ""
+
+#. A typed character as text entry says it, from Hearken's spoken_char
+#. (hearken-app src/text.rs).
+#: lang/extra.pot
+msgid "colon"
+msgstr ""
+
+#: lang/extra.pot
+msgid "dot"
+msgstr ""
+
+#: lang/extra.pot
+msgid "underscore"
+msgstr ""
+
+#: lang/extra.pot
+msgid "question mark"
+msgstr ""
+
+#: lang/extra.pot
+msgid "exclamation mark"
+msgstr ""
+
+#: lang/extra.pot
+msgid "percent"
+msgstr ""
+
+#: lang/extra.pot
+msgid "number sign"
+msgstr ""
+
+#: lang/extra.pot
+msgid "at"
+msgstr ""
+
+#: lang/extra.pot
+msgid "tilde"
+msgstr ""
+
+#: lang/extra.pot
+msgid "star"
+msgstr ""
+
+#: lang/extra.pot
+msgid "quote"
+msgstr ""
+
+#: lang/extra.pot
+msgid "left paren"
+msgstr ""
+
+#: lang/extra.pot
+msgid "right paren"
+msgstr ""
+
+#. placeholders: {ch}
+#: lang/extra.pot
+msgid "cap {ch}"
 msgstr ""
