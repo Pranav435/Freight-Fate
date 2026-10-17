@@ -91,6 +91,9 @@ fn test_hearken_held_alert_lapses_on_its_own_and_cues_latch() {
     assert!(r.engine.cue_held("tick"));
     r.engine.update(CUE_HOLD_TIMEOUT_S + 0.01);
     assert!(!r.engine.cue_held("tick"));
+    r.engine.hold_cue("tick");
+    r.engine.release_cue("tick");
+    assert!(!r.engine.cue_held("tick"));
 }
 
 #[test]
