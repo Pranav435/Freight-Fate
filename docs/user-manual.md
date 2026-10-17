@@ -678,7 +678,7 @@ Your legal hours are the same in both hours modes: eleven driving hours after te
 
 Any thirty consecutive minutes without driving can meet the driving-break requirement. Loading and inspections can count, but they won't reset the duty window. Moving the truck for work counts even when you're bobtail.
 
-Check your hours before choosing how far to continue. Alt+A reads time used, Alt+S tells you when the break is due, and Alt+D reads both shift limits with reachable legal rest. C gives the clock, deadline, and nearest limit. On a controller, D-pad right reads the clock with all of these limits in one report. You'll hear warnings with two hours, one hour, and thirty minutes left.
+Check your hours before choosing how far to continue. Alt+A reads time used, Alt+S tells you when the break is due, and Alt+D reads both shift limits with reachable legal rest. C gives the clock, deadline, and nearest limit. On a controller, D-pad right reads the clock with all of these limits in one report. Before each limit you'll hear one warning: with one hour left in the Relaxed driving mode, two hours in Standard, and two hours, one hour and thirty minutes in Real time. A limit the trip ends inside gets no warning. When you leave with a load, the departure line says your driving time left, your fuel, and whether the run needs a break or a sleep.
 
 A half-hour break won't solve a shift that's ending. Check reachability again if traffic or weather slows you down.
 
@@ -853,9 +853,9 @@ Choose the driving pace first. Relaxed gives you more time to react, Standard co
 
 #### Choosing your driving pace
 
-Relaxed gives you the most time to react. All the driving systems remain available, but you'll face fewer random hazards, have longer to respond, and receive calmer routine announcements. Collisions and fatigue are more forgiving too.
+Relaxed passes about ten minutes of road and clock for each real minute, and gives you the most time to react. All the driving systems remain available, but you'll face fewer random hazards, have longer to respond, and receive calmer routine announcements. Collisions and fatigue are more forgiving too.
 
-Standard brings balanced timing and consequences. Distance and time move twice as fast, so a driving day takes half the real time. Decisions arrive sooner, without the extra forgiveness of Relaxed.
+Standard brings balanced timing and consequences. Distance and time move twice as fast, about twenty minutes for each real minute, so a driving day takes half the real time. Decisions arrive sooner, without the extra forgiveness of Relaxed.
 
 Real time uses Standard's level of challenge and follows your computer's date and time. The driving clock runs in real time on the road and while parked. Pair it with real-world weather if you'd like conditions to follow the world outside. Matching the clock doesn't change your delivery time remaining, career progress, or hours of service.
 
