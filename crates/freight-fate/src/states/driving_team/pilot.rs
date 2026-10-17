@@ -31,6 +31,9 @@ const KEY_BEAT_S: f64 = 1.5;
 const STALL_LIMIT_S: f64 = 180.0;
 /// How far ahead to look for a stop to end the shift at.
 const SHIFT_STOP_REACH_MI: f64 = 40.0;
+/// The pace a stop's reach is judged at: a stop farther than this covers in
+/// the time left before the break is due is out of reach.
+const REACH_MPH: f64 = 50.0;
 /// How close to the posted limit the co-driver brings the truck by hand
 /// before setting the cruise, and how far under it a set speed may sit
 /// before they tap it up.
@@ -43,6 +46,8 @@ const ACCEL_GIVE_UP_S: f64 = 45.0;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum StopPurpose {
     Fuel,
+    /// Their 30-minute break.
+    Break,
     ShiftEnd,
 }
 
@@ -109,7 +114,7 @@ impl DrivingState {
     ) -> Result<Pedals, String> {
         let mut pedals = Pedals::default();
         let speed = self.trip.truck.speed_mph();
-        if let Some(reason) = self.pilot_boundary(ctx) {
+        if let Some(reason) = self.pilot_boundary(ctx, pilot) {
             return Err(reason);
         }
         if speed < 1.0 {
@@ -257,6 +262,8 @@ impl DrivingState {
         }
         let purpose = if pilot.shift_over {
             StopPurpose::ShiftEnd
+        } else if co_driver::break_wanted(hos_of(ctx), &mode) {
+            StopPurpose::Break
         } else if self.trip.truck.fuel_fraction() < FUEL_STOP_FRACTION {
             StopPurpose::Fuel
         } else {
@@ -266,6 +273,7 @@ impl DrivingState {
         let bobtail = self.trip.bobtail;
         let wanted = |stop: &RoadStop| match purpose {
             StopPurpose::Fuel => stop.actions.iter().any(|a| a == "fuel"),
+            StopPurpose::Break => stop.actions.iter().any(|a| a == "break"),
             StopPurpose::ShiftEnd => stop.parking != "none",
         };
         let mut candidates: Vec<&RoadStop> = self
@@ -284,7 +292,17 @@ impl DrivingState {
         let Some(stop) = candidates.first().map(|stop| (*stop).clone()) else {
             return;
         };
-        if purpose == StopPurpose::ShiftEnd && stop.at_mi - here > SHIFT_STOP_REACH_MI {
+        let reach = match purpose {
+            StopPurpose::ShiftEnd => SHIFT_STOP_REACH_MI,
+            StopPurpose::Break => {
+                let left_min = co_driver::BREAK_REQUIRED_AFTER_MIN
+                    - co_driver::CO_DRIVER_SUMMON_LEAD_MIN
+                    - hos_of(ctx).since_break_min;
+                left_min.max(0.0) / 60.0 * REACH_MPH
+            }
+            StopPurpose::Fuel => f64::INFINITY,
+        };
+        if stop.at_mi - here > reach {
             return;
         }
         log::info!(
@@ -302,7 +320,7 @@ impl DrivingState {
 
     /// Something only the driver can decide, or nothing the co-driver can
     /// do: the reason they hand back.
-    fn pilot_boundary(&self, ctx: &GameContext) -> Option<String> {
+    fn pilot_boundary(&self, ctx: &GameContext, pilot: &Pilot) -> Option<String> {
         if self.trip.truck.damage_pct > self.start_damage + 0.5 {
             return Some("damage".to_string());
         }
@@ -312,7 +330,12 @@ impl DrivingState {
         if self.off_pavement() {
             return Some("off the road".to_string());
         }
-        let _ = ctx;
+        // Their break is due with no stop reached: the player takes over
+        // rather than the co-driver driving past the rule.
+        let making_for_break = matches!(pilot.making_for, Some((_, StopPurpose::Break)));
+        if co_driver::break_overdue(hos_of(ctx), &ctx.settings.hos_mode) && !making_for_break {
+            return Some("break".to_string());
+        }
         None
     }
 }

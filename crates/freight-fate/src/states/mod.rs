@@ -8,6 +8,7 @@ pub mod city;
 pub mod city_business;
 pub mod city_garage;
 pub mod city_pickup;
+pub mod city_pickup_team;
 pub mod cloud_save_states;
 pub mod driving;
 pub mod driving_controls;

@@ -77,6 +77,11 @@ fn rest_stop_move(rows: &[String], drive: &DrivingState) -> OverlayMove {
     if pilot.is_some_and(|pilot| pilot.shift_over) {
         return OverlayMove::Summon("shift".into());
     }
+    if pilot.is_some_and(|pilot| matches!(pilot.making_for, Some((_, StopPurpose::Break)))) {
+        if let Some(row) = row_starting(rows, "Take a 30-minute break") {
+            return OverlayMove::Row(row);
+        }
+    }
     let refuel = row_starting(rows, "Refuel");
     let wants_fuel = drive.trip.truck.fuel_fraction() < TOP_UP_FRACTION
         || pilot.is_some_and(|pilot| {

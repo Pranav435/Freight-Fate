@@ -1,7 +1,7 @@
 //! Where the co-driver's information lives: the Driver screen, the ELD
 //! app, and the C readout.
 
-use ff_core::models::co_driver::{CO_DRIVER_SHIFT_MIN, CO_DRIVER_SUMMON_LEAD_MIN};
+use ff_core::models::co_driver::CO_DRIVER_SUMMON_LEAD_MIN;
 use ff_core::sim::hos::{self, HosClock};
 
 use crate::app::GameContext;
@@ -25,12 +25,8 @@ impl DrivingState {
         if hos::is_non_enforced(mode) || hos::limits(mode).is_none() {
             return None;
         }
-        let clock = hos_of(ctx);
-        let shift = CO_DRIVER_SHIFT_MIN - CO_DRIVER_SUMMON_LEAD_MIN - clock.driving_min;
-        let legal = clock
-            .remaining_min(mode)
-            .map_or(shift, |left| left - CO_DRIVER_SUMMON_LEAD_MIN);
-        Some(shift.min(legal).max(0.0))
+        let left = hos_of(ctx).remaining_min(mode)?;
+        Some((left - CO_DRIVER_SUMMON_LEAD_MIN).max(0.0))
     }
 
     /// The C readout's hours clause while the co-driver drives: when they

@@ -41,6 +41,11 @@ impl ArrivalState {
              half the experience.",
             fmt_grouped(split.co_driver_pay, 0)
         ));
+        self.team_miles = team.co_driver_mi;
+        self.team_note = Some(format!(
+            "Team load: {name} drove {} of the miles",
+            ff_core::pyfmt::fmt_f(team.co_driver_mi, 0)
+        ));
         let key = team.co_driver.key;
         let p = profile_mut_of(ctx);
         let status = p.business_status.clone();

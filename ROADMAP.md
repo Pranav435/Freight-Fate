@@ -64,11 +64,15 @@ bookmarks usable.
       miles pay half (an owner-operator pays 30 percent) and earn half the
       experience, and count as sleeper-berth time for the player. The
       logbooks swap, so every hours rule reads the clock of whoever drives.
-- [ ] (Found along the way) Team driving follow-ups: "Run this load as a
-      team" at the shipper, the surprise pairings as hidden achievements,
-      co-driver miles left out of driving achievements and the road
-      journal, and an owner listening pass on ride along and the wake-up
-      summary.
+      The pickup menu offers the same handover from the dock, with the
+      pairing and the terms in the rows' help. About three in ten loads that
+      need a ten-hour break alone are drawn as team loads: 35 percent more
+      pay, and a deadline that allows a half-hour driver change where a solo
+      driver sleeps. The co-driver drives to the end of their own hours and
+      plans their 30-minute break at a rest area. Co-driver miles earn no
+      driving-skill badges, the road journal names who drove, and the
+      Meridian classmate and Ray each carry a hidden badge. The owner's
+      listening pass on ride along and the wake-up summary is his to do.
 - [x] Places visited (player request, 2026-10-14): Career stats counts the
       states and cities delivered to and lists each state's cities; the
       public profile on orinks.net and the in-game driver profile list them

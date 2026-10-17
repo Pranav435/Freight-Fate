@@ -35,14 +35,22 @@ pub const OWNER_CO_DRIVER_PAY_SHARE: f64 = 0.3;
 /// Career experience for co-driver miles, as a share of the full rate
 /// (owner: less than driving it yourself, but not none).
 pub const CO_DRIVER_XP_RATE: f64 = 0.5;
-/// With hours of service enforced, the co-driver drives this long and then
-/// hands the wheel back: eight hours is when their 30-minute break falls
-/// due, and eight in the sleeper is the long half of a sleeper split for the
-/// player.
-pub const CO_DRIVER_SHIFT_MIN: f64 = 8.0 * 60.0;
-/// Hand back this long before the shift ends, so the summon lands with time
-/// to wake up and take over.
+/// Hand back this long before the co-driver's hours run out, so the summon
+/// lands with time to wake up and take over.
 pub const CO_DRIVER_SUMMON_LEAD_MIN: f64 = 15.0;
+/// After this much driving since their last break, the co-driver plans a
+/// stop for the 30-minute break that falls due at eight hours.
+pub const CO_DRIVER_BREAK_PLAN_MIN: f64 = 6.5 * 60.0;
+/// The driving after which the 30-minute break is required.
+pub const BREAK_REQUIRED_AFTER_MIN: f64 = 8.0 * 60.0;
+/// A team load pays the carrier this much more than the same load run
+/// solo: the truck never stops for a 10-hour break, so it delivers sooner.
+pub const TEAM_LOAD_PAY_MULT: f64 = 1.35;
+/// Of the board's loads long enough to need a 10-hour break, about this
+/// share are booked as team loads.
+pub const TEAM_LOAD_SHARE: f64 = 0.3;
+/// Hours a team load's deadline allows at each change of driver.
+pub const TEAM_CHANGE_H: f64 = 0.5;
 /// One team load in this many draws the classmate who went to Meridian.
 pub const MERIDIAN_DRAW_ODDS: u32 = 25;
 /// Career level from which the old trainer can turn up for one load.
@@ -276,13 +284,26 @@ pub fn most_teamed(stats: &Map<String, Value>) -> &'static CoDriver {
     best
 }
 
-/// Who dispatch pairs the player with for this load. `seed` is the trip's
-/// own seed, so a resumed trip and its replay draw the same driver.
+/// The seed a load's team draws come from: the same load gives the same
+/// answer at the dispatch board, at the shipper and on the road.
+pub fn load_seed(origin: &str, destination: &str, cargo_key: &str, weight_tons: f64) -> String {
+    format!("{origin}>{destination}:{cargo_key}:{weight_tons:.1}")
+}
+
+/// Whether dispatch books this load as a team load. Only loads that would
+/// need a 10-hour break solo are candidates; `seed` is [`load_seed`].
+pub fn team_load_drawn(seed: &str) -> bool {
+    PyRandom::new_from_str(&format!("team-load:{seed}")).random() < TEAM_LOAD_SHARE
+}
+
+/// Who dispatch pairs the player with for this load. `seed` is the load's
+/// [`load_seed`], so the shipper, the road and a resumed trip all name the
+/// same driver.
 pub fn pair(
     stats: &Map<String, Value>,
     business_status: &str,
     career_level: i64,
-    seed: i64,
+    seed: &str,
 ) -> Pairing {
     if is_owner_operator(business_status) {
         let hire = hired_co_driver(stats).unwrap_or_else(|| most_teamed(stats));
@@ -409,18 +430,39 @@ pub fn team_split(
     }
 }
 
+fn enforced(hos_mode: &str) -> bool {
+    !hos::is_non_enforced(hos_mode) && hos::limits(hos_mode).is_some()
+}
+
 /// Whether the co-driver should hand the wheel back now: with hours of
-/// service enforced, as their shift nears its end or their own clock runs
-/// low.
+/// service enforced, as their own driving time or duty window runs out.
+/// A shift that long gives the player in the sleeper a full 10-hour reset.
 pub fn shift_over(hos: &HosClock, hos_mode: &str) -> bool {
-    if hos::is_non_enforced(hos_mode) || hos::limits(hos_mode).is_none() {
-        return false;
+    enforced(hos_mode)
+        && hos
+            .remaining_min(hos_mode)
+            .is_some_and(|left| left <= CO_DRIVER_SUMMON_LEAD_MIN)
+}
+
+/// Whether the co-driver should plan a stop for their 30-minute break.
+pub fn break_wanted(hos: &HosClock, hos_mode: &str) -> bool {
+    enforced(hos_mode) && hos.since_break_min >= CO_DRIVER_BREAK_PLAN_MIN
+}
+
+/// Whether the break is so close to due that the co-driver hands back
+/// rather than drive past it.
+pub fn break_overdue(hos: &HosClock, hos_mode: &str) -> bool {
+    enforced(hos_mode)
+        && hos.since_break_min >= BREAK_REQUIRED_AFTER_MIN - CO_DRIVER_SUMMON_LEAD_MIN
+}
+
+/// The hidden badge a surprise pairing earns, if any.
+pub fn pairing_badge(co_driver_key: &str) -> Option<&'static str> {
+    match co_driver_key {
+        "lou" => Some("meridian_classmate"),
+        "ray" => Some("trainer_ride_along"),
+        _ => None,
     }
-    if hos.driving_min >= CO_DRIVER_SHIFT_MIN - CO_DRIVER_SUMMON_LEAD_MIN {
-        return true;
-    }
-    hos.remaining_min(hos_mode)
-        .is_some_and(|left| left <= CO_DRIVER_SUMMON_LEAD_MIN)
 }
 
 /// How far to step the player's fatigue down for `minutes` in the sleeper:

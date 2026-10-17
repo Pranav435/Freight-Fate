@@ -288,6 +288,10 @@ impl GameContext {
     /// waits in message review and the achievements menu (speech mode
     /// audit, 2026-10-03). Quiet still hears the bare name.
     pub fn award_driving_achievement(&mut self, achievement_id: &str) {
+        // The co-driver's driving earns the player nothing.
+        if self.co_driver_away {
+            return;
+        }
         let announce = self.event_speaks(Some(SpeechCategory::Status));
         let awarded = self.award_achievement_with(achievement_id, false, announce);
         if let (false, Some(awarded)) = (announce, awarded) {

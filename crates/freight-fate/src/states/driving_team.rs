@@ -227,7 +227,7 @@ impl DrivingState {
         if self.phase != DRIVE_PHASE_DELIVERY || self.trip.finished {
             return false;
         }
-        if self.team.is_some() {
+        if self.team.is_some() || self.job.team {
             return true;
         }
         let left_mi = (self.trip.total_miles() - self.trip.position_mi).max(0.0);
@@ -250,13 +250,7 @@ impl DrivingState {
         if self.team.is_some() {
             return;
         }
-        let profile = profile_of(ctx);
-        let pairing = co_driver::pair(
-            &profile.achievement_stats,
-            &profile.business_status,
-            profile.career.level(),
-            self.trip_seed,
-        );
+        let pairing = self.team_pairing(ctx);
         let mut team = TeamDrive::new(pairing.co_driver, pairing.reason);
         // A co-driver joining mid-load has been in the bunk, rested.
         team.off_wheel_hos.sleep();
@@ -352,6 +346,24 @@ impl DrivingState {
     }
 }
 
+impl DrivingState {
+    /// Minutes a stop's menu spent, for whoever is off the wheel: the
+    /// sleeper berth on their logbook, and the shift's log while the
+    /// co-driver drives.
+    pub fn team_menu_minutes(&mut self, ctx: &mut GameContext, minutes: f64) {
+        let Some(team) = self.team.as_mut() else {
+            return;
+        };
+        team.off_wheel_hos.sleeper(minutes);
+        let Some(wheel) = team.wheel.as_mut() else {
+            return;
+        };
+        wheel.log.game_minutes += minutes;
+        let profile = profile_mut_of(ctx);
+        profile.fatigue = (profile.fatigue - co_driver::sleeper_fatigue_relief(minutes)).max(0.0);
+    }
+}
+
 /// What the co-driver says when they need the player back.
 fn summon_line(name: &str, reason: &str) -> String {
     match reason {
@@ -361,6 +373,7 @@ fn summon_line(name: &str, reason: &str) -> String {
         "fuel" => format!("{name} needs you. The tank is empty."),
         "off the road" => format!("{name} needs you. The truck has left the road."),
         "stalled" => format!("{name} needs you. The truck is stopped and will not go on."),
+        "break" => format!("{name} needs you back at the wheel. Their break is due."),
         _ => format!("{name} needs you to decide this one."),
     }
 }
@@ -424,7 +437,7 @@ impl DrivingState {
             if let Some(stop) = stop {
                 wheel.log.fuel_stops.push(stop);
             }
-        } else if label == "Back to the road" {
+        } else if label == "Back to the road" || label.starts_with("Take a 30-minute break") {
             wheel.pilot.making_for = None;
         }
     }

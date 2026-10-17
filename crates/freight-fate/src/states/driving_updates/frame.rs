@@ -123,6 +123,10 @@ impl DrivingState {
                 self.begin_departure_chain(ctx, true);
             }
         }
+        // Chosen at the shipper: the co-driver pulls out of the dock.
+        if let Some(mode) = self.pending_team.take() {
+            self.hand_wheel_to_co_driver(ctx, mode);
+        }
         // A pace change from the pause menu waits for the truck to stop.
         self.update_pace_change(ctx, dt);
         let tuning = tuning_for_time_scale(self.trip.time_scale);

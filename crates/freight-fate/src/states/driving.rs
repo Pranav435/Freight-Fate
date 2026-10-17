@@ -1039,6 +1039,9 @@ pub struct DrivingState {
     pub entered_once: bool,
     /// The co-driver for this load, once one has been paired.
     pub team: Option<crate::states::driving_team::TeamDrive>,
+    /// A team departure chosen at the shipper: the co-driver takes the
+    /// wheel on the drive's first frame.
+    pub pending_team: Option<crate::states::driving_team::TeamMode>,
 }
 
 // The accessors onto the trip, the trip swap and the `State` facade live in

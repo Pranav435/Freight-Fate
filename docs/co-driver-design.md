@@ -24,13 +24,13 @@ The playtest harness has a driving loop, but it cannot be reused for players: it
 
 ## How it plays
 
-- **Handing over.** "Hand the wheel to Dan and ride along" or "... and sleep" in the pause menu, on a delivery whose rest would need a ten-hour break. ("Run this load as a team" at the shipper is a follow-up.)
+- **Handing over.** "Hand the wheel to Dan and ride along" or "... and sleep" in the pause menu, on a delivery whose rest would need a ten-hour break. At the shipper, "Depart with Dan driving, and ride along" or "... and sleep", with the pairing and the terms in the rows' help. Some long loads are booked as team loads: about a third more pay, and a deadline with time to change drivers but none for a ten-hour break.
 - **Taking it back.** "Take the wheel back" in the pause menu. The co-driver also hands back on their own, with one sound and a line saying why: their hours are up (parked at a stop), the truck is at the receiver's gate, or something needs a decision only the driver can make. Scales, fuel, troopers and hazards are theirs.
 - **While you are away.** The game goes quiet: no road speech, no limit lines, only the summon. The radio keeps playing if it was on. The status screens still answer if you come back and press Tab.
-- **What it costs.** The co-driver takes a share of the settlement for the miles they drove. Those miles earn you reduced experience, and they do not count toward driving achievements or the road journal. Fuel, tolls and wear cost the same as when you drive.
+- **What it costs.** The co-driver takes a share of the settlement for the miles they drove. Those miles earn you reduced experience. On a load the co-driver drove any of, the badges for how a haul was driven are not earned, and the road journal entry names who drove; lifetime mileage still counts the truck's miles. Fuel, tolls and wear cost the same as when you drive.
 - **What it does not cost.** The co-driver drives clean: no tickets, no preventable damage. They drive cautiously, so a tight deadline is better driven yourself.
 - **Your hours.** Co-driver miles are sleeper-berth time for you, which counts toward the 10-hour break. You come back to the wheel rested.
-- **Who drives when.** Real teams decide this between themselves; the law only limits each driver's own hours. So the player decides, and the co-driver keeps a logbook of their own. When the co-driver's hours run out, they summon you. Taking the wheel back before your break is complete means you have not had your full rest.
+- **Who drives when.** Real teams decide this between themselves; the law only limits each driver's own hours. So the player decides, and the co-driver keeps a logbook of their own. The co-driver drives to the end of their own hours, which gives the player in the sleeper a full ten-hour rest, and plans their 30-minute break from six and a half hours of driving, stopping at the next rest area. When their hours run out, or the break is due with no stop reached, they summon you. Taking the wheel back before your break is complete means you have not had your full rest.
 
 ## Riding along or sleeping through
 
@@ -122,7 +122,7 @@ Each cast member has listening habits, not one fixed station: stations they lean
 
 ### Surprise pairings at milestones
 
-Dispatch pulls a specific co-driver once, unannounced, at a moment the career already marks. Rules: never hinted beforehand, never better or worse at the job than the regular cast, and each one counts as a hidden achievement so the player can find it again.
+Dispatch pulls a specific co-driver once, unannounced, at a moment the career already marks. Rules: never hinted beforehand, never better or worse at the job than the regular cast, and each one counts as a hidden achievement so the player can find it again. Two ship: "The Classmate Came Back" for the Meridian classmate, and "Teacher in the Sleeper" for Ray.
 
 - **The first team load:** Dan, so everyone meets the same face first.
 - **Moving to another carrier:** a classmate who already works there.

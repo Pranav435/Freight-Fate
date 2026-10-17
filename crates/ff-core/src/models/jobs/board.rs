@@ -9,6 +9,8 @@ use parking_lot::Mutex;
 use crate::data::world::World;
 use crate::data::world_models::{City, Location};
 use crate::models::business_constants::DIRECT_FREIGHT_PAY_MULT;
+use crate::models::co_driver::{load_seed, team_load_drawn, TEAM_LOAD_PAY_MULT};
+use crate::models::jobs::team_deadline_hours;
 use crate::models::jobs::{
     cargo_type, dispatch_deadline_hours, facility_cargo, market_tag_cargo_bonus,
     minimum_pay_for_level, plan_hos, CargoType, Job, CARGO_CATALOG, DEADLINE_DISPATCH_SLACK_RANGE,
@@ -737,6 +739,23 @@ impl<'w> JobBoard<'w> {
         job.deadline_covers_rest = covers_rest;
         job.origin_spoken = self.world.spoken_city(origin, Some(true));
         job.destination_spoken = self.world.spoken_city(destination, Some(true));
+        // A load a solo driver must sleep on the way to deliver may be booked
+        // for a team: it pays more and allows no 10-hour break. Drawn from
+        // the load itself, not the board's dice, so every other offer stays
+        // what it was.
+        let seed = load_seed(origin, destination, cargo.key, job.weight_tons);
+        if plan_hos(miles, route.as_ref(), Some(self.world), None).sleeps > 0
+            && team_load_drawn(&seed)
+        {
+            job.team = true;
+            job.deadline_covers_rest = false;
+            job.pay = round_py_n(job.pay * TEAM_LOAD_PAY_MULT, 2);
+            job.deadline_game_h = round_py_n(
+                team_deadline_hours(miles, slack, route.as_ref(), Some(self.world))
+                    * start_option(Some(carrier_key)).dispatch.deadline_slack,
+                1,
+            );
+        }
         job
     }
 }

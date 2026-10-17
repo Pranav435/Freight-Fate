@@ -2,6 +2,7 @@
 
 use ff_core::models::business_constants::is_owner_operator;
 use ff_core::models::co_driver::{self, Pairing};
+use ff_core::models::jobs::Job;
 
 use crate::app::{GameContext, Say};
 use crate::states::base::MenuItem;
@@ -21,13 +22,7 @@ impl DrivingState {
                 reason: team.reason,
             };
         }
-        let profile = profile_of(ctx);
-        co_driver::pair(
-            &profile.achievement_stats,
-            &profile.business_status,
-            profile.career.level(),
-            self.trip_seed,
-        )
+        job_pairing(ctx, &self.job)
     }
 
     /// Whether the pause menu offers the handover now.
@@ -46,8 +41,26 @@ impl DrivingState {
     }
 }
 
+/// Who dispatch pairs with the player for `job`: the same answer at the
+/// shipper and on the road.
+pub fn job_pairing(ctx: &GameContext, job: &Job) -> Pairing {
+    let profile = profile_of(ctx);
+    let seed = co_driver::load_seed(
+        &job.origin,
+        &job.destination,
+        job.cargo.key,
+        job.weight_tons,
+    );
+    co_driver::pair(
+        &profile.achievement_stats,
+        &profile.business_status,
+        profile.career.level(),
+        &seed,
+    )
+}
+
 /// The terms, as the handover rows' help reads them.
-fn terms_text(ctx: &GameContext, name: &str) -> String {
+pub fn terms_text(ctx: &GameContext, name: &str) -> String {
     let owner = is_owner_operator(&profile_of(ctx).business_status);
     let pay = if owner {
         format!(

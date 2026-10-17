@@ -995,6 +995,11 @@ impl GameContext {
     /// `award_achievement(id)` with the defaults (`interrupt=False`,
     /// `announce=True`).
     pub fn award_achievement(&mut self, achievement_id: &str) -> Option<AchievementAward> {
+        // What the co-driver does at the wheel or at a stop is not the
+        // player's to earn.
+        if self.co_driver_away {
+            return None;
+        }
         self.award_achievement_with(achievement_id, false, true)
             .map(|outcome| outcome.award)
     }

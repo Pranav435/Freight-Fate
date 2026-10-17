@@ -2217,6 +2217,28 @@ msgstr ""
 msgid "Andrew Gold - Thank You for Being a Friend"
 msgstr "Andrew Gold - Thank You for Being a Friend"
 
+msgid "The Classmate Came Back"
+msgstr ""
+
+msgid ""
+"Lou turned up as your co-driver, back from Meridian Freight Lines with a "
+"story nobody quite believes."
+msgstr ""
+
+msgid "Thin Lizzy - The Boys Are Back in Town"
+msgstr ""
+
+msgid "Teacher in the Sleeper"
+msgstr ""
+
+msgid ""
+"Ray, who ran your training class, rode one load with you to see how you "
+"turned out."
+msgstr ""
+
+msgid "Jethro Tull - Teacher"
+msgstr ""
+
 #. placeholders: {path}
 msgid "Not a Freight Fate sound pack: {path}"
 msgstr "No es un paquete de sonido de Freight Fate: {path}"
@@ -8731,9 +8753,6 @@ msgid ""
 "Channel 3000 is about him. It is not."
 msgstr ""
 
-msgid "lou"
-msgstr ""
-
 msgid "Lou"
 msgstr ""
 
@@ -8745,15 +8764,18 @@ msgstr ""
 msgid "ff-night-line"
 msgstr ""
 
-msgid "ray"
-msgstr ""
-
 msgid "Ray"
 msgstr ""
 
 msgid ""
 "Ran your training class at Great Lakes. Rides along for one load to see how "
 "you turned out."
+msgstr ""
+
+msgid "ray"
+msgstr ""
+
+msgid "lou"
 msgstr ""
 
 #. placeholders: {name}
@@ -9760,6 +9782,16 @@ msgid "Gross revenue {pay} dollars."
 msgstr "Ingresos brutos: {pay} dólares."
 
 #. placeholders: {hours}
+msgid ""
+"Deadline {hours} hours. Team load: you and a co-driver take turns at the "
+"wheel."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Team load: you and a co-driver take turns at the wheel."
+msgstr ""
+
+#. placeholders: {hours}
 msgid "Deadline {hours} hours, includes a 10-hour rest."
 msgstr "Plazo de entrega: {hours} horas, incluye un descanso de 10 horas."
 
@@ -9813,6 +9845,9 @@ msgstr "sin remolque"
 
 msgid "assigned"
 msgstr "asignado"
+
+msgid "team"
+msgstr ""
 
 #. placeholders: {unwrap_or_else}
 msgid "{unwrap_or_else} freight market"
@@ -17772,6 +17807,12 @@ msgstr ""
 msgid " Deadline extended to {f} hours."
 msgstr " Plazo de entrega ampliado a {f} horas."
 
+#. placeholders: {pairing_line}, {lead}, {route_departure_summary}, {next_context}, {name}
+msgid ""
+"{pairing_line} {lead}{route_departure_summary} {next_context} {name} takes "
+"the wheel."
+msgstr ""
+
 msgid ""
 "Enter accepts. F1 is job details. Tab is the market. Escape goes back."
 msgstr ""
@@ -20863,6 +20904,33 @@ msgstr "Por {join}. W para el tiempo."
 msgid "W for weather."
 msgstr "W para el tiempo."
 
+#. placeholders: {name}
+msgid "Depart with {name} driving, and ride along"
+msgstr ""
+
+#. placeholders: {who}
+#. one sentence of a longer line
+msgid "{who} You rest in the sleeper and hear the road."
+msgstr ""
+
+#. placeholders: {who}, {terms}
+msgid "{who} You rest in the sleeper and hear the road. {terms}"
+msgstr ""
+
+#. placeholders: {name}
+msgid "Depart with {name} driving, and sleep"
+msgstr ""
+
+#. placeholders: {who}, {name}
+#. one sentence of a longer line
+msgid "{who} You wake when {name} needs you, with a summary of the drive."
+msgstr ""
+
+#. placeholders: {who}, {name}, {terms}
+msgid ""
+"{who} You wake when {name} needs you, with a summary of the drive. {terms}"
+msgstr ""
+
 msgid ""
 "This backup was made by an earlier version of Freight Fate. Version 1.9 "
 "rebalances the whole career, so every driver starts fresh, and earlier "
@@ -21825,9 +21893,6 @@ msgstr "{objective}Son las {now}."
 
 msgid "amount"
 msgstr "amount"
-
-msgid "team"
-msgstr ""
 
 msgid "local game time"
 msgstr "hora local del juego"
@@ -31413,6 +31478,14 @@ msgstr ""
 msgid "{name} needs you. The truck is stopped and will not go on."
 msgstr ""
 
+#. one sentence of a longer line
+msgid "Their break is due."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you back at the wheel. Their break is due."
+msgstr ""
+
 #. placeholders: {name}
 msgid "{name} needs you to decide this one."
 msgstr ""
@@ -31458,27 +31531,8 @@ msgstr ""
 msgid "Hand the wheel to {name} and ride along"
 msgstr ""
 
-#. placeholders: {who}
-#. one sentence of a longer line
-msgid "{who} You rest in the sleeper and hear the road."
-msgstr ""
-
-#. placeholders: {who}, {terms}
-msgid "{who} You rest in the sleeper and hear the road. {terms}"
-msgstr ""
-
 #. placeholders: {name}
 msgid "Hand the wheel to {name} and sleep"
-msgstr ""
-
-#. placeholders: {who}, {name}
-#. one sentence of a longer line
-msgid "{who} You wake when {name} needs you, with a summary of the drive."
-msgstr ""
-
-#. placeholders: {who}, {name}, {terms}
-msgid ""
-"{who} You wake when {name} needs you, with a summary of the drive. {terms}"
 msgstr ""
 
 msgid "You have the wheel."
@@ -31546,6 +31600,10 @@ msgstr ""
 msgid ""
 "{name} drove {miles} of this load: {share} is {grouped} dollars, and those "
 "miles earn you half the experience."
+msgstr ""
+
+#. placeholders: {name}, {f}
+msgid "Team load: {name} drove {f} of the miles"
 msgstr ""
 
 msgid "the next street"

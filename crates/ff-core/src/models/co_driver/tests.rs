@@ -31,7 +31,7 @@ fn every_cast_key_is_unique_and_every_member_has_a_bio() {
 #[test]
 fn the_first_team_load_is_always_dan() {
     for seed in 0..50 {
-        let pairing = pair(&stats(), COMPANY_DRIVER, 3, seed);
+        let pairing = pair(&stats(), COMPANY_DRIVER, 3, &seed.to_string());
         assert_eq!(pairing.co_driver.key, "dan");
         assert_eq!(pairing.reason, PairingReason::FirstTeam);
     }
@@ -44,7 +44,7 @@ fn later_loads_draw_from_the_class_and_meridian_turns_up_once() {
     let mut drawn = std::collections::BTreeSet::new();
     let mut lou_seed = None;
     for seed in 0..400 {
-        let pairing = pair(&s, COMPANY_DRIVER, 5, seed);
+        let pairing = pair(&s, COMPANY_DRIVER, 5, &seed.to_string());
         drawn.insert(pairing.co_driver.key);
         assert_ne!(
             pairing.co_driver.key, "ray",
@@ -57,18 +57,21 @@ fn later_loads_draw_from_the_class_and_meridian_turns_up_once() {
     assert!(drawn.len() >= 7, "only {drawn:?} drawn");
     let seed = lou_seed.expect("Lou is drawn on some seed");
     record_team_load(&mut s, "lou", COMPANY_DRIVER);
-    assert_ne!(pair(&s, COMPANY_DRIVER, 5, seed).co_driver.key, "lou");
+    assert_ne!(
+        pair(&s, COMPANY_DRIVER, 5, &seed.to_string()).co_driver.key,
+        "lou"
+    );
 }
 
 #[test]
 fn the_trainer_rides_once_late_in_the_career() {
     let mut s = stats();
     record_team_load(&mut s, "dan", COMPANY_DRIVER);
-    let pairing = pair(&s, COMPANY_DRIVER, TRAINER_LEVEL, 7);
+    let pairing = pair(&s, COMPANY_DRIVER, TRAINER_LEVEL, "7");
     assert_eq!(pairing.co_driver.key, "ray");
     record_team_load(&mut s, "ray", COMPANY_DRIVER);
     assert_ne!(
-        pair(&s, COMPANY_DRIVER, TRAINER_LEVEL, 7).co_driver.key,
+        pair(&s, COMPANY_DRIVER, TRAINER_LEVEL, "7").co_driver.key,
         "ray"
     );
 }
@@ -80,7 +83,7 @@ fn an_owner_operator_keeps_the_classmate_they_teamed_with_most() {
         record_team_load(&mut s, "june", COMPANY_DRIVER);
     }
     record_team_load(&mut s, "walt", COMPANY_DRIVER);
-    let pairing = pair(&s, LEASED_OWNER_OPERATOR, 18, 1);
+    let pairing = pair(&s, LEASED_OWNER_OPERATOR, 18, "1");
     assert_eq!(pairing.co_driver.key, "june");
     assert_eq!(pairing.reason, PairingReason::Hire);
     record_team_load(&mut s, "june", LEASED_OWNER_OPERATOR);
@@ -88,7 +91,10 @@ fn an_owner_operator_keeps_the_classmate_they_teamed_with_most() {
         record_team_load(&mut s, "walt", COMPANY_DRIVER);
     }
     // The hire stays the hire, even after more loads with someone else.
-    assert_eq!(pair(&s, LEASED_OWNER_OPERATOR, 19, 2).co_driver.key, "june");
+    assert_eq!(
+        pair(&s, LEASED_OWNER_OPERATOR, 19, "2").co_driver.key,
+        "june"
+    );
 }
 
 #[test]
@@ -128,13 +134,49 @@ fn a_team_is_worthwhile_only_when_the_rest_needs_a_sleep() {
 }
 
 #[test]
-fn the_shift_ends_before_the_break_falls_due() {
+fn the_shift_runs_to_the_co_drivers_own_limit() {
     let mut hos = HosClock::new();
-    hos.drive(7.0 * 60.0);
+    hos.drive(8.0 * 60.0);
+    hos.take_break(30.0);
+    hos.drive(2.0 * 60.0);
     assert!(!shift_over(&hos, "realistic"));
     hos.drive(50.0);
     assert!(shift_over(&hos, "realistic"));
     assert!(!shift_over(&hos, "off"));
+}
+
+#[test]
+fn the_break_is_planned_ahead_and_handed_back_only_when_overdue() {
+    let mut hos = HosClock::new();
+    hos.drive(6.0 * 60.0);
+    assert!(!break_wanted(&hos, "realistic"));
+    hos.drive(40.0);
+    assert!(break_wanted(&hos, "realistic"));
+    assert!(!break_overdue(&hos, "realistic"));
+    hos.drive(70.0);
+    assert!(break_overdue(&hos, "realistic"));
+    hos.take_break(30.0);
+    assert!(!break_wanted(&hos, "realistic"));
+    assert!(!break_wanted(&HosClock::new(), "off"));
+}
+
+#[test]
+fn a_share_of_loads_are_drawn_as_team_loads_the_same_way_every_time() {
+    let drawn = (0..1000)
+        .filter(|i| team_load_drawn(&load_seed("a", "b", "general", f64::from(*i))))
+        .count();
+    assert!((200..400).contains(&drawn), "{drawn} of 1000");
+    let seed = load_seed("chicago_il_us", "denver_co_us", "general", 16.0);
+    assert_eq!(team_load_drawn(&seed), team_load_drawn(&seed));
+}
+
+#[test]
+fn only_the_surprise_pairings_carry_a_badge() {
+    assert_eq!(pairing_badge("lou"), Some("meridian_classmate"));
+    assert_eq!(pairing_badge("ray"), Some("trainer_ride_along"));
+    for member in class_members() {
+        assert_eq!(pairing_badge(member.key), None);
+    }
 }
 
 #[test]

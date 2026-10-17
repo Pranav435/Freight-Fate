@@ -1,12 +1,13 @@
 //! The co-driver driving whole loads through the real frame: the app's
 //! own tick, the player's controls, and the screens the road opens.
 
+use ff_core::models::co_driver::{self, PairingReason};
 use ff_core::sim::weather::WeatherKind;
 use freight_fate::playtest::harness::{PlaytestHarness, StartDelivery};
 use freight_fate::states::base::{InputEvent, Key};
 use freight_fate::states::driving::DrivingState;
 use freight_fate::states::driving_menu_states::{ArrivalState, FacilityArrivalState};
-use freight_fate::states::driving_team::TeamMode;
+use freight_fate::states::driving_team::{TeamDrive, TeamMode};
 
 const DT: f64 = 1.0 / 60.0;
 
@@ -75,6 +76,11 @@ fn a_slept_shift_runs_ahead_to_the_receivers_gate_and_wakes_the_driver() {
             .destination_exit_stop(ctx)
             .expect("this route has a destination exit");
         d.trip.position_mi = (destination.at_mi - d.exit_window_mi() - 1.0).max(0.0);
+        // Lou, the classmate who comes back from Meridian.
+        let lou = co_driver::co_driver("lou").expect("Lou is in the cast");
+        let mut team = TeamDrive::new(lou, PairingReason::Meridian);
+        team.off_wheel_hos.sleep();
+        d.team = Some(team);
         d.hand_wheel_to_co_driver(ctx, TeamMode::SleepThrough);
     });
     assert!(
@@ -96,7 +102,7 @@ fn a_slept_shift_runs_ahead_to_the_receivers_gate_and_wakes_the_driver() {
     let said = harness.transcript().join("\n");
     assert!(said.contains("You slept"), "{said}");
     assert!(
-        said.contains("Dan has the truck at the receiver's gate"),
+        said.contains("Lou has the truck at the receiver's gate"),
         "{said}"
     );
     assert!(!harness.app.ctx.co_driver_fast_forward, "awake at the gate");
@@ -105,7 +111,24 @@ fn a_slept_shift_runs_ahead_to_the_receivers_gate_and_wakes_the_driver() {
     assert!(harness.state_is::<ArrivalState>());
     let summary =
         harness.with_state::<ArrivalState, _>(|arrival, _| arrival.summary_parts.join(" "));
-    assert!(summary.contains("Dan drove"), "{summary}");
+    assert!(summary.contains("Lou drove"), "{summary}");
+    let note = harness.with_state::<ArrivalState, _>(|arrival, _| arrival.team_note.clone());
+    assert!(
+        note.as_deref()
+            .is_some_and(|n| n.starts_with("Team load: Lou drove") && n.len() <= 60),
+        "{note:?}"
+    );
+    let earned = &harness
+        .app
+        .ctx
+        .profile
+        .as_ref()
+        .expect("a career")
+        .achievements;
+    assert!(
+        earned.iter().any(|id| id == "meridian_classmate"),
+        "{earned:?}"
+    );
 }
 
 #[test]

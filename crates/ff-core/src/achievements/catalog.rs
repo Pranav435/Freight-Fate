@@ -17,7 +17,7 @@ use super::{Achievement, AchievementCategory};
 /// sha256 over every category and achievement field, as the generator
 /// computed it from the Python catalog (see `catalog_digest` in the
 /// tests for the exact framing).
-pub const CATALOG_DIGEST: &str = "aa7f9274bb76ddb7cf7a1f8e96ba74ded9ab87f3e4e6bf30e84ca176d46dc318";
+pub const CATALOG_DIGEST: &str = "6093181d12a31b53d6e362eb429787b12290039cf2f0b1f6cff1ce5beaf8c02c";
 
 /// What a locked, hidden achievement speaks in place of its real name and
 /// description. Keeps a hidden badge's surprise -- the joke, the calendar
@@ -70,7 +70,7 @@ pub const CATEGORIES: [AchievementCategory; 7] = [
 
 /// Every badge, in the Python catalog's order (the achievements menu and
 /// the cloud validator's allow-list both walk it in this order).
-pub const ACHIEVEMENTS: [Achievement; 182] = [
+pub const ACHIEVEMENTS: [Achievement; 184] = [
     Achievement {
         id: "first_dispatch",
         name: "Breaker, Breaker",
@@ -1525,6 +1525,22 @@ pub const ACHIEVEMENTS: [Achievement; 182] = [
         description: "A load during Truck Driver Appreciation Week. Doughnuts at the window and a thank-you from dispatch.",
         category: "hidden",
         inspiration: "Andrew Gold - Thank You for Being a Friend",
+        hidden: true,
+    },
+    Achievement {
+        id: "meridian_classmate",
+        name: "The Classmate Came Back",
+        description: "Lou turned up as your co-driver, back from Meridian Freight Lines with a story nobody quite believes.",
+        category: "hidden",
+        inspiration: "Thin Lizzy - The Boys Are Back in Town",
+        hidden: true,
+    },
+    Achievement {
+        id: "trainer_ride_along",
+        name: "Teacher in the Sleeper",
+        description: "Ray, who ran your training class, rode one load with you to see how you turned out.",
+        category: "hidden",
+        inspiration: "Jethro Tull - Teacher",
         hidden: true,
     },
 ];

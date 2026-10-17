@@ -2449,6 +2449,34 @@ msgstr ""
 msgid "Andrew Gold - Thank You for Being a Friend"
 msgstr ""
 
+#: crates/ff-core/src/achievements/catalog.rs
+msgid "The Classmate Came Back"
+msgstr ""
+
+#: crates/ff-core/src/achievements/catalog.rs
+msgid ""
+"Lou turned up as your co-driver, back from Meridian Freight Lines with a "
+"story nobody quite believes."
+msgstr ""
+
+#: crates/ff-core/src/achievements/catalog.rs
+msgid "Thin Lizzy - The Boys Are Back in Town"
+msgstr ""
+
+#: crates/ff-core/src/achievements/catalog.rs
+msgid "Teacher in the Sleeper"
+msgstr ""
+
+#: crates/ff-core/src/achievements/catalog.rs
+msgid ""
+"Ray, who ran your training class, rode one load with you to see how you "
+"turned out."
+msgstr ""
+
+#: crates/ff-core/src/achievements/catalog.rs
+msgid "Jethro Tull - Teacher"
+msgstr ""
+
 #. placeholders: {path}
 #: crates/ff-core/src/assets_pack.rs
 msgid "Not a Freight Fate sound pack: {path}"
@@ -9367,10 +9395,6 @@ msgid ""
 msgstr ""
 
 #: crates/ff-core/src/models/co_driver.rs
-msgid "lou"
-msgstr ""
-
-#: crates/ff-core/src/models/co_driver.rs
 msgid "Lou"
 msgstr ""
 
@@ -9385,10 +9409,6 @@ msgid "ff-night-line"
 msgstr ""
 
 #: crates/ff-core/src/models/co_driver.rs
-msgid "ray"
-msgstr ""
-
-#: crates/ff-core/src/models/co_driver.rs
 msgid "Ray"
 msgstr ""
 
@@ -9396,6 +9416,14 @@ msgstr ""
 msgid ""
 "Ran your training class at Great Lakes. Rides along for one load to see how "
 "you turned out."
+msgstr ""
+
+#: crates/ff-core/src/models/co_driver.rs
+msgid "ray"
+msgstr ""
+
+#: crates/ff-core/src/models/co_driver.rs
+msgid "lou"
 msgstr ""
 
 #. placeholders: {name}
@@ -10528,6 +10556,18 @@ msgstr ""
 
 #. placeholders: {hours}
 #: crates/ff-core/src/models/jobs.rs
+msgid ""
+"Deadline {hours} hours. Team load: you and a co-driver take turns at the "
+"wheel."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/ff-core/src/models/jobs.rs
+msgid "Team load: you and a co-driver take turns at the wheel."
+msgstr ""
+
+#. placeholders: {hours}
+#: crates/ff-core/src/models/jobs.rs
 msgid "Deadline {hours} hours, includes a 10-hour rest."
 msgstr ""
 
@@ -10588,6 +10628,10 @@ msgstr ""
 
 #: crates/ff-core/src/models/jobs.rs crates/ff-core/src/models/trailer_yard.rs
 msgid "assigned"
+msgstr ""
+
+#: crates/ff-core/src/models/jobs.rs crates/freight-fate/src/states/driving/snapshot.rs
+msgid "team"
 msgstr ""
 
 #. placeholders: {unwrap_or_else}
@@ -19682,6 +19726,13 @@ msgstr ""
 msgid " Deadline extended to {f} hours."
 msgstr ""
 
+#. placeholders: {pairing_line}, {lead}, {route_departure_summary}, {next_context}, {name}
+#: crates/freight-fate/src/states/city.rs
+msgid ""
+"{pairing_line} {lead}{route_departure_summary} {next_context} {name} takes "
+"the wheel."
+msgstr ""
+
 #: crates/freight-fate/src/states/city/board.rs
 msgid ""
 "Enter accepts. F1 is job details. Tab is the market. Escape goes back."
@@ -23084,6 +23135,39 @@ msgstr ""
 msgid "W for weather."
 msgstr ""
 
+#. placeholders: {name}
+#: crates/freight-fate/src/states/city_pickup_team.rs
+msgid "Depart with {name} driving, and ride along"
+msgstr ""
+
+#. placeholders: {who}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/city_pickup_team.rs
+msgid "{who} You rest in the sleeper and hear the road."
+msgstr ""
+
+#. placeholders: {who}, {terms}
+#: crates/freight-fate/src/states/city_pickup_team.rs crates/freight-fate/src/states/driving_team/handover.rs
+msgid "{who} You rest in the sleeper and hear the road. {terms}"
+msgstr ""
+
+#. placeholders: {name}
+#: crates/freight-fate/src/states/city_pickup_team.rs
+msgid "Depart with {name} driving, and sleep"
+msgstr ""
+
+#. placeholders: {who}, {name}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/city_pickup_team.rs
+msgid "{who} You wake when {name} needs you, with a summary of the drive."
+msgstr ""
+
+#. placeholders: {who}, {name}, {terms}
+#: crates/freight-fate/src/states/city_pickup_team.rs crates/freight-fate/src/states/driving_team/handover.rs
+msgid ""
+"{who} You wake when {name} needs you, with a summary of the drive. {terms}"
+msgstr ""
+
 #: crates/freight-fate/src/states/cloud_save_states.rs
 msgid ""
 "This backup was made by an earlier version of Freight Fate. Version 1.9 "
@@ -24123,10 +24207,6 @@ msgstr ""
 
 #: crates/freight-fate/src/states/driving/snapshot.rs
 msgid "amount"
-msgstr ""
-
-#: crates/freight-fate/src/states/driving/snapshot.rs
-msgid "team"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_controls/clock.rs
@@ -32910,7 +32990,7 @@ msgid ""
 "sleep move the clock and the deadline."
 msgstr ""
 
-#: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs
+#: crates/freight-fate/src/states/driving_rest_states/rest_stop.rs crates/freight-fate/src/states/driving_team/overlay.rs
 msgid "Take a 30-minute break"
 msgstr ""
 
@@ -34704,6 +34784,16 @@ msgstr ""
 msgid "{name} needs you. The truck is stopped and will not go on."
 msgstr ""
 
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_team.rs
+msgid "Their break is due."
+msgstr ""
+
+#. placeholders: {name}
+#: crates/freight-fate/src/states/driving_team.rs
+msgid "{name} needs you back at the wheel. Their break is due."
+msgstr ""
+
 #. placeholders: {name}
 #: crates/freight-fate/src/states/driving_team.rs
 msgid "{name} needs you to decide this one."
@@ -34760,32 +34850,9 @@ msgstr ""
 msgid "Hand the wheel to {name} and ride along"
 msgstr ""
 
-#. placeholders: {who}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_team/handover.rs
-msgid "{who} You rest in the sleeper and hear the road."
-msgstr ""
-
-#. placeholders: {who}, {terms}
-#: crates/freight-fate/src/states/driving_team/handover.rs
-msgid "{who} You rest in the sleeper and hear the road. {terms}"
-msgstr ""
-
 #. placeholders: {name}
 #: crates/freight-fate/src/states/driving_team/handover.rs
 msgid "Hand the wheel to {name} and sleep"
-msgstr ""
-
-#. placeholders: {who}, {name}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_team/handover.rs
-msgid "{who} You wake when {name} needs you, with a summary of the drive."
-msgstr ""
-
-#. placeholders: {who}, {name}, {terms}
-#: crates/freight-fate/src/states/driving_team/handover.rs
-msgid ""
-"{who} You wake when {name} needs you, with a summary of the drive. {terms}"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_team/handover.rs
@@ -34871,6 +34938,11 @@ msgstr ""
 msgid ""
 "{name} drove {miles} of this load: {share} is {grouped} dollars, and those "
 "miles earn you half the experience."
+msgstr ""
+
+#. placeholders: {name}, {f}
+#: crates/freight-fate/src/states/driving_team/settle.rs
+msgid "Team load: {name} drove {f} of the miles"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_turns.rs
