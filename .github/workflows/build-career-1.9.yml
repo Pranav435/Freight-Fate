@@ -11,6 +11,15 @@ name: Career 1.9 snapshot
 # Stable releases: push a `v*.*.*` tag. That trigger drops `--prerelease`,
 # takes the version from the tag, and writes notes via
 # `tools/release_notes.py stable`. Do not tag from this workflow.
+#
+# Runners (2026-10-17): Blacksmith for Linux (x86_64 and ARM64, 22.04 for the
+# glibc floor) and Windows, as in rust.yml. The Mac job stays on GitHub's
+# hosted macos-26: this repository is public, so those minutes are free, and
+# the job spends up to 45 of them idle waiting on Apple's notary queue.
+#
+# The game is built on the Hearken engine, a private git dependency for now;
+# every job that compiles goes through .github/actions/rust-setup, whose
+# hearken-access step uses the HEARKEN_TOKEN secret when it is set.
 
 on:
   schedule:
@@ -72,7 +81,7 @@ env:
 jobs:
   prepare:
     name: Prepare
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 10
     outputs:
       should_build: ${{ steps.check.outputs.should_build }}
@@ -190,7 +199,7 @@ jobs:
     name: Format
     needs: prepare
     if: needs.prepare.outputs.should_build == 'true'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
@@ -207,7 +216,7 @@ jobs:
     name: Build (Windows)
     needs: prepare
     if: needs.prepare.outputs.should_build == 'true'
-    runs-on: windows-latest
+    runs-on: blacksmith-4vcpu-windows-2025
     timeout-minutes: 60
     env:
       FREIGHT_FATE_NO_SPEECH: "1"
@@ -226,30 +235,18 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install the pinned Rust toolchain
-        run: rustup show
-
-      - name: Cache cargo registry and target directory
-        # Same shape as rust.yml: keyed on lockfile + rustc, target pruned
-        # to dependency artefacts before saving. This is what keeps the
-        # bundled SDL2 (and everything else) from recompiling every run.
-        uses: Swatinem/rust-cache@v2
+      - name: Set up Rust, Hearken access and the build caches
+        # Hearken access, CMake and ATL for Prism, the pinned toolchain,
+        # sccache and rust-cache: the same setup rust.yml's jobs use.
+        uses: ./.github/actions/rust-setup
         with:
-          shared-key: career-19-snapshot-windows
-
-      - name: Fetch BASS
-        # Audio tests skip when the proprietary BASS runtime is absent. Fetch
-        # and verify it before Clippy or Cargo tests so a clean runner cannot
-        # report green without exercising the audio backend.
-        run: |
-          uv run python tools/fetch_bass.py
-          uv run python tools/fetch_bass.py --check
+          token: ${{ secrets.HEARKEN_TOKEN }}
+          cache-key: snapshot
 
       - name: Lint Rust targets
-        # A scheduled run builds the dev tip, and every push to dev already
-        # ran rust.yml's Clippy (Windows) on that commit. Tag pushes and
-        # manual runs (which may name another branch) still lint here.
-        if: github.event_name != 'schedule'
+        # Every run, the schedule included: rust.yml lints on Linux only, so
+        # this is where the `cfg(windows)` code (console, keyring, the
+        # Windows half of the shell) gets linted.
         run: cargo clippy --all-targets --locked -- -D warnings
 
       - name: Test Rust workspace
@@ -313,27 +310,17 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install the pinned Rust toolchain
-        run: rustup show
-
-      - name: Cache cargo registry and target directory
-        # Same shape as rust.yml: keyed on lockfile + rustc, target pruned
-        # to dependency artefacts before saving. This is what keeps the
-        # bundled SDL2 (and everything else) from recompiling every run.
-        uses: Swatinem/rust-cache@v2
+      - name: Set up Rust, Hearken access and the build caches
+        uses: ./.github/actions/rust-setup
         with:
-          shared-key: career-19-snapshot-macos
+          token: ${{ secrets.HEARKEN_TOKEN }}
+          cache-key: snapshot
 
       # No brewed SDL: Homebrew's sdl2 is sdl2-compat, which loads SDL3 at
       # runtime and dies on player Macs without Homebrew. SDL2 is compiled
       # from source into the executable (`bundled` + `static-link`) using
       # the runner's preinstalled cmake; the staging step fails the build
       # if the executable links any SDL dynamically.
-
-      - name: Fetch BASS
-        run: |
-          uv run python tools/fetch_bass.py
-          uv run python tools/fetch_bass.py --check
 
       - name: Lint Rust targets
         # Kept for the `cfg(target_os)` code only this runner compiles. Same
@@ -453,9 +440,9 @@ jobs:
     #
     # Two native builds, one per CPU: x86_64 for PCs and aarch64 for the
     # Blazie BT Speak and BT Braille (Debian on a Raspberry Pi Compute
-    # Module 4 and 5), Raspberry Pi desktops and other ARM64 Linux. The ARM
-    # runner is GitHub's hosted `ubuntu-22.04-arm`, same glibc floor. The
-    # steps are identical: fetch_bass.py, build_release.py and
+    # Module 4 and 5), Raspberry Pi desktops and other ARM64 Linux. Both
+    # are Blacksmith's 22.04 images, x86_64 and ARM64, so both carry the
+    # same glibc floor. The steps are identical: build_release.py and
     # build_appimage.py each pick their architecture from `uname -m`.
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 75
@@ -464,10 +451,10 @@ jobs:
       matrix:
         include:
           - arch: x86_64
-            runner: ubuntu-22.04
+            runner: blacksmith-4vcpu-ubuntu-2204
             tarball: linux-x64
           - arch: aarch64
-            runner: ubuntu-22.04-arm
+            runner: blacksmith-4vcpu-ubuntu-2204-arm
             tarball: linux-arm64
     env:
       FREIGHT_FATE_NO_SPEECH: "1"
@@ -490,66 +477,21 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install the pinned Rust toolchain
-        run: rustup show
-
-      - name: Cache cargo registry and target directory
-        # The compiler is in the key: a CMake build directory configured by
-        # another compiler throws its cache away on reconfigure, options and
-        # install prefix included, and SDL2 then tries to install into
-        # /usr/local.
-        uses: Swatinem/rust-cache@v2
+      - name: Set up Rust, Hearken access and the build caches
+        # .github/actions/linux-deps installs what SDL2 and Prism compile
+        # against: the whole desktop set of SDL2 backends (a backend whose
+        # headers are missing is compiled out for every player), gcc 13 from
+        # Ubuntu's toolchain PPA (22.04 stops at 12; Prism needs 13's
+        # libstdc++, linked statically) and Speech Dispatcher's headers. It
+        # sets CC/CXX before rust-cache keys on them: a CMake build directory
+        # configured by another compiler throws its cache away, and SDL2
+        # then tries to install into /usr/local. desktop-file-utils validates
+        # the AppImage's launcher entry.
+        uses: ./.github/actions/rust-setup
         with:
-          shared-key: career-19-snapshot-linux-${{ matrix.arch }}-gcc13
-
-      # SDL2 is compiled from source into the executable (`bundled` +
-      # `static-link`), and what it can open at run time is decided by the
-      # headers present now: a video or audio backend whose development
-      # package is missing here is compiled out for every player. So the
-      # whole desktop set goes in -- X11, Wayland with libdecor, PulseAudio,
-      # PipeWire, ALSA, D-Bus for IBus -- although the runner uses none of
-      # it. libdbus-1-dev is also what `keyring` links for the Secret
-      # Service; desktop-file-utils validates the AppImage's launcher entry.
-      - name: Install SDL2 build dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            cmake pkg-config \
-            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev \
-            libxinerama-dev libxss-dev libxfixes-dev libxkbcommon-dev \
-            libwayland-dev wayland-protocols libdecor-0-dev \
-            libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev libdrm-dev libgbm-dev \
-            libasound2-dev libpulse-dev libpipewire-0.3-dev \
-            libdbus-1-dev libudev-dev libibus-1.0-dev \
-            file desktop-file-utils
-
-      # Prism is compiled from source and linked into the executable. It
-      # needs gcc 13's standard library (std::atomic_unsigned_lock_free);
-      # 22.04 stops at 12, so gcc 13 comes from Ubuntu's toolchain PPA and
-      # crates/freight-fate/build.rs links its libstdc++ statically -- the
-      # player's system libstdc++ can be as old as 22.04's. Prism builds its
-      # Speech Dispatcher backend (headers only; it opens the library at run
-      # time) only when the development package is here; without it Linux
-      # players would get no speech. Its Orca backend needs
-      # glibmm 2.68, which 22.04 does not carry, so it is left out; Orca
-      # users hear the game through Speech Dispatcher instead.
-      - name: Install Prism build dependencies
-        run: |
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            gcc-13 g++-13 libspeechd-dev
-          echo "CC=gcc-13" >> "$GITHUB_ENV"
-          echo "CXX=g++-13" >> "$GITHUB_ENV"
-          # Prism's objects carry gcc 13 link-time bytecode; the system cc
-          # (gcc 11) cannot read it, so gcc 13 does the final link as well.
-          echo "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=gcc-13" >> "$GITHUB_ENV"
-          echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=gcc-13" >> "$GITHUB_ENV"
-
-      - name: Fetch BASS
-        run: |
-          uv run python tools/fetch_bass.py
-          uv run python tools/fetch_bass.py --check
+          token: ${{ secrets.HEARKEN_TOKEN }}
+          cache-key: snapshot
+          linux-packages: file desktop-file-utils
 
       - name: Lint Rust targets
         # See the Mac job: platform lints, RUSTFLAGS shared with the tests.
@@ -572,8 +514,7 @@ jobs:
       - name: Build the Linux release
         # --smoke boots the staged tarball payload for five frames with dummy
         # drivers, the same proof the Mac job gets. Staging refuses an
-        # executable that links SDL2 dynamically and a payload missing BASS
-        # or its decoders.
+        # executable that links SDL2 dynamically.
         run: uv run python tools/build_release.py --rust --smoke --tag "${{ needs.prepare.outputs.tag }}"
 
       - name: Check Prism registered its backends
@@ -612,7 +553,7 @@ jobs:
     # (Arch Linux ARM is a separate project with no official image). The
     # Debian containers there are the nearest stand-in for the BT Speak and
     # BT Braille, which are Debian on a Raspberry Pi Compute Module.
-    runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.arch == 'aarch64' && 'blacksmith-2vcpu-ubuntu-2404-arm' || 'blacksmith-2vcpu-ubuntu-2404' }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -648,7 +589,7 @@ jobs:
     name: Release
     needs: [prepare, format, build_windows, build_macos, build_linux, smoke_linux]
     if: always() && needs.prepare.outputs.should_build == 'true' && needs.format.result == 'success' && needs.build_windows.result == 'success' && needs.build_macos.result == 'success' && needs.build_linux.result == 'success' && needs.smoke_linux.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - uses: actions/checkout@v6
         with:

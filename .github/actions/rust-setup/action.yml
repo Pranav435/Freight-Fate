@@ -1,0 +1,75 @@
+name: Rust build setup
+description: Hearken access, the platform's build dependencies, the pinned toolchain and the compile caches.
+inputs:
+  token:
+    description: The HEARKEN_TOKEN secret (may be empty; see hearken-access).
+    required: false
+    default: ""
+  cache-key:
+    description: >-
+      Keeps this job's build cache apart from jobs that build differently
+      (clippy, tests, a release). A rust-cache entry holds one job's
+      artefacts, so two jobs saving under one key take turns evicting each
+      other.
+    required: true
+  linux-packages:
+    description: Extra apt packages for the Linux dependencies step.
+    required: false
+    default: ""
+  save-cache:
+    description: >-
+      Whether this run saves the rust-cache entry. The default saves from
+      pushes, the nightly and manual runs, not from pull requests: a PR
+      restores its base branch's entry, and saving one per PR would push
+      dev's out of the cache budget. sccache still records a PR's own
+      crates, so a second push to the PR is warm where it matters.
+    required: false
+    default: ${{ github.event_name != 'pull_request' }}
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/hearken-access
+      with:
+        token: ${{ inputs.token }}
+    - uses: ./.github/actions/linux-deps
+      if: runner.os == 'Linux'
+      with:
+        extra-packages: ${{ inputs.linux-packages }}
+    - uses: ./.github/actions/windows-deps
+      if: runner.os == 'Windows'
+    # Windows Defender's real-time scan inspects every object file rustc
+    # writes and every one the linker reads back, a known multiple on a
+    # Windows runner. The image runs as an administrator, so an exclusion is
+    # one cmdlet; if Defender is absent the try/catch keeps this a note.
+    - if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        try {
+          Add-MpPreference -ExclusionPath "${{ github.workspace }}", "$env:USERPROFILE\.cargo", "$env:USERPROFILE\.rustup" -ErrorAction Stop
+          Write-Host "Defender exclusions added for the workspace, cargo and rustup."
+        } catch {
+          Write-Host "Could not add Defender exclusions ($_); building without them."
+        }
+    # rust-toolchain.toml names the channel and components; `rustup show`
+    # installs them before the first cargo call. .cargo/config.toml asks for
+    # twelve jobs to leave a desktop usable; a runner should use every core
+    # and no more.
+    - shell: bash
+      run: |
+        rustup show
+        echo "CARGO_BUILD_JOBS=$(nproc)" >> "$GITHUB_ENV"
+    # sccache caches compiled crates by content, so a commit that leaves
+    # ff-core alone does not rebuild it although its files are new.
+    # rust-cache keeps the dependencies' artefacts in the target directory,
+    # which also holds the C builds (SDL2, Prism) sccache cannot see. It
+    # turns incremental compilation off, which sccache needs.
+    - uses: mozilla-actions/sccache-action@v0.0.9
+    - shell: bash
+      run: |
+        echo "RUSTC_WRAPPER=sccache" >> "$GITHUB_ENV"
+        echo "SCCACHE_GHA_ENABLED=true" >> "$GITHUB_ENV"
+    - uses: Swatinem/rust-cache@v2
+      with:
+        key: ${{ inputs.cache-key }}
+        cache-on-failure: true
+        save-if: ${{ inputs.save-cache }}

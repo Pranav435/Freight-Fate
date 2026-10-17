@@ -1,0 +1,37 @@
+name: Hearken access
+description: Lets Cargo fetch the Hearken engine while it is a private repository; does nothing once it is public.
+inputs:
+  token:
+    description: >-
+      The HEARKEN_TOKEN secret, a fine-grained token with Contents read-only
+      on orinks-games/hearken. May be empty.
+    required: false
+    default: ""
+runs:
+  using: composite
+  steps:
+    # Freight Fate is public and Hearken, its engine, is private for now.
+    # Cargo.toml names Hearken by its plain https URL, so the day Hearken is
+    # made public every job fetches it anonymously and this step has nothing
+    # to do. Until then the HEARKEN_TOKEN secret has to be set: with it, only
+    # that one URL is rewritten to carry the token, so the token is used for
+    # Hearken and nothing else, and Cargo fetches through the git CLI, which
+    # honours the rewrite.
+    #
+    # Without the secret this step changes nothing. That is also what a pull
+    # request from a fork sees (GitHub withholds secrets from them), so while
+    # Hearken is private a fork's Rust jobs fail at the fetch; the notice
+    # below says why. The token is never printed: GitHub masks the secret,
+    # and nothing here echoes it.
+    - shell: bash
+      env:
+        HEARKEN_TOKEN: ${{ inputs.token }}
+      run: |
+        if [ -z "$HEARKEN_TOKEN" ]; then
+          echo "::notice::No HEARKEN_TOKEN; fetching Hearken anonymously, which works only while the repository is public."
+          exit 0
+        fi
+        authed="https://x-access-token:${HEARKEN_TOKEN}@github.com/orinks-games/hearken"
+        git config --global url."$authed".insteadOf "https://github.com/orinks-games/hearken"
+        git config --global --add url."$authed".insteadOf "https://github.com/orinks-games/Hearken"
+        echo "CARGO_NET_GIT_FETCH_WITH_CLI=true" >> "$GITHUB_ENV"
