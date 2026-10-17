@@ -672,10 +672,7 @@ Everything found before 2026-09-25 moved to
 - [ ] The owner's listening pass before any stable release: the menu and a
       drive, an engine rev sweep, the horn, blinker pan, a radio tune-in and
       a Channel 3000 seek, listening for fade, pan and loop-seam drift.
-- [ ] Known Hearken gaps, each with a CHANGELOG line. HE-AAC (AAC+
-      stations and their kind of `.m4a`) plays muffled, as its base layer
-      only, because the patent-encumbered decoder (`fdk-aac`) stays off.
-      Tracker modules (`.mod`, `.xm`, `.it`, `.s3m`, `.mo3`) are refused,
+- [ ] Known Hearken gaps, each with a CHANGELOG line. Tracker modules (`.mod`, `.xm`, `.it`, `.s3m`, `.mo3`) are refused,
       since no small pure-Rust player exists. HLS stations whose segments
       are fragmented MP4 (CMAF), or that carry audio only in an
       `EXT-X-MEDIA` rendition, do not play yet. And Hearken verifies a
@@ -717,9 +714,10 @@ Everything found before 2026-09-25 moved to
       manual `rust.yml` run on Windows, Linux and macOS, the listening pass
       above, then the tag. Until Hearken is public, the `HEARKEN_TOKEN`
       secret must be set or the Rust jobs cannot fetch it.
-- [ ] HE-AAC decision (owner): enable Hearken's `fdk-aac` feature, which
-      brings the Fraunhofer licence, or keep AAC+ stations on their base
-      layer.
+- [x] HE-AAC decision (owner, 2026-10-17): Hearken's `fdk-aac` feature is
+      on, so AAC+ stations and `.m4a` files decode in full through
+      Fraunhofer's FDK AAC. Its licence grants no AAC patent licence; the
+      owner accepted that for a free game.
 - [ ] Fragmented-MP4 (CMAF) HLS segments and `EXT-X-MEDIA` audio
       renditions in Hearken's radio.
 - [ ] Tracker modules in personal playlists, if a small pure-Rust player

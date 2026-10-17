@@ -1160,6 +1160,7 @@ def test_full_macos_bundle_verification_reads_packs_from_resources(tmp_path, mon
     required = (
         "build_info.json",
         "LICENSE.txt",
+        "FDK_AAC_LICENSE.txt",
         "CHANGELOG.md",
         "USER_MANUAL.md",
         "USER_MANUAL.html",

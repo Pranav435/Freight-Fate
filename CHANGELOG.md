@@ -144,10 +144,6 @@
 
 - **A slower vehicle ahead now plays the slowing-traffic sound, not a passing sound.**
 
-- **The game now plays all its sound through its own audio engine.** Everything should sound as before; please report anything that does not.
-
-- **Some AAC radio stations and playlist tracks now sound muffled.** High-efficiency AAC plays without its highest frequencies for now.
-
 - **A few internet radio stations that stream in a newer HLS format no longer play for now.**
 
 - **Internet radio stations with an expired or self-signed security certificate no longer play.**

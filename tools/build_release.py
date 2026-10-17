@@ -157,6 +157,12 @@ def stage_release_docs(build_dir: Path, root: Path | None = None) -> None:
         raise RuntimeError(f"License was not found: {license_file}")
     # PolyForm's Notices term expects the terms to travel with every copy.
     shutil.copy2(license_file, root / "LICENSE.txt")
+    # The radio's HE-AAC decoder is Fraunhofer's FDK AAC, whose licence must
+    # travel with every binary that carries it.
+    fdk_notice = ROOT / "docs" / "licenses" / "FDK_AAC_NOTICE.txt"
+    if not fdk_notice.exists():
+        raise RuntimeError(f"FDK AAC licence was not found: {fdk_notice}")
+    shutil.copy2(fdk_notice, root / "FDK_AAC_LICENSE.txt")
 
     manual = ROOT / "docs" / "user-manual.md"
     if not manual.exists():
@@ -1301,6 +1307,7 @@ def verify_rust_payload(build_dir: Path, platform_name: str = sys.platform) -> N
         exe,
         root / "build_info.json",
         root / "LICENSE.txt",
+        root / "FDK_AAC_LICENSE.txt",
         root / "CHANGELOG.md",
         root / "USER_MANUAL.md",
         root / "USER_MANUAL.html",
