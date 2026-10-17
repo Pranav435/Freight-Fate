@@ -443,6 +443,22 @@ fn the_length_is_the_new_tracks_while_the_old_one_fades() {
     );
 }
 
+/// The lengths the test above stubs on the recorder are the ones Hearken
+/// decodes from the same bytes, with no recorder in the way.
+#[test]
+fn the_stubbed_track_lengths_are_the_decoded_ones() {
+    for (seconds, channels) in [(2.0, 2), (7.68, 2), (3.5, 1)] {
+        let info = freight_fate::audio::probe_clip(sine_wav(seconds, channels).into())
+            .expect("a WAV Hearken decodes");
+        let length = info.length_s.expect("a WAV knows its length");
+        assert!(
+            (length - seconds).abs() < 0.01,
+            "decoded {length} s from a {seconds} s clip"
+        );
+        assert_eq!(info.sample_rate, 44_100);
+    }
+}
+
 // -- the dial in Synthesized mode ---------------------------------------------------------
 
 /// `a_drive` with the engine running, the radio on, and the given settings.
