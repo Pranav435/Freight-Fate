@@ -21,6 +21,16 @@ each release.
 - If your PR targets the wrong branch, a maintainer may retarget it before
   review.
 
+## Building
+
+The prerequisites are in [Run from source](README.md#run-from-source): Rust
+through rustup, uv and CMake on every platform, plus the Visual Studio Build
+Tools on Windows, the Xcode Command Line Tools on macOS, and GCC 13, ALSA's
+development files and the SDL2 development packages on Linux. The game's
+engine, Hearken, is a git dependency that Cargo fetches; there is no audio
+library to download. To build against a local Hearken checkout, see the
+untracked `[patch]` recipe in [CLAUDE.md](CLAUDE.md#rust-engineering-practices).
+
 ## Before opening a pull request
 
 - Keep practical code files at or below 1000 lines. Split large code or test

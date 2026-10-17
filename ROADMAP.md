@@ -681,6 +681,34 @@ Everything found before 2026-09-25 moved to
       `EXT-X-MEDIA` rendition, do not play yet. And Hearken verifies a
       station's TLS certificate where BASS did not, so an HTTPS station
       with a self-signed or expired certificate now fails to tune.
+- [x] Hearken milestone M6 (2026-10-17): every engine service under the
+      game runs on Hearken. That is the speech sink stack, the event-voice
+      pacer (the priority ladder stays in `ff-core`), sound, music and the
+      radio, the key, controller and binding types, the single-instance
+      guard and the held-key tracker. The game keeps its own state stack,
+      menus, speech delivery, settings and logging, so nothing a player
+      hears changed except the sound engine. Hearken's
+      `docs/superpowers/notes/2026-10-17-freight-fate-on-hearken.md`
+      records what moved, what stayed and why.
+- [ ] Release prep for M6 (owner): push Hearken's branch and merge it to
+      `main`, `cargo update -p hearken` so `Cargo.lock` pins that commit, a
+      manual `rust.yml` run on Windows, Linux and macOS, the listening pass
+      above, then the tag. Until Hearken is public, the `HEARKEN_TOKEN`
+      secret must be set or the Rust jobs cannot fetch it.
+- [ ] HE-AAC decision (owner): enable Hearken's `fdk-aac` feature, which
+      brings the Fraunhofer licence, or keep AAC+ stations on their base
+      layer.
+- [ ] Fragmented-MP4 (CMAF) HLS segments and `EXT-X-MEDIA` audio
+      renditions in Hearken's radio.
+- [ ] Tracker modules in personal playlists, if a small pure-Rust player
+      (or libopenmpt) becomes worth carrying; `.mo3` stays out either way.
+- [ ] (Optional) Moving the screens onto Hearken's own screen stack. It
+      needs Hearken to grow the push-then-speak ordering, reveal sounds,
+      the menu differences and the delivery hooks listed in the Hearken
+      notes first, and it would rewrite most of the test suite.
+- [ ] FF on a real Mac with Hearken: the macOS link (Prism frameworks and
+      the clang runtime) is proved by the manual CI run, but VoiceOver and
+      CoreAudio output need a person at a Mac.
 
 - [x] Low fuel warning could also fire when remaining range is shorter than
       the distance to the next fuel-capable stop (issue #272 shipped the

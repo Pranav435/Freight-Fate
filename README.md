@@ -119,6 +119,13 @@ Install these prerequisites first:
 - [Git](https://git-scm.com/downloads)
 - [Rust through rustup](https://www.rust-lang.org/tools/install)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- [CMake](https://cmake.org/download/) 3.24 or newer: the Prism speech
+  bridge, SDL2 and the Opus decoder are compiled from source.
+- On Windows, the Visual Studio Build Tools (see the standalone build
+  below). On macOS, the Xcode Command Line Tools (`xcode-select --install`).
+  On Linux, GCC 13 or newer, ALSA's development files (`libasound2-dev` on
+  Debian and Ubuntu, `alsa-lib-devel` on Fedora) for sound, and the SDL2
+  development packages the nightly Career 1.9 workflow installs.
 
 Then clone Career 1.9 and run the game:
 
@@ -129,7 +136,8 @@ uv sync --group dev
 cargo run --release -p freight-fate
 ```
 
-Cargo fetches everything the game links, including its audio engine; there
+Cargo fetches everything the game links, including Hearken, its engine for
+speech, sound and the radio, which comes from its own git repository; there
 is no native audio library to download first.
 
 The first Cargo build takes longer because it compiles the workspace. Later
@@ -167,8 +175,8 @@ Windows also needs the Visual Studio Build Tools with the "Desktop
 development with C++" workload and its optional C++ ATL component (Prism's
 speech backends include `atlbase.h`); the script checks for both and prints
 the `winget` or Visual Studio Installer command that adds what is missing.
-Linux needs GCC 13 or newer plus the SDL2 development packages the nightly
-Career 1.9 workflow installs; on Ubuntu 22.04 the script picks up
+Linux needs GCC 13 or newer, ALSA's development files, plus the SDL2
+development packages the nightly Career 1.9 workflow installs; on Ubuntu 22.04 the script picks up
 `gcc-13`/`g++-13` itself when the default `gcc` is older. macOS builds SDL2
 from source, so do not install Homebrew's `sdl2`.
 
