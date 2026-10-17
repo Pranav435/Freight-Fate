@@ -390,6 +390,9 @@ A control marked Driving commands has no controller button. Hold the right bumpe
 | Alt+T | Driving commands | Switch between automatic and manual transmission on the road. This changes your whole control scheme. |
 | 1 / 2 / 3 | Right bumper plus right stick click steps to the next stage | Select the engine brake stage, two, four, or six cylinders of retard, while it is on. With the engine brake off these keys do nothing. |
 | H | Left stick click, hold | Hold to sound the horn; release to stop it. |
+| Z | Not on the controller | Lower or raise the driver window. With it down you hear the wind rush in and the road louder; it closes again at the start of every drive. |
+| Alt+Z | Not on the controller | Step the fan: off, low, medium, high. The fan runs while the engine does. |
+| Shift+Z | Not on the controller | Switch the fan between heat and air conditioning. A drive starts on whichever the weather calls for. |
 | Space | B | Report speed, gear, and the active speed-control mode and open-road target when speed control is on. RPM is added with a manual transmission, and air pressure or the parking brake only when they need attention. With the signal set for an exit, it ends with that exit and how far away it is. Tab has the full air and brake readings. |
 | S | Right bumper plus X | Report the posted speed limit here, the zone if any, and how far over you are. In bend country it adds the bend's advisory speed, since the posted limit and the yellow diamond are different numbers on a real road. On a delivery ramp that ends at a traffic light, S answers with the light and the distance to the stop bar instead, since the light is the law there. |
 | D | Driving commands | Report one safe-speed number for right now. Weather grip, a steep downgrade, and the next bend are already baked into the number. On an exit ramp it is the exit speed. |

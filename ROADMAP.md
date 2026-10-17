@@ -609,6 +609,9 @@ Everything found before 2026-09-25 moved to
 - [ ] A listening pass by the owner at quiet and urgent only, at the wheel.
 - [x] Achievement sweep (owner, 2026-10-09): four badges whose triggers
       had fallen behind the map or the job board now match them.
+- [x] Driver window and cab climate (player report, 2026-10-17); see
+      [the dated section](#october-17-the-driver-window-and-the-cab-climate-found-along-the-way).
+      Placeholder sounds and the engine's open-window filter are open there.
 - [x] A way out of the training fleet (player report, 2026-10-10): a
       company driver at Great Lakes Training Transport can move to another
       carrier at level 4 with full dispatch trust.
@@ -3069,8 +3072,34 @@ clocks that end in the same sleep, with the alarm tone every time.
       them against real signs, then screen at load if the sample supports it.
 - [ ] The event pacer assumes 13 characters a second whatever the speech
       rate, so a slow Mac voice falls behind; measure the rate it should use.
-- [ ] Bridge expansion joints and passing under overpasses, and a driver
-      window and climate controls (same report).
+- [ ] Bridge expansion joints and passing under overpasses (same report).
+- [x] A driver window and climate controls (same report); see the next
+      section.
+
+### October 17 the driver window and the cab climate (Found along the way)
+
+The same player asked to open the window and run the heater or the air
+conditioning. Z lowers or raises the driver window, Alt Z steps the fan
+(off, low, medium, high) and Shift Z switches heat and air conditioning;
+each press is confirmed in a word or two, and the status screen names the
+cab only when it differs from a fresh one. It is pure ambience: no fuel,
+fatigue or comfort effect, because neither has a source the game could
+cite and he plays to relax. With the window down a wind rush rises with
+the square of road speed, panned to the driver's side, and the tires, rain
+and weather wind come up about 4.6 dB over the two seconds the glass
+travels. The fan runs only with the engine. Nothing is saved: every drive
+starts with the window up, the fan off, and heat or air conditioning by
+the outside temperature.
+
+- [x] Driver window, fan and heat or air conditioning at the wheel.
+- [ ] The four cab sounds are synthesized placeholders (window motor, wind
+      rush, blower, compressor clutch); the owner's ear should pick
+      recordings to replace them under the same keys.
+- [ ] The engine keeps its sealed-cab filter with the window down; a
+      crossfade to the "window cracked" variant `cab_filter` already
+      describes would let the engine open up too.
+- [ ] A passenger window (Shift Z is taken; it would need another key) if
+      players ask.
 
 ## 2.0 planned -- the working week and home
 

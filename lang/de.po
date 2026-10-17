@@ -1953,6 +1953,9 @@ msgstr ""
 msgid "loop_end must be after loop_start"
 msgstr ""
 
+msgid "wav"
+msgstr ""
+
 msgid "day"
 msgstr ""
 
@@ -5723,9 +5726,6 @@ msgid "the Back button"
 msgstr ""
 
 msgid "Left or Right Control"
-msgstr ""
-
-msgid "wav"
 msgstr ""
 
 msgid "event"
@@ -9923,6 +9923,69 @@ msgstr ""
 msgid "{meters} meters"
 msgstr ""
 
+msgid "Driver window down."
+msgstr ""
+
+msgid "Driver window up."
+msgstr ""
+
+msgid "Fan off."
+msgstr ""
+
+msgid "Fan low."
+msgstr ""
+
+msgid "Fan medium."
+msgstr ""
+
+msgid "Fan high."
+msgstr ""
+
+msgid "Heat."
+msgstr ""
+
+msgid "Air conditioning."
+msgstr ""
+
+msgid "Cab: driver window down"
+msgstr ""
+
+msgid "Cab: fan low, heat"
+msgstr ""
+
+msgid "Cab: fan medium, heat"
+msgstr ""
+
+msgid "Cab: fan high, heat"
+msgstr ""
+
+msgid "Cab: fan low, air conditioning"
+msgstr ""
+
+msgid "Cab: fan medium, air conditioning"
+msgstr ""
+
+msgid "Cab: fan high, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan low, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan medium, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan high, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan low, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan medium, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan high, air conditioning"
+msgstr ""
+
 msgid "yield"
 msgstr ""
 
@@ -13140,6 +13203,11 @@ msgstr ""
 msgid "A door."
 msgstr ""
 
+msgid ""
+"The driver window, the wind through it and the fan, right after the key "
+"that set them, which says what changed."
+msgstr ""
+
 msgid "A fuel pump, at a fuel pump."
 msgstr ""
 
@@ -13843,6 +13911,21 @@ msgid "Parking brake"
 msgstr ""
 
 msgid "Horn"
+msgstr ""
+
+msgid "Driver window down or up"
+msgstr ""
+
+msgid "fan"
+msgstr ""
+
+msgid "Fan speed"
+msgstr ""
+
+msgid "climate"
+msgstr ""
+
+msgid "Heat or air conditioning"
 msgstr ""
 
 msgid "Automatic speed control"
@@ -19347,6 +19430,12 @@ msgstr ""
 
 #. placeholders: {horn}
 msgid "{horn} horn."
+msgstr ""
+
+#. placeholders: {window}, {fan}, {climate}
+msgid ""
+"{window} lowers or raises the driver window, {fan} steps the fan, {climate} "
+"switches heat and air conditioning."
 msgstr ""
 
 #. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}

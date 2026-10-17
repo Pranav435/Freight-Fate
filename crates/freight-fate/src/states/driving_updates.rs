@@ -35,6 +35,7 @@
 //! when it lands.
 
 pub mod air;
+pub mod cab;
 pub mod conditions;
 pub mod cues;
 pub mod curve_servo;

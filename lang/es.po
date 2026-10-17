@@ -2263,6 +2263,9 @@ msgstr "unidades de punto de bucle desconocidas: {units}"
 msgid "loop_end must be after loop_start"
 msgstr "loop_end debe ir después de loop_start"
 
+msgid "wav"
+msgstr "wav"
+
 msgid "day"
 msgstr "de día"
 
@@ -6834,9 +6837,6 @@ msgstr "el botón Back"
 
 msgid "Left or Right Control"
 msgstr "Control izquierdo o derecho"
-
-msgid "wav"
-msgstr "wav"
 
 msgid "event"
 msgstr "event"
@@ -11690,6 +11690,75 @@ msgstr "una milla"
 msgid "{meters} meters"
 msgstr "{meters} metros"
 
+msgid "Driver window down."
+msgstr "Ventanilla del conductor abajo."
+
+msgid "Driver window up."
+msgstr "Ventanilla del conductor arriba."
+
+msgid "Fan off."
+msgstr "Ventilador apagado."
+
+msgid "Fan low."
+msgstr "Ventilador bajo."
+
+msgid "Fan medium."
+msgstr "Ventilador medio."
+
+msgid "Fan high."
+msgstr "Ventilador alto."
+
+msgid "Heat."
+msgstr "Calefacción."
+
+msgid "Air conditioning."
+msgstr "Aire acondicionado."
+
+msgid "Cab: driver window down"
+msgstr "Cabina: ventanilla del conductor abajo"
+
+msgid "Cab: fan low, heat"
+msgstr "Cabina: ventilador bajo, calefacción"
+
+msgid "Cab: fan medium, heat"
+msgstr "Cabina: ventilador medio, calefacción"
+
+msgid "Cab: fan high, heat"
+msgstr "Cabina: ventilador alto, calefacción"
+
+msgid "Cab: fan low, air conditioning"
+msgstr "Cabina: ventilador bajo, aire acondicionado"
+
+msgid "Cab: fan medium, air conditioning"
+msgstr "Cabina: ventilador medio, aire acondicionado"
+
+msgid "Cab: fan high, air conditioning"
+msgstr "Cabina: ventilador alto, aire acondicionado"
+
+msgid "Cab: driver window down, fan low, heat"
+msgstr ""
+"Cabina: ventanilla del conductor abajo, ventilador bajo, calefacción"
+
+msgid "Cab: driver window down, fan medium, heat"
+msgstr ""
+"Cabina: ventanilla del conductor abajo, ventilador medio, calefacción"
+
+msgid "Cab: driver window down, fan high, heat"
+msgstr ""
+"Cabina: ventanilla del conductor abajo, ventilador alto, calefacción"
+
+msgid "Cab: driver window down, fan low, air conditioning"
+msgstr ""
+"Cabina: ventanilla del conductor abajo, ventilador bajo, aire acondicionado"
+
+msgid "Cab: driver window down, fan medium, air conditioning"
+msgstr ""
+"Cabina: ventanilla del conductor abajo, ventilador medio, aire acondicionado"
+
+msgid "Cab: driver window down, fan high, air conditioning"
+msgstr ""
+"Cabina: ventanilla del conductor abajo, ventilador alto, aire acondicionado"
+
 msgid "yield"
 msgstr "ceda el paso"
 
@@ -15197,6 +15266,11 @@ msgstr "Juntas del asfalto: textura, no una decisión."
 msgid "A door."
 msgstr "Una puerta."
 
+msgid ""
+"The driver window, the wind through it and the fan, right after the key "
+"that set them, which says what changed."
+msgstr ""
+
 msgid "A fuel pump, at a fuel pump."
 msgstr "Un surtidor de combustible, en un surtidor."
 
@@ -15959,6 +16033,21 @@ msgstr "Freno de estacionamiento"
 
 msgid "Horn"
 msgstr "Bocina"
+
+msgid "Driver window down or up"
+msgstr "Bajar o subir la ventanilla del conductor"
+
+msgid "fan"
+msgstr ""
+
+msgid "Fan speed"
+msgstr "Velocidad del ventilador"
+
+msgid "climate"
+msgstr ""
+
+msgid "Heat or air conditioning"
+msgstr "Calefacción o aire acondicionado"
 
 msgid "Automatic speed control"
 msgstr "Control automático de velocidad"
@@ -22260,6 +22349,14 @@ msgstr ""
 #. placeholders: {horn}
 msgid "{horn} horn."
 msgstr "{horn} el claxon."
+
+#. placeholders: {window}, {fan}, {climate}
+msgid ""
+"{window} lowers or raises the driver window, {fan} steps the fan, {climate} "
+"switches heat and air conditioning."
+msgstr ""
+"{window} baja o sube la ventanilla del conductor, {fan} cambia la velocidad "
+"del ventilador, {climate} alterna entre calefacción y aire acondicionado."
 
 #. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
 msgid ""

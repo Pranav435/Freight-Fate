@@ -2508,6 +2508,10 @@ msgstr ""
 msgid "loop_end must be after loop_start"
 msgstr ""
 
+#: crates/ff-core/src/cab_sounds.rs crates/ff-core/src/lane_guide_tone.rs crates/ff-core/src/music_synth/worker.rs crates/freight-fate/src/audio/assets.rs
+msgid "wav"
+msgstr ""
+
 #: crates/ff-core/src/channel3000.rs crates/ff-core/src/models/profile/tests_compat.rs crates/ff-core/src/models/trucks.rs crates/ff-core/src/sim/hos.rs
 msgid "day"
 msgstr ""
@@ -7298,10 +7302,6 @@ msgstr ""
 
 #: crates/ff-core/src/input_hints.rs
 msgid "Left or Right Control"
-msgstr ""
-
-#: crates/ff-core/src/lane_guide_tone.rs crates/ff-core/src/music_synth/worker.rs crates/freight-fate/src/audio/assets.rs crates/freight-fate/src/states/driving_core/siren.rs
-msgid "wav"
 msgstr ""
 
 #: crates/ff-core/src/message_log.rs crates/ff-core/src/models/exchange.rs crates/ff-core/src/sim/real_weather_alerts.rs
@@ -12606,6 +12606,90 @@ msgstr ""
 msgid "{meters} meters"
 msgstr ""
 
+#: crates/ff-core/src/sim/cab.rs
+msgid "Driver window down."
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Driver window up."
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Fan off."
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Fan low."
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Fan medium."
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Fan high."
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Heat."
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Air conditioning."
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: driver window down"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: fan low, heat"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: fan medium, heat"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: fan high, heat"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: fan low, air conditioning"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: fan medium, air conditioning"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: fan high, air conditioning"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: driver window down, fan low, heat"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: driver window down, fan medium, heat"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: driver window down, fan high, heat"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: driver window down, fan low, air conditioning"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: driver window down, fan medium, air conditioning"
+msgstr ""
+
+#: crates/ff-core/src/sim/cab.rs
+msgid "Cab: driver window down, fan high, air conditioning"
+msgstr ""
+
 #: crates/ff-core/src/sim/cross_traffic.rs crates/freight-fate/src/states/driving_events/ramp_crossing.rs crates/freight-fate/src/states/driving_events/ramp_terminal.rs crates/freight-fate/src/states/driving_events/street_controls.rs
 msgid "yield"
 msgstr ""
@@ -16722,6 +16806,12 @@ msgid "A door."
 msgstr ""
 
 #: crates/ff-core/src/sound_catalog.rs
+msgid ""
+"The driver window, the wind through it and the fan, right after the key "
+"that set them, which says what changed."
+msgstr ""
+
+#: crates/ff-core/src/sound_catalog.rs
 msgid "A fuel pump, at a fuel pump."
 msgstr ""
 
@@ -17620,6 +17710,26 @@ msgstr ""
 
 #: crates/freight-fate/src/bindings.rs
 msgid "Horn"
+msgstr ""
+
+#: crates/freight-fate/src/bindings.rs
+msgid "Driver window down or up"
+msgstr ""
+
+#: crates/freight-fate/src/bindings.rs
+msgid "fan"
+msgstr ""
+
+#: crates/freight-fate/src/bindings.rs
+msgid "Fan speed"
+msgstr ""
+
+#: crates/freight-fate/src/bindings.rs
+msgid "climate"
+msgstr ""
+
+#: crates/freight-fate/src/bindings.rs
+msgid "Heat or air conditioning"
 msgstr ""
 
 #: crates/freight-fate/src/bindings.rs
@@ -24513,6 +24623,13 @@ msgstr ""
 #. placeholders: {horn}
 #: crates/freight-fate/src/states/driving_controls/help.rs
 msgid "{horn} horn."
+msgstr ""
+
+#. placeholders: {window}, {fan}, {climate}
+#: crates/freight-fate/src/states/driving_controls/help.rs
+msgid ""
+"{window} lowers or raises the driver window, {fan} steps the fan, {climate} "
+"switches heat and air conditioning."
 msgstr ""
 
 #. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
