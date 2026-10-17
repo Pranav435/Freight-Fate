@@ -27,7 +27,7 @@ use hearken::radio::{RawTitle, Stream, StreamOptions, StreamState};
 use super::hearken_backend::HearkenBackend;
 use super::{
     parse_hls_stream_title, parse_icy_stream_title, parse_ogg_stream_title, AudioError,
-    RADIO_CONNECT_TIMEOUT_MS, RADIO_NET_BUFFER_MS, RADIO_NET_PREBUF_PERCENT,
+    RADIO_CONNECT_TIMEOUT_MS, RADIO_NET_BUFFER_MS, RADIO_NET_PREBUF_PERCENT, RADIO_READ_TIMEOUT_MS,
 };
 
 /// What a radio station's server sees as the listener's player.
@@ -38,13 +38,14 @@ pub(crate) fn radio_user_agent() -> String {
     )
 }
 
-/// How a station is called: thirty seconds to answer and between reads, a
-/// 1.5 s buffer that starts playing at 300 ms, no reconnects of its own,
+/// How a station is called: thirty seconds to answer, thirty more of
+/// silence before a station that answered counts as gone, a 1.5 s buffer that starts playing at 300 ms, no reconnects of its own,
 /// and the game's own name on the request.
 pub fn radio_stream_options() -> StreamOptions {
     let buffer_ms = u64::from(RADIO_NET_BUFFER_MS);
     StreamOptions {
         timeout: Duration::from_millis(u64::from(RADIO_CONNECT_TIMEOUT_MS)),
+        stall: Duration::from_millis(u64::from(RADIO_READ_TIMEOUT_MS)),
         retry_delays: Vec::new(),
         buffer: Duration::from_millis(buffer_ms),
         prebuffer: Duration::from_millis(buffer_ms * u64::from(RADIO_NET_PREBUF_PERCENT) / 100),
@@ -228,6 +229,7 @@ mod tests {
     fn stations_are_called_with_the_tune_policy() {
         let options = radio_stream_options();
         assert_eq!(options.timeout, Duration::from_secs(30));
+        assert_eq!(options.stall, Duration::from_secs(30));
         assert_eq!(options.prebuffer, Duration::from_millis(300));
         assert_eq!(options.buffer, Duration::from_millis(1_500));
         assert!(options.retry_delays.is_empty());

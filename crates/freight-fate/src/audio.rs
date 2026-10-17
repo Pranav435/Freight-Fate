@@ -234,7 +234,8 @@ pub const SPEECH_DUCK_LEVEL: f64 = 0.5;
 // than that to answer, and at eight the radio wrote them off as dead and
 // handed over while they were still coming. The price is a longer silence on
 // a station that really is gone.
-pub const RADIO_CONNECT_TIMEOUT_MS: u32 = 30000; // to answer, and between reads after
+pub const RADIO_CONNECT_TIMEOUT_MS: u32 = 30000; // give up on a station that will not answer
+pub const RADIO_READ_TIMEOUT_MS: u32 = 30000; // and on one that answers then stalls
 /// Audio held for a station. Five seconds is useful for unreliable links but
 /// makes a tune feel much slower than a player that begins with a small
 /// buffer.
