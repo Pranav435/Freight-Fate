@@ -150,6 +150,21 @@ class WindowsRuntimeTests(unittest.TestCase):
         pe_file(payload / "libspeechbridge-1.dll")
         windows_runtime.verify_windows_runtime(payload)
 
+    def test_every_unshipped_library_is_named_in_one_failure(self):
+        # A package build takes minutes; naming one gap per build turns three
+        # gaps into three builds.
+        payload = self.make_payload()
+        pe_file(payload / "prism.dll", ["KERNEL32.dll", "one-1.dll", "two-2.dll"])
+        with self.assertRaises(RuntimeError) as caught:
+            windows_runtime.verify_windows_runtime(payload)
+        self.assertIn("prism.dll needs one-1.dll", str(caught.exception))
+        self.assertIn("prism.dll needs two-2.dll", str(caught.exception))
+
+    def test_core_audio_device_api_is_a_windows_component(self):
+        payload = self.make_payload()
+        pe_file(payload / "prism.dll", ["KERNEL32.dll", "MMDevAPI.dll", "combase.dll"])
+        windows_runtime.verify_windows_runtime(payload)
+
     def test_optional_screen_reader_bridges_do_not_have_to_ship(self):
         # A DELAY import resolves on first call: a player without that
         # reader loses the bridge, never the game.
