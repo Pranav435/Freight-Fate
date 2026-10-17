@@ -200,6 +200,7 @@ pub struct AssistStash {
     descent_speed_control: String,
     lane_keeping: String,
     preset: String,
+    automatic_transmission: bool,
 }
 
 /// One preset field's value: the assist switches are bools, descent speed
@@ -826,8 +827,6 @@ impl Settings {
         true
     }
 
-    /// Set every preset field to the named preset's values. `false` (and no
-    /// change) for a name that is not a preset -- Python raised `KeyError`.
     /// Hand every assist to a co-driver taking the wheel: the "all" preset's
     /// values, with the player's own set aside. Idempotent.
     pub fn hand_assists_to_co_driver(&mut self) {
@@ -839,7 +838,9 @@ impl Settings {
             descent_speed_control: self.descent_speed_control.clone(),
             lane_keeping: self.lane_keeping.clone(),
             preset: self.driving_assistance_preset.clone(),
+            automatic_transmission: self.automatic_transmission,
         }));
+        self.automatic_transmission = true;
         if let Some(values) = driving_assist_preset("all") {
             for (field, value) in DRIVING_ASSIST_FIELDS.iter().zip(values.iter()) {
                 self.set_assist_value(field, *value);
@@ -858,6 +859,7 @@ impl Settings {
         self.descent_speed_control = stash.descent_speed_control;
         self.lane_keeping = stash.lane_keeping;
         self.driving_assistance_preset = stash.preset;
+        self.automatic_transmission = stash.automatic_transmission;
     }
 
     /// The settings as the player chose them: these, with any co-driver
@@ -871,6 +873,8 @@ impl Settings {
         std::borrow::Cow::Owned(own)
     }
 
+    /// Set every preset field to the named preset's values. `false` (and no
+    /// change) for a name that is not a preset -- Python raised `KeyError`.
     pub fn apply_driving_assistance_preset(&mut self, preset: &str) -> bool {
         let Some(values) = driving_assist_preset(preset) else {
             return false;
