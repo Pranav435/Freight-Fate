@@ -148,7 +148,7 @@ pub(super) const DRIVING_ASSIST_SPECS: [(&str, &str, &str); 12] = [
     (
         "destination_approach_assist",
         "Facility stopping assistance",
-        "On the final approach, after any exit, it works the throttle and brakes: up to 12 miles per hour through the facility lane, creeping the last 200 feet, then stopping at pickup and delivery facilities, rest stops, and required weigh stations. It never chooses an exit, enters a yard, or docks. Realistic leaves it off; Balanced and All assists turn it on.",
+        "On the final approach, after any exit, it works the throttle and brakes: up to 12 miles per hour through the facility lane, creeping the last 200 feet, then stopping at pickup and delivery facilities, rest stops, and required weigh stations. It never chooses an exit, enters a yard, or docks. In a chain-law area it stops to put snow chains on and take them off, and it may spend on-duty minutes on chains: about 30 to chain up, 10 to take them off. It never buys chains. Realistic leaves it off; Balanced and All assists turn it on.",
     ),
     (
         "curve_speed_assist",
@@ -528,7 +528,7 @@ impl SettingsCategoryState {
                         )
                     }),
                     adjust(|s, ctx, d| s.toggle_hos_planning_hints(ctx, d)),
-                    "Optional early advice for a break or sleep stop with time to spare. If an earlier stop fits, the hint also names the last legally reachable fallback. While rolling, use the Rest control to select the recommended stop; use it again to cancel. Standard driving speech speaks one suggestion before the next hours warning. The driving time readout gives full hours and route details. Quiet and Urgent only keep the automatic hint silent. Your required hours warnings and readout controls still work when this is off.",
+                    "Optional early advice for a break or sleep stop with time to spare. If an earlier stop fits, the hint also names the last legally reachable fallback. While rolling, use the Rest control to select the recommended stop; use it again to cancel. Standard driving speech speaks one suggestion before the next hours warning. The driving time readout gives full hours and route details. Quiet and Urgent only keep the automatic hint silent. Your required hours warnings and readout controls still work when this is off. It also reminds you before a chain-law road if you have no chains: on the dispatch board when the load crosses a road where trucks must carry chains this season, or where live weather or a weather alert puts a chain law in effect for your truck, while the terminal garage can still sell you a set, and on the road when a posted chain law requires chains on your truck. It never buys anything.",
                 ),
                 // The overspeed warning no longer has a row. It armed at the
                 // same 5-over pace predictive cruise itself holds, so it

@@ -61,6 +61,9 @@ pub const LIMP_CAP_RAMP_MPH_PER_S: f64 = 2.0;
 pub const CHAIN_INSTALL_MIN: f64 = 30.0;
 pub const CHAIN_INSTALL_NIGHT_MULT: f64 = 1.6;
 pub const CHAIN_REMOVE_MIN: f64 = 10.0;
+/// Stop planning's no-chains reminder plays this far before a chain-law
+/// corridor in season: a reminder, well before the 1-mile chain-law cue.
+pub const CHAIN_REMINDER_LEAD_MI: f64 = 15.0;
 // A broken chain is one cross link or one chain, not the whole set, and it
 // is fixed on the shoulder: Caltrans tells drivers to carry "chain repair
 // links", and Washington requires two spare chains for this case (WAC

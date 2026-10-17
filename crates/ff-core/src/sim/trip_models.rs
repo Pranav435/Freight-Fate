@@ -599,6 +599,40 @@ pub fn mt_chain_season_id(game_hours: f64) -> i64 {
     (days / 365.0).floor() as i64
 }
 
+/// A chain-law area ahead on a chain corridor in season (`upcoming_chain_corridor`).
+#[derive(Debug, Clone, PartialEq)]
+pub struct ChainCorridorAhead {
+    /// `"{state}:{highway}:{start_mi to 0.1}"`, one per corridor approach.
+    pub key: String,
+    pub highway: String,
+    pub state: String,
+    /// Route mile the chain-law area (its chain-up pullout) starts at.
+    pub start_mi: f64,
+    /// The nearest numbered interchange at or before the area, or empty.
+    pub exit_label: String,
+}
+
+/// How far before a chain-law area its approach exit is looked for.
+pub const CHAIN_CORRIDOR_EXIT_LOOKBACK_MI: f64 = 5.0;
+
+/// Whether a carry law requires chains aboard on `highway` in `state` in
+/// `month`, whatever the weather: Colorado's carry corridors September 1
+/// to May 31 (CSP chain-law page), Montana October 1 to April 30 (MCA
+/// 61-9-436) and Washington's listed routes November 1 to April 1 (WAC
+/// 204-24-050; April 1 is read at month precision, so April is out).
+/// Everywhere else chains are required only while a chain law is posted
+/// and the rig must chain under it (Caltrans chain controls, NRS 484D.520,
+/// ORS 815.140, Idaho Code 49-948(5), UDOT R920-6, W.S. 31-5-956(e)), so
+/// there is no dry-day season to remind about.
+pub fn in_chain_carry_season(state: &str, highway: &str, month: u32) -> bool {
+    match state {
+        "CO" => CO_CHAIN_CARRY_CORRIDORS.contains(&highway) && in_co_chain_carry_season(month),
+        "MT" => in_mt_chain_carry_season(month),
+        "WA" => !(4..=10).contains(&month),
+        _ => false,
+    }
+}
+
 /// September 1 to May 31: Colorado's chain-carry season.
 pub fn in_co_chain_carry_season(month: u32) -> bool {
     !(6..=8).contains(&month)
