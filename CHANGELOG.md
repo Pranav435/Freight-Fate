@@ -152,6 +152,7 @@
 
 ### Fixed
 
+- **Dispatch says a roadwork closure once when it covers several stretches.** It names how many places instead of repeating the same closure.
 - **The drive to a pickup no longer draws citations for the trailer still waiting in the shipper's yard.**
 - **Officers no longer cite a fault already written up on the same drive.** A trailer lamp, worn tires, body damage or a chain-law ticket counts once per drive.
 - **Snow chains now last through a posted chain law.** Before, they could wear out in about a dozen miles when a weather alert posted the law on a wet road.

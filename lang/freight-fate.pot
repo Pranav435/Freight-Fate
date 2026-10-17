@@ -13758,6 +13758,13 @@ msgid ""
 "{minutes_words}"
 msgstr ""
 
+#. placeholders: {closure_words}, {road}, {near_city}, {count}, {distance_text}, {speed_text}, {minutes_words}
+#: crates/ff-core/src/sim/route_roadwork.rs
+msgid ""
+"{closure_words} on {road} near {near_city} in {count} places, "
+"{distance_text} each, {speed_text}, {minutes_words} each"
+msgstr ""
+
 #. placeholders: {name}
 #: crates/ff-core/src/sim/route_roadwork.rs
 msgid " by way of {name}"
@@ -13832,9 +13839,9 @@ msgstr ""
 msgid "This way {adds}saves {minutes_words}."
 msgstr ""
 
-#. placeholders: {join}
+#. placeholders: {spots_text}
 #: crates/ff-core/src/sim/route_roadwork.rs
-msgid "Construction reported on the way: {join}."
+msgid "Construction reported on the way: {spots_text}."
 msgstr ""
 
 #: crates/ff-core/src/sim/route_roadwork.rs
@@ -13851,9 +13858,9 @@ msgstr ""
 msgid "Route 1 avoids {reason} and saves {minutes_words}."
 msgstr ""
 
-#. placeholders: {join}
+#. placeholders: {spots_text}
 #: crates/ff-core/src/sim/route_roadwork.rs
-msgid "Construction: {join}."
+msgid "Construction: {spots_text}."
 msgstr ""
 
 #: crates/ff-core/src/sim/season.rs

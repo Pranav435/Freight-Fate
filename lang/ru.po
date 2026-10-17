@@ -10807,6 +10807,12 @@ msgid ""
 "{minutes_words}"
 msgstr ""
 
+#. placeholders: {closure_words}, {road}, {near_city}, {count}, {distance_text}, {speed_text}, {minutes_words}
+msgid ""
+"{closure_words} on {road} near {near_city} in {count} places, "
+"{distance_text} each, {speed_text}, {minutes_words} each"
+msgstr ""
+
 #. placeholders: {name}
 msgid " by way of {name}"
 msgstr ""
@@ -10867,8 +10873,8 @@ msgstr ""
 msgid "This way {adds}saves {minutes_words}."
 msgstr ""
 
-#. placeholders: {join}
-msgid "Construction reported on the way: {join}."
+#. placeholders: {spots_text}
+msgid "Construction reported on the way: {spots_text}."
 msgstr ""
 
 msgid "No quicker way around."
@@ -10882,8 +10888,8 @@ msgstr ""
 msgid "Route 1 avoids {reason} and saves {minutes_words}."
 msgstr ""
 
-#. placeholders: {join}
-msgid "Construction: {join}."
+#. placeholders: {spots_text}
+msgid "Construction: {spots_text}."
 msgstr ""
 
 msgid "autumn"

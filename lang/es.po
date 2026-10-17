@@ -12591,6 +12591,14 @@ msgstr ""
 "{closure_words} en {road} cerca de {near_city}, {distance_text}, "
 "{speed_text}, {minutes_words}"
 
+#. placeholders: {closure_words}, {road}, {near_city}, {count}, {distance_text}, {speed_text}, {minutes_words}
+msgid ""
+"{closure_words} on {road} near {near_city} in {count} places, "
+"{distance_text} each, {speed_text}, {minutes_words} each"
+msgstr ""
+"{closure_words} en {road} cerca de {near_city} en {count} tramos, "
+"{distance_text} cada uno, {speed_text}, {minutes_words} cada uno"
+
 #. placeholders: {name}
 msgid " by way of {name}"
 msgstr " por {name}"
@@ -12653,9 +12661,9 @@ msgstr ""
 msgid "This way {adds}saves {minutes_words}."
 msgstr "Por aquí {adds}ahorra {minutes_words}."
 
-#. placeholders: {join}
-msgid "Construction reported on the way: {join}."
-msgstr "Obras anunciadas en el camino: {join}."
+#. placeholders: {spots_text}
+msgid "Construction reported on the way: {spots_text}."
+msgstr "Obras anunciadas en el camino: {spots_text}."
 
 msgid "No quicker way around."
 msgstr "No hay un rodeo más rápido."
@@ -12668,9 +12676,9 @@ msgstr "{reason} La ruta 1 lo rodea{by_way_of}."
 msgid "Route 1 avoids {reason} and saves {minutes_words}."
 msgstr "La ruta 1 evita {reason} y ahorra {minutes_words}."
 
-#. placeholders: {join}
-msgid "Construction: {join}."
-msgstr "Obras: {join}."
+#. placeholders: {spots_text}
+msgid "Construction: {spots_text}."
+msgstr "Obras: {spots_text}."
 
 msgid "autumn"
 msgstr "otoño"
@@ -40452,6 +40460,12 @@ msgstr "cierra paréntesis"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "mayúscula {ch}"
+
+#~ msgid "Construction reported on the way: {join}."
+#~ msgstr "Obras anunciadas en el camino: {join}."
+
+#~ msgid "Construction: {join}."
+#~ msgstr "Obras: {join}."
 
 #~ msgid ""
 #~ "Report damage or a trailer fault. Dispatch can send the roadside mechanic."
