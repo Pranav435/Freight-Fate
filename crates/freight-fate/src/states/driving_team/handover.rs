@@ -71,7 +71,8 @@ pub fn terms_text(ctx: &GameContext, name: &str) -> String {
         format!("Miles {name} drives pay you half.")
     };
     format!(
-        "{pay} They earn you half the experience, and count as sleeper-berth time for your hours."
+        "{pay} Those miles earn you half the experience. While {name} drives, you are logged in the \
+         sleeper berth."
     )
 }
 

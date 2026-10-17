@@ -704,7 +704,7 @@ When the rest of the delivery would need a ten-hour break, the pause menu offers
 - **Hand the wheel to Dan and ride along.** The drive goes on at the normal pace. You hear the truck and the radio, and the road's announcements stay quiet.
 - **Hand the wheel to Dan and sleep.** The co-driver's shift runs ahead without waiting, with the sound off. You wake when they need you, with a summary of how far they drove and where they fueled.
 
-The pickup menu offers the same choice once the load is on: **Depart with Dan driving, and ride along**, or **and sleep**. Each row's help names the co-driver and the pay terms, so you hear them before you leave.
+The pickup menu offers the same choice once the load is on: **Depart with Dan driving, and ride along**, or **and sleep**. Each row's help names the co-driver and the pay terms.
 
 **Team loads.** Some long loads on the dispatch board are booked for a team. Their details say "Team load". They pay about a third more, and the deadline leaves no time for a ten-hour break, only for changing drivers. You can still drive a team load alone, but you will be late unless the co-driver takes their turns.
 
@@ -721,7 +721,7 @@ To drive again sooner, pause and choose Take the wheel back.
 
 **What it costs.** On a company job, miles the co-driver drives pay you half. An owner-operator pays their co-driver 30 percent of the settlement for those miles, and still pays fuel, tolls and upkeep. Those miles earn half the career experience. The settlement names the co-driver's miles and share. Badges for how a haul was driven, such as a long run with no tolls, are not earned on a team load, and the road journal notes who drove.
 
-**Your hours.** Time while the co-driver drives counts as sleeper-berth time, whether you ride along or sleep. Ten hours of it resets your legal hours and clears your fatigue. The co-driver keeps a logbook of their own. The Driver status screen says who is driving and when they need you back, the ELD app reads both logbooks, and C says when the co-driver needs you back.
+**Your hours.** Time while the co-driver drives counts as sleeper-berth time, whether you ride along or sleep. Ten hours of it resets your legal hours and clears your fatigue. The co-driver keeps a logbook of their own. The Driver status screen says who is driving. It and C both say when the co-driver needs you back, and the ELD app reads both logbooks.
 
 ## Status screens
 

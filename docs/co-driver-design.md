@@ -4,7 +4,7 @@ Decided by the owner on 2026-10-17: the co-driver goes ahead. There is no attrac
 
 ## What it is
 
-You hand the wheel over from the pause menu (or for a whole load at dispatch), and the co-driver runs the truck while you play something else. It works the way real team driving works: while they drive, you are in the sleeper, so your own hours of service recover. Driving it yourself stays the way to earn the full rate and full experience.
+You hand the wheel over from the pause menu (or from the shipper's dock, for the whole load), and the co-driver runs the truck while you play something else. It works the way real team driving works: while they drive, you are in the sleeper, so your own hours of service recover. Driving it yourself stays the way to earn the full rate and full experience.
 
 Pausing never hands the truck over on its own. A paused truck that drives itself while you are at dinner breaks the one thing pause promises, and the career would pay for it.
 
@@ -34,7 +34,7 @@ The playtest harness has a driving loop, but it cannot be reused for players: it
 
 ## Riding along or sleeping through
 
-Today, sleeping parks the truck, shuts the engine down and moves the clock forward. Nothing drives during it. With a co-driver, the handover offers two choices:
+Without a co-driver, sleeping parks the truck, shuts the engine down and moves the clock forward. Nothing drives during it. With a co-driver, the handover offers two choices:
 
 - **Ride along.** The drive plays out at the normal pace with the co-driver at the wheel. You can listen, play something else, or take the wheel back with one key.
 - **Sleep through it.** The co-driver's shift is run ahead without waiting, on the same automatic driver and the same road, so fuel, scales and traffic still happen. You wake up where the truck got to, with a short summary: miles covered, where they fueled, anything that went wrong. If something needs the driver, it stops early and wakes you.
@@ -45,7 +45,7 @@ Both run the same drive, so the choice changes only how long you wait, and pay, 
 
 No new hotkeys. Everything goes where players already look:
 
-- **Dispatch board and job details.** A load long enough to team says so in its details, with the pay split and the experience rate.
+- **Dispatch board and job details.** A team load says so in its details. The pay terms are in the help of the handover rows.
 - **Tab, Driver screen.** While teamed: who is driving, the co-driver's driving time left, and when they will need you back. After a slept-through shift, the wake-up summary stays here so it can be read again.
 - **C readout.** The "nearest hours-of-service limit" clause names the co-driver's limit while they drive, since that is the next thing that will need you.
 - **ELD app.** The co-driver's logbook next to yours, the way a real team's electronic log shows both drivers.
@@ -108,7 +108,7 @@ Each cast member has listening habits, not one fixed station: stations they lean
 
 **Dan "Dangerous Dan".** The most careful driver in the class, which is why the name stuck. He asked the Roadhouse for "Dangerous Dan" so often the other drivers named him after it. Leans toward the Freight Fate Roadhouse and rarely touches the dial. A good fit for the co-driver's cautious driving.
 
-**Rusty Oxley.** Grandson of Grandpa Spuds Oxley, the voice of The Delta 94.3. He learned to drive listening to his grandfather on the air, which is a callback to "Grandpa's Radio". Leans toward The Delta, of course, and blues wherever he can find it.
+**Rusty Oxley.** Grandson of Grandpa Spuds Oxley, the voice of The Delta 94.3. He learned to drive listening to his grandfather on the air, which is a callback to "Grandpa's Radio". Leans toward The Delta, and blues wherever he can find it.
 
 **June, from Della's.** Grew up waiting tables at Della's Blue Plate Diner, watching drivers come and go, and decided to be one. She knows every diner on the map. Leans toward country, Big Wheel 104.5 first, and hums along.
 
@@ -127,7 +127,7 @@ Dispatch pulls a specific co-driver once, unannounced, at a moment the career al
 - **The first team load:** Dan, so everyone meets the same face first.
 - **Moving to another carrier:** a classmate who already works there.
 - **A rare draw on any team load:** the classmate who "went to Meridian", back with a story.
-- **Late career (for example a million miles):** Ray, the old trainer, for one load, if the owner wants him somewhere other than the regular pool.
+- **Level 20:** Ray, the old trainer, for one load. He is never in the regular pool.
 - **Owner-operator buy-in:** the co-driver offering to come along is already planned; it can land as the surprise of that level-up.
 
 ### Smaller easter eggs
@@ -139,4 +139,4 @@ Dispatch pulls a specific co-driver once, unannounced, at a moment the career al
 ### Decisions for the owner
 
 - Which characters stay, and their names.
-- Ray, the trainer, is out of the pool for now (owner unsure, 2026-10-17).
+- Ray, the trainer, stays out of the regular pool (owner unsure, 2026-10-17). He turns up once, at level 20.

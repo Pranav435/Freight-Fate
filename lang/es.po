@@ -649,12 +649,8 @@ msgstr ""
 msgid "Just Keep Rollin' On"
 msgstr "Tú sigue rodando"
 
-msgid ""
-"A hundred deliveries. No fuss, just load after load until the number got "
-"serious."
-msgstr ""
-"Cien entregas. Sin alboroto, solo carga tras carga hasta que el número se "
-"puso serio."
+msgid "A hundred deliveries, load after load, until the number got serious."
+msgstr "Cien entregas, carga tras carga, hasta que el número se puso serio."
 
 msgid "Lynyrd Skynyrd - Call Me the Breeze"
 msgstr "Lynyrd Skynyrd - Call Me the Breeze"
@@ -662,11 +658,9 @@ msgstr "Lynyrd Skynyrd - Call Me the Breeze"
 msgid "Ten Thousand Down the Line"
 msgstr "Diez mil millas de camino"
 
-msgid ""
-"Ten thousand miles. The white-line fever isn't a symptom now. It's the job."
+msgid "Ten thousand miles. The white-line fever is just the job now."
 msgstr ""
-"Diez mil millas. La fiebre de la línea blanca ya no es un síntoma. Es el "
-"trabajo."
+"Diez mil millas. La fiebre de la línea blanca ya es parte del trabajo."
 
 msgid "Highway Lifer"
 msgstr "De por vida en la carretera"
@@ -1161,10 +1155,10 @@ msgid "Twenty-Five and Rolling Steady"
 msgstr "Veinticinco y rodando firme"
 
 msgid ""
-"Twenty-five deliveries. Not a rookie, not a veteran, just more road than "
-"most."
+"Twenty-five deliveries, somewhere between rookie and veteran, with more "
+"road than most."
 msgstr ""
-"Veinticinco entregas. Ni novato ni veterano, solo más carretera que la "
+"Veinticinco entregas, entre novato y veterano, con más carretera que la "
 "mayoría."
 
 msgid "Ellie Turner - A Little Farther Down The Line"
@@ -1173,8 +1167,8 @@ msgstr "Ellie Turner - A Little Farther Down The Line"
 msgid "Two Hundred and Playing for Keeps"
 msgstr "Doscientas y jugando en serio"
 
-msgid "Two hundred deliveries. Not a phase anymore. It's a body of work."
-msgstr "Doscientas entregas. Ya no es una etapa. Es toda una obra."
+msgid "Two hundred deliveries. That's a body of work."
+msgstr "Doscientas entregas. Eso ya es toda una obra."
 
 msgid "Emily Nenni - Long Game"
 msgstr "Emily Nenni - Long Game"
@@ -2048,8 +2042,8 @@ msgid "One More Cup for the Road"
 msgstr "Una taza más para el camino"
 
 msgid ""
-"Twenty-five breaks taken right. It's not the coffee. It's the sitting down."
-msgstr "Veinticinco descansos bien tomados. No es el café. Es sentarse."
+"Twenty-five breaks taken right. The sitting down did more than the coffee."
+msgstr "Veinticinco descansos bien tomados. Sentarse ayudó más que el café."
 
 msgid "Bob Dylan - One More Cup of Coffee"
 msgstr "Bob Dylan - One More Cup of Coffee"
@@ -31515,10 +31509,20 @@ msgstr ""
 msgid "Miles {name} drives pay you half."
 msgstr ""
 
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "While {name} drives, you are logged in the sleeper berth."
+msgstr ""
+
 #. placeholders: {pay}
+#. one sentence of a longer line
+msgid "{pay} Those miles earn you half the experience."
+msgstr ""
+
+#. placeholders: {pay}, {name}
 msgid ""
-"{pay} They earn you half the experience, and count as sleeper-berth time "
-"for your hours."
+"{pay} Those miles earn you half the experience. While {name} drives, you "
+"are logged in the sleeper berth."
 msgstr ""
 
 msgid "Take the wheel back"

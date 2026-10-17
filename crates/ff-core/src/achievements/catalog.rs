@@ -17,7 +17,7 @@ use super::{Achievement, AchievementCategory};
 /// sha256 over every category and achievement field, as the generator
 /// computed it from the Python catalog (see `catalog_digest` in the
 /// tests for the exact framing).
-pub const CATALOG_DIGEST: &str = "6093181d12a31b53d6e362eb429787b12290039cf2f0b1f6cff1ce5beaf8c02c";
+pub const CATALOG_DIGEST: &str = "dbb4c7c4fa714cd9f049fda5ec04886cf63ba9ac54f307780a0067357361bd00";
 
 /// What a locked, hidden achievement speaks in place of its real name and
 /// description. Keeps a hidden badge's surprise -- the joke, the calendar
@@ -474,7 +474,7 @@ pub const ACHIEVEMENTS: [Achievement; 184] = [
     Achievement {
         id: "hundred_deliveries",
         name: "Just Keep Rollin' On",
-        description: "A hundred deliveries. No fuss, just load after load until the number got serious.",
+        description: "A hundred deliveries, load after load, until the number got serious.",
         category: "career",
         inspiration: "Lynyrd Skynyrd - Call Me the Breeze",
         hidden: false,
@@ -482,7 +482,7 @@ pub const ACHIEVEMENTS: [Achievement; 184] = [
     Achievement {
         id: "ten_thousand_miles",
         name: "Ten Thousand Down the Line",
-        description: "Ten thousand miles. The white-line fever isn't a symptom now. It's the job.",
+        description: "Ten thousand miles. The white-line fever is just the job now.",
         category: "career",
         inspiration: "Merle Haggard - White Line Fever",
         hidden: false,
@@ -818,7 +818,7 @@ pub const ACHIEVEMENTS: [Achievement; 184] = [
     Achievement {
         id: "twenty_five_deliveries",
         name: "Twenty-Five and Rolling Steady",
-        description: "Twenty-five deliveries. Not a rookie, not a veteran, just more road than most.",
+        description: "Twenty-five deliveries, somewhere between rookie and veteran, with more road than most.",
         category: "career",
         inspiration: "Ellie Turner - A Little Farther Down The Line",
         hidden: false,
@@ -826,7 +826,7 @@ pub const ACHIEVEMENTS: [Achievement; 184] = [
     Achievement {
         id: "two_hundred_deliveries",
         name: "Two Hundred and Playing for Keeps",
-        description: "Two hundred deliveries. Not a phase anymore. It's a body of work.",
+        description: "Two hundred deliveries. That's a body of work.",
         category: "career",
         inspiration: "Emily Nenni - Long Game",
         hidden: false,
@@ -1418,7 +1418,7 @@ pub const ACHIEVEMENTS: [Achievement; 184] = [
     Achievement {
         id: "coffee_regular",
         name: "One More Cup for the Road",
-        description: "Twenty-five breaks taken right. It's not the coffee. It's the sitting down.",
+        description: "Twenty-five breaks taken right. The sitting down did more than the coffee.",
         category: "working_day",
         inspiration: "Bob Dylan - One More Cup of Coffee",
         hidden: false,

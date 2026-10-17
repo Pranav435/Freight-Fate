@@ -567,9 +567,7 @@ msgstr ""
 msgid "Just Keep Rollin' On"
 msgstr ""
 
-msgid ""
-"A hundred deliveries. No fuss, just load after load until the number got "
-"serious."
+msgid "A hundred deliveries, load after load, until the number got serious."
 msgstr ""
 
 msgid "Lynyrd Skynyrd - Call Me the Breeze"
@@ -578,8 +576,7 @@ msgstr ""
 msgid "Ten Thousand Down the Line"
 msgstr ""
 
-msgid ""
-"Ten thousand miles. The white-line fever isn't a symptom now. It's the job."
+msgid "Ten thousand miles. The white-line fever is just the job now."
 msgstr ""
 
 msgid "Highway Lifer"
@@ -1001,8 +998,8 @@ msgid "Twenty-Five and Rolling Steady"
 msgstr ""
 
 msgid ""
-"Twenty-five deliveries. Not a rookie, not a veteran, just more road than "
-"most."
+"Twenty-five deliveries, somewhere between rookie and veteran, with more "
+"road than most."
 msgstr ""
 
 msgid "Ellie Turner - A Little Farther Down The Line"
@@ -1011,7 +1008,7 @@ msgstr ""
 msgid "Two Hundred and Playing for Keeps"
 msgstr ""
 
-msgid "Two hundred deliveries. Not a phase anymore. It's a body of work."
+msgid "Two hundred deliveries. That's a body of work."
 msgstr ""
 
 msgid "Emily Nenni - Long Game"
@@ -1765,7 +1762,7 @@ msgid "One More Cup for the Road"
 msgstr ""
 
 msgid ""
-"Twenty-five breaks taken right. It's not the coffee. It's the sitting down."
+"Twenty-five breaks taken right. The sitting down did more than the coffee."
 msgstr ""
 
 msgid "Bob Dylan - One More Cup of Coffee"
@@ -27639,10 +27636,20 @@ msgstr ""
 msgid "Miles {name} drives pay you half."
 msgstr ""
 
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "While {name} drives, you are logged in the sleeper berth."
+msgstr ""
+
 #. placeholders: {pay}
+#. one sentence of a longer line
+msgid "{pay} Those miles earn you half the experience."
+msgstr ""
+
+#. placeholders: {pay}, {name}
 msgid ""
-"{pay} They earn you half the experience, and count as sleeper-berth time "
-"for your hours."
+"{pay} Those miles earn you half the experience. While {name} drives, you "
+"are logged in the sleeper berth."
 msgstr ""
 
 msgid "Take the wheel back"

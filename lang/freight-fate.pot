@@ -731,9 +731,7 @@ msgid "Just Keep Rollin' On"
 msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
-msgid ""
-"A hundred deliveries. No fuss, just load after load until the number got "
-"serious."
+msgid "A hundred deliveries, load after load, until the number got serious."
 msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
@@ -745,8 +743,7 @@ msgid "Ten Thousand Down the Line"
 msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
-msgid ""
-"Ten thousand miles. The white-line fever isn't a symptom now. It's the job."
+msgid "Ten thousand miles. The white-line fever is just the job now."
 msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
@@ -1286,8 +1283,8 @@ msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
 msgid ""
-"Twenty-five deliveries. Not a rookie, not a veteran, just more road than "
-"most."
+"Twenty-five deliveries, somewhere between rookie and veteran, with more "
+"road than most."
 msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
@@ -1299,7 +1296,7 @@ msgid "Two Hundred and Playing for Keeps"
 msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
-msgid "Two hundred deliveries. Not a phase anymore. It's a body of work."
+msgid "Two hundred deliveries. That's a body of work."
 msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
@@ -2268,7 +2265,7 @@ msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
 msgid ""
-"Twenty-five breaks taken right. It's not the coffee. It's the sitting down."
+"Twenty-five breaks taken right. The sitting down did more than the coffee."
 msgstr ""
 
 #: crates/ff-core/src/achievements/catalog.rs
@@ -34830,11 +34827,23 @@ msgstr ""
 msgid "Miles {name} drives pay you half."
 msgstr ""
 
+#. placeholders: {name}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_team/handover.rs
+msgid "While {name} drives, you are logged in the sleeper berth."
+msgstr ""
+
 #. placeholders: {pay}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/driving_team/handover.rs
+msgid "{pay} Those miles earn you half the experience."
+msgstr ""
+
+#. placeholders: {pay}, {name}
 #: crates/freight-fate/src/states/driving_team/handover.rs
 msgid ""
-"{pay} They earn you half the experience, and count as sleeper-berth time "
-"for your hours."
+"{pay} Those miles earn you half the experience. While {name} drives, you "
+"are logged in the sleeper berth."
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_team/handover.rs

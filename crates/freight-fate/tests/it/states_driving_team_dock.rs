@@ -71,7 +71,7 @@ fn the_co_driver_drives_out_of_the_shipper_and_the_terms_are_read_first() {
             .expect("the row");
         state.menu().items[at].help_text(state, ctx)
     });
-    assert!(help.contains("sleeper-berth time"), "{help}");
+    assert!(help.contains("sleeper berth"), "{help}");
     harness.select_menu_item(&ride);
     if harness.state_is::<RouteSelectState>() {
         harness.key(InputEvent::key(Key::Return));

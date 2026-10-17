@@ -116,7 +116,7 @@
     },
     "coffee_regular": {
       "category": "working_day",
-      "description": "Twenty-five breaks taken right. It's not the coffee. It's the sitting down."
+      "description": "Twenty-five breaks taken right. The sitting down did more than the coffee."
     },
     "construction_zone": {
       "category": "working_day",
@@ -328,7 +328,7 @@
     },
     "hundred_deliveries": {
       "category": "career",
-      "description": "A hundred deliveries. No fuss, just load after load until the number got serious."
+      "description": "A hundred deliveries, load after load, until the number got serious."
     },
     "hundred_fifty_cities": {
       "category": "places",
@@ -660,7 +660,7 @@
     },
     "ten_thousand_miles": {
       "category": "career",
-      "description": "Ten thousand miles. The white-line fever isn't a symptom now. It's the job."
+      "description": "Ten thousand miles. The white-line fever is just the job now."
     },
     "texas_triangle": {
       "category": "places",
@@ -716,7 +716,7 @@
     },
     "twenty_five_deliveries": {
       "category": "career",
-      "description": "Twenty-five deliveries. Not a rookie, not a veteran, just more road than most."
+      "description": "Twenty-five deliveries, somewhere between rookie and veteran, with more road than most."
     },
     "twenty_five_grand": {
       "category": "career",
@@ -724,7 +724,7 @@
     },
     "two_hundred_deliveries": {
       "category": "career",
-      "description": "Two hundred deliveries. Not a phase anymore. It's a body of work."
+      "description": "Two hundred deliveries. That's a body of work."
     },
     "vegas_arrival": {
       "category": "places",
