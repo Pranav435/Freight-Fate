@@ -38,6 +38,10 @@ mod bass_engine;
 mod bass_radio;
 pub mod classic_music;
 mod engine;
+mod hearken_backend;
+pub mod hearken_clips;
+mod hearken_engine;
+mod hearken_music;
 mod null;
 mod sustain;
 
@@ -51,6 +55,7 @@ pub use bass::BassBackend;
 pub use engine::AudioEngine;
 pub use ff_core::assets_pack::{generated_sound_keys, register_generated_sound};
 pub use ff_core::audio_loops::{to_seconds, LoopUnits, SustainLoopSpec};
+pub use hearken_backend::{HearkenBackend, HearkenEngineBand};
 pub use null::NullBackend;
 pub use sustain::{SustainLoop, SustainLoopError};
 

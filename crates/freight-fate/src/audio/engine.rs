@@ -9,11 +9,11 @@ use ff_core::assets_pack::generated_sound;
 use ff_core::pyrandom::PyRandom;
 
 use super::{
-    asset_bytes, Audio, AudioBackend, AudioError, BassBackend, Buses, KeyProbe, NullBackend,
-    SustainLoopSpec, VolumeUpdate, ALERT_HOLD_TIMEOUT_S, BASS_NO_SOUND_DEVICE, CH_AIR, CH_ALERT,
-    CH_AMBIENT, CH_EDGE, CH_HORN, CH_JAKE, CH_LANE_GUIDE, CH_RADIO_FX, CH_ROAD, CH_SCALE, CH_SURGE,
-    CH_TRAFFIC_BED, CH_TRAFFIC_SOUNDS, CH_WEATHER, CH_WEATHER_B, CUE_HOLD_TIMEOUT_S, HORN_LOOP,
-    JAKE_BAND_PREFIX, JAKE_CLASSIC_KEY, JAKE_RECORDED_KEY, SFX_EXTENSIONS,
+    asset_bytes, Audio, AudioBackend, AudioError, BassBackend, Buses, HearkenBackend, KeyProbe,
+    NullBackend, SustainLoopSpec, VolumeUpdate, ALERT_HOLD_TIMEOUT_S, BASS_NO_SOUND_DEVICE, CH_AIR,
+    CH_ALERT, CH_AMBIENT, CH_EDGE, CH_HORN, CH_JAKE, CH_LANE_GUIDE, CH_RADIO_FX, CH_ROAD, CH_SCALE,
+    CH_SURGE, CH_TRAFFIC_BED, CH_TRAFFIC_SOUNDS, CH_WEATHER, CH_WEATHER_B, CUE_HOLD_TIMEOUT_S,
+    HORN_LOOP, JAKE_BAND_PREFIX, JAKE_CLASSIC_KEY, JAKE_RECORDED_KEY, SFX_EXTENSIONS,
 };
 
 /// Facade over the active backend; the rest of the game talks only to this.
@@ -241,6 +241,14 @@ impl AudioEngine {
         self.backend.as_any_mut().downcast_mut::<BassBackend>()
     }
 
+    pub fn hearken(&self) -> Option<&HearkenBackend> {
+        self.backend.as_any().downcast_ref::<HearkenBackend>()
+    }
+
+    pub fn hearken_mut(&mut self) -> Option<&mut HearkenBackend> {
+        self.backend.as_any_mut().downcast_mut::<HearkenBackend>()
+    }
+
     /// The volume buses of the active backend.
     pub fn buses(&self) -> &Buses {
         self.backend.buses()
@@ -357,6 +365,11 @@ fn pick_backend(pref: &str) -> (Box<dyn AudioBackend>, bool) {
             Err(err) => log::warn!("BASS unavailable ({err}); running silent"),
         }
         return (Box::new(NullBackend::new()), !headless);
+    }
+    if pref == "hearken" {
+        let backend = HearkenBackend::new();
+        let deaf = !headless && backend.no_device();
+        return (Box::new(backend), deaf);
     }
     if pref == "pygame" {
         log::warn!("FREIGHT_FATE_AUDIO_BACKEND=pygame: the pygame mixer is not part of this build; running silent");

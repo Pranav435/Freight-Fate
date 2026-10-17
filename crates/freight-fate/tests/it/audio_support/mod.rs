@@ -17,7 +17,8 @@ use std::thread::JoinHandle;
 use std::time::{Duration, Instant};
 
 use ff_core::assets_pack;
-use freight_fate::audio::{assets_dir, Audio, AudioEngine};
+use freight_fate::audio::{assets_dir, Audio, AudioEngine, HearkenBackend};
+use hearken::audio::{Recorder, RecordingBackend};
 
 static AUDIO_LOCK: Mutex<()> = Mutex::new(());
 static HEADLESS: Once = Once::new();
@@ -77,6 +78,38 @@ pub fn bass_rig_with_recordings() -> Option<Rig> {
         return None;
     }
     bass_rig()
+}
+
+/// The facade on the Hearken backend over Hearken's recording backend, and
+/// the recorder that saw every call. No device, so no lock and no skip:
+/// unlike the BASS rig, these run on every machine.
+pub struct HearkenRig {
+    pub engine: AudioEngine,
+    pub rec: Recorder,
+}
+
+impl HearkenRig {
+    pub fn hearken(&self) -> &HearkenBackend {
+        self.engine.hearken().expect("the Hearken backend")
+    }
+
+    pub fn hearken_mut(&mut self) -> &mut HearkenBackend {
+        self.engine.hearken_mut().expect("the Hearken backend")
+    }
+
+    /// The backend channel the latest play of `key` went to.
+    pub fn channel(&self, key: &str) -> u64 {
+        self.rec
+            .channel_of(key)
+            .unwrap_or_else(|| panic!("{key} was never played"))
+    }
+}
+
+pub fn hearken_rig() -> HearkenRig {
+    let (backend, rec) = RecordingBackend::new();
+    let engine =
+        AudioEngine::with_backend(Box::new(HearkenBackend::with_backend(Box::new(backend))));
+    HearkenRig { engine, rec }
 }
 
 // ---------------------------------------------------------------------------

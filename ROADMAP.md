@@ -661,6 +661,16 @@ Everything found before 2026-09-25 moved to
       and "facility gate" zones over the chain, not each street's own limit
       and the yard: the street-detail zones, and the other layers gated on
       a pure facility route, do not yet look at a joined route's streets.
+- [ ] The Hearken sound backend (`FREIGHT_FATE_AUDIO_BACKEND=hearken`,
+      opt-in, BASS still the default) plays every effect, loop, the horn,
+      the engine and music. Before it becomes the default: radio streams
+      (it refuses them for now), the owner's listening pass on fades, pan
+      and loop seams, and two playlist gaps it brings. HE-AAC files
+      (AAC+ stations' kind of `.m4a`) play muffled, as their base layer
+      only, because the patent-encumbered decoder stays off; and tracker
+      modules (`.mod`, `.xm`, `.it`, `.s3m`) do not play at all, since no
+      small pure-Rust player exists. Both need a CHANGELOG line when the
+      default flips.
 
 - [x] Low fuel warning could also fire when remaining range is shorter than
       the distance to the next fuel-capable stop (issue #272 shipped the
