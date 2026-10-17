@@ -13916,10 +13916,10 @@ msgstr ""
 msgid "Driver window down or up"
 msgstr ""
 
-msgid "fan"
+msgid "Fan speed"
 msgstr ""
 
-msgid "Fan speed"
+msgid "fan"
 msgstr ""
 
 msgid "climate"

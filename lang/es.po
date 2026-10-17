@@ -16037,11 +16037,11 @@ msgstr "Bocina"
 msgid "Driver window down or up"
 msgstr "Bajar o subir la ventanilla del conductor"
 
-msgid "fan"
-msgstr ""
-
 msgid "Fan speed"
 msgstr "Velocidad del ventilador"
+
+msgid "fan"
+msgstr ""
 
 msgid "climate"
 msgstr ""

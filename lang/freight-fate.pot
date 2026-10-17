@@ -17717,11 +17717,11 @@ msgid "Driver window down or up"
 msgstr ""
 
 #: crates/freight-fate/src/bindings.rs
-msgid "fan"
+msgid "Fan speed"
 msgstr ""
 
 #: crates/freight-fate/src/bindings.rs
-msgid "Fan speed"
+msgid "fan"
 msgstr ""
 
 #: crates/freight-fate/src/bindings.rs

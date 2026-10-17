@@ -131,7 +131,7 @@ fn bindings_round_trip_through_settings() {
     );
     let mut settings = Settings::default();
     b.store(&mut settings);
-    assert_eq!(settings.key_bindings, "accelerate=f5;engine=alt+z");
+    assert_eq!(settings.key_bindings, "accelerate=f5;engine=alt+backslash");
     assert_eq!(
         settings.pad_bindings,
         "horn=mod+paddle_1;radio_tune_next=paddle_2"
