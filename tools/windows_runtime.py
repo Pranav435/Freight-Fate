@@ -36,6 +36,10 @@ WINDOWS_SYSTEM_DLLS = frozenset(
         "advapi32.dll",
         "bcrypt.dll",
         "bcryptprimitives.dll",
+        # COM's own runtime since Windows 8; the sound output reaches WASAPI
+        # through it. Microsoft lists it as the DLL behind the COM functions,
+        # e.g. https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coincrementmtausage
+        "combase.dll",
         "comctl32.dll",
         "comdlg32.dll",
         "crypt32.dll",
