@@ -467,29 +467,59 @@ fn leaving_a_stop_drops_the_co_drivers_plan() {
 #[test]
 fn a_slept_shift_is_simulated_rather_than_played() {
     let mut harness = quiet_drive("Team Sim");
-    let start = harness.with_drive(|d, ctx| {
+    harness.with_drive(|d, ctx| {
         d.truck_mut().start_engine();
         d.truck_mut().set_air_ready(false);
+        d.trip.position_mi = 3.0;
+        d.truck_mut().velocity_mps = 60.0 / 2.236_936;
+        d.cruise_mph = Some(60.0);
         d.hand_wheel_to_co_driver(ctx, TeamMode::SleepThrough);
-        (d.trip.position_mi, d.trip.total_miles())
+        d.truck_mut().parking_brake = false;
     });
-    // Three minutes of frames: played at the normal pace, an hour of road.
-    let back = run_until(&mut harness, 60 * 60 * 3, |h| !h.app.ctx.co_driver_away);
-    let (at, miles) = harness.read_drive(|d| {
-        let team = d.team.as_ref().expect("a team");
-        (d.trip.position_mi, team.co_driver_mi)
+    let driven_before = harness
+        .app
+        .ctx
+        .profile
+        .as_ref()
+        .expect("a career")
+        .hos
+        .driving_min;
+    let (jump, start_min, end_min, miles, at) = harness.with_drive(|d, ctx| {
+        let start_min = d.trip.game_minutes;
+        let jump = d.sleep_ahead(ctx);
+        let miles = d.team.as_ref().expect("a team").co_driver_mi;
+        (
+            jump,
+            start_min,
+            d.trip.game_minutes,
+            miles,
+            d.trip.position_mi,
+        )
     });
-    let road = (start.1 - start.0).min(150.0);
+    let jump = jump.expect("the open road ahead is simulated at once");
+    assert!(jump.miles > 10.0, "{jump:?}");
     assert!(
-        back || at - start.0 >= road * 0.9,
-        "the sleep was played, not simulated: {:.1} of {:.1} miles\n{}",
-        at - start.0,
-        start.1 - start.0,
-        transcript_tail(&harness)
+        (at - 3.0 - jump.miles).abs() < 1e-6,
+        "the truck is where the jump ended"
     );
     assert!(
-        (miles - (at - start.0)).abs() < 1.0,
-        "the co-driver's miles are the miles covered: {miles:.1} for {:.1}",
-        at - start.0
+        (miles - jump.miles).abs() < 1e-6,
+        "the co-driver's miles: {miles}"
     );
+    assert!((end_min - start_min - jump.minutes).abs() < 1e-6);
+    let driven = harness
+        .app
+        .ctx
+        .profile
+        .as_ref()
+        .expect("a career")
+        .hos
+        .driving_min;
+    assert!(
+        (driven - driven_before - jump.minutes).abs() < 1e-6,
+        "the co-driver's logbook carries the drive"
+    );
+    // Short of the receiver's exit: the last stretch is driven live.
+    let exit = harness.with_drive(|d, ctx| d.destination_exit_stop(ctx).map(|s| s.at_mi));
+    assert!(exit.is_some_and(|exit| at < exit), "{at} past {exit:?}");
 }

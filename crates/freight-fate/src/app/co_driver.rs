@@ -18,9 +18,8 @@ use crate::states::driving_team::overlay::{overlay_move, OverlayMove};
 use super::{App, SharedState, FPS};
 
 /// Real time the frame may spend running a slept-through shift's stops
-/// ahead. The player is asleep with the sound down, so a slower frame costs
-/// nothing they hear.
-const FAST_FORWARD_BUDGET: Duration = Duration::from_millis(30);
+/// ahead.
+const FAST_FORWARD_BUDGET: Duration = Duration::from_millis(12);
 /// Ticks run ahead in one frame, at most.
 const FAST_FORWARD_TICKS: usize = 1000;
 /// A beat between the co-driver's keys on a screen.
@@ -172,8 +171,8 @@ impl App {
             return;
         }
         let dt = 1.0 / FPS as f64;
-        let started = Instant::now();
         self.co_driver_sleep_ahead();
+        let started = Instant::now();
         for _ in 0..FAST_FORWARD_TICKS {
             if !self.ctx.co_driver_fast_forward
                 || self.co_driver.player_depth.is_some()

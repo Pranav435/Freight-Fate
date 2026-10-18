@@ -23,8 +23,8 @@ use super::TeamMode;
 const STEP_MI: f64 = 0.25;
 /// A jump shorter than this is left to the live drive.
 const MIN_JUMP_MI: f64 = 2.0;
-/// Where a jump ends ahead of the stop the co-driver is making for, beyond
-/// the exit window they signal in.
+/// Where a jump ends ahead of the stop the co-driver is making for, or the
+/// receiver's exit, beyond the exit window they signal in.
 const STOP_LEAD_MI: f64 = 1.0;
 /// Where a jump ends ahead of the receiver, beyond the gate's warning.
 const GATE_LEAD_MI: f64 = 3.0;
@@ -69,10 +69,18 @@ impl DrivingState {
 
     /// The mile a jump may run to: short of the next thing the co-driver
     /// acts on. None when nothing allows one.
-    fn sleep_jump_limit(&self) -> Option<f64> {
+    fn sleep_jump_limit(&mut self, ctx: &mut GameContext) -> Option<f64> {
+        // Off the highway for the receiver: the streets are driven live.
+        if self.destination_exit_taken {
+            return None;
+        }
         let here = self.trip.position_mi;
         let window = self.exit_window_mi();
         let mut limit = self.trip.total_miles() - self.gate_warning_window_mi() - GATE_LEAD_MI;
+        // No receiver's exit ahead means the truck is at it, or past it
+        // and looping back: driven live.
+        let exit = self.destination_exit_stop(ctx)?;
+        limit = limit.min(exit.at_mi - window - STOP_LEAD_MI);
         let making_for = self
             .team
             .as_ref()
@@ -143,7 +151,7 @@ impl DrivingState {
         if !self.sleep_jump_ready(ctx) {
             return None;
         }
-        let limit = self.sleep_jump_limit()?;
+        let limit = self.sleep_jump_limit(ctx)?;
         let jump = self.sleep_jump_walk(ctx, limit);
         if jump.miles < MIN_JUMP_MI {
             return None;
