@@ -8,7 +8,7 @@ use serde_json::json;
 
 use super::*;
 use crate::sim::surge::LiquidLoad;
-use crate::sim::transmission::REVERSE;
+use crate::sim::transmission::{AUTO_DOWNSHIFT_RPM, REVERSE};
 
 const DT: f64 = 1.0 / 60.0;
 
@@ -1519,6 +1519,40 @@ fn test_lighter_loads_take_fewer_shifts() {
     };
     let (empty, half, full) = (shifts(0.0), shifts(0.5), shifts(1.0));
     assert!(empty < half && half < full, "{empty} {half} {full}");
+}
+
+#[test]
+fn test_start_gear_still_downshifts_once_the_road_wins() {
+    // The launch hold is for a truck still gathering speed. In its starting
+    // gear on a rise at a light throttle, with the road out-pulling the
+    // engine, the revs are falling and the box must still gear down.
+    let mut truck = make_auto_truck();
+    truck.set_air_ready(false);
+    truck.cargo_kg = 0.7 * REFERENCE_CARGO_KG;
+    truck.grade = 0.019;
+    truck.transmission.gear = 2;
+    truck.velocity_mps = 1.0;
+    truck.throttle = 0.06;
+    assert!(truck.coupled_rpm(None) < AUTO_DOWNSHIFT_RPM);
+    assert!(truck.drive_force() < truck.resistance_force());
+    assert_eq!(truck.auto_shift(), Some(1));
+}
+
+#[test]
+fn test_worn_engine_does_not_skip_into_a_gear_it_cannot_pull() {
+    // The skip judges the gear two up with the power the engine still has.
+    let skip = |wear_pct: f64| {
+        let mut truck = make_auto_truck();
+        truck.set_air_ready(false);
+        truck.cargo_kg = 0.0;
+        truck.transmission.gear = 7;
+        truck.velocity_mps = 20.0;
+        truck.throttle = 0.2;
+        truck.engine_wear_pct = wear_pct;
+        truck.auto_shift()
+    };
+    assert_eq!(skip(0.0), Some(9));
+    assert_ne!(skip(100.0), Some(9));
 }
 
 #[test]

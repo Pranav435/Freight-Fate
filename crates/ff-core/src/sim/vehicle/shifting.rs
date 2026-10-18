@@ -91,6 +91,7 @@ impl TruckState {
                 let skip_force = (self.torque_at(landing_rpm)
                     * self.throttle
                     * self.health_factor()
+                    * self.engine_wear_factor()
                     * tr.ratio_for(skip_gear).abs()
                     * self.specs.driveline_efficiency
                     / self.specs.wheel_radius_m)
@@ -144,10 +145,15 @@ impl TruckState {
         let mut downshift_rpm = AUTO_DOWNSHIFT_RPM - 300.0 * (1.0 - load_fraction);
         // Pulling away in the starting gear, the engine runs under the lug
         // guard until the truck gathers speed. That is the launch, not
-        // lugging: the gear was picked for this load and grade. Without this
-        // a light truck pulling away gently in third dropped to second at a
-        // walking pace, then had to shift back up past it.
-        let launching = tr.gear <= start_gear && self.throttle > 0.05;
+        // lugging: the gear was picked for this load and grade, and the
+        // engine is still out-pulling the road. Without this a light truck
+        // pulling away gently in third dropped to second at a walking pace,
+        // then had to shift back up past it. Once the road wins -- a part
+        // load on a rise at part throttle -- the revs are falling and the
+        // guard applies again.
+        let launching = tr.gear <= start_gear
+            && self.throttle > 0.05
+            && self.drive_force() > self.resistance_force();
         if launching {
             downshift_rpm = 0.0;
         }
