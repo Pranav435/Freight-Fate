@@ -51,50 +51,75 @@ pub const ENGLISH: &str = "en";
 pub struct Language {
     /// The catalog's file stem and the settings value: `es`, `pt_BR`.
     pub code: &'static str,
-    /// The language's name in that language, as the settings row reads it.
+    /// The language's name in English.
+    pub name: &'static str,
+    /// The language's name in that language.
     pub autonym: &'static str,
+}
+
+impl Language {
+    /// The settings row's name: the English name with the language's own
+    /// name after it, "Spanish (Español)", or one name when they are the same.
+    pub fn label(&self) -> String {
+        let Language { name, autonym, .. } = *self;
+        if name == autonym {
+            autonym.to_string()
+        } else {
+            format!("{name} ({autonym})")
+        }
+    }
 }
 
 /// Every language with a catalog, English first, then in settings order.
 pub const LANGUAGES: &[Language] = &[
     Language {
         code: "en",
+        name: "English",
         autonym: "English",
     },
     Language {
         code: "es",
+        name: "Spanish",
         autonym: "Español",
     },
     Language {
         code: "fr",
+        name: "French",
         autonym: "Français",
     },
     Language {
         code: "de",
+        name: "German",
         autonym: "Deutsch",
     },
     Language {
         code: "pt_BR",
+        name: "Brazilian Portuguese",
         autonym: "Português do Brasil",
     },
     Language {
         code: "it",
+        name: "Italian",
         autonym: "Italiano",
     },
     Language {
         code: "ru",
+        name: "Russian",
         autonym: "Русский",
     },
     Language {
         code: "pl",
+        name: "Polish",
         autonym: "Polski",
     },
     Language {
         code: "zh_CN",
+        name: "Simplified Chinese",
         autonym: "简体中文",
     },
     Language {
         code: "ja",
+        name: "Japanese",
         autonym: "日本語",
     },
 ];
@@ -103,12 +128,12 @@ pub const LANGUAGES: &[Language] = &[
 static ADDED: std::sync::OnceLock<Vec<Language>> = std::sync::OnceLock::new();
 
 /// Offer languages that came as a catalog file with no entry in
-/// [`LANGUAGES`]: `(code, autonym)` pairs, read from the files' headers.
+/// [`LANGUAGES`]: `(code, name, autonym)`, read from the files' headers.
 /// The game calls this once, before the language is first resolved; a
 /// later call changes nothing. Codes already known are skipped.
-pub fn add_languages(found: impl IntoIterator<Item = (String, String)>) {
+pub fn add_languages(found: impl IntoIterator<Item = (String, String, String)>) {
     let mut added: Vec<Language> = Vec::new();
-    for (code, autonym) in found {
+    for (code, name, autonym) in found {
         if language(&code).is_some() || added.iter().any(|lang| lang.code == code) {
             continue;
         }
@@ -116,6 +141,7 @@ pub fn add_languages(found: impl IntoIterator<Item = (String, String)>) {
         // resolved code hand these out as `&'static str` like the built-ins.
         added.push(Language {
             code: Box::leak(code.into_boxed_str()),
+            name: Box::leak(name.into_boxed_str()),
             autonym: Box::leak(autonym.into_boxed_str()),
         });
     }

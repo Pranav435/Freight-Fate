@@ -114,6 +114,10 @@ fn a_language_added_as_a_file_alone_is_found_with_its_name() {
     // a new language.
     std::fs::write(dir.path().join("lang").join("es.po"), TEST_CATALOG).expect("file written");
     let added = added_languages(dir.path());
-    assert!(added.contains(&("nl".to_string(), "Nederlands".to_string())));
-    assert!(!added.iter().any(|(code, _)| code == "es"));
+    assert!(added.contains(&(
+        "nl".to_string(),
+        "Nederlands".to_string(),
+        "Nederlands".to_string()
+    )));
+    assert!(!added.iter().any(|(code, _, _)| code == "es"));
 }

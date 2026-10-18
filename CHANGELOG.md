@@ -20,7 +20,15 @@
 - **Career stats and driver profiles now list the places you have delivered to.** Career stats also counts your states and cities; Places visited lists each state's cities.
 - **A broken snow chain can be fixed on the shoulder.** Each chain set comes with two spare repair links. Stopped with a broken chain, the pause menu offers "Repair the broken chain: about 15 minutes", which puts the set back on at 80 percent worn, under the slap warning. The garage restocks the links for 25 dollars.
 - **A worn chain warns you before it breaks.** At 85 percent wear the game says "A chain is slapping the fender. Stop soon and tighten it." Tightening takes about 5 minutes and buys back a little wear, once each time the chains go on.
+- **The game can speak French.** Choose Français under Settings, Speech, Language; the radio stays in English.
 - **The game can speak Spanish.** Choose Español under Settings, Speech, Language; the radio stays in English.
+- **The game can speak German.** Choose Deutsch under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Brazilian Portuguese.** Choose Português do Brasil under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Italian.** Choose Italiano under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Russian.** Choose Русский under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Polish.** Choose Polski under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Japanese.** Choose 日本語 under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Simplified Chinese.** Choose 简体中文 under Settings, Speech, Language; the radio stays in English. Thanks to wangru2025 ([PR 448](https://github.com/orinks-games/Freight-Fate/pull/448)).
 
 - **Key and button practice says what each key or button does at the wheel.** Shift F1 or Back plus Start opens it anywhere.
 
@@ -74,6 +82,7 @@
 
 ### Changed
 
+- **The Language setting names each language in English, then in that language.** For example, Spanish (Español).
 - **Updates download much less when the music and radio packs have not changed.** After this update, most updates are about 35 megabytes instead of 531.
 - **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
 - **The toll sound is now a soft, low bong, and plays once per toll.** It sounds when the toll is charged, not on the toll-ahead warning too.
