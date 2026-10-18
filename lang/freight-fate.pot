@@ -11221,7 +11221,7 @@ msgstr ""
 msgid "No advance while you owe {money_text}."
 msgstr ""
 
-#: crates/ff-core/src/models/solvency.rs crates/ff-core/src/settings.rs crates/freight-fate/src/main.rs crates/freight-fate/src/states/assist_picker.rs
+#: crates/ff-core/src/models/solvency.rs crates/ff-core/src/settings/assists.rs crates/ff-core/src/settings.rs crates/freight-fate/src/main.rs
 msgid "all"
 msgstr ""
 
@@ -12797,24 +12797,7 @@ msgid "stable"
 msgstr ""
 
 #: crates/ff-core/src/settings.rs
-msgid "custom"
-msgstr ""
-
-#: crates/ff-core/src/settings.rs
 msgid "everything"
-msgstr ""
-
-#: crates/ff-core/src/settings.rs crates/ff-core/src/sim/trip/placement.rs crates/ff-core/src/sim/trip.rs crates/ff-core/src/units.rs
-msgid "mile"
-msgstr ""
-
-#. placeholders: {distance}
-#: crates/ff-core/src/settings.rs
-msgid "{distance} per hour"
-msgstr ""
-
-#: crates/ff-core/src/settings.rs crates/ff-core/src/sim/trip/placement.rs crates/ff-core/src/sim/trip.rs crates/ff-core/src/units.rs
-msgid "kilometer"
 msgstr ""
 
 #: crates/ff-core/src/settings.rs crates/ff-core/src/sim/trip/placement.rs crates/ff-core/src/sim/trip.rs
@@ -12836,6 +12819,23 @@ msgstr ""
 #. placeholders: {meters}
 #: crates/ff-core/src/settings.rs crates/ff-core/src/sim/trip.rs crates/ff-core/src/units.rs
 msgid "{meters} meters"
+msgstr ""
+
+#: crates/ff-core/src/settings/assists.rs crates/ff-core/src/settings.rs
+msgid "custom"
+msgstr ""
+
+#: crates/ff-core/src/settings/units.rs crates/ff-core/src/settings.rs crates/ff-core/src/sim/trip/placement.rs crates/ff-core/src/sim/trip.rs
+msgid "mile"
+msgstr ""
+
+#. placeholders: {distance}
+#: crates/ff-core/src/settings/units.rs
+msgid "{distance} per hour"
+msgstr ""
+
+#: crates/ff-core/src/settings/units.rs crates/ff-core/src/settings.rs crates/ff-core/src/sim/trip/placement.rs crates/ff-core/src/sim/trip.rs
+msgid "kilometer"
 msgstr ""
 
 #: crates/ff-core/src/sim/cab.rs
@@ -35176,7 +35176,7 @@ msgstr ""
 msgid "roadside"
 msgstr ""
 
-#: crates/freight-fate/src/states/driving_team/overlay.rs
+#: crates/freight-fate/src/states/driving_team/overlay.rs crates/freight-fate/src/states/driving_team/pilot.rs
 msgid "shift"
 msgstr ""
 
@@ -43231,6 +43231,38 @@ msgstr ""
 msgid "The download stopped. Nothing arrived for {STALL_TIMEOUT_S} seconds."
 msgstr ""
 
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/update.rs
+msgid ""
+"Copy it over your game folder, which keeps your music and radio packs, then "
+"restart the game."
+msgstr ""
+
+#. placeholders: {dest}
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/update.rs
+msgid "The new version is saved at {dest}."
+msgstr ""
+
+#. placeholders: {dest}
+#: crates/freight-fate/src/states/update.rs
+msgid ""
+"The new version is saved at {dest}. Copy it over your game folder, which "
+"keeps your music and radio packs, then restart the game."
+msgstr ""
+
+#. one sentence of a longer line
+#: crates/freight-fate/src/states/update.rs
+msgid "Install it yourself, then restart the game."
+msgstr ""
+
+#. placeholders: {dest}
+#: crates/freight-fate/src/states/update.rs
+msgid ""
+"The new version is saved at {dest}. Install it yourself, then restart the "
+"game."
+msgstr ""
+
 #. placeholders: {mb}
 #: crates/freight-fate/src/states/update.rs
 msgid ", {mb} megabytes"
@@ -43282,22 +43314,10 @@ msgstr ""
 msgid "Download complete, but this install cannot update itself."
 msgstr ""
 
-#. placeholders: {dest}
+#. placeholders: {manual_install}
 #: crates/freight-fate/src/states/update.rs
 msgid ""
-"Download complete, but this install cannot update itself. The new version "
-"is saved at {dest}. Install it yourself, then restart the game."
-msgstr ""
-
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/update.rs
-msgid "Install it yourself, then restart the game."
-msgstr ""
-
-#. placeholders: {dest}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/update.rs
-msgid "The new version is saved at {dest}."
+"Download complete, but this install cannot update itself. {manual_install}"
 msgstr ""
 
 #. one sentence of a longer line
@@ -43305,11 +43325,10 @@ msgstr ""
 msgid "Download complete, but the update could not install itself."
 msgstr ""
 
-#. placeholders: {dest}
+#. placeholders: {manual_install}
 #: crates/freight-fate/src/states/update.rs
 msgid ""
-"Download complete, but the update could not install itself. The new version "
-"is saved at {dest}. Install it yourself, then restart the game."
+"Download complete, but the update could not install itself. {manual_install}"
 msgstr ""
 
 #: crates/freight-fate/src/states/update.rs

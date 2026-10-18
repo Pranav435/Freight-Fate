@@ -144,9 +144,11 @@ fn link_clang_runtime() {
     );
 }
 
-/// Compile every `lang/*.po` into the game, so a translator's new language
-/// needs its file and nothing else: `$OUT_DIR/catalogs.rs` is the
-/// `(code, text)` list `app::language` includes.
+/// Compile every `lang/*.po` that translates something into the game, so a
+/// translator's new language needs its file and nothing else:
+/// `$OUT_DIR/catalogs.rs` is the `(code, text)` list `app::language`
+/// includes. A file with no translations yet is left out: Settings would not
+/// offer it, and each one is most of a megabyte of English in the executable.
 fn write_catalog_list(root: &std::path::Path) {
     let lang = root.join("lang");
     println!("cargo:rerun-if-changed={}", lang.display());
@@ -160,6 +162,7 @@ fn write_catalog_list(root: &std::path::Path) {
             let code = path.file_stem()?.to_str()?.to_string();
             Some((code, path))
         })
+        .filter(|(_, path)| fs::read_to_string(path).is_ok_and(|text| translates_something(&text)))
         .collect();
     codes.sort();
     let mut out = String::from("&[\n");
@@ -173,4 +176,31 @@ fn write_catalog_list(root: &std::path::Path) {
     out.push(']');
     let dest = PathBuf::from(env::var("OUT_DIR").unwrap()).join("catalogs.rs");
     fs::write(dest, out).expect("catalog list written");
+}
+
+/// Whether a PO file has any entry past the header with a non-empty
+/// translation, on one `msgstr` line or its continuation lines.
+fn translates_something(po: &str) -> bool {
+    let mut past_header = false;
+    let mut in_msgstr = false;
+    for line in po.lines().map(str::trim) {
+        if line.starts_with("msgid ") {
+            in_msgstr = false;
+        } else if let Some(rest) = line.strip_prefix("msgstr") {
+            // `msgstr "..."` or a plural form, `msgstr[0] "..."`.
+            let text = rest.trim_start_matches(|c: char| c != '"');
+            if past_header && text.len() > 2 {
+                return true;
+            }
+            in_msgstr = true;
+        } else if line.starts_with('"') {
+            if in_msgstr && past_header && line.len() > 2 {
+                return true;
+            }
+        } else if line.is_empty() && in_msgstr {
+            past_header = true;
+            in_msgstr = false;
+        }
+    }
+    false
 }
