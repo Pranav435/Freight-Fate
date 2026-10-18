@@ -34403,6 +34403,12 @@ msgstr ""
 "Tylko NVDA i JAWS mogą przesyłać grę na monitor brajlowski. Mowa pozostaje "
 "włączona, dopóki jeden z nich nie działa."
 
+msgid "Cab speakers"
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
 msgid "Controller: disabled"
 msgstr "Kontroler: wyłączony"
 
@@ -35498,6 +35504,16 @@ msgid ""
 msgstr ""
 "Gdy włączone, każda twoja playlista gra w losowej kolejności, każdy utwór "
 "raz, zanim cokolwiek się powtórzy. Gdy wyłączone, plik gra od góry do dołu."
+
+#. placeholders: {sound}
+msgid "Radio sound: {sound}"
+msgstr ""
+
+msgid ""
+"Cab speakers plays the radio through the truck's door speakers in the small "
+"cab, and lowering the driver window brightens it. Clean plays it exactly as "
+"the station sends it."
+msgstr ""
 
 #. placeholders: {on_off}
 msgid "Game sounds step back for speech: {on_off}"

@@ -518,6 +518,12 @@ impl SettingsCategoryState {
         self.announce(ctx);
     }
 
+    pub(super) fn toggle_radio_cab_speakers(&mut self, ctx: &mut GameContext, _d: i64) {
+        ctx.settings.radio_cab_speakers = !ctx.settings.radio_cab_speakers;
+        save_settings(&ctx.settings);
+        self.announce(ctx);
+    }
+
     pub(super) fn toggle_duck_for_speech(&mut self, ctx: &mut GameContext, _d: i64) {
         ctx.settings.duck_audio_for_speech = !ctx.settings.duck_audio_for_speech;
         save_settings(&ctx.settings);

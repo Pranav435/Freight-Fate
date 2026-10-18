@@ -34438,6 +34438,12 @@ msgstr ""
 "Solo NVDA y JAWS pueden enviar el juego a una línea braille. La voz sigue "
 "activa hasta que uno de ellos esté en marcha."
 
+msgid "Cab speakers"
+msgstr "Altavoces de la cabina"
+
+msgid "Clean"
+msgstr "Limpio"
+
 msgid "Controller: disabled"
 msgstr "Mando: desactivado"
 
@@ -35542,6 +35548,19 @@ msgstr ""
 "Activado reproduce cada una de tus listas en orden aleatorio, cada pista "
 "una vez antes de repetir ninguna. Desactivado reproduce el archivo de "
 "principio a fin."
+
+#. placeholders: {sound}
+msgid "Radio sound: {sound}"
+msgstr "Sonido de la radio: {sound}"
+
+msgid ""
+"Cab speakers plays the radio through the truck's door speakers in the small "
+"cab, and lowering the driver window brightens it. Clean plays it exactly as "
+"the station sends it."
+msgstr ""
+"Altavoces de la cabina hace sonar la radio por los altavoces de las puertas "
+"del camión, en la cabina pequeña, y bajar la ventanilla del conductor le da "
+"más brillo. Limpio la reproduce tal como la envía la emisora."
 
 #. placeholders: {on_off}
 msgid "Game sounds step back for speech: {on_off}"

@@ -31049,6 +31049,12 @@ msgid ""
 "until one of them is running."
 msgstr "ゲームを点字ディスプレイに送れるのは NVDA と JAWS だけです。どちらかが動くまでは読み上げはオンのままです。"
 
+msgid "Cab speakers"
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
 msgid "Controller: disabled"
 msgstr "コントローラー: 無効"
 
@@ -31980,6 +31986,16 @@ msgid ""
 "On plays each of your playlists in a random order, every track once before "
 "any repeats. Off plays the file top to bottom."
 msgstr "オンでは、各プレイリストをランダムな順番で、すべての曲を1回ずつ流してから繰り返します。オフでは、ファイルの上から順に流します。"
+
+#. placeholders: {sound}
+msgid "Radio sound: {sound}"
+msgstr ""
+
+msgid ""
+"Cab speakers plays the radio through the truck's door speakers in the small "
+"cab, and lowering the driver window brightens it. Clean plays it exactly as "
+"the station sends it."
+msgstr ""
 
 #. placeholders: {on_off}
 msgid "Game sounds step back for speech: {on_off}"

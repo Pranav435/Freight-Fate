@@ -37,6 +37,16 @@ fn on_off(flag: bool) -> &'static str {
     }
 }
 
+/// The Radio sound row's value. Each is a whole literal so a catalog can
+/// translate it.
+fn radio_sound_name(cab_speakers: bool) -> &'static str {
+    if cab_speakers {
+        "Cab speakers"
+    } else {
+        "Clean"
+    }
+}
+
 fn pct(level: f64) -> i64 {
     round_py_int(level * 100.0)
 }
@@ -483,6 +493,7 @@ impl SettingsCategoryState {
                 adjust(|s, ctx, d| s.volume(ctx, "radio_volume", 0.1 * d as f64)),
                 adjust(|s, ctx, d| s.toggle_radio_streamer_safe(ctx, d)),
                 adjust(|s, ctx, d| s.toggle_radio_shuffle_playlists(ctx, d)),
+                adjust(|s, ctx, d| s.toggle_radio_cab_speakers(ctx, d)),
                 adjust(|s, ctx, d| s.toggle_duck_for_speech(ctx, d)),
                 adjust(|s, ctx, d| s.volume(ctx, "ui_volume", 0.1 * d as f64)),
             ],
@@ -961,6 +972,16 @@ impl SettingsCategoryState {
                 adjust(|s, ctx, d| s.toggle_radio_shuffle_playlists(ctx, d)),
                 "On plays each of your playlists in a random order, every track \
                  once before any repeats. Off plays the file top to bottom.",
+            ),
+            row(
+                dyn_label(|s| {
+                    let sound = radio_sound_name(s.radio_cab_speakers);
+                    format!("Radio sound: {sound}")
+                }),
+                adjust(|s, ctx, d| s.toggle_radio_cab_speakers(ctx, d)),
+                "Cab speakers plays the radio through the truck's door \
+                 speakers in the small cab, and lowering the driver window \
+                 brightens it. Clean plays it exactly as the station sends it.",
             ),
             row(
                 dyn_label(|s| {

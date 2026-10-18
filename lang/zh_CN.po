@@ -30714,6 +30714,12 @@ msgid ""
 "until one of them is running."
 msgstr "只有NVDA和JAWS能把游戏内容发送到盲文显示器。在它们之一运行之前，语音会保持开启。"
 
+msgid "Cab speakers"
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
 msgid "Controller: disabled"
 msgstr "手柄：已禁用"
 
@@ -31612,6 +31618,16 @@ msgid ""
 "On plays each of your playlists in a random order, every track once before "
 "any repeats. Off plays the file top to bottom."
 msgstr "打开时，每个播放列表都按随机顺序播放，每首歌都播完一遍才会重复。关闭时从文件开头按顺序播放到结尾。"
+
+#. placeholders: {sound}
+msgid "Radio sound: {sound}"
+msgstr ""
+
+msgid ""
+"Cab speakers plays the radio through the truck's door speakers in the small "
+"cab, and lowering the driver window brightens it. Clean plays it exactly as "
+"the station sends it."
+msgstr ""
 
 #. placeholders: {on_off}
 msgid "Game sounds step back for speech: {on_off}"
