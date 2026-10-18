@@ -19,7 +19,17 @@ impl PickupFacilityState {
         if self.job.team {
             return true;
         }
-        let drive_min = self.job.distance_mi / 55.0 * 60.0;
+        let route = ctx
+            .world
+            .supported_route(&self.job.origin, &self.job.destination, None)
+            .ok()
+            .flatten();
+        let drive_min = match route {
+            Some(route) => {
+                ff_core::models::jobs::route_drive_hours(Some(&route), 0.0, Some(ctx.world)) * 60.0
+            }
+            None => self.job.distance_mi / ff_core::models::jobs::DEADLINE_AVG_MPH * 60.0,
+        };
         co_driver::team_worthwhile(&profile(ctx).hos, &ctx.settings.hos_mode, drive_min)
     }
 

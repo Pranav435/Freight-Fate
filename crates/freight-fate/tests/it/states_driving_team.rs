@@ -287,3 +287,107 @@ fn a_radio_left_off_stays_off_for_the_whole_shift() {
     }
     assert!(harness.read_drive(|d| !d.radio.enabled));
 }
+
+#[test]
+fn a_manual_driver_keeps_the_manual_bonus_through_a_co_driver_shift() {
+    let mut harness = team_ready();
+    harness.app.ctx.settings.automatic_transmission = false;
+    harness.with_drive(|d, ctx| {
+        d.truck_mut().start_engine();
+        d.trip.truck.transmission.automatic = false;
+        d.hand_wheel_to_co_driver(ctx, TeamMode::RideAlong);
+    });
+    assert!(harness.read_drive(|d| d.truck().transmission.automatic));
+    let moving = run_until(&mut harness, 60 * 90, |h| {
+        h.read_drive(|d| d.truck().speed_mph() > 10.0)
+    });
+    assert!(moving, "the co-driver drives off");
+    harness.with_drive(|d, ctx| d.take_wheel_back(ctx));
+    for _ in 0..60 {
+        harness.advance_frame_clock();
+        harness.app.frame(DT);
+    }
+    let said = harness.transcript().join("\n");
+    assert!(!said.contains("Transmission changed"), "{said}");
+    assert!(harness.read_drive(|d| !d.truck().transmission.automatic));
+    assert!(
+        harness.read_drive(|d| !d.drove_automatic),
+        "the co-driver's automatic miles are not the player's"
+    );
+}
+
+#[test]
+fn the_co_drivers_miles_are_the_miles_the_truck_covered() {
+    let mut harness = quiet_drive("Team Miles");
+    let start = harness.with_drive(|d, ctx| {
+        d.trip.time_scale = 4.0;
+        d.truck_mut().start_engine();
+        d.hand_wheel_to_co_driver(ctx, TeamMode::RideAlong);
+        d.trip.position_mi
+    });
+    let moved = run_until(&mut harness, 60 * 60 * 3, |h| {
+        h.state_is::<DrivingState>() && h.read_drive(|d| d.trip.position_mi - start > 2.0)
+    });
+    assert!(moved, "the co-driver drove two miles");
+    let (covered, logged) = harness.read_drive(|d| {
+        (
+            d.trip.position_mi - start,
+            d.team.as_ref().map_or(0.0, |team| team.co_driver_mi),
+        )
+    });
+    assert!(
+        (logged - covered).abs() < covered * 0.1,
+        "logged {logged:.2} of {covered:.2} miles"
+    );
+}
+
+#[test]
+fn a_stop_already_behind_the_truck_is_dropped_from_the_plan() {
+    use freight_fate::states::driving_team::pilot::StopPurpose;
+    let mut harness = quiet_drive("Team Plan");
+    harness.with_drive(|d, ctx| {
+        d.truck_mut().start_engine();
+        d.truck_mut().set_air_ready(false);
+        d.hand_wheel_to_co_driver(ctx, TeamMode::RideAlong);
+        let wheel = d.team.as_mut().and_then(|t| t.wheel.as_mut()).unwrap();
+        wheel.pilot.making_for = Some(("a stop not on this road".into(), StopPurpose::Fuel));
+    });
+    run_until(&mut harness, 60 * 60, |h| {
+        h.read_drive(|d| d.truck().speed_mph() > 5.0)
+    });
+    let planned = harness.read_drive(|d| {
+        d.team
+            .as_ref()
+            .and_then(|t| t.wheel.as_ref())
+            .map(|w| w.pilot.making_for.clone())
+    });
+    assert!(
+        planned.as_ref().is_some_and(|stop| stop
+            .as_ref()
+            .is_none_or(|(key, _)| key != "a stop not on this road")),
+        "{planned:?}"
+    );
+}
+
+#[test]
+fn a_co_driver_out_of_hours_with_no_stop_in_reach_hands_back() {
+    let mut harness = quiet_drive("Team Hours");
+    harness.app.ctx.settings.hos_mode = "realistic".to_string();
+    harness.with_drive(|d, ctx| {
+        d.truck_mut().start_engine();
+        d.hand_wheel_to_co_driver(ctx, TeamMode::RideAlong);
+        d.trip
+            .stops
+            .retain(|stop| stop.stop_type == "delivery_destination");
+    });
+    // The co-driver's logbook, the profile's while they drive: five
+    // minutes of driving left, the break already taken.
+    let hos = &mut harness.app.ctx.profile.as_mut().expect("a career").hos;
+    hos.drive(7.0 * 60.0);
+    hos.take_break(30.0);
+    hos.drive(4.0 * 60.0 - 5.0);
+    let back = run_until(&mut harness, 60 * 60 * 2, |h| !h.app.ctx.co_driver_away);
+    assert!(back, "the co-driver drove on past their hours");
+    let said = harness.transcript().join("\n");
+    assert!(said.contains("Their hours are up."), "{said}");
+}

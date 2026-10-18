@@ -1400,3 +1400,18 @@ fn a_co_driver_drives_on_every_assist_and_the_file_keeps_the_players() {
     s.take_assists_back();
     assert_eq!(s.to_file_text(), before);
 }
+
+#[test]
+fn an_assist_changed_during_the_co_drivers_shift_keeps_the_change() {
+    let mut s = Settings::default();
+    s.apply_driving_assistance_preset("realistic");
+    let own_aeb = s.automatic_emergency_braking;
+    s.hand_assists_to_co_driver();
+    assert_eq!(s.lane_keeping, "full");
+    // The player sets partial lane keeping from the pause settings.
+    s.lane_keeping = "partial".to_string();
+    s.take_assists_back();
+    assert_eq!(s.lane_keeping, "partial", "the player's change stands");
+    assert_eq!(s.automatic_emergency_braking, own_aeb);
+    assert!(!s.destination_approach_assist, "untouched fields come back");
+}

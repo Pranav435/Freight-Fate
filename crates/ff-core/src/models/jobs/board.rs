@@ -711,10 +711,11 @@ impl<'w> JobBoard<'w> {
         ) * start_option(Some(carrier_key)).dispatch.deadline_slack;
         // Speak the stretch when the driver's current clock forces a sleep a
         // fresh clock would not have needed -- the long number is the law.
+        // A fresh driver's sleeps, planned once for both questions below.
+        let fresh_sleeps = plan_hos(miles, route.as_ref(), Some(self.world), None).sleeps;
         let covers_rest = match &self.hos {
             Some(hos) => {
-                plan_hos(miles, route.as_ref(), Some(self.world), Some(hos)).sleeps
-                    > plan_hos(miles, route.as_ref(), Some(self.world), None).sleeps
+                plan_hos(miles, route.as_ref(), Some(self.world), Some(hos)).sleeps > fresh_sleeps
             }
             None => false,
         };
@@ -744,9 +745,7 @@ impl<'w> JobBoard<'w> {
         // the load itself, not the board's dice, so every other offer stays
         // what it was.
         let seed = load_seed(origin, destination, cargo.key, job.weight_tons);
-        if plan_hos(miles, route.as_ref(), Some(self.world), None).sleeps > 0
-            && team_load_drawn(&seed)
-        {
+        if fresh_sleeps > 0 && team_load_drawn(&seed) {
             job.team = true;
             job.deadline_covers_rest = false;
             job.pay = round_py_n(job.pay * TEAM_LOAD_PAY_MULT, 2);

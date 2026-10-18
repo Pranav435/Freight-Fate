@@ -230,10 +230,13 @@ impl DrivingState {
         if self.team.is_some() || self.job.team {
             return true;
         }
-        let left_mi = (self.trip.total_miles() - self.trip.position_mi).max(0.0);
-        // The planner's own pace for the drive ahead: the posted limits
-        // less the stops, which a half-hour per hundred miles stands for.
-        let drive_min_left = left_mi / 55.0 * 60.0;
+        // The planner's own pace for the road ahead, curves and towns
+        // included.
+        let drive_min_left = ff_core::models::jobs::route_drive_hours(
+            Some(&self.trip.route),
+            self.trip.position_mi,
+            Some(ctx.world),
+        ) * 60.0;
         let mode = ctx.settings.hos_mode.clone();
         co_driver::team_worthwhile(self.team_player_hos(ctx), &mode, drive_min_left)
     }
@@ -291,6 +294,9 @@ impl DrivingState {
             summon: None,
         });
         ctx.settings.hand_assists_to_co_driver();
+        // The co-driver drives the automatic box. Set here, not by the
+        // frame, which would announce it as the player's own change.
+        self.trip.truck.transmission.automatic = ctx.settings.automatic_transmission;
         ctx.co_driver_away = true;
         if mode == TeamMode::SleepThrough {
             ctx.co_driver_fast_forward = true;
@@ -313,6 +319,7 @@ impl DrivingState {
         let wheel = team.wheel.take()?;
         std::mem::swap(hos_mut_of(ctx), &mut team.off_wheel_hos);
         ctx.settings.take_assists_back();
+        self.trip.truck.transmission.automatic = ctx.settings.automatic_transmission;
         ctx.co_driver_away = false;
         if std::mem::take(&mut ctx.co_driver_fast_forward) {
             ctx.apply_volumes();
@@ -328,8 +335,10 @@ impl DrivingState {
     /// The per-frame team bookkeeping, run with the hours: the logbook not
     /// in use rests, the player's fatigue clears while the co-driver drives,
     /// and the co-driver's miles add up.
-    pub fn update_team_hours(&mut self, ctx: &mut GameContext, dt: f64, gm: f64) {
-        let speed_mph = self.trip.truck.speed_mph();
+    pub fn update_team_hours(&mut self, ctx: &mut GameContext, gm: f64) {
+        // The trip's own distance this frame: the time compression is in
+        // it, where speed times the real frame time would leave it out.
+        let miles = self.trip.last_moved_mi.max(0.0);
         let Some(team) = self.team.as_mut() else {
             return;
         };
@@ -337,7 +346,6 @@ impl DrivingState {
         let Some(wheel) = team.wheel.as_mut() else {
             return;
         };
-        let miles = speed_mph.max(0.0) * dt / 3600.0;
         team.co_driver_mi += miles;
         wheel.log.miles += miles;
         wheel.log.game_minutes += gm;
@@ -437,7 +445,10 @@ impl DrivingState {
             if let Some(stop) = stop {
                 wheel.log.fuel_stops.push(stop);
             }
-        } else if label == "Back to the road" || label.starts_with("Take a 30-minute break") {
+        } else if label == "Back to the road"
+            || label.starts_with("Take a 30-minute break")
+            || label.starts_with("Drive on to the next stop")
+        {
             wheel.pilot.making_for = None;
         }
     }

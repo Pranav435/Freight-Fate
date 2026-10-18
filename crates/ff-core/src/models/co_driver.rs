@@ -377,16 +377,22 @@ pub fn pairing_line(pairing: &Pairing, carrier_name: &str) -> String {
 
 /// Whether the rest of this trip is long enough to team: driving it would
 /// need a 10-hour break first. `drive_min_left` is the planner's driving
-/// minutes to the destination; `hos_mode` the player's hours setting.
+/// minutes to the destination; `hos_mode` the player's hours setting. The
+/// 30-minute break the drive would need comes out of the duty window.
 pub fn team_worthwhile(hos: &HosClock, hos_mode: &str, drive_min_left: f64) -> bool {
-    let Some((drive_limit, window, _)) = hos::limits(hos_mode) else {
+    let Some((drive_limit, window, break_after)) = hos::limits(hos_mode) else {
         // Hours off: nothing forces a sleep, so judge the trip against one
         // full shift instead.
         return drive_min_left > hos::REALISTIC_LIMITS.0;
     };
     let drive_left = (drive_limit - hos.driving_min).max(0.0);
     let window_left = (window - hos.duty_min).max(0.0);
-    drive_min_left > drive_left.min(window_left)
+    let break_min = if hos.since_break_min + drive_min_left > break_after {
+        hos::BREAK_MIN
+    } else {
+        0.0
+    };
+    drive_min_left > drive_left || drive_min_left + break_min > window_left
 }
 
 /// The split of one settlement between the player and the co-driver.

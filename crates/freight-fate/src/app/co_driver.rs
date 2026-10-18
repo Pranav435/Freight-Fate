@@ -84,6 +84,11 @@ impl App {
         }
         let (Some(top), Some(drive)) = (states.last().cloned(), find_drive(&states)) else {
             // No drive under the screens: nothing for a co-driver to do.
+            // The drive's exit hands everything back; reaching here means
+            // it was dropped without one, so at least the player's own
+            // assists come back before the next settings save.
+            log::error!("the co-driver's drive left the screens without its exit");
+            self.ctx.settings.take_assists_back();
             self.ctx.co_driver_away = false;
             self.ctx.co_driver_fast_forward = false;
             self.ctx.apply_volumes();
@@ -174,7 +179,18 @@ impl App {
             {
                 break;
             }
-            self.tick(dt);
+            self.fast_forward_tick(dt);
+        }
+    }
+
+    /// One tick run ahead: the co-driver's move and the screen it is on,
+    /// and none of the frame's other work (controller repeat, speech,
+    /// audio fades, presence), which keeps to the real frame.
+    fn fast_forward_tick(&mut self, dt: f64) {
+        self.co_driver_step(dt);
+        if let Some(state) = self.ctx.state() {
+            state.borrow_mut().update(&mut self.ctx, dt);
+            self.ctx.run_deferred();
         }
     }
 }

@@ -72,7 +72,7 @@ impl DrivingState {
 
         // A team's other logbook rests, and while the co-driver drives the
         // player is in the bunk: no fatigue gained, some slept off.
-        self.update_team_hours(ctx, dt, gm);
+        self.update_team_hours(ctx, gm);
         let co_driver = self.co_driver_driving();
 
         let night = is_night(self.trip.local_hour());

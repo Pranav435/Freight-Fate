@@ -129,6 +129,12 @@ fn a_team_is_worthwhile_only_when_the_rest_needs_a_sleep() {
     let mut tired = HosClock::new();
     tired.drive(9.0 * 60.0);
     assert!(team_worthwhile(&tired, "realistic", 3.0 * 60.0));
+    // Nine hours of driving fits the 11-hour limit, but with the break it
+    // needs it does not fit what is left of a window 4.75 hours in.
+    let mut late = HosClock::new();
+    late.on_duty(4.75 * 60.0);
+    assert!(team_worthwhile(&late, "realistic", 9.0 * 60.0));
+    assert!(!team_worthwhile(&fresh, "realistic", 9.0 * 60.0));
     assert!(!team_worthwhile(&fresh, "off", 600.0));
     assert!(team_worthwhile(&fresh, "off", 700.0));
 }

@@ -14,11 +14,9 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::pyfmt::{fmt_f, fmt_grouped, round_py_int};
+use crate::pyfmt::{fmt_f, round_py_int};
 use crate::speech_pacing::{disposition_for, Disposition, SpeechCategory, DEFAULT_DRIVING_SPEECH};
-use crate::units::{
-    distance_unit, hud_speed, spoken_distance, spoken_gap, to_distance, MILES_TO_KM,
-};
+use crate::units::{to_distance, MILES_TO_KM};
 
 /// How score readouts balance the descriptive band and the numeric score.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -39,8 +37,11 @@ impl From<ScoreDisplay> for Value {
     }
 }
 
+mod assists;
 mod migrate;
 pub mod paths;
+mod units;
+pub use assists::AssistStash;
 #[cfg(test)]
 mod tests;
 
@@ -192,16 +193,6 @@ pub const LANE_CUE_LOUDNESS_MODES: [&str; 3] = ["subtle", "standard", "prominent
 pub const DESCENT_SPEED_CONTROL_MODES: [&str; 4] = ["off", "realistic", "balanced", "interactive"];
 pub const PEDAL_LATCH_MODES: [&str; 2] = ["on", "off"];
 pub const UPDATE_CHANNELS: [&str; 3] = ["", "stable", "dev"];
-
-/// The player's assist fields, set aside while a co-driver drives.
-#[derive(Clone, Debug, PartialEq)]
-pub struct AssistStash {
-    values: [AssistValue; 9],
-    descent_speed_control: String,
-    lane_keeping: String,
-    preset: String,
-    automatic_transmission: bool,
-}
 
 /// One preset field's value: the assist switches are bools, descent speed
 /// control and lane keeping are modes.
@@ -786,122 +777,6 @@ impl Settings {
         })
     }
 
-    /// The preset fields' current values, in DRIVING_ASSIST_FIELDS order.
-    pub fn assist_values(&self) -> [AssistValue; 9] {
-        [
-            Flag(self.automatic_emergency_braking),
-            Flag(self.lane_departure_warning),
-            Flag(self.stop_and_go_assist),
-            Mode(static_mode(&self.descent_speed_control)),
-            Flag(self.exit_speed_assist),
-            Flag(self.destination_approach_assist),
-            Flag(self.curve_speed_assist),
-            Flag(self.route_transition_assist),
-            Mode(static_mode(&self.lane_keeping)),
-        ]
-    }
-
-    /// `getattr(settings, field)` for one preset field.
-    pub fn assist_value(&self, field: &str) -> Option<AssistValue> {
-        DRIVING_ASSIST_FIELDS
-            .iter()
-            .position(|name| *name == field)
-            .map(|index| self.assist_values()[index])
-    }
-
-    /// `setattr(settings, field, value)` for one preset field; `false` when
-    /// `field` is not a preset field or `value` is the wrong shape for it.
-    pub fn set_assist_value(&mut self, field: &str, value: AssistValue) -> bool {
-        match (field, value) {
-            ("automatic_emergency_braking", Flag(v)) => self.automatic_emergency_braking = v,
-            ("lane_departure_warning", Flag(v)) => self.lane_departure_warning = v,
-            ("stop_and_go_assist", Flag(v)) => self.stop_and_go_assist = v,
-            ("descent_speed_control", Mode(v)) => self.descent_speed_control = v.to_string(),
-            ("exit_speed_assist", Flag(v)) => self.exit_speed_assist = v,
-            ("destination_approach_assist", Flag(v)) => self.destination_approach_assist = v,
-            ("curve_speed_assist", Flag(v)) => self.curve_speed_assist = v,
-            ("route_transition_assist", Flag(v)) => self.route_transition_assist = v,
-            ("lane_keeping", Mode(v)) => self.lane_keeping = v.to_string(),
-            _ => return false,
-        }
-        true
-    }
-
-    /// Hand every assist to a co-driver taking the wheel: the "all" preset's
-    /// values, with the player's own set aside. Idempotent.
-    pub fn hand_assists_to_co_driver(&mut self) {
-        if self.co_driver_stash.is_some() {
-            return;
-        }
-        self.co_driver_stash = Some(Box::new(AssistStash {
-            values: self.assist_values(),
-            descent_speed_control: self.descent_speed_control.clone(),
-            lane_keeping: self.lane_keeping.clone(),
-            preset: self.driving_assistance_preset.clone(),
-            automatic_transmission: self.automatic_transmission,
-        }));
-        self.automatic_transmission = true;
-        if let Some(values) = driving_assist_preset("all") {
-            for (field, value) in DRIVING_ASSIST_FIELDS.iter().zip(values.iter()) {
-                self.set_assist_value(field, *value);
-            }
-        }
-    }
-
-    /// Put the player's own assists back. Idempotent.
-    pub fn take_assists_back(&mut self) {
-        let Some(stash) = self.co_driver_stash.take() else {
-            return;
-        };
-        for (field, value) in DRIVING_ASSIST_FIELDS.iter().zip(stash.values.iter()) {
-            self.set_assist_value(field, *value);
-        }
-        self.descent_speed_control = stash.descent_speed_control;
-        self.lane_keeping = stash.lane_keeping;
-        self.driving_assistance_preset = stash.preset;
-        self.automatic_transmission = stash.automatic_transmission;
-    }
-
-    /// The settings as the player chose them: these, with any co-driver
-    /// override undone. What the settings file holds.
-    pub fn player_owned(&self) -> std::borrow::Cow<'_, Settings> {
-        if self.co_driver_stash.is_none() {
-            return std::borrow::Cow::Borrowed(self);
-        }
-        let mut own = self.clone();
-        own.take_assists_back();
-        std::borrow::Cow::Owned(own)
-    }
-
-    /// Set every preset field to the named preset's values. `false` (and no
-    /// change) for a name that is not a preset -- Python raised `KeyError`.
-    pub fn apply_driving_assistance_preset(&mut self, preset: &str) -> bool {
-        let Some(values) = driving_assist_preset(preset) else {
-            return false;
-        };
-        for (field, value) in DRIVING_ASSIST_FIELDS.iter().zip(values.iter()) {
-            self.set_assist_value(field, *value);
-        }
-        self.driving_assistance_preset = preset.to_string();
-        true
-    }
-
-    /// Re-derive the preset row from the real fields: the one preset whose
-    /// mapping matches exactly, or "custom".
-    pub fn refresh_driving_assistance_preset(&mut self) -> &'static str {
-        let values = self.assist_values();
-        let mut matches = DRIVING_ASSIST_PRESETS
-            .iter()
-            .filter(|(_, mapping)| *mapping == values)
-            .map(|(name, _)| *name);
-        let name = match (matches.next(), matches.next()) {
-            (Some(only), None) => only,
-            _ => "custom",
-        };
-        self.driving_assistance_preset = name.to_string();
-        name
-    }
-
     /// How the player's rung delivers this category of information.
     pub fn speech_disposition(&self, category: Option<SpeechCategory>) -> Disposition {
         disposition_for(&self.driving_speech, category)
@@ -975,79 +850,6 @@ impl Settings {
     pub fn set_all_chatter(&mut self, enabled: bool) {
         for field in CHATTER_FIELDS {
             self.set_chatter_field(field, enabled);
-        }
-    }
-
-    // -- unit formatting ---------------------------------------------------------
-
-    pub fn speed_text(&self, mph: f64) -> String {
-        if self.imperial_units {
-            format!("{} per hour", spoken_distance(mph, "mile"))
-        } else {
-            format!(
-                "{} per hour",
-                spoken_distance(mph * MILES_TO_KM, "kilometer")
-            )
-        }
-    }
-
-    /// `speed_text`'s bare number, for the terse slot grammar where the
-    /// frame carries the unit ("Limit 65.").
-    pub fn speed_value(&self, mph: f64) -> String {
-        let value = if self.imperial_units {
-            mph
-        } else {
-            mph * MILES_TO_KM
-        };
-        round_py_int(value).to_string()
-    }
-
-    /// Spoken distance in the player's unit. `precise` keeps one decimal for
-    /// short spans ("1.2 miles ahead") where whole numbers would read as
-    /// zero or lie by half a mile.
-    pub fn distance_text(&self, miles: f64, precise: bool) -> String {
-        distance_text_for(miles, self.imperial_units, precise)
-    }
-
-    /// Colloquial short range for pacenote-style calls: quarter-mile steps
-    /// under a mile ("half a mile"), 100-meter steps under a kilometer ("400
-    /// meters"), the normal precise form beyond.
-    pub fn short_distance_text(&self, miles: f64) -> String {
-        short_distance_text_for(miles, self.imperial_units)
-    }
-
-    /// A spoken distance kept to one decimal, for close-range cues.
-    pub fn gap_text(&self, miles: f64) -> String {
-        spoken_gap(miles, self.imperial_units)
-    }
-
-    /// Speed for the visual HUD, in the short written form.
-    pub fn hud_speed_text(&self, mph: f64) -> String {
-        hud_speed(mph, self.imperial_units)
-    }
-
-    /// A bare converted distance, for readouts that name the unit once after
-    /// two numbers ("12 of 400 miles").
-    pub fn distance_value(&self, miles: f64, decimals: usize, grouped: bool) -> String {
-        let value = to_distance(miles, self.imperial_units);
-        if grouped {
-            fmt_grouped(value, decimals)
-        } else {
-            fmt_f(value, decimals)
-        }
-    }
-
-    /// The player's distance unit, to pair with `distance_value`.
-    pub fn distance_unit_text(&self, plural: bool) -> &'static str {
-        distance_unit(self.imperial_units, plural)
-    }
-
-    /// A per-mile rate as a rate in the player's own distance unit.
-    pub fn per_distance(&self, per_mile: f64) -> f64 {
-        if self.imperial_units {
-            per_mile
-        } else {
-            per_mile / MILES_TO_KM
         }
     }
 }
@@ -1136,7 +938,7 @@ pub fn acc_gap_seconds(name: &str) -> Option<f64> {
 /// A mode field's value as the static str the preset tables use, or a
 /// marker no preset matches when it holds something outside the tables
 /// (only possible between the raw copy and the value checks in `from_dict`).
-fn static_mode(value: &str) -> &'static str {
+pub(crate) fn static_mode(value: &str) -> &'static str {
     for mode in DESCENT_SPEED_CONTROL_MODES {
         if mode == value {
             return mode;

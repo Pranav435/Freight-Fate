@@ -442,7 +442,10 @@ impl DrivingState {
                 SayEvent::new().category(SpeechCategory::Confirmation),
             );
         }
-        if self.trip.truck.transmission.automatic && self.trip.truck.speed_mph().abs() > 1.0 {
+        if self.trip.truck.transmission.automatic
+            && self.trip.truck.speed_mph().abs() > 1.0
+            && !self.co_driver_driving()
+        {
             self.drove_automatic = true;
         }
 

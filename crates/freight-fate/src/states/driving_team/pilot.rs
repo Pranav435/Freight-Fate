@@ -165,6 +165,17 @@ impl DrivingState {
         }
 
         self.pilot_plan_stops(ctx, pilot);
+        // The shift is ending with no stop to end it at, or the hours are
+        // gone before the stop: the player takes over rather than the
+        // co-driver driving past the limit.
+        if pilot.shift_over {
+            let out = hos_of(ctx)
+                .remaining_min(&ctx.settings.hos_mode)
+                .is_some_and(|left| left <= 0.0);
+            if pilot.making_for.is_none() || out {
+                return Err("shift".to_string());
+            }
+        }
 
         // An open scale, or the stop they are making for, inside the exit
         // window: signal for it.
@@ -201,11 +212,12 @@ impl DrivingState {
         let (limit, zone) = self.trip.speed_limit_at(self.trip.position_mi);
         let near_limit = speed >= (limit - CRUISE_SET_MARGIN_MPH).max(3.0);
         let armed = self.keeper_mph.is_some() || self.cruise_mph.is_some();
-        // A light, sign or yield the assist has taken is left to it: a
-        // foot on the accelerator overrides its stop, and the truck ran
-        // the red at the ramp's end.
-        let terminal = self.terminal_assist_owns(ctx);
-        if terminal {
+        // A light, sign or yield the assist has taken, or a deceleration
+        // lane it is braking down, is left to it: a foot on the
+        // accelerator overrides its brakes, and the truck ran the red at
+        // the ramp's end.
+        let assist_has_pedals = self.terminal_assist_owns(ctx) || self.decel_lane_brake > 0.0;
+        if assist_has_pedals {
             // Waiting at the bar is not a stall.
             pilot.accel_s = 0.0;
             pilot.stalled_s = 0.0;
@@ -264,6 +276,23 @@ impl DrivingState {
         if !pilot.shift_over && co_driver::shift_over(hos_of(ctx), &mode) {
             pilot.shift_over = true;
             pilot.making_for = None;
+        }
+        // A stop passed without pulling in (missed, or a full lot driven
+        // on from) is no longer the one they are making for: plan again.
+        if let Some((key, _)) = &pilot.making_for {
+            let on_its_ramp = self
+                .ramp_stop
+                .as_ref()
+                .is_some_and(|stop| &stop.key() == key);
+            let behind = self
+                .trip
+                .stops
+                .iter()
+                .find(|stop| &stop.key() == key)
+                .is_none_or(|stop| stop.at_mi < self.trip.position_mi - 0.1);
+            if behind && !on_its_ramp {
+                pilot.making_for = None;
+            }
         }
         if pilot.making_for.is_some() {
             return;
