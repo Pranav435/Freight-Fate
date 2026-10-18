@@ -201,7 +201,15 @@ impl DrivingState {
         let (limit, zone) = self.trip.speed_limit_at(self.trip.position_mi);
         let near_limit = speed >= (limit - CRUISE_SET_MARGIN_MPH).max(3.0);
         let armed = self.keeper_mph.is_some() || self.cruise_mph.is_some();
-        if !armed {
+        // A light, sign or yield the assist has taken is left to it: a
+        // foot on the accelerator overrides its stop, and the truck ran
+        // the red at the ramp's end.
+        let terminal = self.terminal_assist_owns(ctx);
+        if terminal {
+            // Waiting at the bar is not a stall.
+            pilot.accel_s = 0.0;
+            pilot.stalled_s = 0.0;
+        } else if !armed {
             pilot.accel_s += dt;
             if !near_limit {
                 pedals.accelerate = true;
