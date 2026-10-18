@@ -4,8 +4,8 @@
 //! wheel through the drive's pilot, on a screen the road opened by walking
 //! its cursor to a row and pressing Enter, the way the player would. A
 //! screen the player opened is left to them. While a shift is slept
-//! through, the frame runs the drive ahead several ticks at a time with the
-//! sound down.
+//! through, the open road is simulated at once and the stops run several
+//! ticks a frame with the sound down.
 
 use std::rc::Rc;
 use std::time::{Duration, Instant};
@@ -17,11 +17,12 @@ use crate::states::driving_team::overlay::{overlay_move, OverlayMove};
 
 use super::{App, SharedState, FPS};
 
-/// Real time the frame may spend running a slept-through shift ahead.
-const FAST_FORWARD_BUDGET: Duration = Duration::from_millis(12);
-/// Ticks run ahead in one frame, at most: an hour of driving in well under
-/// a minute at the normal time scale.
-const FAST_FORWARD_TICKS: usize = 240;
+/// Real time the frame may spend running a slept-through shift's stops
+/// ahead. The player is asleep with the sound down, so a slower frame costs
+/// nothing they hear.
+const FAST_FORWARD_BUDGET: Duration = Duration::from_millis(30);
+/// Ticks run ahead in one frame, at most.
+const FAST_FORWARD_TICKS: usize = 1000;
 /// A beat between the co-driver's keys on a screen.
 const MENU_BEAT_S: f64 = 0.4;
 /// Cursor moves without reaching the row: something is wrong with the
@@ -172,6 +173,7 @@ impl App {
         }
         let dt = 1.0 / FPS as f64;
         let started = Instant::now();
+        self.co_driver_sleep_ahead();
         for _ in 0..FAST_FORWARD_TICKS {
             if !self.ctx.co_driver_fast_forward
                 || self.co_driver.player_depth.is_some()
@@ -181,6 +183,25 @@ impl App {
             }
             self.fast_forward_tick(dt);
         }
+    }
+
+    /// The open road ahead of a sleeping player, simulated at once (see
+    /// `states::driving_team::sleep_ahead`): only when the drive is the top
+    /// screen and the player has none open.
+    fn co_driver_sleep_ahead(&mut self) {
+        if self.co_driver.player_depth.is_some() {
+            return;
+        }
+        let states = self.ctx.states();
+        let (Some(top), Some(drive)) = (states.last().cloned(), find_drive(&states)) else {
+            return;
+        };
+        if !Rc::ptr_eq(&top, &drive) {
+            return;
+        }
+        let ctx = &mut self.ctx;
+        with_drive(&drive, |d| d.sleep_ahead(ctx));
+        self.ctx.run_deferred();
     }
 
     /// One tick run ahead: the co-driver's move and the screen it is on,

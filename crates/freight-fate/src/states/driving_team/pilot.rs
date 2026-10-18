@@ -22,7 +22,7 @@ use crate::states::driving_core::*;
 use super::Pedals;
 
 /// Refuel below this share of the tank.
-const FUEL_STOP_FRACTION: f64 = 0.35;
+pub(crate) const FUEL_STOP_FRACTION: f64 = 0.35;
 /// A key the co-driver pressed gets this long to take effect before they
 /// press another.
 const KEY_BEAT_S: f64 = 1.5;
@@ -227,7 +227,8 @@ impl DrivingState {
                 pedals.accelerate = true;
             }
             let ready = near_limit || (speed >= 3.0 && pilot.accel_s >= ACCEL_GIVE_UP_S);
-            if ready && pilot.beat_s == 0.0 {
+            // Armed and only paused (a stop, a bend), it resumes by itself.
+            if ready && !self.speed_control_armed && pilot.beat_s == 0.0 {
                 let action = if self.resume_target_mph.is_some() {
                     Action::CruiseResume
                 } else {
@@ -326,7 +327,17 @@ impl DrivingState {
             })
             .collect();
         candidates.sort_by(|a, b| a.at_mi.total_cmp(&b.at_mi));
-        let Some(stop) = candidates.first().map(|stop| (*stop).clone()) else {
+        // A planned stop that serves the purpose is kept, whoever planned it:
+        // choosing another while signalled for this one left the truck
+        // fuelling here and then pulling in again at the second plan.
+        let kept = self.selected_rest_stop().filter(|stop| {
+            let on_its_ramp = self
+                .ramp_stop
+                .as_ref()
+                .is_some_and(|ramp| ramp.key() == stop.key());
+            (on_its_ramp || stop.at_mi > here) && wanted(stop)
+        });
+        let Some(stop) = kept.or_else(|| candidates.first().map(|stop| (*stop).clone())) else {
             return;
         };
         let reach = match purpose {

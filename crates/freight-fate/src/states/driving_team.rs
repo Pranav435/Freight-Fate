@@ -30,6 +30,7 @@ pub mod pilot;
 pub mod radio;
 pub mod readouts;
 pub mod settle;
+pub mod sleep_ahead;
 
 use serde_json::{json, Map, Value};
 
@@ -434,22 +435,33 @@ impl DrivingState {
     /// The co-driver chose a row on a stop's screen: keep the shift's log,
     /// and a stop they are leaving is no longer one they are making for.
     pub fn note_co_driver_choice(&mut self, _ctx: &mut GameContext, label: &str) {
-        let stop = self
-            .trip
-            .nearest_stop_within(1.5)
-            .map(|stop| stop.spoken_name());
+        let here = self.trip.nearest_stop_within(1.5).cloned();
         let Some(wheel) = self.team.as_mut().and_then(|team| team.wheel.as_mut()) else {
             return;
         };
         if label.starts_with("Refuel") {
-            if let Some(stop) = stop {
-                wheel.log.fuel_stops.push(stop);
+            if let Some(stop) = &here {
+                wheel.log.fuel_stops.push(stop.spoken_name());
             }
-        } else if label == "Back to the road"
+            return;
+        }
+        let done = label == "Back to the road"
             || label.starts_with("Take a 30-minute break")
-            || label.starts_with("Drive on to the next stop")
-        {
-            wheel.pilot.making_for = None;
+            || label.starts_with("Drive on to the next stop");
+        if !done {
+            return;
+        }
+        // The stop is done with, here or at the one they had planned: the
+        // plan goes with it, or the truck pulls in again further on with
+        // nothing to do there.
+        let plan = wheel.pilot.making_for.take().map(|(key, _)| key);
+        let here = here.map(|stop| stop.key());
+        let finished = |key: &String| Some(key) == plan.as_ref() || Some(key) == here.as_ref();
+        if self.trip.planned_stop_key.as_ref().is_some_and(finished) {
+            self.trip.planned_stop_key = None;
+        }
+        if self.selected_stop_key.as_ref().is_some_and(finished) {
+            self.clear_selected_stop_intent();
         }
     }
 }

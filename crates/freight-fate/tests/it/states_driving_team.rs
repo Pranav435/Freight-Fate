@@ -391,3 +391,105 @@ fn a_co_driver_out_of_hours_with_no_stop_in_reach_hands_back() {
     let said = harness.transcript().join("\n");
     assert!(said.contains("Their hours are up."), "{said}");
 }
+
+/// The fuel stops ahead of the truck that the co-driver could plan for.
+fn fuel_stops_ahead(d: &DrivingState) -> Vec<String> {
+    let past = d.trip.position_mi + d.exit_window_mi();
+    d.trip
+        .stops
+        .iter()
+        .filter(|stop| {
+            stop.actions.iter().any(|a| a == "fuel")
+                && stop.stop_type != "weigh_station"
+                && stop.stop_type != "delivery_destination"
+                && stop.at_mi > past
+        })
+        .map(|stop| stop.key())
+        .collect()
+}
+
+#[test]
+fn the_co_driver_keeps_a_planned_stop_that_serves_the_purpose() {
+    use freight_fate::states::driving_team::pilot::StopPurpose;
+    let mut harness = quiet_drive("Team Kept Plan");
+    let planned = harness.with_drive(|d, ctx| {
+        // A second fuel stop further on, planned ahead of the nearer one.
+        let first = fuel_stops_ahead(d).first()?.clone();
+        let mut second = d.trip.stops.iter().find(|s| s.key() == first)?.clone();
+        second.at_mi += 20.0;
+        let later = second.key();
+        d.trip.stops.push(second);
+        d.truck_mut().start_engine();
+        d.truck_mut().set_air_ready(false);
+        let tank = d.truck().specs.fuel_tank_gal;
+        d.truck_mut().fuel_gal = tank * 0.3;
+        d.trip.planned_stop_key = Some(later.clone());
+        d.selected_stop_key = Some(later.clone());
+        d.hand_wheel_to_co_driver(ctx, TeamMode::RideAlong);
+        Some(later)
+    });
+    let planned = planned.expect("this route has two fuel stops");
+    run_until(&mut harness, 60 * 30, |h| {
+        h.read_drive(|d| {
+            d.team
+                .as_ref()
+                .and_then(|t| t.wheel.as_ref())
+                .is_some_and(|w| w.pilot.making_for.is_some())
+        })
+    });
+    let making_for = harness.read_drive(|d| {
+        d.team
+            .as_ref()
+            .and_then(|t| t.wheel.as_ref())
+            .and_then(|w| w.pilot.making_for.clone())
+    });
+    assert_eq!(making_for, Some((planned, StopPurpose::Fuel)));
+}
+
+#[test]
+fn leaving_a_stop_drops_the_co_drivers_plan() {
+    use freight_fate::states::driving_team::pilot::StopPurpose;
+    let mut harness = quiet_drive("Team Done Plan");
+    let left = harness.with_drive(|d, ctx| {
+        let later = fuel_stops_ahead(d).first()?.clone();
+        d.truck_mut().start_engine();
+        d.hand_wheel_to_co_driver(ctx, TeamMode::RideAlong);
+        d.trip.planned_stop_key = Some(later.clone());
+        d.selected_stop_key = Some(later.clone());
+        let wheel = d.team.as_mut().and_then(|t| t.wheel.as_mut())?;
+        wheel.pilot.making_for = Some((later, StopPurpose::Fuel));
+        d.note_co_driver_choice(ctx, "Back to the road");
+        Some((d.trip.planned_stop_key.clone(), d.selected_stop_key.clone()))
+    });
+    assert_eq!(left, Some((None, None)));
+}
+
+#[test]
+fn a_slept_shift_is_simulated_rather_than_played() {
+    let mut harness = quiet_drive("Team Sim");
+    let start = harness.with_drive(|d, ctx| {
+        d.truck_mut().start_engine();
+        d.truck_mut().set_air_ready(false);
+        d.hand_wheel_to_co_driver(ctx, TeamMode::SleepThrough);
+        (d.trip.position_mi, d.trip.total_miles())
+    });
+    // Three minutes of frames: played at the normal pace, an hour of road.
+    let back = run_until(&mut harness, 60 * 60 * 3, |h| !h.app.ctx.co_driver_away);
+    let (at, miles) = harness.read_drive(|d| {
+        let team = d.team.as_ref().expect("a team");
+        (d.trip.position_mi, team.co_driver_mi)
+    });
+    let road = (start.1 - start.0).min(150.0);
+    assert!(
+        back || at - start.0 >= road * 0.9,
+        "the sleep was played, not simulated: {:.1} of {:.1} miles\n{}",
+        at - start.0,
+        start.1 - start.0,
+        transcript_tail(&harness)
+    );
+    assert!(
+        (miles - (at - start.0)).abs() < 1.0,
+        "the co-driver's miles are the miles covered: {miles:.1} for {:.1}",
+        at - start.0
+    );
+}

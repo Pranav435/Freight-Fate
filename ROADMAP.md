@@ -75,8 +75,11 @@ bookmarks usable.
       driver sleeps. The co-driver drives to the end of their own hours and
       plans their 30-minute break at a rest area. Co-driver miles earn no
       driving-skill badges, the road journal names who drove, and the
-      Meridian classmate and Ray each carry a hidden badge. The owner's
-      listening pass on ride along and the wake-up summary is his to do.
+      Meridian classmate and Ray each carry a hidden badge. Sleeping
+      through the shift simulates the open road between stops at once
+      (owner, 2026-10-18), so the summary comes within moments; the stops
+      still run live, sped up. The owner's listening pass on ride along and
+      the wake-up summary is his to do.
 - [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
       `music.pak` opens like `channel3000.pak`, reading only its directory
       at launch and each track from its offset when it starts; `sounds.pak`
