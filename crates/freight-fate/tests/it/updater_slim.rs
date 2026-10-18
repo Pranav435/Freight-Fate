@@ -13,7 +13,7 @@ use sha2::{Digest, Sha256};
 
 const FULL: &str = "FreightFate-v9.9.9-windows-portable.zip";
 const UPDATE: &str = "FreightFate-v9.9.9-windows-portable-update.zip";
-const MANIFEST: &str = "FreightFate-v9.9.9-windows-portable-packs.json";
+const MANIFEST: &str = "FreightFate-v9.9.9-packs.json";
 const MANIFEST_URL: &str = "https://example.test/packs.json";
 
 fn sha(data: &[u8]) -> String {
@@ -240,6 +240,22 @@ fn names_follow_the_full_archive() {
     );
     assert_eq!(
         slim::update_asset_name("FreightFate-x-linux-x86_64.AppImage"),
+        None
+    );
+    // One pack list serves every platform, the -macos copy included.
+    for full in [
+        "FreightFate-x-macos-arm64.zip",
+        "FreightFate-x-macos.zip",
+        "FreightFate-x-linux-arm64.tar.gz",
+    ] {
+        assert_eq!(
+            slim::packs_manifest_name(full).as_deref(),
+            Some("FreightFate-x-packs.json"),
+            "{full}"
+        );
+    }
+    assert_eq!(
+        slim::packs_manifest_name("FreightFate-x-linux-x86_64.AppImage"),
         None
     );
 }

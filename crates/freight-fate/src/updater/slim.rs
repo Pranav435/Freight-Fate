@@ -3,9 +3,9 @@
 //! Most of a release archive is two packs (`music.pak`, `channel3000.pak`)
 //! that rarely change between builds. Each release therefore also carries,
 //! beside every game archive, an update archive with those packs left out
-//! (`X-windows-portable-update.zip`) and a manifest naming them with their
-//! SHA-256 (`X-windows-portable-packs.json`), both cut by
-//! `tools/build_release.py`. When the player's own copies match the
+//! (`X-windows-portable-update.zip`), cut by `tools/build_release.py`. One
+//! manifest per release names those packs with their SHA-256
+//! (`X-packs.json`, merged from the builds by `tools/merge_pack_lists.py`). When the player's own copies match the
 //! manifest, the updater downloads the update archive instead of the full
 //! one.
 //!
@@ -70,9 +70,23 @@ pub fn update_asset_name(full: &str) -> Option<String> {
     split_archive_name(full).map(|(stem, ext)| format!("{stem}-update{ext}"))
 }
 
-/// `X-windows-portable.zip` -> `X-windows-portable-packs.json`.
+/// The platform endings of the archives that have an update archive,
+/// including the plain `-macos.zip` copy stable releases carry.
+const PLATFORM_SUFFIXES: [&str; 5] = [
+    "-windows-portable.zip",
+    "-macos-arm64.zip",
+    "-macos.zip",
+    "-linux-x64.tar.gz",
+    "-linux-arm64.tar.gz",
+];
+
+/// `X-windows-portable.zip` -> `X-packs.json`: the packs are the same on
+/// every platform, so a release publishes one list for all of them.
 pub fn packs_manifest_name(full: &str) -> Option<String> {
-    split_archive_name(full).map(|(stem, _)| format!("{stem}-packs.json"))
+    PLATFORM_SUFFIXES
+        .into_iter()
+        .find_map(|suffix| full.strip_suffix(suffix))
+        .map(|label| format!("{label}-packs.json"))
 }
 
 /// A release asset's download facts.

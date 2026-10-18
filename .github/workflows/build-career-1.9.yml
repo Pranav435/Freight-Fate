@@ -693,6 +693,9 @@ jobs:
               fi
             done
           done
+          # The packs are the same on every platform: publish one pack list,
+          # FreightFate-<label>-packs.json, in place of the four identical ones.
+          python3 tools/merge_pack_lists.py release-assets
 
       - name: Prepare and verify release notes and checksums
         env:
@@ -776,7 +779,6 @@ jobs:
           for zip in bridge-assets/FreightFate-*-macos-arm64.zip; do
             cp "$zip" "${zip%-macos-arm64.zip}-macos.zip"
             cp "${zip%.zip}-update.zip" "${zip%-macos-arm64.zip}-macos-update.zip"
-            cp "${zip%.zip}-packs.json" "${zip%-macos-arm64.zip}-macos-packs.json"
           done
           (cd bridge-assets && sha256sum FreightFate-* > checksums.txt)
 
@@ -826,10 +828,9 @@ jobs:
           # ever offered the release. The arm64 name stays for the snapshots.
           for zip in release-assets/FreightFate-*-macos-arm64.zip; do
             cp "$zip" "${zip%-macos-arm64.zip}-macos.zip"
-            # The update archive and pack list follow the name the updater
-            # picked, so the -macos copy needs its own.
+            # The update archive follows the name the updater picked, so the
+            # -macos copy needs its own; the one pack list serves both.
             cp "${zip%.zip}-update.zip" "${zip%-macos-arm64.zip}-macos-update.zip"
-            cp "${zip%.zip}-packs.json" "${zip%-macos-arm64.zip}-macos-packs.json"
           done
           (cd release-assets && sha256sum FreightFate-* > checksums.txt)
           # GitHub shows an asset's label in place of its file name. The

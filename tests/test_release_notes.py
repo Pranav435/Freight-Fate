@@ -820,6 +820,9 @@ def test_career_19_snapshot_builds_and_boots_a_linux_release():
         workflow.count('cp "${zip%.zip}-update.zip" "${zip%-macos-arm64.zip}-macos-update.zip"')
         == 2
     )
+    # The four identical pack lists go out as one.
+    assert "python3 tools/merge_pack_lists.py release-assets" in workflow
+    assert "-macos-packs.json" not in workflow
     # The translator's kit is one release asset, not a folder in each archive.
     assert 'python3 tools/translation_kit.py --label "$TAG" --out release-assets' in workflow
 
