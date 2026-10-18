@@ -837,15 +837,17 @@ Everything found before 2026-09-25 moved to
 - [x] Smaller updates (player reports, owner go-ahead 2026-10-18): every
       update downloaded the whole 531 MB archive, and 497 MB of it is
       `music.pak` (383 MB) and `channel3000.pak` (114 MB), byte for byte the
-      same from 1.9-tester-20261014 to 20261017. Each archive now ships
-      beside an `-update` archive without those packs and a `-packs.json`
-      manifest of their SHA-256 (`tools/build_release.py`). The updater
-      (`updater::slim`) offers the update archive when the install's packs
-      match: the check trusts `build_info.json`'s recorded hashes when sizes
-      agree, the download confirms each pack is still there at that size
-      and otherwise takes the full archive, and a Mac bundle gets the
-      player's packs copied in before the swap. AppImage runs still take the
-      full file. The first update to carry this is itself full size.
+      same from 1.9-tester-20261014 to 20261017. The release carries no
+      extra files for this: the updater (`updater::slim`, `zip_index`) reads
+      the zip's index from its last bytes with HTTP range requests, compares
+      the two packs' size and CRC-32 with the install's (`build_info.json`
+      records them, so the check reads no pack when sizes agree), and then
+      fetches only the byte ranges around them, about 35 MB, writing a new
+      index so the result unpacks normally with every kept file's CRC-32
+      checked. Any failure falls back to the full archive, and a Mac bundle
+      gets the player's packs copied in before the swap. Linux tarballs and
+      AppImages still download in full. The first update to carry this is
+      itself full size.
 - [x] Release page trimmed (owner, 2026-10-18): each snapshot run deletes
       tester snapshot releases beyond the newest seven
       (`tools/prune_snapshots.py`); their tags stay, and stable and

@@ -1111,13 +1111,10 @@ def test_macos_uses_non_launch_verification_before_archive(tmp_path, monkeypatch
     )
     monkeypatch.setattr(build_release, "archive", lambda *_args: archive)
     monkeypatch.setattr(build_release, "verify_archive", lambda _archive: events.append("archive"))
-    monkeypatch.setattr(
-        build_release, "make_update_artifacts", lambda *_args: events.append("update")
-    )
 
     build_release.build_rust("test", None, False, macos_non_launch_verify=True)
 
-    assert events == ["stamp", "docs", "verify", "strip", "sign", "notarize", "archive", "update"]
+    assert events == ["stamp", "docs", "verify", "strip", "sign", "notarize", "archive"]
 
 
 def test_windows_keeps_packaged_process_smoke(tmp_path, monkeypatch):
@@ -1139,13 +1136,10 @@ def test_windows_keeps_packaged_process_smoke(tmp_path, monkeypatch):
     monkeypatch.setattr(build_release, "sign_distribution", lambda _app: events.append("sign"))
     monkeypatch.setattr(build_release, "archive", lambda *_args: archive)
     monkeypatch.setattr(build_release, "verify_archive", lambda _archive: events.append("archive"))
-    monkeypatch.setattr(
-        build_release, "make_update_artifacts", lambda *_args: events.append("update")
-    )
 
     build_release.build_rust("test", None, True)
 
-    assert events == ["stamp", "docs", "verify", "strip", "smoke", "strip", "archive", "update"]
+    assert events == ["stamp", "docs", "verify", "strip", "smoke", "strip", "archive"]
 
 
 def test_full_macos_bundle_verification_reads_packs_from_resources(tmp_path, monkeypatch):

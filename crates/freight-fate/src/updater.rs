@@ -375,17 +375,18 @@ pub struct UpdateInfo {
     pub asset_size: i64,
     /// Lowercase hex SHA-256 GitHub publishes for the asset; "" when unknown.
     pub asset_sha256: String,
-    /// The smaller download that keeps this install's sound packs, when the
-    /// release has one and the packs match (see [`slim`]).
+    /// The smaller download that skips this install's unchanged sound packs,
+    /// when the archive's index shows they match (see [`slim`]).
     pub slim: Option<SlimUpdate>,
 }
 
 impl UpdateInfo {
-    /// Bytes the player will download: the update archive when it applies.
+    /// Bytes the player will download: only the non-pack ranges when the
+    /// smaller download applies.
     pub fn download_size(&self) -> i64 {
         match &self.slim {
-            Some(slim) if !slim.packs.is_empty() => slim.asset_size,
-            _ => self.asset_size,
+            Some(slim) => i64::try_from(slim.fetch_len()).unwrap_or(self.asset_size),
+            None => self.asset_size,
         }
     }
 }
@@ -669,7 +670,7 @@ fn update_from_release(release: &Value, title: &str, env: &UpdaterEnv) -> Option
     let (name, url, size) = pick_update_asset(release, env)?;
     Some(UpdateInfo {
         asset_sha256: asset_sha256(release, &name),
-        slim: slim::candidate(release, &name),
+        slim: None,
         tag: tag_name(release),
         title: title.to_string(),
         notes: flatten_markdown(release.get("body").and_then(Value::as_str)),
@@ -1141,6 +1142,7 @@ pub fn check_for_update(
 mod apply;
 mod notes;
 pub mod slim;
+mod zip_index;
 
 pub use slim::SlimUpdate;
 
