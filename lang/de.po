@@ -35291,8 +35291,8 @@ msgstr ""
 "Controller-Vibration bei Gefahren, harten Bremsungen, dem Rüttelstreifen "
 "und Fahrbahnfugen. Braucht einen verbundenen Controller."
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
 msgstr ""
 
 msgid ""

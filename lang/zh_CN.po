@@ -31305,8 +31305,8 @@ msgid ""
 "seams. Needs a controller connected."
 msgstr "遇到危险、急刹车、振动带和路面接缝时手柄会震动。需要连接手柄。"
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
 msgstr ""
 
 msgid ""

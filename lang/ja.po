@@ -31664,8 +31664,8 @@ msgid ""
 "seams. Needs a controller connected."
 msgstr "危険、急ブレーキ、ランブルストリップ、路面の継ぎ目でコントローラーが振動します。コントローラーの接続が必要です。"
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
 msgstr ""
 
 msgid ""

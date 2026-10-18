@@ -705,12 +705,7 @@ impl SettingsCategoryState {
                      strip, and road seams. Needs a controller connected.",
                 ),
                 row(
-                    dyn_label(|s| {
-                        format!(
-                            "Visual display: {}",
-                            if s.visual_display { "on" } else { "off" }
-                        )
-                    }),
+                    dyn_label(|s| format!("Visual display: {}", on_off(s.visual_display))),
                     adjust(|s, ctx, d| s.toggle_visual_display(ctx, d)),
                     "Draws the road, the dashboard, menus and captions of what \
                      is spoken in the game window, for sighted and low-vision \

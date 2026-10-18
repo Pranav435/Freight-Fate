@@ -35508,8 +35508,8 @@ msgstr ""
 "Vibrations de la manette pour les dangers, les freinages brusques, la bande "
 "rugueuse et les joints de chaussée. Une manette doit être connectée."
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
 msgstr ""
 
 msgid ""

@@ -38719,9 +38719,9 @@ msgid ""
 "seams. Needs a controller connected."
 msgstr ""
 
-#. placeholders: {else}
+#. placeholders: {on_off}
 #: crates/freight-fate/src/states/main_menu/settings_items.rs
-msgid "Visual display: {else}"
+msgid "Visual display: {on_off}"
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu/settings_items.rs

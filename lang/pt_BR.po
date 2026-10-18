@@ -35018,8 +35018,8 @@ msgstr ""
 "Vibração do controle para perigos, freadas fortes, a faixa sonora e as "
 "emendas da estrada. Precisa de um controle conectado."
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
 msgstr ""
 
 msgid ""

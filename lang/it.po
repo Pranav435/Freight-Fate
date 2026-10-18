@@ -35223,8 +35223,8 @@ msgstr ""
 "Vibrazione del controller per pericoli, frenate brusche, la banda rumorosa "
 "e le giunture della strada. Serve un controller collegato."
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
 msgstr ""
 
 msgid ""

@@ -35169,15 +35169,19 @@ msgstr ""
 "Vibración del mando para peligros, frenadas fuertes, la banda sonora y las "
 "juntas de la carretera. Necesita un mando conectado."
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
-msgstr ""
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
+msgstr "Dibujo en pantalla: {on_off}"
 
 msgid ""
 "Draws the road, the dashboard, menus and captions of what is spoken in the "
 "game window, for sighted and low-vision players. Off keeps the window dark "
 "and saves battery. Speech and sound are the same either way."
 msgstr ""
+"Dibuja en la ventana del juego la carretera, el tablero, los menús y "
+"subtítulos de lo que se dice, para jugadores que ven o tienen baja visión. "
+"Desactivado, la ventana queda oscura y ahorra batería. La voz y el sonido "
+"son iguales en ambos casos."
 
 msgid "Keyboard shortcuts"
 msgstr "Atajos de teclado"

@@ -35327,8 +35327,8 @@ msgstr ""
 "Вибрация геймпада при опасностях, резком торможении, на шумовой полосе и на "
 "стыках дороги. Нужен подключённый геймпад."
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
 msgstr ""
 
 msgid ""

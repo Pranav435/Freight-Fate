@@ -35125,8 +35125,8 @@ msgstr ""
 "Wibracje kontrolera przy zagrożeniach, mocnym hamowaniu, na pasie "
 "akustycznym i na łączeniach nawierzchni. Wymaga podłączonego kontrolera."
 
-#. placeholders: {else}
-msgid "Visual display: {else}"
+#. placeholders: {on_off}
+msgid "Visual display: {on_off}"
 msgstr ""
 
 msgid ""
