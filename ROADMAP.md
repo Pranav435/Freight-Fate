@@ -58,6 +58,25 @@ bookmarks usable.
       `translations` folder in every archive). Only a catalog that translates
       something is compiled into the game, so the empty language files cost
       the executable nothing until a translator fills one.
+- [x] Team driving (owner design, 2026-10-17): on a delivery whose rest
+      would need a ten-hour break, the pause menu hands the wheel to a
+      co-driver from the Great Lakes training class, to ride along or sleep
+      through their shift. The co-driver drives through the player's own
+      controls with every assist on, fuels, crosses open scales, pulls over
+      for troopers, and hands back at the end of their hours, at the
+      receiver's gate, or on anything only the driver should decide. Their
+      miles pay half (an owner-operator pays 30 percent) and earn half the
+      experience, and count as sleeper-berth time for the player. The
+      logbooks swap, so every hours rule reads the clock of whoever drives.
+      The pickup menu offers the same handover from the dock, with the
+      pairing and the terms in the rows' help. About three in ten loads that
+      need a ten-hour break alone are drawn as team loads: 35 percent more
+      pay, and a deadline that allows a half-hour driver change where a solo
+      driver sleeps. The co-driver drives to the end of their own hours and
+      plans their 30-minute break at a rest area. Co-driver miles earn no
+      driving-skill badges, the road journal names who drove, and the
+      Meridian classmate and Ray each carry a hidden badge. The owner's
+      listening pass on ride along and the wake-up summary is his to do.
 - [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
       `music.pak` opens like `channel3000.pak`, reading only its directory
       at launch and each track from its offset when it starts; `sounds.pak`

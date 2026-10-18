@@ -182,6 +182,15 @@ pub struct GameContext {
     /// handled. See `player_asked`: a readout somebody asked for cuts the
     /// line in progress even at the wheel, where unasked-for lines queue.
     pub(crate) speech_requested: bool,
+    /// The co-driver has the wheel and the player is in the sleeper: the
+    /// road, the co-driver's own controls and the screens they work say
+    /// nothing aloud (the transcript still gets every line). Answers to
+    /// keys the player presses, and forced lines such as the co-driver's
+    /// summon, still speak.
+    pub co_driver_away: bool,
+    /// The co-driver's shift is being slept through: the app runs the
+    /// drive ahead several frames at a time, with the sound down.
+    pub co_driver_fast_forward: bool,
     /// Which screen and row had focus when the copy mark was last set.
     copy_focus_key: Option<(usize, usize)>,
     /// `message_log.total_added()` when the screen opened or focus last
@@ -277,6 +286,8 @@ impl GameContext {
             running: false,
             speech_ducked: false,
             speech_requested: false,
+            co_driver_away: false,
+            co_driver_fast_forward: false,
             copy_focus_key: None,
             copy_mark: 0,
             copy_seen: 0,
@@ -985,6 +996,11 @@ impl GameContext {
     /// `award_achievement(id)` with the defaults (`interrupt=False`,
     /// `announce=True`).
     pub fn award_achievement(&mut self, achievement_id: &str) -> Option<AchievementAward> {
+        // What the co-driver does at the wheel or at a stop is not the
+        // player's to earn.
+        if self.co_driver_away {
+            return None;
+        }
         self.award_achievement_with(achievement_id, false, true)
             .map(|outcome| outcome.award)
     }

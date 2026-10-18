@@ -70,9 +70,14 @@ impl DrivingState {
             self.maybe_hos_planning_hint(ctx);
         }
 
+        // A team's other logbook rests, and while the co-driver drives the
+        // player is in the bunk: no fatigue gained, some slept off.
+        self.update_team_hours(ctx, gm);
+        let co_driver = self.co_driver_driving();
+
         let night = is_night(self.trip.local_hour());
         let now_h = self.absolute_game_hour(ctx, None);
-        if moving {
+        if moving && !co_driver {
             // Pressure-mode tuning scales how fast the day wears on you, and
             // an active food/drink buff slows accrual (data/buffs.py); neither
             // touches the HOS duty clock above.
@@ -109,7 +114,7 @@ impl DrivingState {
             .map(|buff| buff.rate)
             .unwrap_or(1.0);
         let fatigue = profile_of(ctx).fatigue;
-        let alerts_clear = self.hazard_deadline.is_none();
+        let alerts_clear = self.hazard_deadline.is_none() && !co_driver;
         if fatigue >= hos::FATIGUE_SEVERE && !self.severe_said && alerts_clear {
             self.severe_said = true;
             self.fatigue_cue_gm = 0.0;
@@ -138,7 +143,7 @@ impl DrivingState {
             self.severe_said = false;
         }
         // periodic audio cues while drowsiness persists
-        if moving && fatigue >= hos::FATIGUE_DROWSY {
+        if moving && !co_driver && fatigue >= hos::FATIGUE_DROWSY {
             self.fatigue_cue_gm += gm;
             if self.fatigue_cue_gm >= 15.0 {
                 self.fatigue_cue_gm = 0.0;
@@ -149,7 +154,9 @@ impl DrivingState {
                 }
             }
         }
-        self.accrue_microsleep(ctx, gm, moving, fatigue);
+        if !co_driver {
+            self.accrue_microsleep(ctx, gm, moving, fatigue);
+        }
     }
 
     // -- microsleeps (severe fatigue) ----------------------------------------------

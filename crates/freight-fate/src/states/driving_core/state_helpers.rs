@@ -38,6 +38,17 @@ pub fn advance_rest_clock(
     driving.trip.truck.advance_parked_time(minutes);
     driving.trip.game_minutes += minutes;
     driving.trip.weather.update(minutes);
+    // Whoever is off the wheel rests through the stop too.
+    driving.team_menu_minutes(ctx, minutes);
+    // While the co-driver works the stop, the player's own log reads the
+    // sleeper berth.
+    let duty_status = duty_status.map(|status| {
+        if driving.co_driver_driving() {
+            "sleeper_berth"
+        } else {
+            status
+        }
+    });
     if let Some(status) = duty_status {
         let end_hour = driving.absolute_game_hour(ctx, None);
         let location = driving.logbook_location(ctx);
