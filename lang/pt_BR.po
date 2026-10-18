@@ -39635,6 +39635,9 @@ msgid ""
 msgstr ""
 "No iPhone e no iPad, as atualizações vêm pela App Store ou pelo TestFlight."
 
+msgid "AG Now keeps this copy up to date."
+msgstr ""
+
 msgid ""
 "Updates are only available in the packaged game. This copy runs from "
 "source; update it with git."

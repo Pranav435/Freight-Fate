@@ -43074,6 +43074,10 @@ msgid ""
 msgstr ""
 
 #: crates/freight-fate/src/states/update.rs
+msgid "AG Now keeps this copy up to date."
+msgstr ""
+
+#: crates/freight-fate/src/states/update.rs
 msgid ""
 "Updates are only available in the packaged game. This copy runs from "
 "source; update it with git."
