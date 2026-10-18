@@ -758,9 +758,11 @@ Everything found before 2026-09-25 moved to
 - [ ] Known Hearken gaps. The owner rule (2026-10-17) is that the
       changelog does not announce the engine change or its side effects;
       only a change a player must act on (Linux's ALSA) gets a line.
-      HE-AAC (AAC+ stations and their kind of `.m4a`) plays muffled, as
-      its base layer only: Fraunhofer's licence permits `fdk-aac` only
-      under AAC patent licences the game does not hold, so it stays off.
+      On Linux, HE-AAC (AAC+ stations, most HLS radio and their kind of
+      `.m4a`) plays muffled, as its base layer only: Fraunhofer's licence
+      permits `fdk-aac` only under AAC patent licences the game does not
+      hold, so it stays off. Windows and macOS decode it in full through
+      the system decoder (below).
       Tracker modules (`.mod`, `.xm`, `.it`, `.s3m`, `.mo3`) are refused,
       since no small pure-Rust player exists. Hearken checks a station's
       TLS certificate with the operating system's verifier, as a browser
@@ -809,11 +811,14 @@ Everything found before 2026-09-25 moved to
       manual `rust.yml` run on Windows, Linux and macOS, the listening pass
       above, then the tag. Hearken is public (2026-10-17), so CI fetches it
       with no secret.
-- [ ] HE-AAC through the system decoder (owner, 2026-10-17: AAC+ stays on
-      its base layer for 1.9, since `fdk-aac`'s licence needs AAC patent
-      licences). BASS decoded AAC through Media Foundation on Windows and
-      Core Audio on macOS, whose platforms carry the licences; a Hearken
-      radio decoder on each would match it. Linux stays on the base layer.
+- [x] HE-AAC through the system decoder (2026-10-18, Hearken PR 5). The
+      radio decodes AAC with Media Foundation on Windows and AudioToolbox
+      on macOS, as BASS did, so AAC+ and HE-AAC v2 stations, HLS included,
+      play at full bandwidth in stereo; Microsoft and Apple carry the
+      patent licences, and the game ships no AAC decoder. Where the system
+      decoder cannot open (Windows N without the Media Feature Pack),
+      Symphonia plays the base layer as before. Linux stays on the base
+      layer.
 - [x] CI back on GitHub's hosted runners (owner, 2026-10-17: Blacksmith's
       paid minutes stay with the private repositories), with the nightly's
       tests beside its packaging rather than before it, and the Spanish keys
