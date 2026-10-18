@@ -70,6 +70,7 @@
 
 ### Changed
 
+- **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
 - **The toll sound is now a soft, low bong, and plays once per toll.** It sounds when the toll is charged, not on the toll-ahead warning too.
 - **The hours of service countdown is one calm notice before each limit.** One hour out on Relaxed, two on Standard, no alarm tone, and nothing when the trip ends first.
 
