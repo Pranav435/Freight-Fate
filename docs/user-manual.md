@@ -652,7 +652,6 @@ Until level 10, officers give you a warning instead of most citations: no fine, 
 | Following too closely | 600 dollars |
 | Chain law | 580 dollars |
 | Improper lane use | 500 dollars |
-| Running dark after sunset | 350 dollars |
 
 Speeding fines start at 250 dollars below ten over the limit, 400 from ten over, 1,000 from fifteen, 1,600 from twenty, and 2,500 from thirty. Fleeing has a 5,000 dollar base fine. Construction doubles applicable fines, with the barrel citation excluded.
 
