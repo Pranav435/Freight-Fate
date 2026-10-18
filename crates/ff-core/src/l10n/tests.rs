@@ -347,15 +347,39 @@ fn side_by_side_holes_split_before_a_comma_tail() {
 }
 
 #[test]
+fn the_settings_name_gives_the_english_name_then_the_language_own() {
+    let label = |code| super::language(code).map(Language::label);
+    assert_eq!(label("es").as_deref(), Some("Spanish (Español)"));
+    assert_eq!(label("fr").as_deref(), Some("French (Français)"));
+    assert_eq!(
+        label("zh_CN").as_deref(),
+        Some("Simplified Chinese (简体中文)")
+    );
+    assert_eq!(label("en").as_deref(), Some("English"));
+}
+
+#[test]
 fn a_language_added_from_a_file_is_known_and_matches_its_locale() {
     // The only test that adds a language: the list is set once a process.
     super::add_languages([
-        ("tlh".to_string(), "tlhIngan Hol".to_string()),
-        ("es".to_string(), "not added again".to_string()),
+        (
+            "tlh".to_string(),
+            "Klingon".to_string(),
+            "tlhIngan Hol".to_string(),
+        ),
+        (
+            "es".to_string(),
+            "not added".to_string(),
+            "not added again".to_string(),
+        ),
     ]);
     assert_eq!(
         super::language("tlh").map(|lang| lang.autonym),
         Some("tlhIngan Hol")
+    );
+    assert_eq!(
+        super::language("tlh").map(Language::label).as_deref(),
+        Some("Klingon (tlhIngan Hol)")
     );
     assert_eq!(match_locale("tlh-US"), Some("tlh"));
     assert_eq!(

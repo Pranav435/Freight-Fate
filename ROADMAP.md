@@ -57,10 +57,7 @@ bookmarks usable.
       `FreightFate-<tag>-translation-kit.zip` (2026-10-17; it had been a
       `translations` folder in every archive). Only a catalog that translates
       something is compiled into the game, so the empty language files cost
-      the executable nothing until a translator fills one. Shipped languages
-      (2026-10-18): Spanish, French, German, Brazilian Portuguese, Italian,
-      Russian, Polish, Japanese, and Simplified Chinese, the last revised by
-      a translator (wangru2025, PR 448).
+      the executable nothing until a translator fills one.
 - [x] Team driving (owner design, 2026-10-17): on a delivery whose rest
       would need a ten-hour break, the pause menu hands the wheel to a
       co-driver from the Great Lakes training class, to ride along or sleep
@@ -95,12 +92,6 @@ bookmarks usable.
       extractor cannot see (turn-by-turn street instructions, some stop
       announcements) stay partly English until each shape is added to
       `lang/extra.pot`. `FREIGHT_FATE_L10N_MISSES` lists them from a drive.
-- [ ] (Found along the way) About 1,100 lines added or reworded in dev
-      after the machine translations were made are untranslated in French,
-      German, Brazilian Portuguese, Italian, Russian, Polish and Japanese
-      (87 percent coverage each; Spanish and Simplified Chinese are at 98).
-      The old wording's translation is kept as an obsolete entry in each file
-      to start from.
 - [ ] (Found along the way) A fluent player's review of each machine-made
       translation, starting with whichever language players ask for first.
 - [ ] (Found along the way) The separate event voice keeps the system's

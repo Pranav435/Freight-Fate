@@ -82,6 +82,7 @@
 
 ### Changed
 
+- **The Language setting names each language in English, then in that language.** For example, Spanish (Español).
 - **Updates download much less when the music and radio packs have not changed.** After this update, most updates are about 35 megabytes instead of 531.
 - **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
 - **The toll sound is now a soft, low bong, and plays once per toll.** It sounds when the toll is charged, not on the toll-ahead warning too.
