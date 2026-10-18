@@ -52,8 +52,12 @@ bookmarks usable.
       `.po` file alone, built in or dropped into `saves/lang/`, is offered
       by its `X-Language-Autonym` header with no code change; it gets two
       plural forms and English number separators until a maintainer adds
-      its rules to `l10n::plural`. Every download carries `lang/` as a
-      `translations` folder (template, language files, glossaries, guide).
+      its rules to `l10n::plural`. The translator's kit (`lang/`: template,
+      language files, glossaries, guide) is its own release asset,
+      `FreightFate-<tag>-translation-kit.zip` (2026-10-17; it had been a
+      `translations` folder in every archive). Only a catalog that translates
+      something is compiled into the game, so the empty language files cost
+      the executable nothing until a translator fills one.
 - [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
       `music.pak` opens like `channel3000.pak`, reading only its directory
       at launch and each track from its offset when it starts; `sounds.pak`
@@ -780,6 +784,18 @@ Everything found before 2026-09-25 moved to
 - [ ] FF on a real Mac with Hearken: the macOS link (Prism frameworks and
       the clang runtime) is proved by the manual CI run, but VoiceOver and
       CoreAudio output need a person at a Mac.
+- [x] Smaller updates (player reports, owner go-ahead 2026-10-18): every
+      update downloaded the whole 531 MB archive, and 497 MB of it is
+      `music.pak` (383 MB) and `channel3000.pak` (114 MB), byte for byte the
+      same from 1.9-tester-20261014 to 20261017. Each archive now ships
+      beside an `-update` archive without those packs and a `-packs.json`
+      manifest of their SHA-256 (`tools/build_release.py`). The updater
+      (`updater::slim`) offers the update archive when the install's packs
+      match: the check trusts `build_info.json`'s recorded hashes when sizes
+      agree, the download confirms each pack is still there at that size
+      and otherwise takes the full archive, and a Mac bundle gets the
+      player's packs copied in before the swap. AppImage runs still take the
+      full file. The first update to carry this is itself full size.
 - [x] Release page trimmed (owner, 2026-10-18): each snapshot run deletes
       tester snapshot releases beyond the newest seven
       (`tools/prune_snapshots.py`); their tags stay, and stable and

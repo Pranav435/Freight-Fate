@@ -28,7 +28,7 @@
 
 - **A translator can add a new language with its translation file alone.** The game offers it in Settings by the name the file gives.
 
-- **Every download has a translations folder.** It holds the template for a new language, each language file, and the translator's guide.
+- **The translation kit is a separate download on each release page.** It holds the template for a new language, each language file, and the translator's guide.
 
 - **The main menu now has background sound under the music, picked by your career.** A truck stop at night, your rig in the yard, or the dispatch office.
 
@@ -70,6 +70,7 @@
 
 ### Changed
 
+- **Updates download much less when the music and radio packs have not changed.** After this update, most updates are about 35 megabytes instead of 531.
 - **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
 - **The toll sound is now a soft, low bong, and plays once per toll.** It sounds when the toll is charged, not on the toll-ahead warning too.
 - **The hours of service countdown is one calm notice before each limit.** One hour out on Relaxed, two on Standard, no alarm tone, and nothing when the trip ends first.

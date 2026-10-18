@@ -140,10 +140,6 @@ def stage_sound_pack(build_dir: Path, root: Path | None = None) -> None:
     shutil.copy2(credits, root / "SOUND_CREDITS.md")
 
 
-# Where the translator's kit lands in a release, beside the manual.
-TRANSLATIONS_DIR = "translations"
-
-
 def stage_release_docs(build_dir: Path, root: Path | None = None) -> None:
     """Copy player-facing release documents into the packaged runtime."""
     changelog = ROOT / "CHANGELOG.md"
@@ -180,14 +176,9 @@ def stage_release_docs(build_dir: Path, root: Path | None = None) -> None:
     )
     (root / "ALPHA_TEST_BOOK.html").write_text(test_book_html, encoding="utf-8")
 
-    # The translator's kit: the template a new language starts from, every
-    # language file to correct, the glossaries and the guide (README.md),
-    # whose links are relative to this folder. The game itself reads the
-    # copies compiled into it, never these.
-    lang = ROOT / "lang"
-    if not (lang / "freight-fate.pot").exists():
-        raise RuntimeError(f"Translation template was not found: {lang / 'freight-fate.pot'}")
-    shutil.copytree(lang, root / TRANSLATIONS_DIR, dirs_exist_ok=True)
+    # The translator's kit is its own release asset
+    # (tools/translation_kit.py), not part of the game: a player never reads
+    # it, and every update would carry it.
 
 
 def verify_sound_packs(root: Path) -> None:
@@ -271,9 +262,52 @@ def stamp_build_info(build_dir: Path, label: str, root: Path | None = None) -> N
         "package_version": label_package_version(label),
         "commit": build_commit(),
     }
-    info_path = (root or runtime_root(build_dir)) / "build_info.json"
+    root = root or runtime_root(build_dir)
+    packs = pack_manifest_entries(root)
+    if packs:
+        info["packs"] = packs
+    info_path = root / "build_info.json"
     with open(info_path, "w", encoding="utf-8") as f:
         json.dump(info, f, indent=2)
+
+
+# The packs an update archive leaves out: most of the download, and they
+# rarely change between builds. Relative to the payload root (beside the
+# executable, or a Mac bundle's Resources). The in-game updater keeps the
+# player's own copies when their SHA-256 matches the release's manifest.
+UPDATE_SKIPPED_PACKS = ("freight_fate/music.pak", "freight_fate/channel3000.pak")
+
+
+def pack_manifest_entries(root: Path) -> list[dict[str, object]]:
+    """``{path, sha256, size}`` for each skipped pack staged under ``root``."""
+    entries: list[dict[str, object]] = []
+    for relative in UPDATE_SKIPPED_PACKS:
+        path = root / relative
+        if path.is_file():
+            entries.append(
+                {"path": relative, "sha256": file_sha256(path), "size": path.stat().st_size}
+            )
+    return entries
+
+
+def _split_archive_name(name: str) -> tuple[str, str]:
+    for ext in (".tar.gz", ".zip"):
+        if name.endswith(ext):
+            return name[: -len(ext)], ext
+    raise RuntimeError(f"Unrecognized release archive name: {name}")
+
+
+def update_archive_name(full_name: str) -> str:
+    """``X-windows-portable.zip`` -> ``X-windows-portable-update.zip``. It ends
+    in no updater suffix, so an updater that does not know it never picks it."""
+    stem, ext = _split_archive_name(full_name)
+    return f"{stem}-update{ext}"
+
+
+def packs_manifest_name(full_name: str) -> str:
+    """``X-windows-portable.zip`` -> ``X-windows-portable-packs.json``."""
+    stem, _ext = _split_archive_name(full_name)
+    return f"{stem}-packs.json"
 
 
 MACOS_SIGN_IDENTITY_ENV = "MACOS_SIGN_IDENTITY"
@@ -505,16 +539,19 @@ def verify_archive(out: Path) -> None:
     no runnable game inside (for example a Linux snapshot missing its
     executable) and nothing else would notice.
     """
-    macos_archive = out.name.endswith(("-macos-arm64.zip", "-macos.zip"))
+    update = out.name.endswith(("-update.zip", "-update.tar.gz"))
+    # Classify an update archive by the full archive it was cut from.
+    name = out.name.replace("-update.", ".") if update else out.name
+    macos_archive = name.endswith(("-macos-arm64.zip", "-macos.zip"))
     if macos_archive:
         root = f"{APP_NAME}.app/Contents/MacOS"
         exe_entry = f"{root}/{APP_NAME}"
         needs_exec = True
-    elif out.name.endswith(LINUX_TARBALL_SUFFIXES):
+    elif name.endswith(LINUX_TARBALL_SUFFIXES):
         root = APP_NAME
         exe_entry = f"{root}/{APP_NAME}"
         needs_exec = True
-    elif out.name.endswith("-windows-portable.zip"):
+    elif name.endswith("-windows-portable.zip"):
         root = APP_NAME
         exe_entry = f"{root}/{APP_NAME}.exe"
         needs_exec = False
@@ -539,17 +576,23 @@ def verify_archive(out: Path) -> None:
         "LICENSE.txt",
         "USER_MANUAL.md",
         "freight_fate/sounds.pak",
-        "freight_fate/music.pak",
-        "freight_fate/channel3000.pak",
+        *(() if update else UPDATE_SKIPPED_PACKS),
         RUST_BAKED_FILE_ENTRY,
     )
-    missing = [name for name in required if f"{payload_root}/{name}" not in entries]
+    missing = [entry for entry in required if f"{payload_root}/{entry}" not in entries]
+    if update:
+        carried = [p for p in UPDATE_SKIPPED_PACKS if f"{payload_root}/{p}" in entries]
+        if carried:
+            raise RuntimeError(
+                f"Update archive carries packs it should leave out: {', '.join(carried)} "
+                f"in {out.name}"
+            )
     if macos_archive:
         if f"{APP_NAME}.app/Contents/Info.plist" not in entries:
             missing.append(f"{APP_NAME}.app/Contents/Info.plist")
         # No native library requirement: SDL2, Prism and the audio engine
         # are compiled into the executable.
-    elif out.name.endswith(LINUX_TARBALL_SUFFIXES):
+    elif name.endswith(LINUX_TARBALL_SUFFIXES):
         pass  # Likewise: the Linux executable carries everything it links.
     else:
         # The delivered ZIP, not only the build runner, must carry the CRT.
@@ -594,6 +637,70 @@ def archive(build_dir: Path, label: str) -> Path:
         with tarfile.open(out, "w:gz") as tar:
             tar.add(build_dir, arcname=APP_NAME)
     return out
+
+
+def archive_update(build_dir: Path, full: Path) -> Path:
+    """The update archive beside ``full``: the same payload minus
+    ``UPDATE_SKIPPED_PACKS``, which the in-game updater keeps from the
+    player's install when they match the release's manifest."""
+    out = full.with_name(update_archive_name(full.name))
+    payload = build_dir / "Contents" / "Resources" if build_dir.suffix == ".app" else build_dir
+    skipped = {payload / relative for relative in UPDATE_SKIPPED_PACKS}
+    if full.name.endswith(".tar.gz"):
+        skipped_names = {f"{APP_NAME}/{path.relative_to(build_dir).as_posix()}" for path in skipped}
+        with tarfile.open(out, "w:gz") as tar:
+            tar.add(
+                build_dir,
+                arcname=APP_NAME,
+                filter=lambda member: None if member.name in skipped_names else member,
+            )
+    elif build_dir.suffix == ".app":
+        # ditto has no exclude: park the packs outside the bundle while it
+        # zips, and always put them back. The bundle's signature seals them,
+        # so the update is complete again once the updater copies the
+        # player's identical packs in.
+        parked = Path(tempfile.mkdtemp(prefix="freightfate-packs-", dir=DIST))
+        moved: list[tuple[Path, Path]] = []
+        try:
+            for path in sorted(skipped):
+                if path.is_file():
+                    target = parked / path.name
+                    shutil.move(path, target)
+                    moved.append((target, path))
+            subprocess.run(
+                ["ditto", "-c", "-k", "--keepParent", str(build_dir), str(out)], check=True
+            )
+        finally:
+            for target, path in moved:
+                shutil.move(target, path)
+            shutil.rmtree(parked, ignore_errors=True)
+    else:
+        with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+            for path in sorted(build_dir.rglob("*")):
+                if path in skipped:
+                    continue
+                z.write(path, Path(APP_NAME) / path.relative_to(build_dir))
+    return out
+
+
+def write_packs_manifest(build_dir: Path, full: Path) -> Path:
+    """The release asset that tells the updater which packs the update
+    archive leaves out, and the SHA-256 the player's copies must have."""
+    payload = build_dir / "Contents" / "Resources" if build_dir.suffix == ".app" else build_dir
+    entries = pack_manifest_entries(payload)
+    missing = set(UPDATE_SKIPPED_PACKS) - {str(entry["path"]) for entry in entries}
+    if missing:
+        raise RuntimeError(f"Packs missing from the staged build: {', '.join(sorted(missing))}")
+    out = full.with_name(packs_manifest_name(full.name))
+    out.write_text(json.dumps({"packs": entries}, indent=2) + "\n", encoding="utf-8")
+    return out
+
+
+def make_update_artifacts(build_dir: Path, full: Path) -> tuple[Path, Path]:
+    """Cut the update archive and its pack manifest from the verified build."""
+    update = archive_update(build_dir, full)
+    verify_archive(update)
+    return update, write_packs_manifest(build_dir, full)
 
 
 # -- The Rust payload ---------------------------------------------------------
@@ -1306,8 +1413,6 @@ def verify_rust_payload(build_dir: Path, platform_name: str = sys.platform) -> N
         root / "USER_MANUAL.html",
         root / "ALPHA_TEST_BOOK.md",
         root / "ALPHA_TEST_BOOK.html",
-        root / TRANSLATIONS_DIR / "freight-fate.pot",
-        root / TRANSLATIONS_DIR / "README.md",
         root / "SOUND_CREDITS.md",
         root / "freight_fate" / "sounds.pak",
         root / "freight_fate" / "music.pak",
@@ -1426,6 +1531,7 @@ def build_rust(
     DIST.mkdir(parents=True, exist_ok=True)
     out = archive(build_dir, label)
     verify_archive(out)
+    make_update_artifacts(build_dir, out)
     return out
 
 

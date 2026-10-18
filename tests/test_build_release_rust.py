@@ -681,13 +681,10 @@ def test_macos_stage_is_a_player_ready_app_bundle(tmp_path, monkeypatch):
         "USER_MANUAL.html",
         "ALPHA_TEST_BOOK.md",
         "ALPHA_TEST_BOOK.html",
-        "translations/freight-fate.pot",
-        "translations/extra.pot",
-        "translations/README.md",
-        "translations/es.po",
-        "translations/glossary/en.md",
     ):
         assert (resources / name).is_file()
+    # The translator's kit is its own download, not part of the game.
+    assert not (resources / "translations").exists()
     # The audio engine is compiled in: the bundle carries no audio library.
     assert not list(app.rglob("libbass*"))
     with (app / "Contents" / "Info.plist").open("rb") as stream:
@@ -1114,10 +1111,13 @@ def test_macos_uses_non_launch_verification_before_archive(tmp_path, monkeypatch
     )
     monkeypatch.setattr(build_release, "archive", lambda *_args: archive)
     monkeypatch.setattr(build_release, "verify_archive", lambda _archive: events.append("archive"))
+    monkeypatch.setattr(
+        build_release, "make_update_artifacts", lambda *_args: events.append("update")
+    )
 
     build_release.build_rust("test", None, False, macos_non_launch_verify=True)
 
-    assert events == ["stamp", "docs", "verify", "strip", "sign", "notarize", "archive"]
+    assert events == ["stamp", "docs", "verify", "strip", "sign", "notarize", "archive", "update"]
 
 
 def test_windows_keeps_packaged_process_smoke(tmp_path, monkeypatch):
@@ -1139,10 +1139,13 @@ def test_windows_keeps_packaged_process_smoke(tmp_path, monkeypatch):
     monkeypatch.setattr(build_release, "sign_distribution", lambda _app: events.append("sign"))
     monkeypatch.setattr(build_release, "archive", lambda *_args: archive)
     monkeypatch.setattr(build_release, "verify_archive", lambda _archive: events.append("archive"))
+    monkeypatch.setattr(
+        build_release, "make_update_artifacts", lambda *_args: events.append("update")
+    )
 
     build_release.build_rust("test", None, True)
 
-    assert events == ["stamp", "docs", "verify", "strip", "smoke", "strip", "archive"]
+    assert events == ["stamp", "docs", "verify", "strip", "smoke", "strip", "archive", "update"]
 
 
 def test_full_macos_bundle_verification_reads_packs_from_resources(tmp_path, monkeypatch):
@@ -1165,8 +1168,6 @@ def test_full_macos_bundle_verification_reads_packs_from_resources(tmp_path, mon
         "USER_MANUAL.html",
         "ALPHA_TEST_BOOK.md",
         "ALPHA_TEST_BOOK.html",
-        "translations/freight-fate.pot",
-        "translations/README.md",
         "SOUND_CREDITS.md",
         "freight_fate/sounds.pak",
         "freight_fate/music.pak",

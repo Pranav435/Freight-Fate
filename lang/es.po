@@ -39568,6 +39568,33 @@ msgid "The download stopped. Nothing arrived for {STALL_TIMEOUT_S} seconds."
 msgstr ""
 "La descarga se detuvo. No llegó nada durante {STALL_TIMEOUT_S} segundos."
 
+#. one sentence of a longer line
+msgid ""
+"Copy it over your game folder, which keeps your music and radio packs, then "
+"restart the game."
+msgstr ""
+
+#. placeholders: {dest}
+#. one sentence of a longer line
+msgid "The new version is saved at {dest}."
+msgstr "La nueva versión está guardada en {dest}."
+
+#. placeholders: {dest}
+msgid ""
+"The new version is saved at {dest}. Copy it over your game folder, which "
+"keeps your music and radio packs, then restart the game."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Install it yourself, then restart the game."
+msgstr "Instálala tú y luego reinicia el juego."
+
+#. placeholders: {dest}
+msgid ""
+"The new version is saved at {dest}. Install it yourself, then restart the "
+"game."
+msgstr ""
+
 #. placeholders: {mb}
 msgid ", {mb} megabytes"
 msgstr ", {mb} megabytes"
@@ -39612,35 +39639,19 @@ msgid "Download complete, but this install cannot update itself."
 msgstr ""
 "Descarga completa, pero esta instalación no puede actualizarse sola."
 
-#. placeholders: {dest}
+#. placeholders: {manual_install}
 msgid ""
-"Download complete, but this install cannot update itself. The new version "
-"is saved at {dest}. Install it yourself, then restart the game."
+"Download complete, but this install cannot update itself. {manual_install}"
 msgstr ""
-"Descarga completa, pero esta instalación no puede actualizarse sola. La "
-"nueva versión está guardada en {dest}. Instálala tú y luego reinicia el "
-"juego."
-
-#. one sentence of a longer line
-msgid "Install it yourself, then restart the game."
-msgstr "Instálala tú y luego reinicia el juego."
-
-#. placeholders: {dest}
-#. one sentence of a longer line
-msgid "The new version is saved at {dest}."
-msgstr "La nueva versión está guardada en {dest}."
 
 #. one sentence of a longer line
 msgid "Download complete, but the update could not install itself."
 msgstr "Descarga completa, pero la actualización no pudo instalarse sola."
 
-#. placeholders: {dest}
+#. placeholders: {manual_install}
 msgid ""
-"Download complete, but the update could not install itself. The new version "
-"is saved at {dest}. Install it yourself, then restart the game."
+"Download complete, but the update could not install itself. {manual_install}"
 msgstr ""
-"Descarga completa, pero la actualización no pudo instalarse sola. La nueva "
-"versión está guardada en {dest}. Instálala tú y luego reinicia el juego."
 
 msgid "Installing the update. The game closes and restarts by itself."
 msgstr "Instalando la actualización. El juego se cierra y se reinicia solo."
@@ -40609,6 +40620,21 @@ msgstr "cierra paréntesis"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "mayúscula {ch}"
+
+#~ msgid ""
+#~ "Download complete, but this install cannot update itself. The new version "
+#~ "is saved at {dest}. Install it yourself, then restart the game."
+#~ msgstr ""
+#~ "Descarga completa, pero esta instalación no puede actualizarse sola. La "
+#~ "nueva versión está guardada en {dest}. Instálala tú y luego reinicia el "
+#~ "juego."
+
+#~ msgid ""
+#~ "Download complete, but the update could not install itself. The new version "
+#~ "is saved at {dest}. Install it yourself, then restart the game."
+#~ msgstr ""
+#~ "Descarga completa, pero la actualización no pudo instalarse sola. La nueva "
+#~ "versión está guardada en {dest}. Instálala tú y luego reinicia el juego."
 
 #~ msgid "Construction reported on the way: {join}."
 #~ msgstr "Obras anunciadas en el camino: {join}."
