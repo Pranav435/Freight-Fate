@@ -63,9 +63,9 @@ Score display in Settings, Speech can read reputation and dispatch trust as both
   separate highway node.
 - **Original audio** — sound effects and music are original project assets,
   with sources documented in the audio credits. The Rust audio engine plays
-  them through BASS, with the engine note pitch-tracking RPM in real time. If
-  BASS is unavailable, the game continues with a silent audio backend rather
-  than failing to start.
+  them through Hearken, the game's own Rust audio engine, with the engine note
+  pitch-tracking RPM in real time. If no sound device can be opened, the game
+  continues silently and says so rather than failing to start.
 - **Screen reader native** — menus with first-letter navigation, contextual
   F1 help everywhere, on-demand information keys while driving, a message log
   you can walk back through from any screen, and a choice of terse or normal
@@ -95,7 +95,9 @@ Score display in Settings, Speech can read reputation and dispatch trust as both
    `-linux-x86_64.AppImage`) and for ARM64 machines such as the Blazie BT
    Speak and BT Braille or a Raspberry Pi (`-linux-arm64.tar.gz`,
    `-linux-aarch64.AppImage`). Choose the archive for your machine's
-   processor. AppImages run directly; tarballs need extracting.
+   processor. AppImages run directly; tarballs need extracting. Both need
+   the ALSA sound library (`libasound2` on Debian and Ubuntu, `alsa-lib` on
+   Fedora and Arch), which nearly every Linux desktop already has.
 4. Extract the zip file. On Windows, open the extracted `FreightFate` folder
    and run `FreightFate.exe`. On an Apple Silicon Mac, move `FreightFate.app`
    to Applications. If macOS blocks the first launch, open System Settings,
@@ -119,6 +121,13 @@ Install these prerequisites first:
 - [Git](https://git-scm.com/downloads)
 - [Rust through rustup](https://www.rust-lang.org/tools/install)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- [CMake](https://cmake.org/download/) 3.24 or newer: the Prism speech
+  bridge, SDL2 and the Opus decoder are compiled from source.
+- On Windows, the Visual Studio Build Tools (see the standalone build
+  below). On macOS, the Xcode Command Line Tools (`xcode-select --install`).
+  On Linux, GCC 13 or newer, ALSA's development files (`libasound2-dev` on
+  Debian and Ubuntu, `alsa-lib-devel` on Fedora) for sound, and the SDL2
+  development packages the nightly Career 1.9 workflow installs.
 
 Then clone Career 1.9 and run the game:
 
@@ -126,12 +135,12 @@ Then clone Career 1.9 and run the game:
 git clone https://github.com/orinks-games/Freight-Fate.git
 cd Freight-Fate
 uv sync --group dev
-uv run python tools/fetch_bass.py
 cargo run --release -p freight-fate
 ```
 
-The BASS fetcher downloads and verifies the required audio libraries. A raw
-source run needs this command because `cargo run` does not fetch BASS itself.
+Cargo fetches everything the game links, including Hearken, its engine for
+speech, sound and the radio, which comes from its own git repository; there
+is no native audio library to download first.
 
 The first Cargo build takes longer because it compiles the workspace. Later
 runs reuse `target/`.
@@ -158,7 +167,7 @@ On macOS or Linux, from a terminal:
 
 Either script checks the prerequisites, installs the pinned Rust toolchain
 and the project's Python tooling, builds the native game, fetches and
-verifies BASS and the public music pack, checks the staged game, and writes
+verifies the public music pack, checks the staged game, and writes
 the archive for that platform to `dist/`: the Windows portable zip, the
 macOS app zip, or the Linux tarball. Players using those archives and
 contributors using these standalone build scripts do not need to find or
@@ -168,8 +177,8 @@ Windows also needs the Visual Studio Build Tools with the "Desktop
 development with C++" workload and its optional C++ ATL component (Prism's
 speech backends include `atlbase.h`); the script checks for both and prints
 the `winget` or Visual Studio Installer command that adds what is missing.
-Linux needs GCC 13 or newer plus the SDL2 development packages the nightly
-Career 1.9 workflow installs; on Ubuntu 22.04 the script picks up
+Linux needs GCC 13 or newer, ALSA's development files, plus the SDL2
+development packages the nightly Career 1.9 workflow installs; on Ubuntu 22.04 the script picks up
 `gcc-13`/`g++-13` itself when the default `gcc` is older. macOS builds SDL2
 from source, so do not install Homebrew's `sdl2`.
 
@@ -179,8 +188,8 @@ For iPhone and iPad builds and the touch gestures, see `docs/ios.md`.
 
 The release script passes extra options to `tools/build_release.py`. Maintainers
 can use `--tag` or `--cargo-target-dir` when preparing a specific release.
-`FREIGHT_FATE_MUSIC_URL`, `FREIGHT_FATE_MUSIC_SHA256`, and
-`FREIGHT_FATE_BASS_PATH` remain emergency overrides for pinned release inputs.
+`FREIGHT_FATE_MUSIC_URL` and `FREIGHT_FATE_MUSIC_SHA256` remain emergency
+overrides for pinned release inputs.
 Normal players and ordinary source builders do not need these overrides.
 
 If the build succeeds but the archive seems to vanish on Windows, check
@@ -256,7 +265,7 @@ Speed control:
 | Key | Action |
 | --- | --- |
 | K | Automatic speed control on / off. Parked with the brake set, it latches a high idle instead |
-| Shift+K | Resume the last speed after braking cancelled it |
+| Shift+K | Resume the last speed after braking canceled it |
 | Plus / minus (keypad too) | Raise / lower the remembered open-road target by 5 |
 
 Route actions:
@@ -485,12 +494,6 @@ license, not an OSI-approved open-source license. Bundled audio credits and
 provenance are tracked in
 [the Freight Fate audio credits](assets/sounds/CREDITS.md).
 
-**BASS license caveat:** audio playback uses the
-[BASS](https://www.un4seen.com/) library through Freight Fate's Rust bindings.
-BASS is proprietary and **free for non-commercial use only**. If
-Freight Fate is ever sold commercially (Steam, itch.io paid downloads, and
-so on), a paid license must be purchased from
-[un4seen developments](https://www.un4seen.com/bass.html#license) first.
-The same terms cover the bundled BASSHLS addon
-(`basshls.dll`), which lets the radio play HLS streams; its license text ships
-alongside it. When BASS is unavailable, the Rust game runs without sound.
+**Audio:** playback, decoding and the radio use Hearken, Freight Fate's own
+Rust audio engine (MIT or Apache-2.0), built on Kira and Symphonia. Earlier
+releases used the proprietary BASS library; nothing of it ships any more.

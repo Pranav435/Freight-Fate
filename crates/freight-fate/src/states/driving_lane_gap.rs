@@ -74,18 +74,6 @@ fn real_length_mi(vehicle_class: &str) -> f64 {
     feet / 5280.0
 }
 
-/// What lane keeping says when it eases off to let a vehicle pacing it in
-/// the right lane by, whole per kind so a translation can say each its way.
-fn easing_off_line(vehicle_class: &str) -> &'static str {
-    match vehicle_class {
-        "car" => "Easing off to let the car by.",
-        "box truck" => "Easing off to let the box truck by.",
-        "semi" => "Easing off to let the semi by.",
-        "state trooper" => "Easing off to let the state trooper by.",
-        _ => "Easing off to let traffic by.",
-    }
-}
-
 /// The margin and the forward sweep live with the trip now
 /// (`Trip::lane_blocker_at`), because the hazard call that names the open
 /// side reads the same clearance this cue and the L key do.
@@ -223,17 +211,8 @@ impl DrivingState {
         }
         self.lane_gap_cue_s = LANE_GAP_CUE_MIN_GAP_S;
         let name = lane_label(watch, self.lane.lane_count);
-        let vehicle = if self.lane_gap_blocker_class.is_empty() {
-            "vehicle".to_string()
-        } else {
-            self.lane_gap_blocker_class.clone()
-        };
         let capitalized = capitalize(name);
-        let message = if self.terse_speech(ctx) {
-            format!("{capitalized} lane open.")
-        } else {
-            format!("Clear of the {vehicle}. {capitalized} lane open.")
-        };
+        let message = format!("{capitalized} lane open.");
         ctx.play_event_cue(Some(SpeechCategory::Status), "ui/notify", 0.45, 0.0);
         // ROUTE priority: "the lane you were boxed out of is open" is the
         // transition a driver is actively waiting on to merge back, and at
@@ -243,7 +222,7 @@ impl DrivingState {
         ctx.say_event_with(
             message,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Status),
         );
     }
@@ -278,7 +257,7 @@ impl DrivingState {
         ctx.say_event_with(
             format!("Changing to the {name} lane for the exit."),
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Confirmation),
         );
     }
@@ -318,7 +297,6 @@ impl DrivingState {
     pub fn update_pass_return(&mut self, ctx: &mut GameContext) {
         self.pass_return_ease_mph = None;
         let Some((home, passed_in)) = self.passing else {
-            self.pass_return_ease_said = false;
             return;
         };
         if self.lane_change_target.is_some() {
@@ -347,11 +325,10 @@ impl DrivingState {
             // Held by traffic, which is lane keeping's call and not the
             // driver's: the left lane is excused while it lasts.
             self.keep_right_excused_s = KEEP_RIGHT_EXCUSE_S;
-            self.ease_for_pacer(ctx, home);
+            self.ease_for_pacer(home);
             return;
         }
         self.passing = None;
-        self.pass_return_ease_said = false;
         // "In the right lane." on arrival is the whole report; the blinker
         // says it is coming.
         self.begin_lane_change(home);
@@ -415,7 +392,7 @@ impl DrivingState {
         ctx.say_event_with(
             text,
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Confirmation),
         );
     }
@@ -455,27 +432,18 @@ impl DrivingState {
     /// A vehicle holding the right lane at the truck's speed or faster
     /// paces it, and lane keeping would wait in the left lane for as long as
     /// that lasts. Ease off under it, so it pulls ahead and the truck drops
-    /// in behind, and say so once: the cruise setting still reads the set
-    /// speed. A slower vehicle there is the one being passed, and the pass
-    /// carries on at speed.
-    fn ease_for_pacer(&mut self, ctx: &mut GameContext, lane: i64) {
+    /// in behind, without a word: the driver hears the engine ease. A slower
+    /// vehicle there is the one being passed, and the pass carries on at
+    /// speed.
+    fn ease_for_pacer(&mut self, lane: i64) {
         let Some(pacer) = self.pass_return_blocker(lane) else {
             return;
         };
         if pacer.speed_mph + 2.0 < self.trip.truck.speed_mph() {
             return;
         }
-        let line = easing_off_line(&pacer.vehicle_class);
         self.pass_return_ease_mph =
             Some((pacer.speed_mph - PASS_RETURN_EASE_MPH).max(LANE_MIN_MPH));
-        if self.cruise_mph.is_some() && !std::mem::replace(&mut self.pass_return_ease_said, true) {
-            ctx.say_event_with(
-                line,
-                SayEvent::queued()
-                    .priority(EventPriority::Route)
-                    .category(SpeechCategory::Confirmation),
-            );
-        }
     }
 
     /// Whether an armed exit is close enough that the truck should be

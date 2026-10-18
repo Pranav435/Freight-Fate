@@ -39,7 +39,6 @@ use ff_core::sim::real_traffic::RealTrafficProvider;
 use ff_core::sim::real_weather::RealWeatherProvider;
 use ff_core::sim::real_weather_alerts::WeatherAlertsProvider;
 use ff_core::sim::truck_parking::TruckParkingProvider;
-use ff_core::speech_pacing::EventSpeechPacer;
 use ff_core::speech_text::achievement_announced;
 
 use crate::account_achievements::AccountAchievements;
@@ -54,7 +53,7 @@ use crate::meaningful_play::MeaningfulPlayReason;
 use crate::net::UreqTransport;
 use crate::online_journal::{queue_achievement, JournalOutbox};
 use crate::online_presence::{OnlineIdentity, OnlinePresence};
-use crate::speech::{apply_speech_settings, SpeechSink};
+use crate::speech::{apply_speech_settings, EventSpeechPacer, SpeechSink};
 use crate::states::base::State;
 
 use super::held_keys::HeldKeys;
@@ -116,7 +115,6 @@ pub struct Services {
     pub jaws_script: JawsScript,
     pub cloud: CloudSaves,
     pub journal: JournalOutbox,
-    pub mastodon: JournalOutbox,
 }
 
 /// A career achievement and whether this installation can publish it publicly.
@@ -253,6 +251,7 @@ impl GameContext {
         // The guide tone must exist before a drive starts, not only after
         // the Learn game sounds screen has been opened. Idempotent and cheap.
         ff_core::lane_guide_tone::register_lane_guide_tone();
+        ff_core::cab_sounds::register_cab_sounds();
         Self {
             speech: parts.speech,
             audio: parts.audio,
@@ -271,7 +270,7 @@ impl GameContext {
             dispatch_board_seed: None,
             school_sandbox: false,
             school_real_profile: None,
-            event_pacer: EventSpeechPacer::new(),
+            event_pacer: EventSpeechPacer::new(super::FF_PACER),
             clipboard: parts.clipboard,
             services: parts.services,
             input: HeldKeys::default(),
@@ -306,7 +305,7 @@ impl GameContext {
     /// individual `setting` are enabled.
     ///
     /// The master governs the orinks.net and sharing services only (drivers
-    /// board, profile sharing, cloud backup, Mastodon, Discord presence).
+    /// board, profile sharing, cloud backup, Discord presence).
     /// Live-data simulation sources -- weather, traffic, parking -- follow
     /// their own Settings toggles and are deliberately NOT gated here (owner
     /// ruling, 2026-08-08: two testers lost real weather to the master
@@ -778,12 +777,6 @@ impl GameContext {
             ));
     }
 
-    /// Reflect the Mastodon sharing setting (e.g. after a settings change).
-    pub fn apply_mastodon_sharing(&mut self) {
-        let enabled = self.online_enabled(self.settings.mastodon_sharing);
-        self.services.mastodon.set_enabled(enabled);
-    }
-
     /// The backup service, for the Cloud backup menu.
     pub fn cloud_saves_service(&self) -> &CloudSaves {
         &self.services.cloud
@@ -795,8 +788,7 @@ impl GameContext {
         self.services.online.set_identity(identity.clone());
         self.services.duty.set_identity(identity.as_ref());
         self.services.cloud.set_identity(identity.clone());
-        self.services.journal.set_identity(identity.clone());
-        self.services.mastodon.set_identity(identity);
+        self.services.journal.set_identity(identity);
     }
 
     /// Reflect the controller setting (e.g. after a settings change).

@@ -1,4 +1,4 @@
-//! The licence file: `DrivingRecord` and the legacy-save seeding, split out
+//! The license file: `DrivingRecord` and the legacy-save seeding, split out
 //! of `enforcement.py` by size only.
 
 use serde::{Deserialize, Serialize};
@@ -38,7 +38,7 @@ pub const RECORD_CRASH: &str = "crash";
 /// How many explained entries the record keeps; the oldest fall off first.
 pub const RECORD_ENTRIES_KEPT: usize = 60;
 
-/// What the licence file remembers about this driver, for the whole career.
+/// What the license file remembers about this driver, for the whole career.
 ///
 /// Times are career game hours -- the same clock `Profile.game_hours` runs
 /// on -- so a suspension is served in game time and survives save and load.
@@ -64,7 +64,7 @@ pub struct DrivingRecord {
     /// them, so a serious violation it already carried -- served through the
     /// 383.51 ladder the driver was told about at the time -- cannot fire a
     /// hold or a termination the driver was never warned of on the first
-    /// boot of a new build. The licence ladder itself is not affected.
+    /// boot of a new build. The license ladder itself is not affected.
     pub review_started_h: f64,
     /// Lifetime enforcement money, all sources.
     pub fines_paid: f64,
@@ -180,7 +180,7 @@ impl DrivingRecord {
 
     /// Serious violations the carrier's review and the insurer count: inside
     /// the review window AND since the review began. Distinct from
-    /// [`Self::serious_in_window`], which is the 383.51 licence ladder, looks
+    /// [`Self::serious_in_window`], which is the 383.51 license ladder, looks
     /// back three years and counts every one.
     pub fn serious_in_review_window(&self, game_hours: f64) -> i64 {
         self.serious_within(game_hours, REVIEW_WINDOW_DAYS)
@@ -338,7 +338,7 @@ impl DrivingRecord {
     /// Log running off the road asleep. Returns (fatigue events, serious).
     ///
     /// The first one is a preventable safety incident: it costs standing but
-    /// not the licence. From the second on it is a 49 CFR 392.3 violation --
+    /// not the license. From the second on it is a 49 CFR 392.3 violation --
     /// operating a commercial vehicle impaired by fatigue -- and it joins the
     /// serious-violation ladder like any other.
     pub fn record_fatigue_event(&mut self, game_hours: f64) -> (i64, i64) {

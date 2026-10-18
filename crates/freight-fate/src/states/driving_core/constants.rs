@@ -55,10 +55,27 @@ pub const LIMP_CAP_RAMP_MPH_PER_S: f64 = 2.0;
 // Chaining up is done kneeling on the shoulder in the weather that made it
 // necessary. Real crews quote twenty to thirty minutes for a drive-axle set;
 // doing it in the dark by headlamp costs more time and much more out of the
-// driver. Removal is quick by comparison.
-pub const CHAIN_INSTALL_MIN: f64 = 25.0;
+// driver. Removal is quick by comparison. A set is now five chains mounted
+// (four drive tires and one trailer tire), so 30 minutes: about five a
+// chain. UNVERIFIED: no official time source; trucker guidance runs 20 to 45.
+pub const CHAIN_INSTALL_MIN: f64 = 30.0;
 pub const CHAIN_INSTALL_NIGHT_MULT: f64 = 1.6;
 pub const CHAIN_REMOVE_MIN: f64 = 10.0;
+/// Stop planning's no-chains reminder plays this far before a chain-law
+/// corridor in season: a reminder, well before the 1-mile chain-law cue.
+pub const CHAIN_REMINDER_LEAD_MI: f64 = 15.0;
+// A broken chain is one cross link or one chain, not the whole set, and it
+// is fixed on the shoulder: Caltrans tells drivers to carry "chain repair
+// links", and Washington requires two spare chains for this case (WAC
+// 204-24-050(2)(f)). A repair puts the set back at 80 percent worn, under
+// the slap warning, so a fresh repair doesn't slap at once.
+pub const CHAIN_REPAIR_MIN: f64 = 15.0;
+pub const CHAIN_REPAIR_WEAR_RESTORE: f64 = 20.0;
+// A worn chain loosens and slaps the fender before it lets go. Tightening it
+// takes about five minutes and buys back a little wear, once per install.
+pub const CHAIN_SLAP_WARN_PCT: f64 = 85.0;
+pub const CHAIN_TIGHTEN_MIN: f64 = 5.0;
+pub const CHAIN_TIGHTEN_WEAR_RESTORE: f64 = 5.0;
 pub const CHAIN_INSTALL_FATIGUE: f64 = 6.0;
 pub const CHAIN_INSTALL_NIGHT_FATIGUE: f64 = 10.0;
 pub const CHAIN_REMOVE_FATIGUE: f64 = 2.0;
@@ -66,6 +83,19 @@ pub const CHAIN_REMOVE_FATIGUE: f64 = 2.0;
 // bottom of the grade is staffed often enough that gambling is a bad trade.
 // What the citation costs is priced in models/enforcement with every other fine.
 pub const CHAIN_LAW_CHECKPOINT_CHANCE: f64 = 0.6;
+// California staffs every active R-control at a fixed checkpoint, and
+// screening ("TS" on the Caltrans chain-control chart) stops every truck.
+// The other states' staffing is UNVERIFIED and keeps the 0.6 roll.
+pub const CHAIN_LAW_CHECKPOINT_CHANCE_CA: f64 = 1.0;
+
+/// How often the checkpoint chance for `state` (two-letter code).
+pub fn chain_law_checkpoint_chance(state: Option<&str>) -> f64 {
+    if state == Some("CA") {
+        CHAIN_LAW_CHECKPOINT_CHANCE_CA
+    } else {
+        CHAIN_LAW_CHECKPOINT_CHANCE
+    }
+}
 // Running the ramp-end red or stop sign is seen when someone is watching the
 // crossroad -- a patrol car on the corner, a camera on the mast arm -- and
 // most of the time nobody is. Same shape as CHAIN_LAW_CHECKPOINT_CHANCE: a
@@ -85,6 +115,14 @@ pub const ROAD_TIRE_COST_PER_PCT: f64 = 60.0; // everyone else marks tire work u
 pub const ROAD_TIRE_MIN: f64 = 75.0;
 pub const ROAD_BRAKE_COST_PER_PCT: f64 = 55.0; // road-shop premium over the garage's 40
 pub const ROAD_BRAKE_MIN: f64 = 120.0;
+/// A chain set bought on the road: the terminal garage's 750 dollars plus
+/// the third road shops add to tire work (60 a percent against the
+/// garage's 45). ASSUMED; truck stops on chain corridors stock sets, and
+/// nobody publishes a single price.
+pub const ROAD_CHAIN_SET_COST: f64 = 1000.0;
+/// Paying at the counter and stowing the set in the side box, on duty.
+/// ASSUMED, as the terminal garage's 10 minutes.
+pub const ROAD_CHAIN_BUY_MIN: f64 = 10.0;
 pub const FUEL_STOP_MIN: f64 = 20.0; // fueling is on-duty-not-driving work
 /// Fraction of tank remaining that fires the once-per-threshold low-fuel cue.
 /// Re-arms only after a refill climbs back above this line.
@@ -563,7 +601,7 @@ pub const CRUISE_CLOSE_FEATHER_FROM_MPH: f64 = 1.0;
 // When has a hill BEATEN the descent control, as opposed to merely being held?
 //
 // The descent twin of CRUISE_GRADE_BEATEN_*, and it did not exist until
-// 2026-08-25. "Descent control cannot hold this grade. Apply service brakes."
+// 2026-08-25. "Descent control can't hold this grade. Brake."
 // was said on the first frame the truck was this far over the ceiling
 // interactive mode had just imposed -- which on a 75 mph road with cruise set
 // at 80 is the instant a dip starts, before the control has done anything at
@@ -597,10 +635,9 @@ pub const PCC_DESCENT_SHAVE_MPH: f64 = 2.0; // taken off before a downgrade, at 
                                             // road inside this distance has already gone flat. Judged on the full preview
                                             // instead, a three-mile pull read as cresting from a mile and a half out.
 pub const PCC_CREST_WINDOW_MI: f64 = 0.4;
-pub const PCC_CUE_COOLDOWN_S: f64 = 45.0; // rolling country must not chant preview cues
-                                          // Grade advisories, spoken whether or not cruise is on. A downgrade this steep
-                                          // is the one a driver has to plan for -- gear and retarder before the hill, not
-                                          // halfway down it.
+// Grade advisories, spoken whether or not cruise is on. A downgrade this steep
+// is the one a driver has to plan for -- gear and retarder before the hill, not
+// halfway down it.
 pub const GRADE_WARN_PCT: f64 = 3.0; // steep enough to call out, either direction
 pub const GRADE_WARN_CLEAR_PCT: f64 = 2.0; // hysteresis: under this the grade is behind you
                                            // A grade that keeps its sign but gets materially worse is a new thing to plan

@@ -9,7 +9,7 @@
 //!
 //! The door is a hiring bar, the same one for both kinds of driver: the
 //! level where dispatch moves a driver up to the regional fleet, and full
-//! dispatch trust -- service, licence, record and money all clear. A trainee
+//! dispatch trust -- service, license, record and money all clear. A trainee
 //! reaches it by finishing training; a driver who was let go reaches it by
 //! rebuilding exactly what cost them the last seat. Nothing else changes in
 //! the move: the career, the record and the home terminal come along, and

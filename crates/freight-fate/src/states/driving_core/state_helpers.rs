@@ -71,6 +71,7 @@ pub fn secure_truck_for_stopped_menu_at(
     driving.destination_arrival_active = false;
     driving.destination_assist_brake = 0.0;
     driving.keeper_snub = 0.0;
+    driving.keeper_corner_braking = false;
     driving.aeb_brake = 0.0;
     driving.curve_servo = None;
     true
@@ -91,29 +92,19 @@ pub fn shut_down_engine(driving: &mut DrivingState, ctx: &mut GameContext) -> St
     "You shut down the engine. ".to_string()
 }
 
-/// Describe the required keyboard/controller recovery after parked air loss.
-/// (`from_rest_menu` defaults to true in Python.)
-pub fn wake_air_instruction(
-    driving: &DrivingState,
-    ctx: &GameContext,
-    from_rest_menu: bool,
-) -> String {
+/// The truck's state after a rest that left the air bled down: the engine
+/// (when it is off) and the pressure the driver is waiting on.
+pub fn wake_air_instruction(driving: &DrivingState) -> String {
     let truck = &driving.trip.truck;
     if truck.air_ready() {
         return String::new();
     }
-    let road_step = if from_rest_menu {
-        "Choose Back to the road, then press"
+    let psi = truck.air_pressure_psi();
+    if truck.engine_on {
+        format!(" Air {psi:.0} psi.")
     } else {
-        "Press"
-    };
-    format!(
-        " Air pressure {:.0} psi. {road_step} {} to start the engine. At air ready, {} releases \
-         the parking brake.",
-        truck.air_pressure_psi(),
-        ctx.control_hint("engine"),
-        ctx.control_hint("parking_brake")
-    )
+        format!(" Engine off, air {psi:.0} psi.")
+    }
 }
 
 /// The delivery appointment in the receiving city's local time.
@@ -149,6 +140,7 @@ pub fn perform_shoulder_sleep(
     driving: &mut DrivingState,
     ctx: &mut GameContext,
     anchor_mi: f64,
+    at_chain_checkpoint: bool,
 ) -> String {
     let engine_off = shut_down_engine(driving, ctx);
     advance_rest_clock(driving, ctx, hos::SLEEP_MIN, None, "");
@@ -157,13 +149,24 @@ pub fn perform_shoulder_sleep(
         let p = profile_mut_of(ctx);
         p.fatigue = hos::rest_shoulder(p.fatigue);
     }
-    let mut parts = vec![format!(
-        "{engine_off}You sleep poorly on the shoulder, woken again and again by passing trucks. \
-         It is {}. Hours of service reset, but you are still tired.{}",
-        clock_text(driving.trip.local_hour()),
-        wake_air_instruction(driving, ctx, false)
-    )];
-    if hos::shoulder_fine_due(driving.trip_seed, anchor_mi) {
+    let mut parts = vec![if at_chain_checkpoint {
+        format!(
+            "{engine_off}You sleep poorly on the checkpoint apron, woken again and again by \
+             passing trucks. It is {}. Driving and duty clocks reset, but you are still tired.{}",
+            clock_text(driving.trip.local_hour()),
+            wake_air_instruction(driving)
+        )
+    } else {
+        format!(
+            "{engine_off}You sleep poorly on the shoulder, woken again and again by passing \
+             trucks. It is {}. Driving and duty clocks reset, but you are still tired.{}",
+            clock_text(driving.trip.local_hour()),
+            wake_air_instruction(driving)
+        )
+    }];
+    // Held at a chain checkpoint, the officer keeps the truck there: no
+    // parking ticket and no shoulder debris.
+    if !at_chain_checkpoint && hos::shoulder_fine_due(driving.trip_seed, anchor_mi) {
         let zone = driving.trip.in_construction_zone();
         let fine = citation_fine(
             hos::SHOULDER_FINE,
@@ -184,7 +187,7 @@ pub fn perform_shoulder_sleep(
             fmt_grouped(money, 0)
         ));
     }
-    if hos::shoulder_damage_due(driving.trip_seed, anchor_mi) {
+    if !at_chain_checkpoint && hos::shoulder_damage_due(driving.trip_seed, anchor_mi) {
         driving
             .trip
             .truck
@@ -193,6 +196,11 @@ pub fn perform_shoulder_sleep(
             "Roadside debris and wake turbulence added {:.0} percent truck damage.",
             hos::SHOULDER_DAMAGE_PCT
         ));
+    }
+    if at_chain_checkpoint {
+        if let Some(line) = driving.recheck_chain_checkpoint_hold_after_rest(ctx) {
+            parts.push(line.to_string());
+        }
     }
     let snapshot = driving.snapshot(ctx);
     {

@@ -2,8 +2,8 @@
 
 Runs after ``tools/build_release.py`` and expects its staged folder,
 ``build/FreightFate``. The Rust build needs almost no bundled libraries --
-SDL2 and Prism are compiled in, BASS carries its decoders beside the
-executable -- so the AppImage is mostly the launcher, the desktop entry and
+SDL2, Prism and the audio engine are all compiled into the executable --
+so the AppImage is mostly the launcher, the desktop entry and
 the self-update path the tarball cannot offer. linuxdeploy still runs over
 it, with the host-integration stacks below excluded so the game keeps using
 the target system's GLib, D-Bus, AT-SPI/speech stack, and OpenSSL.

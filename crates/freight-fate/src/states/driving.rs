@@ -288,8 +288,43 @@ pub struct DrivingState {
     // -- the setting every driver leaves it on until ice says otherwise.
     pub jake_selected_stage: i32,
     pub chains_fast_active: bool, // spoken chains-over-speed warning edge tracking
+    /// The cruise and keeper set speeds held down to chain speed while the
+    /// chains are on, given back when they come off (`apply_chain_speed_cap`).
+    pub chain_cap_cruise_mph: Option<f64>,
+    pub chain_cap_keeper_mph: Option<f64>,
+    /// "Cruise held to 30 miles per hour for chains." is said once per set.
+    pub chain_cap_said: bool,
     pub chain_law_warned: HashSet<(i64, i64)>, // (area, level) spoken warnings
-    pub chain_law_cited: HashSet<(i64, i64)>, // checkpoint rolls already taken
+    pub chain_law_cited: HashSet<(i64, i64)>,  // (area, level) already fined
+    /// (area, level) -> whether its checkpoint is staffed, rolled once.
+    pub chain_checkpoint_staffed: HashMap<(i64, i64), bool>,
+    /// Cited with chains aboard: held on the apron until they are on.
+    pub chain_checkpoint_hold: bool,
+    /// Colorado chain-carry rule: warned once, and rolled once, per drive.
+    pub chain_carry_warned: bool,
+    pub chain_carry_rolled: bool,
+    /// "A chain is slapping the fender" is said once per install.
+    pub chain_slap_said: bool,
+    /// The chains were tightened once since they went on.
+    pub chain_tightened: bool,
+    /// Stop planning's no-chains reminder, said once per corridor approach
+    /// (`ChainCorridorAhead::key`). Not saved: a resume may repeat it once.
+    pub chain_reminder_said: HashSet<String>,
+    /// Facility stopping assistance's pending roadside chain stop.
+    pub chain_stop: Option<crate::states::driving_events::chain_stop::ChainStop>,
+    /// Its held brake application, one of the assists' pedal floors.
+    pub chain_stop_brake: f64,
+    /// Chain-law areas the chain-up stop has handled, declined or had
+    /// cancelled: never retried.
+    pub chain_stop_areas_done: HashSet<usize>,
+    /// The last chain-law area each chain-off decision was made after.
+    pub chain_off_done: HashSet<usize>,
+    /// Route mile the bare road began, past the last chain-law area.
+    pub chain_off_bare_from: Option<f64>,
+    /// The slap tighten was offered once since the chains went on.
+    pub chain_assist_tighten_tried: bool,
+    /// A chain broke this drive and the assist hasn't answered it yet.
+    pub chain_assist_snapped: bool,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,
@@ -619,7 +654,6 @@ pub struct DrivingState {
     pub cruise_jake_last_step: i32, // +1 raised, -1 lowered, 0 released
     pub cruise_snubbing: bool,  // a service-brake snub is in progress
     pub pcc_phase: String,      // what the grade preview is doing, for the cue
-    pub pcc_cue_s: f64,         // quiet time between preview cues
     pub climb_cue_said: bool,   // cruise has already owned up to this pull
     pub climb_cue_s: f64,       // quiet time between hand-back cues
     pub climb_beaten_s: f64,    // how long the grade has genuinely been winning
@@ -639,6 +673,10 @@ pub struct DrivingState {
     // from the pickup plan once per half mile rather than every frame:
     // (defect or empty, mile it was read at).
     pub visible_trailer_defect: (String, f64),
+    // Equipment faults already on an inspection report or citation this
+    // drive (the finding as the officer read it). The driver carries that
+    // paper to the next shop, so no later post writes the same fault again.
+    pub written_up: HashSet<String>,
     pub nice_speed_mi: f64,    // distance held at a very particular speed
     pub double_nickel_mi: f64, // and at the limit Congress retired in 1995
     pub jake_descent_mi: f64,  // downgrade held on the engine alone
@@ -706,13 +744,6 @@ pub struct DrivingState {
     pub descent_beaten_s: f64,
     pub descent_capture_active: bool,
     pub assist_exit_slowing_said: bool,
-    // Lane keeping on full grants the exit lane and takes the destination
-    // exit without the driver touching anything. That is coherent, but
-    // unattributed it reads as the exit taking itself -- which is exactly
-    // what got reported. Name the automation at the point of confusion,
-    // once each per run, then go back to the plain wording.
-    pub lane_keeping_grant_said: bool,
-    pub lane_keeping_takes_exit_said: bool,
     pub curve_assist_active: bool,
     pub curve_assist_cue_s: f64,
     // Whether the SLOWING cue was actually spoken for the run in progress.
@@ -753,6 +784,9 @@ pub struct DrivingState {
     // and how long it has been out of authority with the truck still over
     // the number -- past which it owns up rather than riding it out.
     pub keeper_snub: f64,
+    /// The keeper is braking a late corner down to its number
+    /// (`keeper_corner_brakes`); the held snub stays on until it is there.
+    pub keeper_corner_braking: bool,
     /// The number the held snub is bringing the truck down to -- the
     /// keeper's WORKING target, which on an approach is the corner or zone
     /// ahead and not the set speed. The release rule reads this.
@@ -809,18 +843,16 @@ pub struct DrivingState {
     pub lane_gap_cue_s: f64,
 
     // ---- driving_turns.py: `_reset_turn_state_for_trip` -------------------------------
-    // Street corners: how many corners this run has cost, which escalates
-    // the spoken help. The per-corner latches are rebuilt whenever the
+    // Street corners: how many corners this run has missed. The per-corner
+    // latches are rebuilt whenever the
     // trip's route changes (`turn_trip_id` vs `trip_generation`).
     pub turn_miss_count: i64,
     pub turn_trip_id: u64,
     pub turn_advised: HashSet<String>,
-    pub turn_missed: HashSet<String>,
     pub turn_resolved: HashSet<String>,
-    /// Corners whose call actually reached the voice. The turn earcon is
-    /// played off this at the moment the corner is taken, so a driver who
-    /// was told nothing about a corner is not chimed at for it either
-    /// (owner, 2026-09-20).
+    /// Corners whose chime has sounded. It goes out once, with the first
+    /// words that name the corner, so a driver who was told nothing about a
+    /// corner is not chimed at for it either (owner, 2026-09-20).
     pub turn_announced: HashSet<String>,
     /// Corners whose own call already said "now": the route's call at the
     /// corner would only say the turn again.
@@ -868,8 +900,6 @@ pub struct DrivingState {
     /// was called off or held by traffic, so the CB does not blame the
     /// driver for a hold the assist made.
     pub keep_right_excused_s: f64,
-    /// The easing-off line has been said for the current held move back.
-    pub pass_return_ease_said: bool,
     pub merge_deadline: Option<f64>,
     // Miles of acceleration lane still ahead after pulling out of a
     // facility. None once the lane is behind the truck (or when the run
@@ -951,6 +981,8 @@ pub struct DrivingState {
     pub transverse_fired: Vec<f64>,
     pub lane_locator_on: bool, // I toggles the panned position tock
     pub lane_locator_timer: f64,
+    /// The driver window and the climate controls: pure ambience, not saved.
+    pub cab: ff_core::sim::cab::CabState,
     // The same tock, summoned by the steering itself rather than by I:
     // while a lane move is underway it runs on its own and ends with the
     // signal cancelling. See _update_steering_lane_cue.

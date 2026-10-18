@@ -115,10 +115,7 @@ TRANSCRIPT_INSTRUMENTS = ("[jake]",)
 # Lines the game logs on every start no matter what; flagging them as warnings
 # would train the operator to ignore the warning channel on the first minute
 # of every session.
-BENIGN_WARNINGS = (
-    "Could not set default device",
-    "BASS could not load plugin",
-)
+BENIGN_WARNINGS = ("Could not set default device",)
 
 
 class Session:
@@ -367,10 +364,9 @@ IDENTITY_NAMES = frozenset(
         "online.token",
         "cloud_saves.json",
         "online-outbox.json",
-        "online-mastodon-outbox.json",
     }
 )
-OFFLINE_SETTINGS = ("cloud_saves", "online_presence", "online_services", "mastodon_sharing")
+OFFLINE_SETTINGS = ("cloud_saves", "online_presence", "online_services")
 
 
 def _is_identity(path: Path) -> bool:

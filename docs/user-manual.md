@@ -52,7 +52,7 @@ Before you've created a career, Achievements tells you there are no saved career
 
 ### Online
 
-Online brings together the public driver lists, account-wide achievements, your orinks.net account, and cloud backup and restore. It's also where you choose sharing options such as Mastodon and Discord. You can decide which parts you want to use.
+Online brings together the public driver lists, account-wide achievements, your orinks.net account, and cloud backup and restore. It's also where you turn Discord presence on or off. You can decide which parts you want to use.
 
 ### How to play
 
@@ -142,7 +142,7 @@ Start the engine with E, then give the air pressure time to reach 100 psi. The b
 
 On a controller, hold the right bumper and press A to start the engine, then hold the right bumper and press Y to release the parking brake. The right trigger accelerates and the left trigger brakes, as far as you press them. Y starts automatic speed control and B reads your speed.
 
-You don't have to hold the accelerator for the whole trip. When automatic speed control is available, K starts it. That leaves you more time to listen to the road and learn the readouts. Press Space to check your speed, speed-control mode, and air pressure. On the open road, K uses adaptive cruise. In supported low-speed areas, it uses speed keeper to help you manage an approach to a pickup or delivery facility.
+You don't have to hold the accelerator for the whole trip. When automatic speed control is available, K starts it. That leaves you more time to listen to the road and learn the readouts. Press Space to check your speed and speed-control mode. On the open road, K uses adaptive cruise. In supported low-speed areas, it uses speed keeper to help you manage an approach to a pickup or delivery facility.
 
 ### Collecting the freight
 
@@ -390,7 +390,10 @@ A control marked Driving commands has no controller button. Hold the right bumpe
 | Alt+T | Driving commands | Switch between automatic and manual transmission on the road. This changes your whole control scheme. |
 | 1 / 2 / 3 | Right bumper plus right stick click steps to the next stage | Select the engine brake stage, two, four, or six cylinders of retard, while it is on. With the engine brake off these keys do nothing. |
 | H | Left stick click, hold | Hold to sound the horn; release to stop it. |
-| Space | B | Report speed, gear, RPM, the active speed-control mode and open-road target when speed control is on, air pressure, and brake state. With the signal set for an exit, it ends with that exit and how far away it is. |
+| Z | Not on the controller | Lower or raise the driver window. With it down you hear the wind rush in and the road louder; it closes again at the start of every drive. |
+| Alt+Z | Not on the controller | Step the fan: off, low, medium, high. The fan runs while the engine does. |
+| Shift+Z | Not on the controller | Switch the fan between heat and air conditioning. A drive starts on whichever the weather calls for. |
+| Space | B | Report speed, gear, and the active speed-control mode and open-road target when speed control is on. RPM is added with a manual transmission, and air pressure or the parking brake only when they need attention. With the signal set for an exit, it ends with that exit and how far away it is. Tab has the full air and brake readings. |
 | S | Right bumper plus X | Report the posted speed limit here, the zone if any, and how far over you are. In bend country it adds the bend's advisory speed, since the posted limit and the yellow diamond are different numbers on a real road. On a delivery ramp that ends at a traffic light, S answers with the light and the distance to the stop bar instead, since the light is the law there. |
 | D | Driving commands | Report one safe-speed number for right now. Weather grip, a steep downgrade, and the next bend are already baked into the number. On an exit ramp it is the exit speed. |
 | G | Driving commands | Report the grade under the wheels: the slope, how far it runs, and whether the truck is holding, pulling, or losing it, including whether the engine brake has the descent or is about to lose it. G also names the next grade ahead worth planning for, how far off and how long it runs, including one that steepens without flattening out first, and the gentler pull automatic speed control is building speed for when nothing steep is coming. |
@@ -601,7 +604,7 @@ At a ramp light, you'll hear each change in its steady cycle. Stop for red. At y
 
 When the way is clear, pull ahead as directed. Facility stopping assistance can manage the pedals on the way to the gate, while speed keeper handles any city streets between. Pressing your brake cancels that pedal assistance.
 
-Local streets have their own limits and corner calls. Traffic controls aren't modeled throughout the street network. A driveway takes you into a yard at fifteen miles per hour; where there isn't a driveway, the gate may be on the street.
+Local streets have their own limits and corner calls. Each corner is called with its distance and the speed to take it at, and the turn's chime plays with the call, on the side you turn. Take a corner faster than about three miles per hour over that speed and you miss it: the truck goes around the block and comes out on the street you missed, a few minutes later. Traffic controls aren't modeled throughout the street network. A driveway takes you into a yard at fifteen miles per hour; where there isn't a driveway, the gate may be on the street.
 
 ### Stop services
 
@@ -678,7 +681,7 @@ Your legal hours are the same in both hours modes: eleven driving hours after te
 
 Any thirty consecutive minutes without driving can meet the driving-break requirement. Loading and inspections can count, but they won't reset the duty window. Moving the truck for work counts even when you're bobtail.
 
-Check your hours before choosing how far to continue. Alt+A reads time used, Alt+S tells you when the break is due, and Alt+D reads both shift limits with reachable legal rest. C gives the clock, deadline, and nearest limit. On a controller, D-pad right reads the clock with all of these limits in one report. You'll hear warnings with two hours, one hour, and thirty minutes left.
+Check your hours before choosing how far to continue. Alt+A reads time used, Alt+S tells you when the break is due, and Alt+D reads both shift limits with reachable legal rest. C gives the clock, deadline, and nearest limit. On a controller, D-pad right reads the clock with all of these limits in one report. Before each limit you'll hear one warning: with one hour left in the Relaxed driving mode, two hours in Standard, and two hours, one hour and thirty minutes in Real time. A limit the trip ends inside gets no warning. When you leave with a load, the departure line says your driving time left, your fuel, and whether the run needs a break or a sleep.
 
 A half-hour break won't solve a shift that's ending. Check reachability again if traffic or weather slows you down.
 
@@ -700,7 +703,7 @@ Use a readout hotkey for a quick check of fuel or time left. Press Tab, or the r
 
 | Key | Controller | Information |
 | --- | --- | --- |
-| Space | B | Speed, gear, RPM, air pressure, and brake state, and with the signal set, how far to the exit. |
+| Space | B | Speed, gear, and speed control, plus RPM with a manual transmission and air or brakes when they need attention. With the signal set, how far to the exit. |
 | F | Right bumper plus B | Fuel level and estimated range. |
 | C | D-pad right | Clock, deadline, estimated arrival, and the nearest hours-of-service limit. |
 | Alt+A | Driving commands | Time at the wheel so far this shift, and time on duty. |
@@ -853,9 +856,9 @@ Choose the driving pace first. Relaxed gives you more time to react, Standard co
 
 #### Choosing your driving pace
 
-Relaxed gives you the most time to react. All the driving systems remain available, but you'll face fewer random hazards, have longer to respond, and receive calmer routine announcements. Collisions and fatigue are more forgiving too.
+Relaxed passes about ten minutes of road and clock for each real minute, and gives you the most time to react. All the driving systems remain available, but you'll face fewer random hazards, have longer to respond, and receive calmer routine announcements. Collisions and fatigue are more forgiving too.
 
-Standard brings balanced timing and consequences. Distance and time move twice as fast, so a driving day takes half the real time. Decisions arrive sooner, without the extra forgiveness of Relaxed.
+Standard brings balanced timing and consequences. Distance and time move twice as fast, about twenty minutes for each real minute, so a driving day takes half the real time. Decisions arrive sooner, without the extra forgiveness of Relaxed.
 
 Real time uses Standard's level of challenge and follows your computer's date and time. The driving clock runs in real time on the road and while parked. Pair it with real-world weather if you'd like conditions to follow the world outside. Matching the clock doesn't change your delivery time remaining, career progress, or hours of service.
 
@@ -943,7 +946,7 @@ You can browse public driver information without sharing your own. Connect an ac
 | Driver directory | Browse public driver profiles, with active drivers first. Enter opens a profile; Check again refreshes the list. Viewing it shares nothing about you. |
 | Drivers on duty | Hear who's playing and what they're doing. The list refreshes about once a minute; Enter opens a driver's public profile. You don't need to share your own profile to view it. |
 | Say when drivers go on or off duty | Hear when other drivers start or finish playing. Off by default, and urgent driving messages come first. No account is needed. |
-| Online services | Turn orinks.net services, Mastodon sharing, and Discord presence on or off together. Your individual choices are remembered. Live weather, traffic, and parking have separate settings. |
+| Online services | Turn orinks.net services and Discord presence on or off together. Your individual choices are remembered. Live weather, traffic, and parking have separate settings. |
 | Account achievements | Browse achievements from all your careers on this computer in seven categories. For one career's record, use Achievements on the main menu. |
 | Your profile | Read your public driver profile as other players hear it. Requires a connected account and Profile sharing. |
 | Set up orinks.net account | Connect an existing account using your browser. The [account and backup guide](#online-sharing-and-cloud-backups) explains setup. |
@@ -952,8 +955,6 @@ You can browse public driver information without sharing your own. Connect an ac
 | Back up saves to your orinks.net account | Keep private backups after saving, for recovery or play on another computer. |
 | Restore a cloud backup | Choose a backed-up career to restore, or use Back up this career now to upload your current save. |
 | Automatic cloud retention | Keep up to ten cloud careers. Replacing a cloud career leaves its local save intact. |
-| Share notable deliveries to Mastodon | Share deliveries that earn an achievement, level, or perfect streak using FreightFateRuns. Routine deliveries aren't posted. Requires a linked Mastodon account. |
-| Link a Mastodon account | Open orinks.net to authorize your Mastodon account. Use the same page to unlink it. |
 | Discord presence | Show broad activity, route, and cargo in Discord. On by default while Discord is running; no driver profile is needed. It clears after half an hour idle and never shares saves or personal details. |
 
 ### Problem reports
@@ -1102,10 +1103,6 @@ With the engine running, M switches the radio on, and Page Up or Page Down tunes
 ### Can I hear a weather warning again?
 
 With live weather on, the Weather app under Driver apps lists active alerts. Comma also steps back through recent messages.
-
-### Why did a delivery not post to Mastodon?
-
-Only deliveries that earn an achievement, a level, or a perfect streak are shared, and only after you link an account.
 
 ### Can I steer the truck myself?
 

@@ -11,7 +11,6 @@
 
 use sdl2::clipboard::ClipboardUtil;
 use sdl2::event::{Event, WindowEvent};
-use sdl2::keyboard::{Keycode, Mod};
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
 use sdl2::{EventPump, Sdl, VideoSubsystem};
@@ -20,7 +19,10 @@ use crate::controller::sdl::{axis_from_sdl, button_from_sdl};
 use crate::states::base::{InputEvent, Key, Mods};
 
 use super::context::Clipboard;
+
 use super::{BG_COLOR, WINDOW_SIZE};
+/// SDL keycode to the game's key set, and `event.mod & KMOD_*`: Hearken's.
+pub use hearken::sdl_shell::{key_from_keycode, mods_from};
 
 /// The SDL clipboard (UTF-8 through `SDL_SetClipboardText`, so the whole
 /// CF_TEXT-drops-non-ASCII workaround of `online_states.py` is gone).
@@ -549,119 +551,10 @@ fn pair_typed_text(out: &mut Vec<InputEvent>, text: &str) {
     }
 }
 
-/// `event.mod & KMOD_*`.
-pub fn mods_from(keymod: Mod) -> Mods {
-    Mods {
-        shift: keymod.intersects(Mod::LSHIFTMOD | Mod::RSHIFTMOD),
-        ctrl: keymod.intersects(Mod::LCTRLMOD | Mod::RCTRLMOD),
-        alt: keymod.intersects(Mod::LALTMOD | Mod::RALTMOD),
-    }
-}
-
-/// SDL keycode to the game's key set.
-pub fn key_from_keycode(keycode: Keycode) -> Key {
-    match keycode {
-        Keycode::A => Key::A,
-        Keycode::B => Key::B,
-        Keycode::C => Key::C,
-        Keycode::D => Key::D,
-        Keycode::E => Key::E,
-        Keycode::F => Key::F,
-        Keycode::G => Key::G,
-        Keycode::H => Key::H,
-        Keycode::I => Key::I,
-        Keycode::J => Key::J,
-        Keycode::K => Key::K,
-        Keycode::L => Key::L,
-        Keycode::M => Key::M,
-        Keycode::N => Key::N,
-        Keycode::O => Key::O,
-        Keycode::P => Key::P,
-        Keycode::Q => Key::Q,
-        Keycode::R => Key::R,
-        Keycode::S => Key::S,
-        Keycode::T => Key::T,
-        Keycode::U => Key::U,
-        Keycode::V => Key::V,
-        Keycode::W => Key::W,
-        Keycode::X => Key::X,
-        Keycode::Y => Key::Y,
-        Keycode::Z => Key::Z,
-        Keycode::NUM_0 => Key::Num0,
-        Keycode::NUM_1 => Key::Num1,
-        Keycode::NUM_2 => Key::Num2,
-        Keycode::NUM_3 => Key::Num3,
-        Keycode::NUM_4 => Key::Num4,
-        Keycode::NUM_5 => Key::Num5,
-        Keycode::NUM_6 => Key::Num6,
-        Keycode::NUM_7 => Key::Num7,
-        Keycode::NUM_8 => Key::Num8,
-        Keycode::NUM_9 => Key::Num9,
-        Keycode::KP_0 => Key::Kp0,
-        Keycode::KP_1 => Key::Kp1,
-        Keycode::KP_2 => Key::Kp2,
-        Keycode::KP_3 => Key::Kp3,
-        Keycode::KP_4 => Key::Kp4,
-        Keycode::KP_5 => Key::Kp5,
-        Keycode::KP_6 => Key::Kp6,
-        Keycode::KP_7 => Key::Kp7,
-        Keycode::KP_8 => Key::Kp8,
-        Keycode::KP_9 => Key::Kp9,
-        Keycode::KP_ENTER => Key::KpEnter,
-        Keycode::KP_PLUS => Key::KpPlus,
-        Keycode::KP_MINUS => Key::KpMinus,
-        Keycode::F1 => Key::F1,
-        Keycode::F2 => Key::F2,
-        Keycode::F3 => Key::F3,
-        Keycode::F4 => Key::F4,
-        Keycode::F5 => Key::F5,
-        Keycode::F6 => Key::F6,
-        Keycode::F7 => Key::F7,
-        Keycode::F8 => Key::F8,
-        Keycode::F9 => Key::F9,
-        Keycode::F10 => Key::F10,
-        Keycode::F11 => Key::F11,
-        Keycode::F12 => Key::F12,
-        Keycode::RETURN => Key::Return,
-        Keycode::ESCAPE => Key::Escape,
-        Keycode::SPACE => Key::Space,
-        Keycode::TAB => Key::Tab,
-        Keycode::BACKSPACE => Key::Backspace,
-        Keycode::UP => Key::Up,
-        Keycode::DOWN => Key::Down,
-        Keycode::LEFT => Key::Left,
-        Keycode::RIGHT => Key::Right,
-        Keycode::HOME => Key::Home,
-        Keycode::END => Key::End,
-        Keycode::PAGEUP => Key::PageUp,
-        Keycode::PAGEDOWN => Key::PageDown,
-        Keycode::INSERT => Key::Insert,
-        Keycode::DELETE => Key::Delete,
-        Keycode::COMMA => Key::Comma,
-        Keycode::PERIOD => Key::Period,
-        Keycode::SLASH => Key::Slash,
-        Keycode::BACKSLASH => Key::Backslash,
-        Keycode::BACKQUOTE => Key::Backquote,
-        Keycode::EQUALS => Key::Equals,
-        Keycode::PLUS => Key::Plus,
-        Keycode::MINUS => Key::Minus,
-        Keycode::SEMICOLON => Key::Semicolon,
-        Keycode::QUOTE => Key::Quote,
-        Keycode::LEFTBRACKET => Key::LeftBracket,
-        Keycode::RIGHTBRACKET => Key::RightBracket,
-        Keycode::LCTRL => Key::LCtrl,
-        Keycode::RCTRL => Key::RCtrl,
-        Keycode::LSHIFT => Key::LShift,
-        Keycode::RSHIFT => Key::RShift,
-        Keycode::LALT => Key::LAlt,
-        Keycode::RALT => Key::RAlt,
-        other => Key::Other(other.into_i32()),
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use sdl2::keyboard::{Keycode, Mod};
 
     #[test]
     fn keydown_pairs_with_the_following_text_input() {

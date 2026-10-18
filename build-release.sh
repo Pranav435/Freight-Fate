@@ -3,7 +3,7 @@
 #
 # The Unix counterpart of build-release.ps1: check the prerequisites, install
 # the pinned Rust toolchain and the Python tooling, then hand over to
-# tools/build_release.py, which fetches BASS and the music pack, builds the
+# tools/build_release.py, which fetches the music pack, builds the
 # game, bakes the world, smokes the packaged build and writes the archive to
 # dist/. Extra arguments (for example --tag or --cargo-target-dir) pass
 # through to the builder.

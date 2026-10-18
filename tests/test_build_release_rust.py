@@ -69,8 +69,7 @@ def make_profile_dir(profile_dir: Path, exe_name: str) -> None:
     """What ``cargo build --release`` leaves behind on Windows."""
     profile_dir.mkdir(parents=True)
     (profile_dir / exe_name).write_bytes(b"MZ")
-    for name in ("SDL2.dll", "bass.dll", "bassopus.dll", "basshls.dll"):
-        (profile_dir / name).write_bytes(b"dll")
+    (profile_dir / "SDL2.dll").write_bytes(b"dll")
     (profile_dir / "freightfate.pdb").write_bytes(b"pdb")
     (profile_dir / "libfreight_fate.rlib").write_bytes(b"rlib")
     deps = profile_dir / "deps"
@@ -100,11 +99,6 @@ def planned(tmp_path, monkeypatch):
     # of source audio that got into one release is exactly this, and it must
     # not reach the plan.
     (package_dir / "assets" / "sounds" / "idle_take3_source.wav").write_bytes(b"local accident")
-    addon = tmp_path / "addon_lib"
-    addon.mkdir()
-    (addon / "basshls.dll").write_bytes(b"hls")
-    (addon / "basshls.txt").write_text("licence", encoding="utf-8")
-    monkeypatch.setattr(build_release, "ADDON_LIB_DIR", addon)
     profile_dir = tmp_path / "target" / "release"
     make_profile_dir(profile_dir, "freightfate.exe")
     baked = make_container(tmp_path / "build" / build_release.RUST_BAKED_FILE, build_release)
@@ -207,14 +201,13 @@ def test_plan_leaves_uncommitted_sounds_on_the_builders_disk(planned):
 def test_plan_stages_only_top_level_runtime_libraries(planned):
     _, plan, _, _ = planned
     dests = destinations(plan)
-    for name in ("SDL2.dll", "bass.dll", "bassopus.dll", "basshls.dll"):
-        assert name in dests
+    assert "SDL2.dll" in dests
     assert "freightfate.pdb" not in dests
     assert "libfreight_fate.rlib" not in dests
     assert not any("serde_derive" in dest for dest in dests)
-    # The game's own fallback plugin folder gets the add-on, not its licence note.
-    assert "freight_fate/lib/basshls.dll" in dests
-    assert "freight_fate/lib/basshls.txt" not in dests
+    # No audio library or add-on plugin folder: the audio engine is linked in.
+    assert not any("bass" in dest.lower() for dest in dests)
+    assert not any(dest.startswith("freight_fate/lib/") for dest in dests)
 
 
 def test_plan_refuses_a_profile_dir_without_the_binary(tmp_path):
@@ -497,8 +490,9 @@ def test_cargo_command_honours_the_target_dir(tmp_path):
     assert build_release.cargo_profile_dir() == build_release.ROOT / "target" / "release"
 
 
-def test_prepare_rust_release_dependencies_fetches_bass_then_music(monkeypatch):
-    """Release builds restore native audio before fetching the music and Channel 3000 packs."""
+def test_prepare_rust_release_dependencies_fetches_the_packs_and_no_audio_library(monkeypatch):
+    """Release builds fetch the music and Channel 3000 packs; there is no
+    native audio library left to restore."""
     build_release = load_build_release_module()
     calls = []
     monkeypatch.setattr(
@@ -513,10 +507,7 @@ def test_prepare_rust_release_dependencies_fetches_bass_then_music(monkeypatch):
 
     build_release.prepare_rust_release_dependencies()
 
-    assert calls[0][0] == [build_release.sys.executable, str(build_release.TOOLS / "fetch_bass.py")]
-    assert calls[0][1] == {"cwd": build_release.ROOT, "check": True}
-    assert calls[1][0] == "music"
-    assert calls[2][0] == "channel3000"
+    assert [call[0] for call in calls] == ["music", "channel3000"]
 
 
 def test_windows_release_wrapper_is_the_complete_beginner_command():
@@ -641,13 +632,6 @@ def test_stable_macos_smoke_uses_the_bounded_headless_app_path(tmp_path, monkeyp
 def make_macos_profile(profile_dir: Path) -> None:
     profile_dir.mkdir(parents=True)
     (profile_dir / "freightfate").write_bytes(b"Mach-O")
-    for name in (
-        "libbass.dylib",
-        "libbasshls.dylib",
-        "libbassopus.dylib",
-        "libbassflac.dylib",
-    ):
-        (profile_dir / name).write_bytes(b"dylib")
 
 
 def test_macos_stage_is_a_player_ready_app_bundle(tmp_path, monkeypatch):
@@ -663,7 +647,6 @@ def test_macos_stage_is_a_player_ready_app_bundle(tmp_path, monkeypatch):
     make_macos_profile(profile_dir)
     baked = make_container(tmp_path / "world.ffdata", build_release)
     monkeypatch.setattr(build_release, "PACKAGE_DIR", package_dir)
-    monkeypatch.setattr(build_release, "ADDON_LIB_DIR", tmp_path / "no-addons")
     monkeypatch.setattr(build_release, "macos_dynamic_sdl_dependency", lambda _exe: None)
     monkeypatch.setattr(build_release, "relocate_macos_libraries", lambda _app: None)
 
@@ -705,14 +688,8 @@ def test_macos_stage_is_a_player_ready_app_bundle(tmp_path, monkeypatch):
         "translations/glossary/en.md",
     ):
         assert (resources / name).is_file()
-    frameworks = app / "Contents" / "Frameworks"
-    for name in (
-        "libbass.dylib",
-        "libbasshls.dylib",
-        "libbassopus.dylib",
-        "libbassflac.dylib",
-    ):
-        assert (frameworks / name).is_file()
+    # The audio engine is compiled in: the bundle carries no audio library.
+    assert not list(app.rglob("libbass*"))
     with (app / "Contents" / "Info.plist").open("rb") as stream:
         info = plistlib.load(stream)
     assert info["CFBundleExecutable"] == "FreightFate"
@@ -722,28 +699,6 @@ def test_macos_stage_is_a_player_ready_app_bundle(tmp_path, monkeypatch):
     assert info["CFBundleGetInfoString"] == "Freight Fate 1.9.0 (1.9-tester-20260830)"
     assert "NSAppleEventsUsageDescription" not in info
     assert "LSMinimumSystemVersion" not in info
-
-
-def test_macos_stage_refuses_missing_player_libraries(tmp_path, monkeypatch):
-    """A silent or Homebrew-dependent app must never become a release."""
-    build_release = load_build_release_module()
-    package_dir = tmp_path / "repo"
-    make_package_tree(package_dir, build_release)
-    track_everything(tmp_path)
-    profile_dir = tmp_path / "target" / "release"
-    profile_dir.mkdir(parents=True)
-    (profile_dir / "freightfate").write_bytes(b"Mach-O")
-    baked = make_container(tmp_path / "world.ffdata", build_release)
-    monkeypatch.setattr(build_release, "PACKAGE_DIR", package_dir)
-    monkeypatch.setattr(build_release, "ADDON_LIB_DIR", tmp_path / "no-addons")
-
-    with pytest.raises(RuntimeError, match="missing macOS player library libbass.dylib"):
-        build_release.stage_rust_build(
-            profile_dir,
-            build_dir=tmp_path / "build" / "FreightFate",
-            baked_data=baked,
-            platform_name="darwin",
-        )
 
 
 def test_macos_dynamic_sdl_dependency_reads_the_install_names(tmp_path, monkeypatch):
@@ -779,7 +734,6 @@ def test_macos_stage_refuses_a_dynamically_linked_sdl(tmp_path, monkeypatch):
     make_macos_profile(profile_dir)
     baked = make_container(tmp_path / "world.ffdata", build_release)
     monkeypatch.setattr(build_release, "PACKAGE_DIR", package_dir)
-    monkeypatch.setattr(build_release, "ADDON_LIB_DIR", tmp_path / "no-addons")
     monkeypatch.setattr(
         build_release,
         "macos_dynamic_sdl_dependency",
@@ -797,22 +751,16 @@ def test_macos_stage_refuses_a_dynamically_linked_sdl(tmp_path, monkeypatch):
 
 def make_linux_profile(profile_dir: Path) -> None:
     """What ``cargo build --release`` leaves behind on Linux: the executable
-    and BASS with its decoders (Prism is linked in)."""
+    (SDL2, Prism and the audio engine are linked in) and build leftovers."""
     profile_dir.mkdir(parents=True)
     (profile_dir / "freightfate").write_bytes(b"ELF")
-    for name in (
-        "libbass.so",
-        "libbassopus.so",
-        "libbasshls.so",
-        "libbassflac.so",
-    ):
-        (profile_dir / name).write_bytes(b"so")
     (profile_dir / "freightfate.d").write_text("deps", encoding="utf-8")
     (profile_dir / "libfreight_fate.rlib").write_bytes(b"rlib")
 
 
-def test_linux_stage_ships_bass_and_its_decoders(tmp_path, monkeypatch):
-    """The Linux payload carries BASS and its decoders beside the executable."""
+def test_linux_stage_ships_the_executable_with_no_native_libraries(tmp_path, monkeypatch):
+    """The Linux payload is the executable and its data: nothing it links
+    has to sit beside it."""
     build_release = load_build_release_module()
     package_dir = tmp_path / "repo"
     make_package_tree(package_dir, build_release)
@@ -824,7 +772,6 @@ def test_linux_stage_ships_bass_and_its_decoders(tmp_path, monkeypatch):
     make_linux_profile(profile_dir)
     baked = make_container(tmp_path / "world.ffdata", build_release)
     monkeypatch.setattr(build_release, "PACKAGE_DIR", package_dir)
-    monkeypatch.setattr(build_release, "ADDON_LIB_DIR", tmp_path / "no-addons")
     monkeypatch.setattr(build_release, "linux_dynamic_sdl_dependency", lambda _exe: None)
 
     build_dir = build_release.stage_rust_build(
@@ -837,34 +784,10 @@ def test_linux_stage_ships_bass_and_its_decoders(tmp_path, monkeypatch):
 
     assert build_dir == tmp_path / "build" / "FreightFate"
     assert (build_dir / "FreightFate").is_file()
-    for name in build_release.LINUX_REQUIRED_LIBRARIES:
-        assert (build_dir / name).is_file(), name
+    assert not list(build_dir.glob("*.so*"))
     assert not (build_dir / "freightfate.d").exists()
     assert not (build_dir / "libfreight_fate.rlib").exists()
     assert (build_dir / "freight_fate" / "data" / "world.ffdata").is_file()
-
-
-@pytest.mark.parametrize("missing_name", ["libbass.so", "libbassopus.so"])
-def test_linux_stage_refuses_missing_player_libraries(tmp_path, monkeypatch, missing_name):
-    """A mute or speechless tarball must never become a release."""
-    build_release = load_build_release_module()
-    package_dir = tmp_path / "repo"
-    make_package_tree(package_dir, build_release)
-    track_everything(tmp_path)
-    profile_dir = tmp_path / "target" / "release"
-    make_linux_profile(profile_dir)
-    (profile_dir / missing_name).unlink()
-    baked = make_container(tmp_path / "world.ffdata", build_release)
-    monkeypatch.setattr(build_release, "PACKAGE_DIR", package_dir)
-    monkeypatch.setattr(build_release, "ADDON_LIB_DIR", tmp_path / "no-addons")
-
-    with pytest.raises(RuntimeError, match=f"missing Linux player library {missing_name}"):
-        build_release.stage_rust_build(
-            profile_dir,
-            build_dir=tmp_path / "build" / "FreightFate",
-            baked_data=baked,
-            platform_name="linux",
-        )
 
 
 def test_linux_dynamic_sdl_dependency_reads_the_needed_sonames(tmp_path, monkeypatch):
@@ -907,7 +830,6 @@ def test_linux_stage_refuses_a_dynamically_linked_sdl(tmp_path, monkeypatch):
     make_linux_profile(profile_dir)
     baked = make_container(tmp_path / "world.ffdata", build_release)
     monkeypatch.setattr(build_release, "PACKAGE_DIR", package_dir)
-    monkeypatch.setattr(build_release, "ADDON_LIB_DIR", tmp_path / "no-addons")
     monkeypatch.setattr(
         build_release, "linux_dynamic_sdl_dependency", lambda _exe: "libSDL2-2.0.so.0"
     )
@@ -937,8 +859,13 @@ def write_linux_tarball(path: Path, names: list[str], build_release) -> None:
             tar.addfile(info, io.BytesIO(data))
 
 
-@pytest.mark.parametrize("missing_name", ["libbass.so", "libbassopus.so", "libbassflac.so"])
-def test_linux_archive_verifier_rejects_a_rust_tarball_missing_a_library(tmp_path, missing_name):
+@pytest.mark.parametrize(
+    "missing_name",
+    ["freight_fate/sounds.pak", "freight_fate/music.pak", "freight_fate/channel3000.pak"],
+)
+def test_linux_archive_verifier_rejects_a_rust_tarball_missing_a_pack(tmp_path, missing_name):
+    """A tarball with no native library beside the executable is whole; one
+    missing a pack is not."""
     build_release = load_build_release_module()
     names = [
         "FreightFate",
@@ -949,12 +876,12 @@ def test_linux_archive_verifier_rejects_a_rust_tarball_missing_a_library(tmp_pat
         "freight_fate/music.pak",
         "freight_fate/channel3000.pak",
         build_release.RUST_BAKED_FILE_ENTRY,
-        *(name for name in build_release.LINUX_REQUIRED_LIBRARIES if name != missing_name),
     ]
+    names.remove(missing_name)
     out = tmp_path / "FreightFate-1.9-tester-20260902-linux-x64.tar.gz"
     write_linux_tarball(out, names, build_release)
 
-    with pytest.raises(RuntimeError, match=f"FreightFate/{missing_name}"):
+    with pytest.raises(RuntimeError, match=f"missing payload files: {missing_name}"):
         build_release.verify_archive(out)
 
     write_linux_tarball(out, [*names, missing_name], build_release)
@@ -987,7 +914,7 @@ def test_linux_tarball_has_no_name_for_an_architecture_nobody_builds():
 def test_linux_archive_verifier_checks_the_arm64_rust_tarball_too(tmp_path):
     """The ARM64 tarball is the same layout under a different name; the
     verifier must recognise it rather than reject the name outright, and
-    must demand the same libraries of it."""
+    must demand the same payload of it."""
     build_release = load_build_release_module()
     names = [
         "FreightFate",
@@ -995,16 +922,14 @@ def test_linux_archive_verifier_checks_the_arm64_rust_tarball_too(tmp_path):
         "LICENSE.txt",
         "USER_MANUAL.md",
         "freight_fate/sounds.pak",
-        "freight_fate/music.pak",
         "freight_fate/channel3000.pak",
         build_release.RUST_BAKED_FILE_ENTRY,
-        *(name for name in build_release.LINUX_REQUIRED_LIBRARIES if name != "libbass.so"),
     ]
     out = tmp_path / "FreightFate-1.9-tester-20260902-linux-arm64.tar.gz"
     write_linux_tarball(out, names, build_release)
-    with pytest.raises(RuntimeError, match="FreightFate/libbass.so"):
+    with pytest.raises(RuntimeError, match="missing payload files: freight_fate/music.pak"):
         build_release.verify_archive(out)
-    write_linux_tarball(out, [*names, "libbass.so"], build_release)
+    write_linux_tarball(out, [*names, "freight_fate/music.pak"], build_release)
     build_release.verify_archive(out)
 
 
@@ -1039,17 +964,17 @@ def test_appimage_tooling_refuses_an_architecture_it_has_no_tools_for():
 def test_macos_linked_libraries_ignores_fat_macho_slice_headers(tmp_path, monkeypatch):
     """Every fat-binary architecture header names the file, not a dependency."""
     build_release = load_build_release_module()
-    dylib = tmp_path / "libbass.dylib"
+    dylib = tmp_path / "libone.dylib"
     dylib.write_bytes(b"Mach-O")
 
     def run(command, **_kwargs):
         assert command == ["otool", "-L", str(dylib)]
         output = (
             f"{dylib} (architecture x86_64):\n"
-            "\t@rpath/libbass.dylib (compatibility version 1.0.0)\n"
+            "\t@rpath/libone.dylib (compatibility version 1.0.0)\n"
             "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0)\n"
             f"{dylib} (architecture arm64):\n"
-            "\t@rpath/libbass.dylib (compatibility version 1.0.0)\n"
+            "\t@rpath/libone.dylib (compatibility version 1.0.0)\n"
             "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0)\n"
         )
         return subprocess.CompletedProcess(command, 0, output, "")
@@ -1057,7 +982,7 @@ def test_macos_linked_libraries_ignores_fat_macho_slice_headers(tmp_path, monkey
     monkeypatch.setattr(build_release.subprocess, "run", run)
 
     assert build_release.macos_linked_libraries(dylib) == [
-        "@rpath/libbass.dylib",
+        "@rpath/libone.dylib",
         "/usr/lib/libSystem.B.dylib",
     ]
 
@@ -1231,14 +1156,7 @@ def test_full_macos_bundle_verification_reads_packs_from_resources(tmp_path, mon
     frameworks.mkdir(parents=True)
     executable.write_bytes(b"Mach-O")
     executable.chmod(0o755)
-    for name in (
-        "libbass.dylib",
-        "libbassopus.dylib",
-        "libbasshls.dylib",
-        "libbassflac.dylib",
-        "libSDL2-2.0.0.dylib",
-    ):
-        (frameworks / name).write_bytes(b"dylib")
+    (frameworks / "libSDL2-2.0.0.dylib").write_bytes(b"dylib")
     required = (
         "build_info.json",
         "LICENSE.txt",
@@ -1283,60 +1201,6 @@ def test_full_macos_bundle_verification_reads_packs_from_resources(tmp_path, mon
     ]
 
 
-@pytest.mark.parametrize(
-    ("missing_name", "error_fragment"),
-    [
-        ("libbass.dylib", "libbass.dylib"),
-        ("libbassopus.dylib", "libbassopus.dylib"),
-        ("libbasshls.dylib", "libbasshls.dylib"),
-        ("libbassflac.dylib", "libbassflac.dylib"),
-    ],
-)
-def test_macos_staged_payload_rejects_each_missing_runtime_library(
-    tmp_path, monkeypatch, missing_name, error_fragment
-):
-    build_release = load_build_release_module()
-    app = tmp_path / "FreightFate.app"
-    executable = app / "Contents" / "MacOS" / "FreightFate"
-    resources = app / "Contents" / "Resources"
-    frameworks = app / "Contents" / "Frameworks"
-    executable.parent.mkdir(parents=True)
-    resources.mkdir(parents=True)
-    frameworks.mkdir(parents=True)
-    executable.write_bytes(b"Mach-O")
-    executable.chmod(0o755)
-    for name in build_release.MACOS_REQUIRED_LIBRARIES:
-        if name != missing_name:
-            (frameworks / name).write_bytes(b"dylib")
-    required = (
-        "build_info.json",
-        "LICENSE.txt",
-        "CHANGELOG.md",
-        "USER_MANUAL.md",
-        "USER_MANUAL.html",
-        "ALPHA_TEST_BOOK.md",
-        "ALPHA_TEST_BOOK.html",
-        "translations/freight-fate.pot",
-        "translations/README.md",
-        "SOUND_CREDITS.md",
-        "freight_fate/sounds.pak",
-        "freight_fate/music.pak",
-        "freight_fate/channel3000.pak",
-        "freight_fate/assets/sounds/CREDITS.md",
-    )
-    for relative in required:
-        path = resources / relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(b"payload")
-    make_container(resources / "freight_fate" / "data" / "world.ffdata", build_release)
-    fake_assets = type("FakeAssets", (), {"SoundPack": lambda _self, _path: None})
-    fake_tool = type("FakeTool", (), {"_load_assets_pack": staticmethod(lambda: fake_assets)})
-    monkeypatch.setattr(build_release, "_load_tool", lambda _name: fake_tool)
-
-    with pytest.raises(RuntimeError, match=error_fragment):
-        build_release.verify_rust_payload(app, platform_name="darwin")
-
-
 def write_macos_archive(
     path: Path,
     payload_root: str,
@@ -1345,10 +1209,6 @@ def write_macos_archive(
     entries = {
         "FreightFate.app/Contents/MacOS/FreightFate": b"Mach-O",
         "FreightFate.app/Contents/Info.plist": b"plist",
-        "FreightFate.app/Contents/Frameworks/libbass.dylib": b"bass",
-        "FreightFate.app/Contents/Frameworks/libbassopus.dylib": b"bassopus",
-        "FreightFate.app/Contents/Frameworks/libbasshls.dylib": b"basshls",
-        "FreightFate.app/Contents/Frameworks/libbassflac.dylib": b"bassflac",
         "FreightFate.app/Contents/Frameworks/libSDL2-2.0.0.dylib": b"sdl",
         f"{payload_root}/build_info.json": b"{}",
         f"{payload_root}/LICENSE.txt": b"license",
@@ -1374,22 +1234,13 @@ def test_archive_verifier_detects_new_rust_payload_by_resources_build_info(tmp_p
     build_release.verify_archive(archive)
 
 
-@pytest.mark.parametrize(
-    ("missing_name", "error_fragment"),
-    [
-        ("libbass.dylib", "libbass.dylib"),
-        ("libbassopus.dylib", "libbassopus.dylib"),
-        ("libbasshls.dylib", "libbasshls.dylib"),
-        ("libbassflac.dylib", "libbassflac.dylib"),
-    ],
-)
-def test_macos_archive_verifier_rejects_each_missing_runtime_library(
-    tmp_path, missing_name, error_fragment
-):
+def test_macos_archive_verifier_rejects_a_bundle_without_its_info_plist(tmp_path):
+    """The bundle needs no native audio library any more, but it is still
+    no app without its Info.plist."""
     archive = tmp_path / "FreightFate-broken-macos-arm64.zip"
     write_macos_archive(archive, "FreightFate.app/Contents/Resources")
     rewritten = tmp_path / "rewritten.zip"
-    missing_entry = f"FreightFate.app/Contents/Frameworks/{missing_name}"
+    missing_entry = "FreightFate.app/Contents/Info.plist"
     with zipfile.ZipFile(archive) as source, zipfile.ZipFile(rewritten, "w") as target:
         for info in source.infolist():
             if info.filename != missing_entry:
@@ -1398,7 +1249,7 @@ def test_macos_archive_verifier_rejects_each_missing_runtime_library(
     rewritten.rename(archive)
 
     build_release = load_build_release_module()
-    with pytest.raises(RuntimeError, match=error_fragment):
+    with pytest.raises(RuntimeError, match="Info.plist"):
         build_release.verify_archive(archive)
 
 
@@ -1450,7 +1301,7 @@ def test_macos_developer_id_signing_seals_libraries_before_the_bundle(tmp_path, 
     (app / "Contents" / "MacOS" / "FreightFate").write_bytes(b"")
     frameworks = app / "Contents" / "Frameworks"
     frameworks.mkdir()
-    for name in ("libbass.dylib", "libbassopus.dylib"):
+    for name in ("libone.dylib", "libtwo.dylib"):
         (frameworks / name).write_bytes(b"")
     calls = []
     monkeypatch.setattr(build_release.sys, "platform", "darwin")
@@ -1480,8 +1331,8 @@ def test_macos_developer_id_signing_seals_libraries_before_the_bundle(tmp_path, 
         ]
 
     assert calls == [
-        signed(frameworks / "libbass.dylib"),
-        signed(frameworks / "libbassopus.dylib"),
+        signed(frameworks / "libone.dylib"),
+        signed(frameworks / "libtwo.dylib"),
         signed(app),
         ["codesign", "--verify", "--deep", "--strict", str(app)],
     ]

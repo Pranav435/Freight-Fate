@@ -552,7 +552,7 @@ pub(crate) fn award_arrival_achievements(
     if arrival_hour < 4.0 && increment_stat(profile_mut_of(ctx), "night_deliveries") >= 10 {
         push(&mut ids, "night_shift_regular");
     }
-    // A clean licence is a running record, so a single ticket ends it: the
+    // A clean license is a running record, so a single ticket ends it: the
     // counter only advances on deliveries that came with none.
     if d.speeding_tickets == 0 {
         if increment_stat(profile_mut_of(ctx), "ticket_free_deliveries") >= 50 {
@@ -587,7 +587,6 @@ pub(crate) fn award_arrival_achievements(
             state.record_badge(
                 result.award.message.normal.clone(),
                 result.award.achievement.name.to_string(),
-                result.publicly_eligible,
             );
         }
     }

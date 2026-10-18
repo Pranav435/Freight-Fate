@@ -11,10 +11,11 @@
 //! [`IntoSpoken`].
 
 use ff_core::message_log::MessageCategory;
-use ff_core::speech_pacing::{Cut, Disposition, EventPriority, SpeechCategory, Valid};
+use ff_core::speech_pacing::{Disposition, SpeechCategory};
 use ff_core::speech_text::SpokenMessage;
 
 use crate::audio::SPEECH_DUCK_LEVEL;
+use crate::speech::{Cut, EventPriority, PacerConfig, Protect, Valid};
 
 use super::GameContext;
 
@@ -22,6 +23,33 @@ use super::GameContext;
 /// a transcript of what the player heard -- the most faithful record for an
 /// audio-first game. Same name as the Python logger so the lines grep alike.
 pub const TRANSCRIPT_TARGET: &str = "freight_fate.transcript";
+
+/// The event pacer's tuning: Hearken's defaults, plus the three values
+/// Freight Fate's own pacer had. A CRITICAL line delivered queued (an
+/// engine stall behind the line speaking) waits as long as chatter does
+/// rather than flushing whatever is speaking; a ROUTE line waits under a
+/// second; and a Chinese, Japanese or Korean character counts as three
+/// English letters of speaking time, so a translated line is not mistaken
+/// for a short one.
+pub const FF_PACER: PacerConfig = PacerConfig {
+    critical_wait_s: 3.0,
+    important_wait_s: 0.8,
+    wide_char_weight: 3.0,
+    ..PacerConfig::DEFAULT
+};
+
+/// A CONFIRMATION never takes the pacer's hand-back slot: it reports an
+/// outcome the player has usually heard in full, and handing it back after
+/// the line that cut it repeats it, burying what came next ("The road
+/// narrows to two lanes." heard twice around "Automatic braking.", QA
+/// drive 2026-10-13). Every other line, categorised or not, may.
+fn protect_for(category: Option<SpeechCategory>) -> Protect {
+    if category == Some(SpeechCategory::Confirmation) {
+        Protect::No
+    } else {
+        Protect::Yes
+    }
+}
 
 macro_rules! transcript {
     ($($arg:tt)*) => {
@@ -449,7 +477,8 @@ impl GameContext {
         if interrupt {
             self.event_pacer.note_ahead(&text);
         } else {
-            self.event_pacer.note_queued(&text, priority, None, None);
+            self.event_pacer
+                .note_queued(&text, priority, Protect::Yes, None);
         }
         self.event_pacer.resume_delivery(&text);
         if self.settings.sapi_events {
@@ -688,14 +717,15 @@ impl GameContext {
         transcript!("[event] {}", text);
         self.event_pacer.note_spoken(&text, key);
         let mut cut = None;
+        let protect = protect_for(category);
         if self.settings.sapi_events {
             if interrupt {
                 cut = self
                     .event_pacer
-                    .note_interrupt(&text, priority, category, valid);
+                    .note_interrupt(&text, priority, protect, valid);
             } else if self
                 .event_pacer
-                .should_flush(&text, priority, category, valid)
+                .should_flush(&text, priority, protect, valid)
             {
                 // The channel is backed up past the point of truth: purging
                 // and speaking fresh IS the queued line's honest delivery.
@@ -720,11 +750,11 @@ impl GameContext {
             if interrupt {
                 cut = self
                     .event_pacer
-                    .note_interrupt(&text, priority, category, valid);
+                    .note_interrupt(&text, priority, protect, valid);
                 self.speech.stop_main();
             } else {
                 self.event_pacer
-                    .note_queued(&text, priority, category, valid);
+                    .note_queued(&text, priority, protect, valid);
             }
             self.speech.say(&text, false);
         }
@@ -866,10 +896,7 @@ impl GameContext {
         self.event_pacer.speaking_critical()
     }
 
-    pub fn event_delivery_status(
-        &mut self,
-        key: &str,
-    ) -> Option<ff_core::speech_pacing::DeliveryStatus> {
+    pub fn event_delivery_status(&mut self, key: &str) -> Option<crate::speech::DeliveryStatus> {
         self.event_pacer.delivery_status(key)
     }
 

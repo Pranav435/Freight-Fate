@@ -64,11 +64,9 @@ BUFF_FIELDS = ("label", "help", "purchased", "worn_off")
 # the msgctxt that tells them apart. The game never looks up an entry with
 # a context (it matches finished lines), so the plain entry is the one
 # spoken; the context entry exists so a translator sees the two uses apart.
-CONTEXTS = {
-    # The controller's Back button, named as the controller prints it; the
-    # plain "Back" is the menu row that leaves a screen.
-    ("crates/freight-fate/src/bindings/names.rs", "Back"): "controller button",
-}
+# An entry in ``lang/extra.pot`` can carry its own msgctxt instead (the
+# controller's Back button, which Hearken's bindings name, is one).
+CONTEXTS: dict[tuple[str, str], str] = {}
 
 
 def template_entries() -> list[Entry]:
@@ -157,6 +155,18 @@ def template_entries() -> list[Entry]:
     if EXTRA.exists():
         for extra in parse_po(EXTRA.read_text(encoding="utf-8")):
             if not extra.msgid:
+                continue
+            if extra.msgctxt is not None:
+                if all(c.key != extra.key for c in contextual):
+                    contextual.append(
+                        Entry(
+                            msgid=extra.msgid,
+                            msgctxt=extra.msgctxt,
+                            refs=extra.refs or ["lang/extra.pot"],
+                            comments=extra.comments,
+                            line=extra.line,
+                        )
+                    )
                 continue
             if extra.msgid in entries:
                 entries[extra.msgid].comments.extend(extra.comments)

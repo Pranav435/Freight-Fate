@@ -746,10 +746,10 @@ fn shipped_spanish_says_every_eld_status_whole() {
     // loose "{driven} driving" once took the stopped line and left
     // "ELD status en duty not de conducción".
     let tr = shipped_spanish();
-    let hours = "Hours of service: 11 hours of driving left, break due in 8 hours, \
-                 duty window closes in 14 hours";
-    let spanish_hours = "Horas de servicio: quedan 11 horas de conducción, la pausa toca \
-                         en 8 horas y la ventana de servicio se cierra en 14 horas";
+    let hours = "Hours of service: 11 hours of driving left, 30-minute break due in 8 hours, \
+                 14 hours left in the 14-hour window";
+    let spanish_hours = "Horas de servicio: quedan 11 horas de conducción, la pausa de 30 minutos \
+                         toca en 8 horas y quedan 14 horas de la ventana de 14 horas";
     for (status, spoken) in [
         ("driving", "conduciendo"),
         ("on duty not driving", "en servicio sin conducir"),
@@ -791,36 +791,11 @@ fn shipped_spanish_keeps_a_template_hole_to_one_sentence() {
 }
 
 #[test]
-fn shipped_spanish_finds_the_sentence_after_a_lead_in_hole() {
-    // "{flavor} Dispatch starts you on ..." reaches the board split into
-    // sentences, the flavor sentence apart from the rest.
-    let tr = shipped_spanish();
-    assert_eq!(
-        tr.translate(
-            "Career objective: First dispatch. Northstar Freight Lines keeps the first week \
-             balanced. Dispatch starts you on a short standard load with room on the \
-             appointment. Recommended dispatch: trainer-recommended."
-        ),
-        "Objetivo de carrera: Primer despacho. Northstar Freight Lines mantiene equilibrada \
-         la primera semana. Despacho te empieza con una carga estándar corta y margen en la \
-         cita. Despacho recomendado: recomendado por el instructor."
-    );
-}
-
-#[test]
 fn shipped_spanish_says_a_yard_once_and_joins_de_el() {
     let tr = shipped_spanish();
     assert_eq!(
-        tr.translate(
-            "Parked at company yard: Chicago Company Yard in the Chicago service area, Illinois."
-        ),
-        "Aparcado en patio de la empresa: Patio de la empresa Chicago, en la zona de servicio \
-         de Chicago, Illinois."
-    );
-    assert_eq!(
-        tr.translate("Load weight: 13,677 pounds under the gross-weight limit with current fuel."),
-        "Peso de la carga: 13.677 libras por debajo del límite de peso bruto con el combustible \
-         actual."
+        tr.translate("company yard: Chicago Company Yard in Chicago. 5,000 dollars."),
+        "patio de la empresa: Chicago Company Yard en Chicago. 5.000 dólares."
     );
     assert_eq!(
         tr.translate(
@@ -850,10 +825,10 @@ fn shipped_spanish_says_places_board_rows_and_regions_whole() {
         ("Dispatch routed you to retail distribution hub Amazon Fulfillment Center KRB1 in Kenosha, Wisconsin.", "Despacho te ha enviado a centro de distribución comercial Amazon Fulfillment Center KRB1 en Kenosha, Wisconsin."),
         ("Market watch: automotive tight, farm inputs tight, lumber paper loose, steel loose.", "Vistazo al mercado: automoción al alza, insumos agrícolas al alza, madera y papel a la baja, acero a la baja."),
         ("16 tons of general freight from Chicago Parcel Hub in Chicago, Illinois to the Fargo metro freight market. 62 miles. Carrier gross 332 dollars. Deadline 3 hours. Equipment: dry van trailer.", "16 toneladas de carga general desde Chicago Parcel Hub en Chicago, Illinois hasta el mercado de carga metropolitano de Fargo. 62 millas. Ingreso bruto de la empresa de transporte: 332 dólares. Plazo de entrega: 3 horas. Equipo: remolque de furgón seco."),
-        ("16 tons of general freight from Chicago Parcel Hub in Chicago, Illinois to Amazon Fulfillment Center KRB1 in Kenosha, Wisconsin. 62 miles. Gross revenue 332 dollars. Deadline 12 hours, planned around the 10-hour rest your hours will force. Equipment: dry van trailer.", "16 toneladas de carga general desde Chicago Parcel Hub en Chicago, Illinois hasta Amazon Fulfillment Center KRB1 en Kenosha, Wisconsin. 62 millas. Ingresos brutos: 332 dólares. Plazo de entrega: 12 horas, contando el descanso de 10 horas que te impondrán tus horas de servicio. Equipo: remolque de furgón seco."),
+        ("16 tons of general freight from Chicago Parcel Hub in Chicago, Illinois to Amazon Fulfillment Center KRB1 in Kenosha, Wisconsin. 62 miles. Gross revenue 332 dollars. Deadline 12 hours, includes a 10-hour rest. Equipment: dry van trailer.", "16 toneladas de carga general desde Chicago Parcel Hub en Chicago, Illinois hasta Amazon Fulfillment Center KRB1 en Kenosha, Wisconsin. 62 millas. Ingresos brutos: 332 dólares. Plazo de entrega: 12 horas, incluye un descanso de 10 horas. Equipo: remolque de furgón seco."),
         (
-            "Dispatch accepted from Chicago Company Yard. Deadhead 1.1 miles on South Canal Street to pickup at Chicago Parcel Hub in Chicago, Illinois.",
-            "Despacho aceptado desde Patio de la empresa Chicago. Trayecto en vacío de 1,1 millas por South Canal Street hasta la recogida en Chicago Parcel Hub en Chicago, Illinois.",
+            "Accepted. Deadhead 1.1 miles on South Canal Street to pickup at Chicago Parcel Hub in Chicago, Illinois.",
+            "Aceptado. Trayecto en vacío de 1,1 millas por South Canal Street hasta la recogida en Chicago Parcel Hub en Chicago, Illinois.",
         ),
         (
             "Pulling into port Port of Tacoma in Tacoma, Washington.",
@@ -1004,4 +979,30 @@ fn every_facility_kind_and_market_class_has_its_phrases() {
             assert!(extra.contains(&format!("msgid \"{phrase}\"")), "{phrase}");
         }
     }
+}
+
+#[test]
+fn a_long_line_of_commas_is_matched_without_retrying_every_cut() {
+    // The Spanish keyboard help is one 5,600-character line, and
+    // "{a}, {b} to {c}, {d}, {e}{f}." tried every way of cutting it at its
+    // commas: a minute on the game thread for one key press. A line like
+    // it, which the template cannot fill, must be turned down at once; the
+    // old search would not finish this before the heat death of the run.
+    let template = Template::new(
+        parse_source("{a}, {b} to {c}, {d}, {e}{f}."),
+        parse_translation("{a}, {b} a {c}, {d}, {e}{f}."),
+    )
+    .expect("the template has literal letters");
+    let line = "one, two to three, ".repeat(200) + "no full stop";
+    assert!(template.captures(&line).is_none());
+    // And one it can fill still is, the same way as before.
+    let caps = template
+        .captures("Up, Down to brake, Left, Right.")
+        .expect("filled");
+    assert_eq!(caps["a"], "Up");
+    assert_eq!(caps["b"], "Down");
+    assert_eq!(caps["c"], "brake");
+    assert_eq!(caps["d"], "Left");
+    assert_eq!(caps["e"], "");
+    assert_eq!(caps["f"], "Right");
 }

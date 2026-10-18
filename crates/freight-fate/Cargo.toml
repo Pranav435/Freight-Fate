@@ -39,16 +39,7 @@ workspace = true
 
 [dependencies]
 ff-core = { path = "../ff-core" }
-# Prism is compiled from source and linked in.
-# 0.1.4 at least: it loads the optional screen reader DLLs (Windows) and
-# Speech Dispatcher (Linux) at run time, and anchors its backends for GCC
-# and Clang, so build.rs needs no delay-load or whole-archive flags.
-# Earlier releases also drop every backend from a static link (0.1.1) or
-# overrun the caller's stack in Prism::new (0.1.2; trypsynth/prismer#2).
-prismer = { version = "0.1.4", features = ["static"] }
-bass-sys = { path = "../bass-sys" }
-anyhow.workspace = true
-thiserror.workspace = true
+hearken.workspace = true
 log.workspace = true
 env_logger.workspace = true
 serde.workspace = true
@@ -64,11 +55,9 @@ ureq.workspace = true
 keyring.workspace = true
 discord-rich-presence.workspace = true
 once_cell.workspace = true
-parking_lot.workspace = true
 regex.workspace = true
 sdl2 = { workspace = true, features = ["raw-window-handle"] }
 url.workspace = true
-form_urlencoded.workspace = true
 webbrowser.workspace = true
 sys-locale.workspace = true
 
@@ -91,8 +80,10 @@ sdl2 = { workspace = true, features = ["bundled", "static-link"] }
 # ships a libSDL2-2.0.so.0, but not the same one, and a tarball that has to
 # run on Fedora, Arch and Debian alike cannot pick which. The static build
 # still opens X11, Wayland, PulseAudio, PipeWire and ALSA through dlopen at
-# run time, so what the player's machine lacks is skipped rather than fatal,
-# and the executable itself depends on nothing but libc.
+# run time, so what the player's machine lacks is skipped rather than fatal.
+# The executable does link libc, D-Bus, and ALSA's libasound.so.2, which
+# Hearken's audio engine (cpal) links to reach the sound server: a machine
+# without libasound2 cannot start the game.
 [target.'cfg(target_os = "linux")'.dependencies]
 sdl2 = { workspace = true, features = ["bundled", "static-link"] }
 

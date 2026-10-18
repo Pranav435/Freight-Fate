@@ -169,6 +169,12 @@ impl SpeechSink for TeeSpeech {
     fn refresh(&mut self) -> bool {
         self.inner.refresh()
     }
+    fn is_speaking(&self) -> bool {
+        self.inner.is_speaking()
+    }
+    fn startup_hold(&self) -> std::time::Duration {
+        self.inner.startup_hold()
+    }
     fn shutdown(&mut self) {
         self.inner.shutdown();
     }
@@ -194,12 +200,12 @@ struct TeeAudio {
 }
 
 /// The key the road bed plays under. The game never starts that bed by key:
-/// it calls `set_road_noise(speed)`, and the BASS backend starts and stops the
+/// it calls `set_road_noise(speed)`, and the audio backend starts and stops the
 /// `vehicle/road` loop on [`CH_ROAD`] behind that call. The tee has to know
 /// the same thing, or the bed's pan reports as "channel 3" (review S1).
 const ROAD_BED_KEY: &str = "vehicle/road";
 /// Below this the backend stops the road bed rather than playing it at a
-/// whisper: `gain = speed / 30`, stopped under 0.02 (audio/bass.rs).
+/// whisper: `gain = speed / 30`, stopped under 0.02 (audio/hearken_backend.rs).
 const ROAD_BED_MIN_MPS: f64 = 0.02 * 30.0;
 
 impl TeeAudio {
@@ -440,6 +446,9 @@ impl Audio for TeeAudio {
     }
     fn set_wind(&mut self, intensity: f64) {
         self.inner.set_wind(intensity);
+    }
+    fn set_outside_lift(&mut self, lift: f64) {
+        self.inner.set_outside_lift(lift);
     }
     fn set_ambient_with(&mut self, key: Option<&str>, volume: f64) {
         let audible_key = key.filter(|_| volume > 0.0);

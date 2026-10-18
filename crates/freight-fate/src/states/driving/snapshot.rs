@@ -250,6 +250,29 @@ impl DrivingState {
         );
         out.insert("engine_on".to_string(), json!(self.trip.truck.engine_on));
         out.insert("chains_on".to_string(), json!(self.trip.truck.chains_on));
+        out.insert(
+            "chain_checkpoint_hold".to_string(),
+            json!(self.chain_checkpoint_hold),
+        );
+        // [area, level] pairs; absent on older saves, which re-roll the same
+        // seeded staffing and find nothing cited.
+        let mut cited: Vec<(i64, i64)> = self.chain_law_cited.iter().copied().collect();
+        cited.sort_unstable();
+        out.insert("chain_law_cited".to_string(), json!(cited));
+        let mut written_up: Vec<&String> = self.written_up.iter().collect();
+        written_up.sort_unstable();
+        out.insert("written_up".to_string(), json!(written_up));
+        let mut staffed: Vec<(i64, i64, bool)> = self
+            .chain_checkpoint_staffed
+            .iter()
+            .map(|(&(area, level), &on)| (area, level, on))
+            .collect();
+        staffed.sort_unstable();
+        out.insert("chain_checkpoint_staffed".to_string(), json!(staffed));
+        out.insert(
+            "chain_wear_pct".to_string(),
+            json!(self.trip.truck.chain_wear_pct),
+        );
         out.insert("hos".to_string(), json!(hos_of(ctx).to_dict()));
         out.insert("fatigue".to_string(), json!(profile_of(ctx).fatigue));
         out.insert("hos_fine_count".to_string(), json!(self.hos_fine_count));
@@ -446,6 +469,32 @@ impl DrivingState {
             .unwrap_or_else(|| state.maintenance_wear_levels());
         // Chains stay on the drives across a save; absent on older saves.
         state.trip.truck.chains_on = b(data, "chains_on", false);
+        state.chain_checkpoint_hold = b(data, "chain_checkpoint_hold", false);
+        state.chain_law_cited = data
+            .get("chain_law_cited")
+            .and_then(|v| serde_json::from_value::<Vec<(i64, i64)>>(v.clone()).ok())
+            .unwrap_or_default()
+            .into_iter()
+            .collect();
+        // Absent on older saves: nothing written up yet.
+        state.written_up = data
+            .get("written_up")
+            .and_then(|v| serde_json::from_value::<Vec<String>>(v.clone()).ok())
+            .unwrap_or_default()
+            .into_iter()
+            .collect();
+        state.chain_checkpoint_staffed = data
+            .get("chain_checkpoint_staffed")
+            .and_then(|v| serde_json::from_value::<Vec<(i64, i64, bool)>>(v.clone()).ok())
+            .unwrap_or_default()
+            .into_iter()
+            .map(|(area, level, on)| ((area, level), on))
+            .collect();
+        // The chain meter rides with the drive: the profile only catches up
+        // at a stop, so a set that snapped (or wore) since then came back as
+        // it was at the last stop. An older save keeps the profile's value.
+        state.trip.truck.chain_wear_pct =
+            f(data, "chain_wear_pct", state.trip.truck.chain_wear_pct);
         state.trailer_refused = b(data, "trailer_refused", false);
         state.trailer_repaired = b(data, "trailer_repaired", false);
         state.rig_buffs = data

@@ -465,11 +465,13 @@ impl Translator {
             return Cow::Owned(hit.clone());
         }
         let mut missed = Vec::new();
+        let mut memo = Memo::new();
         let out = match split_position_cue(line) {
             Some((row, position, count)) => {
                 let row = Pass {
                     catalog,
                     missed: &mut missed,
+                    memo: &mut memo,
                 }
                 .line(row, 0)
                 .unwrap_or_else(|| row.to_string());
@@ -480,6 +482,7 @@ impl Translator {
             None => Pass {
                 catalog,
                 missed: &mut missed,
+                memo: &mut memo,
             }
             .line(line, 0)
             .map(|out| {
@@ -536,7 +539,15 @@ impl MissLog {
 struct Pass<'c, 'm> {
     catalog: &'c Catalog,
     missed: &'m mut Vec<String>,
+    memo: &'m mut Memo,
 }
+
+/// Every piece already worked out in one line's translation, by its text,
+/// depth and whether it may split, with the misses it recorded. The
+/// matcher tries the same capture under many templates and clause splits,
+/// so a long line (the driving keyboard help) asked for the same pieces
+/// millions of times: minutes on the game thread before this.
+type Memo = HashMap<(String, usize, bool), (Option<String>, Vec<String>)>;
 
 impl Pass<'_, '_> {
     /// A whole line or one of its pieces. `None` when nothing in it was
@@ -550,6 +561,19 @@ impl Pass<'_, '_> {
     }
 
     fn piece(&mut self, text: &str, depth: usize, split: bool) -> Option<String> {
+        let key = (text.to_string(), depth, split);
+        if let Some((out, missed)) = self.memo.get(&key) {
+            self.missed.extend(missed.iter().cloned());
+            return out.clone();
+        }
+        let start = self.missed.len();
+        let out = self.piece_uncached(text, depth, split);
+        let missed = self.missed.get(start..).unwrap_or_default().to_vec();
+        self.memo.insert(key, (out.clone(), missed));
+        out
+    }
+
+    fn piece_uncached(&mut self, text: &str, depth: usize, split: bool) -> Option<String> {
         let core = text.trim();
         if core.is_empty() {
             return None;
@@ -656,6 +680,7 @@ impl Pass<'_, '_> {
                     let mut inner = Pass {
                         catalog: self.catalog,
                         missed: &mut missed,
+                        memo: &mut *self.memo,
                     };
                     // A sentence is a line of its own; only clauses go deeper.
                     let deeper = if clauses { depth + 1 } else { depth };
@@ -915,6 +940,7 @@ impl Pass<'_, '_> {
                         let translated = Pass {
                             catalog: self.catalog,
                             missed: &mut ignored,
+                            memo: &mut *self.memo,
                         }
                         .piece(raw, depth + 1, has_sentence_break(raw));
                         // A measure ("2 miles") or a name kept as is is

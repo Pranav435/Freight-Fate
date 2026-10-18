@@ -121,18 +121,9 @@ pub fn xp_rate_clause(band: &str) -> String {
     // Whole literals per band so a translation can agree with "confianza"
     // without changing the bare word "full" that lane assist also uses.
     match band {
-        "guarded" => "While your dispatch trust is guarded, the carrier keeps you on \
-             routine freight, so career experience comes in more slowly until it \
-             is back up."
-            .to_string(),
-        "poor" => "While your dispatch trust is poor, the carrier keeps you on \
-             routine freight, so career experience comes in more slowly until it \
-             is back up."
-            .to_string(),
-        _ => "While your dispatch trust is last chance, the carrier keeps you on \
-             routine freight, so career experience comes in more slowly until it \
-             is back up."
-            .to_string(),
+        "guarded" => "While dispatch trust is guarded, experience comes slower.".to_string(),
+        "poor" => "While dispatch trust is poor, experience comes slower.".to_string(),
+        _ => "While dispatch trust is last chance, experience comes slower.".to_string(),
     }
 }
 

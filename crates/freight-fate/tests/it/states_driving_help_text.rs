@@ -217,7 +217,7 @@ fn test_dispatch_board_keeps_route_planning_out_of_load_offer() {
         "{rows:#?}"
     );
     assert!(
-        rows.iter().all(|row| !row.contains("Legal HOS plan")),
+        rows.iter().all(|row| !row.contains("Break stops:")),
         "{rows:#?}"
     );
     assert!(
@@ -225,7 +225,7 @@ fn test_dispatch_board_keeps_route_planning_out_of_load_offer() {
         "{rows:#?}"
     );
     assert!(
-        rows.iter().all(|row| !row.contains("Fuel-capable stops")),
+        rows.iter().all(|row| !row.contains("Fuel stops:")),
         "{rows:#?}"
     );
     let first_help = items[0].help_text(&state, &app.ctx);
@@ -237,12 +237,15 @@ fn test_dispatch_board_keeps_route_planning_out_of_load_offer() {
     let toll_route = world
         .route_from_cities(&["New York", "Philadelphia"])
         .expect("New York to Philadelphia is a route");
-    let summary = route_planning_summary(&toll_route);
-    assert!(summary.contains("Legal HOS plan"), "{summary}");
-    assert!(summary.contains("Fuel-capable stops:"), "{summary}");
+    let summary = route_planning_summary(&toll_route, None);
+    assert!(summary.contains(" driving hours"), "{summary}");
+    assert!(summary.contains("Fuel stops:"), "{summary}");
     assert!(
         summary.contains("Estimated tolls, carrier-paid"),
         "{summary}"
     );
-    assert!(summary.contains("not a guaranteed open space"), "{summary}");
+    assert!(
+        !summary.contains("not a guaranteed open space"),
+        "{summary}"
+    );
 }

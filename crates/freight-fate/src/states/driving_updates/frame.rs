@@ -1,7 +1,9 @@
 //! The frame loop itself (`DrivingUpdateMixin.update`), the safety-call
 //! re-speak, and the retarder transcript trace.
 
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
+
+use crate::speech::EventPriority;
 
 use crate::app::{GameContext, SayEvent, TRANSCRIPT_TARGET};
 use crate::audio::CH_BRAKE;
@@ -220,7 +222,7 @@ impl DrivingState {
                 ctx.say_event_with(
                     "Jake off.",
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Confirmation),
                 );
             }
@@ -243,7 +245,7 @@ impl DrivingState {
                 ctx.say_event_with(
                     "Jake off.",
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Confirmation),
                 );
             }
@@ -288,6 +290,11 @@ impl DrivingState {
             .keeper_snub
             .max(self.aeb_brake)
             .max(self.destination_assist_brake)
+            .max(if self.chain_stop.is_some() {
+                self.chain_stop_brake
+            } else {
+                0.0
+            })
             .max(ramp_terminal_brake)
             .max(decel_lane_brake)
             .max(self.curve_servo.as_ref().map_or(0.0, |servo| servo.brake))
@@ -320,7 +327,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Cruise off.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         }
@@ -464,6 +471,7 @@ impl DrivingState {
         self.trip.traffic_manager.player_lane_target = self.lane_change_target;
         self.update_exit_preparation(ctx, dt);
         self.resume_speed_control_if_ready(ctx, braking);
+        self.apply_chain_speed_cap(ctx);
         self.update_cruise(ctx, dt, braking, hand_accelerating, clutch_disengaged);
         self.update_keeper(ctx, dt, braking, hand_accelerating, clutch_disengaged);
         // The keeper's held snub, for the same reason and by the same rule:
@@ -484,6 +492,9 @@ impl DrivingState {
         // while the assist's own bookkeeping said 0.40. Every earlier fix to
         // this assist tuned a number against a pedal the truck never felt.
         self.update_destination_approach_assist(ctx);
+        // Facility stopping assistance's roadside chain stops, for the same
+        // reason: the brake it holds has to reach the physics.
+        self.update_chain_stop_assist(ctx, braking_key || emergency || hand_accelerating);
         // Curve assistance's approach servo, for the same reason: its
         // pedal has to be set where the physics will see it, and after cruise
         // and the keeper so the max it applies is the one that stands.
@@ -567,6 +578,9 @@ impl DrivingState {
         // On the ramp the highway odometer holds and the ramp consumes the
         // movement instead; the trip records how far the truck rolled either way.
         self.trip.on_ramp = self.ramp_mi.is_some();
+        // The yard is announced when the truck has turned into it, not when
+        // it rolls over the driveway's milepost on its way past the turn.
+        self.trip.yard_entry_held = self.driveway_turn_pending();
         for event in self.trip.update(dt) {
             self.handle_trip_event(ctx, &event);
         }
@@ -656,7 +670,10 @@ impl DrivingState {
         self.update_pull_over(ctx, dt, braking || emergency);
         self.update_brake_heat_cue(ctx, dt);
         self.update_traction_cues(ctx);
+        self.update_chain_reminder(ctx);
         self.update_chain_law(ctx);
+        self.update_chain_checkpoint_hold(ctx);
+        self.update_chain_carry(ctx);
         // The destination approach assist used to run here -- after the
         // physics step, which is why its brake never reached the truck. It
         // now runs with the other assists' pedal floors, ahead of t.update().
@@ -708,6 +725,10 @@ impl DrivingState {
         live::set_arrival_menu_open(self.arrival_menu_open);
         live::set_gate_stop_prompted(self.arrival_full_stop_said);
         live::set_on_ramp(self.ramp_mi.is_some());
+        live::set_posted_limit_mph(match self.trip.entered_zone.as_ref() {
+            Some(zone) => zone.limit_mph,
+            None => self.trip.corridor_limit_at(self.trip.position_mi),
+        });
         live::set_ramp_holding(
             self.ramp_mi.is_some()
                 && !self.ramp_terminal_done

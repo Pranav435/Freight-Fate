@@ -6,7 +6,7 @@ blind and low-vision players. Full contributor policy lives in
 authoring time.
 
 **Career 1.9 is a native Rust game.** The Cargo workspace under `crates/`
-(`ff-core`, `freight-fate`, `bass-sys`) is the shipping
+(`ff-core`, `freight-fate`) is the shipping
 runtime, on both `dev` and `main`. The Python game is gone (its last release
 is the `v1.8.8.1` tag, and 1.8 gets no further releases); `tools/` stays
 Python for baking, packaging, and data generation. The world data tree is
@@ -55,14 +55,15 @@ Read this before opening files; the rest is discoverable from `lib.rs` docs.
   which is what a session log with `FREIGHT_FATE_LOG_FILE` set reads as.
 - **Speech and audio are pluggable and optional.** `speech/` has the live
   Prism backend on its own worker thread, a capture sink the tests read
-  transcripts from, and fakes. `audio/` is BASS behind a backend trait with a
-  null fallback. The Prism screen-reader and TTS library comes from the
-  `prismer` crate, compiled from source (CMake and a C++23 compiler) and
+  transcripts from, and fakes. `audio/` is the Hearken engine (the
+  `hearken` git dependency: Kira playback, decoding and the radio) behind a
+  backend trait with a null fallback. The Prism screen-reader and TTS library
+  comes in through Hearken's speech crate (the `prismer` crate), compiled from source (CMake and a C++23 compiler) and
   linked into the executable; it opens the screen-reader client DLLs and
   Speech Dispatcher at run time, so a missing reader costs that reader, not
   the game.
-  `bass-sys` declares the BASS C ABI by hand and loads the DLL at run time,
-  so a machine without BASS still starts the game.
+  Hearken opens the sound device off the game thread, so a machine with no
+  device still starts the game, silent, and the menu says so.
 - **Environment variables are two different roots.** `FREIGHT_FATE_DATA_ROOT`
   is where world data comes from; `FREIGHT_FATE_DATA_DIR` is where settings,
   saves and the keyring-backed token go. The playtest harness redirects the
@@ -158,9 +159,30 @@ cleanup](https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.ht
 
 - Setup: install `rustup` (the pinned toolchain and its `rustfmt`/Clippy
   components come from `rust-toolchain.toml` via `rustup show`), then
-  `uv sync` and `uv run python tools/fetch_bass.py` for the licensed BASS
-  runtime. Without BASS the workspace still builds and the audio tests skip
-  themselves, which reads as a green run that proved nothing -- so fetch it.
+  `uv sync`. CMake 3.24+ is needed (Prism, SDL2 and libopus compile from
+  source); Linux also needs ALSA's headers (`libasound2-dev`) and GCC 13,
+  macOS the Xcode Command Line Tools. The engine is Hearken: one workspace
+  dependency, the `hearken` facade crate, fetched by Cargo from
+  `https://github.com/orinks-games/hearken` (branch `main`, the commit pinned
+  by `Cargo.lock`). Game code takes its services and leaf types through
+  `crate::speech`, `crate::audio` and the re-exports in `states::base`,
+  `controller`, `bindings` and `app::held_keys`, never Hearken's app shell
+  (`Ctx`, `App`, its screens; the `rust.yml` checks job greps for it). There
+  is no native audio library to install.
+- Building against a local Hearken checkout: add this override to
+  `~/.cargo/config.toml` (or a config file passed with `--config`). It is
+  **untracked: never commit it**, and remove it before re-locking, because
+  `Cargo.lock` must pin a Hearken commit that exists on GitHub. Once the
+  Hearken change is pushed, `cargo update -p hearken` pins it.
+  ```toml
+  [patch."https://github.com/orinks-games/hearken"]
+  hearken = { path = "/path/to/hearken/crates/hearken" }
+  hearken-app = { path = "/path/to/hearken/crates/hearken-app" }
+  hearken-speech = { path = "/path/to/hearken/crates/hearken-speech" }
+  hearken-audio = { path = "/path/to/hearken/crates/hearken-audio" }
+  hearken-radio = { path = "/path/to/hearken/crates/hearken-radio" }
+  hearken-synth = { path = "/path/to/hearken/crates/hearken-synth" }
+  ```
 - Run the game: `cargo run --release -p freight-fate`
 - Format: `cargo fmt --all --check`
 - Lint: `cargo clippy --all-targets --locked -- -D warnings`. Warnings are
@@ -254,19 +276,29 @@ cleanup](https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.ht
   services. Codex's restricted shell can block initialization even when the
   same check passes with normal Windows access. Use the authorized elevated
   tool path for that verification; keep the game's save sandbox enabled.
-- Rust CI (`.github/workflows/rust.yml`) tests the game on **Windows only**,
-  deliberately (ff-core, which is headless, runs its tests on Linux in
-  parallel): SDL2 is vendored for `windows-x86_64` alone. macOS and Linux build from
-  source (BASS is fetched for both, Prism is vendored, and SDL2 is compiled
+- Rust CI (`.github/workflows/rust.yml`) runs on GitHub's hosted runners
+  (free for this public repository; owner rule 2026-10-17: Blacksmith's paid
+  minutes are for the private repositories) in Hearken's and Echo Parlor's
+  shape: a no-build checks job (fmt, the
+  translation files, `tools/check_test_targets.py`, the Hearken leaf-type
+  grep) that finishes in well under a minute, clippy once on Linux, and the
+  game's tests on Windows and Linux in parallel (ff-core, which is headless,
+  on Linux only). A manual dispatch or a `v*` tag adds the tests on macOS.
+  Every compiling job goes through `.github/actions/rust-setup` (the
+  platform's build dependencies, the pinned toolchain, sccache and rust-cache). SDL2 is
+  vendored for `windows-x86_64` alone. macOS and Linux build from
+  source (Hearken comes through Cargo, Prism is compiled from source, and SDL2 is compiled
   in statically via the crate's `bundled` + `static-link` features -- NEVER
   Homebrew's sdl2, which is sdl2-compat and loads SDL3 at runtime, dying on
-  player Macs; on Linux a system libSDL2 differs per distro) and are built,
-  tested and packaged by the nightly Career 1.9 snapshot workflow instead,
-  which also boots the Linux tarball and AppImage on seven distributions
-  through `tools/linux_smoke.sh`. The Linux build runs on `ubuntu-22.04`
+  player Macs; on Linux a system libSDL2 differs per distro). The nightly
+  Career 1.9 snapshot workflow tests and packages all three side by side
+  (a `Test` leg per platform next to each `Build` job; the whole-map sweeps
+  on the Linux x86_64 leg), and
+  also boots the Linux tarball and AppImage on seven distributions
+  through `tools/linux_smoke.sh`. The Linux release build runs on `ubuntu-22.04`
   on purpose: the executable's glibc floor is its build host's. Locally,
-  build Linux under WSL (`sudo apt install` the SDL2 -dev set the workflow
-  lists, then the same commands); a run there with `~/.asoundrc` routing
+  build Linux under WSL (`sudo apt install` the SDL2 and ALSA -dev set the
+  workflow lists, then the same commands); a run there with `~/.asoundrc` routing
   ALSA's default device to PulseAudio has real sound and speech.
 
 ### Python -- tools, data, packaging
@@ -342,7 +374,7 @@ cleanup](https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.ht
   its own `saves-agent-staging` directory, no careers and no identity copied
   in, its own driver on the staging backend (through the orinks-net `dev`
   preview; the owner enters its spoken code there the first time), cloud
-  backup on, presence and Mastodon off. No agent session ever reaches
+  backup on, presence off. No agent session ever reaches
   production: `--online`, which carried the real driver identity, was removed
   on 2026-09-25.
 

@@ -2,11 +2,12 @@
 //! changes, crossings, a road that narrows under the truck, coned-off lanes,
 //! and keep-right pressure.
 
+use crate::speech::EventPriority;
 use ff_core::data::curves::{advisory_with_bank_mph, superelevation_at};
 use ff_core::pyfmt::fmt_grouped;
 use ff_core::sim::lane::{in_lane_phrase, RoadConditions};
 use ff_core::sim::trip_models::Zone;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::SpokenMessage;
 
 use crate::app::{GameContext, SayEvent};
@@ -299,9 +300,9 @@ impl DrivingState {
                 // the pedals (automation-handoff sweep, 2026-08-20, the
                 // deferred 2026-08-15 audit).
                 ctx.say_event_with(
-                    "Curve assistance slowing.",
+                    "Slowing for the bend.",
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Confirmation),
                 );
             }
@@ -317,7 +318,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Curve assistance released.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         } else if !curve_assisting {
@@ -377,7 +378,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Route-transition assistance released.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         }
@@ -605,7 +606,7 @@ impl DrivingState {
                     lane_phrase(lane_index, lane_count)
                 )
             } else {
-                format!("You swerve around {names}. Well done.")
+                format!("Clear of {names}.")
             };
             self.finish_hazard_clear(ctx, &text);
             return;
@@ -628,7 +629,7 @@ impl DrivingState {
             ctx.say_event_with(
                 format!("{}.", in_lane_phrase(lane_index, lane_count)),
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(category),
             );
         }
@@ -700,10 +701,9 @@ impl DrivingState {
                 self.merge_deadline = None;
                 let volume = 1.0f64.min(0.7 * self.cue_loudness(ctx));
                 ctx.audio.play_with("vehicle/lane_line_cross", volume, 0.0);
-                let text = format!(
-                    "The {} lane is closed where the road narrows. You are in the {open_name} lane.",
-                    lane_label(closed, count)
-                );
+                let mut closed_name = lane_label(closed, count).to_string();
+                closed_name[..1].make_ascii_uppercase();
+                let text = format!("{closed_name} lane closed. In the {open_name} lane.");
                 ctx.say_event_with(text, SayEvent::new().category(SpeechCategory::Safety));
                 return;
             }
@@ -718,14 +718,11 @@ impl DrivingState {
             // it could have been. Narrowing to one lane already said which
             // lane you are in by saying there is only one.
             let moved = if count <= 1 {
-                "You are moved over.".to_string()
+                String::new()
             } else {
-                format!(
-                    "You are moved to the {} lane.",
-                    lane_label(self.lane.lane, count)
-                )
+                format!(" Now in the {} lane.", lane_label(self.lane.lane, count))
             };
-            let text = format!("The road narrows to {}. {moved}", lane_count_words(count));
+            let text = format!("The road narrows to {}.{moved}", lane_count_words(count));
             ctx.say_event_with(text, SayEvent::new().category(SpeechCategory::Safety));
         }
     }
@@ -888,7 +885,7 @@ impl DrivingState {
             // Money rides ROUTE's never-dropped contract: a busy stretch must
             // not age a citation out of the queue.
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Money),
         );
         // A second serious violation just suspended the CDL: the drive ends
