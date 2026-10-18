@@ -227,9 +227,10 @@ impl UpdatePromptState {
     }
 }
 
-/// `asset_size / 1e6` spoken as whole megabytes, or `None` when unknown.
+/// The download's size (`UpdateInfo::download_size`) spoken as whole
+/// megabytes, or `None` when unknown.
 fn megabytes(info: &UpdateInfo) -> Option<String> {
-    let mb = info.asset_size as f64 / 1e6;
+    let mb = info.download_size() as f64 / 1e6;
     (mb != 0.0).then(|| fmt_f(mb, 0))
 }
 
@@ -584,6 +585,9 @@ impl UpdateDownloadState {
             outcome.lock().unwrap_or_else(|e| e.into_inner()).staging = Some(staging.clone());
             let mut on_progress =
                 |done: u64, total: u64| Self::record_progress(&bytes, &progress, done, total);
+            let env = UpdaterEnv::current();
+            // The smaller archive when this install's sound packs still match.
+            let (info, keep_packs) = updater::slim::choose_download(&info, &env);
             let archive = fetch(&info, &staging, &mut on_progress, &cancelled)?;
             if is_cancelled() {
                 return Err(DownloadError::Cancelled);
@@ -593,10 +597,13 @@ impl UpdateDownloadState {
             let new_root = updater::stage_update_with(
                 &archive,
                 &staging,
-                &UpdaterEnv::current(),
+                &env,
                 Some(&cancelled),
                 updater::UNPACK_TIMEOUT,
             )?;
+            if let Some(packs) = &keep_packs {
+                updater::slim::complete_staged(&new_root, packs, &env)?;
+            }
             if is_cancelled() {
                 return Err(DownloadError::Cancelled);
             }

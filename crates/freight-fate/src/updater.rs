@@ -361,7 +361,7 @@ pub fn resolve_channel(setting: &str, build: Option<&BuildInfo>) -> String {
 
 // -- release discovery ------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct UpdateInfo {
     /// release tag to install
     pub tag: String,
@@ -375,6 +375,19 @@ pub struct UpdateInfo {
     pub asset_size: i64,
     /// Lowercase hex SHA-256 GitHub publishes for the asset; "" when unknown.
     pub asset_sha256: String,
+    /// The smaller download that keeps this install's sound packs, when the
+    /// release has one and the packs match (see [`slim`]).
+    pub slim: Option<SlimUpdate>,
+}
+
+impl UpdateInfo {
+    /// Bytes the player will download: the update archive when it applies.
+    pub fn download_size(&self) -> i64 {
+        match &self.slim {
+            Some(slim) if !slim.packs.is_empty() => slim.asset_size,
+            _ => self.asset_size,
+        }
+    }
 }
 
 /// `_api_get`: one GitHub API request on the updater's tier.
@@ -634,6 +647,7 @@ fn update_from_release(release: &Value, title: &str, env: &UpdaterEnv) -> Option
     let (name, url, size) = pick_update_asset(release, env)?;
     Some(UpdateInfo {
         asset_sha256: asset_sha256(release, &name),
+        slim: slim::candidate(release, &name),
         tag: tag_name(release),
         title: title.to_string(),
         notes: flatten_markdown(release.get("body").and_then(Value::as_str)),
@@ -1094,17 +1108,19 @@ pub fn check_for_update(
     current_version: &str,
     build: Option<&BuildInfo>,
 ) -> Result<Option<UpdateInfo>, NetError> {
-    check_for_update_with(
-        channel,
-        current_version,
-        build,
-        &UpdaterEnv::current(),
-        &api_get,
-    )
+    let env = UpdaterEnv::current();
+    let mut found = check_for_update_with(channel, current_version, build, &env, &api_get)?;
+    if let Some(info) = found.as_mut() {
+        slim::resolve(info, &env);
+    }
+    Ok(found)
 }
 
 mod apply;
 mod notes;
+pub mod slim;
+
+pub use slim::SlimUpdate;
 
 pub use notes::flatten_markdown;
 

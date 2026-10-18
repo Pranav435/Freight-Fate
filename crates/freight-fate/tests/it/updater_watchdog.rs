@@ -26,6 +26,7 @@ fn snapshot_info() -> UpdateInfo {
         asset_url: "https://example.test/a".to_string(),
         asset_size: 419_438_969,
         asset_sha256: String::new(),
+        slim: None,
     }
 }
 

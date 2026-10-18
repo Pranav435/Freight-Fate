@@ -745,12 +745,18 @@ Everything found before 2026-09-25 moved to
 - [ ] FF on a real Mac with Hearken: the macOS link (Prism frameworks and
       the clang runtime) is proved by the manual CI run, but VoiceOver and
       CoreAudio output need a person at a Mac.
-- [ ] Smaller updates (player reports, 2026-10-17): every update downloads
-      the whole 531 MB archive, and 497 MB of it is `music.pak` (383 MB) and
-      `channel3000.pak` (114 MB), byte for byte the same from 1.9-tester-20261014
-      to 20261017. An update that keeps the packs the player already has
-      would be about 35 MB. Channel 3000 joining the archive in October is
-      what took it from about 400 MB to 531 MB.
+- [x] Smaller updates (player reports, owner go-ahead 2026-10-18): every
+      update downloaded the whole 531 MB archive, and 497 MB of it is
+      `music.pak` (383 MB) and `channel3000.pak` (114 MB), byte for byte the
+      same from 1.9-tester-20261014 to 20261017. Each archive now ships
+      beside an `-update` archive without those packs and a `-packs.json`
+      manifest of their SHA-256 (`tools/build_release.py`). The updater
+      (`updater::slim`) offers the update archive when the install's packs
+      match: the check trusts `build_info.json`'s recorded hashes when sizes
+      agree, the download hashes again and falls back to the full archive,
+      and a Mac bundle gets the player's packs copied in before the swap.
+      AppImage runs still take the full file. The first update to carry this
+      is itself full size.
 
 - [x] Low fuel warning could also fire when remaining range is shorter than
       the distance to the next fuel-capable stop (issue #272 shipped the
