@@ -21,6 +21,16 @@ each release.
 - If your PR targets the wrong branch, a maintainer may retarget it before
   review.
 
+## Building
+
+The prerequisites are in [Run from source](README.md#run-from-source): Rust
+through rustup, uv and CMake on every platform, plus the Visual Studio Build
+Tools on Windows, the Xcode Command Line Tools on macOS, and GCC 13, ALSA's
+development files and the SDL2 development packages on Linux. The game's
+engine, Hearken, is a git dependency that Cargo fetches; there is no audio
+library to download. To build against a local Hearken checkout, see the
+untracked `[patch]` recipe in [CLAUDE.md](CLAUDE.md#rust-engineering-practices).
+
 ## Before opening a pull request
 
 - Keep practical code files at or below 1000 lines. Split large code or test
@@ -53,6 +63,15 @@ each release.
 - Do not replace spoken information with visual-only cues.
 - If you add or change menu items, driving prompts, warnings, settings, or
   status text, test the spoken result.
+
+## Translations
+
+Every spoken line is translated where it leaves for the speech channels, from
+the PO files in `lang/`; [lang/README.md](lang/README.md) is the translator's
+guide. After changing spoken text, run `uv run python tools/l10n/extract.py`
+so the template and every language file pick up the new line; the Python
+tests fail while they are stale. A translation correction can arrive as a pull
+request against a `lang/*.po` file or as a Translation correction issue.
 
 ## World and route data
 

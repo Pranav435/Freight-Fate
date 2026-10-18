@@ -60,13 +60,10 @@ BUILD = ROOT / "build"
 APP_NAME = "FreightFate"
 # The checkout root stands in for the installed ``freight_fate/`` package:
 # ``data/`` and ``assets/sounds/`` stage to the same relative paths under it.
-# The packs and add-ons sit under ``assets/`` here but at the package top
-# level (packs) and in ``lib/`` (add-ons) in a release.
+# The packs sit under ``assets/`` here but at the package top level in a
+# release.
 PACKAGE_DIR = ROOT
 SOURCE_ASSETS = "assets"
-# Game-shipped BASS addon plugins (e.g. basshls for HLS radio streams),
-# staged beside the executable with the rest of BASS.
-ADDON_LIB_DIR = PACKAGE_DIR / SOURCE_ASSETS / "lib"
 # Production, so a release no longer pulls its music through the staging host.
 #
 # This took two goes. The route is a 307 to FREIGHT_FATE_MUSIC_BLOB_URL, and
@@ -83,7 +80,7 @@ ADDON_LIB_DIR = PACKAGE_DIR / SOURCE_ASSETS / "lib"
 DEFAULT_MUSIC_URL = "https://www.orinks.net/downloads/music.pak"
 DEFAULT_MUSIC_SHA256 = "c56401a2a45057faba0bd4bf7d024ce7dd3908f682f4c35526643a1870cb7798"
 # Channel 3000's clips, packed by tools/build_channel3000.py from the
-# channel3000-clips branch. Its own pack rather than more of music.pak, which
+# owner's local clips folder. Its own pack rather than more of music.pak, which
 # the game reads whole into memory; the game opens this one only when the
 # radio is first tuned to 87.7. The digest is of that tool's build of the
 # branch after tools/level_channel3000.py --write (98 clips, 2026-10-10). Each
@@ -179,6 +176,10 @@ def stage_release_docs(build_dir: Path, root: Path | None = None) -> None:
     )
     (root / "ALPHA_TEST_BOOK.html").write_text(test_book_html, encoding="utf-8")
 
+    # The translator's kit is its own release asset
+    # (tools/translation_kit.py), not part of the game: a player never reads
+    # it, and every update would carry it.
+
 
 def verify_sound_packs(root: Path) -> None:
     """Open the staged packs and prove they carry what the game reads."""
@@ -261,9 +262,52 @@ def stamp_build_info(build_dir: Path, label: str, root: Path | None = None) -> N
         "package_version": label_package_version(label),
         "commit": build_commit(),
     }
-    info_path = (root or runtime_root(build_dir)) / "build_info.json"
+    root = root or runtime_root(build_dir)
+    packs = pack_manifest_entries(root)
+    if packs:
+        info["packs"] = packs
+    info_path = root / "build_info.json"
     with open(info_path, "w", encoding="utf-8") as f:
         json.dump(info, f, indent=2)
+
+
+# The packs an update archive leaves out: most of the download, and they
+# rarely change between builds. Relative to the payload root (beside the
+# executable, or a Mac bundle's Resources). The in-game updater keeps the
+# player's own copies when their SHA-256 matches the release's manifest.
+UPDATE_SKIPPED_PACKS = ("freight_fate/music.pak", "freight_fate/channel3000.pak")
+
+
+def pack_manifest_entries(root: Path) -> list[dict[str, object]]:
+    """``{path, sha256, size}`` for each skipped pack staged under ``root``."""
+    entries: list[dict[str, object]] = []
+    for relative in UPDATE_SKIPPED_PACKS:
+        path = root / relative
+        if path.is_file():
+            entries.append(
+                {"path": relative, "sha256": file_sha256(path), "size": path.stat().st_size}
+            )
+    return entries
+
+
+def _split_archive_name(name: str) -> tuple[str, str]:
+    for ext in (".tar.gz", ".zip"):
+        if name.endswith(ext):
+            return name[: -len(ext)], ext
+    raise RuntimeError(f"Unrecognized release archive name: {name}")
+
+
+def update_archive_name(full_name: str) -> str:
+    """``X-windows-portable.zip`` -> ``X-windows-portable-update.zip``. It ends
+    in no updater suffix, so an updater that does not know it never picks it."""
+    stem, ext = _split_archive_name(full_name)
+    return f"{stem}-update{ext}"
+
+
+def packs_manifest_name(full_name: str) -> str:
+    """``X-windows-portable.zip`` -> ``X-windows-portable-packs.json``."""
+    stem, _ext = _split_archive_name(full_name)
+    return f"{stem}-packs.json"
 
 
 MACOS_SIGN_IDENTITY_ENV = "MACOS_SIGN_IDENTITY"
@@ -495,16 +539,19 @@ def verify_archive(out: Path) -> None:
     no runnable game inside (for example a Linux snapshot missing its
     executable) and nothing else would notice.
     """
-    macos_archive = out.name.endswith(("-macos-arm64.zip", "-macos.zip"))
+    update = out.name.endswith(("-update.zip", "-update.tar.gz"))
+    # Classify an update archive by the full archive it was cut from.
+    name = out.name.replace("-update.", ".") if update else out.name
+    macos_archive = name.endswith(("-macos-arm64.zip", "-macos.zip"))
     if macos_archive:
         root = f"{APP_NAME}.app/Contents/MacOS"
         exe_entry = f"{root}/{APP_NAME}"
         needs_exec = True
-    elif out.name.endswith(LINUX_TARBALL_SUFFIXES):
+    elif name.endswith(LINUX_TARBALL_SUFFIXES):
         root = APP_NAME
         exe_entry = f"{root}/{APP_NAME}"
         needs_exec = True
-    elif out.name.endswith("-windows-portable.zip"):
+    elif name.endswith("-windows-portable.zip"):
         root = APP_NAME
         exe_entry = f"{root}/{APP_NAME}.exe"
         needs_exec = False
@@ -529,23 +576,24 @@ def verify_archive(out: Path) -> None:
         "LICENSE.txt",
         "USER_MANUAL.md",
         "freight_fate/sounds.pak",
-        "freight_fate/music.pak",
-        "freight_fate/channel3000.pak",
+        *(() if update else UPDATE_SKIPPED_PACKS),
         RUST_BAKED_FILE_ENTRY,
     )
-    missing = [name for name in required if f"{payload_root}/{name}" not in entries]
+    missing = [entry for entry in required if f"{payload_root}/{entry}" not in entries]
+    if update:
+        carried = [p for p in UPDATE_SKIPPED_PACKS if f"{payload_root}/{p}" in entries]
+        if carried:
+            raise RuntimeError(
+                f"Update archive carries packs it should leave out: {', '.join(carried)} "
+                f"in {out.name}"
+            )
     if macos_archive:
-        bundle_required = (
-            f"{APP_NAME}.app/Contents/Info.plist",
-            *(f"{APP_NAME}.app/Contents/Frameworks/{name}" for name in MACOS_REQUIRED_LIBRARIES),
-        )
-        missing.extend(name for name in bundle_required if name not in entries)
-        # No libSDL2 requirement: SDL2 ships compiled into the executable.
-    elif out.name.endswith(LINUX_TARBALL_SUFFIXES):
-        # Same libraries as the Mac bundle, flat beside the executable.
-        missing.extend(
-            f"{root}/{name}" for name in LINUX_REQUIRED_LIBRARIES if f"{root}/{name}" not in entries
-        )
+        if f"{APP_NAME}.app/Contents/Info.plist" not in entries:
+            missing.append(f"{APP_NAME}.app/Contents/Info.plist")
+        # No native library requirement: SDL2, Prism and the audio engine
+        # are compiled into the executable.
+    elif name.endswith(LINUX_TARBALL_SUFFIXES):
+        pass  # Likewise: the Linux executable carries everything it links.
     else:
         # The delivered ZIP, not only the build runner, must carry the CRT.
         folded = {name.lower(): metadata for name, metadata in entries.items()}
@@ -591,6 +639,70 @@ def archive(build_dir: Path, label: str) -> Path:
     return out
 
 
+def archive_update(build_dir: Path, full: Path) -> Path:
+    """The update archive beside ``full``: the same payload minus
+    ``UPDATE_SKIPPED_PACKS``, which the in-game updater keeps from the
+    player's install when they match the release's manifest."""
+    out = full.with_name(update_archive_name(full.name))
+    payload = build_dir / "Contents" / "Resources" if build_dir.suffix == ".app" else build_dir
+    skipped = {payload / relative for relative in UPDATE_SKIPPED_PACKS}
+    if full.name.endswith(".tar.gz"):
+        skipped_names = {f"{APP_NAME}/{path.relative_to(build_dir).as_posix()}" for path in skipped}
+        with tarfile.open(out, "w:gz") as tar:
+            tar.add(
+                build_dir,
+                arcname=APP_NAME,
+                filter=lambda member: None if member.name in skipped_names else member,
+            )
+    elif build_dir.suffix == ".app":
+        # ditto has no exclude: park the packs outside the bundle while it
+        # zips, and always put them back. The bundle's signature seals them,
+        # so the update is complete again once the updater copies the
+        # player's identical packs in.
+        parked = Path(tempfile.mkdtemp(prefix="freightfate-packs-", dir=DIST))
+        moved: list[tuple[Path, Path]] = []
+        try:
+            for path in sorted(skipped):
+                if path.is_file():
+                    target = parked / path.name
+                    shutil.move(path, target)
+                    moved.append((target, path))
+            subprocess.run(
+                ["ditto", "-c", "-k", "--keepParent", str(build_dir), str(out)], check=True
+            )
+        finally:
+            for target, path in moved:
+                shutil.move(target, path)
+            shutil.rmtree(parked, ignore_errors=True)
+    else:
+        with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+            for path in sorted(build_dir.rglob("*")):
+                if path in skipped:
+                    continue
+                z.write(path, Path(APP_NAME) / path.relative_to(build_dir))
+    return out
+
+
+def write_packs_manifest(build_dir: Path, full: Path) -> Path:
+    """The release asset that tells the updater which packs the update
+    archive leaves out, and the SHA-256 the player's copies must have."""
+    payload = build_dir / "Contents" / "Resources" if build_dir.suffix == ".app" else build_dir
+    entries = pack_manifest_entries(payload)
+    missing = set(UPDATE_SKIPPED_PACKS) - {str(entry["path"]) for entry in entries}
+    if missing:
+        raise RuntimeError(f"Packs missing from the staged build: {', '.join(sorted(missing))}")
+    out = full.with_name(packs_manifest_name(full.name))
+    out.write_text(json.dumps({"packs": entries}, indent=2) + "\n", encoding="utf-8")
+    return out
+
+
+def make_update_artifacts(build_dir: Path, full: Path) -> tuple[Path, Path]:
+    """Cut the update archive and its pack manifest from the verified build."""
+    update = archive_update(build_dir, full)
+    verify_archive(update)
+    return update, write_packs_manifest(build_dir, full)
+
+
 # -- The Rust payload ---------------------------------------------------------
 #
 # The staged folder keeps the layout the in-game updater and
@@ -598,9 +710,9 @@ def archive(build_dir: Path, label: str) -> Path:
 # ``FreightFate(.exe)``, ``build_info.json``, the docs, and a ``freight_fate/``
 # folder with the packs and the baked data container
 # (``ff_core::data::data_resources::data_root`` looks for
-# ``<exe dir>/freight_fate/data``). The native libraries (SDL2, BASS and its
-# plugins) sit flat beside the executable; Prism is linked into it, which is where the crates'
-# build scripts stage them and where their loaders look first.
+# ``<exe dir>/freight_fate/data``). Any native library the crates' build
+# scripts stage (SDL2 on Windows) sits flat beside the executable; Prism and
+# the audio engine are linked into it.
 
 # ``[[bin]] name`` in crates/freight-fate/Cargo.toml. The staged copy is
 # renamed to APP_NAME: ``updater::is_frozen`` (both ports) accepts the stem
@@ -659,19 +771,6 @@ LFS_POINTER_PREFIX = b"version https://git-lfs"
 # Build-only leftovers in the Cargo profile directory that are not runtime
 # libraries even though they carry a native suffix on some platforms.
 CARGO_NON_RUNTIME_SUFFIXES = {".pdb", ".d", ".rlib", ".lib", ".exp"}
-MACOS_REQUIRED_LIBRARIES = (
-    "libbass.dylib",
-    "libbassopus.dylib",
-    "libbasshls.dylib",
-    "libbassflac.dylib",
-)
-# The Linux tarball's equivalents, flat beside the executable.
-LINUX_REQUIRED_LIBRARIES = (
-    "libbass.so",
-    "libbassopus.so",
-    "libbasshls.so",
-    "libbassflac.so",
-)
 
 
 def rust_exe_name(platform_name: str = sys.platform) -> str:
@@ -1137,15 +1236,6 @@ def plan_rust_layout(
         plan.append((package_dir / relative, package / relative))
     for relative in rust_loose_sound_files(package_dir):
         plan.append((package_dir / relative, package / relative))
-    # The game's fallback location for BASS add-on plugins
-    # (``audio::assets::plugin_lib_dir`` is ``<exe dir>/freight_fate/lib``);
-    # the copy beside bass.dll is what normally loads, this one covers a
-    # player who swaps in their own BASS.
-    if ADDON_LIB_DIR.is_dir():
-        suffixes = native_exts or platform_native_exts(platform_name)
-        for path in sorted(ADDON_LIB_DIR.iterdir()):
-            if path.is_file() and path.suffix.lower() in suffixes:
-                plan.append((path, package / "lib" / path.name))
     return plan
 
 
@@ -1155,14 +1245,8 @@ def run_cargo(target_dir: Path | None = None) -> Path:
     return cargo_profile_dir(target_dir)
 
 
-def fetch_bass_command() -> list[str]:
-    """Return the checkout-local BASS preparation command."""
-    return [sys.executable, str(TOOLS / "fetch_bass.py")]
-
-
 def prepare_rust_release_dependencies() -> None:
-    """Restore native audio and the verified music pack before Cargo runs."""
-    subprocess.run(fetch_bass_command(), cwd=ROOT, check=True)
+    """Restore the verified music and Channel 3000 packs before Cargo runs."""
     ensure_music_pack()
     ensure_channel3000_pack()
 
@@ -1175,19 +1259,6 @@ def stage_rust_build(
     label: str | None = None,
 ) -> Path:
     """Assemble the Rust release folder from the plan plus the packs and docs."""
-    if platform_name == "darwin":
-        for name in MACOS_REQUIRED_LIBRARIES:
-            if not (profile_dir / name).is_file():
-                raise RuntimeError(f"Rust build is missing macOS player library {name}")
-    elif platform_name == "linux":
-        for name in LINUX_REQUIRED_LIBRARIES:
-            if not (profile_dir / name).is_file():
-                hint = (
-                    " Run `uv run python tools/fetch_bass.py` and build again."
-                    if name.startswith("libbass")
-                    else ""
-                )
-                raise RuntimeError(f"Rust build is missing Linux player library {name}.{hint}")
     require_real_pack(PACKAGE_DIR / SOURCE_ASSETS / "sounds.pak")
     require_real_pack(PACKAGE_DIR / SOURCE_ASSETS / "music.pak")
     require_real_pack(PACKAGE_DIR / SOURCE_ASSETS / "channel3000.pak")
@@ -1396,40 +1467,16 @@ def verify_rust_payload(build_dir: Path, platform_name: str = sys.platform) -> N
 
     if platform_name == "win32":
         verify_windows_runtime(executable_root)
-        for name in ("SDL2.dll", "bass.dll"):
-            if not (root / name).exists():
-                # BASS is fetched rather than committed, so a checkout that
-                # skipped the fetch would otherwise build a silent release and
-                # say nothing about why.
-                hint = (
-                    " Run `uv run python tools/fetch_bass.py` and build again."
-                    if name.startswith("bass")
-                    else ""
-                )
-                raise RuntimeError(f"Rust payload is missing the native library {name}.{hint}")
-    elif platform_name == "darwin":
-        frameworks = build_dir / "Contents" / "Frameworks"
-        # SDL2 is deliberately absent: it is compiled into the executable
-        # (`bundled` + `static-link`), and staging refuses a dynamic link.
-        missing_macos = [
-            name for name in MACOS_REQUIRED_LIBRARIES if not (frameworks / name).exists()
-        ]
-        if missing_macos:
-            raise RuntimeError(
-                "Rust macOS payload is missing native libraries: " + ", ".join(missing_macos)
-            )
-    elif platform_name == "linux":
-        # SDL2 and Prism are compiled in here too; what must be beside the
-        # executable is BASS with its decoders.
-        missing_linux = [name for name in LINUX_REQUIRED_LIBRARIES if not (root / name).exists()]
-        if missing_linux:
-            raise RuntimeError(
-                "Rust Linux payload is missing native libraries: " + ", ".join(missing_linux)
-            )
+        if not (root / "SDL2.dll").exists():
+            raise RuntimeError("Rust payload is missing the native library SDL2.dll.")
+    elif platform_name in ("darwin", "linux"):
+        # SDL2 (`bundled` + `static-link`), Prism and the audio engine are
+        # compiled into the executable; staging refuses a dynamic SDL2 link.
+        pass
     elif not native_files(root):
         print(
             "Warning: no native libraries staged beside the executable; the game "
-            "will need system SDL2/BASS on this platform."
+            "will need system SDL2 on this platform."
         )
 
     verify_sound_packs(build_dir)
@@ -1484,6 +1531,7 @@ def build_rust(
     DIST.mkdir(parents=True, exist_ok=True)
     out = archive(build_dir, label)
     verify_archive(out)
+    make_update_artifacts(build_dir, out)
     return out
 
 

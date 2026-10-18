@@ -10,8 +10,8 @@ use ff_core::settings::Settings;
 use super::settings::{Adjust, SettingsCategoryState};
 use super::settings_actions::{
     acc_gap_label, assist_preset_label, backup_announcements_label, cue_loudness_label,
-    descent_level_label, event_voice_label, hos_label, lane_keeping_label, output_label,
-    pace_label, update_channel,
+    descent_level_label, event_voice_label, hos_label, lane_keeping_label, language_label,
+    output_label, pace_label, score_display_label, update_channel,
 };
 use super::shortcuts::{ShortcutDevice, ShortcutsState};
 use super::touch_gestures::TouchGesturesState;
@@ -43,6 +43,19 @@ fn pct(level: f64) -> i64 {
 
 fn dyn_label(f: impl Fn(&Settings) -> String + 'static) -> Label<SettingsCategoryState> {
     Label::dynamic(move |_s, ctx| f(&ctx.settings))
+}
+
+/// The Controller row: the setting, and while it is on, the pad the game
+/// is listening to, so a player can tell whether their controller was found.
+fn controller_label(ctx: &GameContext) -> String {
+    if !ctx.settings.controller_enabled {
+        return "Controller: disabled".to_string();
+    }
+    if ctx.controller.connected() {
+        format!("Controller: enabled, {} connected", ctx.controller.name())
+    } else {
+        "Controller: enabled, none connected".to_string()
+    }
 }
 
 fn adjust(f: impl Fn(&mut SettingsCategoryState, &mut GameContext, i64) + 'static) -> Adjust {
@@ -125,17 +138,17 @@ pub(super) const DRIVING_ASSIST_SPECS: [(&str, &str, &str); 12] = [
     (
         "descent_speed_control",
         "Descent speed control",
-        "With adaptive cruise on, holds a steep downgrade at the speed your truck can take it at with its load, on the engine brake and short brake applications. Balanced and Interactive capture a lower target when you brake. Interactive also caps every descent at 55 miles per hour and intervenes harder.",
+        "With adaptive cruise on, holds a steep downhill grade at the speed your truck can take it at with its load, on the engine brake and short brake applications. Balanced and Interactive capture a lower target when you brake. Interactive also caps every descent at 55 miles per hour and intervenes harder.",
     ),
     (
         "exit_speed_assist",
         "Exit speed assistance",
-        "For a signalled exit: slows a truck too fast for the gore, keeps the approach within 10 miles per hour of road speed, and brakes in the exit lane to the exit speed. You still take the exit.",
+        "For a signaled exit: slows a truck too fast for the gore, keeps the approach within 10 miles per hour of road speed, and brakes in the exit lane to the exit speed. You still take the exit.",
     ),
     (
         "destination_approach_assist",
         "Facility stopping assistance",
-        "On the final approach, after any exit, it works the throttle and brakes: up to 12 miles per hour through the facility lane, creeping the last 200 feet, then stopping at pickup and delivery facilities, rest stops, and required weigh stations. It never chooses an exit, enters a yard, or docks. Realistic leaves it off; Balanced and All assists turn it on.",
+        "On the final approach, after any exit, it works the throttle and brakes: up to 12 miles per hour through the facility lane, creeping the last 200 feet, then stopping at pickup and delivery facilities, rest stops, and required weigh stations. It never chooses an exit, enters a yard, or docks. In a chain-law area it stops to put snow chains on and take them off, and it may spend on-duty minutes on chains: about 30 to chain up, 10 to take them off. It never buys chains. Realistic leaves it off; Balanced and All assists turn it on.",
     ),
     (
         "curve_speed_assist",
@@ -212,6 +225,17 @@ impl SettingsCategoryState {
     pub(super) fn speech_control_specs(&self, ctx: &GameContext) -> Vec<SpeechSpec> {
         let speech = &ctx.speech;
         let mut specs = vec![
+            SpeechSpec {
+                label: dyn_label(|s| format!("Language: {}", language_label(s))),
+                action: adjust(|s, ctx, d| s.cycle_language(ctx, d)),
+                help: "Automatic follows your system language. Radio and \
+                       recorded voices stay in English.",
+            },
+            SpeechSpec {
+                label: dyn_label(|s| format!("Score display: {}", score_display_label(s))),
+                action: adjust(|s, ctx, d| s.cycle_score_display(ctx, d)),
+                help: "Choose whether reputation and dispatch trust read both their descriptive band and score, only the score, or only the description. A trust score is spoken only when service sets its band.",
+            },
             SpeechSpec {
                 label: dyn_label(|s| {
                     format!("Driving speech: {}", s.driving_speech.replace('_', " "))
@@ -418,6 +442,7 @@ impl SettingsCategoryState {
                 adjust(|s, ctx, d| s.toggle_real_fuel_prices(ctx, d)),
                 adjust(|s, ctx, d| s.toggle_real_parking(ctx, d)),
                 adjust(|s, ctx, d| s.toggle_live_weather_calendar(ctx, d)),
+                adjust(|s, ctx, d| s.toggle_facility_streets(ctx, d)),
             ],
             "controls" => vec![
                 adjust(|s, ctx, d| s.toggle_units(ctx, d)),
@@ -477,10 +502,11 @@ impl SettingsCategoryState {
                 row(
                     dyn_label(|s| format!("Driving mode: {}", pace_label(s))),
                     adjust(|s, ctx, d| s.cycle_pace(ctx, d)),
-                    "Pacing and pressure. Relaxed gives wider hazard windows, \
+                    "Pacing and pressure. Relaxed passes about ten minutes of \
+                     road and clock each real minute, with wider hazard windows, \
                      gentler damage and fatigue, calmer speech, and the most \
                      time to respond. Standard keeps balanced pressure and moves \
-                     the clock twice as fast. Real time keeps Standard's \
+                     twice as fast, about twenty minutes each real minute. Real time keeps Standard's \
                      pressure and runs the driving clock at the speed of a real \
                      clock, lined up with your computer's date and time; delivery \
                      time remaining and hours of service do not move. Changeable \
@@ -503,7 +529,7 @@ impl SettingsCategoryState {
                         )
                     }),
                     adjust(|s, ctx, d| s.toggle_hos_planning_hints(ctx, d)),
-                    "Optional early advice for a break or sleep stop with time to spare. If an earlier stop fits, the hint also names the last legally reachable fallback. While rolling, use the Rest control to select the recommended stop; use it again to cancel. Standard driving speech speaks one suggestion before the next hours warning. The driving time readout gives full hours and route details. Quiet and Urgent only keep the automatic hint silent. Your required hours warnings and readout controls still work when this is off.",
+                    "Optional early advice for a break or sleep stop with time to spare. If an earlier stop fits, the hint also names the last legally reachable fallback. While rolling, use the Rest control to select the recommended stop; use it again to cancel. Standard driving speech speaks one suggestion before the next hours warning. The driving time readout gives full hours and route details. Quiet and Urgent only keep the automatic hint silent. Your required hours warnings and readout controls still work when this is off. It also reminds you before a chain-law road if you have no chains: on the dispatch board when the load crosses a road where trucks must carry chains this season, or where live weather or a weather alert puts a chain law in effect for your truck, while the terminal garage can still sell you a set, and on the road when a posted chain law requires chains on your truck. It never buys anything.",
                 ),
                 // The overspeed warning no longer has a row. It armed at the
                 // same 5-over pace predictive cruise itself holds, so it
@@ -589,6 +615,16 @@ impl SettingsCategoryState {
                      the career date advances at midnight and seasons pass while \
                      weather still comes from the real world.",
                 ),
+                row(
+                    dyn_label(|s| format!("Facility streets: {}", on_off(s.facility_streets))),
+                    adjust(|s, ctx, d| s.toggle_facility_streets(ctx, d)),
+                    "On, you drive the real streets between the highway and a \
+                     facility, turn by turn. Off, as in version 1.8, the exit ramp \
+                     ends at the facility gate with no light or stop sign, a \
+                     loaded run leaves straight onto the highway, and a pickup in \
+                     town is one stretch of road. \
+                     Applies from your next drive.",
+                ),
                 back_row(),
             ],
             "controls" => vec![
@@ -635,16 +671,7 @@ impl SettingsCategoryState {
                      everywhere. Automatic transmission only.",
                 ),
                 row(
-                    dyn_label(|s| {
-                        format!(
-                            "Controller: {}",
-                            if s.controller_enabled {
-                                "enabled"
-                            } else {
-                                "disabled"
-                            }
-                        )
-                    }),
+                    Label::dynamic(|_s, ctx| controller_label(ctx)),
                     adjust(|s, ctx, d| s.toggle_controller(ctx, d)),
                     "Game-controller input alongside the keyboard, which \
                      always stays active. The first connected controller is \

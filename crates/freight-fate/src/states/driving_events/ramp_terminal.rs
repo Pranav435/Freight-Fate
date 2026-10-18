@@ -2,12 +2,13 @@
 //! the cross-traffic bubble, the stop bar's countdown and its held tone, the
 //! route-transition assist, and the crossing itself.
 
+use crate::speech::EventPriority;
 use ff_core::data::world_models::Interchange;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::cross_traffic::{CrossTraffic, CrossVehicle};
 use ff_core::sim::trip_models::RoadStop;
 use ff_core::sim::trip_route_helpers::INTERCHANGE_IDENTITY_MI;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::units::spoken_feet_or_meters;
 
 use crate::app::{GameContext, IntoSpoken, SayEvent};
@@ -50,6 +51,12 @@ impl DrivingState {
             // The dice used to put a stop sign here, spoken with the
             // MAINLINE's limit on its far side (owner playtest, 2026-08-20,
             // "Stop sign at ramp end. Limit 70").
+            return "none".to_string();
+        }
+        if stop.stop_type == "delivery_destination" && !self.facility_streets_on {
+            // Facility streets off is the 1.8 arrival: the ramp runs into
+            // the facility, with no light or sign at its end (owner,
+            // 2026-10-11).
             return "none".to_string();
         }
         // A stop matched to its interchange at bake time reads that record
@@ -933,7 +940,7 @@ impl DrivingState {
     /// asks the hold line whether it is still true while delivering it.
     pub(crate) fn say_route_navigation(&self, ctx: &mut GameContext, message: &str) {
         self.refresh_live_facts();
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Some(SpeechCategory::Navigation);
         ctx.say_event_with(message.to_string(), opts);
     }
@@ -952,7 +959,7 @@ impl DrivingState {
         category: SpeechCategory,
     ) {
         self.refresh_live_facts();
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Some(category);
         ctx.say_event_with(message, opts);
     }
@@ -970,7 +977,7 @@ impl DrivingState {
     ) {
         self.refresh_live_facts();
         let opts = SayEvent::queued()
-            .priority(EventPriority::Route)
+            .priority(EventPriority::Important)
             .category(category)
             .valid(live::ramp_holding);
         ctx.say_event_with(message.to_string(), opts);

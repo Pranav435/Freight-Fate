@@ -1,4 +1,4 @@
-# Build, sign and upload Freight Fate to TestFlight (internal testers).
+# Build, sign and upload Freight Fate to TestFlight.
 #
 # Manual only. Dispatch it from dev, after the changes you want to test have
 # merged, with
@@ -9,6 +9,12 @@
 # bundle id, profile, build and signing, and uploads nothing to TestFlight.
 # Add -f upload=true for a real upload.
 #
+# Testers: the Internal group gets every uploaded build by itself. With
+# testers=friends (the default) a real upload is also added to the external
+# Friends group and submitted to Apple's beta review; Friends get it once Apple
+# approves it. testers=internal stops at the Internal group. whats_new is the
+# "What to Test" note testers read; leave it empty for the branch and commit.
+#
 # The log and the TestFlight build notes show the exact commit that was built.
 # Any other branch needs allow_other_ref set, so a build from unmerged work is
 # always deliberate.
@@ -16,12 +22,12 @@
 # It never runs from a push, a tag or a pull request, and it makes no tag and
 # no release. One-time setup and failure messages: docs/ios-testflight.md.
 #
-# No certificate or profile is stored. Each run uses the App Store Connect key
-# (ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8_BASE64) to make a short-lived Apple
-# distribution certificate and App Store profile (tools/ios_signing.py), signs
-# with them in a throwaway keychain, and deletes the keychain, the key files,
-# the profile and the certificate when it ends, so runs never use up Apple's
-# certificate cap.
+# Every run signs with the same stored Apple Distribution certificate and key
+# (IOS_DISTRIBUTION_P12_BASE64, IOS_DISTRIBUTION_P12_PASSWORD) in a throwaway
+# keychain. The App Store Connect key (ASC_KEY_ID, ASC_ISSUER_ID,
+# ASC_KEY_P8_BASE64) finds that certificate on the team and reuses its App
+# Store profile (tools/ios_signing.py). No run creates or revokes a
+# certificate, so Apple sends no "certificate revoked" mail after an upload.
 #
 # Build number: continues the number sequence already in TestFlight. The run
 # asks App Store Connect for the highest build number it has for this app and
@@ -54,6 +60,18 @@ on:
         required: false
         type: boolean
         default: false
+      testers:
+        description: "Who gets an uploaded build: friends (Internal plus the external Friends group, after Apple's beta review) or internal only"
+        required: false
+        type: choice
+        options:
+          - friends
+          - internal
+        default: friends
+      whats_new:
+        description: "What to Test note for testers (default: the branch and commit)"
+        required: false
+        type: string
 
 concurrency:
   group: ios-testflight
@@ -118,9 +136,12 @@ jobs:
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           ASC_KEY_P8_BASE64: ${{ secrets.ASC_KEY_P8_BASE64 }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          IOS_DISTRIBUTION_P12_BASE64: ${{ secrets.IOS_DISTRIBUTION_P12_BASE64 }}
+          IOS_DISTRIBUTION_P12_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_P12_PASSWORD }}
         run: |
           set -euo pipefail
-          for name in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8_BASE64 APPLE_TEAM_ID; do
+          for name in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8_BASE64 APPLE_TEAM_ID \
+            IOS_DISTRIBUTION_P12_BASE64 IOS_DISTRIBUTION_P12_PASSWORD; do
             if [ -z "${!name}" ]; then
               echo "::error::The repository secret $name is empty or missing. See docs/ios-testflight.md."
               exit 1
@@ -148,51 +169,30 @@ jobs:
             echo "$delimiter"
           } >> "$GITHUB_ENV"
 
-      - name: Create the signing certificate and App Store profile
-        # Checks the key, registers the bundle id if it is new, then makes a
-        # temporary certificate and a profile for it. Clear errors name the
-        # one thing to fix.
+      - name: Import the stored certificate into a throwaway keychain
         shell: bash
         env:
-          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-        run: |
-          python3 tools/ios_signing.py prepare --out "$SIGNING_DIR" \
-            --bundle-id "$BUNDLE_ID" --label "run-${{ github.run_id }}"
-
-      - name: Import the certificate into a throwaway keychain
-        shell: bash
-        env:
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          IOS_DISTRIBUTION_P12_BASE64: ${{ secrets.IOS_DISTRIBUTION_P12_BASE64 }}
+          IOS_DISTRIBUTION_P12_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_P12_PASSWORD }}
         run: |
           set -euo pipefail
           keychain="$RUNNER_TEMP/freight-fate-ios.keychain-db"
           keychain_password="$(uuidgen)"
-          p12_password="$(uuidgen)"
           echo "::add-mask::$keychain_password"
-          echo "::add-mask::$p12_password"
           security create-keychain -p "$keychain_password" "$keychain"
           security set-keychain-settings -lut 21600 "$keychain"
           security unlock-keychain -p "$keychain_password" "$keychain"
           echo "SIGN_KEYCHAIN=$keychain" >> "$GITHUB_ENV"
-          # OpenSSL 3 writes AES/PBKDF2 PKCS12 files that the macOS keychain
-          # rejects ("MAC verification failed"). Ask for the older 3DES/SHA1
-          # format explicitly when the openssl on PATH is OpenSSL 3; LibreSSL
-          # (/usr/bin/openssl) already writes it by default.
-          openssl_version="$(openssl version)"
-          echo "$openssl_version"
-          p12_flags=()
-          if [[ "$openssl_version" == "OpenSSL 3"* ]]; then
-            p12_flags=(-keypbe PBE-SHA1-3DES -certpbe PBE-SHA1-3DES -macalg sha1)
+          p12="$SIGNING_DIR/distribution.p12"
+          echo "$IOS_DISTRIBUTION_P12_BASE64" | base64 --decode > "$p12"
+          chmod 600 "$p12"
+          if ! security import "$p12" -k "$keychain" -f pkcs12 \
+              -P "$IOS_DISTRIBUTION_P12_PASSWORD" -T /usr/bin/codesign; then
+            rm -f "$p12"
+            echo "::error::The keychain refused IOS_DISTRIBUTION_P12_BASE64. Check its password secret, and that the .p12 was written with openssl pkcs12 -export -legacy (see docs/ios-testflight.md)."
+            exit 1
           fi
-          # The ${arr[@]+...} form keeps an empty array safe under set -u on bash 3.2.
-          openssl pkcs12 -export ${p12_flags[@]+"${p12_flags[@]}"} \
-            -inkey "$SIGNING_DIR/distribution.key.pem" \
-            -in "$SIGNING_DIR/distribution.cert.pem" \
-            -out "$SIGNING_DIR/distribution.p12" -passout "pass:$p12_password"
-          security import "$SIGNING_DIR/distribution.p12" -k "$keychain" \
-            -P "$p12_password" -T /usr/bin/codesign
-          rm -f "$SIGNING_DIR/distribution.p12"
+          rm -f "$p12"
           # Apple's intermediates, in case the runner image lacks them.
           for ca in AppleWWDRCAG3 AppleWWDRCAG6; do
             if curl -fsSL "https://www.apple.com/certificateauthority/$ca.cer" -o "$RUNNER_TEMP/$ca.cer"; then
@@ -203,12 +203,32 @@ jobs:
             -k "$keychain_password" "$keychain" >/dev/null
           security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
           security find-identity -v -p codesigning "$keychain"
-          identity="$(security find-identity -v -p codesigning "$keychain" | awk '/[0-9A-F]{40}/ {print $2; exit}')"
+          identity="$(security find-identity -v -p codesigning "$keychain" | awk '/[0-9A-F]{40}/ && /Distribution/ {print $2; exit}')"
           if [ -z "$identity" ]; then
-            echo "::error::No valid signing identity after the import. The list above shows what the keychain holds."
+            echo "::error::No valid distribution signing identity after the import. The list above shows what the keychain holds."
             exit 1
           fi
           echo "SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
+          # The public certificate, for tools/ios_signing.py to find on the team.
+          security find-certificate -a -Z -p "$keychain" | awk -v id="$identity" '
+            /^SHA-1 hash:/ { keep = ($3 == id) }
+            keep' | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' \
+            > "$SIGNING_DIR/distribution.cert.pem"
+          test -s "$SIGNING_DIR/distribution.cert.pem"
+
+      - name: Find the App Store profile for the stored certificate
+        # Checks the key, finds the certificate on the team, registers the
+        # bundle id if it is new, and reuses the active profile that names the
+        # certificate (making one only if none is active). Clear errors name
+        # the one thing to fix.
+        shell: bash
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -euo pipefail
+          python3 tools/ios_signing.py prepare --out "$SIGNING_DIR" \
+            --bundle-id "$BUNDLE_ID" --cert "$SIGNING_DIR/distribution.cert.pem"
           # Install the profile where Xcode tools look for it.
           profile_uuid="$(security cms -D -i "$SIGNING_DIR/profile.mobileprovision" | plutil -extract UUID raw -o - -)"
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
@@ -285,16 +305,25 @@ jobs:
           # set a value that is already set and fail with HTTP 409.
           wait-for-processing: "true"
           # Shown to testers as "What to Test".
-          release-notes: "Built from ${{ github.ref_name }} at ${{ github.sha }}"
+          release-notes: ${{ inputs.whats_new != '' && inputs.whats_new || format('Built from {0} at {1}', github.ref_name, github.sha) }}
 
-      - name: Remove the signing material
-        # Runs even after a failure: revoke the temporary certificate and
-        # profile, then delete the keychain and every key file.
-        if: always()
+      - name: Send the build to the Friends group
+        if: ${{ inputs.upload == true && inputs.testers == 'friends' }}
         shell: bash
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -euo pipefail
+          python3 tools/ios_signing.py distribute --bundle-id "$BUNDLE_ID" \
+            --build-number "$BUILD_NUMBER" --group Friends | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Remove the signing material
+        # Runs even after a failure: delete the keychain and every key file
+        # on the runner. The certificate and profile stay on the team for the
+        # next run.
+        if: always()
+        shell: bash
         run: |
           SIGNING_DIR="${SIGNING_DIR:-$RUNNER_TEMP/ios-signing}"
           python3 tools/ios_signing.py cleanup --out "$SIGNING_DIR" || true

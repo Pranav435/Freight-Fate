@@ -7,6 +7,11 @@ use crate::controller::ControllerButton;
 use crate::states::base::InputEvent;
 use crate::states::driving::DrivingState;
 
+/// How far the left stick goes over to ask for a lane change with lane
+/// keeping on full, and how near the center it must return before the next.
+const STICK_LANE_PUSH: f64 = 0.5;
+const STICK_LANE_RESET: f64 = 0.25;
+
 impl DrivingState {
     /// `handle_controller(event, manager)`.
     ///
@@ -128,6 +133,9 @@ impl DrivingState {
             // the one question enforcement acts on (Sarah R., 2026-08-16).
             Action::SpeedLimit => self.speak_speed_limit(ctx),
             Action::ParkingBrake => self.toggle_parking_brake(ctx),
+            Action::DriverWindow => self.toggle_driver_window(ctx),
+            Action::Fan => self.step_cab_fan(ctx),
+            Action::Climate => self.toggle_cab_climate(ctx),
             Action::CycleJake => self.cycle_jake_stage(ctx),
             Action::JakeStage1 => self.select_jake_stage(ctx, 1),
             Action::JakeStage2 => self.select_jake_stage(ctx, 2),
@@ -142,6 +150,7 @@ impl DrivingState {
             Action::Grade => self.speak_grade(ctx),
             Action::Upcoming => self.speak_upcoming(ctx, 15.0),
             Action::LastAnnouncement => self.speak_last_announcement(ctx),
+            Action::CopyLastSpoken => crate::states::base::copy_last_spoken(ctx),
             Action::Cb => self.speak_last_cb_chatter(ctx),
             Action::HosWheel => self.speak_hos_wheel_time(ctx),
             Action::HosBreak => self.speak_hos_break(ctx),
@@ -153,6 +162,12 @@ impl DrivingState {
             Action::Neutral | Action::Reverse | Action::TransmissionMode => {}
             Action::Radio => self.toggle_radio(ctx),
             Action::RadioFavorite => self.toggle_radio_favorite(ctx),
+            Action::RadioTuneNext => self.tune_radio(ctx, 1),
+            Action::RadioTunePrev => self.tune_radio(ctx, -1),
+            Action::RadioVolumeUp => self.adjust_radio_volume(ctx, 1),
+            Action::RadioVolumeDown => self.adjust_radio_volume(ctx, -1),
+            Action::RadioCategoryNext => self.jump_radio_category(ctx, 1),
+            Action::RadioCategoryPrev => self.jump_radio_category(ctx, -1),
             Action::RadioStatus => self.speak_radio_status(ctx),
             Action::RadioNowPlaying => self.speak_radio_now_playing(ctx),
             Action::Accelerate
@@ -162,6 +177,24 @@ impl DrivingState {
             | Action::SteerRight
             | Action::Straighten => {}
         }
+    }
+
+    /// Lane keeping on full holds the lane, so the left stick does not steer;
+    /// pushing it past halfway asks for one lane change that way, as a tap
+    /// of an arrow key does. It has to come back near the center before it
+    /// asks again, so a stick held over changes one lane, not every lane.
+    pub fn update_stick_lane_change(&mut self, ctx: &mut GameContext, stick: f64) {
+        if stick.abs() < STICK_LANE_RESET {
+            self.stick_lane_request = 0;
+            return;
+        }
+        if stick.abs() < STICK_LANE_PUSH || self.stick_lane_request != 0 {
+            return;
+        }
+        let side: i8 = if stick < 0.0 { -1 } else { 1 };
+        self.stick_lane_request = side;
+        // +1 moves left, the way the Left arrow asks.
+        self.tap_lane_change(ctx, -i64::from(side));
     }
 
     /// `on_controller_disconnect()`.

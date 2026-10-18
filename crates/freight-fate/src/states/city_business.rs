@@ -106,11 +106,7 @@ impl BusinessStatusState {
             p.dispatch_board_cache = None;
         }
         save_business_change(ctx);
-        let carrier = ff_core::models::career::carrier_name_of(profile(ctx));
-        ctx.say(&format!(
-            "Staying a company driver with {carrier}. The career plan stops pointing you at \
-             the buy-in. It stays open here under Business status if you change your mind."
-        ));
+        ctx.say("Staying a company driver.");
         self.refresh(ctx, true);
     }
 
@@ -207,9 +203,7 @@ impl BusinessStatusState {
         ctx.audio.play("ui/cash");
         ctx.say(&format!(
             "Leased-on owner-operator status unlocked. Paid {} dollars toward your first \
-             tractor, {} dollars working capital left. Loads pay higher gross, and your \
-             business pays fuel, repairs, maintenance reserve, insurance, trailer program, \
-             truck payment reserve, and settlement fees.",
+             tractor, {} dollars working capital left.",
             fmt_grouped(OWNER_OPERATOR_BUY_IN, 0),
             fmt_grouped(money, 0)
         ));
@@ -264,9 +258,7 @@ impl BusinessStatusState {
         save_business_change(ctx);
         ctx.audio.play("ui/cash");
         ctx.say(&format!(
-            "Weigh station transponder active. Paid {} dollars, {} dollars left. A clean \
-             truck gets a weigh-in-motion check at most open scales instead of pulling in, \
-             for a small per-mile settlement reserve.",
+            "Weigh station transponder active. Paid {} dollars, {} dollars left.",
             fmt_grouped(WEIGH_STATION_TRANSPONDER_SIGNUP_FEE, 0),
             fmt_grouped(money, 0)
         ));
@@ -528,7 +520,9 @@ impl UpgradeShopState {
 
     fn locked(&mut self, ctx: &mut GameContext) {
         ctx.audio.play("ui/error");
-        ctx.say("Upgrades unlock after the leased-on owner-operator buy-in.");
+        ctx.say(
+            "Upgrades unlock with the owner-operator buy-in, from level 18 under Business status.",
+        );
     }
 
     fn label(ctx: &GameContext, upgrade: &Upgrade) -> String {
@@ -563,7 +557,7 @@ impl UpgradeShopState {
     fn buy(&mut self, ctx: &mut GameContext, upgrade: &'static Upgrade) {
         if !is_owner_operator(&profile(ctx).business_status) {
             ctx.audio.play("ui/error");
-            ctx.say("Upgrades unlock after the leased-on owner-operator buy-in.");
+            ctx.say("Upgrades unlock with the owner-operator buy-in, from level 18 under Business status.");
             return;
         }
         let owned = profile(ctx).upgrades.get(upgrade.key).copied().unwrap_or(0);
@@ -650,7 +644,7 @@ impl Menu for UpgradeShopState {
                     "Upgrades locked: carrier-assigned tractor",
                     |s: &mut Self, ctx| s.locked(ctx),
                 )
-                .help("Upgrades unlock after the leased-on owner-operator buy-in."),
+                .help("Upgrades unlock with the owner-operator buy-in, from level 18 under Business status."),
                 MenuItem::new("Back", |s: &mut Self, ctx| s.go_back(ctx)),
             ];
         }
@@ -696,7 +690,7 @@ impl TruckShopState {
 
     fn locked(&mut self, ctx: &mut GameContext) {
         ctx.audio.play("ui/error");
-        ctx.say("Truck ownership unlocks after the leased-on owner-operator buy-in.");
+        ctx.say("Company drivers use the carrier's trucks. Buying trucks unlocks with the owner-operator buy-in, from level 18 under Business status.");
     }
 
     fn label(ctx: &GameContext, model: &TruckModel) -> String {
@@ -728,7 +722,7 @@ impl TruckShopState {
         }
         if !is_owner_operator(&profile(ctx).business_status) {
             ctx.audio.play("ui/error");
-            ctx.say("Truck purchases unlock after the leased-on owner-operator buy-in.");
+            ctx.say("Company drivers use the carrier's trucks. Buying trucks unlocks with the owner-operator buy-in, from level 18 under Business status.");
             return;
         }
         if !profile(ctx).owned_trucks.iter().any(|k| k == model.key) {
@@ -821,7 +815,9 @@ impl Menu for TruckShopState {
                     "Truck ownership locked: carrier-assigned tractor",
                     |s: &mut Self, ctx| s.locked(ctx),
                 )
-                .help("Unlocks after the leased-on owner-operator buy-in."),
+                .help(
+                    "Unlocks with the owner-operator buy-in, from level 18 under Business status.",
+                ),
                 MenuItem::new("Back", |s: &mut Self, ctx| s.go_back(ctx)),
             ];
         }
@@ -867,8 +863,8 @@ impl TrailerProgramState {
     fn locked(&mut self, ctx: &mut GameContext) {
         ctx.audio.play("ui/error");
         ctx.say(
-            "Trailer programs unlock after the leased-on owner-operator buy-in. The carrier \
-             provides trailers.",
+            "Trailer programs unlock with the owner-operator buy-in, from level 18 under \
+             Business status. The carrier provides trailers.",
         );
     }
 
@@ -910,7 +906,7 @@ impl TrailerProgramState {
     fn lease(&mut self, ctx: &mut GameContext, trailer: &TrailerType) {
         if !is_owner_operator(&profile(ctx).business_status) {
             ctx.audio.play("ui/error");
-            ctx.say("Trailer programs unlock after the leased-on owner-operator buy-in.");
+            ctx.say("Trailer programs unlock with the owner-operator buy-in, from level 18 under Business status.");
             return;
         }
         if profile(ctx)
@@ -948,8 +944,7 @@ impl TrailerProgramState {
         save_equipment_change(ctx);
         ctx.audio.play("ui/cash");
         ctx.say(&format!(
-            "{} trailer program active for {} dollars. You have {} dollars left. Matching \
-             cargo now appears on the dispatch board.",
+            "{} trailer program active for {} dollars. You have {} dollars left.",
             trailer.label,
             fmt_grouped(trailer.lease_deposit, 0),
             fmt_grouped(money, 0)
@@ -1235,10 +1230,7 @@ impl Menu for EndorsementCourseState {
         let money = profile(ctx).money();
         let current = self.current_text(ctx);
         ctx.say(&format!(
-            "Licenses and training. Certificates are carrier training, free at their listed \
-             levels or paid early. Endorsements and cards take a written test, a course fee, \
-             and for hazmat and the port card a background check wait. You have {} dollars. \
-             {current}",
+            "Licenses and training. You have {} dollars. {current}",
             fmt_grouped(money, 0)
         ));
     }

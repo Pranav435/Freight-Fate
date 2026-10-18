@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
-"""Make and clean up iOS TestFlight signing material through the App Store Connect API.
+"""Find the iOS TestFlight signing profile through the App Store Connect API.
 
-Used by ``.github/workflows/ios-testflight.yml``. No stored certificate or
-profile is needed: each run makes a short-lived Apple distribution
-certificate and an App Store provisioning profile, and removes both when it
-ends, so runs never pile up certificates against Apple's cap.
+Used by ``.github/workflows/ios-testflight.yml``. The Apple distribution
+certificate and its private key are stored once, as the repository secrets
+IOS_DISTRIBUTION_P12_BASE64 and IOS_DISTRIBUTION_P12_PASSWORD, and every run
+signs with that same certificate. Nothing here creates or revokes a
+certificate, so Apple sends no "certificate revoked" mail after a run.
 
 Sub-commands (the API key comes from the environment, never the command line):
 
-    prepare    check the key, make the private key and CSR, find or register
-               the bundle id, create the certificate and the profile, and
-               write them under --out together with a state file of ids
+    prepare    check the key, find the stored certificate on the team by its
+               serial number, find or register the bundle id, then reuse the
+               App Store profile that names that certificate (making one only
+               when none is active) and write it under --out
     check-app  check that the App Store Connect app record exists
-    cleanup    delete the profile and the certificate named in the state
-               file, then delete the key files; best effort, never fails
+    next-build print the next build number for TestFlight
+    distribute add an uploaded build to an external tester group (Friends)
+               and submit it to Apple's beta review; internal testers get
+               every build without this
+    cleanup    delete the local profile and certificate files; nothing in
+               App Store Connect is touched
 
 Environment: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH (the downloaded .p8).
 
@@ -56,15 +62,13 @@ def _load_build_ios():
 _BUILD_IOS = _load_build_ios()
 BUNDLE_ID = _BUILD_IOS.BUNDLE_ID
 APP_NAME = "Freight Fate"
-CERTIFICATE_TYPE = "IOS_DISTRIBUTION"
+CERTIFICATE_TYPES = ("DISTRIBUTION", "IOS_DISTRIBUTION")
 PROFILE_TYPE = "IOS_APP_STORE"
 TOKEN_LIFETIME = 15 * 60  # Apple allows at most 20 minutes.
 
-STATE_FILE = "signing-state.json"
-KEY_FILE = "distribution.key.pem"
 CERT_FILE = "distribution.cert.pem"
 PROFILE_FILE = "profile.mobileprovision"
-CSR_FILE = "distribution.csr"
+P12_FILE = "distribution.p12"
 
 
 class SigningError(Exception):
@@ -198,29 +202,51 @@ def explain(error: ApiError) -> SigningError:
 # --- Signing material -------------------------------------------------------
 
 
-def make_key_and_csr(out: Path, common_name: str) -> str:
-    """Write a fresh RSA 2048 key (mode 600) and return the PEM CSR text."""
-    key = out / KEY_FILE
-    csr = out / CSR_FILE
+def certificate_serial(cert_path: Path) -> str:
+    """The serial number of a PEM certificate, as uppercase hex without leading zeros."""
     result = subprocess.run(
-        [
-            "openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes",
-            "-keyout", str(key), "-out", str(csr),
-            "-subj", f"/CN={common_name}/O=Freight Fate CI/C=US",
-        ],
+        ["openssl", "x509", "-in", str(cert_path), "-noout", "-serial"],
         capture_output=True,
+        text=True,
         check=False,
-    )  # fmt: skip
-    if result.returncode != 0 or not key.exists():
-        raise SigningError("openssl could not make the signing key and request.")
-    key.chmod(0o600)
-    return csr.read_text(encoding="ascii")
+    )
+    if result.returncode != 0 or "=" not in result.stdout:
+        raise SigningError(
+            "openssl could not read the stored distribution certificate. Check that "
+            "IOS_DISTRIBUTION_P12_BASE64 holds the base64 of a .p12 with the certificate in it."
+        )
+    return result.stdout.strip().split("=", 1)[1].upper().lstrip("0") or "0"
 
 
-def der_b64_to_pem(content: str) -> str:
-    body = base64.b64decode(content)
-    wrapped = base64.encodebytes(body).decode("ascii")
-    return "-----BEGIN CERTIFICATE-----\n" + wrapped + "-----END CERTIFICATE-----\n"
+STORED_CERT_HELP = (
+    "Make a new Apple Distribution certificate from the same private key and store it "
+    "again as IOS_DISTRIBUTION_P12_BASE64 and IOS_DISTRIBUTION_P12_PASSWORD "
+    "(docs/ios-testflight.md)."
+)
+
+
+def find_certificate(token: str, serial: str) -> dict:
+    """The team's certificate with this serial number; refuses a missing or expired one."""
+    query = urllib.parse.urlencode({"filter[serialNumber]": serial, "limit": 200})
+    for cert in api_request(token, "GET", f"/v1/certificates?{query}").get("data", []):
+        attrs = cert.get("attributes", {})
+        if str(attrs.get("serialNumber", "")).upper().lstrip("0") != serial:
+            continue
+        if attrs.get("certificateType") not in CERTIFICATE_TYPES:
+            raise SigningError(
+                f"The stored certificate (serial {serial}) is a {attrs.get('certificateType')} "
+                f"certificate, not a distribution one. {STORED_CERT_HELP}"
+            )
+        expires = str(attrs.get("expirationDate", ""))
+        if expires and expires[:19] <= time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime()):
+            raise SigningError(
+                f"The stored distribution certificate expired on {expires[:10]}. {STORED_CERT_HELP}"
+            )
+        return cert
+    raise SigningError(
+        f"The stored distribution certificate (serial {serial}) is not on the team any more; "
+        f"it was revoked or has expired. {STORED_CERT_HELP}"
+    )
 
 
 def find_bundle_id(token: str, identifier: str) -> str | None:
@@ -244,29 +270,31 @@ def ensure_bundle_id(token: str, identifier: str) -> tuple[str, bool]:
     return api_request(token, "POST", "/v1/bundleIds", body)["data"]["id"], True
 
 
-def count_distribution_certs(token: str) -> int:
-    query = urllib.parse.urlencode({"filter[certificateType]": CERTIFICATE_TYPE, "limit": 200})
-    return len(api_request(token, "GET", f"/v1/certificates?{query}").get("data", []))
-
-
-def create_certificate(token: str, csr: str) -> dict:
-    body = {
-        "data": {
-            "type": "certificates",
-            "attributes": {"certificateType": CERTIFICATE_TYPE, "csrContent": csr},
+def find_profile(token: str, bundle_id: str, certificate_id: str) -> dict | None:
+    """An active App Store profile for this bundle id that names this certificate."""
+    query = urllib.parse.urlencode(
+        {
+            "filter[profileType]": PROFILE_TYPE,
+            "filter[profileState]": "ACTIVE",
+            "include": "bundleId,certificates",
+            "limit": 200,
+            "limit[certificates]": 50,
         }
-    }
-    try:
-        return api_request(token, "POST", "/v1/certificates", body)["data"]
-    except ApiError as error:
-        if error.status == 409 or "limit" in error.detail.lower():
-            raise SigningError(
-                "Apple will not make another distribution certificate: the team is at its "
-                "limit. Open developer.apple.com, Certificates, and revoke an old iOS or Apple "
-                "Distribution certificate that nothing uses, then run this again. "
-                f"Apple said: {error.detail}"
-            ) from None
-        raise
+    )
+    reply = api_request(token, "GET", f"/v1/profiles?{query}")
+    best = None
+    for profile in reply.get("data", []):
+        rel = profile.get("relationships", {})
+        bundle = (rel.get("bundleId", {}).get("data") or {}).get("id")
+        certs = [c.get("id") for c in rel.get("certificates", {}).get("data") or []]
+        if bundle != bundle_id or certificate_id not in certs:
+            continue
+        if not profile.get("attributes", {}).get("profileContent"):
+            continue
+        expires = str(profile["attributes"].get("expirationDate", ""))
+        if best is None or expires > str(best["attributes"].get("expirationDate", "")):
+            best = profile
+    return best
 
 
 def create_profile(token: str, name: str, bundle_id: str, certificate_id: str) -> dict:
@@ -349,6 +377,88 @@ def next_build_number(
     return max(highest, run_number) + 1, highest
 
 
+# --- External testers ---------------------------------------------------------
+
+
+def find_build(
+    token: str, app_id: str, number: str, attempts: int = 30, pause: float = 20.0
+) -> dict:
+    """The uploaded build with this build number, once Apple has processed it."""
+    query = urllib.parse.urlencode(
+        {"filter[app]": app_id, "filter[version]": number, "limit": "10"}
+    )
+    state = "not listed yet"
+    for attempt in range(attempts):
+        builds = api_request(token, "GET", f"/v1/builds?{query}").get("data", [])
+        if builds:
+            state = builds[0].get("attributes", {}).get("processingState", "")
+            if state == "VALID":
+                return builds[0]
+            if state in ("FAILED", "INVALID"):
+                break
+        if attempt + 1 < attempts:
+            time.sleep(pause)
+    raise SigningError(
+        f"Build {number} is {state} in App Store Connect, so it was not sent to external "
+        "testers. Internal testers still get it once Apple finishes processing."
+    )
+
+
+def find_external_group(token: str, app_id: str, name: str) -> dict:
+    query = urllib.parse.urlencode({"limit": "200"})
+    for group in api_request(token, "GET", f"/v1/apps/{app_id}/betaGroups?{query}").get("data", []):
+        attributes = group.get("attributes", {})
+        if attributes.get("name") == name and not attributes.get("isInternalGroup"):
+            return group
+    raise SigningError(
+        f"There is no external TestFlight group named {name!r} for this app (App Store "
+        "Connect, the app, TestFlight, External Testing). The build was uploaded for "
+        "internal testers only."
+    )
+
+
+def review_submitted(token: str, build_id: str) -> bool:
+    try:
+        reply = api_request(token, "GET", f"/v1/builds/{build_id}/betaAppReviewSubmission")
+    except ApiError as error:
+        if error.status == 404:
+            return False
+        raise
+    return bool(reply.get("data"))
+
+
+def distribute(token: str, bundle_id: str, number: str, group_name: str) -> str:
+    """Add build ``number`` to the external group and submit it; returns a summary."""
+    app_id = find_app_id(token, bundle_id)
+    if app_id is None:
+        raise SigningError(MISSING_APP_HELP.format(bundle=bundle_id))
+    group = find_external_group(token, app_id, group_name)
+    build = find_build(token, app_id, number)
+    api_request(
+        token,
+        "POST",
+        f"/v1/betaGroups/{group['id']}/relationships/builds",
+        {"data": [{"type": "builds", "id": build["id"]}]},
+    )
+    if review_submitted(token, build["id"]):
+        return f"Build {number} added to {group_name}; it was already submitted for beta review."
+    api_request(
+        token,
+        "POST",
+        "/v1/betaAppReviewSubmissions",
+        {
+            "data": {
+                "type": "betaAppReviewSubmissions",
+                "relationships": {"build": {"data": {"type": "builds", "id": build["id"]}}},
+            }
+        },
+    )
+    return (
+        f"Build {number} added to {group_name} and submitted for beta review. Its testers "
+        "get it once Apple approves it."
+    )
+
+
 MISSING_APP_HELP = (
     "There is no App Store Connect app record for bundle id {bundle}, the id "
     "tools/build_ios.py stamps into the app. The bundle id in App Store Connect must match "
@@ -385,30 +495,38 @@ def _token() -> str:
 def cmd_prepare(args: argparse.Namespace) -> int:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
+    cert_path = Path(args.cert) if args.cert else out / CERT_FILE
+    if not cert_path.is_file() or cert_path.stat().st_size == 0:
+        raise SigningError(
+            f"The stored distribution certificate was not exported to {cert_path}. "
+            "Check IOS_DISTRIBUTION_P12_BASE64 and IOS_DISTRIBUTION_P12_PASSWORD."
+        )
+    serial = certificate_serial(cert_path)
     token = _token()
-    state: dict = {}
-    state_path = out / STATE_FILE
     try:
-        existing = count_distribution_certs(token)
-        print(f"Key accepted. The team already has {existing} distribution certificate(s).")
-        csr = make_key_and_csr(out, f"Freight Fate CI {args.label}")
+        cert = find_certificate(token, serial)
+        print(
+            f"Key accepted. Signing with the stored distribution certificate (id {cert['id']}, "
+            f"expires {str(cert['attributes'].get('expirationDate', ''))[:10]})."
+        )
         bundle, created = ensure_bundle_id(token, args.bundle_id)
         print(
             f"Bundle id {args.bundle_id}: {'registered now' if created else 'already registered'}."
         )
-        cert = create_certificate(token, csr)
-        state["certificate_id"] = cert["id"]
-        state_path.write_text(json.dumps(state))
-        print(f"Created a temporary distribution certificate (id {cert['id']}).")
-        (out / CERT_FILE).write_text(
-            der_b64_to_pem(cert["attributes"]["certificateContent"]), encoding="ascii"
-        )
-        profile = create_profile(token, f"Freight Fate TestFlight {args.label}", bundle, cert["id"])
-        state["profile_id"] = profile["id"]
-        state_path.write_text(json.dumps(state))
+        profile = find_profile(token, bundle, cert["id"])
+        if profile is not None:
+            name = profile["attributes"].get("name")
+            print(f"Reusing the App Store profile {name!r} (id {profile['id']}).")
+        else:
+            profile = create_profile(
+                token, f"Freight Fate App Store {cert['id']}", bundle, cert["id"]
+            )
+            print(
+                f"Made an App Store profile for the stored certificate (id {profile['id']}). "
+                "Later runs reuse it."
+            )
         profile_path = out / PROFILE_FILE
         profile_path.write_bytes(base64.b64decode(profile["attributes"]["profileContent"]))
-        print(f"Created a temporary App Store profile (id {profile['id']}).")
     except ApiError as error:
         raise explain(error) from None
     return 0
@@ -446,38 +564,20 @@ def cmd_next_build(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_distribute(args: argparse.Namespace) -> int:
+    if not args.build_number:
+        raise SigningError("distribute needs --build-number.")
+    token = _token()
+    try:
+        print(distribute(token, args.bundle_id, args.build_number, args.group))
+    except ApiError as error:
+        raise explain(error) from None
+    return 0
+
+
 def cmd_cleanup(args: argparse.Namespace) -> int:
     out = Path(args.out)
-    state_path = out / STATE_FILE
-    state: dict = {}
-    if state_path.is_file():
-        try:
-            state = json.loads(state_path.read_text())
-        except ValueError:
-            print("::warning::The signing state file is unreadable; cannot revoke by id.")
-    token = None
-    if state:
-        try:
-            token = _token()
-        except SigningError as error:
-            print(f"::warning::Cleanup could not authenticate: {error}")
-    if token:
-        for kind, key, path in (
-            ("profile", "profile_id", "/v1/profiles/"),
-            ("certificate", "certificate_id", "/v1/certificates/"),
-        ):
-            item = state.get(key)
-            if not item:
-                continue
-            try:
-                api_request(token, "DELETE", path + item)
-                print(f"Deleted the temporary {kind} (id {item}).")
-            except SigningError as error:
-                print(
-                    f"::warning::Could not delete the temporary {kind} (id {item}); "
-                    f"remove it by hand at developer.apple.com. {error}"
-                )
-    for name in (KEY_FILE, CERT_FILE, PROFILE_FILE, CSR_FILE, STATE_FILE):
+    for name in (CERT_FILE, PROFILE_FILE, P12_FILE):
         (out / name).unlink(missing_ok=True)
     return 0
 
@@ -489,6 +589,7 @@ def main(argv: list[str] | None = None) -> int:
         ("prepare", cmd_prepare),
         ("check-app", cmd_check_app),
         ("next-build", cmd_next_build),
+        ("distribute", cmd_distribute),
         ("cleanup", cmd_cleanup),
     ):
         p = sub.add_parser(name)
@@ -496,6 +597,9 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--out", default="build/ios-signing")
         p.add_argument("--label", default="manual", help="run label for names (no secrets)")
         p.add_argument("--run-number", type=int, default=0, help="lowest build number to allow")
+        p.add_argument("--cert", default="", help="PEM of the stored certificate (prepare)")
+        p.add_argument("--build-number", default="", help="uploaded build (distribute)")
+        p.add_argument("--group", default="Friends", help="external tester group (distribute)")
         p.set_defaults(func=func)
     args = parser.parse_args(argv)
     try:

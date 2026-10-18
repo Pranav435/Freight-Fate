@@ -58,7 +58,7 @@ impl Corridor {
 fn lanes_your_side(leg: &ff_core::data::world_models::Leg, offset_mi: f64) -> i64 {
     for seg in leg.lane_segments() {
         if seg.start_mi <= offset_mi && offset_mi <= seg.end_mi {
-            return seg.your_side(true).max(1);
+            return seg.your_side().max(1);
         }
     }
     if leg.divided == Some(false) {
@@ -1115,7 +1115,7 @@ pub fn bench_lead(lanes_your_side: i64, lead_mph: f64) -> BenchRun {
             run.resolution = harness
                 .transcript()
                 .iter()
-                .find(|line| line.contains("Well done"))
+                .find(|line| line.contains("Clear of"))
                 .cloned()
                 .unwrap_or_default();
             break;
@@ -1525,12 +1525,12 @@ fn with_no_lane_to_go_around_in_the_call_is_brake_and_nothing_else() {
     assert!(!call.contains("Change lanes"), "{call:?}");
     let resolution = heard
         .iter()
-        .find(|line| line.contains("Well done"))
+        .find(|line| line.contains("Clear of"))
         .unwrap_or_else(|| panic!("the hazard never resolved: {heard:#?}"));
     // What actually happened is that the truck came down to the vehicle's
     // speed. It did not nearly stop, and there was nowhere to ease around to.
     assert!(
-        resolution.contains("You slow to match the slow car. Well done."),
+        resolution.contains("Clear of the slow car."),
         "{resolution:?}"
     );
     assert!(!resolution.contains("ease around"), "{resolution:?}");
@@ -1561,13 +1561,13 @@ fn with_a_lane_open_the_call_offers_it() {
     );
     let resolution = heard
         .iter()
-        .find(|line| line.contains("Well done"))
+        .find(|line| line.contains("Clear of"))
         .unwrap_or_else(|| panic!("the hazard never resolved: {heard:#?}"));
     // Braking down to the vehicle's speed is not going around it, whatever
     // the road offers: the swerve has its own line, spoken from the lane
     // change itself.
     assert!(
-        resolution.contains("You slow to match the slow car. Well done."),
+        resolution.contains("Clear of the slow car."),
         "{resolution:?}"
     );
     assert!(!resolution.contains("ease around"), "{resolution:?}");

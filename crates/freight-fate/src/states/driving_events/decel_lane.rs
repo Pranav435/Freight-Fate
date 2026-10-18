@@ -10,8 +10,9 @@
 //! and the exit speed (the ramp's advisory, MUTCD W13-2, which stands along
 //! this lane) governs the curve that follows it, not the gore.
 
+use crate::speech::EventPriority;
 use ff_core::data::curves::min_radius_ft;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 
 use crate::app::{GameContext, SayEvent};
 use crate::bindings::Action;
@@ -167,19 +168,10 @@ impl DrivingState {
         self.decel_lane_assist_said = true;
         // ROUTE: an automation naming that it just took the brakes, the same
         // class as every other assist's slowing line.
-        let who = if ctx.settings.exit_speed_assist {
-            "Exit speed assistance"
-        } else if ctx.settings.route_transition_assist {
-            "Route-transition assistance"
-        } else if ctx.settings.curve_speed_assist {
-            "Curve assistance"
-        } else {
-            "Facility stopping assistance"
-        };
         ctx.say_event_with(
-            format!("{who} slowing for the ramp."),
+            "Slowing for the ramp.",
             SayEvent::queued()
-                .priority(EventPriority::Route)
+                .priority(EventPriority::Important)
                 .category(SpeechCategory::Confirmation),
         );
     }

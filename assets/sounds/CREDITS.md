@@ -97,7 +97,7 @@ not distributed in this repository.
 | Hazard warning | `events/hazard_warning.ogg` | Short in-drive hazard cue |
 | Construction zone | `events/construction_zone.ogg` | Short construction-zone cue |
 | Traffic slowing | `events/traffic_slowing.ogg` | Short traffic-slowing cue |
-| Toll charged | `events/toll_charged.ogg` | Short toll/transponder cue |
+| Toll charged | `events/toll_charged.ogg` | ElevenLabs-generated low, soft dashboard bong |
 | State crossing | `events/state_crossing.ogg` | Short route milestone cue |
 | Inspection warning | `events/inspection_warning.ogg` | Short inspection/weigh-station cue |
 | Scale warning | `events/weigh_station_warning.ogg` | Procedural (numpy) two-part low-thump-then-beep cue for the open-scale approach notice, generated with `tools/generate_sounds.py --weigh-station-warning`, no ElevenLabs credits |
@@ -114,6 +114,9 @@ not distributed in this repository.
 | Weigh station lane | `poi/weigh_station_lane.ogg` | Parked weigh-station lane ambience loop |
 | Facility gate | `poi/facility_gate.ogg` | ElevenLabs-generated loading-dock gate ambience loop |
 | Dock and deliver | `poi/dock_and_deliver.ogg` | Destination docking action cue |
+| Main menu, night | `ambient/menu_night_lot.ogg` | ElevenLabs-generated truck-stop-at-night ambience loop |
+| Main menu, owner-operator by day | `ambient/menu_yard.ogg` | ElevenLabs-generated loop of one rig idling in a truck yard |
+| Main menu, company driver by day | `ambient/menu_dispatch_office.ogg` | ElevenLabs-generated trucking dispatch office ambience loop |
 | Truck stop by day | `ambient/truck_stop.ogg` | ElevenLabs-generated daytime truck-stop lot ambience loop |
 | Warehouse interior | `ambient/warehouse.ogg` | ElevenLabs-generated warehouse dock interior ambience loop |
 | Night driving | `ambient/night.ogg` | In-cab night ambience loop, shared by Darren Duff |

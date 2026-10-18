@@ -1,4 +1,4 @@
-"""tools/ios_signing.py: JWT shape, API sequence, error text, cleanup."""
+"""tools/ios_signing.py: JWT shape, stored-certificate lookup, profile reuse, cleanup."""
 
 from __future__ import annotations
 
@@ -72,16 +72,52 @@ def test_real_openssl_signature_is_64_bytes(tmp_path) -> None:
 
 
 @needs_openssl
-def test_csr_and_key_files(tmp_path) -> None:
-    csr = ios_signing.make_key_and_csr(tmp_path, "Freight Fate CI 1")
-    assert "BEGIN CERTIFICATE REQUEST" in csr
-    assert (tmp_path / ios_signing.KEY_FILE).exists()
+def test_certificate_serial_reads_pem(tmp_path) -> None:
+    key, cert = tmp_path / "k.pem", tmp_path / "c.pem"
+    subprocess.run(
+        ["openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-keyout", str(key),
+         "-out", str(cert), "-subj", "/CN=t", "-days", "1", "-set_serial", "0x00AB12"],
+        check=True, capture_output=True,
+    )  # fmt: skip
+    assert ios_signing.certificate_serial(cert) == "AB12"
+
+
+SERIAL = "6FAEDF0892775C53B5B9AE78C662511B"
+BUNDLE_ID_RESOURCE = "B1"
+
+
+def _cert(serial=SERIAL, kind="DISTRIBUTION", expires="2099-01-01T00:00:00.000+00:00"):
+    return {
+        "id": "C1",
+        "attributes": {
+            "serialNumber": serial,
+            "certificateType": kind,
+            "expirationDate": expires,
+        },
+    }
+
+
+def _profile(pid, bundle="B1", cert="C1", expires="2099-01-01T00:00:00.000+00:00"):
+    return {
+        "id": pid,
+        "attributes": {
+            "name": f"profile {pid}",
+            "expirationDate": expires,
+            "profileContent": base64.b64encode(pid.encode()).decode(),
+        },
+        "relationships": {
+            "bundleId": {"data": {"type": "bundleIds", "id": bundle}},
+            "certificates": {"data": [{"type": "certificates", "id": cert}]},
+        },
+    }
 
 
 class FakeApi:
     def __init__(self, bundles=None, fail=None):
         self.calls: list[tuple[str, str, dict | None]] = []
         self.bundles = bundles if bundles is not None else []
+        self.certs = [_cert()]
+        self.profiles: list[dict] = []
         self.fail = fail or {}
 
     def __call__(self, token, method, path, body=None):
@@ -92,12 +128,11 @@ class FakeApi:
         if key == ("GET", "/v1/bundleIds"):
             return {"data": self.bundles}
         if key == ("GET", "/v1/certificates"):
-            return {"data": []}
+            return {"data": self.certs}
+        if key == ("GET", "/v1/profiles"):
+            return {"data": self.profiles}
         if key == ("POST", "/v1/bundleIds"):
-            return {"data": {"id": "B1"}}
-        if key == ("POST", "/v1/certificates"):
-            cert = base64.b64encode(b"certbytes").decode()
-            return {"data": {"id": "C1", "attributes": {"certificateContent": cert}}}
+            return {"data": {"id": BUNDLE_ID_RESOURCE}}
         if key == ("POST", "/v1/profiles"):
             prof = base64.b64encode(b"profilebytes").decode()
             return {"data": {"id": "P1", "attributes": {"profileContent": prof}}}
@@ -111,43 +146,77 @@ def api(monkeypatch, tmp_path):
     fake = FakeApi()
     monkeypatch.setattr(ios_signing, "api_request", fake)
     monkeypatch.setattr(ios_signing, "_token", lambda: "tok")
-
-    def fake_csr(out, common_name):
-        (out / ios_signing.KEY_FILE).write_text("k")
-        return "csr"
-
-    monkeypatch.setattr(ios_signing, "make_key_and_csr", fake_csr)
+    monkeypatch.setattr(ios_signing, "certificate_serial", lambda path: SERIAL)
+    (tmp_path / ios_signing.CERT_FILE).write_text("cert")
     return fake
 
 
-def test_prepare_registers_bundle_and_links_profile(api, tmp_path) -> None:
+def _methods(api) -> set[str]:
+    return {c[0] for c in api.calls}
+
+
+def test_prepare_never_creates_or_revokes_a_certificate(api, tmp_path) -> None:
+    assert ios_signing.main(["prepare", "--out", str(tmp_path)]) == 0
+    touched = [(c[0], c[1]) for c in api.calls]
+    assert ("POST", "/v1/certificates") not in touched
+    assert not any(m == "DELETE" for m, _ in touched)
+
+
+def test_prepare_makes_one_profile_when_none_is_active(api, tmp_path) -> None:
     assert ios_signing.main(["prepare", "--out", str(tmp_path)]) == 0
     posts = [(c[1], c[2]) for c in api.calls if c[0] == "POST"]
-    assert [p[0] for p in posts] == ["/v1/bundleIds", "/v1/certificates", "/v1/profiles"]
-    cert_attrs = posts[1][1]["data"]["attributes"]
-    assert cert_attrs["certificateType"] == "IOS_DISTRIBUTION" and cert_attrs["csrContent"] == "csr"
-    rel = posts[2][1]["data"]["relationships"]
-    assert rel["bundleId"]["data"]["id"] == "B1"
+    assert [p[0] for p in posts] == ["/v1/bundleIds", "/v1/profiles"]
+    rel = posts[1][1]["data"]["relationships"]
+    assert rel["bundleId"]["data"]["id"] == BUNDLE_ID_RESOURCE
     assert rel["certificates"]["data"][0]["id"] == "C1"
-    assert posts[2][1]["data"]["attributes"]["profileType"] == "IOS_APP_STORE"
+    assert posts[1][1]["data"]["attributes"]["profileType"] == "IOS_APP_STORE"
     assert (tmp_path / ios_signing.PROFILE_FILE).read_bytes() == b"profilebytes"
-    assert "BEGIN CERTIFICATE" in (tmp_path / ios_signing.CERT_FILE).read_text()
-    assert json.loads((tmp_path / ios_signing.STATE_FILE).read_text()) == {
-        "certificate_id": "C1",
-        "profile_id": "P1",
-    }
 
 
-def test_prepare_reuses_existing_bundle_id(api, tmp_path) -> None:
-    api.bundles = [{"id": "EXIST", "attributes": {"identifier": ios_signing.BUNDLE_ID}}]
+def test_prepare_reuses_the_profile_for_the_stored_cert(api, tmp_path) -> None:
+    api.bundles = [{"id": "B1", "attributes": {"identifier": ios_signing.BUNDLE_ID}}]
+    api.profiles = [
+        _profile("OTHER_CERT", cert="C9"),
+        _profile("OTHER_APP", bundle="B9"),
+        _profile("OLD", expires="2027-01-01T00:00:00.000+00:00"),
+        _profile("NEW", expires="2028-01-01T00:00:00.000+00:00"),
+    ]
     assert ios_signing.main(["prepare", "--out", str(tmp_path)]) == 0
-    assert ("POST", "/v1/bundleIds") not in [(c[0], c[1]) for c in api.calls]
+    assert _methods(api) == {"GET"}
+    assert (tmp_path / ios_signing.PROFILE_FILE).read_bytes() == b"NEW"
 
 
 def test_prepare_ignores_prefix_bundle_matches(api, tmp_path) -> None:
     api.bundles = [{"id": "X", "attributes": {"identifier": ios_signing.BUNDLE_ID + ".extra"}}]
     ios_signing.main(["prepare", "--out", str(tmp_path)])
     assert ("POST", "/v1/bundleIds") in [(c[0], c[1]) for c in api.calls]
+
+
+def test_prepare_stops_when_the_stored_cert_is_gone(api, tmp_path, capsys) -> None:
+    api.certs = [_cert(serial="1234")]
+    assert ios_signing.main(["prepare", "--out", str(tmp_path)]) == 1
+    out = capsys.readouterr().out
+    assert "not on the team" in out and "IOS_DISTRIBUTION_P12_BASE64" in out
+    assert _methods(api) == {"GET"}
+
+
+def test_prepare_stops_when_the_stored_cert_expired(api, tmp_path, capsys) -> None:
+    api.certs = [_cert(expires="2020-01-01T00:00:00.000+00:00")]
+    assert ios_signing.main(["prepare", "--out", str(tmp_path)]) == 1
+    assert "expired on 2020-01-01" in capsys.readouterr().out
+
+
+def test_prepare_refuses_a_development_cert(api, tmp_path, capsys) -> None:
+    api.certs = [_cert(kind="DEVELOPMENT")]
+    assert ios_signing.main(["prepare", "--out", str(tmp_path)]) == 1
+    assert "not a distribution one" in capsys.readouterr().out
+
+
+def test_prepare_without_the_exported_cert(api, tmp_path, capsys) -> None:
+    (tmp_path / ios_signing.CERT_FILE).unlink()
+    assert ios_signing.main(["prepare", "--out", str(tmp_path)]) == 1
+    assert "IOS_DISTRIBUTION_P12_PASSWORD" in capsys.readouterr().out
+    assert api.calls == []
 
 
 def test_forbidden_key_gets_plain_message(api, tmp_path, capsys) -> None:
@@ -164,14 +233,6 @@ def test_unauthorized_key_message(api, tmp_path, capsys) -> None:
     assert "ASC_KEY_P8_BASE64" in capsys.readouterr().out
 
 
-def test_certificate_limit_message(api, tmp_path, capsys) -> None:
-    api.fail[("POST", "/v1/certificates")] = ios_signing.ApiError(
-        "POST", "/v1/certificates", 409, "limit reached"
-    )
-    assert ios_signing.main(["prepare", "--out", str(tmp_path)]) == 1
-    assert "revoke an old" in capsys.readouterr().out
-
-
 def test_missing_app_record_says_what_to_do(api, capsys) -> None:
     assert ios_signing.main(["check-app"]) == 1
     out = capsys.readouterr().out
@@ -183,30 +244,23 @@ def test_app_record_present(api, capsys) -> None:
     assert ios_signing.main(["check-app"]) == 0
 
 
-def test_cleanup_deletes_profile_then_cert_and_files(api, tmp_path) -> None:
-    (tmp_path / ios_signing.STATE_FILE).write_text(
-        json.dumps({"certificate_id": "C1", "profile_id": "P1"})
-    )
-    (tmp_path / ios_signing.KEY_FILE).write_text("secret")
+def test_cleanup_only_removes_local_files(api, tmp_path) -> None:
+    for name in (ios_signing.CERT_FILE, ios_signing.PROFILE_FILE, ios_signing.P12_FILE):
+        (tmp_path / name).write_text("x")
     assert ios_signing.main(["cleanup", "--out", str(tmp_path)]) == 0
-    deletes = [c[1] for c in api.calls if c[0] == "DELETE"]
-    assert deletes == ["/v1/profiles/P1", "/v1/certificates/C1"]
+    assert api.calls == []
     assert list(tmp_path.iterdir()) == []
 
 
-def test_cleanup_failure_warns_and_still_removes_files(api, tmp_path, capsys) -> None:
-    api.fail[("DELETE", "/v1/certificates/C1")] = ios_signing.ApiError(
-        "DELETE", "/v1/certificates/C1", 500, "x"
-    )
-    (tmp_path / ios_signing.STATE_FILE).write_text(json.dumps({"certificate_id": "C1"}))
-    (tmp_path / ios_signing.KEY_FILE).write_text("secret")
+def test_cleanup_with_nothing_there_is_quiet(tmp_path) -> None:
     assert ios_signing.main(["cleanup", "--out", str(tmp_path)]) == 0
-    assert "::warning::" in capsys.readouterr().out
-    assert not (tmp_path / ios_signing.KEY_FILE).exists()
 
 
-def test_cleanup_with_no_state_is_quiet(tmp_path) -> None:
-    assert ios_signing.main(["cleanup", "--out", str(tmp_path)]) == 0
+def test_workflow_signs_with_the_stored_certificate() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "ios-testflight.yml").read_text(encoding="utf-8")
+    assert "secrets.IOS_DISTRIBUTION_P12_BASE64" in workflow
+    assert "secrets.IOS_DISTRIBUTION_P12_PASSWORD" in workflow
+    assert "--label" not in workflow
 
 
 def test_bundle_id_comes_from_build_ios() -> None:
@@ -235,3 +289,88 @@ def test_workflow_leaves_export_compliance_to_info_plist() -> None:
     assert not any("uses-non-exempt-encryption" in ln for ln in active)
     build_ios = (ROOT / "tools" / "build_ios.py").read_text(encoding="utf-8")
     assert '"ITSAppUsesNonExemptEncryption": False' in build_ios
+
+
+class FakeTestFlight:
+    """App Store Connect as seen by distribute: one app, its groups and builds."""
+
+    def __init__(self, states=("VALID",), submitted=False):
+        self.calls: list[tuple[str, str, dict | None]] = []
+        self.states = list(states)
+        self.submitted = submitted
+        self.groups = [
+            {"id": "G-int", "attributes": {"name": "Friends", "isInternalGroup": True}},
+            {"id": "G-ext", "attributes": {"name": "Friends", "isInternalGroup": False}},
+        ]
+
+    def __call__(self, token, method, path, body=None):
+        bare = path.split("?")[0]
+        self.calls.append((method, bare, body))
+        if bare == "/v1/apps":
+            return {"data": [{"id": "APP"}]}
+        if bare == "/v1/apps/APP/betaGroups":
+            return {"data": self.groups}
+        if bare == "/v1/builds":
+            assert "filter%5Bversion%5D=10" in path
+            state = self.states.pop(0) if len(self.states) > 1 else self.states[0]
+            return {"data": [{"id": "BUILD", "attributes": {"processingState": state}}]}
+        if bare == "/v1/builds/BUILD/betaAppReviewSubmission":
+            return {"data": {"id": "S"} if self.submitted else None}
+        return {}
+
+
+@pytest.fixture
+def testflight(monkeypatch):
+    fake = FakeTestFlight()
+    monkeypatch.setattr(ios_signing, "api_request", fake)
+    monkeypatch.setattr(ios_signing, "_token", lambda: "tok")
+    monkeypatch.setattr(ios_signing.time, "sleep", lambda seconds: None)
+    return fake
+
+
+def _writes(fake) -> list[tuple[str, str, dict | None]]:
+    return [c for c in fake.calls if c[0] != "GET"]
+
+
+def test_distribute_adds_to_the_external_group_and_submits(testflight, capsys) -> None:
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 0
+    added, submitted = _writes(testflight)
+    assert added[1] == "/v1/betaGroups/G-ext/relationships/builds"
+    assert added[2] == {"data": [{"type": "builds", "id": "BUILD"}]}
+    assert submitted[1] == "/v1/betaAppReviewSubmissions"
+    assert submitted[2]["data"]["relationships"]["build"]["data"]["id"] == "BUILD"
+    assert "submitted for beta review" in capsys.readouterr().out
+
+
+def test_distribute_waits_for_processing(testflight) -> None:
+    testflight.states = ["PROCESSING", "PROCESSING", "VALID"]
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 0
+    assert sum(1 for c in testflight.calls if c[1] == "/v1/builds") == 3
+
+
+def test_distribute_does_not_resubmit(testflight, capsys) -> None:
+    testflight.submitted = True
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 0
+    assert [c[1] for c in _writes(testflight)] == ["/v1/betaGroups/G-ext/relationships/builds"]
+    assert "already submitted" in capsys.readouterr().out
+
+
+def test_distribute_stops_on_a_failed_build(testflight, capsys) -> None:
+    testflight.states = ["INVALID"]
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 1
+    assert _writes(testflight) == []
+    assert "INVALID" in capsys.readouterr().out
+
+
+def test_distribute_needs_an_external_group(testflight, capsys) -> None:
+    testflight.groups = testflight.groups[:1]
+    assert ios_signing.main(["distribute", "--build-number", "10"]) == 1
+    assert _writes(testflight) == []
+    assert "no external TestFlight group named 'Friends'" in capsys.readouterr().out
+
+
+def test_workflow_sends_real_uploads_to_friends_by_default() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "ios-testflight.yml").read_text(encoding="utf-8")
+    assert "inputs.upload == true && inputs.testers == 'friends'" in workflow
+    assert "tools/ios_signing.py distribute" in workflow
+    assert "default: friends" in workflow

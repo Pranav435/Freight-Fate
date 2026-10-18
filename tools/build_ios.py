@@ -10,9 +10,8 @@ target into an installable ``FreightFate.app``:
 * the executable, with the baked world data, the committed loose sounds and
   the sound and music packs beside it (an iOS bundle is flat, so the game's
   "resources beside the executable" layout already fits);
-* BASS and its add-ons as embedded frameworks under ``Frameworks/``,
-  downloaded from un4seen and pinned by SHA-256 like ``fetch_bass.py``'s
-  desktop libraries (BASS is proprietary and never committed);
+* nothing under ``Frameworks/``: SDL2, Prism and the audio engine are
+  all linked into the executable;
 * an ``Info.plist`` declaring controller support, and the app icon compiled
   from ``crates/freight-fate/ios/Assets.xcassets``;
 * a code signature: ad-hoc for the Simulator, or a real identity plus
@@ -35,7 +34,6 @@ The Simulator build targets Apple Silicon Macs (``aarch64-apple-ios-sim``).
 from __future__ import annotations
 
 import argparse
-import hashlib
 import importlib.util
 import itertools
 import os
@@ -44,15 +42,12 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import urllib.request
-import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BUILD = ROOT / "build"
 IOS_BUILD = BUILD / "ios"
-BASS_CACHE = IOS_BUILD / "bass"
 APP_NAME = "FreightFate"
 BUNDLE_ID = "net.orinks.freightfate"
 ASSET_CATALOG = ROOT / "crates" / "freight-fate" / "ios" / "Assets.xcassets"
@@ -68,44 +63,11 @@ class Target:
     triple: str
     sdk: str
     platform: str
-    xcframework_slice_prefix: str
     simulator: bool
 
 
-SIMULATOR = Target("aarch64-apple-ios-sim", "iphonesimulator", "iPhoneSimulator", "ios-arm64", True)
-DEVICE = Target("aarch64-apple-ios", "iphoneos", "iPhoneOS", "ios-arm64", False)
-
-
-@dataclass(frozen=True)
-class BassArchive:
-    url: str
-    sha256: str
-    framework: str
-
-
-# un4seen's iOS builds, one XCFramework per library, pinned by SHA-256.
-BASS_ARCHIVES = (
-    BassArchive(
-        "https://www.un4seen.com/files/bass24-ios.zip",
-        "087bdb8aec6735a8b8de21253e07270f647cfb7bb3e1f276efa7ba979d46836e",
-        "bass",
-    ),
-    BassArchive(
-        "https://www.un4seen.com/files/bassopus24-ios.zip",
-        "33b44809e9e8aa7a949386213336d0b8fa73652ef058caa63aa7cea5d72c2a96",
-        "bassopus",
-    ),
-    BassArchive(
-        "https://www.un4seen.com/files/bassflac24-ios.zip",
-        "57dd543278b63e75e6ecd236ee0b9afaf5d79e8ad0880a81d565d5d2ed4aed50",
-        "bassflac",
-    ),
-    BassArchive(
-        "https://www.un4seen.com/files/basshls24-ios.zip",
-        "9210a70978faa0352906b1932851569a890c7f3f77859bcad3514bb2c08b03af",
-        "basshls",
-    ),
-)
+SIMULATOR = Target("aarch64-apple-ios-sim", "iphonesimulator", "iPhoneSimulator", True)
+DEVICE = Target("aarch64-apple-ios", "iphoneos", "iPhoneOS", False)
 
 
 def load_build_release():
@@ -117,76 +79,6 @@ def load_build_release():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
-
-
-def sha256_of(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def fetch_bass_archive(archive: BassArchive, cache: Path = BASS_CACHE) -> Path:
-    """Download (once) and verify one BASS iOS archive; return the zip."""
-    cache.mkdir(parents=True, exist_ok=True)
-    destination = cache / archive.url.rsplit("/", 1)[-1]
-    if destination.is_file() and sha256_of(destination) == archive.sha256:
-        return destination
-    with tempfile.NamedTemporaryFile(dir=cache, suffix=".download", delete=False) as temp:
-        temporary = Path(temp.name)
-    try:
-        request = urllib.request.Request(
-            archive.url, headers={"User-Agent": "Freight-Fate-ios-builder"}
-        )
-        with urllib.request.urlopen(request) as response, temporary.open("wb") as out:
-            shutil.copyfileobj(response, out)
-        actual = sha256_of(temporary)
-        if actual != archive.sha256:
-            raise RuntimeError(
-                f"{destination.name} failed SHA-256 verification: "
-                f"expected {archive.sha256}, got {actual}"
-            )
-        temporary.replace(destination)
-    finally:
-        temporary.unlink(missing_ok=True)
-    return destination
-
-
-def xcframework_slice(xcframework: Path, target: Target) -> Path:
-    """The ``.framework`` inside an XCFramework built for ``target``."""
-    info = plistlib.loads((xcframework / "Info.plist").read_bytes())
-    for library in info.get("AvailableLibraries", []):
-        wants_simulator = library.get("SupportedPlatformVariant") == "simulator"
-        if (
-            library.get("SupportedPlatform") == "ios"
-            and wants_simulator == target.simulator
-            and "arm64" in library.get("SupportedArchitectures", [])
-        ):
-            return xcframework / library["LibraryIdentifier"] / library["LibraryPath"]
-    raise RuntimeError(f"{xcframework.name} has no arm64 slice for {target.platform}")
-
-
-def stage_bass_frameworks(frameworks_dir: Path, target: Target) -> list[Path]:
-    """Copy each BASS framework's slice for ``target`` into the app."""
-    staged = []
-    frameworks_dir.mkdir(parents=True, exist_ok=True)
-    for archive in BASS_ARCHIVES:
-        zip_path = fetch_bass_archive(archive)
-        unpacked = BASS_CACHE / zip_path.stem
-        if not unpacked.is_dir():
-            with zipfile.ZipFile(zip_path) as z:
-                z.extractall(unpacked)
-        xcframework = next(unpacked.rglob(f"{archive.framework}.xcframework"), None)
-        if xcframework is None:
-            raise RuntimeError(f"{zip_path.name} holds no {archive.framework}.xcframework")
-        framework = xcframework_slice(xcframework, target)
-        destination = frameworks_dir / framework.name
-        if destination.exists():
-            shutil.rmtree(destination)
-        shutil.copytree(framework, destination, symlinks=True)
-        staged.append(destination)
-    return staged
 
 
 def store_version(version: str) -> str:
@@ -352,8 +244,8 @@ def stage_app(
         shutil.rmtree(app)
     app.mkdir(parents=True)
     baked = build_release.bake_world_data(out=IOS_BUILD / build_release.RUST_BAKED_FILE)
-    # The desktop layout plan, minus native libraries (BASS arrives as
-    # frameworks below): executable, baked world, data files, loose sounds.
+    # The desktop layout plan, minus native libraries (there are none to
+    # embed): executable, baked world, data files, loose sounds.
     plan = build_release.plan_rust_layout(
         profile_dir, platform_name="ios", native_exts={".framework"}, baked_data=baked
     )
@@ -375,7 +267,8 @@ def stage_app(
         shutil.copy2(credits, app / "SOUND_CREDITS.md")
     build_release.stamp_build_info(app, label, root=app)
 
-    frameworks = stage_bass_frameworks(app / "Frameworks", target)
+    # Nothing to embed: the audio engine is compiled in with everything else.
+    frameworks: list[Path] = []
     info = info_plist(build_release.project_version(), target, build_number)
     info.update(compile_icon(app, target))
     if not target.simulator:

@@ -34,7 +34,7 @@ jobs:
     # guards parse, and a few files outside those trees. A Rust-only change
     # leaves it false; rust.yml covers that. The changelog gate is NOT gated
     # here: it lives in changelog.yml and runs on every change.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
       # A manual run, or a filter that could not decide (a force push whose
@@ -61,6 +61,7 @@ jobs:
             python:
               - "tools/**"
               - "tests/**"
+              - "lang/**"
               - "sound-test/**"
               - "data/**"
               - "assets/**"
@@ -69,7 +70,7 @@ jobs:
               - "crates/ff-core/src/music.rs"
               - "crates/ff-core/src/music/**"
               - ".cargo/**"
-              - ".github/workflows/**"
+              - ".github/**"
               - "pyproject.toml"
               - "uv.lock"
               - "README.md"
@@ -90,10 +91,19 @@ jobs:
     # step gates below read as "changed", so a broken filter costs a full
     # run rather than a silent pass of the required checks.
     if: ${{ !cancelled() }}
+    # The check names are what branch protection requires on dev and main
+    # ("test (ubuntu-latest)", "test (windows-latest)"), so they keep the
+    # GitHub-hosted labels they were born with although the jobs run on
+    # pinned images. Rename one only together with the protection rule.
+    name: test (${{ matrix.check }})
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        include:
+          - check: windows-latest
+            os: windows-2025
+          - check: ubuntu-latest
+            os: ubuntu-24.04
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     env:
@@ -141,5 +151,5 @@ jobs:
         if: needs.changes.outputs.python != 'false'
         uses: actions/upload-artifact@v7
         with:
-          name: coverage-${{ matrix.os }}
+          name: coverage-${{ matrix.check }}
           path: coverage.xml

@@ -1,7 +1,9 @@
 //! Hours of service, fatigue, and the microsleeps severe fatigue brings on.
 
+use crate::speech::EventPriority;
 use ff_core::models::enforcement;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::models::jobs::hos_stops::STOP_MARGIN_MIN as HOS_STOP_MARGIN_MIN;
+use ff_core::speech_pacing::SpeechCategory;
 
 use crate::app::{GameContext, SayEvent};
 use crate::bindings::Action;
@@ -23,20 +25,35 @@ impl DrivingState {
             hos_mut_of(ctx).on_duty(gm); // the 14-hour window runs even while parked
         }
         if !hos::HOS_NON_ENFORCED_MODES.contains(&mode.as_str()) && self.hazard_deadline.is_none() {
-            let warnings = hos_mut_of(ctx).check_warnings(&mode);
+            let marks = tuning_for_time_scale(self.trip.time_scale).hos_warning_marks_min;
+            // A countdown to a limit the drive ends inside is no use to the
+            // driver: worked out only when a mark comes due.
+            let destination_min = if hos_of(ctx).mark_due(&mode, marks) {
+                self.hos_stop_advice(ctx)
+                    .map(|advice| advice.destination_travel_min)
+            } else {
+                None
+            };
+            let warnings = hos_mut_of(ctx).check_warnings_with(&mode, marks, |limit| {
+                destination_min
+                    .is_some_and(|minutes| minutes + HOS_STOP_MARGIN_MIN <= limit.remaining_min)
+            });
             for message in warnings {
-                ctx.audio.play("ui/warning");
-                ctx.controller.rumble.alert();
                 // The clock running down is the drive, not colour: even the
                 // non-urgent countdown must not queue behind chatter, and if
-                // something cuts it off it comes back.
+                // something cuts it off it comes back. The alarm and the
+                // rumble are for a violation only; a notice is calm.
                 let urgent = hos::warning_is_urgent(&message);
+                if urgent {
+                    ctx.audio.play("ui/warning");
+                    ctx.controller.rumble.alert();
+                }
                 let opts = SayEvent::new()
                     .interrupt(urgent)
                     .priority(if urgent {
                         EventPriority::Critical
                     } else {
-                        EventPriority::Route
+                        EventPriority::Important
                     })
                     .category(if urgent {
                         SpeechCategory::Safety
@@ -110,7 +127,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Getting drowsy.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Safety),
             );
         }
@@ -231,7 +248,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "You caught it.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         }
@@ -279,7 +296,7 @@ impl DrivingState {
     /// Falling asleep at the wheel is not a scrape: 49 CFR 392.3 forbids
     /// driving impaired by fatigue, and to a carrier this is a preventable
     /// safety incident. The first one costs standing; from the second on it
-    /// is a violation the licence answers for.
+    /// is a violation the license answers for.
     pub fn record_fatigue_event(&mut self, ctx: &mut GameContext) -> String {
         if ctx.profile.is_none() || self.enforcement_bypassed(ctx) {
             return String::new();
@@ -302,8 +319,8 @@ impl DrivingState {
         self.trip.truck.set_parking_brake();
         self.place_out_of_service(ctx);
         format!(
-            "Out of service for fatigue, {:.0} hours off duty. It is now {}. Hours of service \
-             reset, and the delivery deadline kept counting.",
+            "Out of service for fatigue, {:.0} hours off duty. It is now {}. Driving and duty \
+             clocks reset, and the delivery deadline kept counting.",
             enforcement::FATIGUE_OUT_OF_SERVICE_HOURS,
             clock_text(self.trip.local_hour())
         )

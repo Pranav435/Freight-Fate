@@ -1099,10 +1099,7 @@ fn test_manual_update_check_explains_source_builds() {
         check.message.clone()
     };
     assert!(message.contains("This copy runs from source; update it with git."));
-    assert_eq!(
-        app.main_lines(),
-        vec![format!("{message} Escape goes back.")]
-    );
+    assert_eq!(app.main_lines(), vec![message]);
     app.shutdown();
 }
 
@@ -1149,6 +1146,7 @@ fn test_startup_update_prompt_respects_skipped_version() {
         asset_url: "https://example.test/FreightFate.zip".to_string(),
         asset_size: 1,
         asset_sha256: String::new(),
+        slim: None,
     };
     let mut app = TestApp::new();
     app.ctx.settings.skipped_update = "v1.6.1".to_string();
@@ -1202,6 +1200,7 @@ fn test_remind_later_help_describes_terminal_exit_check() {
         asset_url: "https://example.test/FreightFate.zip".to_string(),
         asset_size: 1,
         asset_sha256: String::new(),
+        slim: None,
     };
     let mut state = UpdatePromptState::new(info);
     let items = state.build_items(&mut app.ctx);
@@ -1595,6 +1594,7 @@ fn test_download_state_parks_update_when_not_auto_appliable() {
         asset_url: "https://example.test/a".to_string(),
         asset_size: 1,
         asset_sha256: String::new(),
+        slim: None,
     };
     let new_root = tmp.path().join(&info.asset_name);
     fs::write(&new_root, b"new").unwrap();
@@ -1640,6 +1640,7 @@ fn test_update_info_is_plain_data() {
         asset_url: "https://example.test/a".to_string(),
         asset_size: 1,
         asset_sha256: String::new(),
+        slim: None,
     };
     assert_eq!(info.clone(), info);
 }

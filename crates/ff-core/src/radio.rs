@@ -48,6 +48,24 @@ pub const RADIO_CATALOG_RESOURCE: &str = "radio_catalog.json";
 /// row at a time, so past this a search is a narrower search, not a longer
 /// list; the app says how many more there were.
 pub const RADIO_SEARCH_LIMIT: usize = 40;
+/// How many search hits one page of the Radio app's results list shows.
+/// Further hits sit behind next and previous page rows (and PageUp and
+/// PageDown), so no match is ever unreachable.
+pub const RADIO_SEARCH_PAGE_SIZE: usize = 25;
+
+/// Zero-based hit positions `(start, end)` shown on `page` of `total` hits,
+/// `end` exclusive. The page is clamped to the last real page.
+pub fn search_page_bounds(total: usize, page: usize, page_size: usize) -> (usize, usize) {
+    let size = page_size.max(1);
+    let last_page = total.saturating_sub(1) / size;
+    let start = page.min(last_page) * size;
+    (start, (start + size).min(total))
+}
+
+/// How many pages `total` hits fill (at least one, even when empty).
+pub fn search_page_count(total: usize, page_size: usize) -> usize {
+    total.saturating_sub(1) / page_size.max(1) + 1
+}
 pub const RADIO_IMPORTED_RESOURCE: &str = "radio_imported.json";
 pub const EARTH_RADIUS_MI: f64 = 3958.8;
 
@@ -189,6 +207,9 @@ pub struct RadioReception {
     pub signal: f64,
     pub reason: String,
     pub fallback: bool,
+    /// A saved station heard through its stream because the truck is outside
+    /// its clear signal: see [`RadioState::reception`].
+    pub streamed: bool,
 }
 
 impl RadioReception {
@@ -204,12 +225,16 @@ impl RadioReception {
             signal,
             reason: reason.to_string(),
             fallback: false,
+            streamed: false,
         }
     }
 
     pub fn signal_label(&self) -> &'static str {
         if self.fallback {
             return "fallback";
+        }
+        if self.streamed {
+            return "streaming";
         }
         if self.station.always_available {
             return "always available";
@@ -248,6 +273,16 @@ pub trait RadioPlaybackBackend {
         station: &RadioStation,
         volume: f64,
     ) -> Result<(), RadioPlaybackError>;
+    /// Start the station the radio just judged. A backend that scales the
+    /// program by signal reads it from `reception` rather than measuring the
+    /// station again, so it hears a streamed favorite the way the dial does.
+    fn play_reception(
+        &mut self,
+        reception: &RadioReception,
+        volume: f64,
+    ) -> Result<(), RadioPlaybackError> {
+        self.play_station(&reception.station, volume)
+    }
     fn stop_radio(&mut self);
 }
 
@@ -789,7 +824,11 @@ pub const STATIC_SIGNAL_THRESHOLD: f64 = 0.12; // static smear lives in the oute
 /// the deep fringe, and go silent past the range edge.
 pub fn signal_volume_factor(reception: &RadioReception) -> f64 {
     let station = &reception.station;
-    if reception.fallback || station.always_available || station.range_miles <= 0.0 {
+    if reception.fallback
+        || reception.streamed
+        || station.always_available
+        || station.range_miles <= 0.0
+    {
         return 1.0;
     }
     let signal = reception.signal;
