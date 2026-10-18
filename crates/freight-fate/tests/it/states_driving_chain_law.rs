@@ -355,6 +355,27 @@ fn test_no_post_sees_a_chain_law_off_the_posted_grade() {
 }
 
 #[test]
+fn test_a_truck_cited_in_a_chain_control_is_not_cited_again_inside_it() {
+    // The ticket from the checkpoint is in the cab; a patrol further up the
+    // same control does not write it again (player report, 2026-10-17).
+    use ff_core::sim::enforcement_posts::{build_post, KIND_CMV};
+    let mut app = TestApp::new();
+    let drive = law_drive(&mut app, Law::default());
+    let required = || {
+        with_drive(&drive, |d| {
+            let post = build_post(6.0, KIND_CMV, 0, None, 1.0, "", Some(true), 1.0);
+            d.road_sample(&post).chains_required
+        })
+    };
+    assert!(required(), "uncited, a patrol can see it");
+    with_drive(&drive, |d| {
+        let level = d.trip.chain_law_level();
+        d.chain_law_cited.insert((0, level));
+    });
+    assert!(!required(), "cited, the control is settled");
+}
+
+#[test]
 fn test_winter_tires_on_a_level_1_law_still_get_the_checkpoint() {
     let mut app = TestApp::new();
     let seed = (0..40)
@@ -748,8 +769,8 @@ fn test_a_held_truck_with_no_chains_to_put_on_hears_the_ways_out() {
     let drive = held_with_a_worn_out_set(&mut app);
     assert!(
         spoken(&app).iter().any(|s| s
-            == "Held at the chain checkpoint. You have no chains. Wait here until the chain law \
-                lifts, or turn back."),
+            == "Held at the chain checkpoint. You have no chains. Call dispatch for a set, wait \
+                here until the chain law lifts, or turn back."),
         "{:?}",
         spoken(&app)
     );
@@ -1226,5 +1247,42 @@ fn test_an_alert_that_expires_overnight_lifts_the_hold_after_a_checkpoint_sleep(
             .any(|s| s.contains("The chain law lifted overnight.")),
         "{:?}",
         app.main_lines()
+    );
+}
+
+#[test]
+fn test_dispatch_sends_road_service_with_chains_to_a_held_truck() {
+    use freight_fate::states::driving_core::MECHANIC_WAIT_MIN;
+    use freight_fate::states::driving_dispatch_call::DispatchCallState;
+    let mut app = TestApp::new();
+    let drive = held_with_a_worn_out_set(&mut app);
+    with_drive(&drive, |d| {
+        d.trip.truck.velocity_mps = 0.0;
+        d.trip.truck.parking_brake = true;
+    });
+    let before = with_drive(&drive, |d| d.trip.game_minutes);
+    let mut call = DispatchCallState::new(drive_ref(&drive));
+    app.clear_speech();
+    activate(&mut call, &mut app.ctx, "Report truck trouble");
+    let said = last(&app);
+    assert!(
+        said.contains("sending road service out with a new set"),
+        "{said}"
+    );
+    assert!(said.contains("Road service brought a new set"), "{said}");
+    let p = app.ctx.profile.as_ref().expect("a career");
+    assert!(p.chains_owned());
+    assert_eq!(p.chain_wear_pct(), 0.0);
+    assert_eq!(with_drive(&drive, |d| d.trip.truck.chain_wear_pct), 0.0);
+    assert_eq!(
+        with_drive(&drive, |d| d.trip.game_minutes),
+        before + MECHANIC_WAIT_MIN
+    );
+    // The hour and a half may have moved the weather on; hold the ice.
+    with_drive(&drive, |d| d.trip.weather.current = WeatherKind::Ice);
+    let labels = pause_labels(&mut app, &drive);
+    assert!(
+        labels.iter().any(|l| l.starts_with("Install snow chains")),
+        "{labels:?}"
     );
 }

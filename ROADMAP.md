@@ -671,6 +671,22 @@ Everything found before 2026-09-25 moved to
       after a set snapped, the pause menu still offered to hang it, and it
       snapped again as soon as the truck rolled, until the chain-law ticket.
       The menu now reads the truck's own wear, so a scrap set stays off.
+- [x] Reputation lost to faults the driver can't fix on the road (player
+      report, 2026-10-17): the deadhead to a pickup was cited for the lamp
+      on the trailer still parked in the shipper's yard; post after post
+      wrote up the same lamp, tires or damage, and a patrol re-cited a chain
+      law the checkpoint had already ticketed; a chain law posted by a live
+      alert on a wet road wore chains at the bare-pavement rate; and Report
+      truck trouble saw only body damage. A fault now counts once per drive
+      (one that parks the truck still counts), chains wear as on snow inside
+      a posted control, and dispatch sends a mechanic for a trailer fault.
+- [x] A driver who ran out of chains mid-trip could only wait out the law
+      or turn back, because chains were sold only at the terminal garage
+      (same report). The owner chose both: Report truck trouble under a
+      chain law with no usable set sends road service with one (1,000
+      dollars plus the 500 callout, an hour and a half), and a truck stop
+      in a chain-control state sells a set for 1,000 dollars (assumed: the
+      garage's 750 plus a road markup).
 - [ ] With several controllers connected (a second pad, or Steam's virtual
       one), the game listens only to the first it found, and the other's
       buttons do nothing. It could switch to whichever controller the
@@ -739,6 +755,11 @@ Everything found before 2026-09-25 moved to
       present: no M6 run had the pack, so no shipped catalog track has been
       opened through Hearken yet (including whether any is HE-AAC or a
       tracker module).
+- [ ] (Found along the way) Replace the other shrill short cues the way the
+      toll sound was replaced on 2026-10-17 (ElevenLabs takes, owner picks
+      by ear): lane drift (a pure 3 kHz beep), inspection warning (mostly
+      above 2.6 kHz), turn left and right (1.5 kHz tones), and the scale
+      and ramp-light green chirps (1.76 kHz).
 - [x] Hearken milestone M6 (2026-10-17): every engine service under the
       game runs on Hearken. That is the speech sink stack, the event-voice
       pacer (the priority ladder stays in `ff-core`), sound, music and the
