@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import sys
 import tarfile
 import zipfile
 from pathlib import Path
@@ -89,6 +90,9 @@ def test_no_updater_suffix_matches_an_update_asset():
             assert not derived.endswith(suffixes), derived
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32", reason="Linux tarballs are built on Linux; Windows has no exec bit"
+)
 def test_linux_update_tarball_leaves_out_the_big_packs(tmp_path):
     build_release = load_build_release_module()
     build = tmp_path / "FreightFate"
@@ -129,8 +133,14 @@ def test_update_verifier_rejects_an_update_that_carries_a_pack(tmp_path):
     build = tmp_path / "FreightFate"
     stage_payload(build, build_release)
     out = tmp_path / "FreightFate-x-linux-x64-update.tar.gz"
+
+    def executable(member):
+        if member.name == "FreightFate/FreightFate":
+            member.mode = 0o755
+        return member
+
     with tarfile.open(out, "w:gz") as tar:
-        tar.add(build, arcname="FreightFate")
+        tar.add(build, arcname="FreightFate", filter=executable)
     with pytest.raises(RuntimeError, match="carries packs it should leave out"):
         build_release.verify_archive(out)
 
