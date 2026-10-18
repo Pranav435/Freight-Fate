@@ -32221,10 +32221,6 @@ msgstr "El agente te indica que vuelvas a la carretera."
 msgid "Sleep at the checkpoint from the pause menu, or turn back."
 msgstr "Duerme en el control desde el menú de pausa, o da la vuelta."
 
-#. one sentence of a longer line
-msgid "The chain law still stands."
-msgstr "La ley de cadenas sigue vigente."
-
 #. placeholders: {waited_text}
 #. one sentence of a longer line
 msgid ""
@@ -32290,6 +32286,9 @@ msgstr ""
 msgid "chain checkpoint"
 msgstr "chain checkpoint"
 
+msgid "The chain law still stands."
+msgstr "La ley de cadenas sigue vigente."
+
 msgid ""
 "The chain law lifted overnight. The officer waves you back onto the highway."
 msgstr ""
@@ -32308,16 +32307,16 @@ msgstr ""
 #. placeholders: {drive}
 msgid ""
 "Turning back takes {drive}, more driving than you have before your "
-"30-minute break. Wait here half an hour for your break, or sleep at the "
+"30-minute break. Wait here, which counts as your break, or sleep at the "
 "checkpoint."
 msgstr ""
 "Dar la vuelta supone {drive}, más conducción de la que te queda antes de tu "
-"pausa de 30 minutos. Espera aquí media hora para tu pausa, o duerme en el "
+"pausa de 30 minutos. Espera aquí, que cuenta como tu pausa, o duerme en el "
 "control."
 
 #. one sentence of a longer line
-msgid "Wait here half an hour for your break, or sleep at the checkpoint."
-msgstr "Espera aquí media hora para tu pausa, o duerme en el control."
+msgid "Wait here, which counts as your break, or sleep at the checkpoint."
+msgstr "Espera aquí, que cuenta como tu pausa, o duerme en el control."
 
 #. placeholders: {drive}
 #. one sentence of a longer line
@@ -41141,6 +41140,18 @@ msgstr "cierra paréntesis"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "mayúscula {ch}"
+
+#~ msgid ""
+#~ "Turning back takes {drive}, more driving than you have before your "
+#~ "30-minute break. Wait here half an hour for your break, or sleep at the "
+#~ "checkpoint."
+#~ msgstr ""
+#~ "Dar la vuelta supone {drive}, más conducción de la que te queda antes de tu "
+#~ "pausa de 30 minutos. Espera aquí media hora para tu pausa, o duerme en el "
+#~ "control."
+
+#~ msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+#~ msgstr "Espera aquí media hora para tu pausa, o duerme en el control."
 
 #~ msgid ""
 #~ "Download complete, but this install cannot update itself. The new version "

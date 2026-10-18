@@ -28745,10 +28745,6 @@ msgstr "警员挥手示意你驶回公路。"
 msgid "Sleep at the checkpoint from the pause menu, or turn back."
 msgstr "从暂停菜单选择在检查站睡觉，或者掉头。"
 
-#. one sentence of a longer line
-msgid "The chain law still stands."
-msgstr "防滑链法规仍然生效。"
-
 #. placeholders: {waited_text}
 #. one sentence of a longer line
 msgid ""
@@ -28800,6 +28796,9 @@ msgstr "你等待了{duration_text}。防滑链法规仍然生效。继续等待
 msgid "chain checkpoint"
 msgstr "防滑链检查站"
 
+msgid "The chain law still stands."
+msgstr "防滑链法规仍然生效。"
+
 msgid ""
 "The chain law lifted overnight. The officer waves you back onto the highway."
 msgstr "防滑链法规在夜间解除了。警员挥手示意你驶回公路。"
@@ -28814,13 +28813,13 @@ msgstr "掉头返回需要驾驶{drive}，超过你在30分钟休息前剩余的
 #. placeholders: {drive}
 msgid ""
 "Turning back takes {drive}, more driving than you have before your "
-"30-minute break. Wait here half an hour for your break, or sleep at the "
+"30-minute break. Wait here, which counts as your break, or sleep at the "
 "checkpoint."
-msgstr "掉头返回需要驾驶{drive}，超过你在30分钟休息前剩余的驾驶时间。在这里等半小时完成休息，或者在检查站睡觉。"
+msgstr ""
 
 #. one sentence of a longer line
-msgid "Wait here half an hour for your break, or sleep at the checkpoint."
-msgstr "在这里等半小时完成休息，或者在检查站睡觉。"
+msgid "Wait here, which counts as your break, or sleep at the checkpoint."
+msgstr ""
 
 #. placeholders: {drive}
 #. one sentence of a longer line
@@ -36279,6 +36278,15 @@ msgstr "右括号"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大写{ch}"
+
+#~ msgid ""
+#~ "Turning back takes {drive}, more driving than you have before your "
+#~ "30-minute break. Wait here half an hour for your break, or sleep at the "
+#~ "checkpoint."
+#~ msgstr "掉头返回需要驾驶{drive}，超过你在30分钟休息前剩余的驾驶时间。在这里等半小时完成休息，或者在检查站睡觉。"
+
+#~ msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+#~ msgstr "在这里等半小时完成休息，或者在检查站睡觉。"
 
 #~ msgid ""
 #~ "A hundred deliveries. No fuss, just load after load until the number got "
