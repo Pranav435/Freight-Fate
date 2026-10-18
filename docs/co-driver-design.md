@@ -16,7 +16,7 @@ What the co-driver has to take over, because it is still the player's job on All
 
 - Starting from the gate and arming cruise.
 - Open weigh stations: signal, stop on the scale, press T.
-- Fuel, the 30-minute break and the 10-hour sleep.
+- Fuel, the 30-minute break and the 10-hour sleep. At a stop the co-driver fuels and takes their break without opening the stop's menu: the pump sound, one line in the message log (spoken too when you ride along), and back to the road. Only the end of their shift opens the menu, for you.
 - Pulling over for a trooper, and roadside inspections.
 - Confirming arrival and choosing Dock and deliver.
 
@@ -37,7 +37,7 @@ The playtest harness has a driving loop, but it cannot be reused for players: it
 Without a co-driver, sleeping parks the truck, shuts the engine down and moves the clock forward. Nothing drives during it. With a co-driver, the handover offers two choices:
 
 - **Ride along.** The drive plays out at the normal pace with the co-driver at the wheel. You can listen, play something else, or take the wheel back with one key.
-- **Sleep through it.** The co-driver's shift is simulated so you do not wait, the way a sports game simulates a match (owner, 2026-10-18). The open road between the things that need the co-driver is worked out at once: the posted limits, the highway fuel burn, the tolls and both logbooks. The stops themselves (fuel, the break, the end of the shift, the receiver's gate) still run on the same automatic driver, sped up with the sound down. You wake up where the truck got to, with a short summary: miles covered, where they fueled, anything that went wrong. If something needs the driver, it stops early and wakes you.
+- **Sleep through it.** The co-driver's shift passes as time, the way a sports game simulates a match (owner, 2026-10-18). The road is worked out at once: the posted limits, the highway fuel burn, the tolls and both logbooks. Fuel and the 30-minute break cost their minutes and money where they fall, the radio is left alone, and the shift ends with the truck parked at a stop and its menu open. Only the merge onto the highway and the receiver's exit and gate are still driven, sped up with the sound down. You wake up where the truck got to, with a short summary: miles covered, where they fueled, anything that went wrong. If something needs the driver, it stops early and wakes you.
 
 The choice changes how long you wait, not pay, experience or rest. Riding along is logged as sleeper-berth time and recovers hours and fatigue the same as sleeping through it: in the story you are in the bunk and hear the road, not sitting in the passenger seat. (Real rules count passenger-seat time as on duty, with a small allowance for team drivers, so a seat option would recover almost nothing.) Sleeping through it skips what the open road would have thrown at the co-driver between stops: weigh stations, inspections, hazards and traffic.
 

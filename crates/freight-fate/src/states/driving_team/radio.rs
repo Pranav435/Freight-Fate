@@ -72,13 +72,6 @@ impl DrivingState {
         let engine_on = self.trip.truck.engine_on;
         let enabled = self.radio.enabled;
         let current = self.radio_station_id.clone();
-        let receivable: Vec<String> = self
-            .radio
-            .receivable_stations()
-            .into_iter()
-            .filter(|reception| !reception.fallback)
-            .map(|reception| reception.station.id)
-            .collect();
         let Some(mood) = self
             .team
             .as_mut()
@@ -114,12 +107,23 @@ impl DrivingState {
             if mood.rng.random() < mood.habits.quiet_chance {
                 mood.quiet_left_min = Some(mood.habits.quiet_min);
                 Turn::Quiet
-            } else if let Some(station) = mood
-                .habits
-                .leans
-                .iter()
-                .find(|id| receivable.iter().any(|r| r == *id))
-                .filter(|id| **id != current)
+            } else if let Some(station) = {
+                // Scanned only when they reach for the dial: the scan walks
+                // every station, and once a tick it was most of the cost of
+                // a slept-through shift's sped-up stops.
+                let receivable: Vec<String> = self
+                    .radio
+                    .receivable_stations()
+                    .into_iter()
+                    .filter(|reception| !reception.fallback)
+                    .map(|reception| reception.station.id)
+                    .collect();
+                mood.habits
+                    .leans
+                    .iter()
+                    .find(|id| receivable.iter().any(|r| r == *id))
+            }
+            .filter(|id| **id != current)
             {
                 Turn::Tune(station.to_string())
             } else if mood.habits.leans.contains(&current.as_str()) {

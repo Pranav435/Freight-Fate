@@ -31,6 +31,7 @@ pub mod radio;
 pub mod readouts;
 pub mod settle;
 pub mod sleep_ahead;
+pub mod stop_work;
 
 use serde_json::{json, Map, Value};
 
@@ -300,6 +301,9 @@ impl DrivingState {
         self.trip.truck.transmission.automatic = ctx.settings.automatic_transmission;
         ctx.co_driver_away = true;
         if mode == TeamMode::SleepThrough {
+            // The road's lines in flight are for a driver who is now asleep:
+            // none is handed back at the wake-up summary.
+            ctx.stop_event_speech();
             ctx.co_driver_fast_forward = true;
             ctx.audio
                 .set_volumes(&crate::audio::VolumeUpdate::default().master(0.0));

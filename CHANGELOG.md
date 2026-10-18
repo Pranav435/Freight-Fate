@@ -82,7 +82,8 @@
 
 ### Changed
 
-- **Sleeping through a co-driver's shift no longer makes you wait.** The drive is simulated, and you wake within moments to the summary.
+- **Sleeping through a co-driver's shift no longer makes you wait.** The shift passes in moments, and you wake parked at a stop with the summary.
+- **A co-driver fuels and takes breaks without walking the stop's menu.** You hear the pump, and the stop is listed in your messages.
 - **The Language setting names each language in English, then in that language.** For example, Spanish (Español).
 - **Updates download much less when the music and radio packs have not changed.** After this update, most updates are about 35 megabytes instead of 531.
 - **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).

@@ -65,6 +65,15 @@ pub struct Pilot {
     pub accel_s: f64,
 }
 
+/// Whether `stop` serves what the co-driver is stopping for.
+pub(crate) fn stop_serves(stop: &RoadStop, purpose: StopPurpose) -> bool {
+    match purpose {
+        StopPurpose::Fuel => stop.actions.iter().any(|a| a == "fuel"),
+        StopPurpose::Break => stop.actions.iter().any(|a| a == "break"),
+        StopPurpose::ShiftEnd => stop.parking != "none",
+    }
+}
+
 impl Pilot {
     pub fn new() -> Self {
         Self::default()
@@ -91,11 +100,16 @@ impl DrivingState {
                 return;
             }
         };
+        let mut asleep = false;
         if let Some(wheel) = self.team.as_mut().and_then(|team| team.wheel.as_mut()) {
             wheel.pedals = pedals;
             wheel.pilot = pilot;
+            asleep = wheel.mode == super::TeamMode::SleepThrough;
         }
-        self.update_co_driver_radio(ctx);
+        // Nobody is listening while the player sleeps.
+        if !asleep {
+            self.update_co_driver_radio(ctx);
+        }
     }
 
     /// Press one of the player's keys, then give it a beat to work.
@@ -308,25 +322,7 @@ impl DrivingState {
             return;
         };
         let here = self.trip.position_mi;
-        let bobtail = self.trip.bobtail;
-        let wanted = |stop: &RoadStop| match purpose {
-            StopPurpose::Fuel => stop.actions.iter().any(|a| a == "fuel"),
-            StopPurpose::Break => stop.actions.iter().any(|a| a == "break"),
-            StopPurpose::ShiftEnd => stop.parking != "none",
-        };
-        let mut candidates: Vec<&RoadStop> = self
-            .trip
-            .stops
-            .iter()
-            .filter(|stop| {
-                stop.at_mi > here + self.exit_window_mi() * 0.5
-                    && stop.stop_type != "weigh_station"
-                    && stop.stop_type != "delivery_destination"
-                    && stop.accessible_to(bobtail)
-                    && wanted(stop)
-            })
-            .collect();
-        candidates.sort_by(|a, b| a.at_mi.total_cmp(&b.at_mi));
+        let wanted = |stop: &RoadStop| stop_serves(stop, purpose);
         // A planned stop that serves the purpose is kept, whoever planned it:
         // choosing another while signalled for this one left the truck
         // fuelling here and then pulling in again at the second plan.
@@ -337,20 +333,15 @@ impl DrivingState {
                 .is_some_and(|ramp| ramp.key() == stop.key());
             (on_its_ramp || stop.at_mi > here) && wanted(stop)
         });
-        let Some(stop) = kept.or_else(|| candidates.first().map(|stop| (*stop).clone())) else {
+        let first = || {
+            self.co_driver_stops(purpose, here + self.exit_window_mi() * 0.5)
+                .first()
+                .map(|stop| (*stop).clone())
+        };
+        let Some(stop) = kept.or_else(first) else {
             return;
         };
-        let reach = match purpose {
-            StopPurpose::ShiftEnd => SHIFT_STOP_REACH_MI,
-            StopPurpose::Break => {
-                let left_min = co_driver::BREAK_REQUIRED_AFTER_MIN
-                    - co_driver::CO_DRIVER_SUMMON_LEAD_MIN
-                    - hos_of(ctx).since_break_min;
-                left_min.max(0.0) / 60.0 * REACH_MPH
-            }
-            StopPurpose::Fuel => f64::INFINITY,
-        };
-        if stop.at_mi - here > reach {
+        if stop.at_mi - here > self.co_driver_reach_mi(ctx, purpose) {
             return;
         }
         log::info!(
@@ -364,6 +355,40 @@ impl DrivingState {
         self.selected_stop_assist_armed = false;
         self.selected_stop_assist_said = false;
         pilot.making_for = Some((stop.key(), purpose));
+    }
+
+    /// The stops past `from_mi` that serve `purpose`, nearest first.
+    pub(crate) fn co_driver_stops(&self, purpose: StopPurpose, from_mi: f64) -> Vec<&RoadStop> {
+        let bobtail = self.trip.bobtail;
+        let mut stops: Vec<&RoadStop> = self
+            .trip
+            .stops
+            .iter()
+            .filter(|stop| {
+                stop.at_mi > from_mi
+                    && stop.stop_type != "weigh_station"
+                    && stop.stop_type != "delivery_destination"
+                    && stop.accessible_to(bobtail)
+                    && stop_serves(stop, purpose)
+            })
+            .collect();
+        stops.sort_by(|a, b| a.at_mi.total_cmp(&b.at_mi));
+        stops
+    }
+
+    /// How far ahead a stop for `purpose` may be: the shift's end looks a
+    /// short way, the break as far as the time left before it is due.
+    pub(crate) fn co_driver_reach_mi(&self, ctx: &GameContext, purpose: StopPurpose) -> f64 {
+        match purpose {
+            StopPurpose::ShiftEnd => SHIFT_STOP_REACH_MI,
+            StopPurpose::Break => {
+                let left_min = co_driver::BREAK_REQUIRED_AFTER_MIN
+                    - co_driver::CO_DRIVER_SUMMON_LEAD_MIN
+                    - hos_of(ctx).since_break_min;
+                left_min.max(0.0) / 60.0 * REACH_MPH
+            }
+            StopPurpose::Fuel => f64::INFINITY,
+        }
     }
 
     /// Something only the driver can decide, or nothing the co-driver can

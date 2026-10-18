@@ -4,8 +4,8 @@
 //! wheel through the drive's pilot, on a screen the road opened by walking
 //! its cursor to a row and pressing Enter, the way the player would. A
 //! screen the player opened is left to them. While a shift is slept
-//! through, the open road is simulated at once and the stops run several
-//! ticks a frame with the sound down.
+//! through, it passes as time (`states::driving_team::sleep_ahead`), and
+//! what is still driven runs several ticks a frame with the sound down.
 
 use std::rc::Rc;
 use std::time::{Duration, Instant};
@@ -17,9 +17,11 @@ use crate::states::driving_team::overlay::{overlay_move, OverlayMove};
 
 use super::{App, SharedState, FPS};
 
-/// Real time the frame may spend running a slept-through shift's stops
-/// ahead.
-const FAST_FORWARD_BUDGET: Duration = Duration::from_millis(12);
+/// Real time a frame may spend running the driven parts of a slept-through
+/// shift ahead (the merge, the receiver's exit and gate). The player is
+/// asleep with the sound down, so the window may run at a few frames a
+/// second.
+const FAST_FORWARD_BUDGET: Duration = Duration::from_millis(100);
 /// Ticks run ahead in one frame, at most.
 const FAST_FORWARD_TICKS: usize = 1000;
 /// A beat between the co-driver's keys on a screen.

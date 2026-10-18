@@ -161,10 +161,25 @@ fn the_co_driver_fuels_at_a_stop_and_gets_back_on_the_road() {
         true
     });
     assert!(found, "this route has a fuel stop");
+    let mut menu_opened = false;
     let back_on_road = run_until(&mut harness, 60 * 60 * 20, |h| {
+        menu_opened |= !h.state_is::<DrivingState>();
         h.state_is::<DrivingState>()
             && h.read_drive(|d| d.truck().fuel_fraction() > 0.9 && d.truck().speed_mph() > 30.0)
     });
+    assert!(
+        !menu_opened,
+        "no stop menu to walk: {}",
+        transcript_tail(&harness)
+    );
+    let logged = harness
+        .app
+        .ctx
+        .message_log
+        .filtered_messages()
+        .iter()
+        .any(|message| message.text.contains("fueled"));
+    assert!(logged, "the fuel stop is in the message log");
     assert!(
         back_on_road,
         "the co-driver never fuelled and rejoined the road:\n{}",
@@ -522,4 +537,100 @@ fn a_slept_shift_is_simulated_rather_than_played() {
     // Short of the receiver's exit: the last stretch is driven live.
     let exit = harness.with_drive(|d, ctx| d.destination_exit_stop(ctx).map(|s| s.at_mi));
     assert!(exit.is_some_and(|exit| at < exit), "{at} past {exit:?}");
+}
+
+/// The truck on the open road at 60 with the cruise set, the co-driver at
+/// the wheel and the player asleep.
+fn asleep_at_speed(name: &str) -> PlaytestHarness {
+    let mut harness = quiet_drive(name);
+    harness.with_drive(|d, ctx| {
+        d.truck_mut().start_engine();
+        d.truck_mut().set_air_ready(false);
+        d.trip.position_mi = 3.0;
+        d.truck_mut().velocity_mps = 60.0 / 2.236_936;
+        d.cruise_mph = Some(60.0);
+        d.hand_wheel_to_co_driver(ctx, TeamMode::SleepThrough);
+        d.truck_mut().parking_brake = false;
+    });
+    harness
+}
+
+#[test]
+fn a_slept_shift_fuels_without_leaving_the_road() {
+    let mut harness = asleep_at_speed("Team Sim Fuel");
+    let (first_fuel, exit) = harness.with_drive(|d, ctx| {
+        let tank = d.truck().specs.fuel_tank_gal;
+        d.truck_mut().fuel_gal = tank * 0.2;
+        let exit = d.destination_exit_stop(ctx).map(|s| s.at_mi);
+        (fuel_stops_ahead(d).first().cloned(), exit)
+    });
+    let first_fuel = first_fuel.expect("this route sells diesel");
+    let (jump, fuel, fueled_at) = harness.with_drive(|d, ctx| {
+        let jump = d.sleep_ahead(ctx);
+        let fueled = d
+            .team
+            .as_ref()
+            .and_then(|team| team.wheel.as_ref())
+            .map(|wheel| wheel.log.fuel_stops.clone())
+            .unwrap_or_default();
+        (jump, d.truck().fuel_fraction(), fueled)
+    });
+    let jump = jump.expect("the shift passes as time");
+    assert!(
+        !fueled_at.is_empty(),
+        "fuelled on the way ({first_fuel}, exit at {exit:?}): {jump:?}"
+    );
+    assert!(fuel > 0.5, "the tank was filled: {fuel}");
+    assert!(
+        harness.state_is::<DrivingState>(),
+        "no stop menu opened for the fuel"
+    );
+}
+
+#[test]
+fn a_slept_shift_ends_parked_at_a_stop_with_the_driver_woken() {
+    use freight_fate::states::driving_rest_states::{ParkingFullState, RestStopState};
+    let mut harness = asleep_at_speed("Team Sim Shift");
+    harness.with_drive(|d, ctx| {
+        // A lot fifteen miles on, where the last of the hours run out.
+        let lot = d
+            .trip
+            .stops
+            .iter()
+            .find(|stop| {
+                stop.parking != "none"
+                    && stop.stop_type != "weigh_station"
+                    && stop.stop_type != "delivery_destination"
+                    && stop.at_mi > 20.0
+            })
+            .map(|stop| stop.at_mi)
+            .expect("this route has somewhere to park");
+        d.trip.position_mi = lot - 15.0;
+        d.enforcement_prev_mi = d.trip.position_mi;
+        // The co-driver's logbook: ten minutes of driving left before
+        // they plan the end of the shift.
+        let hos = &mut ctx.profile.as_mut().expect("a career").hos;
+        hos.driving_min = 11.0 * 60.0 - co_driver::CO_DRIVER_SUMMON_LEAD_MIN - 10.0;
+        hos.duty_min = hos.driving_min;
+        hos.since_break_min = 0.0;
+    });
+    let (jump, at, speed) = harness.with_drive(|d, ctx| {
+        let jump = d.sleep_ahead(ctx);
+        (jump, d.trip.position_mi, d.truck().speed_mph())
+    });
+    harness.app.ctx.run_deferred();
+    assert!(jump.is_some(), "the shift passes as time");
+    assert!(speed < 0.5, "parked at {at}");
+    assert!(
+        harness.state_is::<RestStopState>() || harness.state_is::<ParkingFullState>(),
+        "the stop's menu is open: {}",
+        transcript_tail(&harness)
+    );
+    // The co-driver hands back from the stop's menu.
+    let woken = run_until(&mut harness, 600, |h| {
+        h.read_drive(|d| d.team.as_ref().is_some_and(|team| team.wheel.is_none()))
+    });
+    assert!(woken, "{}", transcript_tail(&harness));
+    let said = harness.transcript().join("\n");
+    assert!(said.contains("Their hours are up"), "{said}");
 }
