@@ -25159,6 +25159,9 @@ msgstr "Beanstandet: {findings}."
 msgid "{level}, {f} minutes. Written up for {findings}."
 msgstr "{level}, {f} Minuten. Beanstandet: {findings}."
 
+msgid " The officer lets it go with a warning."
+msgstr " Der Beamte belässt es bei einer Verwarnung."
+
 #. placeholders: {findings}
 msgid "roadside inspection: {findings}"
 msgstr "Straßenkontrolle: {findings}"
@@ -25400,6 +25403,9 @@ msgstr ""
 
 msgid "No engine brake zone. Switch it off."
 msgstr "Zone ohne Motorbremse. Schalt sie aus."
+
+msgid "A local officer warns you about the engine brake."
+msgstr "Ein örtlicher Beamter verwarnt dich wegen der Motorbremse."
 
 msgid "Engine brake in a no engine brake zone"
 msgstr "Motorbremse in einer Zone ohne Motorbremse"
@@ -26525,6 +26531,13 @@ msgstr "Am Stoppschild{place} nur durchgerollt. Der Querverkehr hupt lange."
 
 msgid "the stop sign"
 msgstr "das Stoppschild"
+
+#. placeholders: {offense}
+msgid ""
+"A patrol car at the crossroad saw you run {offense} and gives you a warning."
+msgstr ""
+"Ein Streifenwagen an der Kreuzung hat gesehen, wie du {offense} missachtet "
+"hast, und verwarnt dich."
 
 #. placeholders: {reason}
 msgid "A trooper working this {reason} saw it"
@@ -31109,6 +31122,9 @@ msgstr ""
 msgid "Pulled over"
 msgstr "Angehalten"
 
+msgid "The officer lets you go with a warning."
+msgstr "Der Beamte lässt dich mit einer Verwarnung fahren."
+
 #. placeholders: {grouped}, {construction_zone_fine_clause}
 msgid ""
 "Fine: {grouped} dollars, paid on the spot, and a reputation "
@@ -32216,6 +32232,16 @@ msgstr "Kettenkontrolle. Der Beamte hält dich wieder an. {after}"
 msgid "The officer stops you again."
 msgstr "Der Beamte hält dich wieder an."
 
+#. one sentence of a longer line
+msgid "An officer stops you and gives you a warning."
+msgstr "Ein Beamter hält dich an und verwarnt dich."
+
+#. placeholders: {after}
+msgid ""
+"Chain checkpoint. An officer stops you and gives you a warning. {after}"
+msgstr ""
+"Kettenkontrolle. Ein Beamter hält dich an und verwarnt dich. {after}"
+
 #. placeholders: {level}
 msgid "No chains under a level {level} chain law"
 msgstr "Keine Ketten bei Kettenpflicht der Stufe {level}"
@@ -32442,6 +32468,13 @@ msgid ""
 msgstr ""
 "Colorado verlangt auf dieser Straße vom 1. September bis 31. Mai Ketten an "
 "Bord. Du hast keine."
+
+msgid ""
+"Chain check. No chains aboard on a mountain corridor in chain season. The "
+"officer gives you a warning."
+msgstr ""
+"Kettenkontrolle. Keine Ketten an Bord auf einem Bergkorridor in der "
+"Kettensaison. Der Beamte verwarnt dich."
 
 msgid "No chains aboard on a Colorado chain-carry corridor"
 msgstr ""

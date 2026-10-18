@@ -641,6 +641,8 @@ CB reports tell you what another driver saw and how certain they were. Treat the
 
 ### What a citation costs
 
+Until level 10, officers give you a warning instead of most citations: no fine, no reputation lost, and nothing on your record. Speeding 15 or more over the limit, driving through the barrels, failing to pull over, running an open scale, and anything that puts you out of service are still cited.
+
 | Citation | Base fine |
 | --- | --- |
 | Unsafe equipment | 2,300 dollars |

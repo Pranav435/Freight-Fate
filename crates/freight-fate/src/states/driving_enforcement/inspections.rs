@@ -136,7 +136,22 @@ impl DrivingState {
                 self.written_up.insert(WHAT_DAMAGE.to_string());
             }
         }
-        let fine = report.total_fine();
+        // A new driver is warned for what the truck can still run with; an
+        // item that parks it is fined at any level.
+        let warned = self.new_driver_warning(ctx);
+        let fine = if warned {
+            report
+                .findings
+                .iter()
+                .filter(|f| f.out_of_service)
+                .map(|f| f.fine)
+                .sum()
+        } else {
+            report.total_fine()
+        };
+        if warned && fine <= 0.0 {
+            text.push_str(" The officer lets it go with a warning.");
+        }
         if fine > 0.0 {
             // One citation for the inspection, at the sum of its items: the
             // record counts stops, not lines on a form.

@@ -25123,6 +25123,9 @@ msgid "{level}, {f} minutes. Written up for {findings}."
 msgstr ""
 "{level}, {f} {f:минута|минуты|минут}. Выписаны нарушения: {findings}."
 
+msgid " The officer lets it go with a warning."
+msgstr " Инспектор ограничивается предупреждением."
+
 #. placeholders: {findings}
 msgid "roadside inspection: {findings}"
 msgstr "проверка на дороге: {findings}"
@@ -25363,6 +25366,9 @@ msgstr ""
 
 msgid "No engine brake zone. Switch it off."
 msgstr "Зона запрета моторного тормоза. Выключите его."
+
+msgid "A local officer warns you about the engine brake."
+msgstr "Местный полицейский делает вам предупреждение за моторный тормоз."
 
 msgid "Engine brake in a no engine brake zone"
 msgstr "Моторный тормоз в зоне его запрета"
@@ -26502,6 +26508,13 @@ msgstr ""
 
 msgid "the stop sign"
 msgstr "знак «Стоп»"
+
+#. placeholders: {offense}
+msgid ""
+"A patrol car at the crossroad saw you run {offense} and gives you a warning."
+msgstr ""
+"Патруль на перекрёстке видел, что проигнорирован {offense}, и делает вам "
+"предупреждение."
 
 #. placeholders: {reason}
 msgid "A trooper working this {reason} saw it"
@@ -31152,6 +31165,9 @@ msgstr ""
 msgid "Pulled over"
 msgstr "Остановлен полицией"
 
+msgid "The officer lets you go with a warning."
+msgstr "Инспектор отпускает вас с предупреждением."
+
 #. placeholders: {grouped}, {construction_zone_fine_clause}
 msgid ""
 "Fine: {grouped} dollars, paid on the spot, and a reputation "
@@ -32264,6 +32280,17 @@ msgstr "Пункт проверки цепей. Инспектор снова в
 msgid "The officer stops you again."
 msgstr "Инспектор снова вас останавливает."
 
+#. one sentence of a longer line
+msgid "An officer stops you and gives you a warning."
+msgstr "Инспектор останавливает вас и делает предупреждение."
+
+#. placeholders: {after}
+msgid ""
+"Chain checkpoint. An officer stops you and gives you a warning. {after}"
+msgstr ""
+"Пункт проверки цепей. Инспектор останавливает вас и делает предупреждение. "
+"{after}"
+
 #. placeholders: {level}
 msgid "No chains under a level {level} chain law"
 msgstr "Без цепей при законе о цепях уровня {level}"
@@ -32482,6 +32509,13 @@ msgid ""
 msgstr ""
 "Colorado требует иметь цепи на этой дороге с 1 сентября по 31 мая. У вас их "
 "нет."
+
+msgid ""
+"Chain check. No chains aboard on a mountain corridor in chain season. The "
+"officer gives you a warning."
+msgstr ""
+"Проверка цепей. Нет цепей на горном коридоре в сезон цепей. Инспектор "
+"делает вам предупреждение."
 
 msgid "No chains aboard on a Colorado chain-carry corridor"
 msgstr "Нет цепей на коридоре Colorado, где их обязательно возить"

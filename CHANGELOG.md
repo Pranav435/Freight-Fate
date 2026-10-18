@@ -82,6 +82,7 @@
 
 ### Changed
 
+- **Drivers below level 10 get warnings instead of most citations.** Serious speeding, the work-zone barrels, failing to pull over, running a scale and out-of-service orders still count.
 - **The Language setting names each language in English, then in that language.** For example, Spanish (Español).
 - **Updates download much less when the music and radio packs have not changed.** After this update, most updates are about 35 megabytes instead of 531.
 - **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
@@ -183,6 +184,7 @@
 - **The drive to a pickup no longer draws citations for the trailer still waiting in the shipper's yard.**
 - **Officers no longer cite a fault already written up on the same drive.** A trailer lamp, worn tires, body damage or a chain-law ticket counts once per drive.
 - **Snow chains now last through a posted chain law.** Before, they could wear out in about a dozen miles when a weather alert posted the law on a wet road.
+- **Damage a tractor already had no longer counts as preventable damage on the next load.** A grounding and its delivery now count as one incident, not two.
 - **Report truck trouble now covers trailer faults and missing chains.** Dispatch sends a mechanic for a trailer lamp or tire, and says what to do without chains.
 - **The posted limit no longer dips briefly where the map mistook a ramp or side street for the highway.** 31 such dips are gone.
 - **A speed limit line that was cut off no longer comes back after a newer one.** "Reduced to 45" stays quiet once the limit is 55 again.

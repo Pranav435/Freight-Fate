@@ -22192,6 +22192,9 @@ msgstr "被记录的问题：{findings}。"
 msgid "{level}, {f} minutes. Written up for {findings}."
 msgstr "{level}，{f}分钟。被记录的问题：{findings}。"
 
+msgid " The officer lets it go with a warning."
+msgstr "警员只给了你一个警告。"
+
 #. placeholders: {findings}
 msgid "roadside inspection: {findings}"
 msgstr "路检：{findings}"
@@ -22401,6 +22404,9 @@ msgstr "{distance}后是禁用发动机制动区，即将进入{spoken}。"
 
 msgid "No engine brake zone. Switch it off."
 msgstr "禁用发动机制动区。把它关掉。"
+
+msgid "A local officer warns you about the engine brake."
+msgstr "当地警员就发动机制动给了你一个警告。"
 
 msgid "Engine brake in a no engine brake zone"
 msgstr "在禁用发动机制动区使用发动机制动"
@@ -23472,6 +23478,11 @@ msgstr "滚动了停车标志{place}。交叉交通靠喇叭。"
 
 msgid "the stop sign"
 msgstr "停车标志"
+
+#. placeholders: {offense}
+msgid ""
+"A patrol car at the crossroad saw you run {offense} and gives you a warning."
+msgstr "路口的巡逻车看到你闯{offense}，给了你一个警告。"
 
 #. placeholders: {reason}
 msgid "A trooper working this {reason} saw it"
@@ -27624,6 +27635,9 @@ msgstr "你停到路肩上接受驾照和工时记录检查。{polite}{outcome}{
 msgid "Pulled over"
 msgstr "被拦停"
 
+msgid "The officer lets you go with a warning."
+msgstr "警员给了你一个警告就放你走了。"
+
 #. placeholders: {grouped}, {construction_zone_fine_clause}
 msgid ""
 "Fine: {grouped} dollars, paid on the spot, and a reputation "
@@ -28640,6 +28654,15 @@ msgstr "防滑链检查站。警员再次将你拦下。{after}"
 msgid "The officer stops you again."
 msgstr "警员再次将你拦下。"
 
+#. one sentence of a longer line
+msgid "An officer stops you and gives you a warning."
+msgstr "警员将你拦下，给了你一个警告。"
+
+#. placeholders: {after}
+msgid ""
+"Chain checkpoint. An officer stops you and gives you a warning. {after}"
+msgstr "防滑链检查站。警员将你拦下，给了你一个警告。{after}"
+
 #. placeholders: {level}
 msgid "No chains under a level {level} chain law"
 msgstr "在{level}级防滑链法规下没装防滑链"
@@ -28818,6 +28841,11 @@ msgid ""
 "Colorado requires chains aboard on this road from September 1 to May 31. "
 "You have none."
 msgstr "Colorado规定在9月1日至5月31日期间驶入这条道路必须携带防滑链，而你一条也没有。"
+
+msgid ""
+"Chain check. No chains aboard on a mountain corridor in chain season. The "
+"officer gives you a warning."
+msgstr "防滑链检查。在防滑链季节驶入山区线路，车上却没有防滑链。警员给了你一个警告。"
 
 msgid "No chains aboard on a Colorado chain-carry corridor"
 msgstr "科罗拉多州铁链运输走廊上没有铁链"

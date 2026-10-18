@@ -696,6 +696,26 @@ Everything found before 2026-09-25 moved to
       dollars plus the 500 callout, an hour and a half), and a truck stop
       in a chain-control state sells a set for 1,000 dollars (assumed: the
       garage's 750 plus a road markup).
+- [x] Preventable equipment incidents piled up on a new company career
+      (player report, 2026-10-18: 8 incidents and 10 citations). A tractor
+      left the yard still carrying the last run's damage, and the dock
+      ruled the whole band preventable again for a single shoulder scrape,
+      load after load, until the driver used the carrier's free repair. A
+      grounding and the same run's delivery were also counted as two
+      incidents. A run is now ruled only for a band it took the truck into,
+      and once.
+- [x] New drivers lost all their reputation to minor tickets before they
+      had learned the road (same report; owner ruling 2026-10-18). Below
+      level 10 an officer gives a warning instead of a citation, with no
+      fine, no reputation and nothing on the record. Serious speeding, the
+      work-zone barrels, failing to pull over, running a scale and anything
+      out of service are still cited.
+- [ ] (Found along the way) Dispatch hands a company driver a tractor in
+      reduced power or limp mode without the carrier's shop touching it,
+      though the career start says the carrier maintains the tractor; the
+      free repair waits behind the garage menu, which a new driver may
+      never open. Owner to choose: the carrier repairs between loads, or
+      dispatch says so before the load is accepted.
 - [ ] With several controllers connected (a second pad, or Steam's virtual
       one), the game listens only to the first it found, and the other's
       buttons do nothing. It could switch to whichever controller the

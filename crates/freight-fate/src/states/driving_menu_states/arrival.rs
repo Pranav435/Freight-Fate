@@ -415,10 +415,7 @@ impl ArrivalState {
                 let p = profile_mut_of(ctx);
                 p.career.reputation = (p.career.reputation - damage_reputation_hit).max(0.0);
             }
-            ff_core::achievements::increment_stat(
-                profile_mut_of(ctx),
-                "preventable_equipment_damage",
-            );
+            d.record_equipment_event(ctx);
             self.summary_parts.push(format!(
                 "Preventable damage, {damage_reason}. Carrier covers the repair. Deductible {} \
                  dollars, safety bonus void. Reputation down {}.",

@@ -25312,6 +25312,9 @@ msgstr "Verbalisé pour {findings}."
 msgid "{level}, {f} minutes. Written up for {findings}."
 msgstr "{level}, {f} minutes. Verbalisé pour {findings}."
 
+msgid " The officer lets it go with a warning."
+msgstr " L'agent s'en tient à un avertissement."
+
 #. placeholders: {findings}
 msgid "roadside inspection: {findings}"
 msgstr "contrôle routier : {findings}"
@@ -25552,6 +25555,9 @@ msgstr ""
 
 msgid "No engine brake zone. Switch it off."
 msgstr "Zone interdite au frein moteur. Coupez-le."
+
+msgid "A local officer warns you about the engine brake."
+msgstr "Un agent local vous avertit pour le frein moteur."
 
 msgid "Engine brake in a no engine brake zone"
 msgstr "Frein moteur dans une zone interdite au frein moteur"
@@ -26684,6 +26690,13 @@ msgstr ""
 
 msgid "the stop sign"
 msgstr "le stop"
+
+#. placeholders: {offense}
+msgid ""
+"A patrol car at the crossroad saw you run {offense} and gives you a warning."
+msgstr ""
+"Une patrouille au carrefour vous a vu brûler {offense} et vous donne un "
+"avertissement."
 
 #. placeholders: {reason}
 msgid "A trooper working this {reason} saw it"
@@ -31294,6 +31307,9 @@ msgstr ""
 msgid "Pulled over"
 msgstr "Arrêté par la police"
 
+msgid "The officer lets you go with a warning."
+msgstr "L'agent vous laisse repartir avec un avertissement."
+
 #. placeholders: {grouped}, {construction_zone_fine_clause}
 msgid ""
 "Fine: {grouped} dollars, paid on the spot, and a reputation "
@@ -32408,6 +32424,17 @@ msgstr "Contrôle des chaînes. L'agent vous arrête de nouveau. {after}"
 msgid "The officer stops you again."
 msgstr "L'agent vous arrête de nouveau."
 
+#. one sentence of a longer line
+msgid "An officer stops you and gives you a warning."
+msgstr "Un agent vous arrête et vous donne un avertissement."
+
+#. placeholders: {after}
+msgid ""
+"Chain checkpoint. An officer stops you and gives you a warning. {after}"
+msgstr ""
+"Contrôle des chaînes. Un agent vous arrête et vous donne un avertissement. "
+"{after}"
+
 #. placeholders: {level}
 msgid "No chains under a level {level} chain law"
 msgstr "Pas de chaînes sous une obligation de chaînes de niveau {level}"
@@ -32638,6 +32665,13 @@ msgid ""
 msgstr ""
 "Le Colorado exige des chaînes à bord sur cette route du 1 septembre au 31 "
 "mai. Vous n'en avez pas."
+
+msgid ""
+"Chain check. No chains aboard on a mountain corridor in chain season. The "
+"officer gives you a warning."
+msgstr ""
+"Contrôle des chaînes. Pas de chaînes à bord sur un corridor de montagne en "
+"saison des chaînes. L'agent vous donne un avertissement."
 
 msgid "No chains aboard on a Colorado chain-carry corridor"
 msgstr ""
