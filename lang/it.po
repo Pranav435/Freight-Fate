@@ -20019,6 +20019,16 @@ msgstr "{carrier_name}. {menu_summary} Premi di nuovo Enter per passare."
 msgid "{menu_summary} Press Enter again to move."
 msgstr "{menu_summary} Premi di nuovo Enter per passare."
 
+msgid "carrier shop repair"
+msgstr "riparazione nell'officina dell'azienda"
+
+#. placeholders: {f}, {f2}
+msgid ""
+" The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
+msgstr ""
+" L'officina dell'azienda ha prima riparato {f} per cento di danni, {f2} "
+"minuti in servizio."
+
 #. placeholders: {grouped}
 msgid "You have {grouped} dollars; the unpaid balance is debt."
 msgstr "Hai {grouped} dollari; l'importo non pagato diventa debito."
@@ -25104,6 +25114,9 @@ msgstr "Segnalato per {findings}."
 msgid "{level}, {f} minutes. Written up for {findings}."
 msgstr "{level}, {f} minuti. Segnalato per {findings}."
 
+msgid " The officer lets it go with a warning."
+msgstr " L'agente si limita a un avvertimento."
+
 #. placeholders: {findings}
 msgid "roadside inspection: {findings}"
 msgstr "controllo su strada: {findings}"
@@ -25345,6 +25358,9 @@ msgstr ""
 
 msgid "No engine brake zone. Switch it off."
 msgstr "Zona di divieto del freno motore. Spegnilo."
+
+msgid "A local officer warns you about the engine brake."
+msgstr "Un agente locale ti avverte per il freno motore."
 
 msgid "Engine brake in a no engine brake zone"
 msgstr "Freno motore in una zona di divieto del freno motore"
@@ -26472,6 +26488,13 @@ msgstr ""
 
 msgid "the stop sign"
 msgstr "lo stop"
+
+#. placeholders: {offense}
+msgid ""
+"A patrol car at the crossroad saw you run {offense} and gives you a warning."
+msgstr ""
+"Una pattuglia all'incrocio ti ha visto bruciare {offense} e ti dà un "
+"avvertimento."
 
 #. placeholders: {reason}
 msgid "A trooper working this {reason} saw it"
@@ -31055,6 +31078,9 @@ msgstr ""
 msgid "Pulled over"
 msgstr "Fermato"
 
+msgid "The officer lets you go with a warning."
+msgstr "L'agente ti lascia andare con un avvertimento."
+
 #. placeholders: {grouped}, {construction_zone_fine_clause}
 msgid ""
 "Fine: {grouped} dollars, paid on the spot, and a reputation "
@@ -32174,6 +32200,17 @@ msgstr "Posto di controllo catene. L'agente ti ferma di nuovo. {after}"
 msgid "The officer stops you again."
 msgstr "L'agente ti ferma di nuovo."
 
+#. one sentence of a longer line
+msgid "An officer stops you and gives you a warning."
+msgstr "Un agente ti ferma e ti dà un avvertimento."
+
+#. placeholders: {after}
+msgid ""
+"Chain checkpoint. An officer stops you and gives you a warning. {after}"
+msgstr ""
+"Posto di controllo catene. Un agente ti ferma e ti dà un avvertimento. "
+"{after}"
+
 #. placeholders: {level}
 msgid "No chains under a level {level} chain law"
 msgstr "Senza catene con un obbligo di catene di livello {level}"
@@ -32400,6 +32437,13 @@ msgid ""
 msgstr ""
 "Il Colorado obbliga ad avere le catene a bordo su questa strada dal 1 "
 "settembre al 31 maggio. Tu non ne hai."
+
+msgid ""
+"Chain check. No chains aboard on a mountain corridor in chain season. The "
+"officer gives you a warning."
+msgstr ""
+"Controllo catene. Nessuna catena a bordo su un corridoio di montagna nella "
+"stagione delle catene. L'agente ti dà un avvertimento."
 
 msgid "No chains aboard on a Colorado chain-carry corridor"
 msgstr ""

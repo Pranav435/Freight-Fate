@@ -231,6 +231,7 @@ from the words, and synonyms cost them a re-read.
 | A driving control moved to another key | keyboard shortcut (the screen), the key it is on ("Engine on or off: E") | binding, mapping, keybind, hotkey | `bindings::Action`, `KeyBindings` |
 | The same on the pad | controller button; right bumper plus «button» for the second layer | modified button, layer two, chord | `bindings::PadChord` |
 | The screen where every key or button names its driving command and runs nothing | key and button practice; the menu row is "Practice keys and buttons"; a press answers "«key»: «command»." | keyboard tester, input test, learn mode, key describer | `InputPracticeState` |
+| An officer letting a driver below level 10 off a minor violation, with no fine and nothing on the record | warning ("gives you a warning", "lets you go with a warning") | rookie pass, grace, free ticket | `enforcement::new_driver_warned`, `DrivingState::new_driver_warning` |
 | One booked citation or violation with its reason | citation / serious violation / major offense / safety incident, then day, clock, reason, fine, place | ticket entry, infraction, offense record, strike | `enforcement::RecordEntry`, `DrivingRecord.entries` |
 | The freight itself | cargo, the load | payload, goods | `CargoType`, `Job.cargo` |
 | The board of offers | dispatch board | job list, load board | `JobBoard` |

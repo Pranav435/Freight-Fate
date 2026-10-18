@@ -718,6 +718,16 @@ impl DrivingState {
             );
             return;
         }
+        if self.new_driver_warning(ctx) {
+            ctx.audio.play("ui/warning");
+            ctx.say_event_with(
+                format!("Chain checkpoint. An officer stops you and gives you a warning. {after}"),
+                SayEvent::queued()
+                    .priority(EventPriority::Important)
+                    .category(SpeechCategory::Navigation),
+            );
+            return;
+        }
         let zone = self.trip.in_construction_zone();
         let fine = citation_fine(
             chain_law_fine(state.as_deref()),
@@ -1042,6 +1052,17 @@ impl DrivingState {
         self.chain_carry_rolled = true;
         let mut rng = PyRandom::new_from_str(&format!("{}:chain-carry:{area}", self.trip_seed));
         if rng.random() >= CHAIN_LAW_CHECKPOINT_CHANCE {
+            return;
+        }
+        if self.new_driver_warning(ctx) {
+            ctx.audio.play("ui/warning");
+            ctx.say_event_with(
+                "Chain check. No chains aboard on a mountain corridor in chain season. The \
+                 officer gives you a warning.",
+                SayEvent::queued()
+                    .priority(EventPriority::Important)
+                    .category(SpeechCategory::Navigation),
+            );
             return;
         }
         let zone = self.trip.in_construction_zone();

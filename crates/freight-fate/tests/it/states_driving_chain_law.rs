@@ -137,6 +137,7 @@ fn test_chain_checkpoint_is_seeded_and_fines_past_the_midpoint() {
             ..Law::default()
         },
     );
+    app.seasoned_driver();
     tick(&mut app, &drive);
     assert!(
         spoken(&app).iter().any(|s| s.contains("without chains")),
@@ -164,6 +165,7 @@ fn test_chain_checkpoint_is_seeded_and_fines_past_the_midpoint() {
             ..Law::default()
         },
     );
+    app.seasoned_driver();
     tick(&mut app, &drive);
     assert!(
         spoken(&app).iter().any(|s| s.contains("without chains")),
@@ -183,9 +185,39 @@ fn test_chain_checkpoint_is_seeded_and_fines_past_the_midpoint() {
             ..Law::default()
         },
     );
+    app.seasoned_driver();
     tick(&mut app, &drive);
     assert!((money(&app) - 1000.0).abs() < 0.01);
     assert!(with_drive(&drive, |d| d.chain_law_cited.is_empty()));
+}
+
+#[test]
+fn test_a_new_driver_is_warned_at_the_chain_checkpoint_and_still_held() {
+    let mut app = TestApp::new();
+    let drive = law_drive(
+        &mut app,
+        Law {
+            seed: cited_seed(),
+            ..Law::default()
+        },
+    );
+    tick(&mut app, &drive);
+    assert_eq!(with_drive(&drive, |d| d.ticket_fines_paid), 0.0);
+    assert_eq!(
+        app.ctx
+            .profile
+            .as_ref()
+            .expect("a career")
+            .driving_record
+            .citations,
+        0
+    );
+    let warned: Vec<String> = spoken(&app)
+        .into_iter()
+        .filter(|s| s.contains("gives you a warning"))
+        .collect();
+    assert_eq!(warned.len(), 1, "{:?}", spoken(&app));
+    assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
 }
 
 #[test]
@@ -199,6 +231,7 @@ fn test_chain_law_citation_escalates_with_priors_and_says_the_charged_figure() {
             ..Law::default()
         },
     );
+    app.seasoned_driver();
     tick(&mut app, &drive);
     let expected = citation_fine(CHAIN_LAW_FINE, 2, false, None);
     assert!((expected - CHAIN_LAW_FINE * 2.0).abs() < 0.01); // 1 + 0.5 x 2 priors
@@ -238,6 +271,7 @@ fn test_chain_law_citation_doubles_inside_a_construction_zone_and_says_why() {
             ..Law::default()
         },
     );
+    app.seasoned_driver();
     tick(&mut app, &drive);
     let expected = citation_fine(CHAIN_LAW_FINE, 0, true, None);
     assert!((expected - CHAIN_LAW_FINE * 2.0).abs() < 0.01);
@@ -272,6 +306,7 @@ fn test_the_two_multipliers_compound_on_a_chain_law_citation() {
             ..Law::default()
         },
     );
+    app.seasoned_driver();
     tick(&mut app, &drive);
     let expected = citation_fine(CHAIN_LAW_FINE, 1, true, None);
     assert!((expected - CHAIN_LAW_FINE * 1.5 * 2.0).abs() < 0.01);
@@ -393,6 +428,7 @@ fn test_winter_tires_on_a_level_1_law_still_get_the_checkpoint() {
             ..Law::default()
         },
     );
+    app.seasoned_driver();
     tick(&mut app, &drive);
     assert!(
         spoken(&app)
@@ -575,6 +611,7 @@ fn carry_seed() -> i64 {
 fn test_no_chains_aboard_on_i70_in_october_is_a_132_dollar_citation() {
     let mut app = TestApp::new();
     let drive = carry_drive(&mut app, 288.0, false); // October 15
+    app.seasoned_driver();
     with_drive(&drive, |d| d.trip_seed = carry_seed());
     let date = with_drive(&drive, |d| {
         ff_core::sim::season::date_text(d.trip.current_career_hours().unwrap())
@@ -669,6 +706,7 @@ fn test_montana_warns_about_carrying_chains_in_season_without_a_fine() {
 fn test_wyoming_level_1_warns_and_cites_a_truck_on_all_season_tires() {
     let mut app = TestApp::new();
     let drive = a_drive_between(&mut app, "Cheyenne", "Laramie", "Wyoming");
+    app.seasoned_driver();
     app.ctx
         .profile
         .as_mut()
@@ -710,6 +748,7 @@ fn test_wyoming_level_1_warns_and_cites_a_truck_on_all_season_tires() {
     // Snow tires satisfy Wyoming Level 1.
     let mut app = TestApp::new();
     let drive = a_drive_between(&mut app, "Cheyenne", "Laramie", "Wyoming");
+    app.seasoned_driver();
     with_drive(&drive, |d| {
         d.trip_seed = seed;
         d.trip.weather.current = WeatherKind::Snow;

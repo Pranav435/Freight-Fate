@@ -522,7 +522,7 @@ The damage readout names a band as well as a percentage, so you can hear how ser
 
 Owners pay for roadside repairs and lose several hours; they still need further garage repair afterward. Company drivers get carrier-paid service and a yard spare. Preventable equipment trouble can also affect their record and dispatch trust.
 
-Preventable damage can cost a safety bonus and add a deductible. Repairing it on the road doesn't erase that consequence: settlement uses the deepest damage band reached during the trip. Correct reactions to hazards don't count as preventable damage. Unsafe equipment that's visible on the road can attract an inspection.
+Preventable damage can cost a safety bonus and add a deductible. Repairing it on the road doesn't erase that consequence: settlement uses the deepest damage band reached during the trip. Correct reactions to hazards don't count as preventable damage. Unsafe equipment that's visible on the road can attract an inspection. A company driver's tractor at 40 percent damage or more goes through the carrier shop when the next load is accepted, at no charge and an hour on duty.
 
 ## Mountain driving
 
@@ -641,6 +641,8 @@ CB reports tell you what another driver saw and how certain they were. Treat the
 
 ### What a citation costs
 
+Until level 10, officers give you a warning instead of most citations: no fine, no reputation lost, and nothing on your record. Speeding 15 or more over the limit, driving through the barrels, failing to pull over, running an open scale, and anything that puts you out of service are still cited.
+
 | Citation | Base fine |
 | --- | --- |
 | Unsafe equipment | 2,300 dollars |
@@ -650,7 +652,6 @@ CB reports tell you what another driver saw and how certain they were. Treat the
 | Following too closely | 600 dollars |
 | Chain law | 580 dollars |
 | Improper lane use | 500 dollars |
-| Running dark after sunset | 350 dollars |
 
 Speeding fines start at 250 dollars below ten over the limit, 400 from ten over, 1,000 from fifteen, 1,600 from twenty, and 2,500 from thirty. Fleeing has a 5,000 dollar base fine. Construction doubles applicable fines, with the barrel citation excluded.
 

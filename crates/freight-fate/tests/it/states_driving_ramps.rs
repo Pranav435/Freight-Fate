@@ -404,6 +404,8 @@ fn test_stop_sign_full_stop_clears() {
 /// before the run.
 fn blow_the_terminal(app: &mut TestApp, control: &str, seed: i64, mph: f64) -> (bool, f64, f64) {
     let mut d = a_drive(app);
+    // What a citation costs, not the new-driver warning.
+    app.seasoned_driver();
     let money_before = app.ctx.profile.as_ref().expect("a career").money();
     d.trip_seed = seed;
     d.cross_bubble = None; // the restored-save case: no bubble built yet

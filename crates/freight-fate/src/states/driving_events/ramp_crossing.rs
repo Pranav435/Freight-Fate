@@ -690,6 +690,18 @@ impl DrivingState {
         if rng.random() >= SIGNAL_RUN_CATCH_CHANCE {
             return;
         }
+        if self.new_driver_warning(ctx) {
+            ctx.audio.play("ui/warning");
+            ctx.say_event_with(
+                format!(
+                    "A patrol car at the crossroad saw you run {offense} and gives you a warning."
+                ),
+                SayEvent::queued()
+                    .priority(EventPriority::Important)
+                    .category(SpeechCategory::Navigation),
+            );
+            return;
+        }
         let zone = self.trip.in_construction_zone();
         let fine = citation_fine(base_fine, career_citations(profile_of(ctx)), zone, None);
         let money = {

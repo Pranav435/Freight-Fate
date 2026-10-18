@@ -293,6 +293,18 @@ impl TestApp {
         self.capture.borrow_mut()
     }
 
+    /// Raise the loaded career past the new-driver warnings, so a test of
+    /// what a citation costs sees one.
+    pub fn seasoned_driver(&mut self) {
+        if let Some(profile) = self.ctx.profile.as_mut() {
+            let level = ff_core::models::enforcement::NEW_DRIVER_WARNING_LEVEL as usize;
+            profile.career.xp = profile
+                .career
+                .xp
+                .max(ff_core::models::career::LEVEL_XP[level - 1]);
+        }
+    }
+
     /// Drop everything said so far.
     pub fn clear_speech(&self) {
         self.capture.borrow_mut().clear();

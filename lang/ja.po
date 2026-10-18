@@ -17885,6 +17885,14 @@ msgstr "{carrier_name}。{menu_summary}移るにはもう一度 Enter を押し�
 msgid "{menu_summary} Press Enter again to move."
 msgstr "{menu_summary}移るにはもう一度 Enter を押してください。"
 
+msgid "carrier shop repair"
+msgstr "運送会社の整備工場での修理"
+
+#. placeholders: {f}, {f2}
+msgid ""
+" The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
+msgstr "先に運送会社の整備工場が損傷{f}パーセントを修理しました。勤務時間{f2}分です。"
+
 #. placeholders: {grouped}
 msgid "You have {grouped} dollars; the unpaid balance is debt."
 msgstr "手持ちは{grouped}ドルです。未払いの残高は借金になります。"
@@ -22441,6 +22449,9 @@ msgstr "{findings}で指摘を受けました。"
 msgid "{level}, {f} minutes. Written up for {findings}."
 msgstr "{level}、{f}分。{findings}で指摘を受けました。"
 
+msgid " The officer lets it go with a warning."
+msgstr "警官は警告だけで済ませてくれました。"
+
 #. placeholders: {findings}
 msgid "roadside inspection: {findings}"
 msgstr "路上検査：{findings}"
@@ -22654,6 +22665,9 @@ msgstr "{distance}先、{spoken}に入るとエンジンブレーキ禁止区間
 
 msgid "No engine brake zone. Switch it off."
 msgstr "エンジンブレーキ禁止区間です。切ってください。"
+
+msgid "A local officer warns you about the engine brake."
+msgstr "地元の警官からエンジンブレーキについて警告を受けました。"
 
 msgid "Engine brake in a no engine brake zone"
 msgstr "エンジンブレーキ禁止区間でのエンジンブレーキ"
@@ -23728,6 +23742,11 @@ msgstr "{place}一時停止で停まりきりませんでした。交差する�
 
 msgid "the stop sign"
 msgstr "一時停止の標識"
+
+#. placeholders: {offense}
+msgid ""
+"A patrol car at the crossroad saw you run {offense} and gives you a warning."
+msgstr "交差点のパトカーに{offense}の無視を見られましたが、警告で済みました。"
 
 #. placeholders: {reason}
 msgid "A trooper working this {reason} saw it"
@@ -27920,6 +27939,9 @@ msgstr "免許と運転日誌の確認のため、路肩に停車しました。
 msgid "Pulled over"
 msgstr "停車させられました"
 
+msgid "The officer lets you go with a warning."
+msgstr "警官は警告だけで行かせてくれました。"
+
 #. placeholders: {grouped}, {construction_zone_fine_clause}
 msgid ""
 "Fine: {grouped} dollars, paid on the spot, and a reputation "
@@ -28964,6 +28986,15 @@ msgstr "チェーンの検問所です。警官にまた止められました。
 msgid "The officer stops you again."
 msgstr "警官にまた止められました。"
 
+#. one sentence of a longer line
+msgid "An officer stops you and gives you a warning."
+msgstr "警官に止められ、警告を受けました。"
+
+#. placeholders: {after}
+msgid ""
+"Chain checkpoint. An officer stops you and gives you a warning. {after}"
+msgstr "チェーンの検問所です。警官に止められ、警告を受けました。{after}"
+
 #. placeholders: {level}
 msgid "No chains under a level {level} chain law"
 msgstr "レベル{level}のチェーン規制でチェーンなし"
@@ -29149,6 +29180,11 @@ msgid ""
 "Colorado requires chains aboard on this road from September 1 to May 31. "
 "You have none."
 msgstr "Coloradoでは、9月1日から5月31日まで、この道路でチェーンの携行が必要です。チェーンを持っていません。"
+
+msgid ""
+"Chain check. No chains aboard on a mountain corridor in chain season. The "
+"officer gives you a warning."
+msgstr "チェーンの点検です。チェーンの季節に、山の回廊でチェーンを積んでいません。警官から警告を受けました。"
 
 msgid "No chains aboard on a Colorado chain-carry corridor"
 msgstr "Coloradoのチェーン携行義務のある回廊で、チェーンを積んでいない"

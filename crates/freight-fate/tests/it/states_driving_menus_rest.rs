@@ -1572,6 +1572,7 @@ fn test_a_fault_already_written_up_is_not_cited_again_this_drive() {
     use ff_core::sim::enforcement_posts::{build_post, KIND_CMV};
     let mut app = TestApp::new();
     let (drive, defect) = a_drive_with_a_lamp_out(&mut app);
+    app.seasoned_driver();
     with_drive(&drive, |d| {
         d.trip.truck.tire_wear_pct = 80.0; // past the citation line, short of parked
         d.trip.truck.brake_wear_pct = 0.0;
