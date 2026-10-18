@@ -469,6 +469,11 @@ impl DrivingState {
             // Plan fulfilled; the stop menu announces itself.
             self.trip.planned_stop_key = None;
         }
+        // The co-driver fuels or takes their break and drives on, with no
+        // menu to walk.
+        if self.co_driver_driving() && self.co_driver_works_stop(ctx, stop) {
+            return;
+        }
 
         if settle {
             // A POI stop that pulls in through this wait is a menu-driven

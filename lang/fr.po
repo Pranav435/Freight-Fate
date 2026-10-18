@@ -32184,6 +32184,23 @@ msgstr ""
 msgid "Team load: {name} drove {f} of the miles"
 msgstr "Chargement en équipe : {name} a conduit {f} des miles"
 
+#. placeholders: {name}, {gallons}, {place}
+msgid ""
+"{name} fueled {gallons} gallons and took a 30-minute break at {place}."
+msgstr ""
+
+#. placeholders: {name}, {gallons}, {place}
+msgid "{name} fueled {gallons} gallons at {place}."
+msgstr ""
+
+#. placeholders: {name}, {place}
+msgid "{name} took a 30-minute break at {place}."
+msgstr ""
+
+#. placeholders: {name}, {place}
+msgid "{name} stopped at {place}."
+msgstr ""
+
 msgid "the next street"
 msgstr "la rue suivante"
 

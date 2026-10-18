@@ -256,12 +256,16 @@ impl TruckState {
     /// rate `update_fuel` is calibrated to (about `CRUISE_MPG` at 60 mph),
     /// with the same burn factor, wear and damage penalties. Returns gallons
     /// burned; a no-op with the engine off.
+    /// Gallons a mile of highway cruise burns, wear and damage included.
+    pub fn cruise_gal_per_mile(&self) -> f64 {
+        self.specs.fuel_burn_factor * self.fuel_wear_penalty_mult() / CRUISE_MPG
+    }
+
     pub fn burn_cruise_fuel_over_miles(&mut self, miles: f64) -> f64 {
         if !self.engine_on || miles <= 0.0 {
             return 0.0;
         }
-        let rate = self.specs.fuel_burn_factor * self.fuel_wear_penalty_mult() / CRUISE_MPG;
-        let burned = self.fuel_gal.min(miles * rate);
+        let burned = self.fuel_gal.min(miles * self.cruise_gal_per_mile());
         self.fuel_gal -= burned;
         if self.fuel_gal <= 0.0 {
             self.stop_engine();

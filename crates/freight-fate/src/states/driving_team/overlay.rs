@@ -21,7 +21,7 @@ use crate::states::driving_rest_states::{
 use super::pilot::StopPurpose;
 
 /// Refuel when the tank is below this share at a stop that sells diesel.
-const TOP_UP_FRACTION: f64 = 0.9;
+pub(crate) const TOP_UP_FRACTION: f64 = 0.9;
 
 /// What the co-driver does with the screen on top.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -57,6 +57,16 @@ pub fn overlay_move(top: &dyn State, drive: &DrivingState, ctx: &GameContext) ->
             .map_or_else(|| OverlayMove::Summon("roadside".into()), OverlayMove::Row);
     }
     if any.is::<ParkingFullState>() {
+        // The shift is over and the lot is full: the player decides where
+        // to sleep.
+        let shift_over = drive
+            .team
+            .as_ref()
+            .and_then(|team| team.wheel.as_ref())
+            .is_some_and(|wheel| wheel.pilot.shift_over);
+        if shift_over {
+            return OverlayMove::Summon("shift".into());
+        }
         return row_starting(&rows, "Drive on to the next stop")
             .map_or_else(|| OverlayMove::Summon("parking".into()), OverlayMove::Row);
     }
