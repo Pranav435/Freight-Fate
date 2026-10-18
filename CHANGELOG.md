@@ -89,6 +89,8 @@
 ### Changed
 
 - **The game window draws only when it changes,** so it uses less power.
+- **On AG Now, the game no longer checks for or downloads updates.** AG Now keeps it up to date, and Settings has no Updates category there.
+
 - **Drivers below level 10 get warnings instead of most citations.** Serious speeding, the work-zone barrels, failing to pull over, running a scale and out-of-service orders still count.
 - **The carrier shop now repairs a company tractor at 40 percent damage before the next load.** It takes an hour on duty.
 - **Sleeping through a co-driver's shift no longer makes you wait.** The shift passes in moments, and you wake parked at a stop with the summary.
