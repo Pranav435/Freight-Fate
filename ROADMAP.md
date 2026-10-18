@@ -787,10 +787,14 @@ Everything found before 2026-09-25 moved to
       manifest of their SHA-256 (`tools/build_release.py`). The updater
       (`updater::slim`) offers the update archive when the install's packs
       match: the check trusts `build_info.json`'s recorded hashes when sizes
-      agree, the download hashes again and falls back to the full archive,
-      and a Mac bundle gets the player's packs copied in before the swap.
-      AppImage runs still take the full file. The first update to carry this
-      is itself full size.
+      agree, the download confirms each pack is still there at that size
+      and otherwise takes the full archive, and a Mac bundle gets the
+      player's packs copied in before the swap. AppImage runs still take the
+      full file. The first update to carry this is itself full size.
+- [x] Release page trimmed (owner, 2026-10-18): each snapshot run deletes
+      tester snapshot releases beyond the newest seven
+      (`tools/prune_snapshots.py`); their tags stay, and stable and
+      `nightly-*` bridge releases are never touched.
 
 - [x] Low fuel warning could also fire when remaining range is shorter than
       the distance to the next fuel-capable stop (issue #272 shipped the
