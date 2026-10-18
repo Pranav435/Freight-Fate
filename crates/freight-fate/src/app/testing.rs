@@ -436,6 +436,8 @@ pub struct AudioCalls {
     pub loops: std::collections::HashMap<u32, RecordedLoop>,
     /// The last `set_outside_lift`: what the open driver window adds.
     pub outside_lift: Option<f64>,
+    /// Every `set_radio_voicing`, in order.
+    pub radio_voicing: Vec<Option<crate::audio::RadioVoicing>>,
 }
 
 /// One running loop as [`RecordingAudio`] last left it.
@@ -556,6 +558,9 @@ impl Audio for RecordingAudio {
     }
     fn set_outside_lift(&mut self, lift: f64) {
         self.log.borrow_mut().outside_lift = Some(lift);
+    }
+    fn set_radio_voicing(&mut self, voicing: Option<crate::audio::RadioVoicing>) {
+        self.log.borrow_mut().radio_voicing.push(voicing);
     }
     fn start_sustain_loop_with(
         &mut self,

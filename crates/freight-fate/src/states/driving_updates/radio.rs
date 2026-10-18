@@ -54,6 +54,7 @@ impl DrivingState {
     /// silent when the current bed runs out. Day/night flavor stays as it
     /// was when the menu opened; it catches up when driving resumes.
     pub fn tick_drive_music(&mut self, ctx: &mut GameContext, dt: f64) {
+        self.apply_radio_voicing(ctx);
         self.advance_radio_airtime(dt);
         self.sync_radio_power(ctx); // a rest-menu shutdown kills the radio too
         if self.radio.enabled && self.trip.truck.engine_on {

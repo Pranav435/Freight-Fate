@@ -10,10 +10,11 @@ use ff_core::pyrandom::PyRandom;
 
 use super::{
     asset_bytes, Audio, AudioBackend, AudioError, Buses, HearkenBackend, KeyProbe, NullBackend,
-    SustainLoopSpec, VolumeUpdate, ALERT_HOLD_TIMEOUT_S, CH_AIR, CH_ALERT, CH_AMBIENT, CH_CAB_FAN,
-    CH_CAB_WIND, CH_EDGE, CH_HORN, CH_JAKE, CH_LANE_GUIDE, CH_RADIO_FX, CH_ROAD, CH_SCALE,
-    CH_SURGE, CH_TRAFFIC_BED, CH_TRAFFIC_SOUNDS, CH_WEATHER, CH_WEATHER_B, CUE_HOLD_TIMEOUT_S,
-    HORN_LOOP, JAKE_BAND_PREFIX, JAKE_CLASSIC_KEY, JAKE_RECORDED_KEY, SFX_EXTENSIONS,
+    RadioVoicing, SustainLoopSpec, VolumeUpdate, ALERT_HOLD_TIMEOUT_S, CH_AIR, CH_ALERT,
+    CH_AMBIENT, CH_CAB_FAN, CH_CAB_WIND, CH_EDGE, CH_HORN, CH_JAKE, CH_LANE_GUIDE, CH_RADIO_FX,
+    CH_ROAD, CH_SCALE, CH_SURGE, CH_TRAFFIC_BED, CH_TRAFFIC_SOUNDS, CH_WEATHER, CH_WEATHER_B,
+    CUE_HOLD_TIMEOUT_S, HORN_LOOP, JAKE_BAND_PREFIX, JAKE_CLASSIC_KEY, JAKE_RECORDED_KEY,
+    SFX_EXTENSIONS,
 };
 
 /// Facade over the active backend; the rest of the game talks only to this.
@@ -615,6 +616,10 @@ impl Audio for AudioEngine {
     fn set_outside_lift(&mut self, lift: f64) {
         self.outside_lift = lift.max(0.0);
         self.backend.set_outside_lift(self.outside_lift);
+    }
+
+    fn set_radio_voicing(&mut self, voicing: Option<RadioVoicing>) {
+        self.backend.set_radio_voicing(voicing);
     }
 
     fn set_ambient_with(&mut self, key: Option<&str>, volume: f64) {

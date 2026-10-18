@@ -213,6 +213,8 @@ impl DrivingState {
         self.refresh_exit_hint(ctx);
         ctx.clear_music_rotation();
         ctx.audio.stop_music_with(800);
+        // Before the radio starts, so the station carries the voicing.
+        self.apply_radio_voicing(ctx);
         self.play_radio_current(ctx);
         let sound = self.trip.weather.effects().sound;
         ctx.audio.set_weather(sound);
@@ -331,6 +333,9 @@ impl DrivingState {
         self.road_pan_applied = None;
         ctx.audio.stop_world();
         self.forget_stopped_loops();
+        // Off the music channel before anything new starts there; the
+        // station fading out keeps the voicing it started with.
+        ctx.audio.set_radio_voicing(None);
         ctx.audio.stop_music_with(600);
         ctx.apply_volumes();
     }

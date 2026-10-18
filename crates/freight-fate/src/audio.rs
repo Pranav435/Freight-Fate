@@ -255,6 +255,17 @@ pub const RADIO_TUNE_FADE_MS: u32 = 250;
 /// `HearkenBackend::set_key_filter`).
 pub type KeyProbe = Box<dyn Fn(&str) -> bool>;
 
+/// How the radio sounds while driving: through the cab's door speakers or
+/// clean, and where the driver's glass is. The cab voicing moves with the
+/// glass, so it glides over the window's own travel.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct RadioVoicing {
+    /// The cab's speakers (the default) instead of the clean signal.
+    pub cab_speakers: bool,
+    /// The driver window, 0 up to 1 down.
+    pub window: f64,
+}
+
 /// What the Python facade raised as `RuntimeError`: the radio layer reads the
 /// message to skip a playlist entry or hand a dead station over.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -639,6 +650,10 @@ pub trait Audio {
     /// How much louder the outside sounds (the tires, rain, the weather
     /// wind) are than with the cab sealed: 1.0 with the driver window up.
     fn set_outside_lift(&mut self, _lift: f64) {}
+    /// The radio's voicing while driving; `None` once the drive is over, so
+    /// music started after it (menu music) plays clean. Only the radio is
+    /// voiced: the station, its music tracks, and its own hiss and static.
+    fn set_radio_voicing(&mut self, _voicing: Option<RadioVoicing>) {}
     fn set_ambient_with(&mut self, key: Option<&str>, volume: f64);
     fn set_ambient(&mut self, key: Option<&str>) {
         self.set_ambient_with(key, 1.0);
