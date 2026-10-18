@@ -14825,7 +14825,7 @@ msgstr ""
 msgid " Toll {amount} dollars."
 msgstr ""
 
-#: crates/ff-core/src/sim/trip/placement.rs crates/freight-fate/src/states/driving_core.rs
+#: crates/ff-core/src/sim/trip/placement.rs
 msgid "toll"
 msgstr ""
 

@@ -70,6 +70,7 @@
 
 ### Changed
 
+- **The toll sound is now a soft, low bong, and plays once per toll.** It sounds when the toll is charged, not on the toll-ahead warning too.
 - **The hours of service countdown is one calm notice before each limit.** One hour out on Relaxed, two on Standard, no alarm tone, and nothing when the trip ends first.
 
 - **A speed limit rise at the end of a short zone waits its turn.** Two limit numbers no longer land in one breath.
