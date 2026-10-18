@@ -806,23 +806,8 @@ def test_career_19_snapshot_builds_and_boots_a_linux_release():
     assert (
         "FreightFate-*-linux-x64.tar.gz FreightFate-*-linux-x86_64.AppImage "
         "FreightFate-*-linux-arm64.tar.gz FreightFate-*-linux-aarch64.AppImage "
-        "FreightFate-*-update.zip FreightFate-*-update.tar.gz FreightFate-*-packs.json "
         "FreightFate-*-translation-kit.zip > checksums.txt" in workflow
     )
-    # Every archive the updater can pick ships its update archive and pack
-    # list, and the Mac copies the updaters look for get theirs too.
-    for kind in ("update.zip", "packs.json"):
-        assert f"dist/FreightFate-*-windows-portable-{kind}" in workflow
-        assert f"dist/FreightFate-*-macos-arm64-{kind}" in workflow
-    assert "dist/FreightFate-*-${{ matrix.tarball }}-update.tar.gz" in workflow
-    assert "dist/FreightFate-*-${{ matrix.tarball }}-packs.json" in workflow
-    assert (
-        workflow.count('cp "${zip%.zip}-update.zip" "${zip%-macos-arm64.zip}-macos-update.zip"')
-        == 2
-    )
-    # The four identical pack lists go out as one.
-    assert "python3 tools/merge_pack_lists.py release-assets" in workflow
-    assert "-macos-packs.json" not in workflow
     # The translator's kit is one release asset, not a folder in each archive.
     assert 'python3 tools/translation_kit.py --label "$TAG" --out release-assets' in workflow
 
@@ -882,11 +867,7 @@ def test_career_19_snapshot_builds_an_apple_silicon_macos_release():
     assert "Contents/MacOS/FreightFate" not in named_steps["Build the macOS release"][1]["run"]
     assert all("build-release.ps1" not in step.get("run", "") for step in steps)
     upload = next(step for step in steps if step.get("uses") == "actions/upload-artifact@v7")
-    assert upload["with"]["path"].split() == [
-        "dist/FreightFate-*-macos-arm64.zip",
-        "dist/FreightFate-*-macos-arm64-update.zip",
-        "dist/FreightFate-*-macos-arm64-packs.json",
-    ]
+    assert upload["with"]["path"] == "dist/FreightFate-*-macos-arm64.zip"
 
 
 def test_career_19_release_requires_and_verifies_every_platform_archive():
@@ -950,9 +931,7 @@ def test_career_19_release_requires_and_verifies_every_platform_archive():
     assert "release-assets/FreightFate-*-linux-x86_64.AppImage" in verify["run"]
     assert "release-assets/FreightFate-*-linux-arm64.tar.gz" in verify["run"]
     assert "release-assets/FreightFate-*-linux-aarch64.AppImage" in verify["run"]
-    # Six platform archives, then one loop over the update files.
-    assert verify["run"].count('"${#') == 7
-    assert "for stem in windows-portable macos-arm64 linux-x64 linux-arm64; do" in verify["run"]
+    assert verify["run"].count('"${#') == 6
     checksum = next(
         step
         for step in release["steps"]

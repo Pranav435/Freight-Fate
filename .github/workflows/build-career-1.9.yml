@@ -330,10 +330,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: Windows
-          path: |
-            dist/FreightFate-*-windows-portable.zip
-            dist/FreightFate-*-windows-portable-update.zip
-            dist/FreightFate-*-windows-portable-packs.json
+          path: dist/FreightFate-*-windows-portable.zip
           if-no-files-found: error
 
   build_macos:
@@ -466,10 +463,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: macOS-arm64
-          path: |
-            dist/FreightFate-*-macos-arm64.zip
-            dist/FreightFate-*-macos-arm64-update.zip
-            dist/FreightFate-*-macos-arm64-packs.json
+          path: dist/FreightFate-*-macos-arm64.zip
           if-no-files-found: error
 
   build_linux:
@@ -565,8 +559,6 @@ jobs:
           name: Linux-${{ matrix.arch }}
           path: |
             dist/FreightFate-*-${{ matrix.tarball }}.tar.gz
-            dist/FreightFate-*-${{ matrix.tarball }}-update.tar.gz
-            dist/FreightFate-*-${{ matrix.tarball }}-packs.json
             dist/FreightFate-*-linux-${{ matrix.arch }}.AppImage
           if-no-files-found: error
 
@@ -682,20 +674,6 @@ jobs:
             echo "Expected exactly one Linux ARM64 AppImage; found ${#linux_arm64_appimages[@]}." >&2
             exit 1
           fi
-          # Each archive's smaller update archive and the pack list the
-          # in-game updater checks the player's sound packs against.
-          for stem in windows-portable macos-arm64 linux-x64 linux-arm64; do
-            for kind in update packs; do
-              matches=(release-assets/FreightFate-*-"$stem"-"$kind".*)
-              if [ "${#matches[@]}" -ne 1 ]; then
-                echo "Expected exactly one $stem $kind file; found ${#matches[@]}." >&2
-                exit 1
-              fi
-            done
-          done
-          # The packs are the same on every platform: publish one pack list,
-          # FreightFate-<label>-packs.json, in place of the four identical ones.
-          python3 tools/merge_pack_lists.py release-assets
 
       - name: Prepare and verify release notes and checksums
         env:
@@ -709,7 +687,7 @@ jobs:
           # The translator's kit is one download beside the game archives,
           # not a folder inside each of them.
           python3 tools/translation_kit.py --label "$TAG" --out release-assets
-          (cd release-assets && sha256sum FreightFate-*-windows-portable.zip FreightFate-*-macos-arm64.zip FreightFate-*-linux-x64.tar.gz FreightFate-*-linux-x86_64.AppImage FreightFate-*-linux-arm64.tar.gz FreightFate-*-linux-aarch64.AppImage FreightFate-*-update.zip FreightFate-*-update.tar.gz FreightFate-*-packs.json FreightFate-*-translation-kit.zip > checksums.txt)
+          (cd release-assets && sha256sum FreightFate-*-windows-portable.zip FreightFate-*-macos-arm64.zip FreightFate-*-linux-x64.tar.gz FreightFate-*-linux-x86_64.AppImage FreightFate-*-linux-arm64.tar.gz FreightFate-*-linux-aarch64.AppImage FreightFate-*-translation-kit.zip > checksums.txt)
           (cd release-assets && sha256sum -c checksums.txt)
 
           if [ "$IS_PRERELEASE" = "true" ]; then
@@ -778,7 +756,6 @@ jobs:
           cp release-assets/FreightFate-* bridge-assets/
           for zip in bridge-assets/FreightFate-*-macos-arm64.zip; do
             cp "$zip" "${zip%-macos-arm64.zip}-macos.zip"
-            cp "${zip%.zip}-update.zip" "${zip%-macos-arm64.zip}-macos-update.zip"
           done
           (cd bridge-assets && sha256sum FreightFate-* > checksums.txt)
 
@@ -828,9 +805,6 @@ jobs:
           # ever offered the release. The arm64 name stays for the snapshots.
           for zip in release-assets/FreightFate-*-macos-arm64.zip; do
             cp "$zip" "${zip%-macos-arm64.zip}-macos.zip"
-            # The update archive follows the name the updater picked, so the
-            # -macos copy needs its own; the one pack list serves both.
-            cp "${zip%.zip}-update.zip" "${zip%-macos-arm64.zip}-macos-update.zip"
           done
           (cd release-assets && sha256sum FreightFate-* > checksums.txt)
           # GitHub shows an asset's label in place of its file name. The

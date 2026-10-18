@@ -805,6 +805,7 @@ dependencies = [
  "base64 0.22.1",
  "cc",
  "chrono",
+ "crc32fast",
  "discord-rich-presence",
  "env_logger",
  "ff-core",
