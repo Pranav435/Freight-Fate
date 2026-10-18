@@ -83,8 +83,8 @@ def _opener() -> urllib.request.OpenerDirector:
 
     Directory streams are a long tail of self-signed and expired certs on
     hosts that stream fine, so certificates are not verified: a cert error
-    is not the question being asked here, and BASS does not verify them
-    either.
+    is not the question being asked here. (BASS did not verify them
+    either; Hearken does, so such a host is a ROADMAP gap in the game.)
 
     The cipher setting matters more than it looks. Python 3.12's default
     security level refuses the older suites that a great many Icecast hosts

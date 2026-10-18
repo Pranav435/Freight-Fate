@@ -46,11 +46,11 @@ CURATED_PATH = ROOT / "data" / "radio_catalog.json"
 IMPORTED_PATH = ROOT / "data" / "radio_imported.json"
 HEALTH_PATH = ROOT / "data" / "radio_stream_health.json"
 
-# What the game sends: BASS's own default agent, since the game never sets
-# one. Shoutcast hosts answer a browser agent with their HTML status page
+# What the game sends (``audio::hearken_radio::radio_user_agent``, with the
+# version left at the series). Shoutcast hosts answer a browser agent with their HTML status page
 # and a player agent with audio, so probing as a browser calls live
 # stations dead. A browser agent is tried second, and only reported.
-GAME_AGENT = "BASS/2.4"
+GAME_AGENT = "FreightFate/1.9 (+https://orinks.net/freight-fate)"
 BROWSER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) FreightFate/1.9 stream check"
 LONG_SAMPLE_S = 60.0
 HEADER_SECONDS = 8

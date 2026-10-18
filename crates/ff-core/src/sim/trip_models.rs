@@ -496,8 +496,10 @@ pub const CHAIN_CONTROL_STATES: [&str; 9] = ["CA", "CO", "ID", "MT", "NV", "OR",
 /// must chain under a chain law at `level` in `state`. Heavy trucks get no
 /// winter-tire exemption: Caltrans R-1 to R-3 ("no exemption for heavy-duty
 /// commercial vehicles ... equipped with snow tires", dot.ca.gov chain
-/// requirements), WSDOT over 10,000 lb (WAC 204-24-050) and ODOT snow zones
-/// (traction tires substitute only at 10,000 lb or less) all chain trucks.
+/// requirements) and WSDOT over 10,000 lb (WAC 204-24-050) chain trucks.
+/// Oregon's lower level ("Chains or traction tires required") chains only
+/// single-drive-axle trucks over 10,000 lb, and "Chains required" chains
+/// every truck (ODOT, oregon.gov/odot/mct/pages/chains-and-traction-tires.aspx).
 /// Colorado is the one split: Level 1 chains single-drive-axle combinations
 /// only, and Level 2 chains every truck (CDOT Commercial Vehicle Chain Law,
 /// csp.colorado.gov/chain-law-information). Wyoming Level 1 accepts snow
@@ -507,7 +509,7 @@ pub const CHAIN_CONTROL_STATES: [&str; 9] = ["CA", "CO", "ID", "MT", "NV", "OR",
 pub fn rig_must_chain(state: Option<&str>, level: i64) -> bool {
     match level {
         ..=0 => false,
-        1 => !matches!(state, Some("CO") | Some("WY")),
+        1 => !matches!(state, Some("CO") | Some("WY") | Some("OR")),
         _ => true,
     }
 }
@@ -518,7 +520,7 @@ pub fn chain_law_sign_rule(state: Option<&str>, level: i64) -> &'static str {
     match (state, level >= 2) {
         (Some("WY"), true) => "level 2: chains required on two tires of one drive axle",
         (_, true) => "level 2: chains required on all trucks",
-        (Some("CO"), false) => "level 1: chains required on single-drive-axle trucks",
+        (Some("CO") | Some("OR"), false) => "level 1: chains required on single-drive-axle trucks",
         (Some("WY"), false) => "level 1: snow tires or chains required",
         (_, false) => "level 1: chains required on trucks",
     }
@@ -595,6 +597,40 @@ pub fn mt_chain_season_id(game_hours: f64) -> i64 {
     // Day of year 274 is October 1 on the career's fixed 365-day year.
     let days = crate::sim::season::CAREER_START_DAY_OF_YEAR + game_hours / 24.0 - 274.0;
     (days / 365.0).floor() as i64
+}
+
+/// A chain-law area ahead on a chain corridor in season (`upcoming_chain_corridor`).
+#[derive(Debug, Clone, PartialEq)]
+pub struct ChainCorridorAhead {
+    /// `"{state}:{highway}:{start_mi to 0.1}"`, one per corridor approach.
+    pub key: String,
+    pub highway: String,
+    pub state: String,
+    /// Route mile the chain-law area (its chain-up pullout) starts at.
+    pub start_mi: f64,
+    /// The nearest numbered interchange at or before the area, or empty.
+    pub exit_label: String,
+}
+
+/// How far before a chain-law area its approach exit is looked for.
+pub const CHAIN_CORRIDOR_EXIT_LOOKBACK_MI: f64 = 5.0;
+
+/// Whether a carry law requires chains aboard on `highway` in `state` in
+/// `month`, whatever the weather: Colorado's carry corridors September 1
+/// to May 31 (CSP chain-law page), Montana October 1 to April 30 (MCA
+/// 61-9-436) and Washington's listed routes November 1 to April 1 (WAC
+/// 204-24-050; April 1 is read at month precision, so April is out).
+/// Everywhere else chains are required only while a chain law is posted
+/// and the rig must chain under it (Caltrans chain controls, NRS 484D.520,
+/// ORS 815.140, Idaho Code 49-948(5), UDOT R920-6, W.S. 31-5-956(e)), so
+/// there is no dry-day season to remind about.
+pub fn in_chain_carry_season(state: &str, highway: &str, month: u32) -> bool {
+    match state {
+        "CO" => CO_CHAIN_CARRY_CORRIDORS.contains(&highway) && in_co_chain_carry_season(month),
+        "MT" => in_mt_chain_carry_season(month),
+        "WA" => !(4..=10).contains(&month),
+        _ => false,
+    }
 }
 
 /// September 1 to May 31: Colorado's chain-carry season.
@@ -757,6 +793,9 @@ pub struct TripEventData {
     pub stop: Option<RoadStop>,
     pub suppress_sound: Option<bool>,
     pub limit_change: Option<bool>,
+    /// The posted limit an arrival line names, in mph. Its queued copy is
+    /// worth speaking only while that number still governs the truck.
+    pub limit_mph: Option<f64>,
     pub advance: Option<bool>,
     pub from_zone: Option<TimeZone>,
     pub to_zone: Option<TimeZone>,

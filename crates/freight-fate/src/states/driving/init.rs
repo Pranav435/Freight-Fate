@@ -275,6 +275,8 @@ impl DrivingState {
         let spring_brakes_active = trip.truck.spring_brakes_active();
         let status_text = format!("Press {} to start the engine.", ctx.control_hint("engine"));
 
+        let cab = ff_core::sim::cab::CabState::for_outside(trip.weather.temperature_c());
+
         DrivingState {
             job,
             route: route.clone(),
@@ -380,13 +382,25 @@ impl DrivingState {
             jake_slip_active: false,
             jake_selected_stage: JAKE_STAGES,
             chains_fast_active: false,
+            chain_cap_cruise_mph: None,
+            chain_cap_keeper_mph: None,
+            chain_cap_said: false,
             chain_law_warned: HashSet::new(),
             chain_law_cited: HashSet::new(),
+            chain_checkpoint_staffed: HashMap::new(),
             chain_checkpoint_hold: false,
             chain_carry_warned: false,
             chain_carry_rolled: false,
             chain_slap_said: false,
             chain_tightened: false,
+            chain_reminder_said: HashSet::new(),
+            chain_stop: None,
+            chain_stop_brake: 0.0,
+            chain_stop_areas_done: HashSet::new(),
+            chain_off_done: HashSet::new(),
+            chain_off_bare_from: None,
+            chain_assist_tighten_tried: false,
+            chain_assist_snapped: false,
             curve_warned_mi: None,
             speeding_tickets: 0,
             ticket_fines_paid: 0.0,
@@ -454,6 +468,7 @@ impl DrivingState {
             rescue_offered: false,
             damage_band,
             worst_damage_band: damage_band,
+            equipment_event_logged: false,
             limp_cap_mph: None,
             limp_cruise_said: false,
             out_of_service_creep_s: 0.0,
@@ -558,6 +573,7 @@ impl DrivingState {
             trailer_refused: false,
             trailer_repaired: false,
             visible_trailer_defect: (String::new(), f64::NEG_INFINITY),
+            written_up: HashSet::new(),
             nice_speed_mi: 0.0,
             double_nickel_mi: 0.0,
             jake_descent_mi: 0.0,
@@ -690,6 +706,7 @@ impl DrivingState {
             transverse_fired: Vec::new(),
             lane_locator_on: false,
             lane_locator_timer: 0.0,
+            cab,
             steer_cue_active: false,
             exit_blinker_active: false,
             steer_cue_timer: 0.0,
@@ -728,6 +745,8 @@ impl DrivingState {
             liquid_settled_said: false,
             liquid_settle_timer_s: 0.0,
             entered_once: false,
+            team: None,
+            pending_team: None,
         }
     }
 }

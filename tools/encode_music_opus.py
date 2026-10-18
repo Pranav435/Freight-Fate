@@ -3,8 +3,8 @@
 The music is 236 MB of the 282 MB download -- 84% of what a player pulls, and
 the only part still growing as tracks are added. Opus at 80 kbps stereo roughly
 halves it with no perceptible loss on background beds sitting under speech, and
-both audio backends already decode it (core BASS opens .opus with no plugin;
-the SDL_mixer fallback does too), so this is a data swap, not an engine change.
+the audio engine already decodes it (Hearken reads Ogg Opus natively), so
+this is a data swap, not an engine change.
 
 Loudness. The game applies no per-track gain: the music and radio sliders are
 the only thing between a file and the player's ears, so a track mastered 8 dB

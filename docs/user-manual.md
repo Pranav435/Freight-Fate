@@ -26,6 +26,7 @@ Start at the [main menu](#main-menu), then follow [your first delivery](#quick-s
 - [Enforcement, your record, and your CDL](#enforcement-your-record-and-your-cdl)
 - [When you owe money](#when-you-owe-money)
 - [Hours of service and fatigue](#hours-of-service-and-fatigue)
+- [Team driving](#team-driving)
 - [Status screens](#status-screens)
 - [Driver apps](#driver-apps)
 - [Pause, save, and resume](#pause-save-and-resume)
@@ -52,7 +53,7 @@ Before you've created a career, Achievements tells you there are no saved career
 
 ### Online
 
-Online brings together the public driver lists, account-wide achievements, your orinks.net account, and cloud backup and restore. It's also where you choose sharing options such as Mastodon and Discord. You can decide which parts you want to use.
+Online brings together the public driver lists, account-wide achievements, your orinks.net account, and cloud backup and restore. It's also where you turn Discord presence on or off. You can decide which parts you want to use.
 
 ### How to play
 
@@ -390,6 +391,9 @@ A control marked Driving commands has no controller button. Hold the right bumpe
 | Alt+T | Driving commands | Switch between automatic and manual transmission on the road. This changes your whole control scheme. |
 | 1 / 2 / 3 | Right bumper plus right stick click steps to the next stage | Select the engine brake stage, two, four, or six cylinders of retard, while it is on. With the engine brake off these keys do nothing. |
 | H | Left stick click, hold | Hold to sound the horn; release to stop it. |
+| Z | Not on the controller | Lower or raise the driver window. With it down you hear the wind rush in and the road louder; it closes again at the start of every drive. |
+| Alt+Z | Not on the controller | Step the fan: off, low, medium, high. The fan runs while the engine does. |
+| Shift+Z | Not on the controller | Switch the fan between heat and air conditioning. A drive starts on whichever the weather calls for. |
 | Space | B | Report speed, gear, and the active speed-control mode and open-road target when speed control is on. RPM is added with a manual transmission, and air pressure or the parking brake only when they need attention. With the signal set for an exit, it ends with that exit and how far away it is. Tab has the full air and brake readings. |
 | S | Right bumper plus X | Report the posted speed limit here, the zone if any, and how far over you are. In bend country it adds the bend's advisory speed, since the posted limit and the yellow diamond are different numbers on a real road. On a delivery ramp that ends at a traffic light, S answers with the light and the distance to the stop bar instead, since the light is the law there. |
 | D | Driving commands | Report one safe-speed number for right now. Weather grip, a steep downgrade, and the next bend are already baked into the number. On an exit ramp it is the exit speed. |
@@ -518,7 +522,7 @@ The damage readout names a band as well as a percentage, so you can hear how ser
 
 Owners pay for roadside repairs and lose several hours; they still need further garage repair afterward. Company drivers get carrier-paid service and a yard spare. Preventable equipment trouble can also affect their record and dispatch trust.
 
-Preventable damage can cost a safety bonus and add a deductible. Repairing it on the road doesn't erase that consequence: settlement uses the deepest damage band reached during the trip. Correct reactions to hazards don't count as preventable damage. Unsafe equipment that's visible on the road can attract an inspection.
+Preventable damage can cost a safety bonus and add a deductible. Repairing it on the road doesn't erase that consequence: settlement uses the deepest damage band reached during the trip. Correct reactions to hazards don't count as preventable damage. Unsafe equipment that's visible on the road can attract an inspection. A company driver's tractor at 40 percent damage or more goes through the carrier shop when the next load is accepted, at no charge and an hour on duty.
 
 ## Mountain driving
 
@@ -637,6 +641,8 @@ CB reports tell you what another driver saw and how certain they were. Treat the
 
 ### What a citation costs
 
+Until level 10, officers give you a warning instead of most citations: no fine, no reputation lost, and nothing on your record. Speeding 15 or more over the limit, driving through the barrels, failing to pull over, running an open scale, and anything that puts you out of service are still cited.
+
 | Citation | Base fine |
 | --- | --- |
 | Unsafe equipment | 2,300 dollars |
@@ -646,7 +652,6 @@ CB reports tell you what another driver saw and how certain they were. Treat the
 | Following too closely | 600 dollars |
 | Chain law | 580 dollars |
 | Improper lane use | 500 dollars |
-| Running dark after sunset | 350 dollars |
 
 Speeding fines start at 250 dollars below ten over the limit, 400 from ten over, 1,000 from fifteen, 1,600 from twenty, and 2,500 from thirty. Fleeing has a 5,000 dollar base fine. Construction doubles applicable fines, with the barrel citation excluded.
 
@@ -678,7 +683,7 @@ Your legal hours are the same in both hours modes: eleven driving hours after te
 
 Any thirty consecutive minutes without driving can meet the driving-break requirement. Loading and inspections can count, but they won't reset the duty window. Moving the truck for work counts even when you're bobtail.
 
-Check your hours before choosing how far to continue. Alt+A reads time used, Alt+S tells you when the break is due, and Alt+D reads both shift limits with reachable legal rest. C gives the clock, deadline, and nearest limit. On a controller, D-pad right reads the clock with all of these limits in one report. You'll hear warnings with two hours, one hour, and thirty minutes left.
+Check your hours before choosing how far to continue. Alt+A reads time used, Alt+S tells you when the break is due, and Alt+D reads both shift limits with reachable legal rest. C gives the clock, deadline, and nearest limit. On a controller, D-pad right reads the clock with all of these limits in one report. Before each limit you'll hear one warning: with one hour left in the Relaxed driving mode, two hours in Standard, and two hours, one hour and thirty minutes in Real time. A limit the trip ends inside gets no warning. When you leave with a load, the departure line says your driving time left, your fuel, and whether the run needs a break or a sleep.
 
 A half-hour break won't solve a shift that's ending. Check reachability again if traffic or weather slows you down.
 
@@ -693,6 +698,34 @@ Coffee only buys temporary relief. A break helps more, and full sleep clears fat
 If a lot is full, it may offer a motel at your own expense. Sleep 10 hours in the lot gives poor rest; proper sleeper parking gives full rest.
 
 Away from route points, stop fully and use T or the pause menu for emergency shoulder sleep. On a controller, that's the right bumper with D-pad down, or Start for the pause menu. A nearby stop takes priority. Shoulder sleep secures the truck and resets legal hours after ten hours, but fatigue remains. You also risk a ticket or damage, and the delivery deadline keeps advancing.
+
+## Team driving
+
+On a load too long for one shift, a co-driver can take the wheel while you rest in the sleeper. Dispatch pairs a company driver with a classmate from Great Lakes Training Transport for one load. An owner-operator keeps the co-driver they have teamed with most.
+
+When the rest of the delivery would need a ten-hour break, the pause menu offers two rows, each naming your co-driver:
+
+- **Hand the wheel to Dan and ride along.** The drive goes on at the normal pace. You hear the truck and the radio, and the road's announcements stay quiet.
+- **Hand the wheel to Dan and sleep.** The co-driver's shift runs ahead without waiting, with the sound off. You wake when they need you, with a summary of how far they drove and where they fueled.
+
+The pickup menu offers the same choice once the load is on: **Depart with Dan driving, and ride along**, or **and sleep**. Each row's help names the co-driver and the pay terms.
+
+**Team loads.** Some long loads on the dispatch board are booked for a team. Their details say "Team load". They pay about a third more, and the deadline leaves no time for a ten-hour break, only for changing drivers. You can still drive a team load alone, but you will be late unless the co-driver takes their turns.
+
+While the co-driver drives, the keys that move the truck do nothing. The information keys still answer, and Tab, the apps and the pause menu still open. If the radio was on, the co-driver may change the station or switch it off for a while; once you change it yourself, they leave it alone. A radio you left off stays off.
+
+The co-driver uses every assist, fuels when the tank runs low, crosses the open scales and pulls over for a trooper. They hand the wheel back:
+
+- parked at a stop, when their own hours run out, which leaves you time for a full ten-hour rest;
+- at a rest area for their 30-minute break, or on the road if they could not reach one in time;
+- at the receiver's gate, so you can dock and deliver;
+- when the truck takes damage, or something else needs your decision.
+
+To drive again sooner, pause and choose Take the wheel back.
+
+**What it costs.** On a company job, miles the co-driver drives pay you half. An owner-operator pays their co-driver 30 percent of the settlement for those miles, and still pays fuel, tolls and upkeep. Those miles earn half the career experience. The settlement names the co-driver's miles and share. Badges for how a haul was driven, such as a long run with no tolls, are not earned on a team load, and the road journal notes who drove.
+
+**Your hours.** Time while the co-driver drives counts as sleeper-berth time, whether you ride along or sleep. Ten hours of it resets your legal hours and clears your fatigue. The co-driver keeps a logbook of their own. The Driver status screen says who is driving. It and C both say when the co-driver needs you back, and the ELD app reads both logbooks.
 
 ## Status screens
 
@@ -853,9 +886,9 @@ Choose the driving pace first. Relaxed gives you more time to react, Standard co
 
 #### Choosing your driving pace
 
-Relaxed gives you the most time to react. All the driving systems remain available, but you'll face fewer random hazards, have longer to respond, and receive calmer routine announcements. Collisions and fatigue are more forgiving too.
+Relaxed passes about ten minutes of road and clock for each real minute, and gives you the most time to react. All the driving systems remain available, but you'll face fewer random hazards, have longer to respond, and receive calmer routine announcements. Collisions and fatigue are more forgiving too.
 
-Standard brings balanced timing and consequences. Distance and time move twice as fast, so a driving day takes half the real time. Decisions arrive sooner, without the extra forgiveness of Relaxed.
+Standard brings balanced timing and consequences. Distance and time move twice as fast, about twenty minutes for each real minute, so a driving day takes half the real time. Decisions arrive sooner, without the extra forgiveness of Relaxed.
 
 Real time uses Standard's level of challenge and follows your computer's date and time. The driving clock runs in real time on the road and while parked. Pair it with real-world weather if you'd like conditions to follow the world outside. Matching the clock doesn't change your delivery time remaining, career progress, or hours of service.
 
@@ -944,7 +977,7 @@ You can browse public driver information without sharing your own. Connect an ac
 | Driver directory | Browse public driver profiles, with active drivers first. Enter opens a profile; Check again refreshes the list. Viewing it shares nothing about you. |
 | Drivers on duty | Hear who's playing and what they're doing. The list refreshes about once a minute; Enter opens a driver's public profile. You don't need to share your own profile to view it. |
 | Say when drivers go on or off duty | Hear when other drivers start or finish playing. Off by default, and urgent driving messages come first. No account is needed. |
-| Online services | Turn orinks.net services, Mastodon sharing, and Discord presence on or off together. Your individual choices are remembered. Live weather, traffic, and parking have separate settings. |
+| Online services | Turn orinks.net services and Discord presence on or off together. Your individual choices are remembered. Live weather, traffic, and parking have separate settings. |
 | Account achievements | Browse achievements from all your careers on this computer in seven categories. For one career's record, use Achievements on the main menu. |
 | Your profile | Read your public driver profile as other players hear it. Requires a connected account and Profile sharing. |
 | Set up orinks.net account | Connect an existing account using your browser. The [account and backup guide](#online-sharing-and-cloud-backups) explains setup. |
@@ -953,8 +986,6 @@ You can browse public driver information without sharing your own. Connect an ac
 | Back up saves to your orinks.net account | Keep private backups after saving, for recovery or play on another computer. |
 | Restore a cloud backup | Choose a backed-up career to restore, or use Back up this career now to upload your current save. |
 | Automatic cloud retention | Keep up to ten cloud careers. Replacing a cloud career leaves its local save intact. |
-| Share notable deliveries to Mastodon | Share deliveries that earn an achievement, level, or perfect streak using FreightFateRuns. Routine deliveries aren't posted. Requires a linked Mastodon account. |
-| Link a Mastodon account | Open orinks.net to authorize your Mastodon account. Use the same page to unlink it. |
 | Discord presence | Show broad activity, route, and cargo in Discord. On by default while Discord is running; no driver profile is needed. It clears after half an hour idle and never shares saves or personal details. |
 
 ### Problem reports
@@ -1115,10 +1146,6 @@ With the engine running, M switches the radio on, and Page Up or Page Down tunes
 ### Can I hear a weather warning again?
 
 With live weather on, the Weather app under Driver apps lists active alerts. Comma also steps back through recent messages.
-
-### Why did a delivery not post to Mastodon?
-
-Only deliveries that earn an achievement, a level, or a perfect streak are shared, and only after you link an account.
 
 ### Can I steer the truck myself?
 

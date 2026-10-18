@@ -2,12 +2,13 @@
 //! bypassed scale, unsafe equipment), and the weigh-station machinery.
 //! The stop's own lifecycle, once the lights are on, is in `stops.rs`.
 
+use crate::speech::EventPriority;
 use ff_core::models::business::has_weigh_station_transponder;
 use ff_core::models::enforcement::{UNSAFE_DAMAGE_FINE, WEIGH_STATION_BYPASS_FINE};
 use ff_core::pyrandom::PyRandom;
 use ff_core::settings::short_distance_text_for;
 use ff_core::sim::trip_models::RoadStop;
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::overspeed_nag;
 
 use crate::app::{GameContext, SayEvent};
@@ -51,6 +52,10 @@ impl DrivingState {
             return; // already stopped; the dash has nothing to add
         }
         let (limit, _) = self.trip.speed_limit_at(self.trip.position_mi);
+        if self.trip.in_unannounced_posting() {
+            // The dash would name a limit the road never got to say.
+            return;
+        }
         self.update_overspeed_warning(ctx, dt, limit);
         // About 2 mph per second of comfortable braking sets the window,
         // capped so the grace cannot be used to coast through a whole
@@ -137,7 +142,7 @@ impl DrivingState {
             ctx.say_event_with(
                 message,
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Navigation)
                     // Only while the truck is still over. Terse renders this
                     // as "Limit 35." and a cut line is handed back to finish,
@@ -270,7 +275,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Exit approach canceled; plan it again after the stop.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
         }
@@ -404,7 +409,7 @@ impl DrivingState {
                         stop.name
                     ),
                     SayEvent::queued()
-                        .priority(EventPriority::Route)
+                        .priority(EventPriority::Important)
                         .category(SpeechCategory::Navigation)
                         // valid: this sentence names a distance, and a
                         // distance is a claim about now. The reminder in
@@ -571,7 +576,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Green light. Cleared past the scale.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Navigation)
                     .valid(|| false),
             );
@@ -586,7 +591,7 @@ impl DrivingState {
             ctx.say_event_with(
                 format!("Red light. Pull in to {}.", stop.name),
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Navigation)
                     .valid(move || live::position_mi() < scale_mi),
             );

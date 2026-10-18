@@ -108,6 +108,35 @@ impl DrivingState {
         self.trip.live_alerts = alerts;
     }
 
+    /// Re-read the Weather Service warnings where the truck stands, for a
+    /// truck that is not moving (a wait at a chain checkpoint):
+    /// `sync_weather_alerts` only asks again after `ALERT_POLL_MI` of road,
+    /// so a parked truck would keep a warning that has since expired. Asks
+    /// the provider (never blocking) and takes whatever it has cached for
+    /// this point, silently; with real weather off, the alerts are cleared.
+    pub fn refresh_weather_alerts_here(&mut self, ctx: &mut GameContext) {
+        if !ctx.settings.real_weather {
+            self.trip.live_alerts.clear();
+            return;
+        }
+        let Some(provider) = ctx.weather_alerts_provider_arc() else {
+            return;
+        };
+        let (lat, lon) = self.trip.latlon_at(None);
+        if lat == 0.0 && lon == 0.0 {
+            return;
+        }
+        provider.request(lat, lon);
+        let Some(alerts) = provider.get(lat, lon) else {
+            return;
+        };
+        let winter_fits = self.trip.weather.winter_fits_calendar();
+        self.trip.live_alerts = alerts
+            .into_iter()
+            .filter(|alert| winter_fits || alerts_chain_law_level(std::slice::from_ref(alert)) == 0)
+            .collect();
+    }
+
     pub fn sync_weather_source(&mut self, ctx: &mut GameContext) {
         let real = ctx.settings.real_weather;
         let controls_calendar = ctx.settings.live_weather_controls_calendar;

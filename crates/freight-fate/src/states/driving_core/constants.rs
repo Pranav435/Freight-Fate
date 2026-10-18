@@ -61,6 +61,9 @@ pub const LIMP_CAP_RAMP_MPH_PER_S: f64 = 2.0;
 pub const CHAIN_INSTALL_MIN: f64 = 30.0;
 pub const CHAIN_INSTALL_NIGHT_MULT: f64 = 1.6;
 pub const CHAIN_REMOVE_MIN: f64 = 10.0;
+/// Stop planning's no-chains reminder plays this far before a chain-law
+/// corridor in season: a reminder, well before the 1-mile chain-law cue.
+pub const CHAIN_REMINDER_LEAD_MI: f64 = 15.0;
 // A broken chain is one cross link or one chain, not the whole set, and it
 // is fixed on the shoulder: Caltrans tells drivers to carry "chain repair
 // links", and Washington requires two spare chains for this case (WAC
@@ -112,6 +115,14 @@ pub const ROAD_TIRE_COST_PER_PCT: f64 = 60.0; // everyone else marks tire work u
 pub const ROAD_TIRE_MIN: f64 = 75.0;
 pub const ROAD_BRAKE_COST_PER_PCT: f64 = 55.0; // road-shop premium over the garage's 40
 pub const ROAD_BRAKE_MIN: f64 = 120.0;
+/// A chain set bought on the road: the terminal garage's 750 dollars plus
+/// the third road shops add to tire work (60 a percent against the
+/// garage's 45). ASSUMED; truck stops on chain corridors stock sets, and
+/// nobody publishes a single price.
+pub const ROAD_CHAIN_SET_COST: f64 = 1000.0;
+/// Paying at the counter and stowing the set in the side box, on duty.
+/// ASSUMED, as the terminal garage's 10 minutes.
+pub const ROAD_CHAIN_BUY_MIN: f64 = 10.0;
 pub const FUEL_STOP_MIN: f64 = 20.0; // fueling is on-duty-not-driving work
 /// Fraction of tank remaining that fires the once-per-threshold low-fuel cue.
 /// Re-arms only after a refill climbs back above this line.

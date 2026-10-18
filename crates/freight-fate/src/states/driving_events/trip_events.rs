@@ -1,13 +1,14 @@
 //! `_handle_trip_event` and everything that decides whether a trip event
 //! speaks at all, in what category, and at what priority.
 
+use crate::speech::EventPriority;
 use ff_core::data::state_welcome::welcome_sign;
 use ff_core::data::world_parsing::crc32;
 use ff_core::models::trailer_yard::pickup_plan;
 use ff_core::pyrandom::PyRandom;
 use ff_core::sim::driving_modes::tuning_for_time_scale;
 use ff_core::sim::trip_models::{TripEvent, TripEventKind};
-use ff_core::speech_pacing::{EventPriority, SpeechCategory};
+use ff_core::speech_pacing::SpeechCategory;
 use ff_core::speech_text::{
     cruise_curve_easing, cruise_curve_paused, cruise_curve_paused_assisted, curve_assist_slowing,
     roadside_chatter, stop_callout, SpokenMessage, StopCalloutParts,
@@ -183,7 +184,7 @@ impl DrivingState {
                 if !silenced {
                     ctx.audio.play(sound.unwrap_or("ui/notify"));
                 }
-                let mut opts = SayEvent::queued().priority(EventPriority::Route);
+                let mut opts = SayEvent::queued().priority(EventPriority::Important);
                 opts.category = category;
                 ctx.say_event_with(message, opts);
                 ctx.award_driving_achievement("toll_paid");
@@ -480,7 +481,7 @@ impl DrivingState {
             Ambient::new()
                 .sound(sound)
                 .category(category)
-                .priority(EventPriority::Route),
+                .priority(EventPriority::Important),
         );
         ctx.award_driving_achievement("state_crossing");
     }
@@ -801,8 +802,13 @@ impl DrivingState {
             // A mainline limit cut by the take line is about a road the truck
             // has just left: "Speed limit raised to 75." came back after "You
             // take exit 167" (agent drive, Edwards, 2026-09-24).
+            //
+            // An arrival line also has to name the limit still in force: a
+            // short 45 between two 55s, cut by the next line and handed back,
+            // said "reduced to 45" after "raised to 55".
             self.refresh_live_facts();
-            opts = opts.valid(|| !live::on_ramp());
+            let named = event.data.limit_mph;
+            opts = opts.valid(move || live::limit_line_holds(named));
         }
         ctx.say_event_with(message, opts);
         // Any spoken route line pushes spaced ambient chatter back, so
@@ -1081,11 +1087,11 @@ impl DrivingState {
             event.kind,
             TripEventKind::ZoneEnter | TripEventKind::Checkpoint | TripEventKind::TollCharged
         ) {
-            return EventPriority::Route;
+            return EventPriority::Important;
         }
         if event.kind == TripEventKind::GpsCue {
             if event.data.zone.is_some() {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
             // A limit change is what enforcement reads, and each one is said
             // once: the advance "drops to 55" marks 55 as announced, so when
@@ -1093,7 +1099,7 @@ impl DrivingState {
             // too and the truck ran a 55 it never heard of (agent drive, exit
             // 286A into Abilene, 2026-09-23).
             if event.data.limit_change.unwrap_or(false) {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
             let cue_kind = event
                 .data
@@ -1102,10 +1108,10 @@ impl DrivingState {
                 .map(|cue| cue.kind.as_str())
                 .unwrap_or("");
             if cue_kind == "traffic" {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
             if Self::is_lane_closure_pressure(event) {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
             // The direction itself: which way onto the highway, which way
             // through an interchange, which way down a street. Lose one and
@@ -1119,11 +1125,11 @@ impl DrivingState {
             if !event.data.advance.unwrap_or(false)
                 && matches!(cue_kind, "onramp" | "maneuver" | "local_turn")
             {
-                return EventPriority::Route;
+                return EventPriority::Important;
             }
         }
         if event.kind == TripEventKind::StopAhead || event.data.planned.unwrap_or(false) {
-            return EventPriority::Route;
+            return EventPriority::Important;
         }
         EventPriority::Ambient
     }
@@ -1187,7 +1193,7 @@ impl DrivingState {
             ctx.play_event_cue(category, "ui/notify", 1.0, 0.0);
             let keeper = ctx.settings.speed_text(self.keeper_mph.unwrap_or(0.0));
             let message = message.plus(&format!("Speed keeper holding {keeper}."));
-            let mut opts = SayEvent::queued().priority(EventPriority::Route);
+            let mut opts = SayEvent::queued().priority(EventPriority::Important);
             opts.category = category;
             ctx.say_event_with(message, opts);
             return;
@@ -1204,14 +1210,25 @@ impl DrivingState {
         // whole, and the cruise let go without a word; quiet now says it
         // short.
         let message = message.plus("Cruise off.");
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Some(SpeechCategory::Safety);
         ctx.say_event_with(message, opts);
     }
 
     /// What an inspector would write up on the trailer, if anything.
+    ///
+    /// Only on the loaded run. The pickup plan names the box waiting in the
+    /// shipper's yard, and on the deadhead there the truck is pulling its own
+    /// empty (or nothing): reading the plan then wrote a driver up twice for a
+    /// lamp on a trailer still parked a state away (player report,
+    /// 2026-10-17).
     pub fn hooked_trailer_defect(&self, ctx: &GameContext) -> Option<String> {
-        if ctx.profile.is_none() || self.trailer_refused || self.trailer_repaired {
+        if ctx.profile.is_none()
+            || self.trailer_refused
+            || self.trailer_repaired
+            || self.phase != DRIVE_PHASE_DELIVERY
+            || !self.trip.truck.trailer_attached
+        {
             return None;
         }
         let plan = pickup_plan(&self.job, profile_of(ctx));
@@ -1219,6 +1236,13 @@ impl DrivingState {
             .as_ref()
             .and_then(|trailer| trailer.defect())
             .map(str::to_string)
+    }
+
+    /// The trailer defect an officer can still cite: the hooked one, unless
+    /// an earlier stop this drive already wrote it up.
+    pub fn citable_trailer_defect(&self, ctx: &GameContext) -> Option<String> {
+        self.hooked_trailer_defect(ctx)
+            .filter(|defect| !self.written_up.contains(defect))
     }
 
     /// Route-backed enforcement with stable evidence and no duplicate fines.
@@ -1238,7 +1262,7 @@ impl DrivingState {
         match event.data.context.as_deref() {
             // CB heads-up, not a stop: Roadcheck week is on.
             Some("roadcheck_notice") => {
-                let mut opts = SayEvent::queued().priority(EventPriority::Route);
+                let mut opts = SayEvent::queued().priority(EventPriority::Important);
                 opts.category = Self::event_category(event);
                 ctx.say_event_with(event.text(), opts);
                 return;
@@ -1257,8 +1281,9 @@ impl DrivingState {
         // A trailer hooked out of a drop yard came with whatever the last
         // driver left on it, and an inspector finds what a walk-around would
         // have. This is drop-and-hook's real cost, arriving at the worst moment.
-        if let Some(defect) = self.hooked_trailer_defect(ctx) {
+        if let Some(defect) = self.citable_trailer_defect(ctx) {
             if !defect.is_empty() {
+                self.written_up.insert(defect.clone());
                 evidence.push(defect);
             }
         }
@@ -1325,7 +1350,7 @@ impl DrivingState {
         );
         // A fine is money, not an act-now warning: ROUTE's never-dropped
         // queue instead of an interrupt that could erase one.
-        let mut opts = SayEvent::queued().priority(EventPriority::Route);
+        let mut opts = SayEvent::queued().priority(EventPriority::Important);
         opts.category = Self::event_category(event);
         ctx.say_event_with(message, opts);
     }

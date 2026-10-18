@@ -288,8 +288,16 @@ pub struct DrivingState {
     // -- the setting every driver leaves it on until ice says otherwise.
     pub jake_selected_stage: i32,
     pub chains_fast_active: bool, // spoken chains-over-speed warning edge tracking
+    /// The cruise and keeper set speeds held down to chain speed while the
+    /// chains are on, given back when they come off (`apply_chain_speed_cap`).
+    pub chain_cap_cruise_mph: Option<f64>,
+    pub chain_cap_keeper_mph: Option<f64>,
+    /// "Cruise held to 30 miles per hour for chains." is said once per set.
+    pub chain_cap_said: bool,
     pub chain_law_warned: HashSet<(i64, i64)>, // (area, level) spoken warnings
-    pub chain_law_cited: HashSet<(i64, i64)>, // checkpoint rolls already taken
+    pub chain_law_cited: HashSet<(i64, i64)>,  // (area, level) already fined
+    /// (area, level) -> whether its checkpoint is staffed, rolled once.
+    pub chain_checkpoint_staffed: HashMap<(i64, i64), bool>,
     /// Cited with chains aboard: held on the apron until they are on.
     pub chain_checkpoint_hold: bool,
     /// Colorado chain-carry rule: warned once, and rolled once, per drive.
@@ -299,6 +307,24 @@ pub struct DrivingState {
     pub chain_slap_said: bool,
     /// The chains were tightened once since they went on.
     pub chain_tightened: bool,
+    /// Stop planning's no-chains reminder, said once per corridor approach
+    /// (`ChainCorridorAhead::key`). Not saved: a resume may repeat it once.
+    pub chain_reminder_said: HashSet<String>,
+    /// Facility stopping assistance's pending roadside chain stop.
+    pub chain_stop: Option<crate::states::driving_events::chain_stop::ChainStop>,
+    /// Its held brake application, one of the assists' pedal floors.
+    pub chain_stop_brake: f64,
+    /// Chain-law areas the chain-up stop has handled, declined or had
+    /// cancelled: never retried.
+    pub chain_stop_areas_done: HashSet<usize>,
+    /// The last chain-law area each chain-off decision was made after.
+    pub chain_off_done: HashSet<usize>,
+    /// Route mile the bare road began, past the last chain-law area.
+    pub chain_off_bare_from: Option<f64>,
+    /// The slap tighten was offered once since the chains went on.
+    pub chain_assist_tighten_tried: bool,
+    /// A chain broke this drive and the assist hasn't answered it yet.
+    pub chain_assist_snapped: bool,
     // Curve management: the curve the too-fast warning has been spoken for
     // (its start milepost; the ramp curve has its own id), `driving_rollover`.
     pub curve_warned_mi: Option<f64>,
@@ -445,6 +471,8 @@ pub struct DrivingState {
     pub damage_band: i32,
     // The deepest band this run reached, for settlement to grade against.
     pub worst_damage_band: i32,
+    // This run already put one preventable-equipment event on the record.
+    pub equipment_event_logged: bool,
     pub limp_cap_mph: Option<f64>,
     pub limp_cruise_said: bool,
     pub out_of_service_creep_s: f64,
@@ -647,6 +675,10 @@ pub struct DrivingState {
     // from the pickup plan once per half mile rather than every frame:
     // (defect or empty, mile it was read at).
     pub visible_trailer_defect: (String, f64),
+    // Equipment faults already on an inspection report or citation this
+    // drive (the finding as the officer read it). The driver carries that
+    // paper to the next shop, so no later post writes the same fault again.
+    pub written_up: HashSet<String>,
     pub nice_speed_mi: f64,    // distance held at a very particular speed
     pub double_nickel_mi: f64, // and at the limit Congress retired in 1995
     pub jake_descent_mi: f64,  // downgrade held on the engine alone
@@ -951,6 +983,8 @@ pub struct DrivingState {
     pub transverse_fired: Vec<f64>,
     pub lane_locator_on: bool, // I toggles the panned position tock
     pub lane_locator_timer: f64,
+    /// The driver window and the climate controls: pure ambience, not saved.
+    pub cab: ff_core::sim::cab::CabState,
     // The same tock, summoned by the steering itself rather than by I:
     // while a lane move is underway it runs on its own and ends with the
     // signal cancelling. See _update_steering_lane_cue.
@@ -1011,6 +1045,11 @@ pub struct DrivingState {
 
     // ---- driving.py: lifecycle -----------------------------------------------------------
     pub entered_once: bool,
+    /// The co-driver for this load, once one has been paired.
+    pub team: Option<crate::states::driving_team::TeamDrive>,
+    /// A team departure chosen at the shipper: the co-driver takes the
+    /// wheel on the drive's first frame.
+    pub pending_team: Option<crate::states::driving_team::TeamMode>,
 }
 
 // The accessors onto the trip, the trip swap and the `State` facade live in

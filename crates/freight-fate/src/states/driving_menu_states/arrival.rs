@@ -24,14 +24,11 @@ use ff_core::models::solvency::{self, deductions_from_settlement};
 use ff_core::models::trucks::truck_model;
 use ff_core::pyfmt::{fmt_f, fmt_grouped, round_py_n};
 use ff_core::sim::timezones::to_local;
-use serde_json::{json, Value};
 
 use crate::app::{GameContext, Say};
 use crate::impl_state_for_menu;
 use crate::meaningful_play::MeaningfulPlayReason;
-use crate::online_journal::{
-    queue_career_milestones, queue_delivery, queue_mastodon_share, CareerFacts, DeliveryFacts,
-};
+use crate::online_journal::{queue_career_milestones, queue_delivery, CareerFacts, DeliveryFacts};
 use crate::states::base::{Menu, MenuCore, MenuItem};
 use crate::states::city::CityMenuState;
 use crate::states::driving::DrivingState;
@@ -62,10 +59,13 @@ pub struct ArrivalState {
     pub summary_parts: Vec<String>,
     achievement_messages: Vec<String>,
     new_achievement_names: Vec<String>,
-    public_achievement_names: Vec<String>,
     announcements: Vec<String>,
     pub summary_lines: Vec<String>,
     pub terminal: HomeTerminal,
+    /// Miles the co-driver drove on this load; 0 when the player drove it.
+    pub(crate) team_miles: f64,
+    /// The road journal's line for a team load.
+    pub team_note: Option<String>,
 }
 
 impl ArrivalState {
@@ -88,10 +88,11 @@ impl ArrivalState {
             summary_parts: Vec::new(),
             achievement_messages: Vec::new(),
             new_achievement_names: Vec::new(),
-            public_achievement_names: Vec::new(),
             announcements: Vec::new(),
             summary_lines: Vec::new(),
             terminal,
+            team_miles: 0.0,
+            team_note: None,
         };
         state.settle(ctx, driving, arrival_hours);
         state
@@ -414,10 +415,7 @@ impl ArrivalState {
                 let p = profile_mut_of(ctx);
                 p.career.reputation = (p.career.reputation - damage_reputation_hit).max(0.0);
             }
-            ff_core::achievements::increment_stat(
-                profile_mut_of(ctx),
-                "preventable_equipment_damage",
-            );
+            d.record_equipment_event(ctx);
             self.summary_parts.push(format!(
                 "Preventable damage, {damage_reason}. Carrier covers the repair. Deductible {} \
                  dollars, safety bonus void. Reputation down {}.",
@@ -495,6 +493,8 @@ impl ArrivalState {
                 ));
             }
         }
+        // A team load: the co-driver's share of their miles comes off here.
+        let team_xp_rate = self.settle_team_share(ctx, d, &business_status, &mut net_pay);
         let settled_pay = net_pay;
         // Owner-ops ARE the carrier: detention, lumpers, washouts, and tolls
         // already sit on the existing ledger. Apply that ledger to the wallet
@@ -567,7 +567,7 @@ impl ArrivalState {
             on_time,
             trip_damage,
             xp_class_multiplier(job.cargo),
-            standing_xp_rate(standing),
+            standing_xp_rate(standing) * team_xp_rate,
         );
         {
             let p = profile_of(ctx);
@@ -662,6 +662,7 @@ impl ArrivalState {
             job_destination: job.destination.clone(),
             distance_mi: job.distance_mi,
             weight_tons: job.weight_tons,
+            team_note: self.team_note.clone(),
         };
         let origin_name = ctx.world.spoken_city(&job.origin, None);
         let destination_name = ctx.world.spoken_city(&job.destination, None);
@@ -795,7 +796,6 @@ impl ArrivalState {
         if let Some(line) = achievement_summary.clone() {
             self.summary_parts.push(line);
         }
-        self.queue_notable_share(ctx, &job, on_time, previous_level, occurred_at_ms);
         let timing = if on_time { "On time" } else { "Late" };
         let mut bonus_lines: Vec<String> = Vec::new();
         if on_time_bonus_paid >= 1.0 {
@@ -1071,70 +1071,10 @@ impl ArrivalState {
                 self.record_badge(
                     result.award.message.normal.clone(),
                     result.award.achievement.name.to_string(),
-                    result.publicly_eligible,
                 );
             }
         }
         vec![fleet_upgrade_announcement(profile_of(ctx))]
-    }
-
-    /// Offer this delivery to the player's Mastodon account when it earned
-    /// something worth telling: a new achievement, a level, or a streak
-    /// milestone. Routine runs stay quiet, and the outbox itself is inert
-    /// unless the player turned Mastodon sharing on and linked an account.
-    fn queue_notable_share(
-        &mut self,
-        ctx: &mut GameContext,
-        job: &Job,
-        on_time: bool,
-        previous_level: i64,
-        occurred_at_ms: i64,
-    ) {
-        let mut reasons: Vec<Value> = Vec::new();
-        let level = profile_of(ctx).career.level();
-        if level > previous_level {
-            reasons.push(json!({"type": "level", "level": level}));
-        }
-        if !self.public_achievement_names.is_empty() {
-            let names: Vec<&str> = self
-                .public_achievement_names
-                .iter()
-                .take(10)
-                .map(String::as_str)
-                .collect();
-            reasons.push(json!({"type": "achievements", "names": names}));
-        }
-        let streak = profile_of(ctx)
-            .achievement_stats
-            .get("perfect_streak")
-            .and_then(Value::as_i64)
-            .unwrap_or(0);
-        if matches!(streak, 5 | 10 | 25 | 50 | 100) {
-            reasons.push(json!({"type": "streak", "count": streak}));
-        }
-        let facts = DeliveryFacts {
-            profile_name: profile_of(ctx).name.clone(),
-            deliveries: profile_of(ctx).career.deliveries,
-            cargo_key: job.cargo.key.to_string(),
-            cargo_label: job.cargo.label.to_string(),
-            job_origin: job.origin.clone(),
-            job_destination: job.destination.clone(),
-            distance_mi: job.distance_mi,
-            weight_tons: job.weight_tons,
-        };
-        let origin = ctx.world.spoken_city(&job.origin, None);
-        let destination = ctx.world.spoken_city(&job.destination, None);
-        if queue_mastodon_share(
-            &ctx.services.mastodon,
-            &facts,
-            &origin,
-            &destination,
-            on_time,
-            occurred_at_ms,
-            &reasons,
-        ) {
-            ctx.services.mastodon.flush_async();
-        }
     }
 
     /// One row naming the run's new achievements, not one paragraph each.
@@ -1154,11 +1094,8 @@ impl ArrivalState {
     }
 
     /// The badge sweep's two collectors, for `badges.rs`.
-    pub(crate) fn record_badge(&mut self, message: String, name: String, publicly_eligible: bool) {
+    pub(crate) fn record_badge(&mut self, message: String, name: String) {
         self.achievement_messages.push(message);
-        if publicly_eligible {
-            self.public_achievement_names.push(name.clone());
-        }
         self.new_achievement_names.push(name);
     }
 

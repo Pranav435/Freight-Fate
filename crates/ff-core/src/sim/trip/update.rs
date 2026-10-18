@@ -276,6 +276,8 @@ impl Trip {
         self.truck.grip = effects.grip;
         self.truck.water_mm = effects.water_mm;
         self.truck.surface = effects.surface.to_string();
+        self.truck.chain_control_road =
+            self.chain_law_area_at(self.position_mi).is_some() && self.chain_law_level() > 0;
         self.truck.drag_mult = effects.drag_mult;
         self.truck.grade = match self.ramp_grade {
             Some(grade) if self.on_ramp => grade,
@@ -318,6 +320,7 @@ impl Trip {
         // injected into a jam and updated before the jam was handed over lost
         // its brake lights on the spot.
         self.sync_braking_zones();
+        self.traffic_manager.closed_lane = self.closed_lane_at(None, None);
         self.traffic_manager
             .update(dt, self.position_mi, time_scale, Some(hour), Some(weekend));
         self.check_zones();

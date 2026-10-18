@@ -128,6 +128,15 @@ pub fn times_now_text(count: i64) -> String {
 // three screens it pushes and the two `driving_events/pending.rs` held.
 
 impl DrivingState {
+    /// A minor violation by a new driver gets a warning: no fine, no
+    /// reputation, nothing on the record. Serious violations and
+    /// out-of-service orders are decided by the caller and still count.
+    pub fn new_driver_warning(&self, ctx: &GameContext) -> bool {
+        ctx.profile
+            .as_ref()
+            .is_some_and(|profile| enforcement::new_driver_warned(profile.career.level()))
+    }
+
     /// Book a spoken roadside enforcement event onto the career record.
     ///
     /// Only enforcement the player actually heard reaches the record. The

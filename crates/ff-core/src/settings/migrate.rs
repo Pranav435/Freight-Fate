@@ -313,7 +313,7 @@ impl Settings {
 
     /// The settings file's text, byte for byte what the Python build wrote.
     pub fn to_file_text(&self) -> String {
-        py_json_dump_flat(&self.file_pairs())
+        py_json_dump_flat(&self.player_owned().file_pairs())
     }
 
     /// Write the file atomically: `settings.json.tmp`, then rename over.
@@ -546,11 +546,8 @@ impl Settings {
         if !BACKUP_ANNOUNCEMENT_MODES.contains(&s.backup_announcements.as_str()) {
             s.backup_announcements = "every".to_string();
         }
-        // (cloud_saves, the mastodon fields, live_weather_controls_calendar
-        // and duck_audio_for_speech were type-checked in the raw copy.)
-        if s.mastodon_linked_handle == coerce::JUNK {
-            s.mastodon_linked_handle = String::new();
-        }
+        // (cloud_saves, live_weather_controls_calendar and
+        // duck_audio_for_speech were type-checked in the raw copy.)
         for level in [
             &mut s.master_volume,
             &mut s.sfx_volume,

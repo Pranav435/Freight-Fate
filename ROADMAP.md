@@ -52,8 +52,49 @@ bookmarks usable.
       `.po` file alone, built in or dropped into `saves/lang/`, is offered
       by its `X-Language-Autonym` header with no code change; it gets two
       plural forms and English number separators until a maintainer adds
-      its rules to `l10n::plural`. Every download carries `lang/` as a
-      `translations` folder (template, language files, glossaries, guide).
+      its rules to `l10n::plural`. The translator's kit (`lang/`: template,
+      language files, glossaries, guide) is its own release asset,
+      `FreightFate-<tag>-translation-kit.zip` (2026-10-17; it had been a
+      `translations` folder in every archive). Only a catalog that translates
+      something is compiled into the game, so the empty language files cost
+      the executable nothing until a translator fills one.
+- [x] Team driving (owner design, 2026-10-17): on a delivery whose rest
+      would need a ten-hour break, the pause menu hands the wheel to a
+      co-driver from the Great Lakes training class, to ride along or sleep
+      through their shift. The co-driver drives through the player's own
+      controls with every assist on, fuels, crosses open scales, pulls over
+      for troopers, and hands back at the end of their hours, at the
+      receiver's gate, or on anything only the driver should decide. Their
+      miles pay half (an owner-operator pays 30 percent) and earn half the
+      experience, and count as sleeper-berth time for the player. The
+      logbooks swap, so every hours rule reads the clock of whoever drives.
+      The pickup menu offers the same handover from the dock, with the
+      pairing and the terms in the rows' help. About three in ten loads that
+      need a ten-hour break alone are drawn as team loads: 35 percent more
+      pay, and a deadline that allows a half-hour driver change where a solo
+      driver sleeps. The co-driver drives to the end of their own hours and
+      plans their 30-minute break at a rest area. Co-driver miles earn no
+      driving-skill badges, the road journal names who drove, and the
+      Meridian classmate and Ray each carry a hidden badge. Sleeping
+      through the shift passes it as time (owner, 2026-10-18): the road,
+      fuel and the break are worked out at once, the radio is left alone,
+      and the player wakes parked at a stop, in under a second of real time
+      on an agent drive. Only the merge and the receiver's exit and gate
+      still run live, sped up. At any stop the co-driver fuels and takes the
+      break without the stop's menu: the pump sound and a line in the
+      message log. The owner's listening pass on ride along and the wake-up
+      summary is his to do.
+- [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
+      `music.pak` opens like `channel3000.pak`, reading only its directory
+      at launch and each track from its offset when it starts; `sounds.pak`
+      stays in memory. About 480 MB less memory at the title screen on an
+      M4 Mac. Cherry-picked ahead of the rest of PR 441's visual display.
+- [x] Places visited (player request, 2026-10-14): Career stats counts the
+      states and cities delivered to and lists each state's cities; the
+      public profile on orinks.net and the in-game driver profile list them
+      too, from the snapshot's `visitedPlaces`, which a career gains at its
+      next backup. Only delivery destinations count, as the counts always
+      did (`cities_delivered`).
 - [ ] (Found along the way) Lines the game assembles from pieces the
       extractor cannot see (turn-by-turn street instructions, some stop
       announcements) stay partly English until each shape is added to
@@ -192,6 +233,17 @@ bookmarks usable.
       longer runs the arrival check; the right lane's clearance counts a
       vehicle on the ramp beside it; and a ramp vehicle relabelled cruising
       at road speed now joins the lane instead of riding the ramp for good.
+- [x] Traffic in the open lane of a lane closure lets the truck in (player
+      report relayed by the owner, 2026-10-16: with the right lane coned off,
+      cars in the left lane kept the truck stopped dead in the closed one, and
+      "Left lane open" read from the stop led to a sideswipe once the truck
+      got rolling). While the truck is in the coned-off lane, vehicles behind
+      the sideswipe window in the lane beside it ease in and wait outside the
+      window the L key reads, at the truck's pace; past the merge, the one open lane
+      queues behind the truck the way a one-lane road does
+      (`traffic_manager/work_zone.rs`).
+- [ ] (Found along the way) Bubble vehicles in a coned-off lane drive on
+      through the closure instead of merging out of it.
 - [ ] (Found along the way) Re-bake the lane segments with each matched
       way's direction against the leg's, so a passing lane our side comes
       back (`tools/bake_lane_segments.py`; needs the Overpass corridor
@@ -592,22 +644,26 @@ Everything found before 2026-09-25 moved to
 - [ ] A listening pass by the owner at quiet and urgent only, at the wheel.
 - [x] Achievement sweep (owner, 2026-10-09): four badges whose triggers
       had fallen behind the map or the job board now match them.
+- [x] Driver window and cab climate (player report, 2026-10-17); see
+      [the dated section](#october-17-the-driver-window-and-the-cab-climate-found-along-the-way).
+      Placeholder sounds and the engine's open-window filter are open there.
 - [x] A way out of the training fleet (player report, 2026-10-10): a
       company driver at Great Lakes Training Transport can move to another
       carrier at level 4 with full dispatch trust.
-- [x] [Visual display](#october-15-the-visual-display-found-along-the-way)
-      (contributor, 2026-10-15): the window draws a road view behind the
-      truck, a dashboard, menu panels and captions, so sighted and
-      low-vision players can play by eye; Settings, Gameplay, Controls,
-      Visual display turns it off. `music.pak` is now read track by track
-      instead of held in memory.
-- [ ] (Found along the way) Visual display follow-ups: a cab camera, the
-      crossroad and its signal or stop sign at a ramp's end, and real exit
-      numbers on the gore signs once interchanges carry them on the drive.
 - [x] Engine brake on the driver's terms (player report, 2026-10-14): a
       full brake stop with the engine brake on no longer damages the load, a
       stage the driver picks is no longer dropped by cruise or the bend
       assist, and automatic engine brake off with Alt J lasts between drives.
+- [x] Speech that keeps up with a compressed road, first slice (player
+      report, 2026-10-17): a cut-off limit line is not replayed after a
+      newer one, a zone's end waits behind a limit line, one shift
+      countdown instead of two, and Job details say the hours and fuel a
+      run needs. See [October 17](#october-17-speech-that-keeps-up-with-the-road-found-along-the-way).
+- [x] The owner took the proposal's recommendations the same day: a
+      posting passed before its line could end is not spoken or charged,
+      one calm countdown notice per driving mode, and a departure line
+      with driving time left and fuel.
+- [ ] The pace governor, after the reporter tries the above.
 - [x] Plainer career and equipment wording, and a Common questions page
       in How to play and the manual (owner, 2026-10-11, from a livestreamer
       asking what the fleets meant and when he could get or buy a truck,
@@ -631,6 +687,41 @@ Everything found before 2026-09-25 moved to
       after a set snapped, the pause menu still offered to hang it, and it
       snapped again as soon as the truck rolled, until the chain-law ticket.
       The menu now reads the truck's own wear, so a scrap set stays off.
+- [x] Reputation lost to faults the driver can't fix on the road (player
+      report, 2026-10-17): the deadhead to a pickup was cited for the lamp
+      on the trailer still parked in the shipper's yard; post after post
+      wrote up the same lamp, tires or damage, and a patrol re-cited a chain
+      law the checkpoint had already ticketed; a chain law posted by a live
+      alert on a wet road wore chains at the bare-pavement rate; and Report
+      truck trouble saw only body damage. A fault now counts once per drive
+      (one that parks the truck still counts), chains wear as on snow inside
+      a posted control, and dispatch sends a mechanic for a trailer fault.
+- [x] A driver who ran out of chains mid-trip could only wait out the law
+      or turn back, because chains were sold only at the terminal garage
+      (same report). The owner chose both: Report truck trouble under a
+      chain law with no usable set sends road service with one (1,000
+      dollars plus the 500 callout, an hour and a half), and a truck stop
+      in a chain-control state sells a set for 1,000 dollars (assumed: the
+      garage's 750 plus a road markup).
+- [x] Preventable equipment incidents piled up on a new company career
+      (player report, 2026-10-18: 8 incidents and 10 citations). A tractor
+      left the yard still carrying the last run's damage, and the dock
+      ruled the whole band preventable again for a single shoulder scrape,
+      load after load, until the driver used the carrier's free repair. A
+      grounding and the same run's delivery were also counted as two
+      incidents. A run is now ruled only for a band it took the truck into,
+      and once.
+- [x] New drivers lost all their reputation to minor tickets before they
+      had learned the road (same report; owner ruling 2026-10-18). Below
+      level 10 an officer gives a warning instead of a citation, with no
+      fine, no reputation and nothing on the record. Serious speeding, the
+      work-zone barrels, failing to pull over, running a scale and anything
+      out of service are still cited.
+- [x] Dispatch handed a company driver a damaged tractor without the
+      carrier's shop touching it, though the career start says the carrier
+      maintains the tractor (same report; owner ruling 2026-10-18). At 40
+      percent damage, where an inspector writes it up, the shop repairs it
+      when the load is accepted: free, an hour on duty, and said.
 - [ ] With several controllers connected (a second pad, or Steam's virtual
       one), the game listens only to the first it found, and the other's
       buttons do nothing. It could switch to whichever controller the
@@ -653,6 +744,114 @@ Everything found before 2026-09-25 moved to
       and "facility gate" zones over the chain, not each street's own limit
       and the yard: the street-detail zones, and the other layers gated on
       a pure facility route, do not yet look at a joined route's streets.
+- [x] The Hearken sound backend is the default and only real backend
+      (2026-10-17): every effect, loop, the horn, the engine, music and
+      radio streams play through it, the sound device opens off the game
+      thread, and BASS, `bass-sys` and every BASS fetch and staging step are
+      gone. A saved or environment `bass` preference gets Hearken. Stations
+      are called as `FreightFate/<version>`, Hearken's own reconnects are
+      off (the driving state's re-tune and the playlist hold stay the only
+      retry), and titles go through the game's own ICY, Ogg and HLS parsers.
+- [ ] The owner's listening pass before any stable release: the menu and a
+      drive, an engine rev sweep, the horn, blinker pan, a radio tune-in and
+      a Channel 3000 seek, listening for fade, pan and loop-seam drift.
+- [ ] Known Hearken gaps. The owner rule (2026-10-17) is that the
+      changelog does not announce the engine change or its side effects;
+      only a change a player must act on (Linux's ALSA) gets a line.
+      On Linux, HE-AAC (AAC+ stations, most HLS radio and their kind of
+      `.m4a`) plays muffled, as its base layer only: Fraunhofer's licence
+      permits `fdk-aac` only under AAC patent licences the game does not
+      hold, so it stays off. Windows and macOS decode it in full through
+      the system decoder (below).
+      Tracker modules (`.mod`, `.xm`, `.it`, `.s3m`, `.mo3`) are refused,
+      since no small pure-Rust player exists. Hearken checks a station's
+      TLS certificate with the operating system's verifier, as a browser
+      does, where BASS did not check at all: a station whose server leaves
+      out an intermediate plays on Windows and macOS (the OS fetches it),
+      and one with a self-signed, expired or wrong-name certificate fails
+      to tune. On
+      macOS, Kira reopens the output only when the old device disappears,
+      so game sound stays on the device it opened on when the player
+      switches outputs (BASS followed the system default; speech still
+      does). On Linux the executable now links ALSA (`libasound.so.2`, via
+      cpal), so a machine without it fails to start instead of running
+      silent; the README names it. Hearken clamps a sound's volume at 1.0,
+      and an engine band at full volume asks for up to about 1.06 (level
+      times band weight times the gain walk), so the loudest band loses up
+      to about 0.5 dB at the top settings.
+- [ ] (Found along the way) Hearken follow-ups from the M6 review: poll the
+      default output device on macOS and swap the backend when it changes;
+      let the engine bands' gain go above 1.0 (or rescale them); set the
+      iOS `AVAudioSession` category to Playback before Kira opens (cpal
+      0.18 sets none, so under the default SoloAmbient the ring/silent
+      switch would mute the game; unverified on a device) and run
+      `ios-build.yml` on the ported tree; consider bundling `libasound` in
+      the AppImage.
+- [ ] (Found along the way) Before release, run
+      `test_hearken_music_never_loops_catalog_tracks` with `music.pak`
+      present: no M6 run had the pack, so no shipped catalog track has been
+      opened through Hearken yet (including whether any is HE-AAC or a
+      tracker module).
+- [ ] (Found along the way) Replace the other shrill short cues the way the
+      toll sound was replaced on 2026-10-17 (ElevenLabs takes, owner picks
+      by ear): lane drift (a pure 3 kHz beep), inspection warning (mostly
+      above 2.6 kHz), turn left and right (1.5 kHz tones), and the scale
+      and ramp-light green chirps (1.76 kHz).
+- [x] Hearken milestone M6 (2026-10-17): every engine service under the
+      game runs on Hearken. That is the speech sink stack, the event-voice
+      pacer (the priority ladder stays in `ff-core`), sound, music and the
+      radio, the key, controller and binding types, the single-instance
+      guard and the held-key tracker. The game keeps its own state stack,
+      menus, speech delivery, settings and logging, so nothing a player
+      hears changed except the sound engine. Hearken's
+      `docs/superpowers/notes/2026-10-17-freight-fate-on-hearken.md`
+      records what moved, what stayed and why.
+- [ ] Release prep for M6 (owner): push Hearken's branch and merge it to
+      `main`, `cargo update -p hearken` so `Cargo.lock` pins that commit, a
+      manual `rust.yml` run on Windows, Linux and macOS, the listening pass
+      above, then the tag. Hearken is public (2026-10-17), so CI fetches it
+      with no secret.
+- [x] HE-AAC through the system decoder (2026-10-18, Hearken PR 5). The
+      radio decodes AAC with Media Foundation on Windows and AudioToolbox
+      on macOS, as BASS did, so AAC+ and HE-AAC v2 stations, HLS included,
+      play at full bandwidth in stereo; Microsoft and Apple carry the
+      patent licences, and the game ships no AAC decoder. Where the system
+      decoder cannot open (Windows N without the Media Feature Pack),
+      Symphonia plays the base layer as before. Linux stays on the base
+      layer.
+- [x] CI back on GitHub's hosted runners (owner, 2026-10-17: Blacksmith's
+      paid minutes stay with the private repositories), with the nightly's
+      tests beside its packaging rather than before it, and the Spanish keys
+      help no longer the 2.5-minute tail of every test run.
+- [x] Fragmented-MP4 (CMAF) HLS segments and `EXT-X-MEDIA` audio
+      renditions in Hearken's radio (2026-10-17).
+- [ ] Tracker modules in personal playlists, if a small pure-Rust player
+      (or libopenmpt) becomes worth carrying; `.mo3` stays out either way.
+- [ ] (Optional) Moving the screens onto Hearken's own screen stack. It
+      needs Hearken to grow the push-then-speak ordering, reveal sounds,
+      the menu differences and the delivery hooks listed in the Hearken
+      notes first, and it would rewrite most of the test suite.
+- [ ] FF on a real Mac with Hearken: the macOS link (Prism frameworks and
+      the clang runtime) is proved by the manual CI run, but VoiceOver and
+      CoreAudio output need a person at a Mac.
+- [x] Smaller updates (player reports, owner go-ahead 2026-10-18): every
+      update downloaded the whole 531 MB archive, and 497 MB of it is
+      `music.pak` (383 MB) and `channel3000.pak` (114 MB), byte for byte the
+      same from 1.9-tester-20261014 to 20261017. The release carries no
+      extra files for this: the updater (`updater::slim`, `zip_index`) reads
+      the zip's index from its last bytes with HTTP range requests, compares
+      the two packs' size and CRC-32 with the install's (`build_info.json`
+      records them, so the check reads no pack when sizes agree), and then
+      fetches only the byte ranges around them, about 35 MB, writing a new
+      index so the result unpacks normally with every kept file's CRC-32
+      checked. Any failure falls back to the full archive, and a Mac bundle
+      gets the player's packs copied in before the swap. Linux tarballs and
+      AppImages still download in full. The first update to carry this is
+      itself full size.
+- [x] Release page trimmed (owner, 2026-10-18): each snapshot run deletes
+      tester snapshot releases beyond the newest seven
+      (`tools/prune_snapshots.py`); their tags stay, and stable and
+      `nightly-*` bridge releases are never touched.
 
 - [x] Low fuel warning could also fire when remaining range is shorter than
       the distance to the next fuel-capable stop (issue #272 shipped the
@@ -903,10 +1102,11 @@ Everything found before 2026-09-25 moved to
       cruise, engine and parking brake from a held pedal are covered only by
       the headless tests.
 - [ ] iOS runs from TestFlight on a real iPhone (2026-10-03) but still
-      needs a real controller, BASS sound on hardware (the Simulator has no
-      audio device), and VoiceOver's scrub and on-screen-keyboard typing on
-      hardware. For the App Store: a real app icon (TestFlight has a
-      placeholder), a privacy manifest, BASS licensing for iOS, and a title
+      needs a real controller, Hearken sound on hardware (no iOS build of
+      the Hearken-based tree has run yet, and the audio session category
+      is still unset; see the M6 follow-ups), and VoiceOver's scrub and
+      on-screen-keyboard typing on hardware. For the App Store: a real app
+      icon (TestFlight has a placeholder), a privacy manifest, and a title
       screen or review note for the blank game screen.
 
 ### Release gate record
@@ -2919,6 +3119,14 @@ as they stand now found three more stale ones.
       Tucumcari, Gallup, Holbrook, Winslow, Kingman, Barstow, Victorville),
       and Shadow of the Giants counts the redwood towns (Ukiah, Willits,
       Fortuna, Eureka, Crescent City) alongside Santa Rosa and Chico.
+- [x] Short speed-limit dips off the highway (owner, 2026-10-17, from the
+      Mark's feedback research): 31 postings where the route ran over a
+      ramp or a side street fold back into the highway's limit at load.
+      See [October 17](#october-17-speed-limit-dips-off-the-highway-found-along-the-way).
+- [ ] Re-run the limit screen on the owner's machine for California,
+      Florida, Iowa, New York, North Carolina, Texas and Virginia from their
+      state extracts, which were too large to bring into the session.
+- [ ] The dwell filter drops real village zones (14 of 38 checked).
 
 ### October 10 a way out of the training fleet (Found along the way)
 
@@ -2938,59 +3146,99 @@ stays a starting choice.
 - [ ] Changing carriers between the other three is not offered; add it if
       players ask.
 
-### October 15 the visual display (Found along the way)
+### October 17 speed-limit dips off the highway (Found along the way)
 
-The window was a blank fill: everything lived in speech and sound. It now
-draws what the game knows, for sighted players, low-vision players, and
-anyone watching a stream. Speech, sound and every key are unchanged, and
-the display only reads the game state; it never feeds anything back.
+A scan found postings where the limit drops and comes back within a short
+span, US-19 between Albany and Tallahassee going 55, 45, 55 over 0.2 miles
+among them. The load-time dwell filter already drops nearly all of the ones
+under half a mile; 311 drop-and-return postings under 2.5 miles still play.
 
-- Road view: a chase camera behind and above the trailer. The road's shape
-  is integrated from the drive's own curve and grade samples, the lane
-  count and the truck's lane, offset and heading come from lane keeping,
-  and traffic is drawn from the traffic bubble in its lanes, with brake
-  lights and signals. Signs are drawn only from route data: posted limits
-  (repeated every four miles at the limit enforced at that spot, and at
-  each drop), curve warnings with the advisory, chevrons around sharp and
-  hairpin bends, work zones with drums down the closed lane, guide signs
-  from the navigation cues, service signs for stops, state lines and the
-  trip's billboards. Trees, posts, power lines and buildings are seeded
-  decoration that follows the landscape (desert, plains, wooded, conifer,
-  mountains) and the season.
-- Sky: the local clock sets the light; the route's coordinates give the
-  road's compass heading, so the sun and moon sit where they are. Weather
-  sets cloud, fog distance, wet or snowy pavement, rain, snow and lightning.
-- Dashboard: speed with the limit and cruise marked, engine speed and gear,
-  telltales, fuel, air, damage, the next bend and maneuver, clock, weather,
-  distance left, and a traffic radar a quarter mile behind to half a mile
-  ahead. Menu screens draw as a panel from each screen's visible lines;
-  captions come from the message history.
-- Cost: one glyph atlas and three draw calls a frame. A frame identical to
-  the last is not drawn or presented (a menu costs nothing between key
-  presses; the old window was cleared and presented 60 times a second), and
-  nothing is drawn while the window is minimized or, on a Mac, fully
-  covered (AppKit's occlusion state; SDL 2.26 does not report it). The
-  display can be turned off outright.
-- Playable by sight: `visuals_play` drives two real stretches with speech
-  ignored and every assist off (lane keeping off, curve assist off,
-  emergency braking off), deciding every key press from the display's
-  capture alone -- a 40 mph mountain bend behind a slow car, and a pass on
-  a two-lane interstate. It found one thing the picture lacked: the game
-  holds a quarter-mile footprint behind each vehicle for sideswipes, so a
-  car drawn a few hundred feet back still blocked the lane. Blind-spot
-  lights on the mirrors and a shaded radar lane now read that same
-  clearance check.
-- In a real window: `tests/real_window.rs` (run by name; it needs a
-  desktop) plays the mountain bend the same way in the game's own window,
-  Metal renderer and event loop, in real time, and saves captures of the
-  window by its macOS window number. It runs as a background app that never
-  takes focus, with `FREIGHT_FATE_ALWAYS_DRAW=1` keeping the covered window
-  drawing -- the same switch capture software needs. Its first run caught
-  saguaros on US-40 in Colorado: the dry West is now sagebrush steppe, and
-  cactus desert is kept to the far Southwest.
-- Memory: `music.pak` (about 380 MB in the Mac download) was read whole
-  into memory at launch. It is now opened like `channel3000.pak` and each
-  track is read when it starts.
+A hand check of 100 of them against OpenStreetMap (research note
+`speed-limit-artifacts.md`, 2026-10-17) found length does not separate real
+zones from artifacts: real town zones ran 0.2 to 2.3 miles, artifacts 0.2 to
+2.5. What separates them is whether the leg's own highway carries the
+posting. Every artifact was the route geometry leaving the highway (an
+interchange ramp, a city street) or, among the ones already dropped, one way
+tagged differently from its neighbours. Bridges and lane-count splits
+produced none.
+
+`tools/screen_limit_artifacts.py` asks that question of all 311 against the
+state extracts (derived: nearest way carrying a maxspeed within 40 m, every
+0.02 mile) and names 133 in `limit_artifacts.jsonl`. The loader folds a
+named posting unless a village landmark or a town checkpoint sits within a
+quarter mile, which keeps 102 and folds 31 (10 percent); the baker prints the
+count. On the sample this folded 5 of 9 artifacts and none of 49 real zones.
+Seven states came from an older way cache rather than their extracts; on
+the other 43 the two inputs fold the same 31 postings.
+
+- [x] Name off-highway postings offline; fold them at load with a place guard.
+- [ ] Re-run the seven states from their extracts on the owner's machine.
+- [ ] The dwell filter drops real village zones: 14 of 38 checked drops were
+      Duncan NE, Cascade ID, Elliston MT, Hebo OR, West Point NE and others.
+      Enforcement reads the same profile, so no ticket comes of it; the
+      zone simply goes unannounced. The village guard there reads village
+      landmarks only, and most towns are town checkpoints.
+
+### October 17 speech that keeps up with the road (Found along the way)
+
+A blind player on a Mac wrote that the speed limit sometimes changed faster
+than his speech could follow, and that the shift countdown ran by
+unrealistically fast on a long trip. He asked to hear before the trip how
+much shift time he had and how full the tank was. A third of the posted
+limits in the map are under a mile long, so at 10x a posting can be gone
+before its line ends. The countdown fired three marks for each of two
+clocks that end in the same sleep, with the alarm tone every time.
+
+- [x] A limit line cut off and handed back speaks only if its number still
+      governs the truck.
+- [x] The end of a zone shares the limit lines' spacing when it raises the
+      limit; the open-road check names the new limit once the window opens.
+- [x] Driving time and the duty window count down as one, by the nearer.
+- [x] The route summary at pickup plans from the driver's current shift.
+- [x] Job details carry Trip hours, driving time left, and fuel with range.
+- [x] A posting the truck leaves before its line could be spoken is not
+      announced, warned of ahead, or charged, and the dash stays quiet in it.
+- [x] One countdown notice per limit: one hour out on Relaxed, two on
+      Standard, all three marks on Real time. None for a limit the trip
+      ends inside, and the alarm and rumble only for a violation.
+- [x] The loaded departure line says driving time left and fuel, and
+      names a break, a sleep or a short tank when the run needs one.
+- [x] The Driving mode help and the manual say Relaxed passes about ten
+      minutes of road and clock per real minute.
+- [ ] A governor that eases the pace where postings cluster (decided:
+      later, after the reporter tries the rest).
+- [ ] Short down-and-back-up postings that are mapping artifacts: sample
+      them against real signs, then screen at load if the sample supports it.
+- [ ] The event pacer assumes 13 characters a second whatever the speech
+      rate, so a slow Mac voice falls behind; measure the rate it should use.
+- [ ] Bridge expansion joints and passing under overpasses (same report).
+- [x] A driver window and climate controls (same report); see the next
+      section.
+
+### October 17 the driver window and the cab climate (Found along the way)
+
+The same player asked to open the window and run the heater or the air
+conditioning. Z lowers or raises the driver window, Alt Z steps the fan
+(off, low, medium, high) and Shift Z switches heat and air conditioning;
+each press is confirmed in a word or two, and the status screen names the
+cab only when it differs from a fresh one. It is pure ambience: no fuel,
+fatigue or comfort effect, because neither has a source the game could
+cite and he plays to relax. With the window down a wind rush rises with
+the square of road speed, panned to the driver's side, and the tires, rain
+and weather wind come up about 4.6 dB over the two seconds the glass
+travels. The fan runs only with the engine. Nothing is saved: every drive
+starts with the window up, the fan off, and heat or air conditioning by
+the outside temperature.
+
+- [x] Driver window, fan and heat or air conditioning at the wheel.
+- [ ] The four cab sounds are synthesized placeholders (window motor, wind
+      rush, blower, compressor clutch); the owner's ear should pick
+      recordings to replace them under the same keys.
+- [ ] The engine keeps its sealed-cab filter with the window down; a
+      crossfade to the "window cracked" variant `cab_filter` already
+      describes would let the engine open up too.
+- [ ] A passenger window (Shift Z is taken; it would need another key) if
+      players ask.
 
 ## 2.0 planned -- the working week and home
 

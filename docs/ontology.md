@@ -110,8 +110,6 @@ belongs to the truck you own in this game, not to the driver.
 | Stop-cue geometry from stopping distance | -- | `states/driving_stops.py` |
 | Planned rest-stop stopping assistance | `selected_stop_assist` | `settings.py`, `states/driving_events.py` |
 | Facility streets (the setting): on drives the streets between the highway and a facility; off is the 1.8 arrival at the ramp's end | `facility_streets`, `DrivingState::facility_streets_on` | `settings.rs`, `states/driving_events/chains.rs` |
-| Visual display (the setting and the window it draws): the road view, dashboard, menu panels and captions; off leaves the window dark | `visual_display`, `Visuals`, `Scene` | `settings.rs`, `visuals.rs` |
-| Captions: spoken lines shown on screen for a few seconds, read from the message history | `Captions` | `visuals/captions.rs` |
 | Destination approach assistance | `destination_approach_assist` | `settings.py`, `states/driving_updates.py` |
 | Traffic vehicle | `TrafficVehicle`, `TrafficSituation`, `TrafficManager` | `sim/traffic_manager.py` |
 | Live traffic | `TrafficEvent`, `TrafficData`, `RealTrafficProvider` | `sim/real_traffic.py` |
@@ -233,6 +231,7 @@ from the words, and synonyms cost them a re-read.
 | A driving control moved to another key | keyboard shortcut (the screen), the key it is on ("Engine on or off: E") | binding, mapping, keybind, hotkey | `bindings::Action`, `KeyBindings` |
 | The same on the pad | controller button; right bumper plus «button» for the second layer | modified button, layer two, chord | `bindings::PadChord` |
 | The screen where every key or button names its driving command and runs nothing | key and button practice; the menu row is "Practice keys and buttons"; a press answers "«key»: «command»." | keyboard tester, input test, learn mode, key describer | `InputPracticeState` |
+| An officer letting a driver below level 10 off a minor violation, with no fine and nothing on the record | warning ("gives you a warning", "lets you go with a warning") | rookie pass, grace, free ticket | `enforcement::new_driver_warned`, `DrivingState::new_driver_warning` |
 | One booked citation or violation with its reason | citation / serious violation / major offense / safety incident, then day, clock, reason, fine, place | ticket entry, infraction, offense record, strike | `enforcement::RecordEntry`, `DrivingRecord.entries` |
 | The freight itself | cargo, the load | payload, goods | `CargoType`, `Job.cargo` |
 | The board of offers | dispatch board | job list, load board | `JobBoard` |
@@ -273,10 +272,16 @@ from the words, and synonyms cost them a re-read.
 | Road the truck needs to stop from here | stopping distance | braking distance, stop room | `TruckState.stopping_distance_m` |
 | The short code a player reads and types into a browser to connect a computer | activation code | user code, device code, pairing code | `Activation.user_code` |
 | The legal driving clock as a whole | hours of service | HOS, the ELD rules, your logbook hours | `HosClock`, `settings.hos_mode` |
+| The driving a dispatch will take, deadhead included, estimated before you accept | trip hours ("Trip hours: about 6.5 driving hours, with a 10-hour sleep.") | run time, drive estimate, trip length | `board::briefing::hours_lines` |
 | The 11-hour clock that limits time at the wheel | driving time left | drive clock, hours left, hours remaining | `HosClock.drive_time_summary` |
 | Driving time already spent this shift | at the wheel | hours driven, drive time used, hours on the road (that is the run) | `HosClock.wheel_time_summary` |
 | The 14-hour clock that starts when you go on duty | duty window | 14-hour clock, on-duty clock, shift window | `HosClock.duty_min` |
 | The 30 minutes off the wheel the law requires | break | rest break, 30, half-hour rest | `HosClock.break_summary` |
+| The second driver on a team load, who drives while the player is in the sleeper | co-driver, or their name ("Dan needs you back at the wheel.") | partner, teammate, relief driver, autopilot, AI driver | `TeamDrive`, `models::co_driver` |
+| A delivery run with a co-driver, including a load dispatch books for two drivers ("Team load" in the job details) | team load | team run, relay, duo | `TeamDrive`, `Job.team`, the `team:loads:` counters |
+| Resting in the sleeper while the co-driver drives at the normal pace | ride along ("Hand the wheel to Dan and ride along"; at the shipper, "Depart with Dan driving, and ride along") | watch, spectate, passenger seat | `TeamMode::RideAlong` |
+| Sleeping while the co-driver's shift runs ahead | sleep ("Hand the wheel to Dan and sleep"; at the shipper, "Depart with Dan driving, and sleep"); "sleep through it" in the manual | fast-forward, skip, time skip | `TeamMode::SleepThrough` |
+| The co-driver giving the wheel back | needs you back ("Dan needs you back at the wheel."); the pause menu row is "Take the wheel back" | summon, wake call, handoff | `co_driver_summon`, `take_wheel_back` |
 | The in-game time of day (truck-local with a named zone in accelerated modes; computer-anchored and spoken as "local game time" in Real time) | clock | local time, game time | `Trip.local_hour`, `clock_text` |
 | When the load is due | deadline | due time, drop time (the appointment is the named hour) | `Job.deadline_game_h` |
 | The retarder | engine brake; "jake" in short control feedback ("Jake on, stage two") | retarder | `TruckState.engine_brake_stage` |
@@ -410,6 +415,9 @@ from the words, and synonyms cost them a re-read.
 | Air pressure fallen too low to brake safely | Low air buzzer | low-pressure alarm, air warning | `vehicle/low_air_buzzer` |
 | The parking brake engaging: a hard mechanical clunk of air dumping | Parking brake set | brake set, park brake on | `vehicle/brake_set` |
 | The parking brake releasing, freeing the truck to roll | Parking brake released | brake release, park brake off | `vehicle/brake_release` |
+| The driver's side window, lowered or raised by its motor; with it down the wind rushes in and the outside sounds louder | driver window; "Driver window down." / "Driver window up." | window (alone: "window" is also the duty window), cab window, open/closed | `sim/cab.rs CabState`, `cab/window_motor`, `cab/wind` |
+| The cab blower, off, low, medium or high | fan; "Fan low." | blower, vent, climate fan | `sim/cab.rs FanSpeed`, `cab/fan` |
+| Warm or cold air from the fan | heat; air conditioning | A/C, AC, cooling, climate mode, HVAC | `sim/cab.rs ClimateMode`, `cab/ac_clutch` |
 | The hardest stop the truck has, for a hazard that cannot otherwise be missed | Emergency brake | e-brake (bare abbreviation), panic stop | `vehicle/ebrake` (fallback `vehicle/brake_air`) |
 | The hazard assist taking the truck and stopping it on the service brakes | Automatic braking | AEB, auto brake, emergency braking (that names only the escalation, and the routine stop never reaches it) | `states/driving_updates.py._update_hazard` |
 | Tires losing grip on the road | Tire screech | skid, traction loss | `vehicle/tire_screech` |
@@ -454,6 +462,7 @@ from the words, and synonyms cost them a re-read.
 | Another driver appearing on or leaving the drivers list, and the optional spoken notice of it | "<driver> is on duty" / "<driver> went off duty"; the Online menu row that turns the notice on is "Say when drivers go on or off duty" | joined, logged in, came online, signed off, left the board, notification (the row says "say when") | `duty_watch.duty_change_text`, `settings.duty_notifications` |
 | Every driver with a public profile, on duty or not, and when each was last on duty; the screen that lists them | driver directory; a row says "On duty" or "Last on duty three days ago", and "Not seen on duty yet" for a driver no session has ended for | roster, member list, all drivers, offline drivers, player list, last seen, last online (the stamp is when they went off DUTY, the board's own word) | `DriverDirectoryState`, `getDriverDirectory`, `GET /api/freight-fate/directory`, the Driver directory page on orinks.net |
 | One driver's public page read aloud in the game -- opened with Enter on the drivers list, or as the player's own from the Online menu | driver profile; the player's own is "Your profile"; a driver whose page is hidden "has no public profile" | profile card, driver page, stats screen, player card, private profile (the game never says why a profile is hidden) | `DriverProfileState`, `GET /api/freight-fate/drivers/<driverId>` |
+| The states and cities a career has delivered to (a pickup city does not count), on Career stats and the driver profile | places visited; "States visited" and "Cities visited" for the counts | cities delivered, destinations, map coverage, travel history | `career_stats::visited_places`, `cities_delivered` in `achievement_stats`, `visitedPlaces` on the public profile |
 | Game sound lowering itself while the road voice speaks | game sounds step back for speech (the Settings > Audio row) | ducking, audio duck, attenuation | `settings.duck_audio_for_speech`, `AudioEngine.set_speech_duck` |
 | The language the game speaks, and its spoken name | Language (the Settings > Speech row), with each language named in itself ("Español", "Deutsch") and "automatic" before the name when it follows the system | locale, translation, l10n (code words) | `settings.language`, `ff_core::l10n`, `app::language` |
 | Where the game's lines go: spoken, or to the screen reader's braille display with nothing spoken | Output (the Settings > Speech row), with speech and braille / braille only as its values; the display is "your braille display" | speech mode, silent mode, mute speech, braille backend, braille channel | `settings.braille_only`, `SpeechSink::set_braille_only`, `VoiceBackend::braille` |

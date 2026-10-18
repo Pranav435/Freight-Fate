@@ -70,9 +70,10 @@ speak, untranslated. To add a language the game does not have yet:
    copy of the file renamed by hand, works too.
 2. Save it here as `<code>.po`, where the code is your language's, such as
    `nl.po` for Dutch or `pt_PT.po` for European Portuguese.
-3. In the file's header, set `X-Language-Autonym` to your language's name
-   in your language, such as `X-Language-Autonym: Nederlands`. Settings
-   reads that name out.
+3. In the file's header, set `X-Language-Name` to your language's name in
+   English and `X-Language-Autonym` to its name in your language, such as
+   `X-Language-Name: Dutch` and `X-Language-Autonym: Nederlands`. Settings
+   reads both: "Dutch (Nederlands)".
 
 That is all the game needs: with the file in `saves/lang/` it appears in
 Settings after a restart, and a pull request that adds it here builds it

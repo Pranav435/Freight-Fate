@@ -298,7 +298,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Automatic speed control canceled.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
             return;
@@ -406,7 +406,7 @@ impl DrivingState {
             ctx.say_event_with(
                 resuming,
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
             return;
@@ -430,7 +430,7 @@ impl DrivingState {
                     ctx.say_event_with(
                         format!("Cruise resumes at {floor}. Pedals are yours."),
                         SayEvent::queued()
-                            .priority(EventPriority::Route)
+                            .priority(EventPriority::Important)
                             .category(SpeechCategory::Confirmation),
                     );
                 }
@@ -440,7 +440,7 @@ impl DrivingState {
             ctx.say_event_with(
                 "Speed control resuming.",
                 SayEvent::queued()
-                    .priority(EventPriority::Route)
+                    .priority(EventPriority::Important)
                     .category(SpeechCategory::Confirmation),
             );
             return;
@@ -813,5 +813,60 @@ impl DrivingState {
         }
         self.keeper_ease_target = demand.clone();
         demand.map(|(_, mph, reason)| (mph, reason))
+    }
+}
+
+impl DrivingState {
+    /// Hold cruise and the speed keeper at chain speed while chains are on.
+    ///
+    /// Cruise resumed at 55 with chains on shredded the set in a couple of
+    /// miles (6x wear over `CHAIN_SAFE_MPH`). The cap runs every frame, so
+    /// it also catches a resume, a re-engage after a zone, and a set-speed
+    /// bump; the driver's own number comes back when the chains come off.
+    /// 30 mph is the California ceiling ("25 or 30 miles an hour", Caltrans
+    /// winter driving tips).
+    pub fn apply_chain_speed_cap(&mut self, ctx: &mut GameContext) {
+        if !self.trip.truck.chains_on {
+            self.chain_cap_said = false;
+            if let Some(set) = self.chain_cap_cruise_mph.take() {
+                if self.cruise_mph.is_some() {
+                    self.cruise_mph = Some(set);
+                } else {
+                    // Cancelled while capped: Shift+K resumes the driver's own
+                    // number, not the chain speed it was held to.
+                    self.resume_target_mph = Some(set);
+                }
+            }
+            if let Some(set) = self.chain_cap_keeper_mph.take() {
+                if self.keeper_mph.is_some() {
+                    self.keeper_mph = Some(set);
+                }
+            }
+            return;
+        }
+        let mut capped = false;
+        if let Some(set) = self.cruise_mph.filter(|set| *set > CHAIN_SAFE_MPH) {
+            self.chain_cap_cruise_mph = Some(set);
+            self.cruise_mph = Some(CHAIN_SAFE_MPH);
+            if let Some(working) = self.cruise_working_mph {
+                self.cruise_working_mph = Some(working.min(CHAIN_SAFE_MPH));
+            }
+            capped = true;
+        }
+        if let Some(set) = self.keeper_mph.filter(|set| *set > CHAIN_SAFE_MPH) {
+            self.chain_cap_keeper_mph = Some(set);
+            self.keeper_mph = Some(CHAIN_SAFE_MPH);
+            capped = true;
+        }
+        if capped && !self.chain_cap_said {
+            self.chain_cap_said = true;
+            let held = ctx.settings.speed_text(CHAIN_SAFE_MPH);
+            let line = if self.cruise_mph.is_some() {
+                format!("Cruise held to {held} for chains.")
+            } else {
+                format!("Speed keeper held to {held} for chains.")
+            };
+            self.say_route_confirmation(ctx, line);
+        }
     }
 }

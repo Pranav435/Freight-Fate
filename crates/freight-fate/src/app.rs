@@ -21,7 +21,7 @@ use ff_core::models::profile::{self as profile_module, data_dir};
 use ff_core::settings::Settings;
 
 use crate::account_achievements::AccountAchievements;
-use crate::audio::{Audio, AudioEngine, BassBackend, NullBackend};
+use crate::audio::{Audio, AudioEngine, NullBackend};
 use crate::cloud_saves::{BackupAnnouncements, CloudSaves, CloudSavesOptions};
 use crate::controller::ControllerManager;
 use crate::discord_presence::{DiscordPresence, DiscordPresenceOptions};
@@ -39,6 +39,7 @@ use crate::states::main_menu::{
 use crate::touch::Gesture;
 
 pub mod boot_timing;
+mod co_driver;
 pub mod context;
 pub mod held_keys;
 pub mod key_probe;
@@ -57,7 +58,7 @@ pub use context::{
 pub use held_keys::HeldKeys;
 use key_probe::KeyProbe;
 pub use logging::{active_log_path, configure_logging};
-pub use speech_delivery::{IntoSpoken, Say, SayEvent, Spoken, TRANSCRIPT_TARGET};
+pub use speech_delivery::{IntoSpoken, Say, SayEvent, Spoken, FF_PACER, TRANSCRIPT_TARGET};
 
 use sdl_shell::SdlShell;
 
@@ -158,6 +159,8 @@ pub struct App {
     /// A two- or three-finger touch hold resolved through the live keyboard
     /// bindings. Pedal holds live in `TouchInput`; these actions can be rebound.
     touch_bound_hold: Option<crate::bindings::Chord>,
+    /// The co-driver's place on the screens over the drive.
+    co_driver: co_driver::CoDriverHands,
 }
 
 /// Read-only driving facts available to a normal-input policy.
@@ -389,7 +392,7 @@ impl PlayerInputFrame<'_> {
 
 impl App {
     /// The windowed game: SDL, the vendored sound pack prefetch, speech via
-    /// Prism, BASS audio, every online service, the controller subsystem.
+    /// Prism, Hearken audio, every online service, the controller subsystem.
     pub fn new() -> Result<App, String> {
         // Opt PS4/PS5 pads into HIDAPI rumble so their motors work like Xbox
         // pads. Must be set before SDL init; Xbox/XInput needs no flag.
@@ -415,7 +418,8 @@ impl App {
         // Prism on its own worker thread: a wedged screen-reader or SAPI
         // call costs sentences, never the drive (a synchronous call here
         // froze the whole game at an I-77 merge -- Shane, 2026-08-30).
-        let speech: Box<dyn SpeechSink> = Box::new(crate::speech::ThreadedSpeech::spawn());
+        let speech: Box<dyn SpeechSink> =
+            Box::new(crate::speech::ThreadedSpeech::spawn(crate::speech::env()));
         boot_timing::mark("speech");
         // Deferred: the output-device open runs on a worker thread, so a
         // machine where the probe hangs boots reading input instead of deaf.
@@ -433,8 +437,8 @@ impl App {
         Self::new_headless_with(speech, audio)
     }
 
-    /// A headless app on a caller-built audio engine (BASS on the no-sound
-    /// device, a recorder, ...).
+    /// A headless app on a caller-built audio engine (Hearken on its silent
+    /// backend, a recorder, ...).
     pub fn new_headless_with(speech: Box<dyn SpeechSink>, audio: Box<dyn Audio>) -> App {
         Self::build(None, speech, audio)
     }
@@ -504,18 +508,9 @@ impl App {
             ..Default::default()
         });
         let journal = JournalOutbox::new(
-            identity.clone(),
+            identity,
             settings.online_presence,
             &store.path().with_file_name("online-outbox.json"),
-        );
-        // Mastodon shares ride the same durable-outbox machinery but keep
-        // their own file and enabled flag: posting to the player's own
-        // Mastodon account is a separate consent from public Profile
-        // sharing.
-        let mastodon = JournalOutbox::new(
-            identity,
-            settings.mastodon_sharing,
-            &store.path().with_file_name("online-mastodon-outbox.json"),
         );
         // Every profile save, wherever it happens, queues a cloud backup.
         let backup = cloud.clone();
@@ -559,7 +554,6 @@ impl App {
                 jaws_script: JawsScript::new(),
                 cloud,
                 journal,
-                mastodon,
             },
         });
         // The windowed game speaks the player's language. Headless runs (the
@@ -582,6 +576,7 @@ impl App {
             world_held: false,
             key_probe: None,
             touch_bound_hold: None,
+            co_driver: co_driver::CoDriverHands::default(),
         }
     }
 
@@ -971,6 +966,15 @@ impl App {
 
     /// One event through the loop's switch: focus, quit, controller, state.
     pub fn handle_event(&mut self, event: &InputEvent) {
+        if self.ctx.co_driver_away {
+            self.handle_player_event_while_away(event);
+        } else {
+            self.route_event(event);
+        }
+    }
+
+    /// [`App::handle_event`]'s switch itself.
+    fn route_event(&mut self, event: &InputEvent) {
         match event {
             InputEvent::WindowFocusGained => {
                 // Switching screen readers happens outside the game;
@@ -985,8 +989,8 @@ impl App {
                 // with its own `if`, not the `elif` chain, so the event
                 // carries on to the state; a `match` arm here quietly ate
                 // it, and with it the two screens that wait for the player
-                // to come back from a browser (online setup, the Mastodon
-                // link) -- both sat silent on return.
+                // to come back from a browser (online setup) -- it sat silent
+                // on return.
                 self.dispatch_to_state(event);
             }
             InputEvent::WindowFocusLost => {
@@ -1101,6 +1105,7 @@ impl App {
         if let Some(profile) = self.ctx.profile.as_mut() {
             profile.live_calendar = live_calendar;
         }
+        self.co_driver_step(dt);
         if let Some(state) = self.ctx.state() {
             state.borrow_mut().update(&mut self.ctx, dt);
             self.ctx.run_deferred();
@@ -1208,6 +1213,7 @@ impl App {
             probe.end_frame(&self.ctx.input);
         }
         self.tick(dt);
+        self.co_driver_fast_forward();
         self.sync_text_field();
         self.render();
     }
@@ -1434,17 +1440,19 @@ pub fn smoke_checks() -> Result<(), String> {
     Ok(())
 }
 
-/// Prove a packaged headless build can dynamically load and initialise BASS.
+/// Prove a packaged headless build can decode its sounds through Hearken.
 ///
-/// BASS is opened through `libloading`, not Mach-O's static dependency table,
-/// so merely starting the executable does not validate the library beside it.
-/// The no-sound device exercises the real loader and required exports without
-/// needing an interactive audio session on a hosted runner.
+/// The menu's own select sound is read out of the packed sounds and decoded
+/// with the codecs the game plays through, without opening a sound device,
+/// so a hosted runner with no audio session still proves the pack and the
+/// decoders made it into the build.
 pub fn smoke_audio_checks() -> Result<(), String> {
-    let backend = BassBackend::new_headless()
-        .map_err(|e| format!("smoke: packaged BASS runtime could not initialize: {e}"))?;
-    let mut audio = AudioEngine::with_backend(Box::new(backend));
-    audio.shutdown();
+    const KEY: &str = "ui/menu_select";
+    let (bytes, ext) = crate::audio::hearken_clips::FfClips::sfx(KEY)
+        .ok_or_else(|| format!("smoke: {KEY} is not in the packed sounds"))?;
+    let info = crate::audio::probe_clip(bytes)
+        .map_err(|e| format!("smoke: {KEY}.{ext} does not decode through Hearken: {e}"))?;
+    log::info!("Smoke: {KEY}.{ext} decodes at {} Hz", info.sample_rate);
     Ok(())
 }
 
@@ -1481,7 +1489,9 @@ pub fn main_with(options: CliOptions) -> i32 {
     if options.controller_diagnostics {
         return crate::controller::diagnostics::run_controller_diagnostics();
     }
-    let mut guard = crate::single_instance::SingleInstanceGuard::new();
+    let mut guard = crate::single_instance::SingleInstanceGuard::new(
+        crate::single_instance::SINGLE_INSTANCE_MUTEX_NAME,
+    );
     if !guard.acquire() {
         log::warn!("Freight Fate is already running.");
         return 0;

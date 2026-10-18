@@ -36,6 +36,10 @@ WINDOWS_SYSTEM_DLLS = frozenset(
         "advapi32.dll",
         "bcrypt.dll",
         "bcryptprimitives.dll",
+        # COM's own runtime since Windows 8; the sound output reaches WASAPI
+        # through it. Microsoft lists it as the DLL behind the COM functions,
+        # e.g. https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coincrementmtausage
+        "combase.dll",
         "comctl32.dll",
         "comdlg32.dll",
         "crypt32.dll",
@@ -46,6 +50,10 @@ WINDOWS_SYSTEM_DLLS = frozenset(
         "iphlpapi.dll",
         "kernel32.dll",
         "msacm32.dll",
+        # The Core Audio device API: cpal opens WASAPI devices through
+        # ActivateAudioInterfaceAsync, which Microsoft lists in Mmdevapi.dll,
+        # https://learn.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-activateaudiointerfaceasync
+        "mmdevapi.dll",
         "msvcrt.dll",  # the OS's own CRT, not a redistributable one
         "ntdll.dll",
         "ole32.dll",
@@ -244,6 +252,7 @@ def verify_windows_runtime(root: Path) -> None:
     missing = set(REQUIRED_CRT) - available
     if missing:
         raise RuntimeError("Windows payload is missing VC++ runtime: " + ", ".join(sorted(missing)))
+    unprovided: list[str] = []
     for path in sorted(root.rglob("*")):
         if not path.is_file() or (path.suffix.lower() != ".dll" and path.name != "FreightFate.exe"):
             continue
@@ -255,12 +264,15 @@ def verify_windows_runtime(root: Path) -> None:
         for name in pe_imports(path, delayed=False):
             if name in available or name in WINDOWS_SYSTEM_DLLS or API_SET.fullmatch(name):
                 continue
-            raise RuntimeError(
-                f"{path.relative_to(root)} needs {name} before it can start, and neither "
-                "Windows nor this payload provides it. Ship the library beside the "
-                "executable, or add it to WINDOWS_SYSTEM_DLLS with the Microsoft page "
-                "that says Windows includes it."
-            )
+            unprovided.append(f"{path.relative_to(root)} needs {name}")
+    # Every unprovided import at once, so one package build names them all.
+    if unprovided:
+        raise RuntimeError(
+            "; ".join(unprovided) + " before it can start, and neither Windows nor "
+            "this payload provides it. Ship the library beside the executable, or "
+            "add it to WINDOWS_SYSTEM_DLLS with the Microsoft page that says "
+            "Windows includes it."
+        )
 
 
 def stage_windows_runtime(root: Path) -> None:
