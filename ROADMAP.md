@@ -58,6 +58,11 @@ bookmarks usable.
       `translations` folder in every archive). Only a catalog that translates
       something is compiled into the game, so the empty language files cost
       the executable nothing until a translator fills one.
+- [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
+      `music.pak` opens like `channel3000.pak`, reading only its directory
+      at launch and each track from its offset when it starts; `sounds.pak`
+      stays in memory. About 480 MB less memory at the title screen on an
+      M4 Mac. Cherry-picked ahead of the rest of PR 441's visual display.
 - [x] Places visited (player request, 2026-10-14): Career stats counts the
       states and cities delivered to and lists each state's cities; the
       public profile on orinks.net and the in-game driver profile list them
