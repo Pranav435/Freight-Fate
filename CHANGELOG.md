@@ -22,6 +22,7 @@
 - **A worn chain warns you before it breaks.** At 85 percent wear the game says "A chain is slapping the fender. Stop soon and tighten it." Tightening takes about 5 minutes and buys back a little wear, once each time the chains go on.
 - **The game can speak French.** Choose Français under Settings, Speech, Language; the radio stays in English.
 - **The game can speak Spanish.** Choose Español under Settings, Speech, Language; the radio stays in English.
+- **The game can speak German.** Choose Deutsch under Settings, Speech, Language; the radio stays in English.
 
 - **Key and button practice says what each key or button does at the wheel.** Shift F1 or Back plus Start opens it anywhere.
 
