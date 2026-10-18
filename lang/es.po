@@ -5649,6 +5649,15 @@ msgstr "welcome center"
 msgid "village"
 msgstr "village"
 
+msgid "hamlet"
+msgstr ""
+
+msgid "place"
+msgstr "place"
+
+msgid "town"
+msgstr "town"
+
 msgid "break"
 msgstr "descanso"
 
@@ -6315,9 +6324,6 @@ msgstr "statutory"
 msgid "rural"
 msgstr "rural"
 
-msgid "town"
-msgstr "town"
-
 msgid "signal"
 msgstr "semáforo"
 
@@ -6462,9 +6468,6 @@ msgstr "siete"
 
 msgid "eight"
 msgstr "ocho"
-
-msgid "place"
-msgstr "place"
 
 msgid "highway change"
 msgstr "cambio de carretera"

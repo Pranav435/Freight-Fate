@@ -161,6 +161,7 @@
 
 ### Fixed
 
+- **The posted limit no longer dips briefly where the map mistook a ramp or side street for the highway.** 31 such dips are gone.
 - **A speed limit line that was cut off no longer comes back after a newer one.** "Reduced to 45" stays quiet once the limit is 55 again.
 
 - **Route planning counts the hours you have already driven this shift.** Mid-shift, it now names the sleep the run will need.

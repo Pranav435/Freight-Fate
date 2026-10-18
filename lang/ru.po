@@ -4634,6 +4634,15 @@ msgstr ""
 msgid "village"
 msgstr ""
 
+msgid "hamlet"
+msgstr ""
+
+msgid "place"
+msgstr ""
+
+msgid "town"
+msgstr ""
+
 msgid "break"
 msgstr ""
 
@@ -5224,9 +5233,6 @@ msgstr ""
 msgid "rural"
 msgstr ""
 
-msgid "town"
-msgstr ""
-
 msgid "signal"
 msgstr ""
 
@@ -5360,9 +5366,6 @@ msgid "seven"
 msgstr ""
 
 msgid "eight"
-msgstr ""
-
-msgid "place"
 msgstr ""
 
 msgid "highway change"
