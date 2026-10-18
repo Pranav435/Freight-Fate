@@ -154,12 +154,12 @@ fn the_shift_runs_to_the_co_drivers_own_limit() {
 #[test]
 fn the_break_is_planned_ahead_and_handed_back_only_when_overdue() {
     let mut hos = HosClock::new();
-    hos.drive(6.0 * 60.0);
+    hos.drive(5.0 * 60.0);
     assert!(!break_wanted(&hos, "realistic"));
     hos.drive(40.0);
     assert!(break_wanted(&hos, "realistic"));
     assert!(!break_overdue(&hos, "realistic"));
-    hos.drive(70.0);
+    hos.drive(130.0);
     assert!(break_overdue(&hos, "realistic"));
     hos.take_break(30.0);
     assert!(!break_wanted(&hos, "realistic"));

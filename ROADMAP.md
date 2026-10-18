@@ -75,8 +75,15 @@ bookmarks usable.
       driver sleeps. The co-driver drives to the end of their own hours and
       plans their 30-minute break at a rest area. Co-driver miles earn no
       driving-skill badges, the road journal names who drove, and the
-      Meridian classmate and Ray each carry a hidden badge. The owner's
-      listening pass on ride along and the wake-up summary is his to do.
+      Meridian classmate and Ray each carry a hidden badge. Sleeping
+      through the shift passes it as time (owner, 2026-10-18): the road,
+      fuel and the break are worked out at once, the radio is left alone,
+      and the player wakes parked at a stop, in under a second of real time
+      on an agent drive. Only the merge and the receiver's exit and gate
+      still run live, sped up. At any stop the co-driver fuels and takes the
+      break without the stop's menu: the pump sound and a line in the
+      message log. The owner's listening pass on ride along and the wake-up
+      summary is his to do.
 - [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
       `music.pak` opens like `channel3000.pak`, reading only its directory
       at launch and each track from its offset when it starts; `sounds.pak`

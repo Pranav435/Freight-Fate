@@ -39,8 +39,9 @@ pub const CO_DRIVER_XP_RATE: f64 = 0.5;
 /// lands with time to wake up and take over.
 pub const CO_DRIVER_SUMMON_LEAD_MIN: f64 = 15.0;
 /// After this much driving since their last break, the co-driver plans a
-/// stop for the 30-minute break that falls due at eight hours.
-pub const CO_DRIVER_BREAK_PLAN_MIN: f64 = 6.5 * 60.0;
+/// stop for the 30-minute break that falls due at eight hours: early
+/// enough that a full lot still leaves time to reach the next stop.
+pub const CO_DRIVER_BREAK_PLAN_MIN: f64 = 5.5 * 60.0;
 /// The driving after which the 30-minute break is required.
 pub const BREAK_REQUIRED_AFTER_MIN: f64 = 8.0 * 60.0;
 /// A team load pays the carrier this much more than the same load run

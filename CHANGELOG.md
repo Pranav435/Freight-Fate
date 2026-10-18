@@ -83,6 +83,8 @@
 ### Changed
 
 - **Drivers below level 10 get warnings instead of most citations.** Serious speeding, the work-zone barrels, failing to pull over, running a scale and out-of-service orders still count.
+- **Sleeping through a co-driver's shift no longer makes you wait.** The shift passes in moments, and you wake parked at a stop with the summary.
+- **A co-driver fuels and takes breaks without walking the stop's menu.** You hear the pump, and the stop is listed in your messages.
 - **The Language setting names each language in English, then in that language.** For example, Spanish (Español).
 - **Updates download much less when the music and radio packs have not changed.** After this update, most updates are about 35 megabytes instead of 531.
 - **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
@@ -180,6 +182,8 @@
 
 ### Fixed
 
+- **A co-driver no longer pulls into a second stop after fuelling at the first.** They keep a stop you planned when it suits them.
+- **A co-driver plans their break earlier.** A full lot no longer leaves them out of time and handing you the wheel.
 - **Dispatch says a roadwork closure once when it covers several stretches.** It names how many places instead of repeating the same closure.
 - **The drive to a pickup no longer draws citations for the trailer still waiting in the shipper's yard.**
 - **Officers no longer cite a fault already written up on the same drive.** A trailer lamp, worn tires, body damage or a chain-law ticket counts once per drive.
