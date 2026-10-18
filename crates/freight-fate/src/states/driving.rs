@@ -673,6 +673,10 @@ pub struct DrivingState {
     // from the pickup plan once per half mile rather than every frame:
     // (defect or empty, mile it was read at).
     pub visible_trailer_defect: (String, f64),
+    // Equipment faults already on an inspection report or citation this
+    // drive (the finding as the officer read it). The driver carries that
+    // paper to the next shop, so no later post writes the same fault again.
+    pub written_up: HashSet<String>,
     pub nice_speed_mi: f64,    // distance held at a very particular speed
     pub double_nickel_mi: f64, // and at the limit Congress retired in 1995
     pub jake_descent_mi: f64,  // downgrade held on the engine alone
@@ -977,6 +981,8 @@ pub struct DrivingState {
     pub transverse_fired: Vec<f64>,
     pub lane_locator_on: bool, // I toggles the panned position tock
     pub lane_locator_timer: f64,
+    /// The driver window and the climate controls: pure ambience, not saved.
+    pub cab: ff_core::sim::cab::CabState,
     // The same tock, summoned by the steering itself rather than by I:
     // while a lane move is underway it runs on its own and ends with the
     // signal cancelling. See _update_steering_lane_cue.

@@ -1954,6 +1954,9 @@ msgstr ""
 msgid "loop_end must be after loop_start"
 msgstr ""
 
+msgid "wav"
+msgstr ""
+
 msgid "day"
 msgstr ""
 
@@ -4631,6 +4634,15 @@ msgstr ""
 msgid "village"
 msgstr ""
 
+msgid "hamlet"
+msgstr ""
+
+msgid "place"
+msgstr ""
+
+msgid "town"
+msgstr ""
+
 msgid "break"
 msgstr ""
 
@@ -5221,9 +5233,6 @@ msgstr ""
 msgid "rural"
 msgstr ""
 
-msgid "town"
-msgstr ""
-
 msgid "signal"
 msgstr ""
 
@@ -5357,9 +5366,6 @@ msgid "seven"
 msgstr ""
 
 msgid "eight"
-msgstr ""
-
-msgid "place"
 msgstr ""
 
 msgid "highway change"
@@ -5724,9 +5730,6 @@ msgid "the Back button"
 msgstr ""
 
 msgid "Left or Right Control"
-msgstr ""
-
-msgid "wav"
 msgstr ""
 
 msgid "event"
@@ -9924,6 +9927,69 @@ msgstr ""
 msgid "{meters} meters"
 msgstr ""
 
+msgid "Driver window down."
+msgstr ""
+
+msgid "Driver window up."
+msgstr ""
+
+msgid "Fan off."
+msgstr ""
+
+msgid "Fan low."
+msgstr ""
+
+msgid "Fan medium."
+msgstr ""
+
+msgid "Fan high."
+msgstr ""
+
+msgid "Heat."
+msgstr ""
+
+msgid "Air conditioning."
+msgstr ""
+
+msgid "Cab: driver window down"
+msgstr ""
+
+msgid "Cab: fan low, heat"
+msgstr ""
+
+msgid "Cab: fan medium, heat"
+msgstr ""
+
+msgid "Cab: fan high, heat"
+msgstr ""
+
+msgid "Cab: fan low, air conditioning"
+msgstr ""
+
+msgid "Cab: fan medium, air conditioning"
+msgstr ""
+
+msgid "Cab: fan high, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan low, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan medium, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan high, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan low, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan medium, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan high, air conditioning"
+msgstr ""
+
 msgid "yield"
 msgstr ""
 
@@ -10101,15 +10167,6 @@ msgstr ""
 msgid "past your duty window"
 msgstr ""
 
-msgid "2 hours"
-msgstr ""
-
-msgid "1 hour"
-msgstr ""
-
-msgid "30 minutes"
-msgstr ""
-
 msgid "driving"
 msgstr ""
 
@@ -10129,24 +10186,6 @@ msgid "your 14-hour duty window had expired"
 msgstr ""
 
 msgid "you were past the 30-minute break requirement"
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Driving on risks fines at inspections."
-msgstr ""
-
-#. placeholders: {due}
-#. one sentence of a longer line
-msgid "Hours of service violation: {due}."
-msgstr ""
-
-#. placeholders: {due}
-msgid ""
-"Hours of service violation: {due}. Driving on risks fines at inspections."
-msgstr ""
-
-#. placeholders: {phrase}, {due}
-msgid "Hours of service: {phrase} until {due}."
 msgstr ""
 
 msgid "Hours of service: 30-minute break overdue."
@@ -10372,6 +10411,33 @@ msgid "unknown location"
 msgstr ""
 
 msgid "segments"
+msgstr ""
+
+msgid "2 hours"
+msgstr ""
+
+msgid "1 hour"
+msgstr ""
+
+msgid "30 minutes"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Driving on risks fines at inspections."
+msgstr ""
+
+#. placeholders: {due}
+#. one sentence of a longer line
+msgid "Hours of service violation: {due}."
+msgstr ""
+
+#. placeholders: {due}
+msgid ""
+"Hours of service violation: {due}. Driving on risks fines at inspections."
+msgstr ""
+
+#. placeholders: {phrase}, {due}
+msgid "Hours of service: {phrase} until {due}."
 msgstr ""
 
 msgid "single"
@@ -10737,19 +10803,19 @@ msgstr ""
 msgid "Level 3 driver inspection"
 msgstr ""
 
+msgid "tires worn close to the tread limit"
+msgstr ""
+
+msgid "visible body damage written up as unsafe equipment"
+msgstr ""
+
 msgid "driving past the hours-of-service limit"
 msgstr ""
 
 msgid "a tire below the minimum tread depth"
 msgstr ""
 
-msgid "tires worn close to the tread limit"
-msgstr ""
-
 msgid "body damage past the safe limit"
-msgstr ""
-
-msgid "visible body damage written up as unsafe equipment"
 msgstr ""
 
 msgid "brakes out of adjustment"
@@ -10805,6 +10871,12 @@ msgstr ""
 msgid ""
 "{closure_words} on {road} near {near_city}, {distance_text}, {speed_text}, "
 "{minutes_words}"
+msgstr ""
+
+#. placeholders: {closure_words}, {road}, {near_city}, {count}, {distance_text}, {speed_text}, {minutes_words}
+msgid ""
+"{closure_words} on {road} near {near_city} in {count} places, "
+"{distance_text} each, {speed_text}, {minutes_words} each"
 msgstr ""
 
 #. placeholders: {name}
@@ -10867,8 +10939,8 @@ msgstr ""
 msgid "This way {adds}saves {minutes_words}."
 msgstr ""
 
-#. placeholders: {join}
-msgid "Construction reported on the way: {join}."
+#. placeholders: {spots_text}
+msgid "Construction reported on the way: {spots_text}."
 msgstr ""
 
 msgid "No quicker way around."
@@ -10882,8 +10954,8 @@ msgstr ""
 msgid "Route 1 avoids {reason} and saves {minutes_words}."
 msgstr ""
 
-#. placeholders: {join}
-msgid "Construction: {join}."
+#. placeholders: {spots_text}
+msgid "Construction: {spots_text}."
 msgstr ""
 
 msgid "autumn"
@@ -11329,6 +11401,9 @@ msgstr ""
 msgid "zone"
 msgstr ""
 
+msgid "limit"
+msgstr ""
+
 #. placeholders: {reason}
 #. one sentence of a longer line
 msgid "End of {reason} zone."
@@ -11350,9 +11425,6 @@ msgstr ""
 #. placeholders: {clock_text}
 #. one sentence of a longer line
 msgid "It is now {clock_text}."
-msgstr ""
-
-msgid "limit"
 msgstr ""
 
 msgid "approaching"
@@ -13141,6 +13213,11 @@ msgstr ""
 msgid "A door."
 msgstr ""
 
+msgid ""
+"The driver window, the wind through it and the fan, right after the key "
+"that set them, which says what changed."
+msgstr ""
+
 msgid "A fuel pump, at a fuel pump."
 msgstr ""
 
@@ -13844,6 +13921,21 @@ msgid "Parking brake"
 msgstr ""
 
 msgid "Horn"
+msgstr ""
+
+msgid "Driver window down or up"
+msgstr ""
+
+msgid "Fan speed"
+msgstr ""
+
+msgid "fan"
+msgstr ""
+
+msgid "climate"
+msgstr ""
+
+msgid "Heat or air conditioning"
 msgstr ""
 
 msgid "Automatic speed control"
@@ -15317,10 +15409,6 @@ msgid ""
 msgstr ""
 
 #. placeholders: {f}
-msgid " Deadline extended to {f} hours for a 10-hour sleep en route."
-msgstr ""
-
-#. placeholders: {f}
 msgid " Deadline extended to {f} hours."
 msgstr ""
 
@@ -15650,6 +15738,45 @@ msgstr ""
 msgid ""
 "Route inspection after pickup covers rest, fuel, toll, weather, and "
 "restrictions."
+msgstr ""
+
+#. placeholders: {hours}
+msgid "Trip hours: about {hours} driving hours."
+msgstr ""
+
+#. placeholders: {hours}
+msgid "Trip hours: about {hours} driving hours, with a 30-minute break."
+msgstr ""
+
+#. placeholders: {hours}
+msgid "Trip hours: about {hours} driving hours, with a 10-hour sleep."
+msgstr ""
+
+#. placeholders: {hours}, {sleeps}
+msgid ""
+"Trip hours: about {hours} driving hours, with {sleeps} 10-hour sleeps."
+msgstr ""
+
+#. placeholders: {percent}, {range}
+msgid "Fuel: {percent} percent, about {range} of range, short of this trip."
+msgstr ""
+
+#. placeholders: {percent}, {range}
+msgid "Fuel: {percent} percent, about {range} of range."
+msgstr ""
+
+msgid "This run needs a 30-minute break."
+msgstr ""
+
+msgid "This run needs a 10-hour sleep."
+msgstr ""
+
+#. placeholders: {sleeps}
+msgid "This run needs {sleeps} 10-hour sleeps."
+msgstr ""
+
+#. placeholders: {percent}
+msgid "Fuel: {percent} percent."
 msgstr ""
 
 #. placeholders: {i}, {total}
@@ -19315,6 +19442,12 @@ msgstr ""
 msgid "{horn} horn."
 msgstr ""
 
+#. placeholders: {window}, {fan}, {climate}
+msgid ""
+"{window} lowers or raises the driver window, {fan} steps the fan, {climate} "
+"switches heat and air conditioning."
+msgstr ""
+
 #. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
 msgid ""
 "{engine_brake} engine brake; on an automatic it manages its own stage, and "
@@ -21095,10 +21228,6 @@ msgstr ""
 msgid "Choose what you need to report. Escape hangs up."
 msgstr ""
 
-#. placeholders: {message}, {repair}
-msgid "Dispatch: {message} {repair}"
-msgstr ""
-
 #. placeholders: {message}
 msgid "Dispatch: {message}"
 msgstr ""
@@ -21124,7 +21253,9 @@ msgstr ""
 msgid "Report truck trouble"
 msgstr ""
 
-msgid "Report truck damage. Dispatch can authorize the roadside mechanic."
+msgid ""
+"Report damage, a trailer fault, or missing chains. Dispatch can send road "
+"service."
 msgstr ""
 
 msgid "Report load trouble"
@@ -21154,6 +21285,13 @@ msgstr ""
 
 #. placeholders: {damage_pct}
 msgid "Truck damage is {damage_pct} percent."
+msgstr ""
+
+#. placeholders: {defect}
+msgid " Trailer: {defect}."
+msgstr ""
+
+msgid " No usable chains under an active chain law."
 msgstr ""
 
 #. placeholders: {cargo_damage_pct}
@@ -21281,6 +21419,87 @@ msgid ""
 "closes; {remaining} remain."
 msgstr ""
 
+msgid "trailer repair"
+msgstr ""
+
+msgid "on the carrier breakdown account"
+msgstr ""
+
+#. placeholders: {grouped}
+msgid "for {grouped} dollars"
+msgstr ""
+
+#. placeholders: {billing}
+#. one sentence of a longer line
+msgid "A roadside mechanic fixed the trailer {billing}."
+msgstr ""
+
+#. placeholders: {billing}, {clock_text}
+msgid ""
+"A roadside mechanic fixed the trailer {billing}. It took an hour and a "
+"half. It is {clock_text}."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "It took an hour and a half."
+msgstr ""
+
+msgid "chain delivery"
+msgstr ""
+
+#. placeholders: {grouped2}
+#. one sentence of a longer line
+msgid "You have {grouped2} dollars"
+msgstr ""
+
+#. placeholders: {grouped}
+#. one sentence of a longer line
+msgid "for {grouped} dollars."
+msgstr ""
+
+#. placeholders: {grouped}, {grouped2}
+msgid "for {grouped} dollars. You have {grouped2} dollars"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Put them on from the pause menu."
+msgstr ""
+
+#. placeholders: {billing}
+#. one sentence of a longer line
+msgid "Road service brought a new set of snow chains {billing}."
+msgstr ""
+
+#. placeholders: {billing}, {clock_text}
+msgid ""
+"Road service brought a new set of snow chains {billing}. It took an hour "
+"and a half. It is {clock_text}. Put them on from the pause menu."
+msgstr ""
+
+msgid ""
+"Roadside repair is authorized. Secure the truck while the mechanic works."
+msgstr ""
+
+#. placeholders: {defect}
+#. one sentence of a longer line
+msgid "I have the {defect}."
+msgstr ""
+
+#. placeholders: {defect}
+msgid ""
+"I have the {defect}. I'm sending a mechanic out to fix it where you're "
+"parked."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "I'm sending a mechanic out to fix it where you're parked."
+msgstr ""
+
+msgid ""
+"You have no chains that can go on, and the chain law is up. I'm sending "
+"road service out with a new set."
+msgstr ""
+
 msgid "monitor"
 msgstr ""
 
@@ -21301,10 +21520,6 @@ msgstr ""
 
 #. one sentence of a longer line
 msgid "Watch the gauges and stop if it worsens."
-msgstr ""
-
-msgid ""
-"Roadside repair is authorized. Secure the truck while the mechanic works."
 msgstr ""
 
 #. one sentence of a longer line
@@ -21357,6 +21572,19 @@ msgstr ""
 msgid "roadside inspection"
 msgstr ""
 
+#. one sentence of a longer line
+msgid "Nothing new to write up."
+msgstr ""
+
+#. placeholders: {level}, {f}
+#. one sentence of a longer line
+msgid "{level}, {f} minutes."
+msgstr ""
+
+#. placeholders: {level}, {f}
+msgid "{level}, {f} minutes. Nothing new to write up."
+msgstr ""
+
 #. placeholders: {level}, {f}
 msgid "Clean {level}, {f} minutes."
 msgstr ""
@@ -21369,11 +21597,6 @@ msgstr ""
 #. placeholders: {findings}
 #. one sentence of a longer line
 msgid "Written up for {findings}."
-msgstr ""
-
-#. placeholders: {level}, {f}
-#. one sentence of a longer line
-msgid "{level}, {f} minutes."
 msgstr ""
 
 #. placeholders: {level}, {f}, {findings}
@@ -21411,13 +21634,6 @@ msgid "fixed the trailer's defect"
 msgstr ""
 
 msgid "out-of-service repair"
-msgstr ""
-
-msgid "on the carrier breakdown account"
-msgstr ""
-
-#. placeholders: {grouped}
-msgid "for {grouped} dollars"
 msgstr ""
 
 #. placeholders: {what}, {billing}, {f}
@@ -24938,20 +25154,6 @@ msgstr ""
 msgid "A roadside mechanic helps once damage is past {f} percent."
 msgstr ""
 
-#. placeholders: {grouped2}
-#. one sentence of a longer line
-msgid "You have {grouped2} dollars"
-msgstr ""
-
-#. placeholders: {grouped}
-#. one sentence of a longer line
-msgid "for {grouped} dollars."
-msgstr ""
-
-#. placeholders: {grouped}, {grouped2}
-msgid "for {grouped} dollars. You have {grouped2} dollars"
-msgstr ""
-
 #. placeholders: {f}, {billing}
 #. one sentence of a longer line
 msgid ""
@@ -26615,6 +26817,45 @@ msgstr ""
 msgid "{ticket} {billing} It is {clock_text}."
 msgstr ""
 
+#. placeholders: {grouped}
+msgid "Buy snow chains: {grouped} dollars"
+msgstr ""
+
+msgid "Buy snow chains, carrier billed"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "A new set with two spare repair links."
+msgstr ""
+
+#. placeholders: {f}
+msgid "A new set with two spare repair links. {f} minutes on duty."
+msgstr ""
+
+#. placeholders: {grouped}, {grouped2}
+msgid ""
+"A set of snow chains costs {grouped} dollars and you have {grouped2} "
+"dollars."
+msgstr ""
+
+#. placeholders: {grouped}, {grouped2}
+msgid "{grouped} dollars. You have {grouped2} dollars."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "A new set of snow chains is in the side box."
+msgstr ""
+
+#. placeholders: {billing}, {clock_text}
+msgid ""
+"A new set of snow chains is in the side box. {billing} It is {clock_text}."
+msgstr ""
+
+#. placeholders: {billing}, {clock_text}
+#. one sentence of a longer line
+msgid "{billing} It is {clock_text}."
+msgstr ""
+
 msgid "Return to terminal"
 msgstr ""
 
@@ -27557,8 +27798,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Held at the chain checkpoint. You have no chains. Wait here until the chain "
-"law lifts, or turn back."
+"Held at the chain checkpoint. You have no chains. Call dispatch for a set, "
+"wait here until the chain law lifts, or turn back."
 msgstr ""
 
 #. placeholders: {duration_text}
@@ -29890,13 +30131,14 @@ msgid "Driving mode: {pace_label}"
 msgstr ""
 
 msgid ""
-"Pacing and pressure. Relaxed gives wider hazard windows, gentler damage and "
-"fatigue, calmer speech, and the most time to respond. Standard keeps "
-"balanced pressure and moves the clock twice as fast. Real time keeps "
-"Standard's pressure and runs the driving clock at the speed of a real "
-"clock, lined up with your computer's date and time; delivery time remaining "
-"and hours of service do not move. Changeable mid-drive from the pause menu; "
-"the new pacing starts when the truck next stops."
+"Pacing and pressure. Relaxed passes about ten minutes of road and clock "
+"each real minute, with wider hazard windows, gentler damage and fatigue, "
+"calmer speech, and the most time to respond. Standard keeps balanced "
+"pressure and moves twice as fast, about twenty minutes each real minute. "
+"Real time keeps Standard's pressure and runs the driving clock at the speed "
+"of a real clock, lined up with your computer's date and time; delivery time "
+"remaining and hours of service do not move. Changeable mid-drive from the "
+"pause menu; the new pacing starts when the truck next stops."
 msgstr ""
 
 #. placeholders: {hos_label}
@@ -31692,7 +31934,9 @@ msgstr ""
 
 msgid ""
 "Both hours modes use these limits. Relaxed changes enforcement pressure. "
-"Warnings come at two hours, one hour, and thirty minutes left."
+"One warning comes before each limit: one hour left in the Relaxed driving "
+"mode, two hours in Standard, and two hours, one hour and thirty minutes in "
+"Real time. None comes for a limit the trip ends inside."
 msgstr ""
 
 #. one sentence of a longer line
@@ -32106,9 +32350,9 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Relaxed pacing gives more response time and gentler consequences. Standard "
-"moves driving time and distance twice as fast. Real time follows the "
-"computer clock at real speed."
+"Relaxed pacing passes about ten minutes of road and clock each real minute, "
+"with more response time and gentler consequences. Standard moves twice as "
+"fast. Real time follows the computer clock at real speed."
 msgstr ""
 
 msgid ""

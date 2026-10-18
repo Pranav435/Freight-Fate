@@ -232,7 +232,9 @@ pub fn route_event_sound(event: &TripEvent) -> Option<&'static str> {
                     local_turn_sound(event.data.cue.as_ref().map(|c| c.direction.as_str()))
                 }
                 Some("traffic") => Some(traffic_vehicle_sound(event)),
-                Some("toll") => Some("events/toll_charged"),
+                // The toll earcon means the truck was billed, so it plays
+                // once, at the plaza. On the "toll point ahead" warning too,
+                // it sounded twice per plaza (agent drive, 2026-10-17).
                 _ => None,
             }
         }

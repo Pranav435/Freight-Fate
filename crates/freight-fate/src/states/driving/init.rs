@@ -275,6 +275,8 @@ impl DrivingState {
         let spring_brakes_active = trip.truck.spring_brakes_active();
         let status_text = format!("Press {} to start the engine.", ctx.control_hint("engine"));
 
+        let cab = ff_core::sim::cab::CabState::for_outside(trip.weather.temperature_c());
+
         DrivingState {
             job,
             route: route.clone(),
@@ -570,6 +572,7 @@ impl DrivingState {
             trailer_refused: false,
             trailer_repaired: false,
             visible_trailer_defect: (String::new(), f64::NEG_INFINITY),
+            written_up: HashSet::new(),
             nice_speed_mi: 0.0,
             double_nickel_mi: 0.0,
             jake_descent_mi: 0.0,
@@ -702,6 +705,7 @@ impl DrivingState {
             transverse_fired: Vec::new(),
             lane_locator_on: false,
             lane_locator_timer: 0.0,
+            cab,
             steer_cue_active: false,
             exit_blinker_active: false,
             steer_cue_timer: 0.0,
