@@ -538,24 +538,54 @@ pub fn pick_asset(
     };
     let assets = release.get("assets").and_then(Value::as_array)?;
     for asset in assets {
-        let name = asset.get("name").and_then(Value::as_str).unwrap_or("");
+        let name = asset_name(asset);
         if name.ends_with(suffix) {
-            let url = asset
-                .get("browser_download_url")
-                .and_then(Value::as_str)?
-                .to_string();
-            let size = asset
-                .get("size")
-                .map(|v| match v {
-                    Value::Number(n) => n.as_f64().map(|f| f as i64).unwrap_or(0),
-                    Value::String(s) => s.trim().parse().unwrap_or(0),
-                    _ => 0,
-                })
-                .unwrap_or(0);
-            return Some((name.to_string(), url, size));
+            let url = asset_url(asset)?;
+            return Some((name.to_string(), url, asset_size(asset)));
         }
     }
     None
+}
+
+fn asset_name(asset: &Value) -> &str {
+    asset.get("name").and_then(Value::as_str).unwrap_or("")
+}
+
+/// The release asset named exactly `name`.
+fn asset_named<'a>(release: &'a Value, name: &str) -> Option<&'a Value> {
+    release
+        .get("assets")?
+        .as_array()?
+        .iter()
+        .find(|asset| asset_name(asset) == name)
+}
+
+fn asset_url(asset: &Value) -> Option<String> {
+    asset
+        .get("browser_download_url")
+        .and_then(Value::as_str)
+        .map(str::to_string)
+}
+
+/// An asset's size in bytes, whether listed as a number or a string; 0
+/// when missing.
+fn asset_size(asset: &Value) -> i64 {
+    match asset.get("size") {
+        Some(Value::Number(n)) => n.as_f64().map(|f| f as i64).unwrap_or(0),
+        Some(Value::String(s)) => s.trim().parse().unwrap_or(0),
+        _ => 0,
+    }
+}
+
+/// The SHA-256 GitHub records for an asset (its `digest`,
+/// `"sha256:<hex>"`), or "" when the release predates digests.
+fn asset_digest(asset: &Value) -> String {
+    asset
+        .get("digest")
+        .and_then(Value::as_str)
+        .and_then(|d| d.strip_prefix("sha256:"))
+        .unwrap_or("")
+        .to_ascii_lowercase()
 }
 
 static NIGHTLY: Lazy<Regex> = Lazy::new(|| Regex::new(r"^nightly-(\d{8})$").unwrap());
@@ -628,19 +658,11 @@ fn pick_update_asset(release: &Value, env: &UpdaterEnv) -> Option<(String, Strin
     asset
 }
 
-/// The SHA-256 GitHub records for the asset named `name` (its `digest`,
-/// `"sha256:<hex>"`), or "" when the release predates digests.
+/// The SHA-256 GitHub records for the asset named `name`, or "".
 fn asset_sha256(release: &Value, name: &str) -> String {
-    release
-        .get("assets")
-        .and_then(Value::as_array)
-        .into_iter()
-        .flatten()
-        .find(|a| a.get("name").and_then(Value::as_str) == Some(name))
-        .and_then(|a| a.get("digest").and_then(Value::as_str))
-        .and_then(|d| d.strip_prefix("sha256:"))
-        .unwrap_or("")
-        .to_ascii_lowercase()
+    asset_named(release, name)
+        .map(asset_digest)
+        .unwrap_or_default()
 }
 
 fn update_from_release(release: &Value, title: &str, env: &UpdaterEnv) -> Option<UpdateInfo> {

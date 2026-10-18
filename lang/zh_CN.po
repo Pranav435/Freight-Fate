@@ -34071,6 +34071,33 @@ msgstr ""
 msgid "The download stopped. Nothing arrived for {STALL_TIMEOUT_S} seconds."
 msgstr ""
 
+#. one sentence of a longer line
+msgid ""
+"Copy it over your game folder, which keeps your music and radio packs, then "
+"restart the game."
+msgstr ""
+
+#. placeholders: {dest}
+#. one sentence of a longer line
+msgid "The new version is saved at {dest}."
+msgstr ""
+
+#. placeholders: {dest}
+msgid ""
+"The new version is saved at {dest}. Copy it over your game folder, which "
+"keeps your music and radio packs, then restart the game."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Install it yourself, then restart the game."
+msgstr ""
+
+#. placeholders: {dest}
+msgid ""
+"The new version is saved at {dest}. Install it yourself, then restart the "
+"game."
+msgstr ""
+
 #. placeholders: {mb}
 msgid ", {mb} megabytes"
 msgstr ""
@@ -34112,29 +34139,18 @@ msgstr ""
 msgid "Download complete, but this install cannot update itself."
 msgstr ""
 
-#. placeholders: {dest}
+#. placeholders: {manual_install}
 msgid ""
-"Download complete, but this install cannot update itself. The new version "
-"is saved at {dest}. Install it yourself, then restart the game."
-msgstr ""
-
-#. one sentence of a longer line
-msgid "Install it yourself, then restart the game."
-msgstr ""
-
-#. placeholders: {dest}
-#. one sentence of a longer line
-msgid "The new version is saved at {dest}."
+"Download complete, but this install cannot update itself. {manual_install}"
 msgstr ""
 
 #. one sentence of a longer line
 msgid "Download complete, but the update could not install itself."
 msgstr ""
 
-#. placeholders: {dest}
+#. placeholders: {manual_install}
 msgid ""
-"Download complete, but the update could not install itself. The new version "
-"is saved at {dest}. Install it yourself, then restart the game."
+"Download complete, but the update could not install itself. {manual_install}"
 msgstr ""
 
 msgid "Installing the update. The game closes and restarts by itself."

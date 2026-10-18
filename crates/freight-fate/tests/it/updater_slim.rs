@@ -120,6 +120,23 @@ fn matching_packs_make_the_update_archive_the_download() {
 }
 
 #[test]
+fn the_update_archive_size_reads_like_the_full_one() {
+    let env = UpdaterEnv::fake(Platform::Windows, Path::new("/tmp/x/FreightFate.exe"));
+    let mut listing = release(&[FULL, UPDATE, MANIFEST]);
+    for asset in listing["assets"].as_array_mut().unwrap() {
+        let size = asset["size"].as_i64().unwrap();
+        asset["size"] = if asset["name"] == UPDATE {
+            json!(size.to_string())
+        } else {
+            json!(size as f64)
+        };
+    }
+    let info = updater::stable_update_from(&listing, "9.9.8", &env).expect("update offered");
+    assert_eq!(info.asset_size, 531_000_000);
+    assert_eq!(info.slim.map(|slim| slim.asset_size), Some(35_000_000));
+}
+
+#[test]
 fn a_different_pack_keeps_the_full_download() {
     let tmp = tempfile::tempdir().unwrap();
     // Same sizes, different bytes: only the hash can tell.
@@ -154,10 +171,10 @@ fn a_missing_pack_or_unreadable_manifest_keeps_the_full_download() {
 }
 
 #[test]
-fn the_check_trusts_the_install_record_and_the_download_hashes_again() {
+fn the_check_trusts_the_install_record_and_the_download_reads_no_pack() {
     let tmp = tempfile::tempdir().unwrap();
-    // The install says it has the release's packs, but one has since been
-    // changed on disk without changing its size.
+    // The install says it has the release's packs; the bytes on disk differ
+    // at the same size, so a match here proves no pack was hashed.
     let exe = install(
         tmp.path(),
         b"MUSIC PACK BYTES",
@@ -170,7 +187,22 @@ fn the_check_trusts_the_install_record_and_the_download_hashes_again() {
     assert_eq!(info.download_size(), 35_000_000, "the check reads no pack");
 
     let (chosen, keep) = slim::choose_download(&info, &env);
-    assert_eq!(chosen.asset_name, FULL, "the download hashed the pack");
+    assert_eq!(chosen.asset_name, UPDATE, "the download hashes nothing");
+    assert!(keep.is_some());
+}
+
+#[test]
+fn a_pack_gone_since_the_check_takes_the_full_download() {
+    let tmp = tempfile::tempdir().unwrap();
+    let exe = install(tmp.path(), MUSIC, RADIO, None);
+    let env = UpdaterEnv::fake(Platform::Windows, &exe);
+    let mut info = offered(&env, &[FULL, UPDATE, MANIFEST]);
+    slim::resolve_with(&mut info, &env, &serve(manifest(MUSIC, RADIO)));
+    assert_eq!(info.download_size(), 35_000_000);
+
+    fs::remove_file(tmp.path().join("freight_fate/music.pak")).unwrap();
+    let (chosen, keep) = slim::choose_download(&info, &env);
+    assert_eq!(chosen.asset_name, FULL);
     assert!(keep.is_none());
 }
 
@@ -232,7 +264,7 @@ fn a_mac_update_bundle_gets_the_players_packs_copied_in() {
     let staged = tmp.path().join("staging/FreightFate.app");
     fs::create_dir_all(staged.join("Contents/Resources/freight_fate")).unwrap();
 
-    slim::complete_staged(&staged, &packs(), &env).unwrap();
+    assert!(slim::complete_staged(&staged, &packs(), &env).unwrap());
 
     let staged_packs = staged.join("Contents/Resources/freight_fate");
     assert_eq!(fs::read(staged_packs.join("music.pak")).unwrap(), MUSIC);
@@ -250,7 +282,10 @@ fn a_folder_update_leaves_the_packs_where_they_are() {
     let staged = tmp.path().join("staging/FreightFate");
     fs::create_dir_all(&staged).unwrap();
 
-    slim::complete_staged(&staged, &packs(), &env).unwrap();
+    assert!(
+        !slim::complete_staged(&staged, &packs(), &env).unwrap(),
+        "the staged folder still leaves the packs out"
+    );
 
     // The apply script copies over the install, which keeps its packs.
     assert!(!staged.join("freight_fate/music.pak").exists());

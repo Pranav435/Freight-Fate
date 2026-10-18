@@ -346,6 +346,10 @@ struct DownloadOutcome {
     new_root: Option<PathBuf>,
     staging: Option<PathBuf>,
     error: Option<String>,
+    /// The staged update is the smaller archive, without the sound packs
+    /// the install already has: installed by hand, it must be copied over
+    /// the game folder, not set up fresh.
+    leaves_out_packs: bool,
 }
 
 /// `updater.can_auto_apply` / `stash_for_manual_install`, injectable so a
@@ -511,6 +515,16 @@ impl UpdateDownloadState {
             .clone()
     }
 
+    /// Mark the staged update as the smaller archive, without the sound
+    /// packs (test seam).
+    pub fn leaving_out_packs(self) -> Self {
+        self.outcome
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .leaves_out_packs = true;
+        self
+    }
+
     /// Replace the apply step (test seam; see [`ApplyHook`]).
     pub fn with_apply(mut self, apply: ApplyHook) -> Self {
         self.apply = apply;
@@ -602,7 +616,11 @@ impl UpdateDownloadState {
                 updater::UNPACK_TIMEOUT,
             )?;
             if let Some(packs) = &keep_packs {
-                updater::slim::complete_staged(&new_root, packs, &env)?;
+                let whole = updater::slim::complete_staged(&new_root, packs, &env)?;
+                outcome
+                    .lock()
+                    .unwrap_or_else(|e| e.into_inner())
+                    .leaves_out_packs = !whole;
             }
             if is_cancelled() {
                 return Err(DownloadError::Cancelled);
@@ -700,6 +718,24 @@ impl UpdateDownloadState {
     }
 }
 
+/// Where a download the game could not apply was saved, and how to
+/// install it. The smaller archive has no sound packs, so it only works
+/// copied over the game folder, which keeps the player's own.
+fn manual_install(dest: &Path, leaves_out_packs: bool) -> String {
+    let dest = dest.display();
+    if leaves_out_packs {
+        format!(
+            "The new version is saved at {dest}. Copy it over your game folder, \
+             which keeps your music and radio packs, then restart the game."
+        )
+    } else {
+        format!(
+            "The new version is saved at {dest}. Install it yourself, then \
+             restart the game."
+        )
+    }
+}
+
 impl State for UpdateDownloadState {
     fn enter(&mut self, ctx: &mut GameContext) {
         if self.started {
@@ -752,12 +788,13 @@ impl State for UpdateDownloadState {
             return;
         }
         self.finished = true;
-        let (new_root, staging, error) = {
+        let (new_root, staging, error, leaves_out_packs) = {
             let outcome = self.outcome.lock().unwrap_or_else(|e| e.into_inner());
             (
                 outcome.new_root.clone(),
                 outcome.staging.clone(),
                 outcome.error.clone(),
+                outcome.leaves_out_packs,
             )
         };
         if self.is_cancelled() {
@@ -777,10 +814,8 @@ impl State for UpdateDownloadState {
             // where instead of dead-ending on restart.
             let dest = (self.stash_for_manual_install)(&new_root);
             ctx.say(&format!(
-                "Download complete, but this install cannot update itself. \
-                 The new version is saved at {}. Install it yourself, then \
-                 restart the game.",
-                dest.display()
+                "Download complete, but this install cannot update itself. {}",
+                manual_install(&dest, leaves_out_packs)
             ));
             ctx.pop_state();
             return;
@@ -792,10 +827,8 @@ impl State for UpdateDownloadState {
             log::warn!("Could not spawn the update apply script: {e}");
             let dest = (self.stash_for_manual_install)(&new_root);
             ctx.say(&format!(
-                "Download complete, but the update could not install itself. \
-                 The new version is saved at {}. Install it yourself, then \
-                 restart the game.",
-                dest.display()
+                "Download complete, but the update could not install itself. {}",
+                manual_install(&dest, leaves_out_packs)
             ));
             ctx.audio.play("ui/error");
             ctx.pop_state();

@@ -9,11 +9,12 @@
 //! manifest, the updater downloads the update archive instead of the full
 //! one.
 //!
-//! Matching is checked twice. The update check trusts the install's
-//! `build_info.json` (which records its packs' hashes) when the file sizes
-//! agree, so it reads no pack; it hashes a pack only when the install
-//! predates that record. The download then hashes every pack before it
-//! commits, and falls back to the full archive on any mismatch.
+//! The update check decides. It trusts the install's `build_info.json`
+//! (which records its packs' hashes) when the file sizes agree, so it reads
+//! no pack; it hashes a pack only when the install predates that record.
+//! The download only confirms each pack is still there at the same size,
+//! because hashing half a gigabyte again there could not be cancelled and
+//! would read as a stalled download. Any mismatch takes the full archive.
 //!
 //! Applying needs nothing new on Windows and Linux: their apply scripts
 //! copy the update over the install folder, which keeps its packs. A Mac
@@ -27,7 +28,8 @@ use std::path::{Component, Path, PathBuf};
 use serde_json::Value;
 
 use super::{
-    resource_root_in, running_appimage_path, Platform, UpdateInfo, UpdaterEnv, USER_AGENT,
+    asset_digest, asset_named, asset_size, asset_url, resource_root_in, running_appimage_path,
+    Platform, UpdateInfo, UpdaterEnv, USER_AGENT,
 };
 use crate::net::{self, NetError, Tier};
 
@@ -82,21 +84,12 @@ struct Asset {
 }
 
 fn asset_by_name(release: &Value, name: &str) -> Option<Asset> {
-    let asset = release
-        .get("assets")?
-        .as_array()?
-        .iter()
-        .find(|a| a.get("name").and_then(Value::as_str) == Some(name))?;
+    let asset = asset_named(release, name)?;
     Some(Asset {
         name: name.to_string(),
-        url: asset.get("browser_download_url")?.as_str()?.to_string(),
-        size: asset.get("size").and_then(Value::as_i64).unwrap_or(0),
-        sha256: asset
-            .get("digest")
-            .and_then(Value::as_str)
-            .and_then(|d| d.strip_prefix("sha256:"))
-            .unwrap_or("")
-            .to_ascii_lowercase(),
+        url: asset_url(asset)?,
+        size: asset_size(asset),
+        sha256: asset_digest(asset),
     })
 }
 
@@ -176,13 +169,10 @@ pub fn file_sha256(path: &Path) -> io::Result<String> {
 /// With `recorded` (the install's own `build_info.json` packs), a matching
 /// size and recorded hash are trusted without reading the pack.
 fn installed_matches(root: &Path, pack: &PackRef, recorded: Option<&[PackRef]>) -> bool {
-    let Some(relative) = relative_path(&pack.path) else {
-        return false;
-    };
-    let path = root.join(relative);
-    if fs::metadata(&path).map(|m| m.len()).ok() != Some(pack.size) {
+    if !installed_size_matches(root, pack) {
         return false;
     }
+    let path = root.join(&pack.path);
     if recorded.is_some_and(|recorded| recorded.contains(pack)) {
         return true;
     }
@@ -193,6 +183,13 @@ fn installed_matches(root: &Path, pack: &PackRef, recorded: Option<&[PackRef]>) 
             false
         }
     }
+}
+
+/// Whether the install still has `pack` at its expected size.
+fn installed_size_matches(root: &Path, pack: &PackRef) -> bool {
+    relative_path(&pack.path).is_some_and(|relative| {
+        fs::metadata(root.join(relative)).map(|m| m.len()).ok() == Some(pack.size)
+    })
 }
 
 fn recorded_packs(root: &Path) -> Option<Vec<PackRef>> {
@@ -252,8 +249,8 @@ pub fn resolve(info: &mut UpdateInfo, env: &UpdaterEnv) {
     });
 }
 
-/// What the download should fetch: the update archive when the install's
-/// packs still hash to the manifest's, else the full archive. The second
+/// What the download should fetch: the update archive when the install
+/// still has the packs the update check matched, else the full archive. The second
 /// value is the pack list [`complete_staged`] needs, `None` for a full
 /// download.
 pub fn choose_download(info: &UpdateInfo, env: &UpdaterEnv) -> (UpdateInfo, Option<Vec<PackRef>>) {
@@ -264,7 +261,7 @@ pub fn choose_download(info: &UpdateInfo, env: &UpdaterEnv) -> (UpdateInfo, Opti
     if !slim
         .packs
         .iter()
-        .all(|pack| installed_matches(&root, pack, None))
+        .all(|pack| installed_size_matches(&root, pack))
     {
         log::warn!("A sound pack changed since the update check; downloading the full update");
         return (info.clone(), None);
@@ -278,13 +275,14 @@ pub fn choose_download(info: &UpdateInfo, env: &UpdaterEnv) -> (UpdateInfo, Opti
     (chosen, Some(slim.packs.clone()))
 }
 
-/// Make the staged update whole before it is applied. A Mac bundle is
-/// swapped whole, so the player's packs are copied into it; on Windows and
-/// Linux the apply script copies over the install, which keeps its packs,
-/// so there is nothing to do.
-pub fn complete_staged(new_root: &Path, packs: &[PackRef], env: &UpdaterEnv) -> io::Result<()> {
+/// Make the staged update whole before it is applied, and say whether it
+/// now is. A Mac bundle is swapped whole, so the player's packs are copied
+/// into it. On Windows and Linux the apply script copies over the install,
+/// which keeps its packs, so nothing is copied and the staged folder stays
+/// without them (`false`).
+pub fn complete_staged(new_root: &Path, packs: &[PackRef], env: &UpdaterEnv) -> io::Result<bool> {
     if env.platform != Platform::MacOs || new_root.extension().is_none_or(|ext| ext != "app") {
-        return Ok(());
+        return Ok(packs.is_empty());
     }
     let installed = resource_root_in(env);
     let staged = new_root.join("Contents").join("Resources");
@@ -301,5 +299,5 @@ pub fn complete_staged(new_root: &Path, packs: &[PackRef], env: &UpdaterEnv) -> 
         }
         fs::copy(installed.join(&relative), &target)?;
     }
-    Ok(())
+    Ok(true)
 }

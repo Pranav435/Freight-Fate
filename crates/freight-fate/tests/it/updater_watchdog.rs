@@ -211,6 +211,42 @@ fn an_apply_script_that_cannot_start_never_quits_the_game() {
 }
 
 #[test]
+fn a_smaller_update_saved_for_a_manual_install_says_to_copy_it_over() {
+    // The smaller archive has no music or radio packs: set up as a fresh
+    // install it would have none.
+    let mut app = TestApp::new();
+    app.push_state(base_screen());
+    app.push_state(base_screen());
+    let tmp = tempfile::tempdir().unwrap();
+    let new_root = tmp.path().join("FreightFate");
+    fs::create_dir(&new_root).unwrap();
+    let mut state = UpdateDownloadState::finished_with(
+        snapshot_info(),
+        tmp.path().to_path_buf(),
+        new_root.clone(),
+        Box::new(|_| true),
+        Box::new(|root| root.to_path_buf()),
+    )
+    .leaving_out_packs()
+    .with_apply(Box::new(|_, _| {
+        Err(std::io::Error::new(
+            std::io::ErrorKind::PermissionDenied,
+            "no shell",
+        ))
+    }));
+    app.ctx.running = true;
+    app.clear_speech();
+
+    state.update(&mut app.ctx, 0.0);
+    app.ctx.run_deferred();
+
+    let said = app.main_lines().join(" ");
+    assert!(said.contains("Copy it over your game folder"), "{said}");
+    assert!(!said.contains("Install it yourself"), "{said}");
+    app.shutdown();
+}
+
+#[test]
 fn a_started_apply_script_restarts_the_game() {
     let mut app = TestApp::new();
     app.push_state(base_screen());
