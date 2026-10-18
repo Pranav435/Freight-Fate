@@ -671,7 +671,7 @@ pub fn loaded_departure_line(
     format!(
         "{lead}{} {} {next_context} {tail}",
         crate::states::city_pickup::route_departure_summary(route, &ctx.settings),
-        board::briefing::departure_briefing(ctx, route)
+        board::briefing::departure_briefing(ctx, route, false)
     )
 }
 
@@ -768,13 +768,16 @@ pub fn launch_driving(ctx: &mut GameContext, launch: DrivingLaunch) {
                     let pairing =
                         crate::states::driving_team::handover::job_pairing(ctx, &driving.job);
                     let carrier = ff_core::models::career::carrier_name_of(profile(ctx));
+                    // Your own hours and the tank, as on a solo departure,
+                    // without the solo driver's sleep plan.
                     format!(
-                        "{} {lead}{} {next_context} {} takes the wheel.",
+                        "{} {lead}{} {} {next_context} {} takes the wheel.",
                         ff_core::models::co_driver::pairing_line(&pairing, &carrier),
                         crate::states::city_pickup::route_departure_summary(
                             &route_for_line,
                             &ctx.settings
                         ),
+                        board::briefing::departure_briefing(ctx, &route_for_line, true),
                         pairing.co_driver.name
                     )
                 }

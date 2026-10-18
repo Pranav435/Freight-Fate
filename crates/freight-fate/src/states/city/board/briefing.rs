@@ -85,13 +85,18 @@ pub(super) fn fuel_line(ctx: &GameContext, job: &Job) -> String {
 /// driver's hours and tank, then the one stop this run will need, if any.
 /// "Driving time left: 7 hours, duty window 9 hours. Fuel: 60 percent. This
 /// run needs a 10-hour sleep."
-pub(crate) fn departure_briefing(ctx: &GameContext, route: &Route) -> String {
+///
+/// With the co-driver taking the wheel (`team`), the stop line is left out:
+/// the team changes drivers instead of stopping for the solo driver's sleep.
+pub(crate) fn departure_briefing(ctx: &GameContext, route: &Route, team: bool) -> String {
     let p = profile(ctx);
     let mode = &ctx.settings.hos_mode;
     let mut parts: Vec<String> = Vec::new();
     let mut needs: Option<String> = None;
     if limits(mode).is_some() {
         parts.push(p.hos.drive_time_summary(mode, true));
+    }
+    if limits(mode).is_some() && !team {
         let plan = plan_hos(route.miles(), Some(route), Some(ctx.world), Some(&p.hos));
         needs = match (plan.sleeps, plan.breaks) {
             (0, 0) => None,
