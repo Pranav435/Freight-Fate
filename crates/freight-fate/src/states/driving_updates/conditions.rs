@@ -889,7 +889,8 @@ impl DrivingState {
 
     /// After a sleep at the checkpoint: ask again for the warnings and the
     /// live sky where the truck stands, and release the hold when the law
-    /// lifted overnight. Returns the line to add, or None while it stands.
+    /// lifted overnight. Returns the line to add: the lift, or that the law
+    /// still stands. None when the truck was not held.
     pub fn recheck_chain_checkpoint_hold_after_rest(
         &mut self,
         ctx: &mut GameContext,
@@ -900,7 +901,7 @@ impl DrivingState {
         self.refresh_weather_alerts_here(ctx);
         self.trip.weather.update(0.0);
         if self.trip.chain_law_level() > 0 {
-            return None;
+            return Some("The chain law still stands.");
         }
         self.chain_checkpoint_hold = false;
         Some("The chain law lifted overnight. The officer waves you back onto the highway.")
@@ -945,7 +946,7 @@ impl DrivingState {
         Some(if limit.kind == "break" {
             format!(
                 "Turning back takes {drive}, more driving than you have before your 30-minute \
-                 break. Wait here half an hour for your break, or sleep at the checkpoint."
+                 break. Wait here, which counts as your break, or sleep at the checkpoint."
             )
         } else {
             format!(

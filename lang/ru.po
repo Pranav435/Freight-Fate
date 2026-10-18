@@ -32384,10 +32384,6 @@ msgstr "Инспектор машет вам возвращаться на тр�
 msgid "Sleep at the checkpoint from the pause menu, or turn back."
 msgstr "Поспите у пункта контроля из меню паузы или поверните назад."
 
-#. one sentence of a longer line
-msgid "The chain law still stands."
-msgstr "Закон о цепях всё ещё действует."
-
 #. placeholders: {waited_text}
 #. one sentence of a longer line
 msgid ""
@@ -32450,6 +32446,9 @@ msgstr ""
 msgid "chain checkpoint"
 msgstr "пункт проверки цепей"
 
+msgid "The chain law still stands."
+msgstr "Закон о цепях всё ещё действует."
+
 msgid ""
 "The chain law lifted overnight. The officer waves you back onto the highway."
 msgstr ""
@@ -32467,16 +32466,13 @@ msgstr ""
 #. placeholders: {drive}
 msgid ""
 "Turning back takes {drive}, more driving than you have before your "
-"30-minute break. Wait here half an hour for your break, or sleep at the "
+"30-minute break. Wait here, which counts as your break, or sleep at the "
 "checkpoint."
 msgstr ""
-"Обратный путь займёт {drive}, это больше вождения, чем у вас осталось до "
-"30-минутного перерыва. Подождите здесь полчаса для перерыва или поспите у "
-"пункта контроля."
 
 #. one sentence of a longer line
-msgid "Wait here half an hour for your break, or sleep at the checkpoint."
-msgstr "Подождите здесь полчаса для перерыва или поспите у пункта контроля."
+msgid "Wait here, which counts as your break, or sleep at the checkpoint."
+msgstr ""
 
 #. placeholders: {drive}
 #. one sentence of a longer line
@@ -41270,6 +41266,18 @@ msgstr "закрывающая скобка"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "заглавная {ch}"
+
+#~ msgid ""
+#~ "Turning back takes {drive}, more driving than you have before your "
+#~ "30-minute break. Wait here half an hour for your break, or sleep at the "
+#~ "checkpoint."
+#~ msgstr ""
+#~ "Обратный путь займёт {drive}, это больше вождения, чем у вас осталось до "
+#~ "30-минутного перерыва. Подождите здесь полчаса для перерыва или поспите у "
+#~ "пункта контроля."
+
+#~ msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+#~ msgstr "Подождите здесь полчаса для перерыва или поспите у пункта контроля."
 
 #~ msgid ""
 #~ "Some badges don't announce themselves until you've earned them. Keep "

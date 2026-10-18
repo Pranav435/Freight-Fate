@@ -32100,10 +32100,6 @@ msgstr "O fiscal libera você de volta para a rodovia."
 msgid "Sleep at the checkpoint from the pause menu, or turn back."
 msgstr "Durma no posto de controle pelo menu de pausa, ou volte."
 
-#. one sentence of a longer line
-msgid "The chain law still stands."
-msgstr "A lei das correntes continua em vigor."
-
 #. placeholders: {waited_text}
 #. one sentence of a longer line
 msgid ""
@@ -32169,6 +32165,9 @@ msgstr ""
 msgid "chain checkpoint"
 msgstr "posto de controle de correntes"
 
+msgid "The chain law still stands."
+msgstr "A lei das correntes continua em vigor."
+
 msgid ""
 "The chain law lifted overnight. The officer waves you back onto the highway."
 msgstr ""
@@ -32187,17 +32186,13 @@ msgstr ""
 #. placeholders: {drive}
 msgid ""
 "Turning back takes {drive}, more driving than you have before your "
-"30-minute break. Wait here half an hour for your break, or sleep at the "
+"30-minute break. Wait here, which counts as your break, or sleep at the "
 "checkpoint."
 msgstr ""
-"Voltar leva {drive}, mais direção do que você tem antes da sua pausa de 30 "
-"minutos. Espere aqui meia hora para a sua pausa, ou durma no posto de "
-"controle."
 
 #. one sentence of a longer line
-msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+msgid "Wait here, which counts as your break, or sleep at the checkpoint."
 msgstr ""
-"Espere aqui meia hora para a sua pausa, ou durma no posto de controle."
 
 #. placeholders: {drive}
 #. one sentence of a longer line
@@ -40955,6 +40950,19 @@ msgstr "fecha parêntese"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "{ch} maiúsculo"
+
+#~ msgid ""
+#~ "Turning back takes {drive}, more driving than you have before your "
+#~ "30-minute break. Wait here half an hour for your break, or sleep at the "
+#~ "checkpoint."
+#~ msgstr ""
+#~ "Voltar leva {drive}, mais direção do que você tem antes da sua pausa de 30 "
+#~ "minutos. Espere aqui meia hora para a sua pausa, ou durma no posto de "
+#~ "controle."
+
+#~ msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+#~ msgstr ""
+#~ "Espere aqui meia hora para a sua pausa, ou durma no posto de controle."
 
 #~ msgid ""
 #~ "Some badges don't announce themselves until you've earned them. Keep "

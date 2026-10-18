@@ -29054,10 +29054,6 @@ msgstr "警官が高速道路に戻るよう合図しています。"
 msgid "Sleep at the checkpoint from the pause menu, or turn back."
 msgstr "一時停止メニューから検問所で眠るか、引き返してください。"
 
-#. one sentence of a longer line
-msgid "The chain law still stands."
-msgstr "チェーン規制はまだ続いています。"
-
 #. placeholders: {waited_text}
 #. one sentence of a longer line
 msgid ""
@@ -29113,6 +29109,9 @@ msgstr "{duration_text}待ちました。チェーン規制はまだ続いてい
 msgid "chain checkpoint"
 msgstr "チェーンの検問所"
 
+msgid "The chain law still stands."
+msgstr "チェーン規制はまだ続いています。"
+
 msgid ""
 "The chain law lifted overnight. The officer waves you back onto the highway."
 msgstr "夜の間にチェーン規制が解除されました。警官が高速道路に戻るよう合図しています。"
@@ -29127,13 +29126,13 @@ msgstr "引き返すには{drive}かかり、30分の休憩までに運転でき
 #. placeholders: {drive}
 msgid ""
 "Turning back takes {drive}, more driving than you have before your "
-"30-minute break. Wait here half an hour for your break, or sleep at the "
+"30-minute break. Wait here, which counts as your break, or sleep at the "
 "checkpoint."
-msgstr "引き返すには{drive}かかり、30分の休憩までに運転できる時間を超えます。ここで30分の休憩を取るか、検問所で眠ってください。"
+msgstr ""
 
 #. one sentence of a longer line
-msgid "Wait here half an hour for your break, or sleep at the checkpoint."
-msgstr "ここで30分の休憩を取るか、検問所で眠ってください。"
+msgid "Wait here, which counts as your break, or sleep at the checkpoint."
+msgstr ""
 
 #. placeholders: {drive}
 #. one sentence of a longer line
@@ -36868,6 +36867,15 @@ msgstr "右かっこ"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大文字の{ch}"
+
+#~ msgid ""
+#~ "Turning back takes {drive}, more driving than you have before your "
+#~ "30-minute break. Wait here half an hour for your break, or sleep at the "
+#~ "checkpoint."
+#~ msgstr "引き返すには{drive}かかり、30分の休憩までに運転できる時間を超えます。ここで30分の休憩を取るか、検問所で眠ってください。"
+
+#~ msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+#~ msgstr "ここで30分の休憩を取るか、検問所で眠ってください。"
 
 #~ msgid ""
 #~ "Some badges don't announce themselves until you've earned them. Keep "

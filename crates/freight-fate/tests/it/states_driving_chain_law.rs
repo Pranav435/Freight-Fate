@@ -1203,7 +1203,7 @@ fn test_turning_back_past_the_8_hour_break_limit_is_refused() {
     assert_eq!(
         line,
         "Turning back takes 20 minutes, more driving than you have before your 30-minute break. \
-         Wait here half an hour for your break, or sleep at the checkpoint."
+         Wait here, which counts as your break, or sleep at the checkpoint."
     );
     assert!(with_drive(&drive, |d| d.chain_checkpoint_hold));
     assert_eq!(with_drive(&drive, |d| d.trip.position_mi), position);
@@ -1284,6 +1284,43 @@ fn test_an_alert_that_expires_overnight_lifts_the_hold_after_a_checkpoint_sleep(
         app.main_lines()
             .iter()
             .any(|s| s.contains("The chain law lifted overnight.")),
+        "{:?}",
+        app.main_lines()
+    );
+}
+
+#[test]
+fn test_a_checkpoint_sleep_says_the_chain_law_still_stands() {
+    use freight_fate::states::base::Menu;
+    use freight_fate::states::driving_rest_states::ShoulderSleepConfirmationState;
+    let mut app = TestApp::new();
+    app.ctx.settings.hos_mode = "realistic".to_string();
+    let drive = held_with_no_chains(&mut app);
+    with_drive(&drive, |d| {
+        d.trip.weather.forced = Some(WeatherKind::Ice);
+        d.trip.weather.current = WeatherKind::Ice;
+    });
+    assert!(with_drive(&drive, |d| d.trip.chain_law_level()) > 0);
+    let anchor = with_drive(&drive, |d| d.trip.position_mi);
+    let mut confirm =
+        ShoulderSleepConfirmationState::at_chain_checkpoint(drive_ref(&drive), anchor);
+    let items = confirm.build_items(&mut app.ctx);
+    let index = items
+        .iter()
+        .position(|item| item.text(&confirm, &app.ctx) == "Sleep at the checkpoint")
+        .expect("the sleep row");
+    confirm.menu_mut().items = items;
+    confirm.menu_mut().index = index;
+    app.clear_speech();
+    confirm.activate(&mut app.ctx);
+    assert!(
+        with_drive(&drive, |d| d.chain_checkpoint_hold),
+        "the hold stands"
+    );
+    assert!(
+        app.main_lines()
+            .iter()
+            .any(|s| s.contains("The chain law still stands.")),
         "{:?}",
         app.main_lines()
     );

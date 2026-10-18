@@ -35647,11 +35647,6 @@ msgstr ""
 msgid "Sleep at the checkpoint from the pause menu, or turn back."
 msgstr ""
 
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "The chain law still stands."
-msgstr ""
-
 #. placeholders: {waited_text}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
@@ -35714,6 +35709,10 @@ msgid "chain checkpoint"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
+msgid "The chain law still stands."
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid ""
 "The chain law lifted overnight. The officer waves you back onto the highway."
 msgstr ""
@@ -35730,13 +35729,13 @@ msgstr ""
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
 msgid ""
 "Turning back takes {drive}, more driving than you have before your "
-"30-minute break. Wait here half an hour for your break, or sleep at the "
+"30-minute break. Wait here, which counts as your break, or sleep at the "
 "checkpoint."
 msgstr ""
 
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_updates/conditions.rs
-msgid "Wait here half an hour for your break, or sleep at the checkpoint."
+msgid "Wait here, which counts as your break, or sleep at the checkpoint."
 msgstr ""
 
 #. placeholders: {drive}
