@@ -17885,6 +17885,14 @@ msgstr "{carrier_name}。{menu_summary}移るにはもう一度 Enter を押し�
 msgid "{menu_summary} Press Enter again to move."
 msgstr "{menu_summary}移るにはもう一度 Enter を押してください。"
 
+msgid "carrier shop repair"
+msgstr "運送会社の整備工場での修理"
+
+#. placeholders: {f}, {f2}
+msgid ""
+" The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
+msgstr "先に運送会社の整備工場が損傷{f}パーセントを修理しました。勤務時間{f2}分です。"
+
 #. placeholders: {grouped}
 msgid "You have {grouped} dollars; the unpaid balance is debt."
 msgstr "手持ちは{grouped}ドルです。未払いの残高は借金になります。"

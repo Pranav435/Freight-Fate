@@ -17705,6 +17705,14 @@ msgstr "{carrier_name}。{menu_summary}再按一次Enter换过去。"
 msgid "{menu_summary} Press Enter again to move."
 msgstr "{menu_summary}再按一次Enter换过去。"
 
+msgid "carrier shop repair"
+msgstr "承运商维修厂维修"
+
+#. placeholders: {f}, {f2}
+msgid ""
+" The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
+msgstr "承运商维修厂先修好了百分之{f}的损伤，在岗{f2}分钟。"
+
 #. placeholders: {grouped}
 msgid "You have {grouped} dollars; the unpaid balance is debt."
 msgstr "你有{grouped}美元；没付清的余额算作债务。"

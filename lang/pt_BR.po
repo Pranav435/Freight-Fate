@@ -19917,6 +19917,14 @@ msgstr "{carrier_name}. {menu_summary} Aperte Enter de novo para mudar."
 msgid "{menu_summary} Press Enter again to move."
 msgstr "{menu_summary} Aperte Enter de novo para mudar."
 
+msgid "carrier shop repair"
+msgstr "reparo na oficina da transportadora"
+
+#. placeholders: {f}, {f2}
+msgid ""
+" The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
+msgstr " A oficina da transportadora reparou primeiro {f} por cento de danos, {f2} minutos em serviço."
+
 #. placeholders: {grouped}
 msgid "You have {grouped} dollars; the unpaid balance is debt."
 msgstr "Você tem {grouped} dólares; o saldo não pago vira dívida."

@@ -83,6 +83,7 @@
 ### Changed
 
 - **Drivers below level 10 get warnings instead of most citations.** Serious speeding, the work-zone barrels, failing to pull over, running a scale and out-of-service orders still count.
+- **The carrier shop now repairs a company tractor at 40 percent damage before the next load.** It takes an hour on duty.
 - **Sleeping through a co-driver's shift no longer makes you wait.** The shift passes in moments, and you wake parked at a stop with the summary.
 - **A co-driver fuels and takes breaks without walking the stop's menu.** You hear the pump, and the stop is listed in your messages.
 - **The Language setting names each language in English, then in that language.** For example, Spanish (Español).

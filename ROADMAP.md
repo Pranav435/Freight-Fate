@@ -717,12 +717,11 @@ Everything found before 2026-09-25 moved to
       fine, no reputation and nothing on the record. Serious speeding, the
       work-zone barrels, failing to pull over, running a scale and anything
       out of service are still cited.
-- [ ] (Found along the way) Dispatch hands a company driver a tractor in
-      reduced power or limp mode without the carrier's shop touching it,
-      though the career start says the carrier maintains the tractor; the
-      free repair waits behind the garage menu, which a new driver may
-      never open. Owner to choose: the carrier repairs between loads, or
-      dispatch says so before the load is accepted.
+- [x] Dispatch handed a company driver a damaged tractor without the
+      carrier's shop touching it, though the career start says the carrier
+      maintains the tractor (same report; owner ruling 2026-10-18). At 40
+      percent damage, where an inspector writes it up, the shop repairs it
+      when the load is accepted: free, an hour on duty, and said.
 - [ ] With several controllers connected (a second pad, or Steam's virtual
       one), the game listens only to the first it found, and the other's
       buttons do nothing. It could switch to whichever controller the

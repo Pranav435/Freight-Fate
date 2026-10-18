@@ -20019,6 +20019,14 @@ msgstr "{carrier_name}. {menu_summary} Premi di nuovo Enter per passare."
 msgid "{menu_summary} Press Enter again to move."
 msgstr "{menu_summary} Premi di nuovo Enter per passare."
 
+msgid "carrier shop repair"
+msgstr "riparazione nell'officina dell'azienda"
+
+#. placeholders: {f}, {f2}
+msgid ""
+" The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
+msgstr " L'officina dell'azienda ha prima riparato {f} per cento di danni, {f2} minuti in servizio."
+
 #. placeholders: {grouped}
 msgid "You have {grouped} dollars; the unpaid balance is debt."
 msgstr "Hai {grouped} dollari; l'importo non pagato diventa debito."

@@ -22093,6 +22093,16 @@ msgstr ""
 msgid "{menu_summary} Press Enter again to move."
 msgstr ""
 
+#: crates/freight-fate/src/states/city_garage.rs
+msgid "carrier shop repair"
+msgstr ""
+
+#. placeholders: {f}, {f2}
+#: crates/freight-fate/src/states/city_garage.rs
+msgid ""
+" The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
+msgstr ""
+
 #. placeholders: {grouped}
 #: crates/freight-fate/src/states/city_garage.rs
 msgid "You have {grouped} dollars; the unpaid balance is debt."
