@@ -32,14 +32,45 @@ use ff_core::audio_fades::FadeScheduler;
 use ff_core::audio_loops::SustainLoopSpec;
 use ff_core::pyrandom::PyRandom;
 use hearken::audio::{
-    Audio as Pool, Backend, Bus, GainCurve, KiraBackend, LoopRegion, PanLaw, SilentBackend, Sound,
-    Start,
+    Audio as Pool, Backend, Bus, CabSpeakers, CabSpeakersParams, GainCurve, Insert, KiraBackend,
+    LoopRegion, PanLaw, SilentBackend, Sound, Start,
 };
 
 use super::backend::{loop_category, one_shot_category, Buses, Category, VolumeUpdate};
 use super::hearken_clips::{clip_sample_rate, FfClips};
 use super::hearken_radio::{RadioConnect, RadioPlaying};
-use super::{KeyProbe, CH_REVERSE, CH_ROAD, ENGINE_RPM_IDLE};
+use super::{KeyProbe, RadioVoicing, CH_RADIO_FX, CH_REVERSE, CH_ROAD, ENGINE_RPM_IDLE};
+
+/// The radio's own sounds (its hiss bed, pickets and static) ride this bus
+/// so the cab-speaker voicing reaches them along with the station. Like
+/// every bus it stays at 1.0: it changes no level.
+pub(super) const RADIO_BUS: Bus = Bus("radio_sounds");
+
+fn cab_amount(voicing: RadioVoicing) -> f32 {
+    if voicing.cab_speakers {
+        1.0
+    } else {
+        0.0
+    }
+}
+
+/// How long flipping Radio sound between cab speakers and clean
+/// crossfades.
+pub(super) const RADIO_VOICING_SWITCH_MS: u32 = 300;
+
+/// How long the voicing takes to follow the glass from one frame's
+/// position to the next: a little over a frame, so the 2 s travel glides.
+pub(super) const RADIO_WINDOW_FOLLOW_MS: u32 = 50;
+
+/// The bus a one-shot rides: the radio's own sounds on [`RADIO_BUS`],
+/// everything else on its category's.
+pub(super) fn one_shot_bus(key: &str, category: Category) -> Bus {
+    if key.starts_with("radio/") {
+        RADIO_BUS
+    } else {
+        bus_of(category)
+    }
+}
 
 /// The bus a category rides. Every bus stays at 1.0 (levels are computed
 /// before the pool), so this names sounds for diagnostics; it changes no
@@ -169,6 +200,11 @@ pub struct HearkenBackend {
     pub(super) wobble_rng: PyRandom,
     pub(super) key_filter: Option<KeyProbe>,
     pub(super) requested_keys: Option<Vec<String>>,
+    /// The cab-speaker voicing the radio plays through while driving,
+    /// shared by every radio sound that carries it.
+    pub(super) radio_cab: CabSpeakers,
+    /// The voicing last asked for; `None` off the road.
+    pub(super) radio_voicing: Option<RadioVoicing>,
 }
 
 impl HearkenBackend {
@@ -222,6 +258,11 @@ impl HearkenBackend {
         // Freight Fate is silent where a sound is missing, and registers
         // generated sounds as it runs.
         audio.set_default_fallback(false);
+        // The radio's own sounds always carry the voicing; the music
+        // channel only while driving (`set_radio_voicing`), so menu music
+        // never does.
+        let radio_cab = CabSpeakers::new(CabSpeakersParams::default());
+        audio.set_bus_insert(RADIO_BUS, Some(Insert::CabSpeakers(radio_cab.clone())));
         log::info!("Hearken audio over {}", audio.backend_name());
         Self {
             audio,
@@ -263,7 +304,54 @@ impl HearkenBackend {
             wobble_rng: PyRandom::new_unseeded(),
             key_filter: None,
             requested_keys: None,
+            radio_cab,
+            radio_voicing: None,
         }
+    }
+
+    /// The radio's voicing while driving; `None` takes it off the music
+    /// channel so what starts there next (menu music) plays clean. A sound
+    /// already playing keeps the voicing it started with, so a station
+    /// fading out at the end of a drive fades out as it sounded.
+    pub(super) fn set_radio_voicing(&mut self, voicing: Option<RadioVoicing>) {
+        let was = self.radio_voicing;
+        if voicing == was {
+            return;
+        }
+        self.radio_voicing = voicing;
+        let Some(now) = voicing else {
+            self.audio.set_bus_insert(Bus::MUSIC, None);
+            return;
+        };
+        if was.is_none() {
+            self.audio.set_bus_insert(
+                Bus::MUSIC,
+                Some(Insert::CabSpeakers(self.radio_cab.clone())),
+            );
+        }
+        match was {
+            // A drive's first frame lands at once; a flip of the setting
+            // crossfades.
+            None => self.radio_cab.set_amount(cab_amount(now), 0),
+            Some(before) if before.cab_speakers != now.cab_speakers => self
+                .radio_cab
+                .set_amount(cab_amount(now), RADIO_VOICING_SWITCH_MS),
+            Some(_) => {}
+        }
+        if was.is_none_or(|before| before.window != now.window) {
+            let ramp = if was.is_none() {
+                0
+            } else {
+                RADIO_WINDOW_FOLLOW_MS
+            };
+            self.radio_cab
+                .set_window(now.window.clamp(0.0, 1.0) as f32, ramp);
+        }
+    }
+
+    /// The radio's cab voicing, for tests and diagnostics.
+    pub fn radio_cab(&self) -> &CabSpeakers {
+        &self.radio_cab
     }
 
     /// Whether the sound device would not open (the pool is silent).
@@ -371,7 +459,7 @@ impl HearkenBackend {
         let start = Start::ONCE
             .volume(level(&self.buses, category, volume))
             .pan(pan.clamp(-1.0, 1.0) as f32);
-        self.start_sfx(key, bus_of(category), start)
+        self.start_sfx(key, one_shot_bus(key, category), start)
     }
 
     // -- loops on reserved slots ------------------------------------------------
@@ -384,7 +472,11 @@ impl HearkenBackend {
             }
             self.stop_loop(channel, fade_ms.min(300));
         }
-        let bus = bus_of(loop_category(channel));
+        let bus = if channel == CH_RADIO_FX {
+            RADIO_BUS
+        } else {
+            bus_of(loop_category(channel))
+        };
         let Some(sound) = self.start_sfx(key, bus, Start::LOOP.volume(0.0)) else {
             return;
         };

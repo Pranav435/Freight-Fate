@@ -450,6 +450,9 @@ impl Audio for TeeAudio {
     fn set_outside_lift(&mut self, lift: f64) {
         self.inner.set_outside_lift(lift);
     }
+    fn set_radio_voicing(&mut self, voicing: Option<crate::audio::RadioVoicing>) {
+        self.inner.set_radio_voicing(voicing);
+    }
     fn set_ambient_with(&mut self, key: Option<&str>, volume: f64) {
         let audible_key = key.filter(|_| volume > 0.0);
         if audible_key != self.ambient_key.as_deref() {

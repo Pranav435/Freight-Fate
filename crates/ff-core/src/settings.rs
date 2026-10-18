@@ -561,6 +561,11 @@ settings_fields! {
     /// lists and is being used for MP3 collections (Hailey, drivers board,
     /// 2026-09-18).
     radio_shuffle_playlists: bool = false => bool_truthy,
+    /// The radio's sound while driving: on plays it through the cab's door
+    /// speakers in the small cab, and the open driver window brightens it;
+    /// off plays it clean, exactly as the station sends it (owner,
+    /// 2026-10-18).
+    radio_cab_speakers: bool = true => bool_strict,
     weather_volume: f64 = 0.65 => level,
     engine_volume: f64 = 0.55 => level,
     ui_volume: f64 = 0.9 => level,

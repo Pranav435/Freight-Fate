@@ -34767,6 +34767,12 @@ msgstr ""
 "Seuls NVDA et JAWS peuvent envoyer le jeu vers un afficheur braille. La "
 "parole reste active jusqu'à ce que l'un d'eux soit lancé."
 
+msgid "Cab speakers"
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
 msgid "Controller: disabled"
 msgstr "Manette : désactivée"
 
@@ -35879,6 +35885,16 @@ msgstr ""
 "Activé joue chacune de vos playlists dans un ordre aléatoire, chaque "
 "morceau une fois avant toute répétition. Désactivé joue le fichier de haut "
 "en bas."
+
+#. placeholders: {sound}
+msgid "Radio sound: {sound}"
+msgstr ""
+
+msgid ""
+"Cab speakers plays the radio through the truck's door speakers in the small "
+"cab, and lowering the driver window brightens it. Clean plays it exactly as "
+"the station sends it."
+msgstr ""
 
 #. placeholders: {on_off}
 msgid "Game sounds step back for speech: {on_off}"

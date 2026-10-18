@@ -98,12 +98,12 @@ fn the_struct_carries_the_persisted_fields_in_python_order() {
     // thresholds (2026-10-08), facility_streets (2026-10-11) and language
     // (2026-10-12) and automatic_jake (2026-10-14) were added on the Rust side;
     // lane_centering_assist was retired for 1.9, and the three Mastodon
-    // sharing fields on 2026-10-15.
-    assert_eq!(Settings::FIELD_NAMES.len(), 94);
+    // sharing fields on 2026-10-15; radio_cab_speakers (2026-10-18).
+    assert_eq!(Settings::FIELD_NAMES.len(), 95);
     assert_eq!(Settings::FIELD_NAMES[0], "online_services");
-    assert_eq!(Settings::FIELD_NAMES[78], "settings_layout_notice_from");
+    assert_eq!(Settings::FIELD_NAMES[79], "settings_layout_notice_from");
     let pairs = Settings::default().ordered_values();
-    assert_eq!(pairs.len(), 94);
+    assert_eq!(pairs.len(), 95);
     for ((name, _), field) in pairs.iter().zip(Settings::FIELD_NAMES) {
         assert_eq!(name, field);
     }
@@ -139,7 +139,7 @@ fn the_defaults_match_the_python_dataclass() {
         "sfx_volume": 0.8, "music_volume": 0.5, "synth_music": false, "music_seed": 48213,
         "radio_volume": 0.25, "radio_enabled": true,
         "radio_station_id": "route_playlist", "radio_streamer_safe": false,
-        "radio_shuffle_playlists": false,
+        "radio_shuffle_playlists": false, "radio_cab_speakers": true,
         "weather_volume": 0.65, "engine_volume": 0.55, "ui_volume": 0.9,
         "duck_audio_for_speech": false, "driving_speech": "standard", "chatter_parks": true,
         "chatter_rivers": true, "chatter_passes": true, "chatter_museums": true,
@@ -166,7 +166,7 @@ fn the_defaults_match_the_python_dataclass() {
     let Value::Object(expected) = expected else {
         unreachable!()
     };
-    assert_eq!(expected.len(), 94);
+    assert_eq!(expected.len(), 95);
     for (name, value) in s.ordered_values() {
         assert_eq!(Some(&value), expected.get(name), "{name}");
     }
@@ -992,6 +992,8 @@ fn test_radio_defaults_are_full_dial_and_quiet() {
     assert!(!s.radio_streamer_safe);
     // A playlist file plays in its own order unless the player asks otherwise.
     assert!(!s.radio_shuffle_playlists);
+    // The radio plays through the cab's speakers unless the player picks clean.
+    assert!(s.radio_cab_speakers);
 }
 
 #[test]

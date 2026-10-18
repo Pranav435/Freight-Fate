@@ -38048,6 +38048,14 @@ msgid ""
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid "Cab speakers"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid "Clean"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
 msgid "Controller: disabled"
 msgstr ""
 
@@ -39062,6 +39070,18 @@ msgstr ""
 msgid ""
 "On plays each of your playlists in a random order, every track once before "
 "any repeats. Off plays the file top to bottom."
+msgstr ""
+
+#. placeholders: {sound}
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid "Radio sound: {sound}"
+msgstr ""
+
+#: crates/freight-fate/src/states/main_menu/settings_items.rs
+msgid ""
+"Cab speakers plays the radio through the truck's door speakers in the small "
+"cab, and lowering the driver window brightens it. Clean plays it exactly as "
+"the station sends it."
 msgstr ""
 
 #. placeholders: {on_off}

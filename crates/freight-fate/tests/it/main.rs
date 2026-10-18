@@ -50,6 +50,7 @@ mod audio_backends;
 mod audio_hearken;
 mod audio_loops;
 mod audio_radio_now_playing;
+mod audio_radio_voicing;
 mod audio_sound_pack;
 mod audio_speech_audio;
 mod audio_speech_ducking;

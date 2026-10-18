@@ -34599,6 +34599,12 @@ msgstr ""
 "Выводить игру на брайлевский дисплей умеют только NVDA и JAWS. Речь "
 "остаётся включённой, пока одна из них не запущена."
 
+msgid "Cab speakers"
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
 msgid "Controller: disabled"
 msgstr "Геймпад: выключен"
 
@@ -35693,6 +35699,16 @@ msgid ""
 msgstr ""
 "Включено: каждый ваш плейлист играет в случайном порядке, каждый трек по "
 "разу, прежде чем что-то повторится. Выключено: файл играет сверху вниз."
+
+#. placeholders: {sound}
+msgid "Radio sound: {sound}"
+msgstr ""
+
+msgid ""
+"Cab speakers plays the radio through the truck's door speakers in the small "
+"cab, and lowering the driver window brightens it. Clean plays it exactly as "
+"the station sends it."
+msgstr ""
 
 #. placeholders: {on_off}
 msgid "Game sounds step back for speech: {on_off}"

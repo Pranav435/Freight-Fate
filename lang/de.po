@@ -34566,6 +34566,12 @@ msgstr ""
 "Nur NVDA und JAWS können das Spiel an eine Braillezeile schicken. Die "
 "Sprache bleibt an, bis eins von beiden läuft."
 
+msgid "Cab speakers"
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
 msgid "Controller: disabled"
 msgstr "Controller: deaktiviert"
 
@@ -35660,6 +35666,16 @@ msgstr ""
 "An spielt jede deiner Playlists in zufälliger Reihenfolge, jeden Titel "
 "einmal, bevor sich etwas wiederholt. Aus spielt die Datei von oben nach "
 "unten."
+
+#. placeholders: {sound}
+msgid "Radio sound: {sound}"
+msgstr ""
+
+msgid ""
+"Cab speakers plays the radio through the truck's door speakers in the small "
+"cab, and lowering the driver window brightens it. Clean plays it exactly as "
+"the station sends it."
+msgstr ""
 
 #. placeholders: {on_off}
 msgid "Game sounds step back for speech: {on_off}"

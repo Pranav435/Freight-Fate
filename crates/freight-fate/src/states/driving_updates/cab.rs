@@ -7,7 +7,7 @@ use ff_core::cab_sounds::{FAN_KEY, WIND_RUSH_KEY};
 use ff_core::sim::cab::CabState;
 
 use crate::app::GameContext;
-use crate::audio::{CH_CAB_FAN, CH_CAB_WIND};
+use crate::audio::{RadioVoicing, CH_CAB_FAN, CH_CAB_WIND};
 use crate::states::driving::DrivingState;
 
 /// The driver sits on the left: the window rush leans that way.
@@ -19,6 +19,7 @@ impl DrivingState {
     pub fn update_cab_audio(&mut self, ctx: &mut GameContext, dt: f64) {
         self.cab.step(dt);
         ctx.audio.set_outside_lift(self.cab.outside_lift());
+        self.apply_radio_voicing(ctx);
 
         let speed = self.trip.truck.velocity_mps;
         let rush = self.cab.wind_rush_gain(speed);
@@ -41,5 +42,16 @@ impl DrivingState {
             }
             _ => ctx.audio.stop_loop_with(CH_CAB_FAN, 400),
         }
+    }
+
+    /// The radio through the cab's speakers (or clean, as Settings says),
+    /// following the driver's glass. Also run while a menu covers the
+    /// drive, so a Radio sound change there is heard at once.
+    pub fn apply_radio_voicing(&self, ctx: &mut GameContext) {
+        let voicing = RadioVoicing {
+            cab_speakers: ctx.settings.radio_cab_speakers,
+            window: self.cab.glass(),
+        };
+        ctx.audio.set_radio_voicing(Some(voicing));
     }
 }
