@@ -567,10 +567,8 @@ msgstr "完成五十次交付。调度板认得你的呼号，挡风玻璃也认
 msgid "Just Keep Rollin' On"
 msgstr "继续往前跑"
 
-msgid ""
-"A hundred deliveries. No fuss, just load after load until the number got "
-"serious."
-msgstr "完成一百次交付。没有喧闹，只是一批接一批运货，直到数字变得可观。"
+msgid "A hundred deliveries, load after load, until the number got serious."
+msgstr ""
 
 msgid "Lynyrd Skynyrd - Call Me the Breeze"
 msgstr "Lynyrd Skynyrd - Call Me the Breeze"
@@ -578,9 +576,8 @@ msgstr "Lynyrd Skynyrd - Call Me the Breeze"
 msgid "Ten Thousand Down the Line"
 msgstr "一路一万英里"
 
-msgid ""
-"Ten thousand miles. The white-line fever isn't a symptom now. It's the job."
-msgstr "一万里。白线热现在不是症状。这就是工作。"
+msgid "Ten thousand miles. The white-line fever is just the job now."
+msgstr ""
 
 msgid "Highway Lifer"
 msgstr "终身公路人"
@@ -1001,9 +998,9 @@ msgid "Twenty-Five and Rolling Steady"
 msgstr "二十五单，稳稳前进"
 
 msgid ""
-"Twenty-five deliveries. Not a rookie, not a veteran, just more road than "
-"most."
-msgstr "完成二十五次交付。算不上新手，也还不是老将，只是比多数人走过更多道路。"
+"Twenty-five deliveries, somewhere between rookie and veteran, with more "
+"road than most."
+msgstr ""
 
 msgid "Ellie Turner - A Little Farther Down The Line"
 msgstr "Ellie Turner - A Little Farther Down The Line"
@@ -1011,8 +1008,8 @@ msgstr "Ellie Turner - A Little Farther Down The Line"
 msgid "Two Hundred and Playing for Keeps"
 msgstr "两百单，玩真的"
 
-msgid "Two hundred deliveries. Not a phase anymore. It's a body of work."
-msgstr "完成两百次交付。这已不是一时兴起，而是实打实的成绩。"
+msgid "Two hundred deliveries. That's a body of work."
+msgstr ""
 
 msgid "Emily Nenni - Long Game"
 msgstr "Emily Nenni - Long Game"
@@ -1767,8 +1764,8 @@ msgid "One More Cup for the Road"
 msgstr "上路前再来一杯"
 
 msgid ""
-"Twenty-five breaks taken right. It's not the coffee. It's the sitting down."
-msgstr "正确完成二十五次中途休息。关键不是咖啡，而是坐下来歇一会儿。"
+"Twenty-five breaks taken right. The sitting down did more than the coffee."
+msgstr ""
 
 msgid "Bob Dylan - One More Cup of Coffee"
 msgstr "Bob Dylan - One More Cup of Coffee"
@@ -1910,6 +1907,28 @@ msgstr "在卡车司机感谢周运送了一批货物。窗口递来甜甜圈，
 msgid "Andrew Gold - Thank You for Being a Friend"
 msgstr "Andrew Gold - Thank You for Being a Friend"
 
+msgid "The Classmate Came Back"
+msgstr ""
+
+msgid ""
+"Lou turned up as your co-driver, back from Meridian Freight Lines with a "
+"story nobody quite believes."
+msgstr ""
+
+msgid "Thin Lizzy - The Boys Are Back in Town"
+msgstr ""
+
+msgid "Teacher in the Sleeper"
+msgstr ""
+
+msgid ""
+"Ray, who ran your training class, rode one load with you to see how you "
+"turned out."
+msgstr ""
+
+msgid "Jethro Tull - Teacher"
+msgstr ""
+
 #. placeholders: {path}
 msgid "Not a Freight Fate sound pack: {path}"
 msgstr "这不是Freight Fate声音包：{path}"
@@ -1954,6 +1973,9 @@ msgstr "未知的循环点单位：{units}"
 
 msgid "loop_end must be after loop_start"
 msgstr "loop_end必须在loop_start之后"
+
+msgid "wav"
+msgstr "wav"
 
 msgid "day"
 msgstr "白天"
@@ -4688,6 +4710,15 @@ msgstr "游客中心"
 msgid "village"
 msgstr "village"
 
+msgid "hamlet"
+msgstr ""
+
+msgid "place"
+msgstr "地点"
+
+msgid "town"
+msgstr "town"
+
 msgid "break"
 msgstr "休息"
 
@@ -5320,9 +5351,6 @@ msgstr "statutory"
 msgid "rural"
 msgstr "rural"
 
-msgid "town"
-msgstr "town"
-
 msgid "signal"
 msgstr "signal"
 
@@ -5457,9 +5485,6 @@ msgstr "七"
 
 msgid "eight"
 msgstr "八"
-
-msgid "place"
-msgstr "地点"
 
 msgid "highway change"
 msgstr "公路变更"
@@ -5824,9 +5849,6 @@ msgstr "Back键"
 
 msgid "Left or Right Control"
 msgstr "左 Control 或右 Control"
-
-msgid "wav"
-msgstr "wav"
 
 msgid "event"
 msgstr "event"
@@ -7363,6 +7385,152 @@ msgid ""
 "tractor."
 msgstr "{carrier_name}把你从{former}挖走了。你的等级、记录和基地都会跟着你，下一单货物就用他们的工资和他们的牵引车来跑。"
 
+msgid "dan"
+msgstr ""
+
+msgid "Dan"
+msgstr ""
+
+msgid ""
+"The most careful driver in your training class. The others call him "
+"Dangerous Dan after the song he kept asking the Roadhouse to play."
+msgstr ""
+
+msgid "rusty"
+msgstr ""
+
+msgid "Rusty Oxley"
+msgstr ""
+
+msgid ""
+"Grandson of Grandpa Spuds Oxley on The Delta. He learned the road listening "
+"to his grandfather on the air."
+msgstr ""
+
+msgid "wdlt-memphis"
+msgstr ""
+
+msgid "june"
+msgstr ""
+
+msgid "June"
+msgstr "六月"
+
+msgid ""
+"Grew up waiting tables at Della's Blue Plate Diner and decided she wanted "
+"to be one of the drivers. She knows every diner on the map."
+msgstr ""
+
+msgid "kbsk-billings"
+msgstr ""
+
+msgid "krwl-dallas"
+msgstr ""
+
+msgid "whwy-nashville"
+msgstr ""
+
+msgid "marisol"
+msgstr ""
+
+msgid "Marisol"
+msgstr ""
+
+msgid ""
+"Drove water tenders on a wildfire crew before trucking. Calm on the "
+"mountain grades."
+msgstr ""
+
+msgid "kchm-los-angeles"
+msgstr ""
+
+msgid "krdg-denver"
+msgstr ""
+
+msgid "wgrx-chicago"
+msgstr ""
+
+msgid "walt"
+msgstr ""
+
+msgid "Walt"
+msgstr ""
+
+msgid ""
+"Will not leave a terminal until four forecasts agree. Drives long stretches "
+"in silence."
+msgstr ""
+
+msgid "kpln-kansas-city"
+msgstr ""
+
+msgid "dee"
+msgstr ""
+
+msgid "Dee"
+msgstr ""
+
+msgid ""
+"Spent one summer of the nineties online and never came back. Runs every "
+"driver app there is."
+msgstr ""
+
+msgid "nate"
+msgstr ""
+
+msgid "Nate"
+msgstr ""
+
+msgid ""
+"A bicycle courier before trucks. He will tell you The Lone Courier on "
+"Channel 3000 is about him. It is not."
+msgstr ""
+
+msgid "Lou"
+msgstr ""
+
+msgid ""
+"Left your training class for Meridian Freight Lines and was never heard "
+"from again, until now."
+msgstr ""
+
+msgid "ff-night-line"
+msgstr ""
+
+msgid "Ray"
+msgstr ""
+
+msgid ""
+"Ran your training class at Great Lakes. Rides along for one load to see how "
+"you turned out."
+msgstr ""
+
+msgid "ray"
+msgstr ""
+
+msgid "lou"
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name}, from your training class."
+msgstr ""
+
+#. placeholders: {name}, {carrier_name}
+msgid "{name}, from your training class, drives for {carrier_name} now."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name}, your co-driver."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name}, back from Meridian with a story."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name}, your old trainer, along for one load."
+msgstr ""
+
 msgid "training"
 msgstr "培训"
 
@@ -8246,6 +8414,16 @@ msgid "Gross revenue {pay} dollars."
 msgstr "总收入{pay} 美元。"
 
 #. placeholders: {hours}
+msgid ""
+"Deadline {hours} hours. Team load: you and a co-driver take turns at the "
+"wheel."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Team load: you and a co-driver take turns at the wheel."
+msgstr ""
+
+#. placeholders: {hours}
 msgid "Deadline {hours} hours, includes a 10-hour rest."
 msgstr "截止时间 {hours} 小时，包括 10 小时休息。"
 
@@ -8298,6 +8476,9 @@ msgstr "空车头"
 
 msgid "assigned"
 msgstr "已分配"
+
+msgid "team"
+msgstr ""
 
 #. placeholders: {unwrap_or_else}
 msgid "{unwrap_or_else} freight market"
@@ -10043,21 +10224,8 @@ msgstr "开发版"
 msgid "stable"
 msgstr "稳定版"
 
-msgid "custom"
-msgstr "自定义"
-
 msgid "everything"
 msgstr "全部"
-
-msgid "mile"
-msgstr "英里"
-
-#. placeholders: {distance}
-msgid "{distance} per hour"
-msgstr "每小时{distance}"
-
-msgid "kilometer"
-msgstr "公里"
 
 msgid "a quarter mile"
 msgstr "四分之一英里"
@@ -10074,6 +10242,82 @@ msgstr "一英里"
 #. placeholders: {meters}
 msgid "{meters} meters"
 msgstr "{meters}米"
+
+msgid "custom"
+msgstr "自定义"
+
+msgid "mile"
+msgstr "英里"
+
+#. placeholders: {distance}
+msgid "{distance} per hour"
+msgstr "每小时{distance}"
+
+msgid "kilometer"
+msgstr "公里"
+
+msgid "Driver window down."
+msgstr ""
+
+msgid "Driver window up."
+msgstr ""
+
+msgid "Fan off."
+msgstr ""
+
+msgid "Fan low."
+msgstr ""
+
+msgid "Fan medium."
+msgstr ""
+
+msgid "Fan high."
+msgstr ""
+
+msgid "Heat."
+msgstr ""
+
+msgid "Air conditioning."
+msgstr ""
+
+msgid "Cab: driver window down"
+msgstr ""
+
+msgid "Cab: fan low, heat"
+msgstr ""
+
+msgid "Cab: fan medium, heat"
+msgstr ""
+
+msgid "Cab: fan high, heat"
+msgstr ""
+
+msgid "Cab: fan low, air conditioning"
+msgstr ""
+
+msgid "Cab: fan medium, air conditioning"
+msgstr ""
+
+msgid "Cab: fan high, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan low, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan medium, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan high, heat"
+msgstr ""
+
+msgid "Cab: driver window down, fan low, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan medium, air conditioning"
+msgstr ""
+
+msgid "Cab: driver window down, fan high, air conditioning"
+msgstr ""
 
 msgid "yield"
 msgstr "让行"
@@ -10252,15 +10496,6 @@ msgstr "你的当班时段已经结束。"
 msgid "past your duty window"
 msgstr "已超出当班时段"
 
-msgid "2 hours"
-msgstr "2小时"
-
-msgid "1 hour"
-msgstr "1小时"
-
-msgid "30 minutes"
-msgstr "30分钟"
-
 msgid "driving"
 msgstr "驾驶中"
 
@@ -10281,24 +10516,6 @@ msgstr "你的14小时当班时段已经过期"
 
 msgid "you were past the 30-minute break requirement"
 msgstr "你已超过30分钟中途休息的时限"
-
-#. one sentence of a longer line
-msgid "Driving on risks fines at inspections."
-msgstr "继续开车，检查时可能被罚款。"
-
-#. placeholders: {due}
-#. one sentence of a longer line
-msgid "Hours of service violation: {due}."
-msgstr "驾驶工时违规：{due}。"
-
-#. placeholders: {due}
-msgid ""
-"Hours of service violation: {due}. Driving on risks fines at inspections."
-msgstr "驾驶工时违规：{due}。继续开车，检查时可能被罚款。"
-
-#. placeholders: {phrase}, {due}
-msgid "Hours of service: {phrase} until {due}."
-msgstr "驾驶工时：再过{phrase}，{due}。"
 
 msgid "Hours of service: 30-minute break overdue."
 msgstr "驾驶工时：30分钟中途休息已经逾期。"
@@ -10526,6 +10743,33 @@ msgstr "未知地点"
 
 msgid "segments"
 msgstr "segments"
+
+msgid "2 hours"
+msgstr "2小时"
+
+msgid "1 hour"
+msgstr "1小时"
+
+msgid "30 minutes"
+msgstr "30分钟"
+
+#. one sentence of a longer line
+msgid "Driving on risks fines at inspections."
+msgstr "继续开车，检查时可能被罚款。"
+
+#. placeholders: {due}
+#. one sentence of a longer line
+msgid "Hours of service violation: {due}."
+msgstr "驾驶工时违规：{due}。"
+
+#. placeholders: {due}
+msgid ""
+"Hours of service violation: {due}. Driving on risks fines at inspections."
+msgstr "驾驶工时违规：{due}。继续开车，检查时可能被罚款。"
+
+#. placeholders: {phrase}, {due}
+msgid "Hours of service: {phrase} until {due}."
+msgstr "驾驶工时：再过{phrase}，{due}。"
 
 msgid "single"
 msgstr "唯一"
@@ -10890,20 +11134,20 @@ msgstr "2级绕车检查"
 msgid "Level 3 driver inspection"
 msgstr "3级司机检查"
 
+msgid "tires worn close to the tread limit"
+msgstr "轮胎磨损接近花纹极限"
+
+msgid "visible body damage written up as unsafe equipment"
+msgstr "明显的车身损坏被记为不安全设备"
+
 msgid "driving past the hours-of-service limit"
 msgstr "驾驶超过驾驶工时上限"
 
 msgid "a tire below the minimum tread depth"
 msgstr "一条轮胎低于最低花纹深度"
 
-msgid "tires worn close to the tread limit"
-msgstr "轮胎磨损接近花纹极限"
-
 msgid "body damage past the safe limit"
 msgstr "车身损坏超出安全限度"
-
-msgid "visible body damage written up as unsafe equipment"
-msgstr "明显的车身损坏被记为不安全设备"
 
 msgid "brakes out of adjustment"
 msgstr "制动器调整不当"
@@ -10961,6 +11205,12 @@ msgid ""
 msgstr ""
 "{closure_words} 在 {road} 附近 "
 "{near_city}、{distance_text}、{speed_text}、{minutes_words}"
+
+#. placeholders: {closure_words}, {road}, {near_city}, {count}, {distance_text}, {speed_text}, {minutes_words}
+msgid ""
+"{closure_words} on {road} near {near_city} in {count} places, "
+"{distance_text} each, {speed_text}, {minutes_words} each"
+msgstr ""
 
 #. placeholders: {name}
 msgid " by way of {name}"
@@ -11022,9 +11272,9 @@ msgstr "调度正在安排你绕开{reason}。走这条路{adds}能省{minutes_w
 msgid "This way {adds}saves {minutes_words}."
 msgstr "走这条路{adds}能省{minutes_words}。"
 
-#. placeholders: {join}
-msgid "Construction reported on the way: {join}."
-msgstr "沿途报告有施工：{join}。"
+#. placeholders: {spots_text}
+msgid "Construction reported on the way: {spots_text}."
+msgstr ""
 
 msgid "No quicker way around."
 msgstr "没有更快的绕行路线。"
@@ -11037,9 +11287,9 @@ msgstr "{reason}路线1绕开了它{by_way_of}。"
 msgid "Route 1 avoids {reason} and saves {minutes_words}."
 msgstr "路线1避开{reason}，能省{minutes_words}。"
 
-#. placeholders: {join}
-msgid "Construction: {join}."
-msgstr "施工：{join}。"
+#. placeholders: {spots_text}
+msgid "Construction: {spots_text}."
+msgstr ""
 
 msgid "autumn"
 msgstr "秋季"
@@ -11088,9 +11338,6 @@ msgstr "四月"
 
 msgid "May"
 msgstr "五月"
-
-msgid "June"
-msgstr "六月"
 
 msgid "July"
 msgstr "七月"
@@ -11484,6 +11731,9 @@ msgstr "进入{reason}区。限速{speed_value}。"
 msgid "zone"
 msgstr "区域"
 
+msgid "limit"
+msgstr "限制"
+
 #. placeholders: {reason}
 #. one sentence of a longer line
 msgid "End of {reason} zone."
@@ -11506,9 +11756,6 @@ msgstr "进入{name}。现在是{clock_text}。"
 #. one sentence of a longer line
 msgid "It is now {clock_text}."
 msgstr "现在是{clock_text}。"
-
-msgid "limit"
-msgstr "限制"
 
 msgid "approaching"
 msgstr "即将"
@@ -13333,6 +13580,11 @@ msgstr "路面接缝：是质感，不需要作出决定。"
 msgid "A door."
 msgstr "一扇门。"
 
+msgid ""
+"The driver window, the wind through it and the fan, right after the key "
+"that set them, which says what changed."
+msgstr ""
+
 msgid "A fuel pump, at a fuel pump."
 msgstr "加油泵，就在加油泵旁边。"
 
@@ -13768,9 +14020,13 @@ msgstr "冒烟检查：厂区进场路线为空"
 msgid "Secret store unreachable in this build: {store_detail}"
 msgstr "此版本无法访问密钥存储：{store_detail}"
 
-#. placeholders: {e}
-msgid "smoke: packaged BASS runtime could not initialize: {e}"
-msgstr "冒烟检查：打包的BASS运行库无法初始化：{e}"
+#. placeholders: {KEY}
+msgid "smoke: {KEY} is not in the packed sounds"
+msgstr ""
+
+#. placeholders: {KEY}, {ext}, {e}
+msgid "smoke: {KEY}.{ext} does not decode through Hearken: {e}"
+msgstr ""
 
 msgid "start up"
 msgstr "start up"
@@ -13783,6 +14039,9 @@ msgstr "quit: done"
 
 msgid "smoke checks"
 msgstr "smoke checks"
+
+msgid "screen"
+msgstr ""
 
 #. placeholders: {spacing}
 msgid ", {spacing} ms after the last press"
@@ -14002,14 +14261,14 @@ msgstr "电台流不可用"
 msgid "audio disabled"
 msgstr "音频已禁用"
 
+msgid "pygame"
+msgstr ""
+
 msgid "dummy"
 msgstr "dummy"
 
-msgid "bass"
-msgstr "bass"
-
-msgid "radio-connect"
-msgstr "radio-connect"
+msgid "hearken"
+msgstr ""
 
 #. placeholders: {path}
 msgid "could not read {path}"
@@ -14018,34 +14277,6 @@ msgstr "无法读取{path}"
 #. placeholders: {path}
 msgid "could not decode {path}"
 msgstr "无法解码{path}"
-
-#. placeholders: {path}
-msgid "could not play {path}"
-msgstr "无法播放{path}"
-
-msgid "audio-probe"
-msgstr "audio-probe"
-
-#. placeholders: {err}
-msgid "BASS refused the loop sync: {err}"
-msgstr "BASS拒绝了循环同步：{err}"
-
-msgid "Control "
-msgstr "Control "
-
-msgid "Alt "
-msgstr "Alt "
-
-msgid "Shift "
-msgstr "Shift "
-
-#. placeholders: {short}
-msgid "right bumper plus {short}"
-msgstr "right bumper加{short}"
-
-#. placeholders: {short}
-msgid "the {short} button"
-msgstr "{short}键"
 
 msgid "Accelerate"
 msgstr "加速"
@@ -14073,6 +14304,21 @@ msgstr "驻车制动"
 
 msgid "Horn"
 msgstr "喇叭"
+
+msgid "Driver window down or up"
+msgstr ""
+
+msgid "Fan speed"
+msgstr ""
+
+msgid "fan"
+msgstr ""
+
+msgid "climate"
+msgstr ""
+
+msgid "Heat or air conditioning"
+msgstr ""
 
 msgid "Automatic speed control"
 msgstr "自动速度控制"
@@ -14278,208 +14524,6 @@ msgstr "{spoken}和{spoken2}"
 
 msgid "or"
 msgstr "或"
-
-msgid "keypad 0"
-msgstr "小键盘0"
-
-msgid "keypad 1"
-msgstr "小键盘1"
-
-msgid "keypad 2"
-msgstr "小键盘2"
-
-msgid "keypad 3"
-msgstr "小键盘3"
-
-msgid "keypad 4"
-msgstr "小键盘4"
-
-msgid "keypad 5"
-msgstr "小键盘5"
-
-msgid "keypad 6"
-msgstr "小键盘6"
-
-msgid "keypad 7"
-msgstr "小键盘7"
-
-msgid "keypad 8"
-msgstr "小键盘8"
-
-msgid "keypad 9"
-msgstr "小键盘9"
-
-msgid "keypad Enter"
-msgstr "小键盘Enter"
-
-msgid "keypad plus"
-msgstr "小键盘加号"
-
-msgid "keypad minus"
-msgstr "小键盘减号"
-
-msgid "enter"
-msgstr "enter"
-
-msgid "escape"
-msgstr "escape"
-
-msgid "space"
-msgstr "space"
-
-msgid "tab"
-msgstr "tab"
-
-msgid "backspace"
-msgstr "backspace"
-
-msgid "the Left arrow"
-msgstr "Left arrow"
-
-msgid "the Right arrow"
-msgstr "Right arrow"
-
-msgid "Home"
-msgstr "Home"
-
-msgid "home"
-msgstr "home"
-
-msgid "End"
-msgstr "End"
-
-msgid "end"
-msgstr "end"
-
-msgid "Page Up"
-msgstr "Page Up"
-
-msgid "Page Down"
-msgstr "Page Down"
-
-msgid "Insert"
-msgstr "Insert"
-
-msgid "insert"
-msgstr "insert"
-
-msgid "Delete"
-msgstr "Delete"
-
-msgid "delete"
-msgstr "删除"
-
-msgid "comma"
-msgstr "逗号"
-
-msgid "period"
-msgstr "句号"
-
-msgid "slash"
-msgstr "斜杠"
-
-msgid "backslash"
-msgstr "反斜杠"
-
-msgid "grave"
-msgstr "grave"
-
-msgid "grave accent"
-msgstr "反引号"
-
-msgid "equals"
-msgstr "等号"
-
-msgid "plus"
-msgstr "加号"
-
-msgid "minus"
-msgstr "减号"
-
-msgid "semicolon"
-msgstr "分号"
-
-msgid "apostrophe"
-msgstr "单引号"
-
-msgid "left bracket"
-msgstr "左方括号"
-
-msgid "right bracket"
-msgstr "右方括号"
-
-msgid "Left Control"
-msgstr "Left Control"
-
-msgid "Right Control"
-msgstr "Right Control"
-
-msgid "Right Shift"
-msgstr "Right Shift"
-
-msgid "Left Alt"
-msgstr "Left Alt"
-
-msgid "Right Alt"
-msgstr "Right Alt"
-
-msgid "an unnamed key"
-msgstr "一个没有名字的键"
-
-msgctxt "controller button"
-msgid "Back"
-msgstr "返回"
-
-msgid "back"
-msgstr "back"
-
-msgid "guide"
-msgstr "guide"
-
-msgid "the guide button"
-msgstr "guide键"
-
-msgid "the right bumper"
-msgstr "right bumper"
-
-msgid "misc"
-msgstr "misc"
-
-msgid "the extra button"
-msgstr "额外按键"
-
-msgid "paddle 1"
-msgstr "paddle 1"
-
-msgid "paddle 2"
-msgstr "paddle 2"
-
-msgid "paddle 3"
-msgstr "paddle 3"
-
-msgid "paddle 4"
-msgstr "paddle 4"
-
-msgid "the touchpad"
-msgstr "touchpad"
-
-msgid "touchpad"
-msgstr "touchpad"
-
-msgid "right stick up"
-msgstr "右摇杆向上"
-
-msgid "right stick down"
-msgstr "右摇杆向下"
-
-msgid "right stick left"
-msgstr "右摇杆向左"
-
-msgid "right stick right"
-msgstr "右摇杆向右"
-
-msgid "an unnamed button"
-msgstr "一个没有名字的按键"
 
 msgid "Pause"
 msgstr "暂停"
@@ -14923,6 +14967,18 @@ msgstr "Back键"
 msgid "Start button"
 msgstr "Start键"
 
+msgid "right stick up"
+msgstr "右摇杆向上"
+
+msgid "right stick down"
+msgstr "右摇杆向下"
+
+msgid "right stick left"
+msgstr "右摇杆向左"
+
+msgid "right stick right"
+msgstr "右摇杆向右"
+
 msgid "a button"
 msgstr "一个按键"
 
@@ -15359,24 +15415,6 @@ msgstr "achievement"
 msgid "level"
 msgstr "level"
 
-msgid "main"
-msgstr "main"
-
-msgid "David"
-msgstr "David"
-
-msgid "Zira"
-msgstr "Zira"
-
-msgid "rate"
-msgstr "rate"
-
-msgid "pitch"
-msgstr "pitch"
-
-msgid "volume"
-msgstr "volume"
-
 msgid ""
 "Enter opens a category. Inside one, Enter repeats the achievement and "
 "Escape returns to the categories. From the categories, Escape returns to "
@@ -15523,49 +15561,6 @@ msgstr "保留我的自定义辅助"
 msgid "Keeps the assists you set one by one."
 msgstr "保留你逐项设置的辅助。"
 
-msgid "colon"
-msgstr "冒号"
-
-msgid "dot"
-msgstr "点"
-
-msgid "underscore"
-msgstr "下划线"
-
-msgid "question mark"
-msgstr "问号"
-
-msgid "exclamation mark"
-msgstr "感叹号"
-
-msgid "percent"
-msgstr "百分号"
-
-msgid "number sign"
-msgstr "井号"
-
-msgid "at"
-msgstr "at符号"
-
-msgid "tilde"
-msgstr "波浪号"
-
-msgid "star"
-msgstr "星号"
-
-msgid "quote"
-msgstr "引号"
-
-msgid "left paren"
-msgstr "左括号"
-
-msgid "right paren"
-msgstr "右括号"
-
-#. placeholders: {ch}
-msgid "cap {ch}"
-msgstr "大写{ch}"
-
 msgid "Message copied to clipboard."
 msgstr "消息已复制到剪贴板。"
 
@@ -15589,9 +15584,6 @@ msgstr " 此筛选之外还有{hidden}条较新的{plural}。"
 msgid "Ready in {remaining} seconds."
 msgstr "{remaining}秒后就绪。"
 
-msgid "Back"
-msgstr "Back"
-
 msgid "Enter selects, Escape goes back. Control stops the current speech."
 msgstr "Enter选择，Escape返回。Control停止当前语音。"
 
@@ -15609,6 +15601,9 @@ msgstr "第 {position} 项，共 {count} 项。"
 
 msgid "Repeat this line."
 msgstr "重复这一行。"
+
+msgid "Back"
+msgstr "Back"
 
 msgid "Return to the previous menu."
 msgstr "返回上一个菜单。"
@@ -15879,12 +15874,14 @@ msgid ""
 msgstr "{control_hint}启动发动机，气压升起来后，{control_hint2}松开驻车制动。"
 
 #. placeholders: {f}
-msgid " Deadline extended to {f} hours for a 10-hour sleep en route."
-msgstr "途中睡眠 10 小时的截止日期延长至 {f} 小时。"
-
-#. placeholders: {f}
 msgid " Deadline extended to {f} hours."
 msgstr "截止日期延长至 {f} 小时。"
+
+#. placeholders: {pairing_line}, {lead}, {route_departure_summary}, {departure_briefing}, {next_context}, {name}
+msgid ""
+"{pairing_line} {lead}{route_departure_summary} {departure_briefing} "
+"{next_context} {name} takes the wheel."
+msgstr ""
 
 msgid ""
 "Enter accepts. F1 is job details. Tab is the market. Escape goes back."
@@ -16217,6 +16214,45 @@ msgid ""
 "Route inspection after pickup covers rest, fuel, toll, weather, and "
 "restrictions."
 msgstr "提货后的路线检查涵盖休息、燃油、过路费、天气和限制。"
+
+#. placeholders: {hours}
+msgid "Trip hours: about {hours} driving hours."
+msgstr ""
+
+#. placeholders: {hours}
+msgid "Trip hours: about {hours} driving hours, with a 30-minute break."
+msgstr ""
+
+#. placeholders: {hours}
+msgid "Trip hours: about {hours} driving hours, with a 10-hour sleep."
+msgstr ""
+
+#. placeholders: {hours}, {sleeps}
+msgid ""
+"Trip hours: about {hours} driving hours, with {sleeps} 10-hour sleeps."
+msgstr ""
+
+#. placeholders: {percent}, {range}
+msgid "Fuel: {percent} percent, about {range} of range, short of this trip."
+msgstr ""
+
+#. placeholders: {percent}, {range}
+msgid "Fuel: {percent} percent, about {range} of range."
+msgstr ""
+
+msgid "This run needs a 30-minute break."
+msgstr ""
+
+msgid "This run needs a 10-hour sleep."
+msgstr ""
+
+#. placeholders: {sleeps}
+msgid "This run needs {sleeps} 10-hour sleeps."
+msgstr ""
+
+#. placeholders: {percent}
+msgid "Fuel: {percent} percent."
+msgstr ""
 
 #. placeholders: {i}, {total}
 msgid "Job {i} of {total}: "
@@ -18634,6 +18670,33 @@ msgstr "途经{join}。按W查看天气。"
 msgid "W for weather."
 msgstr "按W查看天气。"
 
+#. placeholders: {name}
+msgid "Depart with {name} driving, and ride along"
+msgstr ""
+
+#. placeholders: {who}
+#. one sentence of a longer line
+msgid "{who} You rest in the sleeper and hear the road."
+msgstr ""
+
+#. placeholders: {who}, {terms}
+msgid "{who} You rest in the sleeper and hear the road. {terms}"
+msgstr ""
+
+#. placeholders: {name}
+msgid "Depart with {name} driving, and sleep"
+msgstr ""
+
+#. placeholders: {who}, {name}
+#. one sentence of a longer line
+msgid "{who} You wake when {name} needs you, with a summary of the drive."
+msgstr ""
+
+#. placeholders: {who}, {name}, {terms}
+msgid ""
+"{who} You wake when {name} needs you, with a summary of the drive. {terms}"
+msgstr ""
+
 msgid ""
 "This backup was made by an earlier version of Freight Fate. Version 1.9 "
 "rebalances the whole career, so every driver starts fresh, and earlier "
@@ -19917,6 +19980,12 @@ msgstr "在远离路线点的地方完全停下时，{rest} 改为打开路肩�
 #. placeholders: {horn}
 msgid "{horn} horn."
 msgstr "{horn} 喇叭。"
+
+#. placeholders: {window}, {fan}, {climate}
+msgid ""
+"{window} lowers or raises the driver window, {fan} steps the fan, {climate} "
+"switches heat and air conditioning."
+msgstr ""
 
 #. placeholders: {engine_brake}, {jake1}, {jake2}, {jake3}
 msgid ""
@@ -21748,10 +21817,6 @@ msgstr "呼叫调度"
 msgid "Choose what you need to report. Escape hangs up."
 msgstr "选择你要报告的情况。Escape挂断。"
 
-#. placeholders: {message}, {repair}
-msgid "Dispatch: {message} {repair}"
-msgstr "调度：{message}{repair}"
-
 #. placeholders: {message}
 msgid "Dispatch: {message}"
 msgstr "调度：{message}"
@@ -21777,8 +21842,10 @@ msgstr "询问剩余距离和当前的天气预警。"
 msgid "Report truck trouble"
 msgstr "报告卡车故障"
 
-msgid "Report truck damage. Dispatch can authorize the roadside mechanic."
-msgstr "报告卡车损坏。调度可以批准路边维修技师来修。"
+msgid ""
+"Report damage, a trailer fault, or missing chains. Dispatch can send road "
+"service."
+msgstr ""
 
 msgid "Report load trouble"
 msgstr "报告货物问题"
@@ -21808,6 +21875,13 @@ msgstr "还剩{remaining_miles}英里。"
 #. placeholders: {damage_pct}
 msgid "Truck damage is {damage_pct} percent."
 msgstr "卡车损坏百分之{damage_pct}。"
+
+#. placeholders: {defect}
+msgid " Trailer: {defect}."
+msgstr ""
+
+msgid " No usable chains under an active chain law."
+msgstr ""
 
 #. placeholders: {cargo_damage_pct}
 msgid "Cargo condition is {cargo_damage_pct} percent."
@@ -21934,6 +22008,87 @@ msgid ""
 "closes; {remaining} remain."
 msgstr "当前的预警是{alerts}。除非道路封闭，否则按计划路线走；还剩{remaining}。"
 
+msgid "trailer repair"
+msgstr ""
+
+msgid "on the carrier breakdown account"
+msgstr "记在承运商的故障账户上"
+
+#. placeholders: {grouped}
+msgid "for {grouped} dollars"
+msgstr "花了{grouped}美元"
+
+#. placeholders: {billing}
+#. one sentence of a longer line
+msgid "A roadside mechanic fixed the trailer {billing}."
+msgstr ""
+
+#. placeholders: {billing}, {clock_text}
+msgid ""
+"A roadside mechanic fixed the trailer {billing}. It took an hour and a "
+"half. It is {clock_text}."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "It took an hour and a half."
+msgstr ""
+
+msgid "chain delivery"
+msgstr ""
+
+#. placeholders: {grouped2}
+#. one sentence of a longer line
+msgid "You have {grouped2} dollars"
+msgstr "你有{grouped2}美元"
+
+#. placeholders: {grouped}
+#. one sentence of a longer line
+msgid "for {grouped} dollars."
+msgstr "花了{grouped}美元。"
+
+#. placeholders: {grouped}, {grouped2}
+msgid "for {grouped} dollars. You have {grouped2} dollars"
+msgstr "花了{grouped}美元。你有{grouped2}美元"
+
+#. one sentence of a longer line
+msgid "Put them on from the pause menu."
+msgstr ""
+
+#. placeholders: {billing}
+#. one sentence of a longer line
+msgid "Road service brought a new set of snow chains {billing}."
+msgstr ""
+
+#. placeholders: {billing}, {clock_text}
+msgid ""
+"Road service brought a new set of snow chains {billing}. It took an hour "
+"and a half. It is {clock_text}. Put them on from the pause menu."
+msgstr ""
+
+msgid ""
+"Roadside repair is authorized. Secure the truck while the mechanic works."
+msgstr "路边维修已批准。技师修车时把卡车停稳。"
+
+#. placeholders: {defect}
+#. one sentence of a longer line
+msgid "I have the {defect}."
+msgstr ""
+
+#. placeholders: {defect}
+msgid ""
+"I have the {defect}. I'm sending a mechanic out to fix it where you're "
+"parked."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "I'm sending a mechanic out to fix it where you're parked."
+msgstr ""
+
+msgid ""
+"You have no chains that can go on, and the chain law is up. I'm sending "
+"road service out with a new set."
+msgstr ""
+
 msgid "monitor"
 msgstr "monitor"
 
@@ -21955,10 +22110,6 @@ msgstr "暂时还不需要叫路边维修。"
 #. one sentence of a longer line
 msgid "Watch the gauges and stop if it worsens."
 msgstr "留意仪表，情况变坏就停车。"
-
-msgid ""
-"Roadside repair is authorized. Secure the truck while the mechanic works."
-msgstr "路边维修已批准。技师修车时把卡车停稳。"
 
 #. one sentence of a longer line
 msgid "Continue and protect it through the next stop."
@@ -22010,6 +22161,19 @@ msgstr "州警在路肩拦下了别人，{reason}，不是你。"
 msgid "roadside inspection"
 msgstr "路检"
 
+#. one sentence of a longer line
+msgid "Nothing new to write up."
+msgstr ""
+
+#. placeholders: {level}, {f}
+#. one sentence of a longer line
+msgid "{level}, {f} minutes."
+msgstr "{level}，{f}分钟。"
+
+#. placeholders: {level}, {f}
+msgid "{level}, {f} minutes. Nothing new to write up."
+msgstr ""
+
 #. placeholders: {level}, {f}
 msgid "Clean {level}, {f} minutes."
 msgstr "{level}没问题，{f}分钟。"
@@ -22023,11 +22187,6 @@ msgstr " 检查员在挡风玻璃上贴了检查标签：接下来三个月，�
 #. one sentence of a longer line
 msgid "Written up for {findings}."
 msgstr "被记录的问题：{findings}。"
-
-#. placeholders: {level}, {f}
-#. one sentence of a longer line
-msgid "{level}, {f} minutes."
-msgstr "{level}，{f}分钟。"
 
 #. placeholders: {level}, {f}, {findings}
 msgid "{level}, {f} minutes. Written up for {findings}."
@@ -22065,13 +22224,6 @@ msgstr "修好了挂车的故障"
 
 msgid "out-of-service repair"
 msgstr "停驶维修"
-
-msgid "on the carrier breakdown account"
-msgstr "记在承运商的故障账户上"
-
-#. placeholders: {grouped}
-msgid "for {grouped} dollars"
-msgstr "花了{grouped}美元"
 
 #. placeholders: {what}, {billing}, {f}
 msgid ""
@@ -22417,6 +22569,9 @@ msgstr "在{facility}。停车并设置驻车制动器。"
 #. one sentence of a longer line
 msgid "Stop and set the parking brake."
 msgstr "停车并设置驻车制动器。"
+
+msgid "gate"
+msgstr ""
 
 msgid "Pulling into destination. Dock menu opening."
 msgstr "正在驶入目的地。装卸口菜单正在打开。"
@@ -24869,6 +25024,12 @@ msgstr "加号"
 msgid "Minus"
 msgstr "减号"
 
+msgid "Page Down"
+msgstr "Page Down"
+
+msgid "Page Up"
+msgstr "Page Up"
+
 msgid "Driving commands"
 msgstr "驾驶命令"
 
@@ -25612,20 +25773,6 @@ msgstr "回到标题界面。驾驶会从你上一个停靠点继续，而不是
 #. placeholders: {f}
 msgid "A roadside mechanic helps once damage is past {f} percent."
 msgstr "损坏超过百分之{f}后，路边维修技师才会来帮忙。"
-
-#. placeholders: {grouped2}
-#. one sentence of a longer line
-msgid "You have {grouped2} dollars"
-msgstr "你有{grouped2}美元"
-
-#. placeholders: {grouped}
-#. one sentence of a longer line
-msgid "for {grouped} dollars."
-msgstr "花了{grouped}美元。"
-
-#. placeholders: {grouped}, {grouped2}
-msgid "for {grouped} dollars. You have {grouped2} dollars"
-msgstr "花了{grouped}美元。你有{grouped2}美元"
 
 #. placeholders: {f}, {billing}
 #. one sentence of a longer line
@@ -27107,6 +27254,9 @@ msgstr "label"
 msgid "group"
 msgstr "group"
 
+msgid "rate"
+msgstr "rate"
+
 msgid "Free with your loyalty reward."
 msgstr "会员奖励免费。"
 
@@ -27314,6 +27464,45 @@ msgstr "CAT Scale称重单。{ticket}{billing}现在是{clock_text}。{deadline_
 #. one sentence of a longer line
 msgid "{ticket} {billing} It is {clock_text}."
 msgstr "{ticket}{billing}现在是{clock_text}。"
+
+#. placeholders: {grouped}
+msgid "Buy snow chains: {grouped} dollars"
+msgstr ""
+
+msgid "Buy snow chains, carrier billed"
+msgstr ""
+
+#. one sentence of a longer line
+msgid "A new set with two spare repair links."
+msgstr ""
+
+#. placeholders: {f}
+msgid "A new set with two spare repair links. {f} minutes on duty."
+msgstr ""
+
+#. placeholders: {grouped}, {grouped2}
+msgid ""
+"A set of snow chains costs {grouped} dollars and you have {grouped2} "
+"dollars."
+msgstr ""
+
+#. placeholders: {grouped}, {grouped2}
+msgid "{grouped} dollars. You have {grouped2} dollars."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "A new set of snow chains is in the side box."
+msgstr ""
+
+#. placeholders: {billing}, {clock_text}
+msgid ""
+"A new set of snow chains is in the side box. {billing} It is {clock_text}."
+msgstr ""
+
+#. placeholders: {billing}, {clock_text}
+#. one sentence of a longer line
+msgid "{billing} It is {clock_text}."
+msgstr ""
 
 msgid "Return to terminal"
 msgstr "回到场站"
@@ -28034,6 +28223,213 @@ msgid ""
 "{target}, {ahead} ahead? {current}"
 msgstr "{title}你已经有一个在{where_}的计划停靠点。把你的计划改到前方{ahead}的{target}吗？{current}"
 
+msgid "reason"
+msgstr ""
+
+msgid "classmate"
+msgstr ""
+
+msgid "hire"
+msgstr ""
+
+msgid "meridian"
+msgstr ""
+
+msgid "trainer"
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} has the truck at the receiver's gate."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Their hours are up."
+msgstr ""
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name} needs you back at the wheel."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you back at the wheel. Their hours are up."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The truck took damage."
+msgstr "卡车受损了。"
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name} needs you."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you. The truck took damage."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The tank is empty."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you. The tank is empty."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The truck has left the road."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you. The truck has left the road."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The truck is stopped and will not go on."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you. The truck is stopped and will not go on."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Their break is due."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you back at the wheel. Their break is due."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you to decide this one."
+msgstr ""
+
+#. placeholders: {f}
+msgid "You slept {f} hours."
+msgstr ""
+
+#. placeholders: {game_minutes}
+msgid "You slept {game_minutes} minutes."
+msgstr ""
+
+#. placeholders: {name}, {distance_text}
+msgid "{name} drove {distance_text}"
+msgstr ""
+
+#. placeholders: {stop}
+msgid " and fueled at {stop}"
+msgstr ""
+
+#. placeholders: {name}, {round}
+msgid ""
+"You pay {name} {round} percent of the settlement for the miles they drive."
+msgstr ""
+
+#. placeholders: {name}
+msgid "Miles {name} drives pay you half."
+msgstr ""
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "While {name} drives, you are logged in the sleeper berth."
+msgstr ""
+
+#. placeholders: {pay}
+#. one sentence of a longer line
+msgid "{pay} Those miles earn you half the experience."
+msgstr ""
+
+#. placeholders: {pay}, {name}
+msgid ""
+"{pay} Those miles earn you half the experience. While {name} drives, you "
+"are logged in the sleeper berth."
+msgstr ""
+
+msgid "Take the wheel back"
+msgstr ""
+
+msgid "Wakes you and gives you the wheel."
+msgstr ""
+
+#. placeholders: {name}
+msgid "Hand the wheel to {name} and ride along"
+msgstr ""
+
+#. placeholders: {name}
+msgid "Hand the wheel to {name} and sleep"
+msgstr ""
+
+msgid "You have the wheel."
+msgstr ""
+
+msgid "roadside"
+msgstr ""
+
+msgid "shift"
+msgstr ""
+
+msgid "Refuel"
+msgstr ""
+
+msgid "stalled"
+msgstr ""
+
+msgid "damage"
+msgstr ""
+
+msgid "off the road"
+msgstr ""
+
+#. placeholders: {name}, {duration_text}
+msgid "{name} needs you back in {duration_text}."
+msgstr ""
+
+#. placeholders: {duration_text}
+msgid ", needs you back in {duration_text}"
+msgstr ""
+
+#. placeholders: {duration_text}
+#. one clause of a longer line
+msgid "needs you back in {duration_text}"
+msgstr ""
+
+#. placeholders: {name}, {back}
+msgid "Co-driver: {name}, driving{back}"
+msgstr ""
+
+#. placeholders: {name}
+msgid "Co-driver: {name}, in the sleeper"
+msgstr ""
+
+#. placeholders: {name}, {bio}
+msgid "About {name}: {bio}"
+msgstr ""
+
+#. placeholders: {join}
+msgid "Last shift: {join}"
+msgstr ""
+
+#. placeholders: {name}, {trim_end_matches}
+msgid "ELD, {name}: {trim_end_matches}"
+msgstr ""
+
+#. placeholders: {round}
+msgid "their {round} percent"
+msgstr ""
+
+msgid "their half of the pay"
+msgstr ""
+
+#. placeholders: {name}, {miles}, {share}, {grouped}
+msgid ""
+"{name} drove {miles} of this load: {share} is {grouped} dollars, and those "
+"miles earn you half the experience."
+msgstr ""
+
+#. placeholders: {name}, {f}
+msgid "Team load: {name} drove {f} of the miles"
+msgstr ""
+
 msgid "the next street"
 msgstr "下一条街"
 
@@ -28278,9 +28674,9 @@ msgid ""
 msgstr "你被防滑链检查站拦下。请从暂停菜单安装防滑链。"
 
 msgid ""
-"Held at the chain checkpoint. You have no chains. Wait here until the chain "
-"law lifts, or turn back."
-msgstr "你被防滑链检查站拦下。你没有防滑链。在这里等法规解除，或者掉头。"
+"Held at the chain checkpoint. You have no chains. Call dispatch for a set, "
+"wait here until the chain law lifts, or turn back."
+msgstr ""
 
 #. placeholders: {duration_text}
 #. one sentence of a longer line
@@ -29689,6 +30085,9 @@ msgstr "按Enter可以删除这个存档。它在Freight Fate 1.8中仍然能用
 msgid "reset"
 msgstr "重置"
 
+msgid "delete"
+msgstr "删除"
+
 msgid "Career actions"
 msgstr "职业生涯操作"
 
@@ -30675,16 +31074,15 @@ msgid "Driving mode: {pace_label}"
 msgstr "驾驶模式：{pace_label}"
 
 msgid ""
-"Pacing and pressure. Relaxed gives wider hazard windows, gentler damage and "
-"fatigue, calmer speech, and the most time to respond. Standard keeps "
-"balanced pressure and moves the clock twice as fast. Real time keeps "
-"Standard's pressure and runs the driving clock at the speed of a real "
-"clock, lined up with your computer's date and time; delivery time remaining "
-"and hours of service do not move. Changeable mid-drive from the pause menu; "
-"the new pacing starts when the truck next stops."
+"Pacing and pressure. Relaxed passes about ten minutes of road and clock "
+"each real minute, with wider hazard windows, gentler damage and fatigue, "
+"calmer speech, and the most time to respond. Standard keeps balanced "
+"pressure and moves twice as fast, about twenty minutes each real minute. "
+"Real time keeps Standard's pressure and runs the driving clock at the speed "
+"of a real clock, lined up with your computer's date and time; delivery time "
+"remaining and hours of service do not move. Changeable mid-drive from the "
+"pause menu; the new pacing starts when the truck next stops."
 msgstr ""
-"节奏和压力。轻松给出更宽的危险反应时间、更温和的损坏和疲劳、更平静的播报，以及最多的反应时间。标准保持均衡的压力，时钟走得是两倍快。实时保持标准的压力，"
-"并让驾驶时钟按真实时钟的速度走，和你电脑的日期时间对齐；剩余送货时间和驾驶工时不受影响。可以在驾驶中从暂停菜单更改；新的节奏在卡车下一次停下时开始。"
 
 #. placeholders: {hos_label}
 msgid "Hours of service: {hos_label}"
@@ -32556,8 +32954,10 @@ msgstr "任何连续30分钟不驾驶的时间都算这次中途休息，包括�
 
 msgid ""
 "Both hours modes use these limits. Relaxed changes enforcement pressure. "
-"Warnings come at two hours, one hour, and thirty minutes left."
-msgstr "两种工时模式都使用这些限制。轻松模式只改变执法压力。剩余2小时、1小时和30分钟时会发出警告。"
+"One warning comes before each limit: one hour left in the Relaxed driving "
+"mode, two hours in Standard, and two hours, one hour and thirty minutes in "
+"Real time. None comes for a limit the trip ends inside."
+msgstr ""
 
 #. one sentence of a longer line
 msgid "Check again as traffic or weather changes."
@@ -32996,10 +33396,10 @@ msgid ""
 msgstr "预设不会改变驾驶节奏、法定工时、变速箱、世界数据来源、锁定刹车和提示音量。"
 
 msgid ""
-"Relaxed pacing gives more response time and gentler consequences. Standard "
-"moves driving time and distance twice as fast. Real time follows the "
-"computer clock at real speed."
-msgstr "轻松节奏给你更多反应时间，后果也更温和。标准让驾驶时间和距离走得快一倍。实时按电脑时钟以真实速度走。"
+"Relaxed pacing passes about ten minutes of road and clock each real minute, "
+"with more response time and gentler consequences. Standard moves twice as "
+"fast. Real time follows the computer clock at real speed."
+msgstr ""
 
 msgid ""
 "Change pacing mid-drive from pause; it begins when the truck next stops. "
@@ -34555,6 +34955,9 @@ msgid ""
 msgstr ""
 "{heading}。输入，然后按Enter。Left和Right方向键查看你输入的字母，Home和End跳到开头或结尾。按Escape取消。"
 
+msgid "End"
+msgstr "End"
+
 msgid "Empty."
 msgstr "空。"
 
@@ -34792,6 +35195,33 @@ msgstr "已经{STALL_TIMEOUT_S}秒没有收到任何数据。"
 msgid "The download stopped. Nothing arrived for {STALL_TIMEOUT_S} seconds."
 msgstr "下载停止了。已经{STALL_TIMEOUT_S}秒没有收到任何数据。"
 
+#. one sentence of a longer line
+msgid ""
+"Copy it over your game folder, which keeps your music and radio packs, then "
+"restart the game."
+msgstr ""
+
+#. placeholders: {dest}
+#. one sentence of a longer line
+msgid "The new version is saved at {dest}."
+msgstr "新版本保存在{dest}。"
+
+#. placeholders: {dest}
+msgid ""
+"The new version is saved at {dest}. Copy it over your game folder, which "
+"keeps your music and radio packs, then restart the game."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "Install it yourself, then restart the game."
+msgstr "请自己安装，然后重启游戏。"
+
+#. placeholders: {dest}
+msgid ""
+"The new version is saved at {dest}. Install it yourself, then restart the "
+"game."
+msgstr ""
+
 #. placeholders: {mb}
 msgid ", {mb} megabytes"
 msgstr "，{mb}兆字节"
@@ -34833,30 +35263,19 @@ msgstr "下载失败。"
 msgid "Download complete, but this install cannot update itself."
 msgstr "下载完成，但这个安装版本无法自行更新。"
 
-#. placeholders: {dest}
+#. placeholders: {manual_install}
 msgid ""
-"Download complete, but this install cannot update itself. The new version "
-"is saved at {dest}. Install it yourself, then restart the game."
-msgstr "下载完成，但这个安装版本无法自行更新。新版本保存在{dest}。请自己安装，然后重启游戏。"
-
-#. one sentence of a longer line
-msgid "Install it yourself, then restart the game."
-msgstr "请自己安装，然后重启游戏。"
-
-#. placeholders: {dest}
-#. one sentence of a longer line
-msgid "The new version is saved at {dest}."
-msgstr "新版本保存在{dest}。"
+"Download complete, but this install cannot update itself. {manual_install}"
+msgstr ""
 
 #. one sentence of a longer line
 msgid "Download complete, but the update could not install itself."
 msgstr "下载完成，但更新无法自行安装。"
 
-#. placeholders: {dest}
+#. placeholders: {manual_install}
 msgid ""
-"Download complete, but the update could not install itself. The new version "
-"is saved at {dest}. Install it yourself, then restart the game."
-msgstr "下载完成，但更新无法自行安装。新版本保存在{dest}。请自己安装，然后重启游戏。"
+"Download complete, but the update could not install itself. {manual_install}"
+msgstr ""
 
 msgid "Installing the update. The game closes and restarts by itself."
 msgstr "正在安装更新。游戏会自己关闭并重启。"
@@ -35562,6 +35981,358 @@ msgstr "分开，你这边一条车道。"
 
 msgid "Mostly divided, one lane your side."
 msgstr "大部分都是分开的，你这​​边有一条车道。"
+
+#. Key and controller button names, as Hearken's bindings say them
+#. (hearken-app src/bindings/names.rs). The lowercase words are the ids
+#. the settings file stores; they stay here so their translations are kept.
+msgid "keypad 0"
+msgstr "小键盘0"
+
+msgid "keypad 1"
+msgstr "小键盘1"
+
+msgid "keypad 2"
+msgstr "小键盘2"
+
+msgid "keypad 3"
+msgstr "小键盘3"
+
+msgid "keypad 4"
+msgstr "小键盘4"
+
+msgid "keypad 5"
+msgstr "小键盘5"
+
+msgid "keypad 6"
+msgstr "小键盘6"
+
+msgid "keypad 7"
+msgstr "小键盘7"
+
+msgid "keypad 8"
+msgstr "小键盘8"
+
+msgid "keypad 9"
+msgstr "小键盘9"
+
+msgid "keypad Enter"
+msgstr "小键盘Enter"
+
+msgid "keypad plus"
+msgstr "小键盘加号"
+
+msgid "keypad minus"
+msgstr "小键盘减号"
+
+msgid "enter"
+msgstr "enter"
+
+msgid "escape"
+msgstr "escape"
+
+msgid "space"
+msgstr "space"
+
+msgid "tab"
+msgstr "tab"
+
+msgid "backspace"
+msgstr "backspace"
+
+msgid "the Left arrow"
+msgstr "Left arrow"
+
+msgid "the Right arrow"
+msgstr "Right arrow"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "home"
+msgstr "home"
+
+msgid "end"
+msgstr "end"
+
+msgid "Insert"
+msgstr "Insert"
+
+msgid "insert"
+msgstr "insert"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "comma"
+msgstr "逗号"
+
+msgid "period"
+msgstr "句号"
+
+msgid "slash"
+msgstr "斜杠"
+
+msgid "backslash"
+msgstr "反斜杠"
+
+msgid "grave"
+msgstr "grave"
+
+msgid "grave accent"
+msgstr "反引号"
+
+msgid "equals"
+msgstr "等号"
+
+msgid "plus"
+msgstr "加号"
+
+msgid "minus"
+msgstr "减号"
+
+msgid "semicolon"
+msgstr "分号"
+
+msgid "apostrophe"
+msgstr "单引号"
+
+msgid "left bracket"
+msgstr "左方括号"
+
+msgid "right bracket"
+msgstr "右方括号"
+
+msgid "Left Control"
+msgstr "Left Control"
+
+msgid "Right Control"
+msgstr "Right Control"
+
+msgid "Right Shift"
+msgstr "Right Shift"
+
+msgid "Left Alt"
+msgstr "Left Alt"
+
+msgid "Right Alt"
+msgstr "Right Alt"
+
+msgid "an unnamed key"
+msgstr "一个没有名字的键"
+
+msgctxt "controller button"
+msgid "Back"
+msgstr "返回"
+
+msgid "back"
+msgstr "back"
+
+msgid "guide"
+msgstr "guide"
+
+msgid "the guide button"
+msgstr "guide键"
+
+msgid "the right bumper"
+msgstr "right bumper"
+
+msgid "misc"
+msgstr "misc"
+
+msgid "the extra button"
+msgstr "额外按键"
+
+msgid "paddle 1"
+msgstr "paddle 1"
+
+msgid "paddle 2"
+msgstr "paddle 2"
+
+msgid "paddle 3"
+msgstr "paddle 3"
+
+msgid "paddle 4"
+msgstr "paddle 4"
+
+msgid "the touchpad"
+msgstr "touchpad"
+
+msgid "touchpad"
+msgstr "touchpad"
+
+msgid "an unnamed button"
+msgstr "一个没有名字的按键"
+
+#. The pieces Hearken's bindings join into a shortcut's spoken name
+#. (hearken-app src/bindings.rs).
+msgid "Control "
+msgstr "Control "
+
+msgid "Alt "
+msgstr "Alt "
+
+msgid "Shift "
+msgstr "Shift "
+
+#. placeholders: {short}
+msgid "right bumper plus {short}"
+msgstr "right bumper加{short}"
+
+#. placeholders: {short}
+msgid "the {short} button"
+msgstr "{short}键"
+
+#. A typed character as text entry says it, from Hearken's spoken_char
+#. (hearken-app src/text.rs).
+msgid "colon"
+msgstr "冒号"
+
+msgid "dot"
+msgstr "点"
+
+msgid "underscore"
+msgstr "下划线"
+
+msgid "question mark"
+msgstr "问号"
+
+msgid "exclamation mark"
+msgstr "感叹号"
+
+msgid "percent"
+msgstr "百分号"
+
+msgid "number sign"
+msgstr "井号"
+
+msgid "at"
+msgstr "at符号"
+
+msgid "tilde"
+msgstr "波浪号"
+
+msgid "star"
+msgstr "星号"
+
+msgid "quote"
+msgstr "引号"
+
+msgid "left paren"
+msgstr "左括号"
+
+msgid "right paren"
+msgstr "右括号"
+
+#. placeholders: {ch}
+msgid "cap {ch}"
+msgstr "大写{ch}"
+
+#~ msgid ""
+#~ "A hundred deliveries. No fuss, just load after load until the number got "
+#~ "serious."
+#~ msgstr "完成一百次交付。没有喧闹，只是一批接一批运货，直到数字变得可观。"
+
+#~ msgid ""
+#~ "Ten thousand miles. The white-line fever isn't a symptom now. It's the job."
+#~ msgstr "一万里。白线热现在不是症状。这就是工作。"
+
+#~ msgid ""
+#~ "Twenty-five deliveries. Not a rookie, not a veteran, just more road than "
+#~ "most."
+#~ msgstr "完成二十五次交付。算不上新手，也还不是老将，只是比多数人走过更多道路。"
+
+#~ msgid "Two hundred deliveries. Not a phase anymore. It's a body of work."
+#~ msgstr "完成两百次交付。这已不是一时兴起，而是实打实的成绩。"
+
+#~ msgid ""
+#~ "Twenty-five breaks taken right. It's not the coffee. It's the sitting down."
+#~ msgstr "正确完成二十五次中途休息。关键不是咖啡，而是坐下来歇一会儿。"
+
+#~ msgid "Construction reported on the way: {join}."
+#~ msgstr "沿途报告有施工：{join}。"
+
+#~ msgid "Construction: {join}."
+#~ msgstr "施工：{join}。"
+
+#~ msgid "smoke: packaged BASS runtime could not initialize: {e}"
+#~ msgstr "冒烟检查：打包的BASS运行库无法初始化：{e}"
+
+#~ msgid "bass"
+#~ msgstr "bass"
+
+#~ msgid "radio-connect"
+#~ msgstr "radio-connect"
+
+#~ msgid "could not play {path}"
+#~ msgstr "无法播放{path}"
+
+#~ msgid "audio-probe"
+#~ msgstr "audio-probe"
+
+#~ msgid "BASS refused the loop sync: {err}"
+#~ msgstr "BASS拒绝了循环同步：{err}"
+
+#~ msgid "main"
+#~ msgstr "main"
+
+#~ msgid "David"
+#~ msgstr "David"
+
+#~ msgid "Zira"
+#~ msgstr "Zira"
+
+#~ msgid "pitch"
+#~ msgstr "pitch"
+
+#~ msgid "volume"
+#~ msgstr "volume"
+
+#~ msgid " Deadline extended to {f} hours for a 10-hour sleep en route."
+#~ msgstr "途中睡眠 10 小时的截止日期延长至 {f} 小时。"
+
+#~ msgid "Dispatch: {message} {repair}"
+#~ msgstr "调度：{message}{repair}"
+
+#~ msgid "Report truck damage. Dispatch can authorize the roadside mechanic."
+#~ msgstr "报告卡车损坏。调度可以批准路边维修技师来修。"
+
+#~ msgid ""
+#~ "Held at the chain checkpoint. You have no chains. Wait here until the chain "
+#~ "law lifts, or turn back."
+#~ msgstr "你被防滑链检查站拦下。你没有防滑链。在这里等法规解除，或者掉头。"
+
+#~ msgid ""
+#~ "Pacing and pressure. Relaxed gives wider hazard windows, gentler damage and "
+#~ "fatigue, calmer speech, and the most time to respond. Standard keeps "
+#~ "balanced pressure and moves the clock twice as fast. Real time keeps "
+#~ "Standard's pressure and runs the driving clock at the speed of a real "
+#~ "clock, lined up with your computer's date and time; delivery time remaining "
+#~ "and hours of service do not move. Changeable mid-drive from the pause menu; "
+#~ "the new pacing starts when the truck next stops."
+#~ msgstr ""
+#~ "节奏和压力。轻松给出更宽的危险反应时间、更温和的损坏和疲劳、更平静的播报，以及最多的反应时间。标准保持均衡的压力，时钟走得是两倍快。实时保持标准的压力，"
+#~ "并让驾驶时钟按真实时钟的速度走，和你电脑的日期时间对齐；剩余送货时间和驾驶工时不受影响。可以在驾驶中从暂停菜单更改；新的节奏在卡车下一次停下时开始。"
+
+#~ msgid ""
+#~ "Both hours modes use these limits. Relaxed changes enforcement pressure. "
+#~ "Warnings come at two hours, one hour, and thirty minutes left."
+#~ msgstr "两种工时模式都使用这些限制。轻松模式只改变执法压力。剩余2小时、1小时和30分钟时会发出警告。"
+
+#~ msgid ""
+#~ "Relaxed pacing gives more response time and gentler consequences. Standard "
+#~ "moves driving time and distance twice as fast. Real time follows the "
+#~ "computer clock at real speed."
+#~ msgstr "轻松节奏给你更多反应时间，后果也更温和。标准让驾驶时间和距离走得快一倍。实时按电脑时钟以真实速度走。"
+
+#~ msgid ""
+#~ "Download complete, but this install cannot update itself. The new version "
+#~ "is saved at {dest}. Install it yourself, then restart the game."
+#~ msgstr "下载完成，但这个安装版本无法自行更新。新版本保存在{dest}。请自己安装，然后重启游戏。"
+
+#~ msgid ""
+#~ "Download complete, but the update could not install itself. The new version "
+#~ "is saved at {dest}. Install it yourself, then restart the game."
+#~ msgstr "下载完成，但更新无法自行安装。新版本保存在{dest}。请自己安装，然后重启游戏。"
 
 #~ msgid "You have no chains aboard. Buy a set at the next garage."
 #~ msgstr "车上没有防滑链。请在下一个车库购买一套。"
@@ -39762,9 +40533,6 @@ msgstr "大部分都是分开的，你这​​边有一条车道。"
 
 #~ msgid "Collision! The truck took damage. Total damage {damage} percent."
 #~ msgstr "撞上了！卡车受损了。总损坏百分之{damage}。"
-
-#~ msgid "The truck took damage."
-#~ msgstr "卡车受损了。"
 
 #~ msgid "{normal} Automatic speed control canceled."
 #~ msgstr "{normal}自动速度控制已取消。"
