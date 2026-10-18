@@ -723,6 +723,16 @@ jobs:
             --title "Freight Fate 1.9 tester snapshot $(date -u +%Y-%m-%d)" \
             --prerelease --target "$COMMIT_SHA"
 
+      # Keep the release page to the last week of tester snapshots; testers
+      # can still roll back that far. Tags stay (the notes step reads the
+      # previous one). A failed prune never fails the release.
+      - name: Prune old tester snapshots
+        if: ${{ inputs.dry_run != true && needs.prepare.outputs.is_prerelease == 'true' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 tools/prune_snapshots.py --keep 7
+
       # The 1.8 updater's developer-snapshot channel looks only at the 20
       # newest releases for a `nightly-YYYYMMDD` prerelease, and on a Mac
       # for an asset ending `-macos.zip`; it has never heard of
