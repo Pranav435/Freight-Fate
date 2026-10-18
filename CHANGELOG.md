@@ -25,6 +25,7 @@
 - **The game can speak German.** Choose Deutsch under Settings, Speech, Language; the radio stays in English.
 - **The game can speak Brazilian Portuguese.** Choose Português do Brasil under Settings, Speech, Language; the radio stays in English.
 - **The game can speak Italian.** Choose Italiano under Settings, Speech, Language; the radio stays in English.
+- **The game can speak Russian.** Choose Русский under Settings, Speech, Language; the radio stays in English.
 
 - **Key and button practice says what each key or button does at the wheel.** Shift F1 or Back plus Start opens it anywhere.
 
