@@ -19877,7 +19877,9 @@ msgstr "ремонт в мастерской перевозчика"
 #. placeholders: {f}, {f2}
 msgid ""
 " The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
-msgstr " Мастерская перевозчика сначала устранила {f} процентов повреждений, {f2} минут на смене."
+msgstr ""
+" Мастерская перевозчика сначала устранила {f} процентов повреждений, {f2} "
+"минут на смене."
 
 #. placeholders: {grouped}
 msgid "You have {grouped} dollars; the unpaid balance is debt."

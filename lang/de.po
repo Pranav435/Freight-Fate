@@ -20066,7 +20066,9 @@ msgstr "Reparatur in der Spediteurswerkstatt"
 #. placeholders: {f}, {f2}
 msgid ""
 " The carrier shop repaired {f} percent damage first, {f2} minutes on duty."
-msgstr " Die Werkstatt der Spedition hat zuerst {f} Prozent Schaden repariert, {f2} Minuten im Dienst."
+msgstr ""
+" Die Werkstatt der Spedition hat zuerst {f} Prozent Schaden repariert, {f2} "
+"Minuten im Dienst."
 
 #. placeholders: {grouped}
 msgid "You have {grouped} dollars; the unpaid balance is debt."
