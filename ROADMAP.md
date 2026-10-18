@@ -775,6 +775,10 @@ Everything found before 2026-09-25 moved to
 - [ ] FF on a real Mac with Hearken: the macOS link (Prism frameworks and
       the clang runtime) is proved by the manual CI run, but VoiceOver and
       CoreAudio output need a person at a Mac.
+- [x] Release page trimmed (owner, 2026-10-18): each snapshot run deletes
+      tester snapshot releases beyond the newest seven
+      (`tools/prune_snapshots.py`); their tags stay, and stable and
+      `nightly-*` bridge releases are never touched.
 
 - [x] Low fuel warning could also fire when remaining range is shorter than
       the distance to the next fuel-capable stop (issue #272 shipped the
