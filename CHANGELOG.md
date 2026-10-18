@@ -4,6 +4,8 @@
 
 ### Added
 
+- **Truck stops in chain-law states sell snow chains.** With no usable set aboard, the stop menu offers a new set for 1,000 dollars.
+- **Dispatch sends road service with chains when you have none under a chain law.** Report truck trouble; the set arrives in an hour and a half.
 - **Job details now say the hours and fuel a run needs.** Trip hours, your driving time left, and your fuel level and range, before you accept.
 
 - **Leaving with a load now tells you your driving time left and fuel.** It adds a break, a sleep or a short tank only when the run needs one.
@@ -162,6 +164,11 @@
 
 ### Fixed
 
+- **Dispatch says a roadwork closure once when it covers several stretches.** It names how many places instead of repeating the same closure.
+- **The drive to a pickup no longer draws citations for the trailer still waiting in the shipper's yard.**
+- **Officers no longer cite a fault already written up on the same drive.** A trailer lamp, worn tires, body damage or a chain-law ticket counts once per drive.
+- **Snow chains now last through a posted chain law.** Before, they could wear out in about a dozen miles when a weather alert posted the law on a wet road.
+- **Report truck trouble now covers trailer faults and missing chains.** Dispatch sends a mechanic for a trailer lamp or tire, and says what to do without chains.
 - **The posted limit no longer dips briefly where the map mistook a ramp or side street for the highway.** 31 such dips are gone.
 - **A speed limit line that was cut off no longer comes back after a newer one.** "Reduced to 45" stays quiet once the limit is 55 again.
 
