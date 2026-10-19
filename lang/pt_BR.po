@@ -40001,6 +40001,38 @@ msgstr "Faixa da direita  ·  manutenção de faixa {lane_assist}"
 msgid "Single lane  ·  lane keeping {lane_assist}"
 msgstr "Faixa única  ·  manutenção de faixa {lane_assist}"
 
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph fechadíssima"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph fechada"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph moderada"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph suave"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h hairpin"
+msgstr "{kmh} km/h fechadíssima"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h sharp"
+msgstr "{kmh} km/h fechada"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h moderate"
+msgstr "{kmh} km/h moderada"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h gentle"
+msgstr "{kmh} km/h suave"
+
 msgid "mph"
 msgstr "mph"
 
@@ -40018,22 +40050,6 @@ msgstr "VELOC."
 
 msgid "LIMIT"
 msgstr "MÁXIMA"
-
-#. placeholders: {mph}
-msgid "{mph} mph hairpin"
-msgstr "{mph} mph fechadíssima"
-
-#. placeholders: {mph}
-msgid "{mph} mph sharp"
-msgstr "{mph} mph fechada"
-
-#. placeholders: {mph}
-msgid "{mph} mph moderate"
-msgstr "{mph} mph moderada"
-
-#. placeholders: {mph}
-msgid "{mph} mph gentle"
-msgstr "{mph} mph suave"
 
 msgid "AUTO"
 msgstr "AUTO"

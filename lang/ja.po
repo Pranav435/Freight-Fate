@@ -35973,6 +35973,38 @@ msgstr "右車線  ·  レーンキープ {lane_assist}"
 msgid "Single lane  ·  lane keeping {lane_assist}"
 msgstr "単一車線  ·  レーンキープ {lane_assist}"
 
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph ヘアピン"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph 急"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph 中程度"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph 緩やか"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h hairpin"
+msgstr "{kmh} km/h ヘアピン"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h sharp"
+msgstr "{kmh} km/h 急"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h moderate"
+msgstr "{kmh} km/h 中程度"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h gentle"
+msgstr "{kmh} km/h 緩やか"
+
 msgid "mph"
 msgstr "mph"
 
@@ -35990,22 +36022,6 @@ msgstr "制限"
 
 msgid "LIMIT"
 msgstr "速度"
-
-#. placeholders: {mph}
-msgid "{mph} mph hairpin"
-msgstr "{mph} mph ヘアピン"
-
-#. placeholders: {mph}
-msgid "{mph} mph sharp"
-msgstr "{mph} mph 急"
-
-#. placeholders: {mph}
-msgid "{mph} mph moderate"
-msgstr "{mph} mph 中程度"
-
-#. placeholders: {mph}
-msgid "{mph} mph gentle"
-msgstr "{mph} mph 緩やか"
 
 msgid "AUTO"
 msgstr "自動"

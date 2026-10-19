@@ -43482,6 +43482,46 @@ msgstr ""
 msgid "Single lane  ·  lane keeping {lane_assist}"
 msgstr ""
 
+#. placeholders: {mph}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{mph} mph hairpin"
+msgstr ""
+
+#. placeholders: {mph}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{mph} mph sharp"
+msgstr ""
+
+#. placeholders: {mph}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{mph} mph moderate"
+msgstr ""
+
+#. placeholders: {mph}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{mph} mph gentle"
+msgstr ""
+
+#. placeholders: {kmh}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{kmh} km/h hairpin"
+msgstr ""
+
+#. placeholders: {kmh}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{kmh} km/h sharp"
+msgstr ""
+
+#. placeholders: {kmh}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{kmh} km/h moderate"
+msgstr ""
+
+#. placeholders: {kmh}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{kmh} km/h gentle"
+msgstr ""
+
 #: crates/freight-fate/src/visuals/hud.rs
 msgid "mph"
 msgstr ""
@@ -43504,26 +43544,6 @@ msgstr ""
 
 #: crates/freight-fate/src/visuals/hud.rs crates/freight-fate/src/visuals/signs.rs
 msgid "LIMIT"
-msgstr ""
-
-#. placeholders: {mph}
-#: crates/freight-fate/src/visuals/hud.rs
-msgid "{mph} mph hairpin"
-msgstr ""
-
-#. placeholders: {mph}
-#: crates/freight-fate/src/visuals/hud.rs
-msgid "{mph} mph sharp"
-msgstr ""
-
-#. placeholders: {mph}
-#: crates/freight-fate/src/visuals/hud.rs
-msgid "{mph} mph moderate"
-msgstr ""
-
-#. placeholders: {mph}
-#: crates/freight-fate/src/visuals/hud.rs
-msgid "{mph} mph gentle"
 msgstr ""
 
 #: crates/freight-fate/src/visuals/hud.rs

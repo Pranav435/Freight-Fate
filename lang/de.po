@@ -40334,6 +40334,38 @@ msgstr "Rechte Spur  ·  Spurhaltung {lane_assist}"
 msgid "Single lane  ·  lane keeping {lane_assist}"
 msgstr "Einspurig  ·  Spurhaltung {lane_assist}"
 
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph Haarnadel"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph scharf"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph mittel"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph leicht"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h hairpin"
+msgstr "{kmh} km/h Haarnadel"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h sharp"
+msgstr "{kmh} km/h scharf"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h moderate"
+msgstr "{kmh} km/h mittel"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h gentle"
+msgstr "{kmh} km/h leicht"
+
 msgid "mph"
 msgstr "mph"
 
@@ -40351,22 +40383,6 @@ msgstr "TEMPO"
 
 msgid "LIMIT"
 msgstr "LIMIT"
-
-#. placeholders: {mph}
-msgid "{mph} mph hairpin"
-msgstr "{mph} mph Haarnadel"
-
-#. placeholders: {mph}
-msgid "{mph} mph sharp"
-msgstr "{mph} mph scharf"
-
-#. placeholders: {mph}
-msgid "{mph} mph moderate"
-msgstr "{mph} mph mittel"
-
-#. placeholders: {mph}
-msgid "{mph} mph gentle"
-msgstr "{mph} mph leicht"
 
 msgid "AUTO"
 msgstr "AUTOMATIK"

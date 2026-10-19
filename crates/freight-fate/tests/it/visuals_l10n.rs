@@ -100,15 +100,22 @@ fn every_shipped_catalog_names_the_curve_in_its_own_words() {
     ];
     for (code, po) in catalogs {
         let text = text_in(&catalog(code, po));
+        let kmh = text.tr_drawn("km/h");
         for severity in ["hairpin", "sharp", "moderate", "gentle"] {
             let drawn = text.tr_drawn(&format!("35 mph {severity}"));
             assert!(drawn.contains("35"), "{code}: {drawn}");
+            assert!(!drawn.contains(severity), "{code}: {drawn}");
+            // A metric driver reads the same bend in km/h.
+            let drawn = text.tr_drawn(&format!("56 km/h {severity}"));
+            assert!(drawn.contains("56"), "{code}: {drawn}");
+            assert!(drawn.contains(&kmh), "{code}: {drawn}");
             assert!(!drawn.contains(severity), "{code}: {drawn}");
         }
     }
     let text = text_in(&spanish());
     assert_eq!(text.tr_drawn("35 mph sharp"), "35 mph cerrada");
     assert_eq!(text.tr_drawn("20 mph hairpin"), "20 mph horquilla");
+    assert_eq!(text.tr_drawn("56 km/h sharp"), "56 km/h cerrada");
 }
 
 #[test]

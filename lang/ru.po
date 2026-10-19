@@ -40313,6 +40313,38 @@ msgstr "Правая полоса  ·  удерж. полосы: {lane_assist}"
 msgid "Single lane  ·  lane keeping {lane_assist}"
 msgstr "Одна полоса  ·  удерж. полосы: {lane_assist}"
 
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} миль/ч разворот"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} миль/ч крутой"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} миль/ч умеренный"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} миль/ч пологий"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h hairpin"
+msgstr "{kmh} км/ч разворот"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h sharp"
+msgstr "{kmh} км/ч крутой"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h moderate"
+msgstr "{kmh} км/ч умеренный"
+
+#. placeholders: {kmh}
+msgid "{kmh} km/h gentle"
+msgstr "{kmh} км/ч пологий"
+
 msgid "mph"
 msgstr "миль/ч"
 
@@ -40330,22 +40362,6 @@ msgstr "ОГРАН."
 
 msgid "LIMIT"
 msgstr "СКОР."
-
-#. placeholders: {mph}
-msgid "{mph} mph hairpin"
-msgstr "{mph} миль/ч разворот"
-
-#. placeholders: {mph}
-msgid "{mph} mph sharp"
-msgstr "{mph} миль/ч крутой"
-
-#. placeholders: {mph}
-msgid "{mph} mph moderate"
-msgstr "{mph} миль/ч умеренный"
-
-#. placeholders: {mph}
-msgid "{mph} mph gentle"
-msgstr "{mph} миль/ч пологий"
 
 msgid "AUTO"
 msgstr "АВТО"

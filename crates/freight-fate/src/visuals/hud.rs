@@ -2,6 +2,9 @@
 //! the posted limit, the next bend and the next turn, the traffic around
 //! the rig, and how far there is to go.
 
+use ff_core::pyfmt::round_py_int;
+use ff_core::units::MILES_TO_KM;
+
 use super::draw::{Layer, Painter, Rgba};
 use super::palette::ACCENT;
 use super::scene_drive::{DriveView, Signal, VehicleKind};
@@ -46,6 +49,35 @@ pub(super) fn lane_line(text: &Text, lane_name: &str, lane_assist: &str) -> Stri
         text.tr_drawn(&format!("Right lane  ·  lane keeping {lane_assist}"))
     } else {
         text.tr_drawn(&format!("Single lane  ·  lane keeping {lane_assist}"))
+    }
+}
+
+/// The next bend's advisory and severity, in the player's units: the number
+/// is the one the spoken warning gives, rounded the same way. Each band is
+/// its own label, so a catalog translates the severity word along with the
+/// rest instead of filling in the English key.
+pub(super) fn curve_label(
+    text: &Text,
+    advisory_mph: i64,
+    severity: &str,
+    imperial: bool,
+) -> String {
+    if imperial {
+        let mph = advisory_mph;
+        match severity {
+            "hairpin" => text.tr_drawn(&format!("{mph} mph hairpin")),
+            "sharp" => text.tr_drawn(&format!("{mph} mph sharp")),
+            "moderate" => text.tr_drawn(&format!("{mph} mph moderate")),
+            _ => text.tr_drawn(&format!("{mph} mph gentle")),
+        }
+    } else {
+        let kmh = round_py_int(advisory_mph as f64 * MILES_TO_KM);
+        match severity {
+            "hairpin" => text.tr_drawn(&format!("{kmh} km/h hairpin")),
+            "sharp" => text.tr_drawn(&format!("{kmh} km/h sharp")),
+            "moderate" => text.tr_drawn(&format!("{kmh} km/h moderate")),
+            _ => text.tr_drawn(&format!("{kmh} km/h gentle")),
+        }
     }
 }
 
@@ -226,15 +258,7 @@ fn top_left(p: &mut Painter, text: &mut Text, view: &DriveView, u: f32, t: f32) 
             ],
             ink,
         );
-        // Each band is its own label, so a catalog translates the severity
-        // word along with the rest instead of filling in the English key.
-        let band: &str = severity;
-        let label = match band {
-            "hairpin" => text.tr_drawn(&format!("{mph} mph hairpin")),
-            "sharp" => text.tr_drawn(&format!("{mph} mph sharp")),
-            "moderate" => text.tr_drawn(&format!("{mph} mph moderate")),
-            _ => text.tr_drawn(&format!("{mph} mph gentle")),
-        };
+        let label = curve_label(text, *mph, severity, hud.imperial);
         let s = 12.0 * u;
         let tw =
             text.measure(&label, s, Weight::Bold)
@@ -891,4 +915,31 @@ fn radar(p: &mut Painter, view: &DriveView, x: f32, y: f32, w: f32, h: f32, u: f
         2.0 * u,
         ACCENT,
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use ff_core::settings::Settings;
+
+    use super::curve_label;
+    use crate::visuals::text::Text;
+
+    #[test]
+    fn the_curve_badge_gives_the_advisory_in_the_players_units() {
+        let text = Text::new();
+        assert_eq!(curve_label(&text, 35, "sharp", true), "35 mph sharp");
+        assert_eq!(curve_label(&text, 35, "sharp", false), "56 km/h sharp");
+        assert_eq!(curve_label(&text, 20, "hairpin", false), "32 km/h hairpin");
+        // The number is the one the spoken warning gives for the same bend.
+        let metric = Settings {
+            imperial_units: false,
+            ..Settings::default()
+        };
+        for mph in [15, 25, 35, 45, 55, 65] {
+            assert_eq!(
+                curve_label(&text, mph, "gentle", false),
+                format!("{} km/h gentle", metric.speed_value(mph as f64))
+            );
+        }
+    }
 }
