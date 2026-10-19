@@ -14,16 +14,19 @@
 //! does internally), so menus' first-letter jump, text entry, and the
 //! `+`/`-` fallbacks keep working.
 
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "visuals"))]
 use std::time::Instant;
 
 use sdl2::clipboard::ClipboardUtil;
 use sdl2::event::{Event, WindowEvent};
-use sdl2::render::{Texture, WindowCanvas};
+#[cfg(feature = "visuals")]
+use sdl2::render::Texture;
+use sdl2::render::WindowCanvas;
 use sdl2::{EventPump, Sdl, VideoSubsystem};
 
 use crate::controller::sdl::{axis_from_sdl, button_from_sdl};
 use crate::states::base::{InputEvent, Key, Mods};
+#[cfg(feature = "visuals")]
 use crate::visuals::Visuals;
 
 use super::context::Clipboard;
@@ -35,6 +38,7 @@ mod display;
 
 /// Keep drawing while the window is covered (macOS stops otherwise), for
 /// capture software that records the window from behind other windows.
+#[cfg(feature = "visuals")]
 pub const ALWAYS_DRAW_ENV: &str = "FREIGHT_FATE_ALWAYS_DRAW";
 
 /// The SDL clipboard (UTF-8 through `SDL_SetClipboardText`, so the whole
@@ -66,8 +70,10 @@ pub struct SdlShell {
     canvas: WindowCanvas,
     pump: EventPump,
     /// The visual display, built the first time it draws.
+    #[cfg(feature = "visuals")]
     visuals: Option<Visuals>,
     /// Its glyph atlas on the GPU.
+    #[cfg(feature = "visuals")]
     atlas: Option<Texture>,
     /// The next frame must be drawn: the window was shown, uncovered,
     /// resized, or the display was switched on or off.
@@ -76,18 +82,20 @@ pub struct SdlShell {
     hidden: bool,
     /// Entirely covered by other windows, as AppKit last said, and when it
     /// was asked. Only a Mac is asked: SDL reports nothing of the kind.
-    #[cfg(target_os = "macos")]
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
     occluded: bool,
-    #[cfg(target_os = "macos")]
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
     occlusion_checked: Option<Instant>,
     /// A real Cocoa window, whose AppKit view can be asked about occlusion.
     /// The dummy driver has none, and the sdl2 crate panics when asked.
     /// False also when `FREIGHT_FATE_ALWAYS_DRAW` is set: capture software
     /// recording the window while it is covered needs it kept drawing.
-    #[cfg(target_os = "macos")]
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
     cocoa: bool,
     /// Whether the last frame drawn was the visual display (or the plain fill).
+    #[cfg(feature = "visuals")]
     showing_visuals: bool,
+    #[cfg(feature = "visuals")]
     geometry_failed: bool,
     #[cfg(target_os = "windows")]
     window_handle: Option<isize>,
@@ -214,7 +222,7 @@ impl SdlShell {
             );
         }
         let pump = sdl.event_pump()?;
-        #[cfg(target_os = "macos")]
+        #[cfg(all(target_os = "macos", feature = "visuals"))]
         let cocoa = video.current_video_driver() == "cocoa"
             && std::env::var_os(ALWAYS_DRAW_ENV).is_none_or(|v| v.is_empty() || v == "0");
         // pygame delivered event.unicode for every key; SDL needs text
@@ -230,17 +238,21 @@ impl SdlShell {
             video,
             canvas,
             pump,
+            #[cfg(feature = "visuals")]
             visuals: None,
+            #[cfg(feature = "visuals")]
             atlas: None,
             redraw: true,
             hidden: false,
-            #[cfg(target_os = "macos")]
+            #[cfg(all(target_os = "macos", feature = "visuals"))]
             occluded: false,
-            #[cfg(target_os = "macos")]
+            #[cfg(all(target_os = "macos", feature = "visuals"))]
             occlusion_checked: None,
-            #[cfg(target_os = "macos")]
+            #[cfg(all(target_os = "macos", feature = "visuals"))]
             cocoa,
+            #[cfg(feature = "visuals")]
             showing_visuals: false,
+            #[cfg(feature = "visuals")]
             geometry_failed: false,
             #[cfg(target_os = "windows")]
             window_handle,

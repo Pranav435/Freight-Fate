@@ -97,7 +97,7 @@ jobs:
         run: |
           touch "$RUNNER_TEMP/ios-build-stamp"
           touch crates/freight-fate/ios/ff_touch.m
-          cargo build -p freight-fate --no-default-features --locked --target ${{ matrix.target }}
+          cargo build -p freight-fate --no-default-features --features visuals --locked --target ${{ matrix.target }}
 
       - name: Check ff_touch.m was compiled for ${{ matrix.target }}
         # Fails the job unless this run compiled ff_touch.m into an object

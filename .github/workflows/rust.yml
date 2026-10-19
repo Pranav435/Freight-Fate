@@ -201,6 +201,12 @@ jobs:
       - name: cargo clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
+      - name: cargo clippy (without the visual display)
+        # Every build names the visual display, so nothing else compiles the
+        # game without it; this keeps that build working for a target that
+        # leaves the display out.
+        run: cargo clippy -p freight-fate --all-targets --no-default-features --features agent-server --locked -- -D warnings
+
   test:
     name: test (${{ matrix.name }})
     strategy:

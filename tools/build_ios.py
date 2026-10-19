@@ -200,7 +200,10 @@ def cargo_build(target: Target, release: bool) -> Path:
         "build",
         "-p",
         "freight-fate",
+        # No agent server; the visual display is what draws the screen.
         "--no-default-features",
+        "--features",
+        "visuals",
         "--target",
         target.triple,
     ]

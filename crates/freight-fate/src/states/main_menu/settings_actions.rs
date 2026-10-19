@@ -547,6 +547,7 @@ impl SettingsCategoryState {
     }
 
     /// The window picks the change up on its next frame.
+    #[cfg(feature = "visuals")]
     pub(super) fn toggle_visual_display(&mut self, ctx: &mut GameContext, _d: i64) {
         ctx.settings.visual_display = !ctx.settings.visual_display;
         self.announce(ctx);

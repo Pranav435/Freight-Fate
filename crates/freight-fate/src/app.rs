@@ -1155,6 +1155,7 @@ impl App {
     /// Draw the window: the visual display, or the plain fill when the
     /// player turned it off. Nothing is read from the game while the window
     /// cannot be seen.
+    #[cfg(feature = "visuals")]
     pub fn render(&mut self) {
         let Some(shell) = self.shell.as_mut() else {
             return;
@@ -1168,6 +1169,15 @@ impl App {
         }
         let scene = crate::visuals::Scene::capture(&self.ctx);
         shell.render_scene(scene, &self.ctx.message_log);
+    }
+
+    /// Draw the window: a build without the visual display has only the
+    /// plain fill.
+    #[cfg(not(feature = "visuals"))]
+    pub fn render(&mut self) {
+        if let Some(shell) = self.shell.as_mut() {
+            shell.render_plain();
+        }
     }
 
     /// One whole frame: pump events, tick, render. `dt` is the frame time.

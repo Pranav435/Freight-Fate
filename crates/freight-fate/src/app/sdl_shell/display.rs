@@ -6,20 +6,24 @@
 //! or (on a Mac) entirely covered. The window used to be cleared and
 //! presented sixty times a second whether anything changed or not.
 
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "visuals"))]
 use std::time::Instant;
 
+#[cfg(feature = "visuals")]
 use ff_core::message_log::MessageLog;
 use sdl2::event::WindowEvent;
 use sdl2::pixels::Color;
 
+#[cfg(feature = "visuals")]
 use crate::visuals::{Scene, Visuals};
 
-use super::super::{BG_COLOR, WINDOW_SIZE};
+use super::super::BG_COLOR;
+#[cfg(feature = "visuals")]
+use super::super::WINDOW_SIZE;
 use super::SdlShell;
 
 /// How often a Mac asks AppKit whether the window is covered.
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "visuals"))]
 const OCCLUSION_POLL: std::time::Duration = std::time::Duration::from_millis(500);
 
 impl SdlShell {
@@ -45,6 +49,7 @@ impl SdlShell {
     /// On a Mac this also asks AppKit, at most twice a second, whether the
     /// window is covered. Only the visual display asks: it is the one thing
     /// drawn frame after frame, and the plain fill is not.
+    #[cfg(feature = "visuals")]
     pub fn can_be_seen(&mut self) -> bool {
         if self.hidden {
             return false;
@@ -56,18 +61,18 @@ impl SdlShell {
         !self.covered()
     }
 
-    #[cfg(target_os = "macos")]
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
     fn covered(&self) -> bool {
         self.occluded
     }
 
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(all(not(target_os = "macos"), feature = "visuals"))]
     fn covered(&self) -> bool {
         false
     }
 
     /// Ask AppKit, at most twice a second, whether the window is covered.
-    #[cfg(target_os = "macos")]
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
     fn check_occlusion(&mut self) {
         let now = Instant::now();
         if self
@@ -93,9 +98,11 @@ impl SdlShell {
         self.occluded = covered;
     }
 
-    /// The visual display off: the plain dark fill, presented only when the
-    /// window needs repainting rather than every frame.
+    /// The visual display off (or left out of the build): the plain dark
+    /// fill, presented only when the window needs repainting rather than
+    /// every frame.
     pub fn render_plain(&mut self) {
+        #[cfg(feature = "visuals")]
         if self.showing_visuals {
             self.showing_visuals = false;
             self.redraw = true;
@@ -116,6 +123,7 @@ impl SdlShell {
     }
 
     /// Draw the visual display for `scene`, if it changed or must be redrawn.
+    #[cfg(feature = "visuals")]
     pub fn render_scene(&mut self, scene: Scene, log: &MessageLog) {
         if !self.showing_visuals {
             self.showing_visuals = true;
@@ -153,7 +161,7 @@ impl SdlShell {
 /// Asking AppKit whether the game window is covered. SDL 2.26 never
 /// reports a window hidden behind others, and drawing one costs the same
 /// as drawing a visible one.
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "visuals"))]
 mod mac_window {
     use objc2_app_kit::{NSWindow, NSWindowOcclusionState};
     use sdl2::sys::{SDL_GetVersion, SDL_GetWindowWMInfo, SDL_SysWMinfo, SDL_bool, SDL_SYSWM_TYPE};
