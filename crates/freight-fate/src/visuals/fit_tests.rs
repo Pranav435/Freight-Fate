@@ -1,13 +1,15 @@
 //! Every catalog's drawn labels fit the space the display gives them: no
-//! gauge label runs into its bar, and no sign word is cut short.
+//! gauge label runs into its bar, and no sign word is cut short. Widths are
+//! measured as wide as any platform's fallback font draws them, so a test
+//! that passes here passes on Linux, Windows and macOS alike.
 
 use std::sync::Arc;
 
 use ff_core::l10n::{Catalog, Translator};
 
 use super::hud::{
-    gauge_label_column, lane_line, GAUGE_LABEL_GAP, GAUGE_TEXT, GAUGE_VALUE_COLUMN,
-    GAUGE_VALUE_GAP, LANE_LINE_TEXT, LANE_LINE_WIDTH,
+    lane_line, GAUGE_LABEL_GAP, GAUGE_LABEL_MAX, GAUGE_TEXT, GAUGE_VALUE_COLUMN, GAUGE_VALUE_GAP,
+    LANE_LINE_TEXT, LANE_LINE_WIDTH,
 };
 use super::signs::{service_rows, SERVICE_LINE_FT, SERVICE_TEXT_FT};
 use super::text::{Text, Weight};
@@ -45,7 +47,7 @@ fn too_wide(text: &mut Text, english: &[&str], size: f32, weight: Weight, max: f
         .collect::<Vec<_>>()
         .into_iter()
         .filter_map(|drawn| {
-            let w = text.measure(&drawn, size, weight);
+            let w = text.measure_on_any_platform(&drawn, size, weight);
             (w > max).then(|| format!("{drawn} ({w:.2} > {max:.2})"))
         })
         .collect()
@@ -59,12 +61,13 @@ fn no_gauge_label_or_value_runs_into_its_bar_in_any_language() {
             .iter()
             .map(|label| text.tr_drawn(label))
             .collect();
-        let refs: Vec<&str> = labels.iter().map(String::as_str).collect();
-        let column = gauge_label_column(&mut text, &refs);
+        // The column grows to the widest label, up to its cap.
         for label in &labels {
-            let w = text.measure(label, GAUGE_TEXT, Weight::Bold);
-            if w + GAUGE_LABEL_GAP > column {
-                problems.push(format!("{code}: {label} ({w:.1}) in a {column:.1} column"));
+            let w = text.measure_on_any_platform(label, GAUGE_TEXT, Weight::Bold);
+            if w + GAUGE_LABEL_GAP > GAUGE_LABEL_MAX {
+                problems.push(format!(
+                    "{code}: {label} ({w:.1}) past the {GAUGE_LABEL_MAX} column"
+                ));
             }
         }
         for bad in too_wide(
@@ -112,7 +115,7 @@ fn no_service_sign_word_is_cut_short_in_any_language() {
                 problems.push(format!("{code}: {drawn} takes {} lines", rows.len()));
             }
             for row in &rows {
-                let w = text.measure(row, SERVICE_TEXT_FT, Weight::Bold);
+                let w = text.measure_on_any_platform(row, SERVICE_TEXT_FT, Weight::Bold);
                 if w > SERVICE_LINE_FT {
                     problems.push(format!("{code}: {row} ({w:.1} ft)"));
                 }
@@ -165,7 +168,7 @@ fn the_lane_line_fits_its_column_for_every_lane_and_mode_in_any_language() {
             let name = name[..1].to_uppercase() + &name[1..];
             for mode in LANE_KEEPING_MODES {
                 let line = lane_line(&text, &name, mode);
-                let w = text.measure(&line, LANE_LINE_TEXT, Weight::Regular);
+                let w = text.measure_on_any_platform(&line, LANE_LINE_TEXT, Weight::Regular);
                 if w > LANE_LINE_WIDTH {
                     problems.push(format!("{code}: {line} ({w:.1})"));
                 }
@@ -176,4 +179,16 @@ fn the_lane_line_fits_its_column_for_every_lane_and_mode_in_any_language() {
         }
     }
     assert!(problems.is_empty(), "{problems:#?}");
+}
+
+#[test]
+fn a_character_overpass_lacks_counts_as_a_full_em_on_any_platform() {
+    let mut text = Text::new();
+    let latin = text.measure("ROAD", 10.0, Weight::Bold);
+    assert_eq!(
+        text.measure_on_any_platform("ROAD", 10.0, Weight::Bold),
+        latin
+    );
+    let cjk = text.measure_on_any_platform("この先", 10.0, Weight::Bold);
+    assert!(cjk >= 29.99, "three full-width characters: {cjk}");
 }
