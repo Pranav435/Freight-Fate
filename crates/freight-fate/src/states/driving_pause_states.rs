@@ -60,6 +60,9 @@ pub fn restore_checkpoint_driver_state(ctx: &mut GameContext, _driving: &mut Dri
 pub struct PauseMenuState {
     menu: MenuCore<Self>,
     driving: DriveRef,
+    /// The introduction to team driving, when this menu is the first to
+    /// offer a co-driver.
+    pub(crate) team_intro: Option<String>,
 }
 
 impl PauseMenuState {
@@ -72,6 +75,7 @@ impl PauseMenuState {
         PauseMenuState {
             menu: MenuCore::new("Paused"),
             driving: DriveRef::active(ctx),
+            team_intro: None,
         }
     }
 
@@ -80,6 +84,7 @@ impl PauseMenuState {
         PauseMenuState {
             menu: MenuCore::new("Paused"),
             driving,
+            team_intro: None,
         }
     }
 
@@ -747,6 +752,9 @@ impl Menu for PauseMenuState {
         // every pair of announcements for anyone who checks the menu mid-run.
         let title = end_sentence(&self.menu.title);
         ctx.say_with(title, Say::new().review(false));
+        if let Some(intro) = self.team_intro.take() {
+            ctx.say_with(intro, Say::queued());
+        }
         let current = self.current_text(ctx);
         ctx.say_with(current, Say::queued().review(false));
     }

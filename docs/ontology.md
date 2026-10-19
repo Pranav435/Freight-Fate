@@ -281,6 +281,7 @@ from the words, and synonyms cost them a re-read.
 | A delivery run with a co-driver, including a load dispatch books for two drivers ("Team load" in the job details) | team load | team run, relay, duo | `TeamDrive`, `Job.team`, the `team:loads:` counters |
 | Resting in the sleeper while the co-driver drives at the normal pace | ride along ("Hand the wheel to Dan and ride along"; at the shipper, "Depart with Dan driving, and ride along") | watch, spectate, passenger seat | `TeamMode::RideAlong` |
 | Sleeping while the co-driver's shift runs ahead | sleep ("Hand the wheel to Dan and sleep"; at the shipper, "Depart with Dan driving, and sleep"); "sleep through it" in the manual | fast-forward, skip, time skip | `TeamMode::SleepThrough` |
+| The player's ten hours off in the sleeper while the co-driver drives, which resets their hours and ends the co-driver's shift | rest ("Rest: 3.5 hours of 10."; "Your 10-hour rest is in.") | recovery, reset, sleep credit | `co_driver::rest_complete`, `Wheel.player_rest_owed` |
 | The co-driver giving the wheel back | needs you back ("Dan needs you back at the wheel."); the pause menu row is "Take the wheel back" | summon, wake call, handoff | `co_driver_summon`, `take_wheel_back` |
 | The in-game time of day (truck-local with a named zone in accelerated modes; computer-anchored and spoken as "local game time" in Real time) | clock | local time, game time | `Trip.local_hour`, `clock_text` |
 | When the load is due | deadline | due time, drop time (the appointment is the named hour) | `Job.deadline_game_h` |

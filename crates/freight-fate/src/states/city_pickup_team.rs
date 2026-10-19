@@ -6,7 +6,7 @@ use crate::app::GameContext;
 use crate::states::base::MenuItem;
 use crate::states::city::profile;
 use crate::states::city_pickup::PickupFacilityState;
-use crate::states::driving_team::handover::{job_pairing, terms_text};
+use crate::states::driving_team::handover::{job_pairing, take_intro, terms_text};
 use crate::states::driving_team::TeamMode;
 
 impl PickupFacilityState {
@@ -31,6 +31,16 @@ impl PickupFacilityState {
             None => self.job.distance_mi / ff_core::models::jobs::DEADLINE_AVG_MPH * 60.0,
         };
         co_driver::team_worthwhile(&profile(ctx).hos, &ctx.settings.hos_mode, drive_min)
+    }
+
+    /// The introduction to team driving, the first time a career's dock
+    /// offers a co-driver.
+    pub(crate) fn team_intro(&self, ctx: &mut GameContext) -> Option<String> {
+        if !self.team_departure_offered(ctx) {
+            return None;
+        }
+        let name = job_pairing(ctx, &self.job).co_driver.name;
+        take_intro(ctx, name, true)
     }
 
     /// The two team rows, placed after Depart for destination.

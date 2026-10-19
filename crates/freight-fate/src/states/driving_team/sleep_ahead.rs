@@ -112,7 +112,7 @@ impl DrivingState {
     /// What the co-driver needs to stop for now, the way they plan it.
     fn sleep_need(&self, ctx: &GameContext) -> Option<StopPurpose> {
         let mode = &ctx.settings.hos_mode;
-        if co_driver::shift_over(hos_of(ctx), mode) {
+        if co_driver::shift_over(hos_of(ctx), mode) || self.player_rest_complete(ctx) {
             Some(StopPurpose::ShiftEnd)
         } else if co_driver::break_wanted(hos_of(ctx), mode) {
             Some(StopPurpose::Break)
@@ -136,7 +136,12 @@ impl DrivingState {
         let mut fuel = truck.fuel_gal;
         let fuel_due_at_start = fuel / tank < FUEL_STOP_FRACTION;
         let break_due_at_start = co_driver::break_wanted(&hos, &mode);
-        let shift_due_at_start = co_driver::shift_over(&hos, &mode);
+        let shift_due_at_start =
+            co_driver::shift_over(&hos, &mode) || self.player_rest_complete(ctx);
+        // The player's rest comes in this many minutes into the walk.
+        let rest_in_min = self
+            .player_rest_left_min(ctx)
+            .filter(|_| !shift_due_at_start);
         let start = self.trip.position_mi;
         let mut mile = start;
         let mut minutes = 0.0;
@@ -151,7 +156,8 @@ impl DrivingState {
             minutes += step_min;
             let due = (!fuel_due_at_start && fuel / tank < FUEL_STOP_FRACTION)
                 || (!break_due_at_start && co_driver::break_wanted(&hos, &mode))
-                || (!shift_due_at_start && co_driver::shift_over(&hos, &mode));
+                || (!shift_due_at_start && co_driver::shift_over(&hos, &mode))
+                || rest_in_min.is_some_and(|rest| minutes >= rest);
             if stop_at_need && due {
                 break;
             }
@@ -235,8 +241,10 @@ impl DrivingState {
     /// The shift ends at `stop`: the truck is parked there with the stop's
     /// menu open, and the co-driver hands back from it.
     fn sleep_park_for_shift_end(&mut self, ctx: &mut GameContext, stop: &RoadStop) {
+        let hours_up = co_driver::shift_over(hos_of(ctx), &ctx.settings.hos_mode);
         if let Some(wheel) = self.team.as_mut().and_then(|team| team.wheel.as_mut()) {
             wheel.pilot.shift_over = true;
+            wheel.pilot.rested = !hours_up;
         }
         self.trip.position_mi = stop.at_mi;
         self.enforcement_prev_mi = stop.at_mi;

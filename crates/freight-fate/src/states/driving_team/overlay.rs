@@ -59,11 +59,12 @@ pub fn overlay_move(top: &dyn State, drive: &DrivingState, ctx: &GameContext) ->
     if any.is::<ParkingFullState>() {
         // The shift is over and the lot is full: the player decides where
         // to sleep.
+        // The player rested, the next lot will do as well as this one.
         let shift_over = drive
             .team
             .as_ref()
             .and_then(|team| team.wheel.as_ref())
-            .is_some_and(|wheel| wheel.pilot.shift_over);
+            .is_some_and(|wheel| wheel.pilot.shift_over && !wheel.pilot.rested);
         if shift_over {
             return OverlayMove::Summon("shift".into());
         }
@@ -84,8 +85,9 @@ fn rest_stop_move(rows: &[String], drive: &DrivingState) -> OverlayMove {
         .as_ref()
         .and_then(|team| team.wheel.as_ref())
         .map(|wheel| &wheel.pilot);
-    if pilot.is_some_and(|pilot| pilot.shift_over) {
-        return OverlayMove::Summon("shift".into());
+    if let Some(pilot) = pilot.filter(|pilot| pilot.shift_over) {
+        let reason = if pilot.rested { "rested" } else { "shift" };
+        return OverlayMove::Summon(reason.into());
     }
     if pilot.is_some_and(|pilot| matches!(pilot.making_for, Some((_, StopPurpose::Break)))) {
         if let Some(row) = row_starting(rows, "Take a 30-minute break") {

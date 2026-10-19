@@ -36,7 +36,7 @@ pub mod stop_work;
 use serde_json::{json, Map, Value};
 
 use ff_core::models::co_driver::{self, CoDriver, PairingReason};
-use ff_core::sim::hos::HosClock;
+use ff_core::sim::hos::{self, HosClock};
 
 use crate::app::{GameContext, TRANSCRIPT_TARGET};
 use crate::bindings::Action;
@@ -82,6 +82,9 @@ pub struct Wheel {
     pub log: ShiftLog,
     /// Why they are handing back, once they are.
     pub summon: Option<String>,
+    /// The player still needed rest when they handed over, so the shift
+    /// ends once that rest is in.
+    pub player_rest_owed: bool,
 }
 
 /// The co-driver for this load.
@@ -286,6 +289,7 @@ impl DrivingState {
             return;
         }
         std::mem::swap(hos_mut_of(ctx), &mut team.off_wheel_hos);
+        let player_rest_owed = !co_driver::fully_rested(&team.off_wheel_hos);
         let seed = self.trip_seed + self.trip.game_minutes as i64;
         team.wheel = Some(Wheel {
             mode,
@@ -294,6 +298,7 @@ impl DrivingState {
             radio: RadioMood::new(team.co_driver, radio_on, seed),
             log: ShiftLog::default(),
             summon: None,
+            player_rest_owed,
         });
         ctx.settings.hand_assists_to_co_driver();
         // The co-driver drives the automatic box. Set here, not by the
@@ -382,6 +387,7 @@ fn summon_line(name: &str, reason: &str) -> String {
     match reason {
         "gate" => format!("{name} has the truck at the receiver's gate."),
         "shift" => format!("{name} needs you back at the wheel. Their hours are up."),
+        "rested" => format!("{name} has parked and hands you the wheel. Your 10-hour rest is in."),
         "damage" => format!("{name} needs you. The truck took damage."),
         "fuel" => format!("{name} needs you. The tank is empty."),
         "off the road" => format!("{name} needs you. The truck has left the road."),
@@ -389,6 +395,21 @@ fn summon_line(name: &str, reason: &str) -> String {
         "break" => format!("{name} needs you back at the wheel. Their break is due."),
         _ => format!("{name} needs you to decide this one."),
     }
+}
+
+/// Woken before the rest was in: how much of it the player had.
+fn rest_short_line(owed: bool, player: &HosClock, ctx: &GameContext) -> Option<String> {
+    let mode = &ctx.settings.hos_mode;
+    if !owed || hos::is_non_enforced(mode) || hos::limits(mode).is_none() {
+        return None;
+    }
+    if co_driver::fully_rested(player) {
+        return None;
+    }
+    Some(format!(
+        "You had {} of your 10-hour rest.",
+        hos::duration_text(co_driver::rested_min(player) / 60.0)
+    ))
 }
 
 /// The wake-up summary after a slept-through shift.
@@ -419,6 +440,10 @@ impl DrivingState {
         };
         let name = team.co_driver.name;
         let mode = team.wheel.as_ref().map(|wheel| wheel.mode);
+        let owed_rest = team
+            .wheel
+            .as_ref()
+            .is_some_and(|wheel| wheel.player_rest_owed);
         let Some(log) = self.take_wheel_back(ctx) else {
             return;
         };
@@ -428,6 +453,9 @@ impl DrivingState {
             lines.push(wake_summary(name, &log, ctx));
         }
         lines.push(summon_line(name, reason));
+        if let Some(short) = rest_short_line(owed_rest, self.player_hos_now(ctx), ctx) {
+            lines.push(short);
+        }
         if let Some(team) = self.team.as_mut() {
             team.last_summary = lines.clone();
         }

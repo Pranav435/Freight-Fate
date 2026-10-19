@@ -189,3 +189,48 @@ fn only_the_surprise_pairings_carry_a_badge() {
 fn ten_hours_in_the_sleeper_clears_fatigue() {
     assert!((sleeper_fatigue_relief(hos::SLEEP_MIN) - 100.0).abs() < 1e-9);
 }
+
+#[test]
+fn the_player_is_rested_after_ten_unbroken_hours_in_the_sleeper() {
+    let mut player = HosClock::new();
+    assert!(fully_rested(&player), "an empty logbook needs no rest");
+    player.drive(6.0 * 60.0);
+    assert!(!fully_rested(&player));
+    assert_eq!(rest_left_min(&player), hos::SLEEP_MIN);
+    player.sleeper(4.0 * 60.0);
+    assert_eq!(rested_min(&player), 4.0 * 60.0);
+    assert!(!rest_complete(&player, "realistic", true));
+    player.sleeper(6.0 * 60.0);
+    assert!(fully_rested(&player));
+    assert!(rest_complete(&player, "realistic", true));
+    assert!(
+        !rest_complete(&player, "realistic", false),
+        "a player rested at the handover gets the co-driver's whole shift"
+    );
+    assert!(
+        !rest_complete(&player, "debug_off", true),
+        "with hours off, nobody's rest ends the shift"
+    );
+}
+
+#[test]
+fn the_introduction_is_heard_once_per_career() {
+    let mut heard = stats();
+    assert!(!introduced(&heard));
+    mark_introduced(&mut heard);
+    assert!(introduced(&heard));
+    let mut teamed = stats();
+    record_team_load(&mut teamed, "dan", COMPANY_DRIVER);
+    assert!(
+        introduced(&teamed),
+        "a career that has teamed knows already"
+    );
+}
+
+#[test]
+fn the_shift_left_leaves_out_the_break_the_co_driver_stops_for() {
+    let mut hos = HosClock::new();
+    hos.drive(7.0 * 60.0);
+    assert_eq!(shift_left_min(&hos, "realistic"), Some(4.0 * 60.0));
+    assert_eq!(shift_left_min(&hos, "debug_off"), None);
+}

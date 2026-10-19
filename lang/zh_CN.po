@@ -16232,6 +16232,11 @@ msgid ""
 "Trip hours: about {hours} driving hours, with {sleeps} 10-hour sleeps."
 msgstr ""
 
+msgid ""
+"Co-driver: available on this load, at the shipper's dock or from the pause "
+"menu."
+msgstr ""
+
 #. placeholders: {percent}, {range}
 msgid "Fuel: {percent} percent, about {range} of range, short of this trip."
 msgstr ""
@@ -28277,6 +28282,15 @@ msgstr ""
 msgid "{name} needs you back at the wheel. Their hours are up."
 msgstr ""
 
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name} has parked and hands you the wheel."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} has parked and hands you the wheel. Your 10-hour rest is in."
+msgstr ""
+
 #. one sentence of a longer line
 msgid "The truck took damage."
 msgstr "卡车受损了。"
@@ -28326,6 +28340,10 @@ msgstr ""
 msgid "{name} needs you to decide this one."
 msgstr ""
 
+#. placeholders: {duration_text}
+msgid "You had {duration_text} of your 10-hour rest."
+msgstr ""
+
 #. placeholders: {f}
 msgid "You slept {f} hours."
 msgstr ""
@@ -28367,10 +28385,45 @@ msgid ""
 "are logged in the sleeper berth."
 msgstr ""
 
-msgid "Take the wheel back"
+#. placeholders: {name}
+msgid ""
+"{name} can drive from here, or take over later from the pause menu, while "
+"you rest in the sleeper."
+msgstr ""
+
+#. placeholders: {name}
+msgid ""
+"{name} can take the wheel from this menu while you rest in the sleeper."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} drives to the receiver's gate unless something needs you."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} drives until their own hours run out."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} hands the wheel back once you have had your 10-hour rest."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "This load is long enough to share with a co-driver."
+msgstr ""
+
+#. placeholders: {take}, {back}
+msgid "This load is long enough to share with a co-driver. {take} {back}"
+msgstr ""
+
+#. placeholders: {status}
+msgid "{status} Wakes you and gives you the wheel."
 msgstr ""
 
 msgid "Wakes you and gives you the wheel."
+msgstr ""
+
+msgid "Take the wheel back"
 msgstr ""
 
 #. placeholders: {name}
@@ -28390,6 +28443,9 @@ msgstr ""
 msgid "shift"
 msgstr ""
 
+msgid "rested"
+msgstr ""
+
 msgid "Refuel"
 msgstr ""
 
@@ -28406,17 +28462,47 @@ msgstr ""
 msgid "{name} needs you back in {duration_text}."
 msgstr ""
 
-#. placeholders: {duration_text}
-msgid ", needs you back in {duration_text}"
+#. one sentence of a longer line
+msgid "Your 10-hour rest is in."
 msgstr ""
 
-#. placeholders: {duration_text}
-#. one clause of a longer line
-msgid "needs you back in {duration_text}"
+#. placeholders: {name}
+msgid ""
+"Your 10-hour rest is in. {name} hands back at the next place to park."
 msgstr ""
 
-#. placeholders: {name}, {back}
-msgid "Co-driver: {name}, driving{back}"
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name} hands back at the next place to park."
+msgstr ""
+
+#. placeholders: {rested}
+#. one sentence of a longer line
+msgid "Rest: {rested} of 10."
+msgstr ""
+
+#. placeholders: {rested}, {name}, {duration_text}
+msgid "Rest: {rested} of 10. {name} hands back in about {duration_text}."
+msgstr ""
+
+#. placeholders: {name}, {duration_text}
+#. one sentence of a longer line
+msgid "{name} hands back in about {duration_text}."
+msgstr ""
+
+#. placeholders: {rested}, {name}, {duration_text}
+msgid ""
+"Rest: {rested} of 10. {name} needs you back in {duration_text}, before your "
+"rest is in."
+msgstr ""
+
+#. placeholders: {name}, {duration_text}
+#. one sentence of a longer line
+msgid "{name} needs you back in {duration_text}, before your rest is in."
+msgstr ""
+
+#. placeholders: {name}
+msgid "Co-driver: {name}, driving"
 msgstr ""
 
 #. placeholders: {name}

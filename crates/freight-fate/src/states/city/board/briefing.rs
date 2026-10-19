@@ -50,7 +50,16 @@ pub(super) fn hours_lines(ctx: &GameContext, job: &Job) -> Vec<String> {
         (1, _) => format!("Trip hours: about {hours} driving hours, with a 10-hour sleep."),
         _ => format!("Trip hours: about {hours} driving hours, with {sleeps} 10-hour sleeps."),
     };
-    vec![trip, p.hos.drive_time_summary(mode, false)]
+    let mut lines = vec![trip, p.hos.drive_time_summary(mode, false)];
+    // Where the co-driver is offered, before the rows turn up there. A team
+    // load says so in its deadline already.
+    if sleeps > 0 && !job.team {
+        lines.push(
+            "Co-driver: available on this load, at the shipper's dock or from the pause menu."
+                .to_string(),
+        );
+    }
+    lines
 }
 
 /// "Fuel: 60 percent, about 900 miles of range.", and "short of this trip"

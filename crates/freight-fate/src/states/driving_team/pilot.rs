@@ -12,6 +12,7 @@
 //! Anything the co-driver has no rule for, they hand back.
 
 use ff_core::models::co_driver;
+use ff_core::sim::hos;
 use ff_core::sim::trip_models::RoadStop;
 
 use crate::app::{GameContext, TRANSCRIPT_TARGET};
@@ -61,6 +62,9 @@ pub struct Pilot {
     /// Their shift is over; the next stop they pull into is where they
     /// hand back.
     pub shift_over: bool,
+    /// The shift is over because the player has had their rest, not
+    /// because the co-driver's hours ran out: no hurry to find the stop.
+    pub rested: bool,
     /// Seconds spent on the accelerator with speed control off.
     pub accel_s: f64,
 }
@@ -186,7 +190,8 @@ impl DrivingState {
             let out = hos_of(ctx)
                 .remaining_min(&ctx.settings.hos_mode)
                 .is_some_and(|left| left <= 0.0);
-            if pilot.making_for.is_none() || out {
+            // Rested, they keep driving until a lot comes into reach.
+            if (pilot.making_for.is_none() && !pilot.rested) || out {
                 return Err("shift".to_string());
             }
         }
@@ -288,8 +293,16 @@ impl DrivingState {
             return;
         }
         let mode = ctx.settings.hos_mode.clone();
-        if !pilot.shift_over && co_driver::shift_over(hos_of(ctx), &mode) {
+        if co_driver::shift_over(hos_of(ctx), &mode) {
+            if !pilot.shift_over || pilot.rested {
+                pilot.shift_over = true;
+                pilot.rested = false;
+                pilot.making_for = None;
+            }
+        } else if !pilot.shift_over && self.player_rest_complete(ctx) {
+            log::info!(target: TRANSCRIPT_TARGET, "[co-driver] the driver's rest is in");
             pilot.shift_over = true;
+            pilot.rested = true;
             pilot.making_for = None;
         }
         // A stop passed without pulling in (missed, or a full lot driven
@@ -341,7 +354,12 @@ impl DrivingState {
         let Some(stop) = kept.or_else(first) else {
             return;
         };
-        if stop.at_mi - here > self.co_driver_reach_mi(ctx, purpose) {
+        let reach = if pilot.rested {
+            self.co_driver_hours_reach_mi(ctx)
+        } else {
+            self.co_driver_reach_mi(ctx, purpose)
+        };
+        if stop.at_mi - here > reach {
             return;
         }
         log::info!(
@@ -389,6 +407,41 @@ impl DrivingState {
             }
             StopPurpose::Fuel => f64::INFINITY,
         }
+    }
+
+    /// How far the co-driver's own hours still reach, at the pace a stop's
+    /// reach is judged at.
+    pub(crate) fn co_driver_hours_reach_mi(&self, ctx: &GameContext) -> f64 {
+        let left_min = hos_of(ctx)
+            .remaining_min(&ctx.settings.hos_mode)
+            .unwrap_or(0.0)
+            - co_driver::CO_DRIVER_SUMMON_LEAD_MIN;
+        left_min.max(0.0) / 60.0 * REACH_MPH
+    }
+
+    /// Whether the player in the sleeper has had the rest they handed over
+    /// for: the co-driver's cue to hand back.
+    pub fn player_rest_complete(&self, ctx: &GameContext) -> bool {
+        let Some(team) = self.team.as_ref() else {
+            return false;
+        };
+        let owed = team
+            .wheel
+            .as_ref()
+            .is_some_and(|wheel| wheel.player_rest_owed);
+        co_driver::rest_complete(&team.off_wheel_hos, &ctx.settings.hos_mode, owed)
+    }
+
+    /// Minutes until the player in the sleeper has had the rest they handed
+    /// over for. None when they owed none, or hours of service are off.
+    pub(crate) fn player_rest_left_min(&self, ctx: &GameContext) -> Option<f64> {
+        let team = self.team.as_ref()?;
+        let owed = team.wheel.as_ref()?.player_rest_owed;
+        let mode = &ctx.settings.hos_mode;
+        if !owed || hos::is_non_enforced(mode) || hos::limits(mode).is_none() {
+            return None;
+        }
+        Some(co_driver::rest_left_min(&team.off_wheel_hos))
     }
 
     /// Something only the driver can decide, or nothing the co-driver can

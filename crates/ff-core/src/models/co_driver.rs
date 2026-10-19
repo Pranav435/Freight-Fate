@@ -60,6 +60,7 @@ pub const TRAINER_LEVEL: i64 = 20;
 const STAT_LOADS: &str = "team:loads:";
 const STAT_HIRE: &str = "team:hire:";
 const STAT_SEEN: &str = "team:seen:";
+const STAT_INTRO: &str = "team:intro";
 
 /// How a co-driver uses the radio when the player leaves it on.
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -441,9 +442,68 @@ fn enforced(hos_mode: &str) -> bool {
     !hos::is_non_enforced(hos_mode) && hos::limits(hos_mode).is_some()
 }
 
+/// Whether this logbook has had its full 10-hour rest since its driver
+/// last drove or worked. A logbook with nothing on it yet counts as rested.
+pub fn fully_rested(hos: &HosClock) -> bool {
+    hos.off_duty_min >= hos::SLEEP_MIN || (hos.driving_min <= 0.0 && hos.duty_min <= 0.0)
+}
+
+/// Minutes of rest this logbook still needs for its full 10 hours.
+pub fn rest_left_min(hos: &HosClock) -> f64 {
+    if fully_rested(hos) {
+        0.0
+    } else {
+        (hos::SLEEP_MIN - hos.off_duty_min).max(0.0)
+    }
+}
+
+/// Minutes of unbroken rest this logbook has, up to the full 10 hours.
+pub fn rested_min(hos: &HosClock) -> f64 {
+    hos::SLEEP_MIN - rest_left_min(hos)
+}
+
+/// Whether the co-driver should hand back because the player in the
+/// sleeper has had their full rest (owner question, 2026-10-19). `owed` is
+/// whether the player still needed rest when they handed over: a player who
+/// was already rested gets the co-driver's whole shift.
+///
+/// The player's 10 hours come in before a fresh co-driver's 11 hours of
+/// driving run out, so the co-driver hands back with an hour or less of
+/// their own unused. Waking the player as soon as they are rested keeps the
+/// share of the load that pays them less no larger than the rest needed,
+/// and makes sleeping through it last as long as a sleep.
+pub fn rest_complete(player: &HosClock, hos_mode: &str, owed: bool) -> bool {
+    owed && enforced(hos_mode) && fully_rested(player)
+}
+
+/// Minutes of driving time or duty window this logbook has left, whichever
+/// ends first. The 30-minute break is left out: the co-driver stops for it
+/// and drives on, so it does not end their shift. None with hours off.
+pub fn shift_left_min(hos: &HosClock, hos_mode: &str) -> Option<f64> {
+    if !enforced(hos_mode) {
+        return None;
+    }
+    let (drive_limit, window, _) = hos::limits(hos_mode)?;
+    Some(
+        (drive_limit - hos.driving_min)
+            .min(window - hos.duty_min)
+            .max(0.0),
+    )
+}
+
+/// Whether the career has heard how team driving works.
+pub fn introduced(stats: &Map<String, Value>) -> bool {
+    stat_i64(stats, STAT_INTRO) > 0 || team_loads(stats) > 0
+}
+
+/// Record that the career has heard the introduction.
+pub fn mark_introduced(stats: &mut Map<String, Value>) {
+    stats.insert(STAT_INTRO.to_string(), Value::from(1));
+}
+
 /// Whether the co-driver should hand the wheel back now: with hours of
 /// service enforced, as their own driving time or duty window runs out.
-/// A shift that long gives the player in the sleeper a full 10-hour reset.
+/// [`rest_complete`] usually ends the shift first.
 pub fn shift_over(hos: &HosClock, hos_mode: &str) -> bool {
     enforced(hos_mode)
         && hos
