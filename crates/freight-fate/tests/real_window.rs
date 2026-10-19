@@ -218,23 +218,16 @@ fn main() {
 /// The game window's macOS window number, for `screencapture -l`.
 #[cfg(target_os = "macos")]
 fn window_number() -> Option<isize> {
-    use std::ffi::{c_char, c_void};
-
+    use objc2_app_kit::NSWindow;
     use sdl2::sys::{
         SDL_GetVersion, SDL_GetWindowFromID, SDL_GetWindowWMInfo, SDL_SysWMinfo, SDL_bool,
         SDL_SYSWM_TYPE,
     };
 
-    #[link(name = "objc", kind = "dylib")]
-    extern "C" {
-        fn sel_registerName(name: *const c_char) -> *mut c_void;
-        fn objc_msgSend();
-    }
-    type SendInt = unsafe extern "C" fn(*mut c_void, *mut c_void) -> isize;
     // SAFETY: SDL owns the window for the life of the app above; the info
     // struct is plain C data, zeroed then filled by SDL; on Cocoa its union
-    // begins with the NSWindow pointer. `-[NSWindow windowNumber]` returns
-    // an NSInteger, the signature `objc_msgSend` is called through.
+    // begins with the NSWindow pointer, which SDL holds while the window
+    // lives. This runs on the main thread that created the window.
     unsafe {
         for id in 1..8 {
             let window = SDL_GetWindowFromID(id);
@@ -249,12 +242,10 @@ fn window_number() -> Option<isize> {
                 continue;
             }
             let ns_window =
-                std::ptr::read_unaligned(info.info.dummy.as_ptr().cast::<*mut c_void>());
-            if ns_window.is_null() {
-                continue;
+                std::ptr::read_unaligned(info.info.dummy.as_ptr().cast::<*const NSWindow>());
+            if let Some(ns_window) = ns_window.as_ref() {
+                return Some(ns_window.windowNumber());
             }
-            let send = std::mem::transmute::<unsafe extern "C" fn(), SendInt>(objc_msgSend);
-            return Some(send(ns_window, sel_registerName(c"windowNumber".as_ptr())));
         }
     }
     None
