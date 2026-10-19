@@ -1167,7 +1167,7 @@ impl App {
             return;
         }
         let scene = crate::visuals::Scene::capture(&self.ctx);
-        shell.render_scene(scene, &self.ctx.message_log);
+        shell.render_scene(scene, &self.ctx.message_log, &self.ctx.translator);
     }
 
     /// One whole frame: pump events, tick, render. `dt` is the frame time.

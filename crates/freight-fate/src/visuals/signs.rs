@@ -19,7 +19,7 @@ const POST: Rgba = Rgba::rgb(130, 132, 134);
 
 /// Width, height, bottom edge above the ground, and set-back from the
 /// pavement, feet.
-fn dims(kind: &SignKind) -> (f32, f32, f32, f32) {
+fn dims(kind: &SignKind, service_rows: usize) -> (f32, f32, f32, f32) {
     match kind {
         SignKind::SpeedLimit(_) => (4.0, 5.0, 6.5, 4.0),
         SignKind::Curve { .. } => (5.0, 5.0, 7.5, 4.0),
@@ -30,10 +30,31 @@ fn dims(kind: &SignKind) -> (f32, f32, f32, f32) {
             let rows = lines.len() as f32 + if distance.is_some() { 1.0 } else { 0.0 };
             (20.0, 4.0 + rows * 3.2, 9.0, 8.0)
         }
-        SignKind::Service { lines } => (13.0, 3.0 + lines.len() as f32 * 2.8, 7.5, 6.0),
+        SignKind::Service { .. } => (13.0, 3.0 + service_rows as f32 * 2.8, 7.5, 6.0),
         SignKind::Welcome(_) => (16.0, 8.0, 5.0, 10.0),
         SignKind::Billboard { .. } => (48.0, 14.0, 20.0, 40.0),
     }
+}
+
+/// A service sign's text height and line width, feet (13 ft wide, a foot
+/// of border each side).
+pub(super) const SERVICE_TEXT_FT: f32 = 1.8;
+pub(super) const SERVICE_LINE_FT: f32 = 11.0;
+
+/// A blue service sign's lines, each wrapped to the sign's width the way a
+/// guide sign's are, so a long translation takes two lines instead of being
+/// cut short. Measured at ten times the size, where the wrap is the same.
+pub(super) fn service_rows(text: &mut Text, lines: &[String]) -> Vec<String> {
+    let mut rows = Vec::new();
+    for line in lines {
+        rows.extend(text.wrap(
+            line,
+            SERVICE_TEXT_FT * 10.0,
+            Weight::Bold,
+            SERVICE_LINE_FT * 10.0,
+        ));
+    }
+    rows
 }
 
 fn left_side(g: &Geom) -> f32 {
@@ -46,7 +67,11 @@ fn left_side(g: &Geom) -> f32 {
 
 pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
     let g = &f.geom;
-    let (w_ft, h_ft, bottom, back) = dims(&sign.kind);
+    let rows = match &sign.kind {
+        SignKind::Service { lines } => service_rows(text, lines),
+        _ => Vec::new(),
+    };
+    let (w_ft, h_ft, bottom, back) = dims(&sign.kind, rows.len());
     let u = if sign.side > 0 {
         g.right_outer() + back + w_ft * 0.5
     } else {
@@ -95,22 +120,24 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
             frame(p, left, top, pw, ph, ink, b);
             if legible {
                 let small = ph * 0.17;
+                let label = text.tr_drawn("SPEED");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.24,
-                    "SPEED",
+                    &label,
                     small,
                     Weight::Bold,
                     ink,
                 );
+                let label = text.tr_drawn("LIMIT");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.43,
-                    "LIMIT",
+                    &label,
                     small,
                     Weight::Bold,
                     ink,
@@ -148,12 +175,13 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
                     Weight::Bold,
                     ink,
                 );
+                let label = text.tr_drawn("MPH");
                 centered(
                     p,
                     text,
                     x,
                     py + plaque_h * 0.88,
-                    "MPH",
+                    &label,
                     plaque_h * 0.3,
                     Weight::Bold,
                     ink,
@@ -181,31 +209,36 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
             diamond(p, x, top + ph * 0.5, ph * 0.5, paint(ORANGE), ink, b);
             if legible {
                 let s = ph * 0.13;
-                centered(p, text, x, top + ph * 0.4, "ROAD", s, Weight::Bold, ink);
-                centered(p, text, x, top + ph * 0.56, "WORK", s, Weight::Bold, ink);
-                centered(p, text, x, top + ph * 0.72, "AHEAD", s, Weight::Bold, ink);
+                let label = text.tr_drawn("ROAD");
+                centered(p, text, x, top + ph * 0.4, &label, s, Weight::Bold, ink);
+                let label = text.tr_drawn("WORK");
+                centered(p, text, x, top + ph * 0.56, &label, s, Weight::Bold, ink);
+                let label = text.tr_drawn("AHEAD");
+                centered(p, text, x, top + ph * 0.72, &label, s, Weight::Bold, ink);
             }
         }
         SignKind::EndRoadWork => {
             p.rect(left, top, pw, ph, paint(ORANGE));
             frame(p, left, top, pw, ph, ink, b);
             if legible {
+                let label = text.tr_drawn("END");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.42,
-                    "END",
+                    &label,
                     ph * 0.26,
                     Weight::Bold,
                     ink,
                 );
+                let label = text.tr_drawn("ROAD WORK");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.8,
-                    "ROAD WORK",
+                    &label,
                     ph * 0.26,
                     Weight::Bold,
                     ink,
@@ -252,7 +285,7 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
                 }
             }
         }
-        SignKind::Service { lines } => {
+        SignKind::Service { .. } => {
             let fg = paint(WHITE);
             p.round_rect(left, top, pw, ph, 0.6 * b, paint(BLUE));
             p.round_rect_outline(
@@ -267,7 +300,7 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
             if legible {
                 let size = (1.8 * b).min(ph * 0.28);
                 let mut row = top + 1.6 * b + size;
-                for line in lines {
+                for line in &rows {
                     let fitted = text.ellipsize(line, size, Weight::Bold, pw - 2.0 * b);
                     centered_baseline(p, text, x, row, &fitted, size, Weight::Bold, fg);
                     row += 2.8 * b;
@@ -279,12 +312,13 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
             p.rect(left, top + ph * 0.72, pw, ph * 0.06, paint(YELLOW));
             if legible {
                 let fg = paint(WHITE);
+                let label = text.tr_drawn("WELCOME TO");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.28,
-                    "WELCOME TO",
+                    &label,
                     ph * 0.14,
                     Weight::Bold,
                     fg,

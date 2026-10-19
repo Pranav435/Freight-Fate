@@ -9,8 +9,10 @@
 
 use std::collections::HashMap;
 use std::hash::{BuildHasherDefault, Hash, Hasher};
+use std::sync::Arc;
 
 use ab_glyph::{Font, FontArc, FontRef, GlyphId, PxScale};
+use ff_core::l10n::Translator;
 
 use super::draw::{Painter, Rgba};
 
@@ -275,6 +277,8 @@ pub struct Text {
     pub atlas: Atlas,
     /// Set when the atlas filled up mid-frame: the next frame starts it over.
     overflowed: bool,
+    /// The player's language, for the labels the display draws itself.
+    translator: Arc<Translator>,
 }
 
 /// Which face drew a glyph: 0 regular, 1 bold, 2.. fallback index + 2.
@@ -302,7 +306,25 @@ impl Text {
             wraps: FxMap::default(),
             atlas: Atlas::new(),
             overflowed: false,
+            translator: Arc::new(Translator::english()),
         }
+    }
+
+    /// A label the display draws itself, in the player's language. Every
+    /// literal handed to a `tr_drawn` call is extracted for translation,
+    /// whatever its shape ("SPEED", "CRUISE {value}").
+    pub fn tr_drawn(&self, english: &str) -> String {
+        self.translator.translate(english).into_owned()
+    }
+
+    /// Draw labels in `translator`'s language from now on. True when the
+    /// language changed, so the frame on screen is stale.
+    pub fn set_translator(&mut self, translator: &Arc<Translator>) -> bool {
+        if Arc::ptr_eq(&self.translator, translator) {
+            return false;
+        }
+        self.translator = Arc::clone(translator);
+        true
     }
 
     /// Start a frame: an atlas that filled up last frame is cleared now,

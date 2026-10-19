@@ -40095,6 +40095,176 @@ msgstr "Pobieranie: {title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape anuluje, Tab odczytuje postęp."
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Środkowy pas  ·  utrzymanie pasa {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "Lewy pas  ·  utrzymanie pasa {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "Prawy pas  ·  utrzymanie pasa {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "Jeden pas  ·  utrzymanie pasa {lane_assist}"
+
+msgid "mph"
+msgstr "mph"
+
+msgid "km/h"
+msgstr "km/h"
+
+msgid "PULL OVER"
+msgstr "ZATRZYMAJ SIĘ"
+
+msgid "SIREN BEHIND"
+msgstr "SYRENA Z TYŁU"
+
+msgid "SPEED"
+msgstr "LIMIT"
+
+msgid "LIMIT"
+msgstr "PRĘDK."
+
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph nawrót"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph ostry"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph średni"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph łagodny"
+
+msgid "AUTO"
+msgstr "AUTO"
+
+msgid "MANUAL"
+msgstr "RĘCZNA"
+
+#. placeholders: {rpm}
+msgid "{rpm} rpm"
+msgstr "{rpm} obr/min"
+
+msgid "PARK BRAKE"
+msgstr "HAMULEC POST."
+
+msgid "ENGINE OFF"
+msgstr "SILNIK WYŁ."
+
+#. placeholders: {factor}
+msgid "CRUISE {factor}"
+msgstr "TEMPOMAT {factor}"
+
+#. placeholders: {factor}
+msgid "KEEPER {factor}"
+msgstr "UTRZYMANIE {factor}"
+
+#. placeholders: {jake_stage}
+msgid "JAKE {jake_stage}"
+msgstr "HAMULEC SILN. {jake_stage}"
+
+msgid "CHECK ENGINE"
+msgstr "SPRAWDŹ SILNIK"
+
+msgid "TRAFFIC BOTH SIDES"
+msgstr "RUCH Z OBU STRON"
+
+msgid "TRAFFIC LEFT"
+msgstr "RUCH Z LEWEJ"
+
+msgid "TRAFFIC RIGHT"
+msgstr "RUCH Z PRAWEJ"
+
+msgid "FUEL"
+msgstr "PALIWO"
+
+msgid "AIR"
+msgstr "CIŚN."
+
+#. placeholders: {air_psi}
+msgid "{air_psi} psi"
+msgstr "{air_psi} psi"
+
+msgid "TRUCK"
+msgstr "POJAZD"
+
+#. placeholders: {truck_damage}
+msgid "{truck_damage}% damage"
+msgstr "{truck_damage}% uszk."
+
+msgid "CARGO"
+msgstr "ŁADUNEK"
+
+#. placeholders: {cargo_damage}
+msgid "{cargo_damage}% damage"
+msgstr "{cargo_damage}% uszk."
+
+#. placeholders: {distance_value}, {distance_unit_text}
+msgid "{distance_value} {distance_unit_text} left"
+msgstr "zostało {distance_value} {distance_unit_text}"
+
+msgid "1/2 MILE"
+msgstr "1/2 MILI"
+
+msgid "PLAZA AHEAD"
+msgstr "PRZED TOBĄ"
+
+msgid "TOLL"
+msgstr "OPŁATA"
+
+msgid "ALL TRUCKS"
+msgstr "WSZYSTKIE CIĘŻARÓWKI"
+
+msgid "WEIGH STATION"
+msgstr "STACJA WAŻENIA"
+
+msgid "REST AREA"
+msgstr "MIEJSCE ODPOCZYNKU"
+
+msgid "1 MILE"
+msgstr "1 MILA"
+
+#. placeholders: {f}, {rows}
+msgid "{f} of {rows}"
+msgstr "{f} z {rows}"
+
+msgid "Escape to go back"
+msgstr "Escape wraca"
+
+msgid "Arrows to move  ·  Enter to choose  ·  Escape to go back"
+msgstr "Strzałki przesuwają  ·  Enter wybiera  ·  Escape wraca"
+
+msgid "MPH"
+msgstr "MPH"
+
+msgid "ROAD"
+msgstr "ROBOTY"
+
+msgid "WORK"
+msgstr "DROGOWE"
+
+msgid "AHEAD"
+msgstr "DALEJ"
+
+msgid "END"
+msgstr "KONIEC"
+
+msgid "ROAD WORK"
+msgstr "ROBÓT"
+
+msgid "WELCOME TO"
+msgstr "WITAMY"
+
 msgid "Energy drink"
 msgstr "Napój energetyczny"
 
@@ -41083,6 +41253,15 @@ msgstr "prawy nawias"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "wielkie {ch}"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "Pas {lane_name}  ·  utrzymanie pasa {lane_assist}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mph {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

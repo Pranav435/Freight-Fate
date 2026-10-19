@@ -201,7 +201,7 @@ impl GameContext {
         register_added_languages();
         let code = l10n::resolve(setting, system_locale().as_deref());
         if code != self.translator.language() {
-            self.translator = load_translator(code, &data_dir());
+            self.translator = std::sync::Arc::new(load_translator(code, &data_dir()));
         }
     }
 

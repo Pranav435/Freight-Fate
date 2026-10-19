@@ -9,6 +9,9 @@
 #[cfg(target_os = "macos")]
 use std::time::Instant;
 
+use std::sync::Arc;
+
+use ff_core::l10n::Translator;
 use ff_core::message_log::MessageLog;
 use sdl2::event::WindowEvent;
 use sdl2::pixels::Color;
@@ -112,7 +115,7 @@ impl SdlShell {
     }
 
     /// Draw the visual display for `scene`, if it changed or must be redrawn.
-    pub fn render_scene(&mut self, scene: Scene, log: &MessageLog) {
+    pub fn render_scene(&mut self, scene: Scene, log: &MessageLog, translator: &Arc<Translator>) {
         if !self.showing_visuals {
             self.showing_visuals = true;
             self.redraw = true;
@@ -120,6 +123,7 @@ impl SdlShell {
         let size = self.canvas.output_size().unwrap_or(WINDOW_SIZE);
         let force = std::mem::take(&mut self.redraw);
         let visuals = self.visuals.get_or_insert_with(Visuals::new);
+        visuals.set_translator(translator);
         if !visuals.build(scene, log, size, force) {
             return;
         }
