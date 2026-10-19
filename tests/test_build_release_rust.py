@@ -679,10 +679,10 @@ def test_macos_stage_is_a_player_ready_app_bundle(tmp_path, monkeypatch):
         "LICENSE.txt",
         "USER_MANUAL.md",
         "USER_MANUAL.html",
-        "ALPHA_TEST_BOOK.md",
-        "ALPHA_TEST_BOOK.html",
     ):
         assert (resources / name).is_file()
+    assert not (resources / "ALPHA_TEST_BOOK.md").exists()
+    assert not (resources / "ALPHA_TEST_BOOK.html").exists()
     # The translator's kit is its own download, not part of the game.
     assert not (resources / "translations").exists()
     # The audio engine is compiled in: the bundle carries no audio library.
@@ -1160,8 +1160,6 @@ def test_full_macos_bundle_verification_reads_packs_from_resources(tmp_path, mon
         "CHANGELOG.md",
         "USER_MANUAL.md",
         "USER_MANUAL.html",
-        "ALPHA_TEST_BOOK.md",
-        "ALPHA_TEST_BOOK.html",
         "SOUND_CREDITS.md",
         "freight_fate/sounds.pak",
         "freight_fate/music.pak",
