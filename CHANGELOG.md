@@ -4,6 +4,11 @@
 
 ### Added
 
+- **The game window now shows the road, your truck and the traffic around it.** Signs, bends, hills and weather show as you drive. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
+- **The dashboard in the game window shows speed, the limit, gear, fuel, air, damage and traffic.** Your next turn and bend show above it.
+- **Amber lights on the truck's mirrors show when traffic holds the lane beside you.** Change lanes once the light on that side goes out.
+- **Captions show what the game says for a few seconds.** Menus appear as a large-print panel with the choice highlighted.
+- **A Visual display setting turns the window's drawing off to save battery.** It is under Settings, Gameplay, Controls; speech and sound stay the same.
 - **A co-driver can take the wheel on long loads.** Pause to ride along or sleep through their shift; their miles pay you less and earn half the experience.
 - **A co-driver can drive you out of the shipper.** On long loads the pickup menu offers it, with the pay terms in the row's help.
 - **Some long loads are now team loads.** They pay more, with no time for a 10-hour break; a co-driver shares the wheel.
@@ -83,6 +88,7 @@
 
 ### Changed
 
+- **The game window draws only when it changes,** so it uses less power.
 - **On AG Now, the game no longer checks for or downloads updates.** AG Now keeps it up to date, and Settings has no Updates category there.
 
 - **Drivers below level 10 get warnings instead of most citations.** Serious speeding, the work-zone barrels, failing to pull over, running a scale and out-of-service orders still count.
