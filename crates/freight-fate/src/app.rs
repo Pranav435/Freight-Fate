@@ -1168,7 +1168,7 @@ impl App {
             return;
         }
         let scene = crate::visuals::Scene::capture(&self.ctx);
-        shell.render_scene(scene, &self.ctx.message_log);
+        shell.render_scene(scene, &self.ctx.message_log, &self.ctx.translator);
     }
 
     /// Draw the window: a build without the visual display has only the

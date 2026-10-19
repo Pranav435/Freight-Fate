@@ -13,6 +13,9 @@ use ff_core::sim::trip::Trip;
 use ff_core::sim::trip_models::highway_class;
 use ff_core::sim::weather::WeatherKind;
 
+use ff_core::l10n::Translator;
+
+use super::tr_drawn;
 use crate::app::GameContext;
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::constants::DRIVE_PHASE_PICKUP;
@@ -283,7 +286,7 @@ impl DriveView {
         let lanes = lane_look(d);
         let weather = weather_look(trip);
         let traffic = traffic_views(d);
-        let signs = sign_views(trip, &lanes);
+        let signs = sign_views(&ctx.translator, trip, &lanes);
         let zones = trip
             .zones
             .iter()
@@ -320,10 +323,13 @@ impl DriveView {
         let total = trip.total_miles().max(0.01);
         let remaining = trip.remaining_miles().max(0.0);
         let decimals = if remaining < 10.0 { 1 } else { 0 };
-        let remaining_text = format!(
-            "{} {} left",
-            settings.distance_value(remaining, decimals, true),
-            settings.distance_unit_text(true)
+        let remaining_text = tr_drawn(
+            &ctx.translator,
+            &format!(
+                "{} {} left",
+                settings.distance_value(remaining, decimals, true),
+                settings.distance_unit_text(true)
+            ),
         );
         let distance_text = |miles: f64| {
             let decimals = if miles < 10.0 { 1 } else { 0 };
@@ -662,7 +668,7 @@ fn next_cue(trip: &Trip) -> Option<(String, f64)> {
 }
 
 /// Every sign in view, from the route's own data.
-fn sign_views(trip: &Trip, lanes: &LaneLook) -> Vec<SignView> {
+fn sign_views(tr: &Translator, trip: &Trip, lanes: &LaneLook) -> Vec<SignView> {
     let pos = trip.position_mi;
     let ahead = |mile: f64| ((mile - pos) * FT_PER_MI) as f32;
     let in_view = |ft: f32| (0.0..VIEW_FT).contains(&ft);
@@ -759,7 +765,7 @@ fn sign_views(trip: &Trip, lanes: &LaneLook) -> Vec<SignView> {
                     1,
                     SignKind::Guide {
                         lines: vec![text.clone()],
-                        distance: Some("1/2 MILE".to_string()),
+                        distance: Some(tr_drawn(tr, "1/2 MILE")),
                     },
                 );
                 push(
@@ -785,7 +791,7 @@ fn sign_views(trip: &Trip, lanes: &LaneLook) -> Vec<SignView> {
                 ahead(cue.at_mi) - 1000.0,
                 1,
                 SignKind::Service {
-                    lines: vec!["TOLL".to_string(), "PLAZA AHEAD".to_string()],
+                    lines: vec![tr_drawn(tr, "TOLL"), tr_drawn(tr, "PLAZA AHEAD")],
                 },
             ),
             _ => {}
@@ -799,12 +805,12 @@ fn sign_views(trip: &Trip, lanes: &LaneLook) -> Vec<SignView> {
         .filter(|s| s.at_mi > pos - 0.1 && s.at_mi < pos + window_mi + 1.1)
     {
         let label = match stop.stop_type.as_str() {
-            "weigh_station" => vec!["WEIGH STATION".to_string(), "ALL TRUCKS".to_string()],
-            "public_rest_area" => vec!["REST AREA".to_string()],
+            "weigh_station" => vec![tr_drawn(tr, "WEIGH STATION"), tr_drawn(tr, "ALL TRUCKS")],
+            "public_rest_area" => vec![tr_drawn(tr, "REST AREA")],
             _ => vec![stop.name.to_uppercase()],
         };
         let mut far = label.clone();
-        far.push("1 MILE".to_string());
+        far.push(tr_drawn(tr, "1 MILE"));
         push(
             ahead(stop.at_mi) - FT_PER_MI as f32,
             1,

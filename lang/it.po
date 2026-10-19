@@ -40236,6 +40236,176 @@ msgstr "Download di {title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape annulla, Tab legge l'avanzamento."
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia centrale  ·  mantenimento di corsia {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia sinistra  ·  mantenimento di corsia {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia destra  ·  mantenimento di corsia {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia unica  ·  mantenimento di corsia {lane_assist}"
+
+msgid "mph"
+msgstr "mph"
+
+msgid "km/h"
+msgstr "km/h"
+
+msgid "PULL OVER"
+msgstr "ACCOSTA"
+
+msgid "SIREN BEHIND"
+msgstr "SIRENA DIETRO"
+
+msgid "SPEED"
+msgstr "LIMITE"
+
+msgid "LIMIT"
+msgstr "VELOCITÀ"
+
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph tornante"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph stretta"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph moderata"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph dolce"
+
+msgid "AUTO"
+msgstr "AUTO"
+
+msgid "MANUAL"
+msgstr "MANUALE"
+
+#. placeholders: {rpm}
+msgid "{rpm} rpm"
+msgstr "{rpm} giri/min"
+
+msgid "PARK BRAKE"
+msgstr "FRENO STAZ."
+
+msgid "ENGINE OFF"
+msgstr "MOTORE SPENTO"
+
+#. placeholders: {factor}
+msgid "CRUISE {factor}"
+msgstr "CRUISE {factor}"
+
+#. placeholders: {factor}
+msgid "KEEPER {factor}"
+msgstr "MANTENITORE {factor}"
+
+#. placeholders: {jake_stage}
+msgid "JAKE {jake_stage}"
+msgstr "FRENO MOTORE {jake_stage}"
+
+msgid "CHECK ENGINE"
+msgstr "CONTROLLA MOTORE"
+
+msgid "TRAFFIC BOTH SIDES"
+msgstr "TRAFFICO AI DUE LATI"
+
+msgid "TRAFFIC LEFT"
+msgstr "TRAFFICO A SINISTRA"
+
+msgid "TRAFFIC RIGHT"
+msgstr "TRAFFICO A DESTRA"
+
+msgid "FUEL"
+msgstr "CARB."
+
+msgid "AIR"
+msgstr "ARIA"
+
+#. placeholders: {air_psi}
+msgid "{air_psi} psi"
+msgstr "{air_psi} psi"
+
+msgid "TRUCK"
+msgstr "CAMION"
+
+#. placeholders: {truck_damage}
+msgid "{truck_damage}% damage"
+msgstr "{truck_damage}% danni"
+
+msgid "CARGO"
+msgstr "CARICO"
+
+#. placeholders: {cargo_damage}
+msgid "{cargo_damage}% damage"
+msgstr "{cargo_damage}% danni"
+
+#. placeholders: {distance_value}, {distance_unit_text}
+msgid "{distance_value} {distance_unit_text} left"
+msgstr "mancano {distance_value} {distance_unit_text}"
+
+msgid "1/2 MILE"
+msgstr "1/2 MIGLIO"
+
+msgid "PLAZA AHEAD"
+msgstr "PIÙ AVANTI"
+
+msgid "TOLL"
+msgstr "PEDAGGIO"
+
+msgid "ALL TRUCKS"
+msgstr "TUTTI I CAMION"
+
+msgid "WEIGH STATION"
+msgstr "STAZIONE DI PESATURA"
+
+msgid "REST AREA"
+msgstr "AREA DI RIPOSO"
+
+msgid "1 MILE"
+msgstr "1 MIGLIO"
+
+#. placeholders: {f}, {rows}
+msgid "{f} of {rows}"
+msgstr "{f} di {rows}"
+
+msgid "Escape to go back"
+msgstr "Escape torna indietro"
+
+msgid "Arrows to move  ·  Enter to choose  ·  Escape to go back"
+msgstr "Frecce per muoverti  ·  Enter per scegliere  ·  Escape per tornare"
+
+msgid "MPH"
+msgstr "MPH"
+
+msgid "ROAD"
+msgstr "LAVORI"
+
+msgid "WORK"
+msgstr "IN"
+
+msgid "AHEAD"
+msgstr "CORSO"
+
+msgid "END"
+msgstr "FINE"
+
+msgid "ROAD WORK"
+msgstr "LAVORI"
+
+msgid "WELCOME TO"
+msgstr "BENVENUTI"
+
 msgid "Energy drink"
 msgstr "Bibita energetica"
 
@@ -41231,6 +41401,15 @@ msgstr "parentesi chiusa"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "{ch} maiuscola"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "Corsia {lane_name}  ·  mantenimento di corsia {lane_assist}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mph {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

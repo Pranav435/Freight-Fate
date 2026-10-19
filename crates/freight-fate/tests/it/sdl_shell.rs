@@ -31,6 +31,7 @@ fn the_shell_boots_on_the_dummy_video_driver() {
         "  Quit".to_string(),
     ])
     .expect("a menu");
+    let english = std::sync::Arc::new(ff_core::l10n::Translator::english());
     for _ in 0..2 {
         assert!(shell.can_be_seen());
         shell.render_scene(
@@ -39,6 +40,7 @@ fn the_shell_boots_on_the_dummy_video_driver() {
                 achievement: None,
             },
             &log,
+            &english,
         );
     }
     shell.render_plain();

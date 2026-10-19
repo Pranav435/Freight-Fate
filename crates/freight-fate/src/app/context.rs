@@ -146,7 +146,7 @@ pub struct GameContext {
     pub message_log: MessageLog,
     /// Turns each finished English line into the player's language
     /// (`app::language`); English passes lines through untouched.
-    pub translator: Translator,
+    pub translator: Arc<Translator>,
     pub achievement_notice: String,
     pub achievement_notice_timer: f64,
     /// True while a playtest-lever scenario runs unsaved (see
@@ -272,7 +272,7 @@ impl GameContext {
             profile: None,
             account_achievements: parts.account_achievements,
             message_log: parts.message_log,
-            translator: Translator::english(),
+            translator: Arc::new(Translator::english()),
             achievement_notice: String::new(),
             achievement_notice_timer: 0.0,
             playtest_sandbox: false,

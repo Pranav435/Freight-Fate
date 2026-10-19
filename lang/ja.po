@@ -35957,6 +35957,176 @@ msgstr "{title}をダウンロード中"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape で取り消し、Tab で進み具合を読み上げます。"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "中央車線  ·  レーンキープ {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "左車線  ·  レーンキープ {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "右車線  ·  レーンキープ {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "単一車線  ·  レーンキープ {lane_assist}"
+
+msgid "mph"
+msgstr "mph"
+
+msgid "km/h"
+msgstr "km/h"
+
+msgid "PULL OVER"
+msgstr "停車してください"
+
+msgid "SIREN BEHIND"
+msgstr "後方にサイレン"
+
+msgid "SPEED"
+msgstr "制限"
+
+msgid "LIMIT"
+msgstr "速度"
+
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph ヘアピン"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph 急"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph 中程度"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph 緩やか"
+
+msgid "AUTO"
+msgstr "自動"
+
+msgid "MANUAL"
+msgstr "手動"
+
+#. placeholders: {rpm}
+msgid "{rpm} rpm"
+msgstr "{rpm} RPM"
+
+msgid "PARK BRAKE"
+msgstr "駐車ブレーキ"
+
+msgid "ENGINE OFF"
+msgstr "エンジン停止"
+
+#. placeholders: {factor}
+msgid "CRUISE {factor}"
+msgstr "クルーズ {factor}"
+
+#. placeholders: {factor}
+msgid "KEEPER {factor}"
+msgstr "速度キープ {factor}"
+
+#. placeholders: {jake_stage}
+msgid "JAKE {jake_stage}"
+msgstr "エンジンブレーキ {jake_stage}"
+
+msgid "CHECK ENGINE"
+msgstr "エンジン点検"
+
+msgid "TRAFFIC BOTH SIDES"
+msgstr "両側に車両"
+
+msgid "TRAFFIC LEFT"
+msgstr "左に車両"
+
+msgid "TRAFFIC RIGHT"
+msgstr "右に車両"
+
+msgid "FUEL"
+msgstr "燃料"
+
+msgid "AIR"
+msgstr "エア"
+
+#. placeholders: {air_psi}
+msgid "{air_psi} psi"
+msgstr "{air_psi} psi"
+
+msgid "TRUCK"
+msgstr "トラック"
+
+#. placeholders: {truck_damage}
+msgid "{truck_damage}% damage"
+msgstr "損傷 {truck_damage}%"
+
+msgid "CARGO"
+msgstr "積荷"
+
+#. placeholders: {cargo_damage}
+msgid "{cargo_damage}% damage"
+msgstr "損傷 {cargo_damage}%"
+
+#. placeholders: {distance_value}, {distance_unit_text}
+msgid "{distance_value} {distance_unit_text} left"
+msgstr "残り {distance_value} {distance_unit_text}"
+
+msgid "1/2 MILE"
+msgstr "1/2 マイル"
+
+msgid "PLAZA AHEAD"
+msgstr "この先"
+
+msgid "TOLL"
+msgstr "料金所"
+
+msgid "ALL TRUCKS"
+msgstr "全トラック"
+
+msgid "WEIGH STATION"
+msgstr "計量所"
+
+msgid "REST AREA"
+msgstr "休憩エリア"
+
+msgid "1 MILE"
+msgstr "1 マイル"
+
+#. placeholders: {f}, {rows}
+msgid "{f} of {rows}"
+msgstr "{f} / {rows}"
+
+msgid "Escape to go back"
+msgstr "Escape で戻る"
+
+msgid "Arrows to move  ·  Enter to choose  ·  Escape to go back"
+msgstr "矢印で移動  ·  Enter で決定  ·  Escape で戻る"
+
+msgid "MPH"
+msgstr "MPH"
+
+msgid "ROAD"
+msgstr "道路"
+
+msgid "WORK"
+msgstr "工事"
+
+msgid "AHEAD"
+msgstr "この先"
+
+msgid "END"
+msgstr "工事"
+
+msgid "ROAD WORK"
+msgstr "区間終了"
+
+msgid "WELCOME TO"
+msgstr "ようこそ"
+
 msgid "Energy drink"
 msgstr "エナジードリンク"
 
@@ -36896,6 +37066,15 @@ msgstr "右かっこ"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大文字の{ch}"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "{lane_name}車線  ·  レーンキープ {lane_assist}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mph {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

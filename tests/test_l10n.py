@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import re
 import sys
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,6 +37,27 @@ def test_inline_names_and_specs():
     src = 'fn f() { format!("{city} in {:.1} miles, {city} again", d); }'
     (lit,) = literals_in(src)
     assert to_template(lit)[0] == "{city} in {d} miles, {city} again"
+
+
+def test_drawn_labels_are_extracted_whatever_their_shape(tmp_path):
+    # The visual display's sign words are all capitals, which the shape
+    # rules would drop as keys; a `tr_drawn` call marks them as player text.
+    src = """
+    fn f(text: &Text, tr: &Translator, set: f64) {
+        let a = text.tr_drawn("SPEED");
+        let b = text.tr_drawn(&format!("CRUISE {:.0}", set));
+        let c = tr_drawn(tr, "1/2 MILE");
+        let d = "PLAIN";
+    }
+    """
+    crate = tmp_path / "crates" / "demo" / "src"
+    crate.mkdir(parents=True)
+    (crate / "lib.rs").write_text(src, encoding="utf-8")
+    from rust_strings import extract as extract_templates
+
+    found = set(extract_templates(tmp_path, ["demo"]))
+    assert {"SPEED", "CRUISE {set}", "1/2 MILE"} <= found
+    assert "PLAIN" not in found
 
 
 def test_logs_tests_and_keys_are_not_player_text():
@@ -167,3 +190,37 @@ def test_an_abbreviated_label_leading_into_a_value_is_extracted():
     src = 'fn f() { format!("ELD: {summary}") }'
     (lit,) = literals_in(src)
     assert is_player_text(lit.text, lit.is_format, lit.is_key)
+
+
+LATIN_SCRIPT_CATALOGS = ("de", "es", "fr", "it", "pl", "pt_BR")
+
+
+def mixed_script_words(text: str) -> list[str]:
+    """Words that mix Latin letters with Cyrillic or Greek look-alikes."""
+
+    def script(c: str) -> str | None:
+        name = unicodedata.name(c, "")
+        return next((s for s in ("LATIN", "CYRILLIC", "GREEK") if name.startswith(s)), None)
+
+    return [
+        word
+        for word in re.findall(r"\w+", text)
+        if "LATIN" in {script(c) for c in word} and len({script(c) for c in word} - {None}) > 1
+    ]
+
+
+def test_a_mixed_script_word_is_caught():
+    assert mixed_script_words("ACHT\u0423NG und STELLE") == ["ACHT\u0423NG"]
+    assert mixed_script_words("ACHTUNG, Größe, ŁAGODNY 35 mph") == []
+
+
+def test_latin_script_catalogs_have_no_mixed_script_words():
+    # A Cyrillic or Greek look-alike inside a word reads the same on screen
+    # but no longer matches, sorts or speaks as the word it imitates.
+    problems = []
+    for code in LATIN_SCRIPT_CATALOGS:
+        po = ROOT / "lang" / f"{code}.po"
+        for entry in parse_po(po.read_text(encoding="utf-8")):
+            for word in mixed_script_words(entry.msgstr):
+                problems.append(f"{code}.po line {entry.line}: {word}")
+    assert problems == []

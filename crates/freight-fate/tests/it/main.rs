@@ -227,4 +227,6 @@ mod states_driving_speech_modes;
 #[cfg(feature = "visuals")]
 mod visuals_frames;
 #[cfg(feature = "visuals")]
+mod visuals_l10n;
+#[cfg(feature = "visuals")]
 mod visuals_play;
