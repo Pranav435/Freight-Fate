@@ -40169,6 +40169,10 @@ msgstr "RUCH Z LEWEJ"
 msgid "TRAFFIC RIGHT"
 msgstr "RUCH Z PRAWEJ"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Środkowy pas  ·  utrzymanie pasa {lane_assist}"
+
 #. placeholders: {lane_name}, {lane_assist}
 msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "Pas {lane_name}  ·  utrzymanie pasa {lane_assist}"

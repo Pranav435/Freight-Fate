@@ -43558,6 +43558,11 @@ msgstr ""
 msgid "TRAFFIC RIGHT"
 msgstr ""
 
+#. placeholders: {lane_assist}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr ""
+
 #. placeholders: {lane_name}, {lane_assist}
 #: crates/freight-fate/src/visuals/hud.rs
 msgid "{lane_name} lane  ·  lane keeping {lane_assist}"

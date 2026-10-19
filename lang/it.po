@@ -40310,6 +40310,10 @@ msgstr "TRAFFICO A SINISTRA"
 msgid "TRAFFIC RIGHT"
 msgstr "TRAFFICO A DESTRA"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia centrale  ·  mantenimento di corsia {lane_assist}"
+
 #. placeholders: {lane_name}, {lane_assist}
 msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "Corsia {lane_name}  ·  mantenimento di corsia {lane_assist}"

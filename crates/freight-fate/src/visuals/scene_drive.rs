@@ -379,7 +379,7 @@ impl DriveView {
             curve,
             clock: clock_text(weather.hour),
             weather_name: capitalize(trip.weather.current.value()),
-            lane_name: d.lane.lane_name().to_string(),
+            lane_name: capitalize(d.lane.lane_name()),
             lane_assist: settings.lane_keeping.clone(),
             imperial: settings.imperial_units,
             siren: d.siren.active,
@@ -399,7 +399,7 @@ impl DriveView {
     }
 }
 
-pub(super) fn capitalize(text: &str) -> String {
+fn capitalize(text: &str) -> String {
     let mut chars = text.chars();
     match chars.next() {
         Some(first) => first.to_uppercase().chain(chars).collect(),

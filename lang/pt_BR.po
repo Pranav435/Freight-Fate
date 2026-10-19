@@ -40059,6 +40059,10 @@ msgstr "TRÂNSITO À ESQUERDA"
 msgid "TRAFFIC RIGHT"
 msgstr "TRÂNSITO À DIREITA"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Faixa do meio  ·  manutenção de faixa {lane_assist}"
+
 #. placeholders: {lane_name}, {lane_assist}
 msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "Faixa {lane_name}  ·  manutenção de faixa {lane_assist}"

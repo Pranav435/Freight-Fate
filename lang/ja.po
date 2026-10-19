@@ -36031,6 +36031,10 @@ msgstr "左に車両"
 msgid "TRAFFIC RIGHT"
 msgstr "右に車両"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "中央車線  ·  レーンキープ {lane_assist}"
+
 #. placeholders: {lane_name}, {lane_assist}
 msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "{lane_name}車線  ·  レーンキープ {lane_assist}"

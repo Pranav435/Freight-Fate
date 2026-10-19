@@ -636,12 +636,17 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
         (false, true) => lights.push((text.tr_drawn("TRAFFIC RIGHT"), AMBER)),
         _ => {}
     }
-    // The lane's name stays lowercase until the line is translated, so a
-    // language that names the lane second ("Carril central") keeps it so.
-    let lane_line = super::scene_drive::capitalize(&text.tr_drawn(&format!(
-        "{} lane  ·  lane keeping {}",
-        hud.lane_name, hud.lane_assist
-    )));
+    // The middle lane has a line of its own: the spoken lane name it would
+    // fill in is shaped for sentences ("carril de la mitad"), not a label.
+    let middle = ff_core::sim::lane::lane_label(1, 3);
+    let lane_line = if hud.lane_name.eq_ignore_ascii_case(middle) {
+        text.tr_drawn(&format!("Middle lane  ·  lane keeping {}", hud.lane_assist))
+    } else {
+        text.tr_drawn(&format!(
+            "{} lane  ·  lane keeping {}",
+            hud.lane_name, hud.lane_assist
+        ))
+    };
     let tsize = 10.0 * u;
     let mut ty = y + 46.0 * u;
     let mut tx2 = col;

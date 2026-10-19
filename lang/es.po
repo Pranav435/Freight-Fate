@@ -12407,7 +12407,7 @@ msgid "single"
 msgstr "único"
 
 msgid "middle"
-msgstr "central"
+msgstr "mitad"
 
 msgid "the lane"
 msgstr "el carril"
@@ -40261,6 +40261,10 @@ msgstr "TRÁFICO A LA IZQUIERDA"
 
 msgid "TRAFFIC RIGHT"
 msgstr "TRÁFICO A LA DERECHA"
+
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Carril central  ·  mantenimiento de carril {lane_assist}"
 
 #. placeholders: {lane_name}, {lane_assist}
 msgid "{lane_name} lane  ·  lane keeping {lane_assist}"

@@ -40392,6 +40392,10 @@ msgstr "VERKEHR LINKS"
 msgid "TRAFFIC RIGHT"
 msgstr "VERKEHR RECHTS"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Mittlere Spur  ·  Spurhaltung {lane_assist}"
+
 #. placeholders: {lane_name}, {lane_assist}
 msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "Spur {lane_name}  ·  Spurhaltung {lane_assist}"

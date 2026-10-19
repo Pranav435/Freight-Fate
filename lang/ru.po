@@ -40371,6 +40371,10 @@ msgstr "МАШИНЫ СЛЕВА"
 msgid "TRAFFIC RIGHT"
 msgstr "МАШИНЫ СПРАВА"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Средняя полоса  ·  удержание полосы: {lane_assist}"
+
 #. placeholders: {lane_name}, {lane_assist}
 msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "Полоса: {lane_name}  ·  удержание полосы: {lane_assist}"

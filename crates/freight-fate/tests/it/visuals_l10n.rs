@@ -112,10 +112,26 @@ fn every_shipped_catalog_names_the_curve_in_its_own_words() {
 }
 
 #[test]
-fn the_spanish_lane_line_names_the_middle_lane_central() {
-    let text = text_in(&spanish());
-    let drawn = text.tr_drawn("middle lane  ·  lane keeping On");
-    assert!(drawn.starts_with("Carril central  ·  "), "{drawn}");
+fn spanish_speaks_the_middle_lane_as_before_and_draws_it_central() {
+    let es = spanish();
+    // The spoken lines fill the shared lane name into "carril de la ...".
+    assert_eq!(
+        es.translate("Changing to the middle lane for the exit."),
+        "Cambiando al carril de la mitad para la salida."
+    );
+    assert_eq!(
+        es.translate("The middle lane is closed."),
+        "El carril de la mitad está cerrado."
+    );
+    // The display's lane line has its own entry for the middle lane.
+    let text = text_in(&es);
+    assert_eq!(
+        text.tr_drawn("Middle lane  ·  lane keeping On"),
+        "Carril central  ·  mantenimiento de carril Activado"
+    );
+    assert!(text
+        .tr_drawn("Left lane  ·  lane keeping On")
+        .starts_with("Carril "));
 }
 
 #[test]
