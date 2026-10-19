@@ -1,5 +1,7 @@
+import sys
 from pathlib import Path
 
+import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -376,6 +378,9 @@ def _run_stale_copy_guard(tmp_path: Path, event: str, dry_run: str, differs: boo
     return subprocess.run(["bash", "-e", "-c", step["run"]], env=env).returncode
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32", reason="Prepare runs on Linux; Git Bash's git shadows the stand-in"
+)
 def test_a_stale_snapshot_workflow_stops_any_run_that_would_publish(tmp_path: Path) -> None:
     """2026-10-19: a dispatch from main built for 25 minutes, then Release
     refused the assets main's stale copy expected. A publishing dispatch now
