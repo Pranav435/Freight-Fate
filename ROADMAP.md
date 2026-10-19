@@ -72,8 +72,13 @@ bookmarks usable.
       pairing and the terms in the rows' help. About three in ten loads that
       need a ten-hour break alone are drawn as team loads: 35 percent more
       pay, and a deadline that allows a half-hour driver change where a solo
-      driver sleeps. The co-driver drives to the end of their own hours and
-      plans their 30-minute break at a rest area. Co-driver miles earn no
+      driver sleeps. The co-driver hands back at the next stop with parking
+      once the player's ten-hour rest is in, or at the end of their own
+      hours if those run out first (2026-10-19), and plans their 30-minute
+      break at a rest area. C, the Driver screen and the Take the wheel back
+      row say how much of the rest is in and when they hand back. The first
+      offer of a co-driver in a career explains it once, and job details
+      say when a load can be shared. Co-driver miles earn no
       driving-skill badges, the road journal names who drove, and the
       Meridian classmate and Ray each carry a hidden badge. Sleeping
       through the shift passes it as time (owner, 2026-10-18): the road,

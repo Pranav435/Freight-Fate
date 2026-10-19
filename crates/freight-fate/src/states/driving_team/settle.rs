@@ -36,11 +36,13 @@ impl ArrivalState {
         } else {
             "their half of the pay".to_string()
         };
-        self.summary_parts.push(format!(
+        let line = format!(
             "{name} drove {miles} of this load: {share} is {} dollars, and those miles earn you \
              half the experience.",
             fmt_grouped(split.co_driver_pay, 0)
-        ));
+        );
+        self.summary_parts.push(line.clone());
+        self.team_line = Some(line);
         self.team_miles = team.co_driver_mi;
         self.team_note = Some(format!(
             "Team load: {name} drove {} of the miles",
