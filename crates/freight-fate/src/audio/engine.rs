@@ -39,6 +39,8 @@ pub struct AudioEngine {
     silence_notice: bool,
     // The driver window's lift on the outside sounds; 1.0 with it up.
     outside_lift: f64,
+    // See `Audio::set_cues_muted`.
+    cues_muted: bool,
 }
 
 impl Default for AudioEngine {
@@ -82,6 +84,7 @@ impl AudioEngine {
             asset_probe: None,
             silence_notice: false,
             outside_lift: 1.0,
+            cues_muted: false,
         }
     }
 
@@ -323,7 +326,14 @@ impl Audio for AudioEngine {
         self.backend.update_cue(&key, volume, pan);
     }
 
+    fn set_cues_muted(&mut self, muted: bool) {
+        self.cues_muted = muted;
+    }
+
     fn play_with(&mut self, key: &str, volume: f64, pan: f64) {
+        if self.cues_muted && crate::audio::is_game_cue(key) {
+            return;
+        }
         let key = self.route_voice_key(key);
         self.backend.play(&key, volume, pan);
     }
@@ -333,6 +343,9 @@ impl Audio for AudioEngine {
     /// -- every cut once before any repeats, never the same cut twice in a
     /// row. A clean clone without the bank keeps the single classic cue.
     fn play_bank_with(&mut self, base: &str, fallback: &str, volume: f64, pan: f64) {
+        if self.cues_muted && crate::audio::is_game_cue(base) {
+            return;
+        }
         let keys = self.bank_keys(base);
         if keys.is_empty() {
             self.play_with(fallback, volume, pan);

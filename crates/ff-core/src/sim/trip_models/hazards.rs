@@ -120,6 +120,14 @@ pub struct HazardDef {
     pub terrain: Option<&'static [&'static str]>,
     pub animal: bool,
     pub in_lane: bool,
+    /// For a thing in the lane that a truck passes slowly rather than stops
+    /// for -- a mattress or a tarp it straddles, standing water it eases
+    /// through, a car on the shoulder it gives room to: the speed braking
+    /// alone has to reach when there is no lane to take. None is the near
+    /// stop a hard object asks for (owner, 2026-10-19: too much braking).
+    /// Assumed, not measured; the move-over figure follows the state laws'
+    /// "slow to 20 under", taken from a 60 mph road.
+    pub brake_to_mph: Option<f64>,
     pub name: &'static str,
 }
 
@@ -132,6 +140,7 @@ const fn hz(text: &'static str, weight: f64, name: &'static str) -> HazardDef {
         terrain: None,
         animal: false,
         in_lane: false,
+        brake_to_mph: None,
         name,
     }
 }
@@ -168,6 +177,7 @@ pub static HAZARDS: &[HazardDef] = &[
         ..hz("loose lumber dropped across the lane", 0.25, "the lumber")
     },
     HazardDef {
+        brake_to_mph: Some(35.0),
         in_lane: true,
         ..hz("a mattress lying in the lane", 0.2, "the mattress")
     },
@@ -176,6 +186,7 @@ pub static HAZARDS: &[HazardDef] = &[
         ..hz("spilled cargo boxes across the lane", 0.2, "the boxes")
     },
     HazardDef {
+        brake_to_mph: Some(35.0),
         in_lane: true,
         ..hz("a shredded truck tarp in the lane", 0.15, "the tarp")
     },
@@ -189,6 +200,7 @@ pub static HAZARDS: &[HazardDef] = &[
     },
     // The move-over law in action: shift a lane away from the shoulder.
     HazardDef {
+        brake_to_mph: Some(40.0),
         in_lane: true,
         ..hz(
             "a vehicle stopped on the shoulder",
@@ -242,6 +254,7 @@ pub static HAZARDS: &[HazardDef] = &[
     }, // honest fallback
     // Wet weather only.
     HazardDef {
+        brake_to_mph: Some(35.0),
         weather: Some(WET),
         in_lane: true,
         ..hz(
@@ -315,6 +328,7 @@ pub static HAZARDS: &[HazardDef] = &[
         ..hz("a dust storm dropping visibility", 0.9, "the dust storm")
     },
     HazardDef {
+        brake_to_mph: Some(45.0),
         weather: Some(&[WeatherKind::Wind]),
         regions: Some(&["desert_southwest", "great_basin", "southern_plains"]),
         in_lane: true,
@@ -333,8 +347,10 @@ pub static HAZARDS: &[HazardDef] = &[
         in_lane: true,
         ..hz("rockfall debris on the road", 1.0, "the rockfall")
     },
+    // Given room, not braked hard for on the grade it is running away on.
     HazardDef {
         terrain: Some(&["mountain"]),
+        brake_to_mph: Some(40.0),
         ..hz(
             "a runaway truck on the grade ahead",
             0.8,
@@ -347,6 +363,20 @@ pub static HAZARDS: &[HazardDef] = &[
 /// around it" that belongs to the hazard rather than to the road.
 pub fn hazard_is_in_lane(text: &str) -> bool {
     HAZARDS.iter().any(|h| h.in_lane && h.text == text)
+}
+
+/// What braking alone has to reach for this hazard, when it is less than a
+/// near stop (see `HazardDef::brake_to_mph`).
+pub fn hazard_brake_to_mph(text: &str) -> Option<f64> {
+    HAZARDS
+        .iter()
+        .find(|h| h.text == text)
+        .and_then(|h| h.brake_to_mph)
+}
+
+/// Whether this hazard is an animal on the road.
+pub fn hazard_is_animal(text: &str) -> bool {
+    HAZARDS.iter().any(|h| h.animal && h.text == text)
 }
 
 /// The short noun phrase a resolution line names this hazard by; "it" for a

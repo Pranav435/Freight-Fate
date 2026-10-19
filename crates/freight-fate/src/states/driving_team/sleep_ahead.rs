@@ -50,6 +50,9 @@ pub struct Jump {
     pub minutes: f64,
 }
 
+/// A slept-through stretch ends before the tank goes under this share.
+const SLEEP_FUEL_RESERVE_FRACTION: f64 = 0.05;
+
 impl DrivingState {
     /// The player is asleep and the co-driver has the wheel, with nothing
     /// handed back yet.
@@ -97,6 +100,14 @@ impl DrivingState {
         // and looping back: driven live.
         let exit = self.destination_exit_stop(ctx)?;
         limit = limit.min(exit.at_mi - window - STOP_LEAD_MI);
+        // An open scale that wants the truck in is driven live, so the
+        // co-driver checks in there as they would awake; one the
+        // transponder clears is passed in the jump.
+        if !self.enforcement_bypassed(ctx) {
+            if let Some((scale, _)) = self.check_in_scale_ahead(ctx, limit - here + window) {
+                limit = limit.min(scale.at_mi - window - STOP_LEAD_MI);
+            }
+        }
         // A chain-law area is the checkpoint's to judge, live.
         let mut mile = here;
         while mile < limit {
@@ -158,7 +169,10 @@ impl DrivingState {
                 || (!break_due_at_start && co_driver::break_wanted(&hos, &mode))
                 || (!shift_due_at_start && co_driver::shift_over(&hos, &mode))
                 || rest_in_min.is_some_and(|rest| minutes >= rest);
-            if stop_at_need && due {
+            // Whatever the walk was for, it never carries the truck onto
+            // its last few gallons: the rest is driven live, where a fuel
+            // stop is planned or the player is woken for it.
+            if (stop_at_need && due) || fuel / tank < SLEEP_FUEL_RESERVE_FRACTION {
                 break;
             }
         }
@@ -263,7 +277,7 @@ impl DrivingState {
     }
 
     /// Whether the lot at `stop` is full when the truck gets there.
-    fn sleep_lot_full(&self, stop: &RoadStop) -> bool {
+    pub(crate) fn lot_full_now(&self, stop: &RoadStop) -> bool {
         stop.actions.iter().any(|action| action == "sleep")
             && hos::parking_is_full(
                 self.trip_seed,
@@ -302,7 +316,7 @@ impl DrivingState {
         }
         stops
             .iter()
-            .find(|stop| !self.sleep_lot_full(stop))
+            .find(|stop| !self.lot_full_now(stop))
             .or(stops.last())
             .map(|stop| (*stop).clone())
     }

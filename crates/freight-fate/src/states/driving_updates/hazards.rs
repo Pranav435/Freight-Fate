@@ -109,6 +109,7 @@ impl DrivingState {
             dodgeable: self.hazard_dodgeable,
             in_lane: self.hazard_in_lane,
             lead_mph: self.hazard_lead_mph,
+            brake_to_mph: self.hazard_brake_to_mph,
         }
     }
 
@@ -265,8 +266,23 @@ impl DrivingState {
         if let Some(lead_mph) = shape.lead_mph {
             return HAZARD_CREEP_MPH.max(lead_mph);
         }
+        // Something a truck passes slowly: a tarp it straddles, water it
+        // eases through, a car on the shoulder it gives room to.
+        if let Some(mph) = shape.brake_to_mph {
+            return mph;
+        }
         if shape.in_lane {
             return HAZARD_CREEP_MPH;
+        }
+        // In weather that takes grip or sight, something across the road
+        // asks for the speed the weather is safe at, a little under: braking
+        // a truck to 25 for a gust or a hail band it was already driving
+        // slow for was the "too much braking" (owner, 2026-10-19). The same
+        // test of bad weather the cruise caps on.
+        let effects = self.trip.weather.effects();
+        if effects.grip < 1.0 || effects.visibility_mi < 8.0 {
+            let weather_mph = effects.safe_speed_mph - HAZARD_WEATHER_MARGIN_MPH;
+            return HAZARD_SAFE_MPH.max(weather_mph.min(HAZARD_SPANNING_MAX_MPH));
         }
         HAZARD_SAFE_MPH
     }
@@ -452,8 +468,8 @@ impl DrivingState {
     /// Shane's ask (2026-08-20), and it is what the air horn is FOR on a
     /// real highway -- but it works the way animals work, not the way a
     /// button works. Livestock, dogs, and coyotes mostly move; deer and
-    /// elk freeze as often as they bolt, which is why braking stays the
-    /// instruction and the horn is a bonus, never the plan. One attempt
+    /// elk freeze as often as they bolt, so the horn is a bonus, never the
+    /// plan. One attempt
     /// per hazard: an animal that ignored the first blast has decided.
     /// Seeded on the hazard so a save-scummed retry hears the same deer
     /// make the same choice.
@@ -499,6 +515,59 @@ impl DrivingState {
         self.finish_hazard_clear(ctx, &text);
     }
 
+    /// An animal the truck reached without slowing for it: most get across,
+    /// and the rest are struck. A strike is a dent and a grille, not the
+    /// wreck a fixed object at speed is: the truck keeps its speed and the
+    /// freight is untouched (owner, 2026-10-19: do not stop for it).
+    ///
+    /// The odds are assumed, not measured: the horn's own split, where deer
+    /// and elk freeze more often than they bolt. The damage scales with the
+    /// animal's size and the truck's speed. Seeded on the hazard, so a
+    /// reload hears the same outcome.
+    pub fn animal_outcome(&mut self, ctx: &mut GameContext) {
+        let names = self.hazard_names.clone();
+        let mut rng = PyRandom::new_from_i64(
+            (self.trip_seed << 9) ^ (self.hazard_arm_mi * 50.0) as i64 ^ 0x5eed,
+        );
+        let struck = names.iter().find(|name| {
+            let freeze_prone = name.as_str() == "the deer" || name.as_str() == "the elk";
+            let gets_across = if freeze_prone { 0.6 } else { 0.75 };
+            rng.random() >= gets_across
+        });
+        let Some(struck) = struck.cloned() else {
+            self.clear_hazard(ctx);
+            return;
+        };
+        let size_pct = match struck.as_str() {
+            "the elk" | "the livestock" => ANIMAL_STRIKE_LARGE_PCT,
+            "the deer" => ANIMAL_STRIKE_DEER_PCT,
+            _ => ANIMAL_STRIKE_SMALL_PCT,
+        };
+        let pct = size_pct * (self.trip.truck.speed_mph() / 65.0).clamp(0.2, 1.2);
+        self.hazard_deadline = None;
+        self.hazard_lead_mph = None;
+        self.hazard_in_lane = false;
+        self.hazard_animal = false;
+        self.hazard_brake_to_mph = None;
+        self.hazard_names.clear();
+        self.refresh_live_facts(); // same reason as `finish_hazard_clear`
+        self.release_hazard_brake();
+        ctx.audio.play_with("vehicle/collision", 0.6, 0.0);
+        ctx.controller.rumble.impact(0.3);
+        self.trip.truck.add_damage(pct, false);
+        let damage = self.trip.truck.damage_pct;
+        let message = format!("Collision with {struck}. Damage {damage:.0} percent.");
+        self.last_event_message = message.clone();
+        self.co_driver_animal_strike(ctx, &struck);
+        let spoken_pct = damage;
+        ctx.say_event_with(
+            message,
+            SayEvent::new()
+                .category(SpeechCategory::Safety)
+                .valid(move || (live::damage_pct() - spoken_pct).abs() < 0.5),
+        );
+    }
+
     /// The pending hazard(s), joined for a resolution line.
     ///
     /// Falls back to "it" when nothing was recorded -- a hazard armed by
@@ -535,6 +604,10 @@ impl DrivingState {
     /// Common tail of every way a pending hazard can resolve: brake,
     /// swerve, or an earlier hazard outrun before a new one armed.
     pub fn finish_hazard_clear(&mut self, ctx: &mut GameContext, message_text: &str) {
+        // What the co-driver did about it, read before the resets below.
+        let co_driver_news = self
+            .co_driver_driving()
+            .then(|| (self.hazard_names_text(), self.hazard_animal));
         self.hazard_deadline = None;
         // The lead belonged to the hazard that just ended; a fresh one must
         // not inherit it, or a tyre carcass would clear at the speed of a
@@ -542,6 +615,8 @@ impl DrivingState {
         // the road must not inherit the near stop the last object asked for.
         self.hazard_lead_mph = None;
         self.hazard_in_lane = false;
+        self.hazard_animal = false;
+        self.hazard_brake_to_mph = None;
         // Everything below here can offer the hazard call its rescue -- the
         // clear line's own flush, or any urgent line that lands before the
         // next tick. That gate asks whether a hazard is still armed, so the
@@ -572,6 +647,9 @@ impl DrivingState {
         );
         ctx.award_driving_achievement("hazard_avoided");
         self.hazard_names.clear();
+        if let Some((names, animal)) = co_driver_news {
+            self.co_driver_note_hazard(ctx, &names, animal, message_text);
+        }
     }
 
     /// Speak and reset the pending hazard(s) as cleared by braking.
@@ -609,6 +687,7 @@ impl DrivingState {
         // following.
         if self.hazard_in_lane
             && self.hazard_lead_mph.is_none()
+            && self.hazard_brake_to_mph.is_none()
             && !self.hazard_slow_hint_said
             && self.trip.truck.speed_mph() <= HAZARD_SAFE_MPH
         {
@@ -643,8 +722,13 @@ impl DrivingState {
         let deadline = self.hazard_deadline.unwrap_or(0.0) - dt;
         self.hazard_deadline = Some(deadline);
         self.track_assisted_deceleration(dt);
-        let assist_may_act =
-            ctx.settings.automatic_emergency_braking && !self.dodge_still_beats_the_hazard();
+        // An animal is never braked for by the assist: a hard stop from
+        // highway speed does not save it, and a loaded truck braking hard for
+        // a deer is how a following car ends up in the trailer (owner,
+        // 2026-10-19). The driver can still brake for it themselves.
+        let assist_may_act = ctx.settings.automatic_emergency_braking
+            && !self.hazard_animal
+            && !self.dodge_still_beats_the_hazard();
         if !assist_may_act {
             // A driver mid-drift has answered the warning, and an assist the
             // driver has switched off has no truck to take.
@@ -710,6 +794,10 @@ impl DrivingState {
                 // 2026-09-01: a highway hazard must not disable cruise).
                 self.cancel_cruise(ctx, true);
             }
+        }
+        if self.hazard_deadline.unwrap_or(0.0) <= 0.0 && self.hazard_animal {
+            self.animal_outcome(ctx);
+            return;
         }
         if self.hazard_deadline.unwrap_or(0.0) <= 0.0 {
             self.hazard_deadline = None;

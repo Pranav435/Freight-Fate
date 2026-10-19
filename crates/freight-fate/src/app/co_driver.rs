@@ -92,6 +92,7 @@ impl App {
             log::error!("the co-driver's drive left the screens without its exit");
             self.ctx.settings.take_assists_back();
             self.ctx.co_driver_away = false;
+            self.ctx.sync_cue_mute();
             self.ctx.co_driver_fast_forward = false;
             self.ctx.apply_volumes();
             return;

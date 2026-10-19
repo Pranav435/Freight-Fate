@@ -525,6 +525,12 @@ pub fn advance_engine_wobble(wobble: &mut [[f64; 2]], dt: f64, rng: &mut PyRando
 /// | `stop_music(fade_ms=1000)` | `stop_music()` / `stop_music_with(fade_ms)` |
 /// | `set_volumes(master=None, ..., siren=None)` | `set_volumes(&VolumeUpdate)` |
 /// | properties | `enabled()`, `backend_name()`, `*_volume()`, `engine_running()`, `engine_starting()` |
+/// Whether `key` is one of the game's own cues rather than the road's or the
+/// truck's: what [`Audio::set_cues_muted`] holds back.
+pub fn is_game_cue(key: &str) -> bool {
+    key.starts_with("ui/") || key.starts_with("events/")
+}
+
 pub trait Audio {
     // -- properties -----------------------------------------------------------
     fn enabled(&self) -> bool;
@@ -547,6 +553,14 @@ pub trait Audio {
     fn engine_running(&self) -> bool;
     /// True while a deliberate ignition is still crossfading into the loop.
     fn engine_starting(&self) -> bool;
+
+    /// Hold back the game's own cues -- the `ui/` and `events/` one-shots
+    /// that announce a menu, a choice or a spoken line -- while `muted`.
+    /// The road, the truck and the radio still sound. Set while the
+    /// co-driver drives and the player has not pressed anything
+    /// (`GameContext::sync_cue_mute`), so none of what the co-driver does
+    /// at a stop or on the road beeps at a player who heard no words.
+    fn set_cues_muted(&mut self, _muted: bool) {}
 
     // -- one-shots and loops --------------------------------------------------
     /// The key this one will really sound as, after the jake A/B.

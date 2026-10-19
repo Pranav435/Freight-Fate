@@ -1,19 +1,20 @@
 //! What the co-driver does at a stop, without the stop's menu (owner,
-//! 2026-10-18): fuel and their 30-minute break happen as a sound and a line
-//! in the message log, then they drive on. Only the end of their shift opens
-//! the menu, because that is where the player takes over.
+//! 2026-10-18 and 2026-10-19: "skip the menus entirely, it is an
+//! artificial driver"): a scale's check-in, fuel and their 30-minute break
+//! happen as a sound and a note, then they drive on. Only the end of their
+//! shift opens the menu, after they hand back, because it is the player's.
 
-use ff_core::message_log::MessageCategory;
 use ff_core::models::loyalty::loyalty_earnings_text;
+use ff_core::sim::roadside_inspection::InspectionLevel;
 use ff_core::sim::trip_models::RoadStop;
 
-use crate::app::{GameContext, Say, TRANSCRIPT_TARGET};
+use crate::app::{GameContext, TRANSCRIPT_TARGET};
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::*;
 
+use super::notes::NoteWeight;
 use super::overlay::TOP_UP_FRACTION;
-use super::pilot::StopPurpose;
-use super::TeamMode;
+use super::pilot::{StopPurpose, FUEL_STOP_FRACTION};
 
 impl DrivingState {
     /// Fill the tank at `stop` the way the pump does. Returns the gallons.
@@ -72,11 +73,18 @@ impl DrivingState {
         );
     }
 
-    /// The co-driver pulled into `stop`: fuel and the break are done here
-    /// with no menu, the stop goes in the message log, and they drive on.
-    /// False when the stop's menu should open instead: the end of their
-    /// shift, or a scale.
+    /// The co-driver pulled into `stop`: a scale's check-in, fuel and the
+    /// break are done here with no menu, the stop goes in their notes, and
+    /// they drive on. False when the stop's menu should open instead: the
+    /// end of their shift, where they have just handed back and the menu is
+    /// the player's.
     pub fn co_driver_works_stop(&mut self, ctx: &mut GameContext, stop: &RoadStop) -> bool {
+        if stop.stop_type == "weigh_station" {
+            // Even at the end of their shift: nobody parks at a scale, so
+            // they check in and hand back at the next lot.
+            self.co_driver_works_scale(ctx, stop);
+            return true;
+        }
         let Some(team) = self.team.as_ref() else {
             return false;
         };
@@ -84,10 +92,14 @@ impl DrivingState {
         let Some(wheel) = team.wheel.as_ref() else {
             return false;
         };
-        if wheel.pilot.shift_over || stop.stop_type == "weigh_station" {
+        let shift_over = wheel.pilot.shift_over && !wheel.pilot.rested;
+        let rested = wheel.pilot.rested || self.player_rest_complete(ctx);
+        let can_park = stop.parking != "none" && !self.lot_full_now(stop);
+        if shift_over || (rested && can_park) {
+            // They hand back, then the stop's menu opens for the player.
+            self.co_driver_summon(ctx, if shift_over { "shift" } else { "rested" });
             return false;
         }
-        let mode = wheel.mode;
         let making_for = wheel.pilot.making_for.clone();
         let purpose = making_for.as_ref().map(|(_, purpose)| *purpose);
         advance_rest_clock(self, ctx, STOP_PULL_IN_MIN, None, "");
@@ -101,6 +113,13 @@ impl DrivingState {
         } else {
             0.0
         };
+        if sells_fuel && gallons <= 0.0 && fuel < FUEL_STOP_FRACTION {
+            // The money will not cover the tank, and driving on is driving
+            // it dry: the player decides, with the stop's menu in front of
+            // them.
+            self.co_driver_summon(ctx, "money");
+            return false;
+        }
         let breaks_here = stop.actions.iter().any(|action| action == "break");
         let took_break = purpose == Some(StopPurpose::Break) && breaks_here;
         if took_break {
@@ -116,12 +135,17 @@ impl DrivingState {
             (false, true) => format!("{name} took a 30-minute break at {place}."),
             (false, false) => format!("{name} stopped at {place}."),
         };
-        ctx.message_log.add(&line, MessageCategory::Event);
-        if mode == TeamMode::RideAlong {
-            // The player is awake in the passenger seat: one line, after
-            // whatever is speaking.
-            ctx.player_asked(|ctx| ctx.say_with(line, Say::queued()));
-        }
+        self.co_driver_note(ctx, line, NoteWeight::Passing);
+        self.co_driver_clear_plan_at(stop, making_for);
+        true
+    }
+
+    /// The stop is done with: none of the plan is left to pull in again.
+    fn co_driver_clear_plan_at(
+        &mut self,
+        stop: &RoadStop,
+        making_for: Option<(String, StopPurpose)>,
+    ) {
         // The stop is done with: none of the plan is left to pull in again.
         if let Some(wheel) = self.team.as_mut().and_then(|team| team.wheel.as_mut()) {
             wheel.pilot.making_for = None;
@@ -136,6 +160,53 @@ impl DrivingState {
         if self.selected_stop_key.as_ref().is_some_and(ours) {
             self.clear_selected_stop_intent();
         }
-        true
+    }
+
+    /// The co-driver at an open scale: the check-in the menu's own row runs,
+    /// settled where the truck stands, and one note of how it went.
+    fn co_driver_works_scale(&mut self, ctx: &mut GameContext, stop: &RoadStop) {
+        let Some(name) = self.co_driver_at_wheel_name() else {
+            return;
+        };
+        let place = stop.spoken_name();
+        if !self.scale_is_open(stop) || self.stop_visit(stop).inspected {
+            return;
+        }
+        self.stop_visit(stop).inspected = true;
+        let (line, weight) = if self.decal_waves_through(ctx) {
+            advance_rest_clock(self, ctx, WAVE_THROUGH_MIN, None, "");
+            hos_mut_of(ctx).on_duty(WAVE_THROUGH_MIN);
+            (
+                format!("{name} checked in at {place}. The inspection decal got the truck waved through."),
+                NoteWeight::Passing,
+            )
+        } else if !self.scale_selects_driver(ctx, stop) {
+            advance_rest_clock(self, ctx, WAVE_THROUGH_MIN, None, "");
+            hos_mut_of(ctx).on_duty(WAVE_THROUGH_MIN);
+            (
+                format!("{name} checked in at {place} and was waved through."),
+                NoteWeight::Passing,
+            )
+        } else {
+            let report = self.inspection_report(ctx, InspectionLevel::Full);
+            let outcome = self.settle_inspection(ctx, &report);
+            (
+                format!("{name} was pulled in for an inspection at {place}. {outcome}"),
+                NoteWeight::Wake,
+            )
+        };
+        if let Some(wheel) = self.team.as_mut().and_then(|team| team.wheel.as_mut()) {
+            wheel.log.scales.push(place.clone());
+        }
+        // The fine, the citation and the done check-in are on disk before a
+        // quit could take them back, as the menu's own check-in saves them.
+        let snapshot = self.snapshot(ctx);
+        profile_mut_of(ctx).active_trip = Some(snapshot);
+        ctx.save_profile();
+        self.note_scale_reannounce(Some(&place));
+        self.co_driver_note(ctx, line, weight);
+        if let Some(wheel) = self.team.as_mut().and_then(|team| team.wheel.as_mut()) {
+            wheel.pilot.making_for = None;
+        }
     }
 }

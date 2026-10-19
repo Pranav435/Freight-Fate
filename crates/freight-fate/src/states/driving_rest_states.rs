@@ -42,6 +42,7 @@ use crate::app::GameContext;
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::{profile_mut_of, profile_of};
 use crate::states::driving_menu_states::{push_over_drive, DriveRef};
+use crate::states::driving_team::notes::NoteWeight;
 use crate::states::driving_updates::pending::EnforcementStopParams;
 
 /// Leaving a stop menu. The engine is whatever it already was: "starts the
@@ -244,6 +245,16 @@ impl DrivingState {
 
     /// `ctx.push_state(ParkingFullState(ctx, self, stop))`.
     pub fn push_parking_full_state(&mut self, ctx: &mut GameContext, stop: &RoadStop) {
+        if let Some(name) = self.co_driver_at_wheel_name() {
+            // The co-driver only reaches a full lot with their shift going
+            // on: they drive on to the next one, with no screen.
+            let line = format!(
+                "The lot at {} is full. {name} drives on.",
+                stop.spoken_name()
+            );
+            self.co_driver_note(ctx, line, NoteWeight::Passing);
+            return;
+        }
         let mut state = ParkingFullState::new(ctx, stop.clone());
         state.enter_over_drive(ctx, self);
         push_over_drive(ctx, state);
@@ -289,7 +300,33 @@ impl DrivingState {
             warned,
             construction_zone,
         );
+        if self.co_driver_settles_roadside(ctx, state.outcome_text(), state.licence_pulled(ctx)) {
+            return;
+        }
         ctx.push_state(state);
+    }
+
+    /// A roadside stop with the co-driver at the wheel: it is settled when
+    /// the screen is built, so they take the outcome, note it and drive on,
+    /// with no screen at all. True when that is done. A stop that pulls the
+    /// license ends the run, so they hand back and the screen is the
+    /// player's.
+    fn co_driver_settles_roadside(
+        &mut self,
+        ctx: &mut GameContext,
+        outcome: &str,
+        licence_pulled: bool,
+    ) -> bool {
+        let Some(name) = self.co_driver_at_wheel_name() else {
+            return false;
+        };
+        if licence_pulled {
+            self.co_driver_summon(ctx, "roadside");
+            return false;
+        }
+        let line = format!("A trooper pulled {name} over. {outcome}");
+        self.co_driver_note(ctx, line.trim_end().to_string(), NoteWeight::Wake);
+        true
     }
 
     /// `ctx.push_state(EnforcementStopState(...))`.
@@ -299,6 +336,10 @@ impl DrivingState {
         stop: EnforcementStopParams,
     ) {
         let state = EnforcementStopState::new(ctx, self, stop);
+        let outcome = format!("{} {}", state.summary, state.outcome_text());
+        if self.co_driver_settles_roadside(ctx, outcome.trim(), state.licence_pulled(ctx)) {
+            return;
+        }
         ctx.push_state(state);
     }
 

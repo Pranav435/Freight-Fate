@@ -1098,6 +1098,33 @@ fn test_a_green_transponder_verdict_retires_the_reminder() {
 }
 
 #[test]
+fn test_a_green_transponder_lets_the_co_driver_and_the_exit_key_pass_the_scale() {
+    // Owner, 2026-10-19: with a transponder showing green, the truck rolls
+    // on by the scale as the rules allow; only a scale that wants the truck
+    // in is one to signal for.
+    let mut app = TestApp::new();
+    let mut drive = a_drive(&mut app, "Jerry");
+    let (scale, _) = with_scale(&mut drive, 10.0, 11.0, true);
+    drive.trip.position_mi = 8.0;
+    assert!(
+        drive.check_in_scale_ahead(&app.ctx, 5.0).is_some(),
+        "with no transponder the open scale wants the truck"
+    );
+    app.ctx.profile.as_mut().expect("a career").career =
+        ff_core::models::career::Career::with_xp(1.0e7);
+    let key = drive.weigh_station_key(&scale);
+    drive
+        .weigh_station_transponder_verdict
+        .insert(key.clone(), "green".to_string());
+    assert!(!drive.scale_wants_truck(&app.ctx, &scale));
+    assert!(drive.check_in_scale_ahead(&app.ctx, 5.0).is_none());
+    drive
+        .weigh_station_transponder_verdict
+        .insert(key, "red".to_string());
+    assert!(drive.check_in_scale_ahead(&app.ctx, 5.0).is_some());
+}
+
+#[test]
 fn test_the_reminder_window_is_the_last_half_mile() {
     const { assert!(WEIGH_STATION_REMINDER_MI > 0.0 && WEIGH_STATION_REMINDER_MI < 1.0) };
 }
