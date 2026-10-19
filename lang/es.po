@@ -17738,6 +17738,13 @@ msgstr ""
 msgid "Open the list of states you have delivered to, each with its cities."
 msgstr ""
 
+msgid "Co-drivers"
+msgstr ""
+
+msgid ""
+"Open the list of co-drivers you have teamed with, each with their story."
+msgstr ""
+
 msgid "Citations and violations"
 msgstr "Multas e infracciones"
 
@@ -17749,6 +17756,42 @@ msgstr ""
 "cuánto costó, cuándo y dónde."
 
 msgid "No deliveries yet."
+msgstr ""
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}, your hire, 1 team load."
+msgstr ""
+
+#. placeholders: {name}, {bio}
+msgid "{name}, your hire, 1 team load. {bio}"
+msgstr ""
+
+#. placeholders: {name}, {loads}
+#. one sentence of a longer line
+msgid "{name}, your hire, {loads} team loads."
+msgstr ""
+
+#. placeholders: {name}, {loads}, {bio}
+msgid "{name}, your hire, {loads} team loads. {bio}"
+msgstr ""
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}, 1 team load."
+msgstr ""
+
+#. placeholders: {name}, {bio}
+msgid "{name}, 1 team load. {bio}"
+msgstr ""
+
+#. placeholders: {name}, {loads}
+#. one sentence of a longer line
+msgid "{name}, {loads} team loads."
+msgstr ""
+
+#. placeholders: {name}, {loads}, {bio}
+msgid "{name}, {loads} team loads. {bio}"
 msgstr ""
 
 msgid "Serious violation"

@@ -88,7 +88,9 @@ bookmarks usable.
       still run live, sped up. At any stop the co-driver fuels and takes the
       break without the stop's menu: the pump sound and a line in the
       message log. The owner's listening pass on ride along and the wake-up
-      summary is his to do.
+      summary is his to do. Career stats gains a Co-drivers list once a
+      career has teamed (2026-10-19): each classmate's loads together, the
+      owner-operator's hire, and their bio, read only when opened.
 - [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
       `music.pak` opens like `channel3000.pak`, reading only its directory
       at launch and each track from its offset when it starts; `sounds.pak`
