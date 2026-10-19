@@ -260,6 +260,15 @@ pub fn team_loads(stats: &Map<String, Value>) -> i64 {
     CAST.iter().map(|c| loads_with(stats, c.key)).sum()
 }
 
+/// Everyone the career has run a team load with, in cast order, with the
+/// loads run together.
+pub fn teamed_with(stats: &Map<String, Value>) -> Vec<(&'static CoDriver, i64)> {
+    CAST.iter()
+        .map(|member| (member, loads_with(stats, member.key)))
+        .filter(|(_, loads)| *loads > 0)
+        .collect()
+}
+
 /// The owner-operator's hired co-driver, once there is one.
 pub fn hired_co_driver(stats: &Map<String, Value>) -> Option<&'static CoDriver> {
     CAST.iter()

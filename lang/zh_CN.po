@@ -15736,6 +15736,13 @@ msgstr "去过的地方"
 msgid "Open the list of states you have delivered to, each with its cities."
 msgstr "打开你已送货到的州列表，每个州都有其城市。"
 
+msgid "Co-drivers"
+msgstr ""
+
+msgid ""
+"Open the list of co-drivers you have teamed with, each with their story."
+msgstr ""
+
 msgid "Citations and violations"
 msgstr "罚单和违规"
 
@@ -15746,6 +15753,42 @@ msgstr "打开列表，最新的在前：是什么、为什么、花了多少、
 
 msgid "No deliveries yet."
 msgstr "还没有发货。"
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}, your hire, 1 team load."
+msgstr ""
+
+#. placeholders: {name}, {bio}
+msgid "{name}, your hire, 1 team load. {bio}"
+msgstr ""
+
+#. placeholders: {name}, {loads}
+#. one sentence of a longer line
+msgid "{name}, your hire, {loads} team loads."
+msgstr ""
+
+#. placeholders: {name}, {loads}, {bio}
+msgid "{name}, your hire, {loads} team loads. {bio}"
+msgstr ""
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}, 1 team load."
+msgstr ""
+
+#. placeholders: {name}, {bio}
+msgid "{name}, 1 team load. {bio}"
+msgstr ""
+
+#. placeholders: {name}, {loads}
+#. one sentence of a longer line
+msgid "{name}, {loads} team loads."
+msgstr ""
+
+#. placeholders: {name}, {loads}, {bio}
+msgid "{name}, {loads} team loads. {bio}"
+msgstr ""
 
 msgid "Serious violation"
 msgstr "严重违规"

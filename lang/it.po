@@ -17785,6 +17785,13 @@ msgid "Open the list of states you have delivered to, each with its cities."
 msgstr ""
 "Apri l'elenco degli stati in cui hai consegnato, ognuno con le sue città."
 
+msgid "Co-drivers"
+msgstr ""
+
+msgid ""
+"Open the list of co-drivers you have teamed with, each with their story."
+msgstr ""
+
 msgid "Citations and violations"
 msgstr "Multe e infrazioni"
 
@@ -17797,6 +17804,42 @@ msgstr ""
 
 msgid "No deliveries yet."
 msgstr "Ancora nessuna consegna."
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}, your hire, 1 team load."
+msgstr ""
+
+#. placeholders: {name}, {bio}
+msgid "{name}, your hire, 1 team load. {bio}"
+msgstr ""
+
+#. placeholders: {name}, {loads}
+#. one sentence of a longer line
+msgid "{name}, your hire, {loads} team loads."
+msgstr ""
+
+#. placeholders: {name}, {loads}, {bio}
+msgid "{name}, your hire, {loads} team loads. {bio}"
+msgstr ""
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "{name}, 1 team load."
+msgstr ""
+
+#. placeholders: {name}, {bio}
+msgid "{name}, 1 team load. {bio}"
+msgstr ""
+
+#. placeholders: {name}, {loads}
+#. one sentence of a longer line
+msgid "{name}, {loads} team loads."
+msgstr ""
+
+#. placeholders: {name}, {loads}, {bio}
+msgid "{name}, {loads} team loads. {bio}"
+msgstr ""
 
 msgid "Serious violation"
 msgstr "Infrazione grave"

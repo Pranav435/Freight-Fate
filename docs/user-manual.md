@@ -723,6 +723,8 @@ The co-driver uses every assist, fuels when the tank runs low, crosses the open 
 
 To drive again sooner, pause and choose Take the wheel back.
 
+**Who they are.** Once you have run a team load, Career stats has a Co-drivers list: everyone you have teamed with, how many loads you ran together, and a line or two about them. The Driver status screen reads the same story for the co-driver on your current load. Nothing reads it to you unless you open it.
+
 **What it costs.** On a company job, miles the co-driver drives pay you half. An owner-operator pays their co-driver 30 percent of the settlement for those miles, and still pays fuel, tolls and upkeep. Those miles earn half the career experience. The settlement names the co-driver's miles and share. Badges for how a haul was driven, such as a long run with no tolls, are not earned on a team load, and the road journal notes who drove.
 
 **Your hours.** Time while the co-driver drives counts as sleeper-berth time, whether you ride along or sleep. Ten hours of it resets your legal hours and clears your fatigue. The co-driver keeps a logbook of their own. The Driver status screen says who is driving. It and C both say when the co-driver needs you back, and the ELD app reads both logbooks.

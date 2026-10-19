@@ -189,3 +189,17 @@ fn only_the_surprise_pairings_carry_a_badge() {
 fn ten_hours_in_the_sleeper_clears_fatigue() {
     assert!((sleeper_fatigue_relief(hos::SLEEP_MIN) - 100.0).abs() < 1e-9);
 }
+
+#[test]
+fn the_roster_lists_only_the_drivers_you_have_teamed_with() {
+    let mut stats = stats();
+    assert!(teamed_with(&stats).is_empty());
+    record_team_load(&mut stats, "june", COMPANY_DRIVER);
+    record_team_load(&mut stats, "dan", COMPANY_DRIVER);
+    record_team_load(&mut stats, "june", COMPANY_DRIVER);
+    let roster: Vec<(&str, i64)> = teamed_with(&stats)
+        .into_iter()
+        .map(|(member, loads)| (member.key, loads))
+        .collect();
+    assert_eq!(roster, vec![("dan", 1), ("june", 2)]);
+}
