@@ -169,6 +169,7 @@ mod states_driving_stop_menus;
 mod states_driving_street_controls;
 mod states_driving_team;
 mod states_driving_team_dock;
+mod states_driving_team_rest;
 mod states_driving_traffic_rate;
 mod states_driving_traffic_sounds;
 mod states_driving_trip_resume;

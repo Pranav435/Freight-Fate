@@ -1,13 +1,32 @@
 //! Leaving the shipper with the co-driver at the wheel.
 
 use ff_core::models::co_driver;
+use ff_core::models::jobs::Job;
 
 use crate::app::GameContext;
 use crate::states::base::MenuItem;
 use crate::states::city::profile;
 use crate::states::city_pickup::PickupFacilityState;
-use crate::states::driving_team::handover::{job_pairing, terms_text};
+use crate::states::driving_team::handover::{job_pairing, take_intro, terms_text};
 use crate::states::driving_team::TeamMode;
+
+/// The driving minutes a co-driver offer is judged on: the route's own
+/// drive hours, or the deadline pace when the world has no route. The dock
+/// and the board's job details both use it, so the board promises only
+/// what the dock offers.
+pub(crate) fn team_drive_min(ctx: &GameContext, job: &Job) -> f64 {
+    let route = ctx
+        .world
+        .supported_route(&job.origin, &job.destination, None)
+        .ok()
+        .flatten();
+    match route {
+        Some(route) => {
+            ff_core::models::jobs::route_drive_hours(Some(&route), 0.0, Some(ctx.world)) * 60.0
+        }
+        None => job.distance_mi / ff_core::models::jobs::DEADLINE_AVG_MPH * 60.0,
+    }
+}
 
 impl PickupFacilityState {
     /// Whether the dock offers a team departure: a team load, or one long
@@ -19,18 +38,22 @@ impl PickupFacilityState {
         if self.job.team {
             return true;
         }
-        let route = ctx
-            .world
-            .supported_route(&self.job.origin, &self.job.destination, None)
-            .ok()
-            .flatten();
-        let drive_min = match route {
-            Some(route) => {
-                ff_core::models::jobs::route_drive_hours(Some(&route), 0.0, Some(ctx.world)) * 60.0
-            }
-            None => self.job.distance_mi / ff_core::models::jobs::DEADLINE_AVG_MPH * 60.0,
-        };
+        let drive_min = team_drive_min(ctx, &self.job);
         co_driver::team_worthwhile(&profile(ctx).hos, &ctx.settings.hos_mode, drive_min)
+    }
+
+    /// The introduction to team driving, the first time a career's dock
+    /// offers a co-driver.
+    pub(crate) fn team_intro(&self, ctx: &mut GameContext) -> Option<String> {
+        let heard = ctx
+            .profile
+            .as_ref()
+            .is_none_or(|p| co_driver::introduced(&p.achievement_stats));
+        if heard || !self.team_departure_offered(ctx) {
+            return None;
+        }
+        let name = job_pairing(ctx, &self.job).co_driver.name;
+        take_intro(ctx, name, true)
     }
 
     /// The two team rows, placed after Depart for destination.

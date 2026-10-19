@@ -112,6 +112,12 @@ fn a_slept_shift_runs_ahead_to_the_receivers_gate_and_wakes_the_driver() {
     let summary =
         harness.with_state::<ArrivalState, _>(|arrival, _| arrival.summary_parts.join(" "));
     assert!(summary.contains("Lou drove"), "{summary}");
+    // The share is a row of its own on the settlement menu, read just
+    // before the net pay it explains.
+    let rows = harness.with_state::<ArrivalState, _>(|arrival, _| arrival.summary_lines.clone());
+    let share = rows.iter().position(|l| l.starts_with("Lou drove"));
+    let net = rows.iter().position(|l| l.starts_with("Net driver pay"));
+    assert!(share.is_some() && share.map(|i| i + 1) == net, "{rows:?}");
     let note = harness.with_state::<ArrivalState, _>(|arrival, _| arrival.team_note.clone());
     assert!(
         note.as_deref()

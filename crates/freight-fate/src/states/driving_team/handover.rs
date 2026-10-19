@@ -76,24 +76,80 @@ pub fn terms_text(ctx: &GameContext, name: &str) -> String {
     )
 }
 
+/// The introduction to team driving, said once per career the first time a
+/// co-driver is offered: at the shipper's dock (`at_dock`) or in the pause
+/// menu. Before it, the rows turned up with nothing to say why (owner
+/// report, 2026-10-19).
+pub fn intro_text(ctx: &GameContext, name: &str, at_dock: bool) -> String {
+    let take = if at_dock {
+        format!(
+            "{name} can drive from here, or take over later from the pause menu, while you rest \
+             in the sleeper."
+        )
+    } else {
+        format!("{name} can take the wheel from this menu while you rest in the sleeper.")
+    };
+    let mode = &ctx.settings.hos_mode;
+    let back = if !co_driver::enforced(mode) {
+        format!("{name} drives to the receiver's gate unless something needs you.")
+    } else if co_driver::fully_rested(&profile_of(ctx).hos) {
+        format!("{name} drives until their own hours run out.")
+    } else {
+        format!("{name} hands the wheel back once you have had your 10-hour rest.")
+    };
+    format!("This load is long enough to share with a co-driver. {take} {back}")
+}
+
+/// The introduction, if this career has not heard it yet. The caller
+/// marks it heard (`mark_intro_heard`) once it is actually spoken.
+pub fn new_intro(ctx: &GameContext, name: &str, at_dock: bool) -> Option<String> {
+    let profile = ctx.profile.as_ref()?;
+    if co_driver::introduced(&profile.achievement_stats) {
+        return None;
+    }
+    Some(intro_text(ctx, name, at_dock))
+}
+
+/// Record that this career has heard the introduction.
+pub fn mark_intro_heard(ctx: &mut GameContext) {
+    if let Some(profile) = ctx.profile.as_mut() {
+        co_driver::mark_introduced(&mut profile.achievement_stats);
+    }
+}
+
+/// The introduction, if this career has not heard it yet, marked heard:
+/// for a caller that speaks it straight away.
+pub fn take_intro(ctx: &mut GameContext, name: &str, at_dock: bool) -> Option<String> {
+    let intro = new_intro(ctx, name, at_dock)?;
+    mark_intro_heard(ctx);
+    Some(intro)
+}
+
 impl PauseMenuState {
     /// The co-driver rows, placed after Resume driving.
     pub(crate) fn team_rows(
-        &self,
-        ctx: &GameContext,
+        &mut self,
+        ctx: &mut GameContext,
         d: &DrivingState,
     ) -> Vec<MenuItem<PauseMenuState>> {
         if d.co_driver_driving() {
+            let help = match d.co_driver_clock_clause(ctx) {
+                Some(status) => format!("{status} Wakes you and gives you the wheel."),
+                None => "Wakes you and gives you the wheel.".to_string(),
+            };
             return vec![MenuItem::new("Take the wheel back", |s: &mut Self, ctx| {
                 s.take_the_wheel_back(ctx)
             })
-            .help("Wakes you and gives you the wheel.")];
+            .help(help)];
         }
         if !d.handover_offered(ctx) {
             return Vec::new();
         }
         let pairing = d.team_pairing(ctx);
         let name = pairing.co_driver.name;
+        // Kept until the menu's entry speaks it; a refresh that builds
+        // these rows does not use it up.
+        self.team_intro = new_intro(ctx, name, false);
         let carrier = ff_core::models::career::carrier_name_of(profile_of(ctx));
         let who = co_driver::pairing_line(&pairing, &carrier);
         let terms = terms_text(ctx, name);
