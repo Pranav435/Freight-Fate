@@ -26,7 +26,7 @@ impl DrivingState {
     }
 
     /// How the player's rest stands while the co-driver drives, and when
-    /// they hand back: "Rest: 3.5 hours of 10. Dan hands back in about 6.5
+    /// they hand back: "Rest: 3.5 hours of 10 hours. Dan hands back in about 6.5
     /// hours." The C readout's hours clause, the Driver screen and the
     /// pause menu all read this.
     pub fn co_driver_clock_clause(&self, ctx: &GameContext) -> Option<String> {
@@ -47,12 +47,12 @@ impl DrivingState {
         let rested = hos::duration_text(co_driver::rested_min(&team.off_wheel_hos) / 60.0);
         if rest_left <= hours_left {
             Some(format!(
-                "Rest: {rested} of 10. {name} hands back in about {}.",
+                "Rest: {rested} of 10 hours. {name} hands back in about {}.",
                 hos::duration_text(rest_left / 60.0)
             ))
         } else {
             Some(format!(
-                "Rest: {rested} of 10. {name} needs you back in {}, before your rest is in.",
+                "Rest: {rested} of 10 hours. {name} needs you back in {}, before your rest is in.",
                 hos::duration_text(hours_left / 60.0)
             ))
         }

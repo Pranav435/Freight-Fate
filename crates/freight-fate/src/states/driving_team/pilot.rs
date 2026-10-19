@@ -12,7 +12,6 @@
 //! Anything the co-driver has no rule for, they hand back.
 
 use ff_core::models::co_driver;
-use ff_core::sim::hos;
 use ff_core::sim::trip_models::RoadStop;
 
 use crate::app::{GameContext, TRANSCRIPT_TARGET};
@@ -294,11 +293,18 @@ impl DrivingState {
         }
         let mode = ctx.settings.hos_mode.clone();
         if co_driver::shift_over(hos_of(ctx), &mode) {
-            if !pilot.shift_over || pilot.rested {
-                pilot.shift_over = true;
-                pilot.rested = false;
+            if !pilot.shift_over {
                 pilot.making_for = None;
+            } else if pilot.rested {
+                // Their hours ran out on the way to the lot they chose for
+                // the player's rest: that lot is still the one to make for,
+                // and none other is needed if they reach it.
+                pilot
+                    .making_for
+                    .take_if(|(_, purpose)| *purpose != StopPurpose::ShiftEnd);
             }
+            pilot.shift_over = true;
+            pilot.rested = false;
         } else if !pilot.shift_over && self.player_rest_complete(ctx) {
             log::info!(target: TRANSCRIPT_TARGET, "[co-driver] the driver's rest is in");
             pilot.shift_over = true;
@@ -325,12 +331,16 @@ impl DrivingState {
         if pilot.making_for.is_some() {
             return;
         }
-        let purpose = if pilot.shift_over {
+        // Looking for a lot once the player is rested can take a while, so
+        // the break and the tank still come first then.
+        let purpose = if pilot.shift_over && !pilot.rested {
             StopPurpose::ShiftEnd
         } else if co_driver::break_wanted(hos_of(ctx), &mode) {
             StopPurpose::Break
         } else if self.trip.truck.fuel_fraction() < FUEL_STOP_FRACTION {
             StopPurpose::Fuel
+        } else if pilot.rested {
+            StopPurpose::ShiftEnd
         } else {
             return;
         };
@@ -354,7 +364,7 @@ impl DrivingState {
         let Some(stop) = kept.or_else(first) else {
             return;
         };
-        let reach = if pilot.rested {
+        let reach = if pilot.rested && purpose == StopPurpose::ShiftEnd {
             self.co_driver_hours_reach_mi(ctx)
         } else {
             self.co_driver_reach_mi(ctx, purpose)
@@ -412,8 +422,9 @@ impl DrivingState {
     /// How far the co-driver's own hours still reach, at the pace a stop's
     /// reach is judged at.
     pub(crate) fn co_driver_hours_reach_mi(&self, ctx: &GameContext) -> f64 {
-        let left_min = hos_of(ctx)
-            .remaining_min(&ctx.settings.hos_mode)
+        // The break is left out: a rested co-driver still plans it, and
+        // stops for it on the way.
+        let left_min = co_driver::shift_left_min(hos_of(ctx), &ctx.settings.hos_mode)
             .unwrap_or(0.0)
             - co_driver::CO_DRIVER_SUMMON_LEAD_MIN;
         left_min.max(0.0) / 60.0 * REACH_MPH
@@ -437,8 +448,7 @@ impl DrivingState {
     pub(crate) fn player_rest_left_min(&self, ctx: &GameContext) -> Option<f64> {
         let team = self.team.as_ref()?;
         let owed = team.wheel.as_ref()?.player_rest_owed;
-        let mode = &ctx.settings.hos_mode;
-        if !owed || hos::is_non_enforced(mode) || hos::limits(mode).is_none() {
+        if !owed || !co_driver::enforced(&ctx.settings.hos_mode) {
             return None;
         }
         Some(co_driver::rest_left_min(&team.off_wheel_hos))

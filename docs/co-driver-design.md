@@ -47,8 +47,8 @@ No new hotkeys. Everything goes where players already look:
 
 - **Dispatch board and job details.** A team load says so in its details. The pay terms are in the help of the handover rows.
 - **Tab, Driver screen.** While teamed: who is driving, how much of the player's ten-hour rest is in, and when the co-driver hands back. After a slept-through shift, the wake-up summary stays here so it can be read again.
-- **C readout.** The "nearest hours-of-service limit" clause becomes the rest and hand-back line while they drive ("Rest: 3.5 hours of 10. Dan hands back in about 6.5 hours."). The pause menu's Take the wheel back row reads the same line in its help.
-- **The first offer.** The first time a career is offered a co-driver, at the dock or in the pause menu, one line says what it is, where to choose it and when the co-driver hands back. Job details on the board say "Co-driver: available on this load" for every load long enough to share.
+- **C readout.** The "nearest hours-of-service limit" clause becomes the rest and hand-back line while they drive ("Rest: 3.5 hours of 10 hours. Dan hands back in about 6.5 hours."). The pause menu's Take the wheel back row reads the same line in its help.
+- **The first offer.** The first time a career is offered a co-driver, at the dock or in the pause menu, one line says what it is, where to choose it and when the co-driver hands back. Job details on the board say "Co-driver: offered at the shipper's dock or from the pause menu, on your current hours." when the dock would offer one on the clock the loaded truck leaves with.
 - **ELD app.** The co-driver's logbook next to yours, the way a real team's electronic log shows both drivers.
 - **Settlement.** One line for the co-driver's miles and their share, and the reduced experience in the experience line.
 - **Manual and ontology.** A "Team driving" section in the manual, and rows for co-driver, team load, ride along and sleep through it.

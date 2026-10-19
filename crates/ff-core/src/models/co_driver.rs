@@ -438,14 +438,18 @@ pub fn team_split(
     }
 }
 
-fn enforced(hos_mode: &str) -> bool {
+/// Whether hours of service are kept in this mode, so rest and shift
+/// limits mean anything.
+pub fn enforced(hos_mode: &str) -> bool {
     !hos::is_non_enforced(hos_mode) && hos::limits(hos_mode).is_some()
 }
 
 /// Whether this logbook has had its full 10-hour rest since its driver
-/// last drove or worked. A logbook with nothing on it yet counts as rested.
+/// last drove. Time on duty without driving (checking in, loading, a
+/// fuel stop) since the last reset does not use the rest up: a driver
+/// fresh from the sleeper who loads and hands over owes no second sleep.
 pub fn fully_rested(hos: &HosClock) -> bool {
-    hos.off_duty_min >= hos::SLEEP_MIN || (hos.driving_min <= 0.0 && hos.duty_min <= 0.0)
+    hos.off_duty_min >= hos::SLEEP_MIN || hos.driving_min <= 0.0
 }
 
 /// Minutes of rest this logbook still needs for its full 10 hours.

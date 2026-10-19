@@ -3,7 +3,6 @@
 use ff_core::models::business_constants::is_owner_operator;
 use ff_core::models::co_driver::{self, Pairing};
 use ff_core::models::jobs::Job;
-use ff_core::sim::hos;
 
 use crate::app::{GameContext, Say};
 use crate::states::base::MenuItem;
@@ -91,7 +90,7 @@ pub fn intro_text(ctx: &GameContext, name: &str, at_dock: bool) -> String {
         format!("{name} can take the wheel from this menu while you rest in the sleeper.")
     };
     let mode = &ctx.settings.hos_mode;
-    let back = if hos::is_non_enforced(mode) || hos::limits(mode).is_none() {
+    let back = if !co_driver::enforced(mode) {
         format!("{name} drives to the receiver's gate unless something needs you.")
     } else if co_driver::fully_rested(&profile_of(ctx).hos) {
         format!("{name} drives until their own hours run out.")
@@ -101,14 +100,29 @@ pub fn intro_text(ctx: &GameContext, name: &str, at_dock: bool) -> String {
     format!("This load is long enough to share with a co-driver. {take} {back}")
 }
 
-/// The introduction, if this career has not heard it yet. Marks it heard.
-pub fn take_intro(ctx: &mut GameContext, name: &str, at_dock: bool) -> Option<String> {
-    let profile = ctx.profile.as_mut()?;
+/// The introduction, if this career has not heard it yet. The caller
+/// marks it heard (`mark_intro_heard`) once it is actually spoken.
+pub fn new_intro(ctx: &GameContext, name: &str, at_dock: bool) -> Option<String> {
+    let profile = ctx.profile.as_ref()?;
     if co_driver::introduced(&profile.achievement_stats) {
         return None;
     }
-    co_driver::mark_introduced(&mut profile.achievement_stats);
     Some(intro_text(ctx, name, at_dock))
+}
+
+/// Record that this career has heard the introduction.
+pub fn mark_intro_heard(ctx: &mut GameContext) {
+    if let Some(profile) = ctx.profile.as_mut() {
+        co_driver::mark_introduced(&mut profile.achievement_stats);
+    }
+}
+
+/// The introduction, if this career has not heard it yet, marked heard:
+/// for a caller that speaks it straight away.
+pub fn take_intro(ctx: &mut GameContext, name: &str, at_dock: bool) -> Option<String> {
+    let intro = new_intro(ctx, name, at_dock)?;
+    mark_intro_heard(ctx);
+    Some(intro)
 }
 
 impl PauseMenuState {
@@ -133,9 +147,9 @@ impl PauseMenuState {
         }
         let pairing = d.team_pairing(ctx);
         let name = pairing.co_driver.name;
-        if let Some(intro) = take_intro(ctx, name, false) {
-            self.team_intro = Some(intro);
-        }
+        // Kept until the menu's entry speaks it; a refresh that builds
+        // these rows does not use it up.
+        self.team_intro = new_intro(ctx, name, false);
         let carrier = ff_core::models::career::carrier_name_of(profile_of(ctx));
         let who = co_driver::pairing_line(&pairing, &carrier);
         let terms = terms_text(ctx, name);

@@ -194,6 +194,12 @@ fn ten_hours_in_the_sleeper_clears_fatigue() {
 fn the_player_is_rested_after_ten_unbroken_hours_in_the_sleeper() {
     let mut player = HosClock::new();
     assert!(fully_rested(&player), "an empty logbook needs no rest");
+    let mut loaded = HosClock::new();
+    loaded.on_duty(90.0);
+    assert!(
+        fully_rested(&loaded),
+        "loading after a sleep does not use the rest up"
+    );
     player.drive(6.0 * 60.0);
     assert!(!fully_rested(&player));
     assert_eq!(rest_left_min(&player), hos::SLEEP_MIN);

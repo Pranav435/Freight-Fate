@@ -13,8 +13,8 @@
 - **A co-driver can take the wheel on long loads.** Pause to ride along or sleep through their shift; their miles pay you less and earn half the experience.
 - **A co-driver can drive you out of the shipper.** On long loads the pickup menu offers it, with the pay terms in the row's help.
 - **Some long loads are now team loads.** They pay more, with no time for a 10-hour break; a co-driver shares the wheel.
-- **A co-driver hands the wheel back once you have had your 10-hour rest.** Press C while they drive to hear your rest so far and when they hand back.
-- **The game explains team driving the first time a load can be shared.** Job details on the dispatch board say when a co-driver is available.
+- **A co-driver hands back once your 10-hour rest is in.** Press C to hear your rest so far and when they hand back.
+- **Team driving is explained the first time a load can be shared.** Job details say when a co-driver is offered.
 - **Miles a co-driver drives no longer earn driving badges.** Two co-drivers who turn up by surprise each carry a hidden badge.
 - **Truck stops in chain-law states sell snow chains.** With no usable set aboard, the stop menu offers a new set for 1,000 dollars.
 - **Dispatch sends road service with chains when you have none under a chain law.** Report truck trouble; the set arrives in an hour and a half.

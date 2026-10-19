@@ -754,6 +754,7 @@ impl Menu for PauseMenuState {
         ctx.say_with(title, Say::new().review(false));
         if let Some(intro) = self.team_intro.take() {
             ctx.say_with(intro, Say::queued());
+            crate::states::driving_team::handover::mark_intro_heard(ctx);
         }
         let current = self.current_text(ctx);
         ctx.say_with(current, Say::queued().review(false));

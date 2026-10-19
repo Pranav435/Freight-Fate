@@ -20272,8 +20272,8 @@ msgstr ""
 
 #: crates/freight-fate/src/states/city/board/briefing.rs
 msgid ""
-"Co-driver: available on this load, at the shipper's dock or from the pause "
-"menu."
+"Co-driver: offered at the shipper's dock or from the pause menu, on your "
+"current hours."
 msgstr ""
 
 #. placeholders: {percent}, {range}
@@ -35323,12 +35323,13 @@ msgstr ""
 #. placeholders: {rested}
 #. one sentence of a longer line
 #: crates/freight-fate/src/states/driving_team/readouts.rs
-msgid "Rest: {rested} of 10."
+msgid "Rest: {rested} of 10 hours."
 msgstr ""
 
 #. placeholders: {rested}, {name}, {duration_text}
 #: crates/freight-fate/src/states/driving_team/readouts.rs
-msgid "Rest: {rested} of 10. {name} hands back in about {duration_text}."
+msgid ""
+"Rest: {rested} of 10 hours. {name} hands back in about {duration_text}."
 msgstr ""
 
 #. placeholders: {name}, {duration_text}
@@ -35340,8 +35341,8 @@ msgstr ""
 #. placeholders: {rested}, {name}, {duration_text}
 #: crates/freight-fate/src/states/driving_team/readouts.rs
 msgid ""
-"Rest: {rested} of 10. {name} needs you back in {duration_text}, before your "
-"rest is in."
+"Rest: {rested} of 10 hours. {name} needs you back in {duration_text}, "
+"before your rest is in."
 msgstr ""
 
 #. placeholders: {name}, {duration_text}

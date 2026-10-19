@@ -72,22 +72,33 @@ pub fn overlay_move(top: &dyn State, drive: &DrivingState, ctx: &GameContext) ->
             .map_or_else(|| OverlayMove::Summon("parking".into()), OverlayMove::Row);
     }
     if any.is::<RestStopState>() {
-        return rest_stop_move(&rows, drive);
+        return rest_stop_move(&rows, drive, ctx);
     }
     OverlayMove::Summon("screen".into())
 }
 
 /// At a stop: hand back if the shift is over, fuel if it sells diesel and
 /// the tank wants it, then back to the road. Leaving a scale checks in.
-fn rest_stop_move(rows: &[String], drive: &DrivingState) -> OverlayMove {
+///
+/// Once the player is rested the hand-back waits for a stop where the
+/// truck can be parked: a scale or a fuel island is crossed as usual, and
+/// a rest that comes in during a break at a lot hands back there.
+fn rest_stop_move(rows: &[String], drive: &DrivingState, ctx: &GameContext) -> OverlayMove {
     let pilot = drive
         .team
         .as_ref()
         .and_then(|team| team.wheel.as_ref())
         .map(|wheel| &wheel.pilot);
-    if let Some(pilot) = pilot.filter(|pilot| pilot.shift_over) {
-        let reason = if pilot.rested { "rested" } else { "shift" };
-        return OverlayMove::Summon(reason.into());
+    if pilot.is_some_and(|pilot| pilot.shift_over && !pilot.rested) {
+        return OverlayMove::Summon("shift".into());
+    }
+    let can_park = drive
+        .trip
+        .nearest_stop_within(1.5)
+        .is_some_and(|stop| stop.parking != "none" && stop.stop_type != "weigh_station");
+    let rested = pilot.is_some_and(|pilot| pilot.rested) || drive.player_rest_complete(ctx);
+    if rested && can_park {
+        return OverlayMove::Summon("rested".into());
     }
     if pilot.is_some_and(|pilot| matches!(pilot.making_for, Some((_, StopPurpose::Break)))) {
         if let Some(row) = row_starting(rows, "Take a 30-minute break") {

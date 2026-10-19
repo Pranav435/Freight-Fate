@@ -7,7 +7,9 @@ use ff_core::models::co_driver;
 use ff_core::sim::weather::WeatherKind;
 use freight_fate::playtest::harness::{PlaytestHarness, StartDelivery};
 use freight_fate::states::base::{InputEvent, Key};
-use freight_fate::states::driving_rest_states::{ParkingFullState, RestStopState};
+use freight_fate::states::driving_rest_states::{ParkingFullState, RestFocus, RestStopState};
+use freight_fate::states::driving_team::overlay::{overlay_move, OverlayMove};
+use freight_fate::states::driving_team::pilot::StopPurpose;
 use freight_fate::states::driving_team::TeamMode;
 
 const DT: f64 = 1.0 / 60.0;
@@ -84,7 +86,7 @@ fn c_reads_the_rest_so_far_and_when_the_co_driver_hands_back() {
     player_sleeper(&mut harness, 210.0);
     let clause = harness.read_drive(|d| d.hos_nearest_clause(&harness.app.ctx));
     assert_eq!(
-        clause, "Rest: 3.5 hours of 10. Dan hands back in about 6.5 hours.",
+        clause, "Rest: 3.5 hours of 10 hours. Dan hands back in about 6.5 hours.",
         "the rest comes in before Dan's hours run out"
     );
     player_sleeper(&mut harness, 390.0);
@@ -108,7 +110,7 @@ fn a_co_driver_short_of_hours_says_they_need_you_before_your_rest_is_in() {
     let clause = harness.read_drive(|d| d.hos_nearest_clause(&harness.app.ctx));
     assert_eq!(
         clause,
-        "Rest: 0 minutes of 10. Dan needs you back in 2 hours, before your rest is in."
+        "Rest: 0 minutes of 10 hours. Dan needs you back in 2 hours, before your rest is in."
     );
 }
 
@@ -154,7 +156,7 @@ fn the_pause_menu_reads_the_rest_in_the_take_the_wheel_back_help() {
     assert_eq!(
         help.as_deref(),
         Some(
-            "Rest: 1 hour of 10. Dan hands back in about 9 hours. Wakes you and gives you the \
+            "Rest: 1 hour of 10 hours. Dan hands back in about 9 hours. Wakes you and gives you the \
              wheel."
         )
     );
@@ -310,4 +312,156 @@ fn the_first_offer_of_a_co_driver_explains_it_once() {
         .filter(|line| line.contains(INTRO))
         .count();
     assert_eq!(heard, 1, "said once per career");
+}
+
+#[test]
+fn an_offer_that_turns_up_on_a_refresh_keeps_the_introduction_for_later() {
+    use freight_fate::states::base::Menu;
+    use freight_fate::states::driving_pause_states::PauseMenuState;
+    let mut harness = PlaytestHarness::new();
+    harness.start_delivery(StartDelivery::named("Team Intro Later"));
+    // Paused with a load one shift covers: no co-driver yet.
+    harness.press_key(Key::Escape, None);
+    // Now the hours make it worth sharing, and the menu rebuilds its rows
+    // without announcing itself again.
+    harness
+        .app
+        .ctx
+        .profile
+        .as_mut()
+        .expect("a career")
+        .hos
+        .drive(600.0);
+    harness.with_state::<PauseMenuState, _>(|menu, ctx| menu.refresh(ctx, true));
+    let stats = &harness
+        .app
+        .ctx
+        .profile
+        .as_ref()
+        .expect("a career")
+        .achievement_stats;
+    assert!(
+        !co_driver::introduced(stats),
+        "built but never said, so not yet heard"
+    );
+    harness.key(InputEvent::key(Key::Escape));
+    harness.press_key(Key::Escape, None);
+    let said = harness.transcript().join("\n");
+    assert!(said.contains(INTRO), "{said}");
+}
+
+#[test]
+fn a_rested_co_driver_whose_hours_run_out_keeps_the_lot_they_chose() {
+    // The rest came in and Dan chose a lot within his hours, farther than
+    // the short look he takes when his hours run out first. Running out on
+    // the way does not drop that lot and hand back on the road.
+    let mut harness = quiet_drive("Team Rest Keep Lot");
+    hand_over_after(&mut harness, 300.0, TeamMode::RideAlong);
+    harness.with_drive(|d, _| {
+        d.truck_mut().start_engine();
+        d.truck_mut().set_air_ready(false);
+        d.truck_mut().parking_brake = false;
+        d.truck_mut().velocity_mps = 60.0 / 2.236_936;
+        d.cruise_mph = Some(60.0);
+        let here = d.trip.position_mi;
+        let lot = d
+            .trip
+            .stops
+            .iter()
+            .find(|stop| {
+                stop.parking != "none"
+                    && stop.stop_type != "weigh_station"
+                    && stop.stop_type != "delivery_destination"
+                    && stop.at_mi > here + 45.0
+            })
+            .map(|stop| stop.key())
+            .expect("this route has a lot well ahead");
+        let wheel = d
+            .team
+            .as_mut()
+            .and_then(|team| team.wheel.as_mut())
+            .expect("Dan is driving");
+        wheel.pilot.shift_over = true;
+        wheel.pilot.rested = true;
+        wheel.pilot.making_for = Some((lot, StopPurpose::ShiftEnd));
+    });
+    let planned = harness.read_drive(|d| {
+        d.team
+            .as_ref()
+            .and_then(|team| team.wheel.as_ref())
+            .and_then(|wheel| wheel.pilot.making_for.clone())
+    });
+    // Dan's own hours are now inside the lead he hands back on, though
+    // not yet gone.
+    let hos = &mut harness.app.ctx.profile.as_mut().expect("a career").hos;
+    hos.drive(7.0 * 60.0);
+    hos.take_break(30.0);
+    hos.drive(4.0 * 60.0 - co_driver::CO_DRIVER_SUMMON_LEAD_MIN / 2.0);
+    run_until(&mut harness, 120, |_| false);
+    let (away, now) = harness.read_drive(|d| {
+        (
+            d.co_driver_driving(),
+            d.team
+                .as_ref()
+                .and_then(|team| team.wheel.as_ref())
+                .and_then(|wheel| wheel.pilot.making_for.clone()),
+        )
+    });
+    assert!(away, "Dan handed back on the road: {}", tail(&harness));
+    assert_eq!(now, planned);
+}
+
+#[test]
+fn once_rested_the_co_driver_hands_back_at_a_lot_and_not_at_a_scale() {
+    let mut harness = quiet_drive("Team Rest Scale");
+    hand_over_after(&mut harness, 300.0, TeamMode::RideAlong);
+    player_sleeper(&mut harness, 600.0);
+    let lot = harness.read_drive(|d| {
+        d.trip
+            .stops
+            .iter()
+            .find(|stop| {
+                stop.parking != "none"
+                    && stop.stop_type != "weigh_station"
+                    && stop.stop_type != "delivery_destination"
+            })
+            .cloned()
+            .expect("a stop with parking")
+    });
+    let move_at = |harness: &mut PlaytestHarness, scale: bool, marked: bool| {
+        let mut stop = lot.clone();
+        harness.with_drive(|d, ctx| {
+            // `marked`: the pilot has already seen the rest come in; without
+            // it the rest came in while they were stopped here.
+            if let Some(wheel) = d.team.as_mut().and_then(|team| team.wheel.as_mut()) {
+                wheel.pilot.shift_over = marked;
+                wheel.pilot.rested = marked;
+            }
+            if scale {
+                stop.stop_type = "weigh_station".to_string();
+                stop.parking = "none".to_string();
+            }
+            stop.at_mi = d.trip.position_mi;
+            d.trip
+                .stops
+                .retain(|other| other.stop_type == "delivery_destination");
+            d.trip.stops.push(stop.clone());
+            let mut screen = RestStopState::new(ctx, stop, RestFocus::Default);
+            screen.enter_over_drive(ctx, d);
+            overlay_move(&screen, d, ctx)
+        })
+    };
+    let at_scale = move_at(&mut harness, true, true);
+    assert!(
+        matches!(&at_scale, OverlayMove::Row(_)),
+        "Dan works the scale and drives on: {at_scale:?}"
+    );
+    for marked in [true, false] {
+        let at_lot = move_at(&mut harness, false, marked);
+        assert_eq!(
+            at_lot,
+            OverlayMove::Summon("rested".into()),
+            "marked {marked}"
+        );
+    }
 }

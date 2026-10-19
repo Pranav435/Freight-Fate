@@ -408,7 +408,7 @@ fn rest_short_line(
     ctx: &GameContext,
 ) -> Option<String> {
     let mode = &ctx.settings.hos_mode;
-    if !owed || hos::is_non_enforced(mode) || hos::limits(mode).is_none() {
+    if !owed || !co_driver::enforced(mode) {
         return None;
     }
     if co_driver::fully_rested(player) {

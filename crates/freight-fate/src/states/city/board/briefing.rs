@@ -51,11 +51,13 @@ pub(super) fn hours_lines(ctx: &GameContext, job: &Job) -> Vec<String> {
         _ => format!("Trip hours: about {hours} driving hours, with {sleeps} 10-hour sleeps."),
     };
     let mut lines = vec![trip, p.hos.drive_time_summary(mode, false)];
-    // Where the co-driver is offered, before the rows turn up there. A team
+    // Where the co-driver is offered, before the rows turn up there: the
+    // dock's own test, on the clock the loaded truck leaves with. A team
     // load says so in its deadline already.
-    if sleeps > 0 && !job.team {
+    let drive_min = crate::states::city_pickup_team::team_drive_min(ctx, job);
+    if !job.team && ff_core::models::co_driver::team_worthwhile(&clock, mode, drive_min) {
         lines.push(
-            "Co-driver: available on this load, at the shipper's dock or from the pause menu."
+            "Co-driver: offered at the shipper's dock or from the pause menu, on your current hours."
                 .to_string(),
         );
     }
