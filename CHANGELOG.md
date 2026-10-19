@@ -70,8 +70,6 @@
 
 ### Changed
 
-- **On AG Now, the game no longer checks for or downloads updates.** AG Now keeps it up to date, and Settings has no Updates category there.
-
 - **Updates download much less when the music and radio packs have not changed.** After this update, most updates are about 35 megabytes instead of 531.
 - **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
 - **The toll sound is now a soft, low bong, and plays once per toll.** It sounds when the toll is charged, not on the toll-ahead warning too.
