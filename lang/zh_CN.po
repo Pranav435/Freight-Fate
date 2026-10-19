@@ -35381,6 +35381,155 @@ msgstr "正在下载{title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape取消，Tab读出进度。"
 
+msgid "mph"
+msgstr "英里/时"
+
+msgid "km/h"
+msgstr "公里/时"
+
+msgid "PULL OVER"
+msgstr "靠边停车"
+
+msgid "SIREN BEHIND"
+msgstr "后方警笛"
+
+msgid "SPEED"
+msgstr "最高"
+
+msgid "LIMIT"
+msgstr "限速"
+
+#. placeholders: {mph}, {severity}
+msgid "{mph} mph {severity}"
+msgstr "{mph} 英里/时 {severity}"
+
+msgid "AUTO"
+msgstr "自动"
+
+msgid "MANUAL"
+msgstr "手动"
+
+#. placeholders: {rpm}
+msgid "{rpm} rpm"
+msgstr "{rpm} 转速"
+
+msgid "PARK BRAKE"
+msgstr "驻车制动"
+
+msgid "ENGINE OFF"
+msgstr "发动机关闭"
+
+#. placeholders: {factor}
+msgid "CRUISE {factor}"
+msgstr "定速 {factor}"
+
+#. placeholders: {factor}
+msgid "KEEPER {factor}"
+msgstr "限速保持 {factor}"
+
+#. placeholders: {jake_stage}
+msgid "JAKE {jake_stage}"
+msgstr "发动机制动 {jake_stage}"
+
+msgid "CHECK ENGINE"
+msgstr "检查发动机"
+
+msgid "TRAFFIC BOTH SIDES"
+msgstr "两侧有车"
+
+msgid "TRAFFIC LEFT"
+msgstr "左侧有车"
+
+msgid "TRAFFIC RIGHT"
+msgstr "右侧有车"
+
+#. placeholders: {lane_name}, {lane_assist}
+msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+msgstr "{lane_name}车道  ·  车道保持 {lane_assist}"
+
+msgid "FUEL"
+msgstr "燃油"
+
+msgid "AIR"
+msgstr "气压"
+
+#. placeholders: {air_psi}
+msgid "{air_psi} psi"
+msgstr "{air_psi} psi"
+
+msgid "TRUCK"
+msgstr "卡车"
+
+#. placeholders: {truck_damage}
+msgid "{truck_damage}% damage"
+msgstr "损坏 {truck_damage}%"
+
+msgid "CARGO"
+msgstr "货物"
+
+#. placeholders: {cargo_damage}
+msgid "{cargo_damage}% damage"
+msgstr "损坏 {cargo_damage}%"
+
+#. placeholders: {distance_value}, {distance_unit_text}
+msgid "{distance_value} {distance_unit_text} left"
+msgstr "剩余 {distance_value} {distance_unit_text}"
+
+msgid "1/2 MILE"
+msgstr "1/2 英里"
+
+msgid "PLAZA AHEAD"
+msgstr "前方"
+
+msgid "TOLL"
+msgstr "收费站"
+
+msgid "ALL TRUCKS"
+msgstr "所有卡车"
+
+msgid "WEIGH STATION"
+msgstr "称重站"
+
+msgid "REST AREA"
+msgstr "休息区"
+
+msgid "1 MILE"
+msgstr "1 英里"
+
+msgid "FREIGHT FATE"
+msgstr "FREIGHT FATE"
+
+#. placeholders: {f}, {rows}
+msgid "{f} of {rows}"
+msgstr "第 {f} 项，共 {rows} 项"
+
+msgid "Escape to go back"
+msgstr "按Escape返回"
+
+msgid "Arrows to move  ·  Enter to choose  ·  Escape to go back"
+msgstr "方向键移动  ·  Enter选择  ·  Escape返回"
+
+msgid "MPH"
+msgstr "MPH"
+
+msgid "ROAD"
+msgstr "前方"
+
+msgid "WORK"
+msgstr "道路"
+
+msgid "AHEAD"
+msgstr "施工"
+
+msgid "END"
+msgstr "施工"
+
+msgid "ROAD WORK"
+msgstr "结束"
+
+msgid "WELCOME TO"
+msgstr "欢迎来到"
+
 msgid "Energy drink"
 msgstr "能量饮料"
 

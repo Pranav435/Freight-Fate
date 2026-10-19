@@ -40297,6 +40297,155 @@ msgstr "Скачиваем {title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape отменяет, Tab зачитывает ход загрузки."
 
+msgid "mph"
+msgstr "миль/ч"
+
+msgid "km/h"
+msgstr "км/ч"
+
+msgid "PULL OVER"
+msgstr "ОСТАНОВИТЕСЬ"
+
+msgid "SIREN BEHIND"
+msgstr "СИРЕНА СЗАДИ"
+
+msgid "SPEED"
+msgstr "ЛИМИТ"
+
+msgid "LIMIT"
+msgstr "СКОРОСТИ"
+
+#. placeholders: {mph}, {severity}
+msgid "{mph} mph {severity}"
+msgstr "{mph} миль/ч {severity}"
+
+msgid "AUTO"
+msgstr "АВТО"
+
+msgid "MANUAL"
+msgstr "РУЧНАЯ"
+
+#. placeholders: {rpm}
+msgid "{rpm} rpm"
+msgstr "{rpm} об/мин"
+
+msgid "PARK BRAKE"
+msgstr "СТОЯНОЧНЫЙ ТОРМОЗ"
+
+msgid "ENGINE OFF"
+msgstr "ДВИГАТЕЛЬ ВЫКЛ."
+
+#. placeholders: {factor}
+msgid "CRUISE {factor}"
+msgstr "КРУИЗ {factor}"
+
+#. placeholders: {factor}
+msgid "KEEPER {factor}"
+msgstr "ПОДДЕРЖАНИЕ {factor}"
+
+#. placeholders: {jake_stage}
+msgid "JAKE {jake_stage}"
+msgstr "МОТОРНЫЙ ТОРМОЗ {jake_stage}"
+
+msgid "CHECK ENGINE"
+msgstr "ПРОВЕРЬТЕ ДВИГАТЕЛЬ"
+
+msgid "TRAFFIC BOTH SIDES"
+msgstr "МАШИНЫ С ОБЕИХ СТОРОН"
+
+msgid "TRAFFIC LEFT"
+msgstr "МАШИНЫ СЛЕВА"
+
+msgid "TRAFFIC RIGHT"
+msgstr "МАШИНЫ СПРАВА"
+
+#. placeholders: {lane_name}, {lane_assist}
+msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+msgstr "Полоса: {lane_name}  ·  удержание полосы: {lane_assist}"
+
+msgid "FUEL"
+msgstr "ТОПЛИВО"
+
+msgid "AIR"
+msgstr "ВОЗДУХ"
+
+#. placeholders: {air_psi}
+msgid "{air_psi} psi"
+msgstr "{air_psi} psi"
+
+msgid "TRUCK"
+msgstr "ГРУЗОВИК"
+
+#. placeholders: {truck_damage}
+msgid "{truck_damage}% damage"
+msgstr "повреждения {truck_damage}%"
+
+msgid "CARGO"
+msgstr "ГРУЗ"
+
+#. placeholders: {cargo_damage}
+msgid "{cargo_damage}% damage"
+msgstr "повреждения {cargo_damage}%"
+
+#. placeholders: {distance_value}, {distance_unit_text}
+msgid "{distance_value} {distance_unit_text} left"
+msgstr "осталось {distance_value} {distance_unit_text}"
+
+msgid "1/2 MILE"
+msgstr "1/2 МИЛИ"
+
+msgid "PLAZA AHEAD"
+msgstr "ВПЕРЕДИ"
+
+msgid "TOLL"
+msgstr "ПЛАТНАЯ ДОРОГА"
+
+msgid "ALL TRUCKS"
+msgstr "ВСЕ ГРУЗОВИКИ"
+
+msgid "WEIGH STATION"
+msgstr "ВЕСОВОЙ КОНТРОЛЬ"
+
+msgid "REST AREA"
+msgstr "ЗОНА ОТДЫХА"
+
+msgid "1 MILE"
+msgstr "1 МИЛЯ"
+
+msgid "FREIGHT FATE"
+msgstr "FREIGHT FATE"
+
+#. placeholders: {f}, {rows}
+msgid "{f} of {rows}"
+msgstr "{f} из {rows}"
+
+msgid "Escape to go back"
+msgstr "Escape возвращает назад"
+
+msgid "Arrows to move  ·  Enter to choose  ·  Escape to go back"
+msgstr "Стрелки — выбор  ·  Enter — открыть  ·  Escape — назад"
+
+msgid "MPH"
+msgstr "MPH"
+
+msgid "ROAD"
+msgstr "ДОРОЖНЫЕ"
+
+msgid "WORK"
+msgstr "РАБОТЫ"
+
+msgid "AHEAD"
+msgstr "ВПЕРЕДИ"
+
+msgid "END"
+msgstr "КОНЕЦ"
+
+msgid "ROAD WORK"
+msgstr "РАБОТ"
+
+msgid "WELCOME TO"
+msgstr "ДОБРО ПОЖАЛОВАТЬ"
+
 msgid "Energy drink"
 msgstr "Энергетик"
 

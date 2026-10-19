@@ -224,4 +224,5 @@ mod states_driving_hos_planning;
 mod states_driving_hos_rest_stretch;
 mod states_driving_speech_modes;
 mod visuals_frames;
+mod visuals_l10n;
 mod visuals_play;

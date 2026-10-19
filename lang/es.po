@@ -40188,6 +40188,155 @@ msgstr "Descargando {title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape cancela, Tab lee el progreso."
 
+msgid "mph"
+msgstr "mph"
+
+msgid "km/h"
+msgstr "km/h"
+
+msgid "PULL OVER"
+msgstr "APÁRTATE"
+
+msgid "SIREN BEHIND"
+msgstr "SIRENA DETRÁS"
+
+msgid "SPEED"
+msgstr "VEL."
+
+msgid "LIMIT"
+msgstr "MÁXIMA"
+
+#. placeholders: {mph}, {severity}
+msgid "{mph} mph {severity}"
+msgstr "{mph} mph {severity}"
+
+msgid "AUTO"
+msgstr "AUTO"
+
+msgid "MANUAL"
+msgstr "MANUAL"
+
+#. placeholders: {rpm}
+msgid "{rpm} rpm"
+msgstr "{rpm} rpm"
+
+msgid "PARK BRAKE"
+msgstr "FRENO ESTAC."
+
+msgid "ENGINE OFF"
+msgstr "MOTOR APAGADO"
+
+#. placeholders: {factor}
+msgid "CRUISE {factor}"
+msgstr "CRUCERO {factor}"
+
+#. placeholders: {factor}
+msgid "KEEPER {factor}"
+msgstr "LIMITADOR {factor}"
+
+#. placeholders: {jake_stage}
+msgid "JAKE {jake_stage}"
+msgstr "FRENO MOTOR {jake_stage}"
+
+msgid "CHECK ENGINE"
+msgstr "REVISAR MOTOR"
+
+msgid "TRAFFIC BOTH SIDES"
+msgstr "TRÁFICO A AMBOS LADOS"
+
+msgid "TRAFFIC LEFT"
+msgstr "TRÁFICO A LA IZQUIERDA"
+
+msgid "TRAFFIC RIGHT"
+msgstr "TRÁFICO A LA DERECHA"
+
+#. placeholders: {lane_name}, {lane_assist}
+msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+msgstr "Carril {lane_name}  ·  mantenimiento de carril {lane_assist}"
+
+msgid "FUEL"
+msgstr "COMB."
+
+msgid "AIR"
+msgstr "AIRE"
+
+#. placeholders: {air_psi}
+msgid "{air_psi} psi"
+msgstr "{air_psi} psi"
+
+msgid "TRUCK"
+msgstr "CAMIÓN"
+
+#. placeholders: {truck_damage}
+msgid "{truck_damage}% damage"
+msgstr "{truck_damage}% daño"
+
+msgid "CARGO"
+msgstr "CARGA"
+
+#. placeholders: {cargo_damage}
+msgid "{cargo_damage}% damage"
+msgstr "{cargo_damage}% daño"
+
+#. placeholders: {distance_value}, {distance_unit_text}
+msgid "{distance_value} {distance_unit_text} left"
+msgstr "quedan {distance_value} {distance_unit_text}"
+
+msgid "1/2 MILE"
+msgstr "1/2 MILLA"
+
+msgid "PLAZA AHEAD"
+msgstr "MÁS ADELANTE"
+
+msgid "TOLL"
+msgstr "PEAJE"
+
+msgid "ALL TRUCKS"
+msgstr "TODOS LOS CAMIONES"
+
+msgid "WEIGH STATION"
+msgstr "BÁSCULA"
+
+msgid "REST AREA"
+msgstr "ÁREA DE DESCANSO"
+
+msgid "1 MILE"
+msgstr "1 MILLA"
+
+msgid "FREIGHT FATE"
+msgstr "FREIGHT FATE"
+
+#. placeholders: {f}, {rows}
+msgid "{f} of {rows}"
+msgstr "{f} de {rows}"
+
+msgid "Escape to go back"
+msgstr "Escape para volver"
+
+msgid "Arrows to move  ·  Enter to choose  ·  Escape to go back"
+msgstr "Flechas para moverte  ·  Enter para elegir  ·  Escape para volver"
+
+msgid "MPH"
+msgstr "MPH"
+
+msgid "ROAD"
+msgstr "OBRAS"
+
+msgid "WORK"
+msgstr "EN LA"
+
+msgid "AHEAD"
+msgstr "VÍA"
+
+msgid "END"
+msgstr "FIN"
+
+msgid "ROAD WORK"
+msgstr "DE OBRAS"
+
+msgid "WELCOME TO"
+msgstr "BIENVENIDO A"
+
 msgid "Energy drink"
 msgstr "Bebida energética"
 

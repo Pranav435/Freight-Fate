@@ -4896,7 +4896,7 @@ msgstr ""
 msgid "Contents"
 msgstr ""
 
-#: crates/ff-core/src/data/grades.rs crates/ff-core/src/sim/trip_models.rs
+#: crates/ff-core/src/data/grades.rs crates/ff-core/src/sim/trip_models.rs crates/freight-fate/src/visuals/scene_drive.rs
 msgid "interstate"
 msgstr ""
 
@@ -14187,7 +14187,7 @@ msgstr ""
 msgid "spring"
 msgstr ""
 
-#: crates/ff-core/src/sim/season.rs
+#: crates/ff-core/src/sim/season.rs crates/freight-fate/src/visuals/scene_drive.rs
 msgid "summer"
 msgstr ""
 
@@ -14410,7 +14410,7 @@ msgstr ""
 msgid "passing"
 msgstr ""
 
-#: crates/ff-core/src/sim/traffic_manager/beside.rs crates/ff-core/src/sim/traffic_manager.rs crates/freight-fate/src/states/driving_traffic_sounds.rs
+#: crates/ff-core/src/sim/traffic_manager/beside.rs crates/ff-core/src/sim/traffic_manager.rs crates/freight-fate/src/states/driving_traffic_sounds.rs crates/freight-fate/src/visuals/scene_drive.rs
 msgid "service vehicle"
 msgstr ""
 
@@ -28103,7 +28103,7 @@ msgstr ""
 msgid "{distance_value} of {distance_value2} {distance_unit_text}"
 msgstr ""
 
-#: crates/freight-fate/src/states/driving_events/arrival.rs
+#: crates/freight-fate/src/states/driving_events/arrival.rs crates/freight-fate/src/visuals/hud.rs
 msgid "LOW AIR"
 msgstr ""
 
@@ -36960,7 +36960,7 @@ msgstr ""
 msgid "last saved {saved_label}"
 msgstr ""
 
-#: crates/freight-fate/src/states/main_menu.rs
+#: crates/freight-fate/src/states/main_menu.rs crates/freight-fate/src/visuals/screens.rs
 msgid "Freight Fate"
 msgstr ""
 
@@ -43460,6 +43460,201 @@ msgstr ""
 
 #: crates/freight-fate/src/states/update.rs
 msgid "Escape cancels, Tab reads progress."
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "mph"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "km/h"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "PULL OVER"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "SIREN BEHIND"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs crates/freight-fate/src/visuals/signs.rs
+msgid "SPEED"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs crates/freight-fate/src/visuals/signs.rs
+msgid "LIMIT"
+msgstr ""
+
+#. placeholders: {mph}, {severity}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{mph} mph {severity}"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "AUTO"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "MANUAL"
+msgstr ""
+
+#. placeholders: {rpm}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{rpm} rpm"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "PARK BRAKE"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "ENGINE OFF"
+msgstr ""
+
+#. placeholders: {factor}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "CRUISE {factor}"
+msgstr ""
+
+#. placeholders: {factor}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "KEEPER {factor}"
+msgstr ""
+
+#. placeholders: {jake_stage}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "JAKE {jake_stage}"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "CHECK ENGINE"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "TRAFFIC BOTH SIDES"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "TRAFFIC LEFT"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "TRAFFIC RIGHT"
+msgstr ""
+
+#. placeholders: {lane_name}, {lane_assist}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "FUEL"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "AIR"
+msgstr ""
+
+#. placeholders: {air_psi}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{air_psi} psi"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "TRUCK"
+msgstr ""
+
+#. placeholders: {truck_damage}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{truck_damage}% damage"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "CARGO"
+msgstr ""
+
+#. placeholders: {cargo_damage}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{cargo_damage}% damage"
+msgstr ""
+
+#. placeholders: {distance_value}, {distance_unit_text}
+#: crates/freight-fate/src/visuals/scene_drive.rs
+msgid "{distance_value} {distance_unit_text} left"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/scene_drive.rs
+msgid "1/2 MILE"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/scene_drive.rs
+msgid "PLAZA AHEAD"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/scene_drive.rs
+msgid "TOLL"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/scene_drive.rs
+msgid "ALL TRUCKS"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/scene_drive.rs
+msgid "WEIGH STATION"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/scene_drive.rs
+msgid "REST AREA"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/scene_drive.rs
+msgid "1 MILE"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/screens.rs
+msgid "FREIGHT FATE"
+msgstr ""
+
+#. placeholders: {f}, {rows}
+#: crates/freight-fate/src/visuals/screens.rs
+msgid "{f} of {rows}"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/screens.rs
+msgid "Escape to go back"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/screens.rs
+msgid "Arrows to move  ·  Enter to choose  ·  Escape to go back"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/signs.rs
+msgid "MPH"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/signs.rs
+msgid "ROAD"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/signs.rs
+msgid "WORK"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/signs.rs
+msgid "AHEAD"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/signs.rs
+msgid "END"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/signs.rs
+msgid "ROAD WORK"
+msgstr ""
+
+#: crates/freight-fate/src/visuals/signs.rs
+msgid "WELCOME TO"
 msgstr ""
 
 #: data/buffs.json

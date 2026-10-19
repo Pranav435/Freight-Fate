@@ -37,6 +37,27 @@ def test_inline_names_and_specs():
     assert to_template(lit)[0] == "{city} in {d} miles, {city} again"
 
 
+def test_drawn_labels_are_extracted_whatever_their_shape(tmp_path):
+    # The visual display's sign words are all capitals, which the shape
+    # rules would drop as keys; a `tr_drawn` call marks them as player text.
+    src = """
+    fn f(text: &Text, tr: &Translator, set: f64) {
+        let a = text.tr_drawn("SPEED");
+        let b = text.tr_drawn(&format!("CRUISE {:.0}", set));
+        let c = tr_drawn(tr, "1/2 MILE");
+        let d = "PLAIN";
+    }
+    """
+    crate = tmp_path / "crates" / "demo" / "src"
+    crate.mkdir(parents=True)
+    (crate / "lib.rs").write_text(src, encoding="utf-8")
+    from rust_strings import extract as extract_templates
+
+    found = set(extract_templates(tmp_path, ["demo"]))
+    assert {"SPEED", "CRUISE {set}", "1/2 MILE"} <= found
+    assert "PLAIN" not in found
+
+
 def test_logs_tests_and_keys_are_not_player_text():
     src = """
     fn f(x: &str) {
