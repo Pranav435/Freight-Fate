@@ -282,7 +282,7 @@ pub fn panel(p: &mut Painter, text: &mut Text, panel: &Panel, w: f32, h: f32, pl
         text.draw(p, px + pad, baseline, line, title_size, Weight::Bold, INK);
     }
     if let Some(f) = focus {
-        let counter = format!("{} of {}", f + 1, rows.len());
+        let counter = text.tr_drawn(&format!("{} of {}", f + 1, rows.len()));
         let cw = text.measure(&counter, 12.0 * u, Weight::Regular);
         text.draw(
             p,
@@ -387,11 +387,11 @@ pub fn panel(p: &mut Painter, text: &mut Text, panel: &Panel, w: f32, h: f32, pl
     }
 
     let hint = if rows.is_empty() {
-        "Escape to go back"
+        text.tr_drawn("Escape to go back")
     } else {
-        "Arrows to move  ·  Enter to choose  ·  Escape to go back"
+        text.tr_drawn("Arrows to move  ·  Enter to choose  ·  Escape to go back")
     };
-    let hint = text.ellipsize(hint, 11.0 * u, Weight::Regular, inner);
+    let hint = text.ellipsize(&hint, 11.0 * u, Weight::Regular, inner);
     p.rect(
         px + pad,
         top + ph - footer_h + 4.0 * u,

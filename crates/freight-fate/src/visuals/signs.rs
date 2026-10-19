@@ -95,22 +95,24 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
             frame(p, left, top, pw, ph, ink, b);
             if legible {
                 let small = ph * 0.17;
+                let label = text.tr_drawn("SPEED");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.24,
-                    "SPEED",
+                    &label,
                     small,
                     Weight::Bold,
                     ink,
                 );
+                let label = text.tr_drawn("LIMIT");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.43,
-                    "LIMIT",
+                    &label,
                     small,
                     Weight::Bold,
                     ink,
@@ -148,12 +150,13 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
                     Weight::Bold,
                     ink,
                 );
+                let label = text.tr_drawn("MPH");
                 centered(
                     p,
                     text,
                     x,
                     py + plaque_h * 0.88,
-                    "MPH",
+                    &label,
                     plaque_h * 0.3,
                     Weight::Bold,
                     ink,
@@ -181,31 +184,36 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
             diamond(p, x, top + ph * 0.5, ph * 0.5, paint(ORANGE), ink, b);
             if legible {
                 let s = ph * 0.13;
-                centered(p, text, x, top + ph * 0.4, "ROAD", s, Weight::Bold, ink);
-                centered(p, text, x, top + ph * 0.56, "WORK", s, Weight::Bold, ink);
-                centered(p, text, x, top + ph * 0.72, "AHEAD", s, Weight::Bold, ink);
+                let label = text.tr_drawn("ROAD");
+                centered(p, text, x, top + ph * 0.4, &label, s, Weight::Bold, ink);
+                let label = text.tr_drawn("WORK");
+                centered(p, text, x, top + ph * 0.56, &label, s, Weight::Bold, ink);
+                let label = text.tr_drawn("AHEAD");
+                centered(p, text, x, top + ph * 0.72, &label, s, Weight::Bold, ink);
             }
         }
         SignKind::EndRoadWork => {
             p.rect(left, top, pw, ph, paint(ORANGE));
             frame(p, left, top, pw, ph, ink, b);
             if legible {
+                let label = text.tr_drawn("END");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.42,
-                    "END",
+                    &label,
                     ph * 0.26,
                     Weight::Bold,
                     ink,
                 );
+                let label = text.tr_drawn("ROAD WORK");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.8,
-                    "ROAD WORK",
+                    &label,
                     ph * 0.26,
                     Weight::Bold,
                     ink,
@@ -279,12 +287,13 @@ pub fn draw(p: &mut Painter, text: &mut Text, f: &RoadFrame, sign: &SignView) {
             p.rect(left, top + ph * 0.72, pw, ph * 0.06, paint(YELLOW));
             if legible {
                 let fg = paint(WHITE);
+                let label = text.tr_drawn("WELCOME TO");
                 centered(
                     p,
                     text,
                     x,
                     top + ph * 0.28,
-                    "WELCOME TO",
+                    &label,
                     ph * 0.14,
                     Weight::Bold,
                     fg,

@@ -27,11 +27,11 @@ pub fn cluster_top(w: f32, h: f32) -> f32 {
     h - 10.0 * u - 136.0 * u
 }
 
-fn speed_units(view: &DriveView) -> (f64, &'static str, f64) {
+fn speed_units(text: &Text, view: &DriveView) -> (f64, String, f64) {
     if view.hud.imperial {
-        (1.0, "mph", 80.0)
+        (1.0, text.tr_drawn("mph"), 80.0)
     } else {
-        (1.609_344, "km/h", 130.0)
+        (1.609_344, text.tr_drawn("km/h"), 130.0)
     }
 }
 
@@ -46,10 +46,11 @@ pub fn draw(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, 
         let flash = (t * 2.5).fract() < 0.5;
         let c = if flash { RED } else { Rgba::rgb(60, 110, 255) };
         let label = if view.hud.pulled_over {
-            "PULL OVER"
+            text.tr_drawn("PULL OVER")
         } else {
-            "SIREN BEHIND"
+            text.tr_drawn("SIREN BEHIND")
         };
+        let label = label.as_str();
         let size = 18.0 * u;
         let tw = text.measure(label, size, Weight::Bold);
         let (bw, bh) = (tw + 30.0 * u, 34.0 * u);
@@ -84,7 +85,12 @@ fn top_left(p: &mut Painter, text: &mut Text, view: &DriveView, u: f32, t: f32) 
             Rgba::rgb(20, 20, 22),
         );
         let ink = Rgba::rgb(20, 20, 22);
-        for (row, word) in [(0.29, "SPEED"), (0.47, "LIMIT")] {
+        let words = [
+            (0.29, text.tr_drawn("SPEED")),
+            (0.47, text.tr_drawn("LIMIT")),
+        ];
+        for (row, word) in &words {
+            let (row, word) = (*row, word.as_str());
             let s = 9.5 * u;
             let tw = text.measure(word, s, Weight::Bold);
             text.draw(
@@ -175,7 +181,7 @@ fn top_left(p: &mut Painter, text: &mut Text, view: &DriveView, u: f32, t: f32) 
             ],
             ink,
         );
-        let label = format!("{mph} mph {severity}");
+        let label = text.tr_drawn(&format!("{mph} mph {severity}"));
         let s = 12.0 * u;
         let tw =
             text.measure(&label, s, Weight::Bold)
@@ -419,7 +425,8 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
         INK,
     );
 
-    let (factor, unit, max) = speed_units(view);
+    let (factor, unit, max) = speed_units(text, view);
+    let unit = unit.as_str();
     let row_y = y + 84.0 * u;
     // Speedometer.
     let (sx, sr) = (x + 70.0 * u, 48.0 * u);
@@ -540,7 +547,12 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
         Weight::Bold,
         INK,
     );
-    let mode = if hud.automatic { "AUTO" } else { "MANUAL" };
+    let mode = if hud.automatic {
+        text.tr_drawn("AUTO")
+    } else {
+        text.tr_drawn("MANUAL")
+    };
+    let mode = mode.as_str();
     let mw = text.measure(mode, 9.0 * u, Weight::Bold);
     text.draw(
         p,
@@ -551,7 +563,7 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
         Weight::Bold,
         DIM,
     );
-    let rpm_text = format!("{:.0} rpm", hud.rpm);
+    let rpm_text = text.tr_drawn(&format!("{:.0} rpm", hud.rpm));
     let rw = text.measure(&rpm_text, 9.5 * u, Weight::Regular);
     text.draw(
         p,
@@ -567,36 +579,36 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
     let col = x + 236.0 * u;
     let mut lights: Vec<(String, Rgba)> = Vec::new();
     if hud.parking_brake || hud.spring_brakes {
-        lights.push(("PARK BRAKE".into(), RED));
+        lights.push((text.tr_drawn("PARK BRAKE"), RED));
     }
     if hud.air_low {
-        lights.push(("LOW AIR".into(), RED));
+        lights.push((text.tr_drawn("LOW AIR"), RED));
     }
     if !hud.engine_on {
-        lights.push(("ENGINE OFF".into(), AMBER));
+        lights.push((text.tr_drawn("ENGINE OFF"), AMBER));
     }
     if let Some(set) = hud.cruise_mph {
-        lights.push((format!("CRUISE {:.0}", set * factor), GREEN));
+        lights.push((text.tr_drawn(&format!("CRUISE {:.0}", set * factor)), GREEN));
     }
     if let Some(keep) = hud.keeper_mph {
-        lights.push((format!("KEEPER {:.0}", keep * factor), CYAN));
+        lights.push((text.tr_drawn(&format!("KEEPER {:.0}", keep * factor)), CYAN));
     }
     if hud.jake_stage > 0 {
-        lights.push((format!("JAKE {}", hud.jake_stage), GREEN));
+        lights.push((text.tr_drawn(&format!("JAKE {}", hud.jake_stage)), GREEN));
     }
     if hud.truck_damage >= 60.0 {
-        lights.push(("CHECK ENGINE".into(), AMBER));
+        lights.push((text.tr_drawn("CHECK ENGINE"), AMBER));
     }
     match (view.lanes.blocked_left, view.lanes.blocked_right) {
-        (true, true) => lights.push(("TRAFFIC BOTH SIDES".into(), AMBER)),
-        (true, false) => lights.push(("TRAFFIC LEFT".into(), AMBER)),
-        (false, true) => lights.push(("TRAFFIC RIGHT".into(), AMBER)),
+        (true, true) => lights.push((text.tr_drawn("TRAFFIC BOTH SIDES"), AMBER)),
+        (true, false) => lights.push((text.tr_drawn("TRAFFIC LEFT"), AMBER)),
+        (false, true) => lights.push((text.tr_drawn("TRAFFIC RIGHT"), AMBER)),
         _ => {}
     }
-    let lane_line = format!(
+    let lane_line = text.tr_drawn(&format!(
         "{} lane  ·  lane keeping {}",
         hud.lane_name, hud.lane_assist
-    );
+    ));
     let tsize = 10.0 * u;
     let mut ty = y + 46.0 * u;
     let mut tx2 = col;
@@ -688,27 +700,27 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
     };
     let bars = [
         (
-            "FUEL",
+            text.tr_drawn("FUEL"),
             hud.fuel_fraction,
             format!("{:.0}%", hud.fuel_fraction * 100.0),
             fuel_c,
         ),
         (
-            "AIR",
+            text.tr_drawn("AIR"),
             hud.air_psi / 150.0,
-            format!("{:.0} psi", hud.air_psi),
+            text.tr_drawn(&format!("{:.0} psi", hud.air_psi)),
             air_c,
         ),
         (
-            "TRUCK",
+            text.tr_drawn("TRUCK"),
             hud.truck_damage / 100.0,
-            format!("{:.0}% damage", hud.truck_damage),
+            text.tr_drawn(&format!("{:.0}% damage", hud.truck_damage)),
             damage_c(hud.truck_damage),
         ),
         (
-            "CARGO",
+            text.tr_drawn("CARGO"),
             hud.cargo_damage / 100.0,
-            format!("{:.0}% damage", hud.cargo_damage),
+            text.tr_drawn(&format!("{:.0}% damage", hud.cargo_damage)),
             damage_c(hud.cargo_damage),
         ),
     ];

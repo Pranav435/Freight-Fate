@@ -4,6 +4,7 @@
 
 ### Added
 
+- **The game window's own labels now follow your language.** The dashboard lights, the road signs and the menu hints are translated into every language the game speaks.
 - **The game window now shows the road, your truck and the traffic around it.** Signs, bends, hills and weather show as you drive. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
 - **The dashboard in the game window shows speed, the limit, gear, fuel, air, damage and traffic.** Your next turn and bend show above it.
 - **Amber lights on the truck's mirrors show when traffic holds the lane beside you.** Change lanes once the light on that side goes out.

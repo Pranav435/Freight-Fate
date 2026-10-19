@@ -35,8 +35,10 @@ mod sky;
 pub mod text;
 mod vehicles;
 
+use std::sync::Arc;
 use std::time::Instant;
 
+use ff_core::l10n::Translator;
 use ff_core::message_log::MessageLog;
 
 use captions::Captions;
@@ -51,6 +53,13 @@ use text::{Atlas, Text};
 /// Background before anything is drawn (the game's old window colour).
 const CLEAR: Rgba = Rgba::rgb(12, 12, 16);
 
+/// A label read off the game while capturing a scene, in the player's
+/// language. Like [`text::Text::tr_drawn`], every literal handed to a
+/// `tr_drawn` call is extracted for translation.
+pub fn tr_drawn(translator: &Translator, english: &str) -> String {
+    translator.translate(english).into_owned()
+}
+
 pub struct Visuals {
     text: Text,
     painter: Painter,
@@ -64,6 +73,8 @@ pub struct Visuals {
     /// the curves the truck drives through.
     drift_heading: f32,
     last_position_ft: Option<f64>,
+    /// The language changed since the last frame: draw it again.
+    relabel: bool,
 }
 
 impl Default for Visuals {
@@ -85,7 +96,13 @@ impl Visuals {
             last_size: (0, 0),
             drift_heading: 4.7,
             last_position_ft: None,
+            relabel: false,
         }
+    }
+
+    /// Draw the display's own labels in `translator`'s language.
+    pub fn set_translator(&mut self, translator: &Arc<Translator>) {
+        self.relabel |= self.text.set_translator(translator);
     }
 
     /// Build this frame's geometry for a `size` pixel canvas. Returns false
@@ -95,6 +112,7 @@ impl Visuals {
         let now = Instant::now();
         let added = self.captions.sync(log, now);
         let fading = self.captions.tick(now);
+        let force = force || std::mem::take(&mut self.relabel);
         let unchanged = !force
             && !added
             && !fading
