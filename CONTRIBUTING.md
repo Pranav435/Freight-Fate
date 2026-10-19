@@ -123,7 +123,8 @@ In your PR body, briefly say:
 
 - what changed and why;
 - what players or maintainers will notice;
-- what tests or manual checks you ran;
+- a test plan: one checkbox per behavior the change touches, checked off
+  once you have confirmed it, with what you heard;
 - any accessibility impact.
 
 Small PRs are easiest to review, but cohesive data restructures are fine when
