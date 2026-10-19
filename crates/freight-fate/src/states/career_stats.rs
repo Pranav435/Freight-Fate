@@ -1,6 +1,7 @@
 //! Career stats screen: the terminal's driver record as a reviewable menu
 //! (port of `freight_fate/states/career_stats.py`).
 
+use ff_core::models::business_constants::is_owner_operator;
 use ff_core::models::career::xp_to_next_level;
 use ff_core::models::carrier_fleet::equipment_status_lines;
 use ff_core::models::co_driver;
@@ -288,14 +289,18 @@ pub fn places_lines(ctx: &GameContext) -> Vec<String> {
 }
 
 /// One line per co-driver the career has teamed with, in cast order: the
-/// loads run together, whether they are the owner-operator's hire, and
+/// loads run together, whether they are this owner-operator's hire, and
 /// their story.
 pub fn co_driver_lines(ctx: &GameContext) -> Vec<String> {
     let Some(p) = ctx.profile.as_ref() else {
         return Vec::new();
     };
     let stats = &p.achievement_stats;
-    let hire = co_driver::hired_co_driver(stats).map(|member| member.key);
+    // The hire is only theirs while they run their own authority; back on
+    // a carrier's payroll, the carrier pairs co-drivers again.
+    let hire = is_owner_operator(&p.business_status)
+        .then(|| co_driver::hired_co_driver(stats).map(|member| member.key))
+        .flatten();
     co_driver::teamed_with(stats)
         .into_iter()
         .map(|(member, loads)| {

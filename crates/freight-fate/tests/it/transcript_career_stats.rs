@@ -164,6 +164,7 @@ fn test_career_stats_lists_the_co_drivers_only_once_you_have_teamed() {
         record_team_load(stats, "june", LEASED_OWNER_OPERATOR);
         record_team_load(stats, "june", LEASED_OWNER_OPERATOR);
     }
+    app.ctx.profile.as_mut().unwrap().business_status = LEASED_OWNER_OPERATOR.to_string();
     with_state_mut::<CareerStatsState, _>(&mut app, |s, ctx| s.refresh(ctx, true));
     select::<CareerStatsState>(&mut app, "Co-drivers");
     let lines = labels::<SimpleMenuState>(&app);
@@ -177,4 +178,11 @@ fn test_career_stats_lists_the_co_drivers_only_once_you_have_teamed() {
         "{lines:?}"
     );
     assert_eq!(lines[2], "Back");
+
+    // Back on a carrier's payroll, June is no longer their hire.
+    key(&mut app, Key::Escape);
+    app.ctx.profile.as_mut().unwrap().business_status = COMPANY_DRIVER.to_string();
+    select::<CareerStatsState>(&mut app, "Co-drivers");
+    let lines = labels::<SimpleMenuState>(&app);
+    assert!(lines[1].starts_with("June, 2 team loads."), "{lines:?}");
 }
