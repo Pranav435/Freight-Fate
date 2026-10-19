@@ -40336,9 +40336,21 @@ msgstr "TEMPO"
 msgid "LIMIT"
 msgstr "LIMIT"
 
-#. placeholders: {mph}, {severity}
-msgid "{mph} mph {severity}"
-msgstr "{mph} mph {severity}"
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph Haarnadel"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph scharf"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph mittel"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph leicht"
 
 msgid "AUTO"
 msgstr "AUTOMATIK"
@@ -40385,7 +40397,7 @@ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "Spur {lane_name}  ·  Spurhaltung {lane_assist}"
 
 msgid "FUEL"
-msgstr "KRAFTSTOFF"
+msgstr "TANK"
 
 msgid "AIR"
 msgstr "LUFT"
@@ -40433,9 +40445,6 @@ msgstr "RASTPLATZ"
 msgid "1 MILE"
 msgstr "1 MEILE"
 
-msgid "FREIGHT FATE"
-msgstr "FREIGHT FATE"
-
 #. placeholders: {f}, {rows}
 msgid "{f} of {rows}"
 msgstr "{f} von {rows}"
@@ -40450,13 +40459,13 @@ msgid "MPH"
 msgstr "MPH"
 
 msgid "ROAD"
-msgstr "BAU"
+msgstr "ACHTUNG"
 
 msgid "WORK"
-msgstr "STELLE"
+msgstr "BAU-"
 
 msgid "AHEAD"
-msgstr "VORAUS"
+msgstr "STELLE"
 
 msgid "END"
 msgstr "ENDE"
@@ -41458,6 +41467,12 @@ msgstr "Klammer zu"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "groß {ch}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mph {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

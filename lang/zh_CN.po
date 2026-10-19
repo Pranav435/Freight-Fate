@@ -35399,9 +35399,21 @@ msgstr "最高"
 msgid "LIMIT"
 msgstr "限速"
 
-#. placeholders: {mph}, {severity}
-msgid "{mph} mph {severity}"
-msgstr "{mph} 英里/时 {severity}"
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} 英里/时 急弯掉头"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} 英里/时 急弯"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} 英里/时 中弯"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} 英里/时 缓弯"
 
 msgid "AUTO"
 msgstr "自动"
@@ -35495,9 +35507,6 @@ msgstr "休息区"
 
 msgid "1 MILE"
 msgstr "1 英里"
-
-msgid "FREIGHT FATE"
-msgstr "FREIGHT FATE"
 
 #. placeholders: {f}, {rows}
 msgid "{f} of {rows}"
@@ -36456,6 +36465,12 @@ msgstr "右括号"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大写{ch}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} 英里/时 {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

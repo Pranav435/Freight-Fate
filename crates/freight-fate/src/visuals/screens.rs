@@ -170,7 +170,8 @@ pub fn brand(p: &mut Painter, text: &mut Text, w: f32, h: f32) {
     p.set_layer(Layer::Hud);
     let u = unit_of(w, h);
     let size = 20.0 * u;
-    let word = "FREIGHT FATE";
+    // The title, as the main menu names it; not a label to translate.
+    let word = "Freight Fate".to_uppercase();
     let spacing = 3.0 * u;
     let total: f32 = word
         .chars()

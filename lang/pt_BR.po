@@ -40003,9 +40003,21 @@ msgstr "VELOC."
 msgid "LIMIT"
 msgstr "MÁXIMA"
 
-#. placeholders: {mph}, {severity}
-msgid "{mph} mph {severity}"
-msgstr "{mph} mph {severity}"
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph fechadíssima"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph fechada"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph moderada"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph suave"
 
 msgid "AUTO"
 msgstr "AUTO"
@@ -40025,7 +40037,7 @@ msgstr "MOTOR DESLIGADO"
 
 #. placeholders: {factor}
 msgid "CRUISE {factor}"
-msgstr "CRUISE {factor}"
+msgstr "PILOTO {factor}"
 
 #. placeholders: {factor}
 msgid "KEEPER {factor}"
@@ -40052,7 +40064,7 @@ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "Faixa {lane_name}  ·  manutenção de faixa {lane_assist}"
 
 msgid "FUEL"
-msgstr "COMBUSTÍVEL"
+msgstr "COMB."
 
 msgid "AIR"
 msgstr "AR"
@@ -40099,9 +40111,6 @@ msgstr "ÁREA DE DESCANSO"
 
 msgid "1 MILE"
 msgstr "1 MILHA"
-
-msgid "FREIGHT FATE"
-msgstr "FREIGHT FATE"
 
 #. placeholders: {f}, {rows}
 msgid "{f} of {rows}"
@@ -41128,6 +41137,12 @@ msgstr "fecha parêntese"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "{ch} maiúsculo"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mph {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

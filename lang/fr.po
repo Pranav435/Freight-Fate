@@ -40591,9 +40591,21 @@ msgstr "LIMITE"
 msgid "LIMIT"
 msgstr "VITESSE"
 
-#. placeholders: {mph}, {severity}
-msgid "{mph} mph {severity}"
-msgstr "{mph} mi/h {severity}"
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mi/h épingle"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mi/h serré"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mi/h modéré"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mi/h léger"
 
 msgid "AUTO"
 msgstr "AUTO"
@@ -40640,7 +40652,7 @@ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr "Voie {lane_name}  ·  maintien de voie {lane_assist}"
 
 msgid "FUEL"
-msgstr "CARBURANT"
+msgstr "CARB."
 
 msgid "AIR"
 msgstr "AIR"
@@ -40687,9 +40699,6 @@ msgstr "AIRE DE REPOS"
 
 msgid "1 MILE"
 msgstr "1 MILE"
-
-msgid "FREIGHT FATE"
-msgstr "FREIGHT FATE"
 
 #. placeholders: {f}, {rows}
 msgid "{f} of {rows}"
@@ -41716,6 +41725,12 @@ msgstr "parenthèse droite"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "majuscule {ch}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mi/h {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

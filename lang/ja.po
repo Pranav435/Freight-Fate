@@ -35975,9 +35975,21 @@ msgstr "制限"
 msgid "LIMIT"
 msgstr "速度"
 
-#. placeholders: {mph}, {severity}
-msgid "{mph} mph {severity}"
-msgstr "{mph} mph {severity}"
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph ヘアピン"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph 急"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph 中程度"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph 緩やか"
 
 msgid "AUTO"
 msgstr "自動"
@@ -36071,9 +36083,6 @@ msgstr "休憩エリア"
 
 msgid "1 MILE"
 msgstr "1 マイル"
-
-msgid "FREIGHT FATE"
-msgstr "FREIGHT FATE"
 
 #. placeholders: {f}, {rows}
 msgid "{f} of {rows}"
@@ -37045,6 +37054,12 @@ msgstr "右かっこ"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大文字の{ch}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mph {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

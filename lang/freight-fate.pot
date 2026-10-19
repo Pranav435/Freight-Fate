@@ -43486,9 +43486,24 @@ msgstr ""
 msgid "LIMIT"
 msgstr ""
 
-#. placeholders: {mph}, {severity}
+#. placeholders: {mph}
 #: crates/freight-fate/src/visuals/hud.rs
-msgid "{mph} mph {severity}"
+msgid "{mph} mph hairpin"
+msgstr ""
+
+#. placeholders: {mph}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{mph} mph sharp"
+msgstr ""
+
+#. placeholders: {mph}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{mph} mph moderate"
+msgstr ""
+
+#. placeholders: {mph}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "{mph} mph gentle"
 msgstr ""
 
 #: crates/freight-fate/src/visuals/hud.rs
@@ -43610,10 +43625,6 @@ msgstr ""
 
 #: crates/freight-fate/src/visuals/scene_drive.rs
 msgid "1 MILE"
-msgstr ""
-
-#: crates/freight-fate/src/visuals/screens.rs
-msgid "FREIGHT FATE"
 msgstr ""
 
 #. placeholders: {f}, {rows}

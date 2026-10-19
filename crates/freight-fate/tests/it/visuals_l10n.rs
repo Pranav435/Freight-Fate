@@ -86,6 +86,39 @@ fn every_shipped_catalog_draws_the_road_work_sign_in_its_language() {
 }
 
 #[test]
+fn every_shipped_catalog_names_the_curve_in_its_own_words() {
+    let catalogs = [
+        ("de", include_str!("../../../../lang/de.po")),
+        ("es", include_str!("../../../../lang/es.po")),
+        ("fr", include_str!("../../../../lang/fr.po")),
+        ("it", include_str!("../../../../lang/it.po")),
+        ("ja", include_str!("../../../../lang/ja.po")),
+        ("pl", include_str!("../../../../lang/pl.po")),
+        ("pt_BR", include_str!("../../../../lang/pt_BR.po")),
+        ("ru", include_str!("../../../../lang/ru.po")),
+        ("zh_CN", include_str!("../../../../lang/zh_CN.po")),
+    ];
+    for (code, po) in catalogs {
+        let text = text_in(&catalog(code, po));
+        for severity in ["hairpin", "sharp", "moderate", "gentle"] {
+            let drawn = text.tr_drawn(&format!("35 mph {severity}"));
+            assert!(drawn.contains("35"), "{code}: {drawn}");
+            assert!(!drawn.contains(severity), "{code}: {drawn}");
+        }
+    }
+    let text = text_in(&spanish());
+    assert_eq!(text.tr_drawn("35 mph sharp"), "35 mph cerrada");
+    assert_eq!(text.tr_drawn("20 mph hairpin"), "20 mph horquilla");
+}
+
+#[test]
+fn the_spanish_lane_line_names_the_middle_lane_central() {
+    let text = text_in(&spanish());
+    let drawn = text.tr_drawn("middle lane  ·  lane keeping On");
+    assert!(drawn.starts_with("Carril central  ·  "), "{drawn}");
+}
+
+#[test]
 fn a_spanish_drive_captures_its_signs_and_distance_in_spanish() {
     let mut h = PlaytestHarness::new();
     h.start_delivery(StartDelivery::named("Visual Display"));

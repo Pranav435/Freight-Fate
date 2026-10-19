@@ -40310,14 +40310,26 @@ msgid "SIREN BEHIND"
 msgstr "СИРЕНА СЗАДИ"
 
 msgid "SPEED"
-msgstr "ЛИМИТ"
+msgstr "ОГРАН."
 
 msgid "LIMIT"
-msgstr "СКОРОСТИ"
+msgstr "СКОР."
 
-#. placeholders: {mph}, {severity}
-msgid "{mph} mph {severity}"
-msgstr "{mph} миль/ч {severity}"
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} миль/ч разворот"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} миль/ч крутой"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} миль/ч умеренный"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} миль/ч пологий"
 
 msgid "AUTO"
 msgstr "АВТО"
@@ -40374,18 +40386,18 @@ msgid "{air_psi} psi"
 msgstr "{air_psi} psi"
 
 msgid "TRUCK"
-msgstr "ГРУЗОВИК"
+msgstr "ТЯГАЧ"
 
 #. placeholders: {truck_damage}
 msgid "{truck_damage}% damage"
-msgstr "повреждения {truck_damage}%"
+msgstr "{truck_damage}% повр."
 
 msgid "CARGO"
 msgstr "ГРУЗ"
 
 #. placeholders: {cargo_damage}
 msgid "{cargo_damage}% damage"
-msgstr "повреждения {cargo_damage}%"
+msgstr "{cargo_damage}% повр."
 
 #. placeholders: {distance_value}, {distance_unit_text}
 msgid "{distance_value} {distance_unit_text} left"
@@ -40398,7 +40410,7 @@ msgid "PLAZA AHEAD"
 msgstr "ВПЕРЕДИ"
 
 msgid "TOLL"
-msgstr "ПЛАТНАЯ ДОРОГА"
+msgstr "ПЛАТНО"
 
 msgid "ALL TRUCKS"
 msgstr "ВСЕ ГРУЗОВИКИ"
@@ -40411,9 +40423,6 @@ msgstr "ЗОНА ОТДЫХА"
 
 msgid "1 MILE"
 msgstr "1 МИЛЯ"
-
-msgid "FREIGHT FATE"
-msgstr "FREIGHT FATE"
 
 #. placeholders: {f}, {rows}
 msgid "{f} of {rows}"
@@ -40429,13 +40438,13 @@ msgid "MPH"
 msgstr "MPH"
 
 msgid "ROAD"
-msgstr "ДОРОЖНЫЕ"
+msgstr "РЕМОНТ"
 
 msgid "WORK"
-msgstr "РАБОТЫ"
+msgstr "ДОРОГИ"
 
 msgid "AHEAD"
-msgstr "ВПЕРЕДИ"
+msgstr "ДАЛЕЕ"
 
 msgid "END"
 msgstr "КОНЕЦ"
@@ -41444,6 +41453,12 @@ msgstr "закрывающая скобка"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "заглавная {ch}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} миль/ч {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

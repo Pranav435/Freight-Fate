@@ -40111,11 +40111,23 @@ msgid "SPEED"
 msgstr "LIMIT"
 
 msgid "LIMIT"
-msgstr "PRĘDKOŚCI"
+msgstr "PRĘDK."
 
-#. placeholders: {mph}, {severity}
-msgid "{mph} mph {severity}"
-msgstr "{mph} mph {severity}"
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph nawrót"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph ostry"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph średni"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph łagodny"
 
 msgid "AUTO"
 msgstr "AUTO"
@@ -40165,25 +40177,25 @@ msgid "FUEL"
 msgstr "PALIWO"
 
 msgid "AIR"
-msgstr "POWIETRZE"
+msgstr "CIŚN."
 
 #. placeholders: {air_psi}
 msgid "{air_psi} psi"
 msgstr "{air_psi} psi"
 
 msgid "TRUCK"
-msgstr "CIĘŻARÓWKA"
+msgstr "POJAZD"
 
 #. placeholders: {truck_damage}
 msgid "{truck_damage}% damage"
-msgstr "{truck_damage}% uszkodzeń"
+msgstr "{truck_damage}% uszk."
 
 msgid "CARGO"
 msgstr "ŁADUNEK"
 
 #. placeholders: {cargo_damage}
 msgid "{cargo_damage}% damage"
-msgstr "{cargo_damage}% uszkodzeń"
+msgstr "{cargo_damage}% uszk."
 
 #. placeholders: {distance_value}, {distance_unit_text}
 msgid "{distance_value} {distance_unit_text} left"
@@ -40209,9 +40221,6 @@ msgstr "MIEJSCE ODPOCZYNKU"
 
 msgid "1 MILE"
 msgstr "1 MILA"
-
-msgid "FREIGHT FATE"
-msgstr "FREIGHT FATE"
 
 #. placeholders: {f}, {rows}
 msgid "{f} of {rows}"
@@ -41232,6 +41241,12 @@ msgstr "prawy nawias"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "wielkie {ch}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mph {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

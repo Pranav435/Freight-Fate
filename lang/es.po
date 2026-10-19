@@ -12407,7 +12407,7 @@ msgid "single"
 msgstr "único"
 
 msgid "middle"
-msgstr "mitad"
+msgstr "central"
 
 msgid "the lane"
 msgstr "el carril"
@@ -40206,9 +40206,21 @@ msgstr "VEL."
 msgid "LIMIT"
 msgstr "MÁXIMA"
 
-#. placeholders: {mph}, {severity}
-msgid "{mph} mph {severity}"
-msgstr "{mph} mph {severity}"
+#. placeholders: {mph}
+msgid "{mph} mph hairpin"
+msgstr "{mph} mph horquilla"
+
+#. placeholders: {mph}
+msgid "{mph} mph sharp"
+msgstr "{mph} mph cerrada"
+
+#. placeholders: {mph}
+msgid "{mph} mph moderate"
+msgstr "{mph} mph moderada"
+
+#. placeholders: {mph}
+msgid "{mph} mph gentle"
+msgstr "{mph} mph suave"
 
 msgid "AUTO"
 msgstr "AUTO"
@@ -40302,9 +40314,6 @@ msgstr "ÁREA DE DESCANSO"
 
 msgid "1 MILE"
 msgstr "1 MILLA"
-
-msgid "FREIGHT FATE"
-msgstr "FREIGHT FATE"
 
 #. placeholders: {f}, {rows}
 msgid "{f} of {rows}"
@@ -41325,6 +41334,12 @@ msgstr "cierra paréntesis"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "mayúscula {ch}"
+
+#~ msgid "{mph} mph {severity}"
+#~ msgstr "{mph} mph {severity}"
+
+#~ msgid "FREIGHT FATE"
+#~ msgstr "FREIGHT FATE"
 
 #~ msgid ""
 #~ "Turning back takes {drive}, more driving than you have before your "

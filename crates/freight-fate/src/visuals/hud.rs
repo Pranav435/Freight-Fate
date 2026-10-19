@@ -27,6 +27,29 @@ pub fn cluster_top(w: f32, h: f32) -> f32 {
     h - 10.0 * u - 136.0 * u
 }
 
+/// The gauge rows' text size, in layout units.
+pub(super) const GAUGE_TEXT: f32 = 9.5;
+/// Room for a gauge's value ("40% damage") after its bar, gap included.
+pub(super) const GAUGE_VALUE_COLUMN: f32 = 74.0;
+/// The gap between a bar and its value.
+pub(super) const GAUGE_VALUE_GAP: f32 = 8.0;
+/// The gap between a gauge's label and its bar.
+pub(super) const GAUGE_LABEL_GAP: f32 = 6.0;
+/// The label column: the English layout's width, and the most a translation
+/// may take from the bars.
+pub(super) const GAUGE_LABEL_MIN: f32 = 46.0;
+pub(super) const GAUGE_LABEL_MAX: f32 = 58.0;
+
+/// The gauge labels' column, in layout units: wide enough for the widest
+/// label in the player's language and a gap, so no label runs into its bar.
+pub(super) fn gauge_label_column(text: &mut Text, labels: &[&str]) -> f32 {
+    let widest = labels
+        .iter()
+        .map(|label| text.measure(label, GAUGE_TEXT, Weight::Bold))
+        .fold(0.0, f32::max);
+    (widest + GAUGE_LABEL_GAP).clamp(GAUGE_LABEL_MIN, GAUGE_LABEL_MAX)
+}
+
 fn speed_units(text: &Text, view: &DriveView) -> (f64, String, f64) {
     if view.hud.imperial {
         (1.0, text.tr_drawn("mph"), 80.0)
@@ -181,7 +204,15 @@ fn top_left(p: &mut Painter, text: &mut Text, view: &DriveView, u: f32, t: f32) 
             ],
             ink,
         );
-        let label = text.tr_drawn(&format!("{mph} mph {severity}"));
+        // Each band is its own label, so a catalog translates the severity
+        // word along with the rest instead of filling in the English key.
+        let band: &str = severity;
+        let label = match band {
+            "hairpin" => text.tr_drawn(&format!("{mph} mph hairpin")),
+            "sharp" => text.tr_drawn(&format!("{mph} mph sharp")),
+            "moderate" => text.tr_drawn(&format!("{mph} mph moderate")),
+            _ => text.tr_drawn(&format!("{mph} mph gentle")),
+        };
         let s = 12.0 * u;
         let tw =
             text.measure(&label, s, Weight::Bold)
@@ -605,10 +636,12 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
         (false, true) => lights.push((text.tr_drawn("TRAFFIC RIGHT"), AMBER)),
         _ => {}
     }
-    let lane_line = text.tr_drawn(&format!(
+    // The lane's name stays lowercase until the line is translated, so a
+    // language that names the lane second ("Carril central") keeps it so.
+    let lane_line = super::scene_drive::capitalize(&text.tr_drawn(&format!(
         "{} lane  ·  lane keeping {}",
         hud.lane_name, hud.lane_assist
-    ));
+    )));
     let tsize = 10.0 * u;
     let mut ty = y + 46.0 * u;
     let mut tx2 = col;
@@ -724,11 +757,13 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
             damage_c(hud.cargo_damage),
         ),
     ];
+    let labels: Vec<&str> = bars.iter().map(|bar| bar.0.as_str()).collect();
+    let label_col = gauge_label_column(text, &labels) * u;
     for (k, (label, frac, value, c)) in bars.iter().enumerate() {
         let by = y + 46.0 * u + k as f32 * 21.0 * u;
-        text.draw(p, bx, by, label, 9.5 * u, Weight::Bold, DIM);
-        let track_x = bx + 46.0 * u;
-        let track_w = bw - 46.0 * u - 74.0 * u;
+        text.draw(p, bx, by, label, GAUGE_TEXT * u, Weight::Bold, DIM);
+        let track_x = bx + label_col;
+        let track_w = bw - label_col - GAUGE_VALUE_COLUMN * u;
         p.round_rect(
             track_x,
             by - 8.0 * u,
@@ -744,10 +779,10 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
         }
         text.draw(
             p,
-            track_x + track_w + 8.0 * u,
+            track_x + track_w + GAUGE_VALUE_GAP * u,
             by,
             value,
-            9.5 * u,
+            GAUGE_TEXT * u,
             Weight::Regular,
             INK,
         );

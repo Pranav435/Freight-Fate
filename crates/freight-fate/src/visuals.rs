@@ -23,6 +23,8 @@
 
 mod captions;
 pub mod draw;
+#[cfg(test)]
+mod fit_tests;
 mod hud;
 mod palette;
 mod road;
