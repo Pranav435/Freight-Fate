@@ -66,7 +66,14 @@ pub struct Pilot {
     pub rested: bool,
     /// Seconds spent on the accelerator with speed control off.
     pub accel_s: f64,
+    /// Seconds a hand-back has waited for the truck to come home from the
+    /// passing lane.
+    pub handback_wait_s: f64,
 }
+
+/// The longest a hand-back waits for the passing lane to clear. Traffic
+/// that keeps the right lane shut is no reason to drive on past a break.
+const HANDBACK_WAIT_MAX_S: f64 = 30.0;
 
 /// Whether `stop` serves what the co-driver is stopping for.
 pub(crate) fn stop_serves(stop: &RoadStop, purpose: StopPurpose) -> bool {
@@ -135,11 +142,16 @@ impl DrivingState {
             // Out in the passing lane, or moving between lanes, the hand-back
             // waits until lane keeping has the truck home, so the player
             // does not take the wheel beside what was just gone around.
-            let urgent = matches!(reason.as_str(), "fuel" | "off the road");
+            // Damage, fuel and leaving the road do not wait, and nothing
+            // waits longer than `HANDBACK_WAIT_MAX_S`.
+            let urgent = matches!(reason.as_str(), "damage" | "fuel" | "off the road");
             let mid_pass = self.passing.is_some() || self.lane_change_target.is_some();
-            if urgent || !mid_pass {
+            pilot.handback_wait_s += dt;
+            if urgent || !mid_pass || pilot.handback_wait_s >= HANDBACK_WAIT_MAX_S {
                 return Err(reason);
             }
+        } else {
+            pilot.handback_wait_s = 0.0;
         }
         if speed < 1.0 {
             pilot.stalled_s += dt;
@@ -269,7 +281,7 @@ impl DrivingState {
         // same cap the cruise holds: pressing on to the limit only had the
         // cruise brake it back down.
         let effects = self.trip.weather.effects();
-        let limit = if effects.grip < 1.0 || effects.visibility_mi < 8.0 {
+        let limit = if effects.is_adverse() {
             posted.min(effects.safe_speed_mph)
         } else {
             posted
@@ -287,7 +299,7 @@ impl DrivingState {
         let assist_has_pedals = self.terminal_assist_owns(ctx)
             || self.decel_lane_brake > 0.0
             || self.chain_stop.is_some()
-            || (self.hazard_deadline.is_some() && !self.hazard_animal);
+            || self.hazard_deadline.is_some();
         if assist_has_pedals {
             // Waiting at the bar is not a stall.
             pilot.accel_s = 0.0;

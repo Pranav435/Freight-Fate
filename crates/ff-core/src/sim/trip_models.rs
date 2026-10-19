@@ -22,7 +22,7 @@ mod hazards;
 mod ramps;
 pub use hazards::{
     eligible_hazards, hazard_brake_to_mph, hazard_is_animal, hazard_is_in_lane, hazard_name,
-    HazardDef, OpenSide, HAZARDS,
+    HazardDef, OpenSide, ANIMAL_BRAKE_TO_MPH, HAZARDS,
 };
 pub use ramps::{
     acceleration_lane_capability_mph, acceleration_lane_mi, deceleration_lane_mi, exit_ramp_layout,

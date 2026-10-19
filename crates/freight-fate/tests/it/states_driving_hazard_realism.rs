@@ -1,10 +1,12 @@
 //! Owner, 2026-10-19: the assists go around things by changing lanes as
-//! much as possible, and do not brake for an animal, since braking hard
-//! from highway speed does not change what happens. The call names the
-//! animal and asks for nothing.
+//! much as possible. An animal is braked for firmly in the lane, never
+//! swerved for and never stopped for. The call names the animal and asks
+//! for nothing.
 
 use ff_core::sim::lane::MPH_PER_MPS;
-use ff_core::sim::trip_models::{OpenSide, TripEvent, TripEventData, TripEventKind};
+use ff_core::sim::trip_models::{
+    OpenSide, TripEvent, TripEventData, TripEventKind, ANIMAL_BRAKE_TO_MPH,
+};
 use ff_core::sim::weather::WeatherKind;
 use ff_core::speech_text::{in_lane_hazard_call, passing_hazard_call, SpokenMessage};
 use freight_fate::playtest::harness::{PlaytestHarness, RouteSetup};
@@ -83,6 +85,7 @@ fn deer_call() -> TripEvent {
             dodgeable: Some(false),
             in_lane: Some(false),
             animal: Some(true),
+            brake_to_mph: Some(ANIMAL_BRAKE_TO_MPH),
             name: Some("the deer".to_string()),
             ..Default::default()
         },
@@ -150,7 +153,7 @@ fn after_going_around_debris_the_truck_holds_the_passing_lane_until_it_is_by() {
 }
 
 #[test]
-fn an_animal_is_called_and_never_braked_for() {
+fn an_animal_is_braked_for_firmly_in_the_lane_not_stopped_for() {
     let mut harness = open_interstate("Deer");
     arm(&mut harness, deer_call());
     let calls = spoken(&harness);
@@ -165,21 +168,42 @@ fn an_animal_is_called_and_never_braked_for() {
         "{calls:#?}"
     );
     let mut braked = false;
+    let mut emergency = false;
     let mut slowest = f64::INFINITY;
     let mut elapsed = 0.0;
     while harness.read_drive(|d| d.hazard_deadline.is_some()) && elapsed < 20.0 {
         frame(&mut harness, DT);
         elapsed += DT;
-        let (mph, aeb) = harness.read_drive(|d| (d.truck().speed_mph(), d.aeb_brake));
+        let (mph, aeb, hard) =
+            harness.read_drive(|d| (d.truck().speed_mph(), d.aeb_brake, d.aeb_emergency));
         slowest = slowest.min(mph);
         braked |= aeb > 0.0;
+        emergency |= hard;
     }
-    assert!(!braked, "the automatic brake acted for a deer");
-    assert!(slowest > 60.0, "slowed to {slowest:.0} for a deer");
+    assert!(braked, "the automatic brake did not act for a deer");
+    assert!(!emergency, "the emergency brake was used for a deer");
+    assert!(slowest > 30.0, "slowed to {slowest:.0} for a deer");
+    assert_eq!(harness.read_drive(|d| d.lane.lane), 0, "swerved for a deer");
     assert!(
-        harness.read_drive(|d| d.cruise_mph.is_some()),
-        "cruise held"
+        said_any(&harness, "Clear of the deer.") || said_any(&harness, "Collision with the deer."),
+        "{:#?}",
+        spoken(&harness)
     );
+}
+
+#[test]
+fn with_automatic_braking_off_a_deer_is_left_to_the_driver() {
+    let mut harness = open_interstate("Deer No Assist");
+    harness.with_drive(|_, ctx| ctx.settings.automatic_emergency_braking = false);
+    arm(&mut harness, deer_call());
+    let mut braked = false;
+    let mut elapsed = 0.0;
+    while harness.read_drive(|d| d.hazard_deadline.is_some()) && elapsed < 20.0 {
+        frame(&mut harness, DT);
+        elapsed += DT;
+        braked |= harness.read_drive(|d| d.aeb_brake > 0.0);
+    }
+    assert!(!braked);
     assert!(
         said_any(&harness, "Clear of the deer.") || said_any(&harness, "Collision with the deer."),
         "{:#?}",
@@ -210,4 +234,41 @@ fn the_drawn_deer_call_asks_for_nothing() {
     let deer = drawn_hazard(2, "deer");
     assert_eq!(deer.text(), "A deer crossing the road.");
     assert_eq!(deer.data.animal, Some(true));
+}
+
+#[test]
+fn a_mattress_with_something_across_the_road_is_not_a_near_stop() {
+    let mut harness = open_interstate("Mattress And Gust");
+    let mattress = TripEvent {
+        kind: TripEventKind::Hazard,
+        message: SpokenMessage::new("A mattress in the lane."),
+        data: TripEventData {
+            deadline_s: Some(6.0),
+            dodgeable: Some(false),
+            in_lane: Some(true),
+            brake_to_mph: Some(35.0),
+            animal: Some(false),
+            name: Some("the mattress".to_string()),
+            ..Default::default()
+        },
+    };
+    let gust = TripEvent {
+        kind: TripEventKind::Hazard,
+        message: SpokenMessage::new("A strong crosswind gust."),
+        data: TripEventData {
+            deadline_s: Some(6.0),
+            dodgeable: Some(false),
+            in_lane: Some(false),
+            animal: Some(false),
+            name: Some("the gust".to_string()),
+            ..Default::default()
+        },
+    };
+    arm(&mut harness, mattress);
+    arm(&mut harness, gust);
+    let target = harness.read_drive(|d| d.hazard_target_mph(None));
+    assert!(
+        target >= 25.0,
+        "braking to {target:.0} for a mattress and a gust"
+    );
 }

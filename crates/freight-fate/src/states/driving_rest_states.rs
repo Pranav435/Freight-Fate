@@ -245,16 +245,6 @@ impl DrivingState {
 
     /// `ctx.push_state(ParkingFullState(ctx, self, stop))`.
     pub fn push_parking_full_state(&mut self, ctx: &mut GameContext, stop: &RoadStop) {
-        if let Some(name) = self.co_driver_at_wheel_name() {
-            // The co-driver only reaches a full lot with their shift going
-            // on: they drive on to the next one, with no screen.
-            let line = format!(
-                "The lot at {} is full. {name} drives on.",
-                stop.spoken_name()
-            );
-            self.co_driver_note(ctx, line, NoteWeight::Passing);
-            return;
-        }
         let mut state = ParkingFullState::new(ctx, stop.clone());
         state.enter_over_drive(ctx, self);
         push_over_drive(ctx, state);
@@ -324,6 +314,7 @@ impl DrivingState {
             self.co_driver_summon(ctx, "roadside");
             return false;
         }
+        let outcome = co_driver_outcome(outcome, name);
         let line = format!("A trooper pulled {name} over. {outcome}");
         self.co_driver_note(ctx, line.trim_end().to_string(), NoteWeight::Wake);
         true
@@ -370,5 +361,39 @@ impl DrivingState {
     pub fn push_felony_stop_state(&mut self, ctx: &mut GameContext) {
         let state = FelonyStopState::new(ctx, self);
         ctx.push_state(state);
+    }
+}
+
+/// A stop screen's outcome, told of the co-driver who was at the wheel.
+/// The screen speaks to the player ("lets you off"); the co-driver's note
+/// must not say the trooper stopped them. "Your record" stays: the record
+/// is the player's career.
+fn co_driver_outcome(outcome: &str, name: &str) -> String {
+    outcome
+        .replace("lets you off", &format!("lets {name} off"))
+        .replace("lets you go", &format!("lets {name} go"))
+        .replace(
+            "You pulled over promptly",
+            &format!("{name} pulled over promptly"),
+        )
+        .replace("waves you through", "waves the truck through")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::co_driver_outcome;
+
+    #[test]
+    fn the_co_drivers_stop_is_told_of_them_not_the_player() {
+        let warning = co_driver_outcome(
+            "12 miles per hour over the 65 limit. You pulled over promptly, so the trooper lets it go with a warning.",
+            "Dan",
+        );
+        assert!(warning.contains("Dan pulled over promptly"), "{warning}");
+        let off = co_driver_outcome("The trooper lets you off with a warning.", "Dan");
+        assert_eq!(off, "The trooper lets Dan off with a warning.");
+        assert!(
+            !co_driver_outcome("The officer lets you go with a warning.", "Dan").contains("you")
+        );
     }
 }

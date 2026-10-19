@@ -29852,20 +29852,6 @@ msgstr ""
 "hier gegen deinen Führerschein und kostet außerdem {f} Punkte Ruf. "
 "{serious_violation_text}"
 
-#. placeholders: {name}
-#. one sentence of a longer line
-msgid "The lot at {name} is full."
-msgstr ""
-
-#. placeholders: {name}, {name2}
-msgid "The lot at {name} is full. {name2} drives on."
-msgstr ""
-
-#. placeholders: {name2}
-#. one sentence of a longer line
-msgid "{name2} drives on."
-msgstr ""
-
 msgid "roadside"
 msgstr "Straßenrand"
 
@@ -29876,6 +29862,33 @@ msgstr ""
 
 #. placeholders: {name}, {outcome}
 msgid "A trooper pulled {name} over. {outcome}"
+msgstr ""
+
+msgid "lets you off"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} off"
+msgstr ""
+
+msgid "lets you go"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} go"
+msgstr ""
+
+msgid "You pulled over promptly"
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} pulled over promptly"
+msgstr ""
+
+msgid "waves the truck through"
+msgstr ""
+
+msgid "waves you through"
 msgstr ""
 
 msgid "over"
@@ -34887,8 +34900,10 @@ msgstr "Automatische Notbremsung"
 
 msgid ""
 "After a hazard warning, the truck brakes itself if you have not slowed "
-"enough. It does not brake for an animal."
+"enough."
 msgstr ""
+"Nach einer Gefahrenwarnung bremst der Lkw selbst, wenn du nicht genug "
+"verlangsamt hast."
 
 msgid "Lane-departure warning"
 msgstr "Spurverlassenswarner"
@@ -41751,13 +41766,6 @@ msgstr "Klammer zu"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "groß {ch}"
-
-#~ msgid ""
-#~ "After a hazard warning, the truck brakes itself if you have not slowed "
-#~ "enough."
-#~ msgstr ""
-#~ "Nach einer Gefahrenwarnung bremst der Lkw selbst, wenn du nicht genug "
-#~ "verlangsamt hast."
 
 #~ msgid ", needs you back in {duration_text}"
 #~ msgstr ", braucht dich in {duration_text} wieder"

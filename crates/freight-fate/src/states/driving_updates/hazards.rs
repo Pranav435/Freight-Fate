@@ -258,9 +258,10 @@ impl DrivingState {
     /// -- a carcass on a one-lane road became a 25 mph problem the moment
     /// "dodgeable" started meaning "there is somewhere to go".
     ///
-    /// ANYTHING THAT SPANS THE ROAD -- fog, ice, a crosswind, a deer that may
-    /// bolt either way -- takes the moving-hazard safe speed, because there
-    /// is no object in the lane to creep past.
+    /// ANYTHING THAT SPANS THE ROAD -- fog, ice, a crosswind -- takes the
+    /// moving-hazard safe speed, because there is no object in the lane to
+    /// creep past. An animal spans it too, but brakes to its own catalog
+    /// speed (`ANIMAL_BRAKE_TO_MPH`).
     pub fn hazard_target_mph(&self, shape: Option<HazardShape>) -> f64 {
         let shape = shape.unwrap_or_else(|| self.hazard_shape());
         if let Some(lead_mph) = shape.lead_mph {
@@ -280,7 +281,7 @@ impl DrivingState {
         // slow for was the "too much braking" (owner, 2026-10-19). The same
         // test of bad weather the cruise caps on.
         let effects = self.trip.weather.effects();
-        if effects.grip < 1.0 || effects.visibility_mi < 8.0 {
+        if effects.is_adverse() {
             let weather_mph = effects.safe_speed_mph - HAZARD_WEATHER_MARGIN_MPH;
             return HAZARD_SAFE_MPH.max(weather_mph.min(HAZARD_SPANNING_MAX_MPH));
         }
@@ -515,23 +516,27 @@ impl DrivingState {
         self.finish_hazard_clear(ctx, &text);
     }
 
-    /// An animal the truck reached without slowing for it: most get across,
-    /// and the rest are struck. A strike is a dent and a grille, not the
-    /// wreck a fixed object at speed is: the truck keeps its speed and the
-    /// freight is untouched (owner, 2026-10-19: do not stop for it).
+    /// An animal the truck reached before slowing to its brake-to speed:
+    /// most get across, and the rest are struck. A strike is a dent and a
+    /// grille, not the wreck a fixed object at speed is: the truck keeps
+    /// going and the freight is untouched (owner, 2026-10-19).
     ///
-    /// The odds are assumed, not measured: the horn's own split, where deer
-    /// and elk freeze more often than they bolt. The damage scales with the
-    /// animal's size and the truck's speed. Seeded on the hazard, so a
-    /// reload hears the same outcome.
+    /// The odds are assumed, not measured: at 65 mph the horn's own split,
+    /// where deer and elk freeze more often than they bolt, and better the
+    /// slower the truck is going, so braking for it counts even when it
+    /// falls short. The damage scales with the animal's size and the
+    /// truck's speed. Seeded on the hazard, so a reload hears the same
+    /// outcome.
     pub fn animal_outcome(&mut self, ctx: &mut GameContext) {
         let names = self.hazard_names.clone();
         let mut rng = PyRandom::new_from_i64(
             (self.trip_seed << 9) ^ (self.hazard_arm_mi * 50.0) as i64 ^ 0x5eed,
         );
+        let slowed = (1.0 - self.trip.truck.speed_mph() / 65.0).clamp(0.0, 1.0);
         let struck = names.iter().find(|name| {
             let freeze_prone = name.as_str() == "the deer" || name.as_str() == "the elk";
-            let gets_across = if freeze_prone { 0.6 } else { 0.75 };
+            let at_speed = if freeze_prone { 0.6 } else { 0.75 };
+            let gets_across = at_speed + (1.0 - at_speed) * slowed;
             rng.random() >= gets_across
         });
         let Some(struck) = struck.cloned() else {
@@ -722,13 +727,12 @@ impl DrivingState {
         let deadline = self.hazard_deadline.unwrap_or(0.0) - dt;
         self.hazard_deadline = Some(deadline);
         self.track_assisted_deceleration(dt);
-        // An animal is never braked for by the assist: a hard stop from
-        // highway speed does not save it, and a loaded truck braking hard for
-        // a deer is how a following car ends up in the trailer (owner,
-        // 2026-10-19). The driver can still brake for it themselves.
-        let assist_may_act = ctx.settings.automatic_emergency_braking
-            && !self.hazard_animal
-            && !self.dodge_still_beats_the_hazard();
+        // An animal is braked for firmly in the lane, to the speed its
+        // catalog row asks for, and never with the emergency application:
+        // a loaded truck stood on its brakes for a deer is how a following
+        // car ends up in the trailer (owner, 2026-10-19).
+        let assist_may_act =
+            ctx.settings.automatic_emergency_braking && !self.dodge_still_beats_the_hazard();
         if !assist_may_act {
             // A driver mid-drift has answered the warning, and an assist the
             // driver has switched off has no truck to take.
@@ -754,7 +758,7 @@ impl DrivingState {
             // And the emergency application stays a genuine last resort, judged
             // on the deceleration the truck is actually making rather than on
             // the one a full application ought to deliver.
-            if self.service_braking_is_losing(dt) {
+            if self.service_braking_is_losing(dt) && !self.hazard_animal {
                 self.aeb_emergency = true;
             }
             self.apply_hazard_brake();

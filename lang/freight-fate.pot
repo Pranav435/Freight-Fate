@@ -32949,23 +32949,6 @@ msgid ""
 "license as well as {f} points off your reputation. {serious_violation_text}"
 msgstr ""
 
-#. placeholders: {name}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_rest_states.rs
-msgid "The lot at {name} is full."
-msgstr ""
-
-#. placeholders: {name}, {name2}
-#: crates/freight-fate/src/states/driving_rest_states.rs
-msgid "The lot at {name} is full. {name2} drives on."
-msgstr ""
-
-#. placeholders: {name2}
-#. one sentence of a longer line
-#: crates/freight-fate/src/states/driving_rest_states.rs
-msgid "{name2} drives on."
-msgstr ""
-
 #: crates/freight-fate/src/states/driving_rest_states.rs crates/freight-fate/src/states/driving_team/overlay.rs
 msgid "roadside"
 msgstr ""
@@ -32979,6 +32962,41 @@ msgstr ""
 #. placeholders: {name}, {outcome}
 #: crates/freight-fate/src/states/driving_rest_states.rs
 msgid "A trooper pulled {name} over. {outcome}"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_rest_states.rs
+msgid "lets you off"
+msgstr ""
+
+#. placeholders: {name}
+#: crates/freight-fate/src/states/driving_rest_states.rs
+msgid "lets {name} off"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_rest_states.rs
+msgid "lets you go"
+msgstr ""
+
+#. placeholders: {name}
+#: crates/freight-fate/src/states/driving_rest_states.rs
+msgid "lets {name} go"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_rest_states.rs
+msgid "You pulled over promptly"
+msgstr ""
+
+#. placeholders: {name}
+#: crates/freight-fate/src/states/driving_rest_states.rs
+msgid "{name} pulled over promptly"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_rest_states.rs
+msgid "waves the truck through"
+msgstr ""
+
+#: crates/freight-fate/src/states/driving_rest_states.rs
+msgid "waves you through"
 msgstr ""
 
 #: crates/freight-fate/src/states/driving_rest_states/fuel_pump.rs
@@ -38443,7 +38461,7 @@ msgstr ""
 #: crates/freight-fate/src/states/main_menu/settings_items.rs
 msgid ""
 "After a hazard warning, the truck brakes itself if you have not slowed "
-"enough. It does not brake for an animal."
+"enough."
 msgstr ""
 
 #: crates/freight-fate/src/states/main_menu/settings_items.rs

@@ -94,10 +94,12 @@ bookmarks usable.
 - [x] Co-driver and assist realism (owner, 2026-10-19): lane keeping on
       full goes around anything sitting in the lane (debris, a car on the
       shoulder, a closure) when a lane is open, and holds
-      the passing lane until the truck is by it. Automatic braking never
-      brakes for an animal: the call names it and asks for nothing, and a
-      seeded roll at the deadline says whether it got across or the truck
-      struck it (damage by the animal's size and the truck's speed). In
+      the passing lane until the truck is by it. Automatic braking slows
+      firmly in the lane for an animal, to 35, never swerving and never
+      with the emergency brake: the call names it and asks for nothing. A
+      truck still above 35 at the deadline takes a seeded roll, better the
+      slower it is going, for whether the animal got across or was struck
+      (damage by the animal's size and the truck's speed). In
       weather that takes grip or sight, things that cover the road brake to
       the weather's safe speed less five (floor 25, ceiling 45), and a
       mattress, a tarp or standing water brake to
@@ -680,6 +682,12 @@ Everything found before 2026-09-25 moved to
       game has no shoulder pull-over to make it there yet (2026-10-19).
 - [ ] A slept-through stretch judges whether a scale ahead is open at the
       time the jump starts, not when the truck would reach it (2026-10-19).
+- [ ] How far past a lane closure the truck stays out is chosen by the
+      closure's name; it belongs on the hazard row as a length, so a new
+      long hazard (a spill, a work zone) gets it too (2026-10-19).
+- [ ] The agent server's `start_at` resets the clock a `scenario` set
+      (asked for 10 PM, staged at 8 AM), and nothing stages a road hazard,
+      so a deer or debris call can only be waited for (2026-10-19).
 - [x] Achievement sweep (owner, 2026-10-09): four badges whose triggers
       had fallen behind the map or the job board now match them.
 - [x] Driver window and cab climate (player report, 2026-10-17); see

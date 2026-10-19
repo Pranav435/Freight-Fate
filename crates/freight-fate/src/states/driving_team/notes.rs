@@ -8,10 +8,12 @@
 //! nothing; the lines that matter on waking ride the wake-up summary.
 
 use ff_core::message_log::MessageCategory;
+use ff_core::speech_pacing::SpeechCategory;
 
-use crate::app::{GameContext, Say, TRANSCRIPT_TARGET};
+use crate::app::{GameContext, Say, SayEvent, TRANSCRIPT_TARGET};
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::{profile_mut_of, profile_of};
+use crate::states::driving_updates::live;
 
 use super::pilot::StopPurpose;
 use super::TeamMode;
@@ -69,8 +71,21 @@ impl DrivingState {
         if !riding {
             return;
         }
-        ctx.player_asked(|ctx| ctx.audio.play(sound));
-        self.co_driver_note(ctx, line.to_string(), NoteWeight::Passing);
+        log::info!(target: TRANSCRIPT_TARGET, "[co-driver] hazard: {line}");
+        ctx.message_log.add(line, MessageCategory::CoDriver);
+        // The driving channel, as the player's own call would be: Safety on
+        // the ladder, and dropped if the hazard is over before it is said.
+        let line = line.to_string();
+        ctx.player_asked(|ctx| {
+            ctx.audio.play(sound);
+            ctx.say_event_with(
+                line,
+                SayEvent::new()
+                    .review(false)
+                    .category(SpeechCategory::Safety)
+                    .valid(live::hazard_active),
+            );
+        });
     }
 
     /// The co-driver has chosen a stop: where, how far, and what for.

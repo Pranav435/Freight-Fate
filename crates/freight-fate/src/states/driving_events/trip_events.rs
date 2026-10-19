@@ -372,13 +372,22 @@ impl DrivingState {
                     (Some(live), Some(folded)) => Some(live.min(folded)),
                     _ => None,
                 };
-                // Either one sitting in the lane takes the group to the near
-                // stop: the object is still there whatever else arrived.
-                self.hazard_in_lane = self.hazard_in_lane || in_lane;
+                // Either one that needs the near stop takes the group there:
+                // the object is still there whatever else arrived. A thing
+                // in the lane with its own brake-to speed (a mattress) does
+                // not, so with something across the road it takes that
+                // one's speed instead of a crawl.
+                let near_stop = (self.hazard_in_lane && self.hazard_brake_to_mph.is_none())
+                    || (in_lane && brake_to_mph.is_none());
                 // The group brakes to the slowest of what its members ask.
                 self.hazard_brake_to_mph = match (self.hazard_brake_to_mph, brake_to_mph) {
                     (Some(live), Some(folded)) => Some(live.min(folded)),
                     _ => None,
+                };
+                self.hazard_in_lane = if self.hazard_brake_to_mph.is_some() {
+                    self.hazard_in_lane || in_lane
+                } else {
+                    near_stop
                 };
                 self.hazard_dodgeable = self.hazard_dodgeable && dodgeable;
             }
@@ -418,8 +427,9 @@ impl DrivingState {
         // back to the pedals right away (Shane, 2026-08-14: a lane change
         // was killing cruise outright, not just easing off the lane being
         // passed -- that narrower bug is 3cbdcffb).
-        // An animal leaves it alone too: nothing is asked of the driver, and
-        // the automatic braking does not act for it.
+        // An animal leaves it alone at the call: the call names the animal
+        // and asks nothing more (owner, 2026-10-19). If the automatic brake
+        // takes the truck for it, that pauses the cruise as it always does.
         let speed_control_was_active = !self.hazard_dodgeable
             && !self.hazard_animal
             && (self.speed_control_armed || self.cruise_mph.is_some() || self.keeper_mph.is_some());

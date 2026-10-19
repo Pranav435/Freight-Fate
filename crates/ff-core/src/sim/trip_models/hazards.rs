@@ -131,6 +131,13 @@ pub struct HazardDef {
     pub name: &'static str,
 }
 
+/// An animal is braked for firmly in the lane, never swerved for: the
+/// standard truck-driver training for a deer (owner, 2026-10-19). Braking a
+/// loaded truck to a stop from highway speed does not save the animal and
+/// invites the car behind into the trailer, so the brake aims at a speed
+/// that buys the animal time to get across. Assumed, not measured.
+pub const ANIMAL_BRAKE_TO_MPH: f64 = 35.0;
+
 const fn hz(text: &'static str, weight: f64, name: &'static str) -> HazardDef {
     HazardDef {
         text,
@@ -222,11 +229,13 @@ pub static HAZARDS: &[HazardDef] = &[
     // Wildlife: dawn/dusk/night, regional species.
     HazardDef {
         animal: true,
+        brake_to_mph: Some(ANIMAL_BRAKE_TO_MPH),
         regions: Some(DEER_REGIONS),
         ..hz("a deer crossing the road", 1.3, "the deer")
     },
     HazardDef {
         animal: true,
+        brake_to_mph: Some(ANIMAL_BRAKE_TO_MPH),
         regions: Some(&["rockies", "great_basin", "pacific_northwest"]),
         ..hz("an elk crossing the road", 1.1, "the elk")
     },
@@ -234,22 +243,27 @@ pub static HAZARDS: &[HazardDef] = &[
     // generic entry carried.
     HazardDef {
         animal: true,
+        brake_to_mph: Some(ANIMAL_BRAKE_TO_MPH),
         ..hz("a dog loose on the road", 0.2, "the dog")
     },
     HazardDef {
         animal: true,
+        brake_to_mph: Some(ANIMAL_BRAKE_TO_MPH),
         ..hz("a coyote crossing the road", 0.15, "the coyote")
     },
     HazardDef {
         animal: true,
+        brake_to_mph: Some(ANIMAL_BRAKE_TO_MPH),
         ..hz("loose livestock on the road", 0.15, "the livestock")
     },
     HazardDef {
         animal: true,
+        brake_to_mph: Some(ANIMAL_BRAKE_TO_MPH),
         ..hz("a raccoon in the lane", 0.1, "the raccoon")
     },
     HazardDef {
         animal: true,
+        brake_to_mph: Some(ANIMAL_BRAKE_TO_MPH),
         ..hz("an animal on the road", 0.1, "the animal")
     }, // honest fallback
     // Wet weather only.

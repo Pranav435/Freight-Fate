@@ -30030,20 +30030,6 @@ msgstr ""
 "votre permis en plus de {f} points de réputation en moins. "
 "{serious_violation_text}"
 
-#. placeholders: {name}
-#. one sentence of a longer line
-msgid "The lot at {name} is full."
-msgstr ""
-
-#. placeholders: {name}, {name2}
-msgid "The lot at {name} is full. {name2} drives on."
-msgstr ""
-
-#. placeholders: {name2}
-#. one sentence of a longer line
-msgid "{name2} drives on."
-msgstr ""
-
 msgid "roadside"
 msgstr "bord de route"
 
@@ -30054,6 +30040,33 @@ msgstr ""
 
 #. placeholders: {name}, {outcome}
 msgid "A trooper pulled {name} over. {outcome}"
+msgstr ""
+
+msgid "lets you off"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} off"
+msgstr ""
+
+msgid "lets you go"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} go"
+msgstr ""
+
+msgid "You pulled over promptly"
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} pulled over promptly"
+msgstr ""
+
+msgid "waves the truck through"
+msgstr ""
+
+msgid "waves you through"
 msgstr ""
 
 msgid "over"
@@ -35091,8 +35104,10 @@ msgstr "Freinage d'urgence automatique"
 
 msgid ""
 "After a hazard warning, the truck brakes itself if you have not slowed "
-"enough. It does not brake for an animal."
+"enough."
 msgstr ""
+"Après une alerte de danger, le camion freine tout seul si vous n'avez pas "
+"assez ralenti."
 
 msgid "Lane-departure warning"
 msgstr "Alerte de franchissement de voie"
@@ -42009,13 +42024,6 @@ msgstr "parenthèse droite"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "majuscule {ch}"
-
-#~ msgid ""
-#~ "After a hazard warning, the truck brakes itself if you have not slowed "
-#~ "enough."
-#~ msgstr ""
-#~ "Après une alerte de danger, le camion freine tout seul si vous n'avez pas "
-#~ "assez ralenti."
 
 #~ msgid ", needs you back in {duration_text}"
 #~ msgstr ", a besoin de vous dans {duration_text}"

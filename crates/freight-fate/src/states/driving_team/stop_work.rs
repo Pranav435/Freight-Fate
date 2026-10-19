@@ -176,6 +176,7 @@ impl DrivingState {
         let (line, weight) = if self.decal_waves_through(ctx) {
             advance_rest_clock(self, ctx, WAVE_THROUGH_MIN, None, "");
             hos_mut_of(ctx).on_duty(WAVE_THROUGH_MIN);
+            record_inspection(ctx);
             (
                 format!("{name} checked in at {place}. The inspection decal got the truck waved through."),
                 NoteWeight::Passing,
@@ -183,6 +184,7 @@ impl DrivingState {
         } else if !self.scale_selects_driver(ctx, stop) {
             advance_rest_clock(self, ctx, WAVE_THROUGH_MIN, None, "");
             hos_mut_of(ctx).on_duty(WAVE_THROUGH_MIN);
+            record_inspection(ctx);
             (
                 format!("{name} checked in at {place} and was waved through."),
                 NoteWeight::Passing,

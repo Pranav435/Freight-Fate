@@ -100,7 +100,7 @@
 - **A co-driver works weigh stations, troopers and full lots without any menu.** With a green transponder light they roll on past the scale.
 - **Riding along, you hear what the co-driver does and why.** Their plans, stops, fines and the hazards they meet are under Co-driver in your messages.
 - **Lane keeping on full now changes lanes around debris and cars on the shoulder instead of braking.** It moves back once the truck is past.
-- **Automatic braking no longer brakes for an animal.** The call names the animal, and the truck may strike it.
+- **Automatic braking slows firmly for an animal instead of stopping, and never swerves.** The call just names the animal; a slower truck strikes fewer.
 - **Automatic braking slows less for wind, hail, fog and things it cannot go around.** It brakes to a safe speed for the conditions, not 25 miles per hour.
 - **The Language setting names each language in English, then in that language.** For example, Spanish (Español).
 - **Windows and Mac updates download much less when the music and radio packs are unchanged.** After this one, most are about 35 megabytes instead of 531.

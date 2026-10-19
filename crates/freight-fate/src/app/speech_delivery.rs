@@ -644,7 +644,7 @@ impl GameContext {
             valid,
         } = opts;
         let key = key.as_deref();
-        if self.co_driver_away && !force {
+        if self.co_driver_away && !force && !self.speech_requested {
             // Nobody is listening for the road while the co-driver drives.
             // A line waiting on its delivery receipt is released, so a stop
             // plan never stalls behind speech that will not come.

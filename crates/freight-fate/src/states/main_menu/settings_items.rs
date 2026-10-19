@@ -133,7 +133,7 @@ pub(super) const DRIVING_ASSIST_SPECS: [(&str, &str, &str); 12] = [
     (
         "automatic_emergency_braking",
         "Automatic emergency braking",
-        "After a hazard warning, the truck brakes itself if you have not slowed enough. It does not brake for an animal.",
+        "After a hazard warning, the truck brakes itself if you have not slowed enough.",
     ),
     (
         "lane_departure_warning",

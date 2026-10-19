@@ -26524,20 +26524,6 @@ msgstr ""
 "那是{times_now_text}，你睡着了就跑出了马路。疲劳驾驶属于联邦违法行为，因此这会影响你的驾照，并且 {f} "
 "也会影响你的声誉。{serious_violation_text}"
 
-#. placeholders: {name}
-#. one sentence of a longer line
-msgid "The lot at {name} is full."
-msgstr ""
-
-#. placeholders: {name}, {name2}
-msgid "The lot at {name} is full. {name2} drives on."
-msgstr ""
-
-#. placeholders: {name2}
-#. one sentence of a longer line
-msgid "{name2} drives on."
-msgstr ""
-
 msgid "roadside"
 msgstr ""
 
@@ -26548,6 +26534,33 @@ msgstr ""
 
 #. placeholders: {name}, {outcome}
 msgid "A trooper pulled {name} over. {outcome}"
+msgstr ""
+
+msgid "lets you off"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} off"
+msgstr ""
+
+msgid "lets you go"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} go"
+msgstr ""
+
+msgid "You pulled over promptly"
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} pulled over promptly"
+msgstr ""
+
+msgid "waves the truck through"
+msgstr ""
+
+msgid "waves you through"
 msgstr ""
 
 msgid "over"
@@ -31032,8 +31045,8 @@ msgstr "自动紧急制动"
 
 msgid ""
 "After a hazard warning, the truck brakes itself if you have not slowed "
-"enough. It does not brake for an animal."
-msgstr ""
+"enough."
+msgstr "危险警告之后，如果你减速不够，卡车会自己刹车。"
 
 msgid "Lane-departure warning"
 msgstr "车道偏离警告"
@@ -36751,11 +36764,6 @@ msgstr "右括号"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大写{ch}"
-
-#~ msgid ""
-#~ "After a hazard warning, the truck brakes itself if you have not slowed "
-#~ "enough."
-#~ msgstr "危险警告之后，如果你减速不够，卡车会自己刹车。"
 
 #~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 #~ msgstr "{lane_name}车道  ·  车道保持 {lane_assist}"

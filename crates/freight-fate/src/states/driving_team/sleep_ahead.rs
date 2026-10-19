@@ -157,6 +157,13 @@ impl DrivingState {
         let mut mile = start;
         let mut minutes = 0.0;
         while mile < limit {
+            // Whatever the walk was for, it never carries the truck onto
+            // its last few gallons: the rest is driven live, where a fuel
+            // stop is planned or the player is woken for it. Judged before
+            // the step, so a tank already in the reserve jumps nowhere.
+            if fuel / tank < SLEEP_FUEL_RESERVE_FRACTION {
+                break;
+            }
             let step = STEP_MI.min(limit - mile);
             let (posted, _) = self.trip.speed_limit_at(mile);
             let mph = (posted * CRUISE_SHARE).max(FLOOR_MPH);
@@ -169,10 +176,7 @@ impl DrivingState {
                 || (!break_due_at_start && co_driver::break_wanted(&hos, &mode))
                 || (!shift_due_at_start && co_driver::shift_over(&hos, &mode))
                 || rest_in_min.is_some_and(|rest| minutes >= rest);
-            // Whatever the walk was for, it never carries the truck onto
-            // its last few gallons: the rest is driven live, where a fuel
-            // stop is planned or the player is woken for it.
-            if (stop_at_need && due) || fuel / tank < SLEEP_FUEL_RESERVE_FRACTION {
+            if stop_at_need && due {
                 break;
             }
         }
@@ -359,6 +363,11 @@ impl DrivingState {
             };
             // Another need coming due on the way is taken first.
             let jump = self.sleep_jump_walk(ctx, stop.at_mi, true);
+            // Short of the stop with nowhere left to jump (the fuel reserve):
+            // the live drive takes it from here.
+            if jump.miles < MIN_JUMP_MI && self.trip.position_mi + jump.miles < stop.at_mi - 0.01 {
+                break;
+            }
             self.sleep_apply_jump(ctx, jump);
             total.miles += jump.miles;
             total.minutes += jump.minutes;

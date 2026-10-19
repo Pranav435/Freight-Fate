@@ -26799,20 +26799,6 @@ msgstr ""
 "居眠りで道路から外れたのは、{times_now_text}です。疲労による運転は連邦の違反なので、今回は評判が{f}ポイント下がるうえに、免許にも違反"
 "として数えられます。{serious_violation_text}"
 
-#. placeholders: {name}
-#. one sentence of a longer line
-msgid "The lot at {name} is full."
-msgstr ""
-
-#. placeholders: {name}, {name2}
-msgid "The lot at {name} is full. {name2} drives on."
-msgstr ""
-
-#. placeholders: {name2}
-#. one sentence of a longer line
-msgid "{name2} drives on."
-msgstr ""
-
 msgid "roadside"
 msgstr "路肩"
 
@@ -26823,6 +26809,33 @@ msgstr ""
 
 #. placeholders: {name}, {outcome}
 msgid "A trooper pulled {name} over. {outcome}"
+msgstr ""
+
+msgid "lets you off"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} off"
+msgstr ""
+
+msgid "lets you go"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} go"
+msgstr ""
+
+msgid "You pulled over promptly"
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} pulled over promptly"
+msgstr ""
+
+msgid "waves the truck through"
+msgstr ""
+
+msgid "waves you through"
 msgstr ""
 
 msgid "over"
@@ -31367,8 +31380,8 @@ msgstr "自動緊急ブレーキ"
 
 msgid ""
 "After a hazard warning, the truck brakes itself if you have not slowed "
-"enough. It does not brake for an animal."
-msgstr ""
+"enough."
+msgstr "危険の警告の後、十分に減速していなければトラックが自分でブレーキをかけます。"
 
 msgid "Lane-departure warning"
 msgstr "車線逸脱警報"
@@ -37340,11 +37353,6 @@ msgstr "右かっこ"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大文字の{ch}"
-
-#~ msgid ""
-#~ "After a hazard warning, the truck brakes itself if you have not slowed "
-#~ "enough."
-#~ msgstr "危険の警告の後、十分に減速していなければトラックが自分でブレーキをかけます。"
 
 #~ msgid ", needs you back in {duration_text}"
 #~ msgstr "、{duration_text}後に交代"
