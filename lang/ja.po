@@ -36116,7 +36116,7 @@ msgid "WORK"
 msgstr "工事"
 
 msgid "AHEAD"
-msgstr "この先"
+msgstr "前方"
 
 msgid "END"
 msgstr "工事"
