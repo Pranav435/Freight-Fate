@@ -110,8 +110,8 @@ the diff and then carried out before the PR is marked ready.
   that this session could not run (no Windows desktop, no build tools),
   stays unchecked with one line saying why; never tick it on the strength
   of a unit test.
-- **Timing, loudness and feel go under "Needs the owner's ears"**, unchecked.
-  A transcript cannot answer those; the owner's listening pass does.
+- **Timing, loudness and feel go under "Manual testing"**, unchecked, for
+  a person to try by ear.
 - After driving, update the PR body with the checked plan. A new push that
   changes behavior means re-driving the items it touches.
 

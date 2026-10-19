@@ -43,11 +43,11 @@
 
 - [ ]
 
-### Needs the owner's ears
+### Manual testing
 
 <!-- Anything that turns on how speech or sound feels (timing, loudness,
-     whether a line is too much). A transcript cannot answer these. Write
-     "None" if nothing here needs a listening pass. -->
+     whether a line is too much), for a person to try by ear. Write "None"
+     if nothing needs it. -->
 
 ## Accessibility impact
 
