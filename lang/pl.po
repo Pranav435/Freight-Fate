@@ -40095,6 +40095,22 @@ msgstr "Pobieranie: {title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape anuluje, Tab odczytuje postęp."
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Środkowy pas  ·  utrzymanie pasa {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "Lewy pas  ·  utrzymanie pasa {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "Prawy pas  ·  utrzymanie pasa {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "Jeden pas  ·  utrzymanie pasa {lane_assist}"
+
 msgid "mph"
 msgstr "mph"
 
@@ -40168,14 +40184,6 @@ msgstr "RUCH Z LEWEJ"
 
 msgid "TRAFFIC RIGHT"
 msgstr "RUCH Z PRAWEJ"
-
-#. placeholders: {lane_assist}
-msgid "Middle lane  ·  lane keeping {lane_assist}"
-msgstr "Środkowy pas  ·  utrzymanie pasa {lane_assist}"
-
-#. placeholders: {lane_name}, {lane_assist}
-msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
-msgstr "Pas {lane_name}  ·  utrzymanie pasa {lane_assist}"
 
 msgid "FUEL"
 msgstr "PALIWO"
@@ -41245,6 +41253,9 @@ msgstr "prawy nawias"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "wielkie {ch}"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "Pas {lane_name}  ·  utrzymanie pasa {lane_assist}"
 
 #~ msgid "{mph} mph {severity}"
 #~ msgstr "{mph} mph {severity}"

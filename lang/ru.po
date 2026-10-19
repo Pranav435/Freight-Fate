@@ -40297,6 +40297,22 @@ msgstr "Скачиваем {title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape отменяет, Tab зачитывает ход загрузки."
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Средняя полоса  ·  удерж. полосы: {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "Левая полоса  ·  удерж. полосы: {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "Правая полоса  ·  удерж. полосы: {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "Одна полоса  ·  удерж. полосы: {lane_assist}"
+
 msgid "mph"
 msgstr "миль/ч"
 
@@ -40370,14 +40386,6 @@ msgstr "МАШИНЫ СЛЕВА"
 
 msgid "TRAFFIC RIGHT"
 msgstr "МАШИНЫ СПРАВА"
-
-#. placeholders: {lane_assist}
-msgid "Middle lane  ·  lane keeping {lane_assist}"
-msgstr "Средняя полоса  ·  удержание полосы: {lane_assist}"
-
-#. placeholders: {lane_name}, {lane_assist}
-msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
-msgstr "Полоса: {lane_name}  ·  удержание полосы: {lane_assist}"
 
 msgid "FUEL"
 msgstr "ТОПЛИВО"
@@ -41457,6 +41465,9 @@ msgstr "закрывающая скобка"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "заглавная {ch}"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "Полоса: {lane_name}  ·  удержание полосы: {lane_assist}"
 
 #~ msgid "{mph} mph {severity}"
 #~ msgstr "{mph} миль/ч {severity}"

@@ -27,6 +27,28 @@ pub fn cluster_top(w: f32, h: f32) -> f32 {
     h - 10.0 * u - 136.0 * u
 }
 
+/// The lane line's text size and the column it has, in layout units.
+pub(super) const LANE_LINE_TEXT: f32 = 10.0;
+pub(super) const LANE_LINE_WIDTH: f32 = 190.0;
+
+/// The lane line under the telltales, a whole line for each lane. The
+/// spoken lane names are shaped for sentences ("carril de la mitad"), so
+/// the drawn line never fills one in; anything but the middle, left or
+/// right lane of a multi-lane road reads as the single lane.
+pub(super) fn lane_line(text: &Text, lane_name: &str, lane_assist: &str) -> String {
+    use ff_core::sim::lane::lane_label;
+    let is = |index, count| lane_name.eq_ignore_ascii_case(lane_label(index, count));
+    if is(1, 3) {
+        text.tr_drawn(&format!("Middle lane  ·  lane keeping {lane_assist}"))
+    } else if is(1, 2) {
+        text.tr_drawn(&format!("Left lane  ·  lane keeping {lane_assist}"))
+    } else if is(0, 2) {
+        text.tr_drawn(&format!("Right lane  ·  lane keeping {lane_assist}"))
+    } else {
+        text.tr_drawn(&format!("Single lane  ·  lane keeping {lane_assist}"))
+    }
+}
+
 /// The gauge rows' text size, in layout units.
 pub(super) const GAUGE_TEXT: f32 = 9.5;
 /// Room for a gauge's value ("40% damage") after its bar, gap included.
@@ -636,21 +658,11 @@ fn cluster(p: &mut Painter, text: &mut Text, view: &DriveView, w: f32, h: f32, u
         (false, true) => lights.push((text.tr_drawn("TRAFFIC RIGHT"), AMBER)),
         _ => {}
     }
-    // The middle lane has a line of its own: the spoken lane name it would
-    // fill in is shaped for sentences ("carril de la mitad"), not a label.
-    let middle = ff_core::sim::lane::lane_label(1, 3);
-    let lane_line = if hud.lane_name.eq_ignore_ascii_case(middle) {
-        text.tr_drawn(&format!("Middle lane  ·  lane keeping {}", hud.lane_assist))
-    } else {
-        text.tr_drawn(&format!(
-            "{} lane  ·  lane keeping {}",
-            hud.lane_name, hud.lane_assist
-        ))
-    };
-    let tsize = 10.0 * u;
+    let lane_line = lane_line(text, &hud.lane_name, &hud.lane_assist);
+    let tsize = LANE_LINE_TEXT * u;
     let mut ty = y + 46.0 * u;
     let mut tx2 = col;
-    let col_w = 190.0 * u;
+    let col_w = LANE_LINE_WIDTH * u;
     for (label, c) in lights.iter().take(6) {
         let lw = text.measure(label, tsize, Weight::Bold) + 12.0 * u;
         if tx2 + lw > col + col_w {

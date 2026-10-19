@@ -6,7 +6,8 @@ use std::sync::Arc;
 use ff_core::l10n::{Catalog, Translator};
 
 use super::hud::{
-    gauge_label_column, GAUGE_LABEL_GAP, GAUGE_TEXT, GAUGE_VALUE_COLUMN, GAUGE_VALUE_GAP,
+    gauge_label_column, lane_line, GAUGE_LABEL_GAP, GAUGE_TEXT, GAUGE_VALUE_COLUMN,
+    GAUGE_VALUE_GAP, LANE_LINE_TEXT, LANE_LINE_WIDTH,
 };
 use super::signs::{service_rows, SERVICE_LINE_FT, SERVICE_TEXT_FT};
 use super::text::{Text, Weight};
@@ -146,6 +147,32 @@ fn the_speed_limit_and_road_work_words_fit_their_signs_in_any_language() {
             6.5,
         ) {
             problems.push(format!("{code}: end road work {bad}"));
+        }
+    }
+    assert!(problems.is_empty(), "{problems:#?}");
+}
+
+#[test]
+fn the_lane_line_fits_its_column_for_every_lane_and_mode_in_any_language() {
+    use ff_core::settings::LANE_KEEPING_MODES;
+    use ff_core::sim::lane::lane_label;
+    let lanes = [(1, 3), (1, 2), (0, 2), (0, 1)];
+    let mut problems = Vec::new();
+    for (code, mut text) in every_language() {
+        for (index, count) in lanes {
+            // As the drive captures it: the lane's name, capitalized.
+            let name = lane_label(index, count);
+            let name = name[..1].to_uppercase() + &name[1..];
+            for mode in LANE_KEEPING_MODES {
+                let line = lane_line(&text, &name, mode);
+                let w = text.measure(&line, LANE_LINE_TEXT, Weight::Regular);
+                if w > LANE_LINE_WIDTH {
+                    problems.push(format!("{code}: {line} ({w:.1})"));
+                }
+                if code != "en" && line.contains(" lane  ") {
+                    problems.push(format!("{code}: untranslated {line}"));
+                }
+            }
         }
     }
     assert!(problems.is_empty(), "{problems:#?}");

@@ -40188,6 +40188,22 @@ msgstr "Descargando {title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape cancela, Tab lee el progreso."
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Carril central  ·  mant. de carril {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "Carril izquierdo  ·  mant. de carril {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "Carril derecho  ·  mant. de carril {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "Carril único  ·  mant. de carril {lane_assist}"
+
 msgid "mph"
 msgstr "mph"
 
@@ -40261,14 +40277,6 @@ msgstr "TRÁFICO A LA IZQUIERDA"
 
 msgid "TRAFFIC RIGHT"
 msgstr "TRÁFICO A LA DERECHA"
-
-#. placeholders: {lane_assist}
-msgid "Middle lane  ·  lane keeping {lane_assist}"
-msgstr "Carril central  ·  mantenimiento de carril {lane_assist}"
-
-#. placeholders: {lane_name}, {lane_assist}
-msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
-msgstr "Carril {lane_name}  ·  mantenimiento de carril {lane_assist}"
 
 msgid "FUEL"
 msgstr "COMB."
@@ -41338,6 +41346,9 @@ msgstr "cierra paréntesis"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "mayúscula {ch}"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "Carril {lane_name}  ·  mantenimiento de carril {lane_assist}"
 
 #~ msgid "{mph} mph {severity}"
 #~ msgstr "{mph} mph {severity}"

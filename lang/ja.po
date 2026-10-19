@@ -35957,6 +35957,22 @@ msgstr "{title}をダウンロード中"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape で取り消し、Tab で進み具合を読み上げます。"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "中央車線  ·  レーンキープ {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "左車線  ·  レーンキープ {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "右車線  ·  レーンキープ {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "単一車線  ·  レーンキープ {lane_assist}"
+
 msgid "mph"
 msgstr "mph"
 
@@ -36030,14 +36046,6 @@ msgstr "左に車両"
 
 msgid "TRAFFIC RIGHT"
 msgstr "右に車両"
-
-#. placeholders: {lane_assist}
-msgid "Middle lane  ·  lane keeping {lane_assist}"
-msgstr "中央車線  ·  レーンキープ {lane_assist}"
-
-#. placeholders: {lane_name}, {lane_assist}
-msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
-msgstr "{lane_name}車線  ·  レーンキープ {lane_assist}"
 
 msgid "FUEL"
 msgstr "燃料"
@@ -37058,6 +37066,9 @@ msgstr "右かっこ"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大文字の{ch}"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "{lane_name}車線  ·  レーンキープ {lane_assist}"
 
 #~ msgid "{mph} mph {severity}"
 #~ msgstr "{mph} mph {severity}"

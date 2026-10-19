@@ -126,12 +126,26 @@ fn spanish_speaks_the_middle_lane_as_before_and_draws_it_central() {
     // The display's lane line has its own entry for the middle lane.
     let text = text_in(&es);
     assert_eq!(
-        text.tr_drawn("Middle lane  ·  lane keeping On"),
-        "Carril central  ·  mantenimiento de carril Activado"
+        text.tr_drawn("Middle lane  ·  lane keeping full"),
+        "Carril central  ·  mant. de carril completo"
     );
-    assert!(text
-        .tr_drawn("Left lane  ·  lane keeping On")
-        .starts_with("Carril "));
+    // Every lane has a whole line of its own, never the spoken lane name.
+    for (english, spanish) in [
+        (
+            "Left lane  ·  lane keeping off",
+            "Carril izquierdo  ·  mant. de carril desactivado",
+        ),
+        (
+            "Right lane  ·  lane keeping partial",
+            "Carril derecho  ·  mant. de carril parcial",
+        ),
+        (
+            "Single lane  ·  lane keeping full",
+            "Carril único  ·  mant. de carril completo",
+        ),
+    ] {
+        assert_eq!(text.tr_drawn(english), spanish);
+    }
 }
 
 #[test]

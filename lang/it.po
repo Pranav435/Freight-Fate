@@ -40236,6 +40236,22 @@ msgstr "Download di {title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape annulla, Tab legge l'avanzamento."
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia centrale  ·  mantenimento di corsia {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia sinistra  ·  mantenimento di corsia {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia destra  ·  mantenimento di corsia {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "Corsia unica  ·  mantenimento di corsia {lane_assist}"
+
 msgid "mph"
 msgstr "mph"
 
@@ -40309,14 +40325,6 @@ msgstr "TRAFFICO A SINISTRA"
 
 msgid "TRAFFIC RIGHT"
 msgstr "TRAFFICO A DESTRA"
-
-#. placeholders: {lane_assist}
-msgid "Middle lane  ·  lane keeping {lane_assist}"
-msgstr "Corsia centrale  ·  mantenimento di corsia {lane_assist}"
-
-#. placeholders: {lane_name}, {lane_assist}
-msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
-msgstr "Corsia {lane_name}  ·  mantenimento di corsia {lane_assist}"
 
 msgid "FUEL"
 msgstr "CARB."
@@ -41393,6 +41401,9 @@ msgstr "parentesi chiusa"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "{ch} maiuscola"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "Corsia {lane_name}  ·  mantenimento di corsia {lane_assist}"
 
 #~ msgid "{mph} mph {severity}"
 #~ msgstr "{mph} mph {severity}"

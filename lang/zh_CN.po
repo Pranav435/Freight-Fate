@@ -35381,6 +35381,22 @@ msgstr "正在下载{title}"
 msgid "Escape cancels, Tab reads progress."
 msgstr "Escape取消，Tab读出进度。"
 
+#. placeholders: {lane_assist}
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr "中间车道  ·  车道保持 {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr "左车道  ·  车道保持 {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr "右车道  ·  车道保持 {lane_assist}"
+
+#. placeholders: {lane_assist}
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr "单车道  ·  车道保持 {lane_assist}"
+
 msgid "mph"
 msgstr "英里/时"
 
@@ -35454,14 +35470,6 @@ msgstr "左侧有车"
 
 msgid "TRAFFIC RIGHT"
 msgstr "右侧有车"
-
-#. placeholders: {lane_assist}
-msgid "Middle lane  ·  lane keeping {lane_assist}"
-msgstr "中间车道  ·  车道保持 {lane_assist}"
-
-#. placeholders: {lane_name}, {lane_assist}
-msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
-msgstr "{lane_name}车道  ·  车道保持 {lane_assist}"
 
 msgid "FUEL"
 msgstr "燃油"
@@ -36469,6 +36477,9 @@ msgstr "右括号"
 #. placeholders: {ch}
 msgid "cap {ch}"
 msgstr "大写{ch}"
+
+#~ msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
+#~ msgstr "{lane_name}车道  ·  车道保持 {lane_assist}"
 
 #~ msgid "{mph} mph {severity}"
 #~ msgstr "{mph} 英里/时 {severity}"

@@ -43462,6 +43462,26 @@ msgstr ""
 msgid "Escape cancels, Tab reads progress."
 msgstr ""
 
+#. placeholders: {lane_assist}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "Middle lane  ·  lane keeping {lane_assist}"
+msgstr ""
+
+#. placeholders: {lane_assist}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "Left lane  ·  lane keeping {lane_assist}"
+msgstr ""
+
+#. placeholders: {lane_assist}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "Right lane  ·  lane keeping {lane_assist}"
+msgstr ""
+
+#. placeholders: {lane_assist}
+#: crates/freight-fate/src/visuals/hud.rs
+msgid "Single lane  ·  lane keeping {lane_assist}"
+msgstr ""
+
 #: crates/freight-fate/src/visuals/hud.rs
 msgid "mph"
 msgstr ""
@@ -43556,16 +43576,6 @@ msgstr ""
 
 #: crates/freight-fate/src/visuals/hud.rs
 msgid "TRAFFIC RIGHT"
-msgstr ""
-
-#. placeholders: {lane_assist}
-#: crates/freight-fate/src/visuals/hud.rs
-msgid "Middle lane  ·  lane keeping {lane_assist}"
-msgstr ""
-
-#. placeholders: {lane_name}, {lane_assist}
-#: crates/freight-fate/src/visuals/hud.rs
-msgid "{lane_name} lane  ·  lane keeping {lane_assist}"
 msgstr ""
 
 #: crates/freight-fate/src/visuals/hud.rs
