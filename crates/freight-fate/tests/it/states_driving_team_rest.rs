@@ -252,6 +252,36 @@ fn woken_early_the_player_hears_how_much_rest_they_had() {
 }
 
 #[test]
+fn woken_from_a_slept_shift_the_player_hears_the_rest_still_to_go() {
+    // "You slept" already gives the time, so the rest line says what is
+    // left of it rather than repeating the same number.
+    let mut harness = quiet_drive("Team Rest Woken");
+    hand_over_after(&mut harness, 300.0, TeamMode::SleepThrough);
+    harness.with_drive(|d, _| {
+        d.truck_mut().start_engine();
+        d.truck_mut().set_air_ready(false);
+        d.truck_mut().parking_brake = false;
+        d.truck_mut().velocity_mps = 60.0 / 2.236_936;
+        d.cruise_mph = Some(60.0);
+    });
+    let hos = &mut harness.app.ctx.profile.as_mut().expect("a career").hos;
+    hos.drive(7.0 * 60.0);
+    hos.take_break(30.0);
+    hos.drive(3.0 * 60.0);
+    let jump = harness.with_drive(|d, ctx| d.sleep_ahead(ctx));
+    harness.app.ctx.run_deferred();
+    assert!(jump.is_some(), "the shift passes as time");
+    let woken = run_until(&mut harness, 60 * 60, |h| {
+        h.read_drive(|d| d.team.as_ref().is_some_and(|team| team.wheel.is_none()))
+    });
+    assert!(woken, "{}", tail(&harness));
+    let said = harness.transcript().join("\n");
+    assert!(said.contains("You slept"), "{said}");
+    assert!(said.contains("of your 10-hour rest still to go."), "{said}");
+    assert!(!said.contains("You had"), "{said}");
+}
+
+#[test]
 fn the_first_offer_of_a_co_driver_explains_it_once() {
     let mut harness = PlaytestHarness::new();
     harness.start_delivery(StartDelivery::named("Team Intro"));

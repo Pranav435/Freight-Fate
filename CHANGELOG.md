@@ -195,6 +195,7 @@
 
 - **A co-driver no longer pulls into a second stop after fuelling at the first.** They keep a stop you planned when it suits them.
 - **A co-driver plans their break earlier.** A full lot no longer leaves them out of time and handing you the wheel.
+- **The delivery summary lists the co-driver's share of the pay.** It is read just before your net pay.
 - **Dispatch says a roadwork closure once when it covers several stretches.** It names how many places instead of repeating the same closure.
 - **The drive to a pickup no longer draws citations for the trailer still waiting in the shipper's yard.**
 - **Officers no longer cite a fault already written up on the same drive.** A trailer lamp, worn tires, body damage or a chain-law ticket counts once per drive.

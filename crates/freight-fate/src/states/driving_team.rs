@@ -398,7 +398,15 @@ fn summon_line(name: &str, reason: &str) -> String {
 }
 
 /// Woken before the rest was in: how much of it the player had.
-fn rest_short_line(owed: bool, player: &HosClock, ctx: &GameContext) -> Option<String> {
+///
+/// After a slept-through shift whose sleep was the whole of the rest so far,
+/// "You slept" already gave the time, so the line says what is left instead.
+fn rest_short_line(
+    owed: bool,
+    player: &HosClock,
+    slept_min: Option<f64>,
+    ctx: &GameContext,
+) -> Option<String> {
     let mode = &ctx.settings.hos_mode;
     if !owed || hos::is_non_enforced(mode) || hos::limits(mode).is_none() {
         return None;
@@ -406,9 +414,16 @@ fn rest_short_line(owed: bool, player: &HosClock, ctx: &GameContext) -> Option<S
     if co_driver::fully_rested(player) {
         return None;
     }
+    let rested = co_driver::rested_min(player);
+    if slept_min.is_some_and(|slept| (slept - rested).abs() < 1.0) {
+        return Some(format!(
+            "{} of your 10-hour rest still to go.",
+            hos::duration_text(co_driver::rest_left_min(player) / 60.0)
+        ));
+    }
     Some(format!(
         "You had {} of your 10-hour rest.",
-        hos::duration_text(co_driver::rested_min(player) / 60.0)
+        hos::duration_text(rested / 60.0)
     ))
 }
 
@@ -453,7 +468,8 @@ impl DrivingState {
             lines.push(wake_summary(name, &log, ctx));
         }
         lines.push(summon_line(name, reason));
-        if let Some(short) = rest_short_line(owed_rest, self.player_hos_now(ctx), ctx) {
+        let slept_min = (mode == Some(TeamMode::SleepThrough)).then_some(log.game_minutes);
+        if let Some(short) = rest_short_line(owed_rest, self.player_hos_now(ctx), slept_min, ctx) {
             lines.push(short);
         }
         if let Some(team) = self.team.as_mut() {

@@ -35147,6 +35147,11 @@ msgstr ""
 
 #. placeholders: {duration_text}
 #: crates/freight-fate/src/states/driving_team.rs
+msgid "{duration_text} of your 10-hour rest still to go."
+msgstr ""
+
+#. placeholders: {duration_text}
+#: crates/freight-fate/src/states/driving_team.rs
 msgid "You had {duration_text} of your 10-hour rest."
 msgstr ""
 

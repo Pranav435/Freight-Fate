@@ -28648,6 +28648,10 @@ msgid "{name} needs you to decide this one."
 msgstr "{name}が、これは決めてほしいそうです。"
 
 #. placeholders: {duration_text}
+msgid "{duration_text} of your 10-hour rest still to go."
+msgstr ""
+
+#. placeholders: {duration_text}
 msgid "You had {duration_text} of your 10-hour rest."
 msgstr ""
 
