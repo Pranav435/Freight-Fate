@@ -154,6 +154,23 @@ bookmarks usable.
       explanations, restated facts and coaching prose; explanations a
       player may still need moved to the screen's F1 help. Cruise eases and
       builds for hills in silence. Spanish carries the new lines.
+- [x] Live weather unavailable while another NWS app worked (owner,
+      2026-10-19): the feeds tier's total deadline rose from 8 to 20
+      seconds, NWS fetches run at most three at a time across the game
+      (route planning used to ask for every city at once), `/points` asks
+      for the address NWS serves without a redirect, and a failure logs the
+      step, the request and the server's reason once per stretch instead of
+      a bare sentence every minute.
+      A tester's log the same day showed an NWS observation outage: every
+      station on the route stuck on one reading for 40 minutes, ages
+      climbing 123 to 162 minutes, then all fresh at once. The game had
+      swapped clear skies for simulated storms; observations past the
+      two-hour cutoff but under six hours now serve as last-known live
+      weather (`OUTAGE_HOLD_MAX_AGE_S`).
+- [ ] (Found along the way) Each drive and each live-weather setting
+      change builds a new weather provider with an empty station cache,
+      so every drive repeats the NWS discovery calls; the drive could share
+      the session provider. Same report.
 - [ ] (Found along the way) The advise-only follow-up to a turn the route
       already named ("Advise 11 miles per hour.") is queued on the droppable
       default, so busy street speech can drop it; a player heard the advise

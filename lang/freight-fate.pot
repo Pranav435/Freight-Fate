@@ -13747,8 +13747,18 @@ msgstr ""
 msgid "observation has no properties"
 msgstr ""
 
+#. placeholders: {message}
+#: crates/ff-core/src/sim/real_weather.rs
+msgid "points lookup: {message}"
+msgstr ""
+
 #: crates/ff-core/src/sim/real_weather.rs
 msgid "point has no observationStations"
+msgstr ""
+
+#. placeholders: {message}
+#: crates/ff-core/src/sim/real_weather.rs
+msgid "station list: {message}"
 msgstr ""
 
 #. placeholders: {lat}, {lon}
@@ -13758,6 +13768,29 @@ msgstr ""
 
 #: crates/ff-core/src/sim/real_weather.rs
 msgid "no station answered"
+msgstr ""
+
+#. placeholders: {join}
+#: crates/ff-core/src/sim/real_weather.rs
+msgid "every station failed: {join}"
+msgstr ""
+
+#: crates/ff-core/src/sim/real_weather/tests_diagnostics.rs
+msgid "Clear"
+msgstr ""
+
+#: crates/ff-core/src/sim/real_weather/tests_diagnostics.rs
+msgid ""
+"The server answered with error 403. (GET api.weather.gov/points/1,2: "
+"Forbidden)"
+msgstr ""
+
+#: crates/ff-core/src/sim/real_weather/tests_diagnostics.rs
+msgid "properties"
+msgstr ""
+
+#: crates/ff-core/src/sim/real_weather/tests_diagnostics.rs
+msgid "no POST on the NWS API"
 msgstr ""
 
 #: crates/ff-core/src/sim/real_weather_alerts.rs

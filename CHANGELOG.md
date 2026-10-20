@@ -199,6 +199,8 @@
 
 ### Fixed
 
+- **Live weather no longer gives up as quickly.** It waits longer for the weather service and asks about fewer places at a time.
+- **During a weather service outage, live weather keeps the last real reading for up to six hours.** You hear it as last-known live weather, not simulated storms.
 - **A co-driver no longer pulls into a second stop after fuelling at the first.** They keep a stop you planned when it suits them.
 - **You no longer hear the co-driver's menu sounds.**
 - **A co-driver no longer hands you the wheel for damage from before their shift.**

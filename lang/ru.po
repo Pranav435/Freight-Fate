@@ -12414,8 +12414,16 @@ msgstr "не удалось преобразовать {raw} в число"
 msgid "observation has no properties"
 msgstr "у наблюдения нет свойств"
 
+#. placeholders: {message}
+msgid "points lookup: {message}"
+msgstr ""
+
 msgid "point has no observationStations"
 msgstr "у точки нет observationStations"
+
+#. placeholders: {message}
+msgid "station list: {message}"
+msgstr ""
 
 #. placeholders: {lat}, {lon}
 msgid "no observation stations near {lat},{lon}"
@@ -12423,6 +12431,24 @@ msgstr "нет метеостанций рядом с {lat},{lon}"
 
 msgid "no station answered"
 msgstr "ни одна станция не ответила"
+
+#. placeholders: {join}
+msgid "every station failed: {join}"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid ""
+"The server answered with error 403. (GET api.weather.gov/points/1,2: "
+"Forbidden)"
+msgstr ""
+
+msgid "properties"
+msgstr ""
+
+msgid "no POST on the NWS API"
+msgstr ""
 
 msgid "(?i)gusts?\\s+(?:up\\s+to|to|of|as high as)\\s+(\\d{2,3})\\s*mph"
 msgstr "(?i)gusts?\\\\s+(?:up\\\\s+to|to|of|as high as)\\\\s+(\\\\d{2,3})\\\\s*mph"
