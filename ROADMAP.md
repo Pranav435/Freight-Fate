@@ -702,6 +702,11 @@ Everything found before 2026-09-25 moved to
 - [ ] How far past a lane closure the truck stays out is chosen by the
       closure's name; it belongs on the hazard row as a length, so a new
       long hazard (a spill, a work zone) gets it too (2026-10-19).
+- [ ] Doubles drive like one trailer: the set weighs no more empty than a
+      53-foot van, hooking skips the converter dolly and the second pup,
+      and nothing about the rear trailer's sway or the no-backing rule is
+      modelled. Turnpike doubles also share the parcel pups' trailer
+      program (2026-10-20).
 - [ ] The agent server's `start_at` resets the clock a `scenario` set
       (asked for 10 PM, staged at 8 AM), and nothing stages a road hazard,
       so a deer or debris call can only be waited for (2026-10-19).

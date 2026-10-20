@@ -10730,6 +10730,10 @@ msgid "turnpike doubles freight"
 msgstr ""
 
 #: crates/ff-core/src/models/jobs/catalog.rs
+msgid "two 48-foot trailers"
+msgstr ""
+
+#: crates/ff-core/src/models/jobs/catalog.rs
 msgid "standard CDL"
 msgstr ""
 

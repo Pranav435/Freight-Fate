@@ -10050,6 +10050,9 @@ msgstr "châssis porte-conteneurs intermodaux"
 msgid "turnpike doubles freight"
 msgstr "fret en doubles longs sur autoroutes à péage"
 
+msgid "two 48-foot trailers"
+msgstr "deux remorques de 48 pieds"
+
 msgid "standard CDL"
 msgstr "CDL standard"
 

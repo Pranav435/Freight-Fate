@@ -9863,6 +9863,9 @@ msgstr "chassi de contêiner intermodal"
 msgid "turnpike doubles freight"
 msgstr "bitrem longo de turnpike"
 
+msgid "two 48-foot trailers"
+msgstr "dois reboques de 48 pés"
+
 msgid "standard CDL"
 msgstr "CDL padrão"
 

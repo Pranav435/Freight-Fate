@@ -8585,6 +8585,9 @@ msgstr "インターモーダルのコンテナシャーシ"
 msgid "turnpike doubles freight"
 msgstr "ターンパイクのダブルス貨物"
 
+msgid "two 48-foot trailers"
+msgstr "48フィートの2連トレーラー"
+
 msgid "standard CDL"
 msgstr "標準のCDL"
 

@@ -9977,6 +9977,9 @@ msgstr "Container-Chassis für den kombinierten Verkehr"
 msgid "turnpike doubles freight"
 msgstr "Doppelauflieger-Fracht auf Turnpikes"
 
+msgid "two 48-foot trailers"
+msgstr "zwei 48-Fuß-Auflieger"
+
 msgid "standard CDL"
 msgstr "Standard-CDL"
 

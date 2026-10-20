@@ -9917,6 +9917,9 @@ msgstr "chasis para contenedores intermodales"
 msgid "turnpike doubles freight"
 msgstr "carga de dobles de autopista de peaje"
 
+msgid "two 48-foot trailers"
+msgstr "dos remolques de 48 pies"
+
 msgid "standard CDL"
 msgstr "CDL estándar"
 

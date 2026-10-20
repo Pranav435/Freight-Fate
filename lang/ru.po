@@ -9754,6 +9754,9 @@ msgstr "контейнерные шасси"
 msgid "turnpike doubles freight"
 msgstr "грузы на сдвоенных прицепах для платных магистралей"
 
+msgid "two 48-foot trailers"
+msgstr "два 48-футовых прицепа"
+
 msgid "standard CDL"
 msgstr "стандартные права CDL"
 

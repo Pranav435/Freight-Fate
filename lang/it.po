@@ -9949,6 +9949,9 @@ msgstr "telai per container intermodali"
 msgid "turnpike doubles freight"
 msgstr "carichi su doppio rimorchio lungo per turnpike"
 
+msgid "two 48-foot trailers"
+msgstr "due rimorchi da 48 piedi"
+
 msgid "standard CDL"
 msgstr "CDL standard"
 

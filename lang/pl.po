@@ -9775,6 +9775,9 @@ msgstr "podwozia do kontenerów intermodalnych"
 msgid "turnpike doubles freight"
 msgstr "podwójne naczepy na autostradach płatnych"
 
+msgid "two 48-foot trailers"
+msgstr "dwie naczepy 48-stopowe"
+
 msgid "standard CDL"
 msgstr "standardowe CDL"
 

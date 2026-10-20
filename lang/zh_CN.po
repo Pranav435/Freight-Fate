@@ -8551,6 +8551,9 @@ msgstr "多式联运集装箱底盘"
 msgid "turnpike doubles freight"
 msgstr "收费公路双挂车货物"
 
+msgid "two 48-foot trailers"
+msgstr "两节48英尺挂车"
+
 msgid "standard CDL"
 msgstr "标准CDL"
 
