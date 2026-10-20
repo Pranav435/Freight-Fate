@@ -11041,8 +11041,16 @@ msgstr "{raw} を浮動小数点数に変換できませんでした"
 msgid "observation has no properties"
 msgstr "観測データにプロパティがありません"
 
+#. placeholders: {message}
+msgid "points lookup: {message}"
+msgstr ""
+
 msgid "point has no observationStations"
 msgstr "地点に observationStations がありません"
+
+#. placeholders: {message}
+msgid "station list: {message}"
+msgstr ""
 
 #. placeholders: {lat}, {lon}
 msgid "no observation stations near {lat},{lon}"
@@ -11050,6 +11058,24 @@ msgstr "{lat},{lon} の近くに観測所がありません"
 
 msgid "no station answered"
 msgstr "どの観測所も応答しませんでした"
+
+#. placeholders: {join}
+msgid "every station failed: {join}"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid ""
+"The server answered with error 403. (GET api.weather.gov/points/1,2: "
+"Forbidden)"
+msgstr ""
+
+msgid "properties"
+msgstr ""
+
+msgid "no POST on the NWS API"
+msgstr ""
 
 msgid "(?i)gusts?\\s+(?:up\\s+to|to|of|as high as)\\s+(\\d{2,3})\\s*mph"
 msgstr "(?i)gusts?\\s+(?:up\\s+to|to|of|as high as)\\s+(\\d{2,3})\\s*mph"

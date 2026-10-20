@@ -10952,8 +10952,16 @@ msgstr "无法把{raw}转换为浮点数"
 msgid "observation has no properties"
 msgstr "观测数据没有properties"
 
+#. placeholders: {message}
+msgid "points lookup: {message}"
+msgstr ""
+
 msgid "point has no observationStations"
 msgstr "该点没有observationStations"
+
+#. placeholders: {message}
+msgid "station list: {message}"
+msgstr ""
 
 #. placeholders: {lat}, {lon}
 msgid "no observation stations near {lat},{lon}"
@@ -10961,6 +10969,24 @@ msgstr "{lat},{lon}附近没有观测站"
 
 msgid "no station answered"
 msgstr "没有观测站回应"
+
+#. placeholders: {join}
+msgid "every station failed: {join}"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid ""
+"The server answered with error 403. (GET api.weather.gov/points/1,2: "
+"Forbidden)"
+msgstr ""
+
+msgid "properties"
+msgstr ""
+
+msgid "no POST on the NWS API"
+msgstr ""
 
 msgid "(?i)gusts?\\s+(?:up\\s+to|to|of|as high as)\\s+(\\d{2,3})\\s*mph"
 msgstr "(?i)gusts?\\s+(?:up\\s+to|to|of|as high as)\\s+(\\d{2,3})\\s*mph"
