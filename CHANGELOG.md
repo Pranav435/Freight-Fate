@@ -195,6 +195,7 @@
 ### Fixed
 
 - **Live weather no longer gives up as quickly.** It waits longer for the weather service and asks about fewer places at a time.
+- **During a weather service outage, live weather keeps the last real reading for up to six hours.** You hear it as last-known live weather, not simulated storms.
 - **A co-driver no longer pulls into a second stop after fuelling at the first.** They keep a stop you planned when it suits them.
 - **A co-driver plans their break earlier.** A full lot no longer leaves them out of time and handing you the wheel.
 - **The delivery summary lists the co-driver's share of the pay.** It is read just before your net pay.

@@ -52,6 +52,17 @@ pub const STALE_AFTER_S: f64 = 30.0 * 60.0;
 /// an observation well past the hourly cycle -- a dead or parked station --
 /// is unusable.
 pub const OBSERVATION_MAX_AGE_S: f64 = 2.0 * 60.0 * 60.0;
+/// An observation older than [`OBSERVATION_MAX_AGE_S`] but within this is
+/// served as last-known live weather rather than dropped for simulated
+/// weather. On 2026-10-19 every station along a tester's route in South
+/// Carolina, Georgia and Alabama sat on the same reading for 40 minutes, its
+/// age climbing from 123 to 162 minutes, then all of them updated at once:
+/// an NWS observation outage. The game swapped clear skies for simulated
+/// thunderstorms and fog while another NWS app kept showing the old
+/// reading. A real sky a few hours old is closer to the truth than an
+/// invented one, and the player hears it as last-known, with its age on the
+/// Weather app. Past this, a reading is too old to stand for now.
+pub const OUTAGE_HOLD_MAX_AGE_S: f64 = 6.0 * 60.0 * 60.0;
 /// wait before retrying a failed city
 pub const RETRY_AFTER_S: f64 = 60.0;
 pub const STRONG_WIND_KMH: f64 = 38.0;
@@ -528,6 +539,10 @@ struct Inner {
 pub enum WorkerOutcome {
     /// A fresh observation landed in the cache.
     Cached,
+    /// NWS answered with an observation past [`OBSERVATION_MAX_AGE_S`] but
+    /// within [`OUTAGE_HOLD_MAX_AGE_S`]; it serves as last-known live
+    /// weather.
+    Held,
     /// NWS answered with an observation older than the cutoff; this run
     /// wrote the once-per-stretch note.
     StaleLogged,
@@ -624,7 +639,7 @@ impl RealWeatherProvider {
 
     fn usable(ctx: &WorkerContext, entry: &CachedObservation) -> bool {
         (ctx.clock)() - entry.fetched_at <= STALE_AFTER_S
-            && (ctx.wall_clock)() - entry.observed_at <= OBSERVATION_MAX_AGE_S
+            && (ctx.wall_clock)() - entry.observed_at <= OUTAGE_HOLD_MAX_AGE_S
     }
 
     /// The aliased station observation for a request key. Caller holds
@@ -655,15 +670,19 @@ impl RealWeatherProvider {
         entry.temperature_c
     }
 
-    /// Whether usable cached data is due for a network refresh.
+    /// Whether usable cached data reads as last-known: due for a network
+    /// refresh, or an observation held through an outage.
     ///
-    /// Refresh cadence follows when the response was fetched. The station's
-    /// observation timestamp is reported separately and does not make a
-    /// freshly fetched, still-usable response last-known.
+    /// Refresh cadence follows when the response was fetched. An ordinary
+    /// observation's age (up to [`OBSERVATION_MAX_AGE_S`]) does not make a
+    /// freshly fetched, still-usable response last-known; one past it,
+    /// served under [`OUTAGE_HOLD_MAX_AGE_S`], always does.
     pub fn stale(&self, city: &str) -> bool {
         let inner = lock_unpoisoned(&self.ctx.inner);
         Self::entry_for(&inner, city).is_some_and(|entry| {
-            Self::usable(&self.ctx, entry) && (self.ctx.clock)() - entry.fetched_at >= CACHE_TTL_S
+            Self::usable(&self.ctx, entry)
+                && ((self.ctx.clock)() - entry.fetched_at >= CACHE_TTL_S
+                    || (self.ctx.wall_clock)() - entry.observed_at > OBSERVATION_MAX_AGE_S)
         })
     }
 
@@ -799,9 +818,9 @@ fn run_worker(ctx: &WorkerContext, city: &str, lat: f64, lon: f64) -> WorkerOutc
         Ok(fetched) => {
             let observed_at = fetched.observed_at.unwrap_or_else(|| (ctx.wall_clock)());
             let age_s = (ctx.wall_clock)() - observed_at;
-            if age_s > OBSERVATION_MAX_AGE_S {
+            if age_s > OUTAGE_HOLD_MAX_AGE_S {
                 // NWS answered fine, but the newest observation the station
-                // has on offer is older than OBSERVATION_MAX_AGE_S. This is
+                // has on offer is older than OUTAGE_HOLD_MAX_AGE_S. This is
                 // an expected, routine condition for a dead or parked
                 // station -- not a fetch failure -- so it is handled in its
                 // own clause, ahead of the generic error handler, and never
@@ -823,7 +842,7 @@ fn run_worker(ctx: &WorkerContext, city: &str, lat: f64, lon: f64) -> WorkerOutc
                     WorkerOutcome::StaleSilent
                 } else {
                     let age_min = age_s / 60.0;
-                    let limit_min = OBSERVATION_MAX_AGE_S / 60.0;
+                    let limit_min = OUTAGE_HOLD_MAX_AGE_S / 60.0;
                     log::info!(
                         "Real weather for {city}: newest station observation is {age_min:.0} min \
                          old (limit {limit_min:.0} min) -- holding previous conditions until a \
@@ -832,22 +851,48 @@ fn run_worker(ctx: &WorkerContext, city: &str, lat: f64, lon: f64) -> WorkerOutc
                     WorkerOutcome::StaleLogged
                 }
             } else {
+                // Past OBSERVATION_MAX_AGE_S (and within the outage hold):
+                // served as last-known, noted once per stretch.
+                let held = age_s > OBSERVATION_MAX_AGE_S;
                 let kind = map_condition(&fetched.text, fetched.wind_kmh, fetched.visibility_mi);
-                {
+                let already_noted = {
                     let mut inner = lock_unpoisoned(&ctx.inner);
-                    inner.obs_by_station.insert(
-                        station.clone(),
-                        CachedObservation {
-                            kind,
-                            temperature_c: fetched.temperature_c,
-                            fetched_at: (ctx.clock)(),
-                            observed_at,
-                        },
-                    );
+                    // A held reading never replaces a newer one already
+                    // cached for the same place.
+                    let newer_cached = inner.obs_by_station.get(&station).is_some_and(|entry| {
+                        entry.observed_at >= observed_at && RealWeatherProvider::usable(ctx, entry)
+                    });
+                    if !(held && newer_cached) {
+                        inner.obs_by_station.insert(
+                            station.clone(),
+                            CachedObservation {
+                                kind,
+                                temperature_c: fetched.temperature_c,
+                                fetched_at: (ctx.clock)(),
+                                observed_at,
+                            },
+                        );
+                    }
                     inner.station_for_key.insert(city.to_string(), station);
                     inner.failed_at.remove(city);
-                    inner.stale_logged.remove(city);
                     inner.error_logged.remove(city);
+                    if held {
+                        !inner.stale_logged.insert(city.to_string())
+                    } else {
+                        inner.stale_logged.remove(city);
+                        false
+                    }
+                };
+                if held {
+                    if !already_noted {
+                        let age_min = age_s / 60.0;
+                        log::info!(
+                            "Real weather for {city}: newest station observation is {age_min:.0} \
+                             min old -- serving it as last-known live weather (NWS {:?})",
+                            fetched.text
+                        );
+                    }
+                    return finish(ctx, city, WorkerOutcome::Held);
                 }
                 log::info!(
                     "Real weather for {city}: {} (NWS {:?}, wind {:.0} km/h, temp {}, vis {})",
@@ -882,6 +927,11 @@ fn run_worker(ctx: &WorkerContext, city: &str, lat: f64, lon: f64) -> WorkerOutc
             }
         }
     };
+    finish(ctx, city, outcome)
+}
+
+/// End a worker run: the key is no longer in flight.
+fn finish(ctx: &WorkerContext, city: &str, outcome: WorkerOutcome) -> WorkerOutcome {
     lock_unpoisoned(&ctx.inner).inflight.remove(city);
     outcome
 }

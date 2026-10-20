@@ -163,3 +163,64 @@ fn route_planning_bursts_never_run_more_than_the_cap_of_fetches_at_once() {
     assert!(peak <= MAX_CONCURRENT_FETCHES, "{peak} fetches ran at once");
     assert!((0..12).all(|i| p.get(&format!("city:{i}")).is_some()));
 }
+
+#[test]
+fn an_nws_outage_serves_the_stuck_reading_as_last_known_not_simulated() {
+    use crate::sim::weather::WeatherSystem;
+
+    // Brandon's drive, 2026-10-19: every station on the route offered the
+    // same reading, 123 minutes old and climbing. A cold session must hear
+    // that real sky as last-known, not invented thunderstorms.
+    let now = 2_000_000.0;
+    let p = RealWeatherProvider::new(Arc::new(move |_, _| {
+        Ok(Observation::new("Clear", 0.0, Some(21.0), Some(10.0)).observed_at(now - 123.0 * 60.0))
+    }))
+    .with_threaded(false)
+    .with_clock(fixed(0.0))
+    .with_wall_clock(fixed(now));
+    assert_eq!(
+        p.worker("city:sumter_sc_us", 33.92, -80.34),
+        WorkerOutcome::Held
+    );
+    assert_eq!(p.get("city:sumter_sc_us"), Some(WeatherKind::Clear));
+    assert!(!p.unavailable("city:sumter_sc_us"));
+    assert!(p.stale("city:sumter_sc_us"));
+
+    let mut weather = WeatherSystem::new("great_lakes", Some(1), Some(Box::new(p)), None, true);
+    weather.set_city("route:sumter_sc_us:florence_sc_us:0", 33.92, -80.34);
+    weather.update(0.0);
+    assert_eq!(weather.source_status(), "last_known");
+    assert_eq!(weather.current, WeatherKind::Clear);
+}
+
+#[test]
+fn a_reading_past_the_outage_hold_is_still_turned_away() {
+    let now = 2_000_000.0;
+    let p = RealWeatherProvider::new(Arc::new(move |_, _| {
+        Ok(Observation::new("Clear", 0.0, None, None)
+            .observed_at(now - OUTAGE_HOLD_MAX_AGE_S - 60.0))
+    }))
+    .with_clock(fixed(0.0))
+    .with_wall_clock(fixed(now));
+    assert_eq!(p.worker("city:x", 33.0, -80.0), WorkerOutcome::StaleLogged);
+    assert_eq!(p.get("city:x"), None);
+    assert!(p.unavailable("city:x"));
+}
+
+#[test]
+fn a_fresh_reading_after_an_outage_is_live_again() {
+    let now = Arc::new(Mutex::new(2_000_000.0));
+    let wall = now.clone();
+    let observed = Arc::new(Mutex::new(2_000_000.0 - 150.0 * 60.0));
+    let feed = observed.clone();
+    let p = RealWeatherProvider::new(Arc::new(move |_, _| {
+        Ok(Observation::new("Clear", 0.0, None, None).observed_at(*lock_unpoisoned(&feed)))
+    }))
+    .with_clock(fixed(0.0))
+    .with_wall_clock(Arc::new(move || *lock_unpoisoned(&wall)));
+    assert_eq!(p.worker("city:x", 33.0, -80.0), WorkerOutcome::Held);
+    assert!(p.stale("city:x"));
+    *lock_unpoisoned(&observed) = *lock_unpoisoned(&now) - 10.0 * 60.0;
+    assert_eq!(p.worker("city:x", 33.0, -80.0), WorkerOutcome::Cached);
+    assert!(!p.stale("city:x"));
+}
