@@ -14,9 +14,10 @@ Packages the Rust game and archives it for release:
 
 Run from the repository root: ``uv run python tools/build_release.py``
 
-The pipeline is ``cargo build --release -p freight-fate --no-default-features``
-(no agent server in a player build; ``--cargo-target-dir`` picks the Cargo
-target directory), then ``ff-bake``
+The pipeline is ``cargo build --release -p freight-fate --no-default-features
+--features visuals`` (no agent server in a player build, and the visual
+display named, since it is one of the defaults; ``--cargo-target-dir`` picks
+the Cargo target directory), then ``ff-bake``
 to turn the JSON data tree into ``world.ffdata``, then a ``FreightFate/``
 folder with the executable renamed to ``FreightFate``. On macOS it creates
 ``FreightFate.app`` with the executable under ``Contents/MacOS``, native
@@ -688,8 +689,18 @@ def cargo_exe_name(platform_name: str = sys.platform) -> str:
 
 def cargo_build_command(target_dir: Path | None = None) -> list[str]:
     # No default features: the agent server (``--agent-server``) is dev
-    # tooling, and a player has no use for an agent at the wheel.
-    cmd = ["cargo", "build", "--release", "-p", RUST_PACKAGE, "--no-default-features"]
+    # tooling, and a player has no use for an agent at the wheel. The visual
+    # display is a default too, so it is named back in.
+    cmd = [
+        "cargo",
+        "build",
+        "--release",
+        "-p",
+        RUST_PACKAGE,
+        "--no-default-features",
+        "--features",
+        "visuals",
+    ]
     if target_dir is not None:
         cmd.extend(["--target-dir", str(target_dir)])
     return cmd

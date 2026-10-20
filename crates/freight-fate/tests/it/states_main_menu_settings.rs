@@ -262,6 +262,7 @@ fn gameplay_subcategory_rows(category: &str) -> &'static [&'static str] {
             "Automatic direction changes",
             "Controller",
             "Haptics",
+            #[cfg(feature = "visuals")]
             "Visual display",
             "Keyboard shortcuts",
             "Controller buttons",
@@ -449,7 +450,11 @@ fn test_every_gameplay_setting_stays_reachable_after_the_split() {
     assert!(reachable("controls", "Automatic direction changes"));
     assert!(reachable("controls", "Controller"));
     assert!(reachable("controls", "Haptics"));
-    assert!(reachable("controls", "Visual display"));
+    // Only a build with the visual display has a row to turn it off.
+    assert_eq!(
+        reachable("controls", "Visual display"),
+        cfg!(feature = "visuals")
+    );
     assert!(reachable("assistance", "Speed keeper"));
     assert!(!reachable("controls", "Speed keeper"));
     assert!(reachable("difficulty", "Driving mode"));
@@ -1280,6 +1285,7 @@ fn the_controller_row_names_the_connected_controller() {
     assert_eq!(controller_row(&mut app), "Controller: disabled");
 }
 
+#[cfg(feature = "visuals")]
 #[test]
 fn visual_display_row_toggles_says_its_state_and_persists() {
     let mut app = TestApp::new();

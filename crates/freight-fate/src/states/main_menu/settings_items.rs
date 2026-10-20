@@ -460,6 +460,7 @@ impl SettingsCategoryState {
                 adjust(|s, ctx, d| s.cycle_automatic_direction_changes(ctx, d)),
                 adjust(|s, ctx, d| s.toggle_controller(ctx, d)),
                 adjust(|s, ctx, d| s.toggle_haptics(ctx, d)),
+                #[cfg(feature = "visuals")]
                 adjust(|s, ctx, d| s.toggle_visual_display(ctx, d)),
             ],
             "assistance" => {
@@ -704,6 +705,8 @@ impl SettingsCategoryState {
                     "Controller rumble for hazards, hard braking, the rumble \
                      strip, and road seams. Needs a controller connected.",
                 ),
+                // A build without the visual display has nothing to turn off.
+                #[cfg(feature = "visuals")]
                 row(
                     dyn_label(|s| format!("Visual display: {}", on_off(s.visual_display))),
                     adjust(|s, ctx, d| s.toggle_visual_display(ctx, d)),

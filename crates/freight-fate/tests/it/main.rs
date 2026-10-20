@@ -222,10 +222,14 @@ mod windows_subsystem;
 mod states_ramp_assist_control;
 mod states_ramp_signal_timing;
 
+#[cfg(feature = "visuals")]
 mod sighted_driver;
 mod states_driving_hos_planning;
 mod states_driving_hos_rest_stretch;
 mod states_driving_speech_modes;
+#[cfg(feature = "visuals")]
 mod visuals_frames;
+#[cfg(feature = "visuals")]
 mod visuals_l10n;
+#[cfg(feature = "visuals")]
 mod visuals_play;

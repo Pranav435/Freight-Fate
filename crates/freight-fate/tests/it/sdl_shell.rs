@@ -5,10 +5,13 @@
 //! crate panics rather than errs when asked for it, which killed every
 //! headless windowed boot the day the handle arrived (2026-09-01).
 
+#[cfg(feature = "visuals")]
 use ff_core::message_log::{MessageCategory, MessageLog};
 use freight_fate::app::sdl_shell::SdlShell;
+#[cfg(feature = "visuals")]
 use freight_fate::visuals::{Panel, Scene, Screen};
 
+#[cfg(feature = "visuals")]
 #[test]
 fn the_shell_boots_on_the_dummy_video_driver() {
     std::env::set_var("SDL_VIDEODRIVER", "dummy");
@@ -40,5 +43,19 @@ fn the_shell_boots_on_the_dummy_video_driver() {
             &english,
         );
     }
+    shell.render_plain();
+}
+
+/// A build without the visual display boots the same window and draws only
+/// the plain fill.
+#[cfg(not(feature = "visuals"))]
+#[test]
+fn the_plain_shell_boots_on_the_dummy_video_driver() {
+    std::env::set_var("SDL_VIDEODRIVER", "dummy");
+    std::env::set_var("SDL_AUDIODRIVER", "dummy");
+    let mut shell =
+        SdlShell::new("Freight Fate headless").expect("the dummy driver hosts a window");
+    assert_eq!(shell.video.current_video_driver(), "dummy");
+    shell.render_plain();
     shell.render_plain();
 }
