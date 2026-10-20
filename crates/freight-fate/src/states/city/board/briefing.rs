@@ -50,7 +50,18 @@ pub(super) fn hours_lines(ctx: &GameContext, job: &Job) -> Vec<String> {
         (1, _) => format!("Trip hours: about {hours} driving hours, with a 10-hour sleep."),
         _ => format!("Trip hours: about {hours} driving hours, with {sleeps} 10-hour sleeps."),
     };
-    vec![trip, p.hos.drive_time_summary(mode, false)]
+    let mut lines = vec![trip, p.hos.drive_time_summary(mode, false)];
+    // Where the co-driver is offered, before the rows turn up there: the
+    // dock's own test, on the clock the loaded truck leaves with. A team
+    // load says so in its deadline already.
+    let drive_min = crate::states::city_pickup_team::team_drive_min(ctx, job);
+    if !job.team && ff_core::models::co_driver::team_worthwhile(&clock, mode, drive_min) {
+        lines.push(
+            "Co-driver: offered at the shipper's dock or from the pause menu, on your current hours."
+                .to_string(),
+        );
+    }
+    lines
 }
 
 /// "Fuel: 60 percent, about 900 miles of range.", and "short of this trip"
@@ -85,13 +96,18 @@ pub(super) fn fuel_line(ctx: &GameContext, job: &Job) -> String {
 /// driver's hours and tank, then the one stop this run will need, if any.
 /// "Driving time left: 7 hours, duty window 9 hours. Fuel: 60 percent. This
 /// run needs a 10-hour sleep."
-pub(crate) fn departure_briefing(ctx: &GameContext, route: &Route) -> String {
+///
+/// With the co-driver taking the wheel (`team`), the stop line is left out:
+/// the team changes drivers instead of stopping for the solo driver's sleep.
+pub(crate) fn departure_briefing(ctx: &GameContext, route: &Route, team: bool) -> String {
     let p = profile(ctx);
     let mode = &ctx.settings.hos_mode;
     let mut parts: Vec<String> = Vec::new();
     let mut needs: Option<String> = None;
     if limits(mode).is_some() {
         parts.push(p.hos.drive_time_summary(mode, true));
+    }
+    if limits(mode).is_some() && !team {
         let plan = plan_hos(route.miles(), Some(route), Some(ctx.world), Some(&p.hos));
         needs = match (plan.sleeps, plan.breaks) {
             (0, 0) => None,

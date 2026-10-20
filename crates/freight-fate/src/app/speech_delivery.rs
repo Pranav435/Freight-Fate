@@ -288,6 +288,10 @@ impl GameContext {
     /// waits in message review and the achievements menu (speech mode
     /// audit, 2026-10-03). Quiet still hears the bare name.
     pub fn award_driving_achievement(&mut self, achievement_id: &str) {
+        // The co-driver's driving earns the player nothing.
+        if self.co_driver_away {
+            return;
+        }
         let announce = self.event_speaks(Some(SpeechCategory::Status));
         let awarded = self.award_achievement_with(achievement_id, false, announce);
         if let (false, Some(awarded)) = (announce, awarded) {
@@ -309,6 +313,12 @@ impl GameContext {
             review,
             category,
         } = say;
+        if self.co_driver_away && !self.speech_requested {
+            if let Some(text) = self.render_spoken(&spoken) {
+                transcript!("[co-driver] quiet: {}", text);
+            }
+            return;
+        }
         if !self.settings.speaks(category) && self.ladder_applies() && !self.speech_requested {
             // Suppressed categories stay out of message review.
             //
@@ -634,6 +644,20 @@ impl GameContext {
             valid,
         } = opts;
         let key = key.as_deref();
+        if self.co_driver_away && !force && !self.speech_requested {
+            // Nobody is listening for the road while the co-driver drives.
+            // A line waiting on its delivery receipt is released, so a stop
+            // plan never stalls behind speech that will not come.
+            if let Some(text) = self.render_spoken(&spoken) {
+                if receipt {
+                    if let Some(key) = key {
+                        self.event_pacer.complete_delivery(key, &text);
+                    }
+                }
+                transcript!("[co-driver] quiet: {}", text);
+            }
+            return;
+        }
         if !self.settings.speaks(category) && !force && self.ladder_applies() {
             // Suppressed categories stay out of message review. Status keys
             // still answer on demand. `force`
@@ -860,11 +884,21 @@ impl GameContext {
     pub fn player_asked_begin(&mut self) -> bool {
         let previous = self.speech_requested;
         self.speech_requested = true;
+        self.sync_cue_mute();
         previous
     }
 
     pub fn player_asked_end(&mut self, previous: bool) {
         self.speech_requested = previous;
+        self.sync_cue_mute();
+    }
+
+    /// The co-driver has the wheel and the player is not pressing anything:
+    /// the game's own cues stay quiet with the words they announce (see
+    /// `Audio::set_cues_muted`). Call after `co_driver_away` changes.
+    pub fn sync_cue_mute(&mut self) {
+        let muted = self.co_driver_away && !self.speech_requested;
+        self.audio.set_cues_muted(muted);
     }
 
     /// Whether a control press is being handled right now.

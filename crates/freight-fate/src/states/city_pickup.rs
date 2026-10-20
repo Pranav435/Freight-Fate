@@ -37,6 +37,7 @@ use crate::states::city::{
     base_menu_enter, base_menu_handle_event, launch_driving, profile, profile_mut, CityMenuState,
     DrivingLaunch, LaunchAnnouncement, LoadedDepartureResume, DRIVE_PHASE_DELIVERY,
 };
+use crate::states::driving_team::TeamMode;
 use crate::states::main_menu::MainMenuState;
 
 pub const PICKUP_CHECK_IN_MIN: f64 = 15.0;
@@ -199,6 +200,8 @@ pub struct LoadedDriveOptions {
     pub speed_control_target_mph: Option<f64>,
     pub lead: String,
     pub trailer_refused: bool,
+    /// The co-driver takes the wheel from the dock.
+    pub team: Option<TeamMode>,
 }
 
 /// Build the loaded delivery trip and depart, narrating `lead` first.
@@ -221,6 +224,7 @@ pub fn start_loaded_drive(ctx: &mut GameContext, job: Job, route: Route, opts: L
         speed_control_armed: opts.speed_control_armed,
         speed_control_target_mph: opts.speed_control_target_mph,
         trailer_refused: opts.trailer_refused,
+        team: opts.team,
     });
     ctx.mark_meaningful_play(MeaningfulPlayReason::DriveStarted);
     launch_driving(ctx, launch);
@@ -367,6 +371,8 @@ pub struct PickupFacilityState {
     pub truck: TruckState,
     pub speed_control_armed: bool,
     pub speed_control_target_mph: Option<f64>,
+    /// Set by a team row just before departing; the plain row clears it.
+    pub(crate) team_departure: Option<TeamMode>,
 }
 
 impl PickupFacilityState {
@@ -405,6 +411,7 @@ impl PickupFacilityState {
             truck,
             speed_control_armed: opts.speed_control_armed,
             speed_control_target_mph: opts.speed_control_target_mph,
+            team_departure: None,
         }
     }
 
@@ -783,6 +790,7 @@ impl PickupFacilityState {
                     speed_control_target_mph: self.speed_control_target_mph,
                     trailer_refused: self.trailer_refused,
                     lead,
+                    team: self.team_departure,
                 },
             );
             return;
@@ -824,6 +832,7 @@ impl PickupFacilityState {
                 trailer_refused: self.trailer_refused,
                 notes,
                 dispatch_note,
+                team: self.team_departure,
             },
         );
         ctx.push_state(select);
@@ -1012,8 +1021,12 @@ impl Menu for PickupFacilityState {
             String::new()
         };
         self.announce_speed_control_status = false;
+        let intro = self
+            .team_intro(ctx)
+            .map(|intro| format!(" {intro}"))
+            .unwrap_or_default();
         let current = self.current_text(ctx);
-        ctx.say(&format!("{lead}{speed_control} {current}"));
+        ctx.say(&format!("{lead}{speed_control}{intro} {current}"));
     }
 
     fn exit(&mut self, ctx: &mut GameContext) {
@@ -1027,6 +1040,7 @@ impl Menu for PickupFacilityState {
         let plan = self.pickup_plan(ctx);
         let primary = if self.loaded {
             MenuItem::new("Depart for destination", |s: &mut Self, ctx| {
+                s.team_departure = None;
                 s.depart_for_destination(ctx)
             })
             .help("Starts the loaded run.")
@@ -1050,6 +1064,7 @@ impl Menu for PickupFacilityState {
             .help("Gets the dock assignment.")
         };
         let mut items = vec![primary];
+        items.extend(self.team_departure_rows(ctx));
         if self.loaded && plan.trailer.is_some() {
             items.push(
                 MenuItem::new("Walk around the trailer", |s: &mut Self, ctx| {
@@ -1175,6 +1190,8 @@ pub struct RouteSelectOptions {
     pub notes: Vec<String>,
     /// Why dispatch put the first route first, when construction decided it.
     pub dispatch_note: String,
+    /// The co-driver takes the wheel from the dock.
+    pub team: Option<TeamMode>,
 }
 
 impl Default for RouteSelectOptions {
@@ -1188,6 +1205,7 @@ impl Default for RouteSelectOptions {
             trailer_refused: false,
             notes: Vec::new(),
             dispatch_note: String::new(),
+            team: None,
         }
     }
 }
@@ -1339,6 +1357,7 @@ impl RouteSelectState {
                 trailer_refused: self.opts.trailer_refused,
                 // The route screen just named the destination.
                 lead: String::new(),
+                team: self.opts.team,
             },
         );
     }

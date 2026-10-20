@@ -291,6 +291,27 @@ def test_rust_ci_runs_its_jobs_side_by_side() -> None:
     assert not any("lfs" in (s.get("with") or {}) for s in test["steps"])
 
 
+def test_the_windows_test_leg_audits_the_game_s_imports() -> None:
+    """The snapshot's payload DLL check also runs in PR CI, on the executable
+    the Windows test build already compiled, so an import a clean Windows
+    lacks fails the PR that adds it."""
+    test = _load(RUST_WORKFLOW)["jobs"]["test"]
+    steps = test["steps"]
+    runs = [s.get("run", "") for s in steps]
+    audit = next(s for s in steps if "tools/check_windows_imports.py" in s.get("run", ""))
+    assert audit["if"] == "matrix.name == 'Windows'"
+    # After the build that leaves target/debug/freightfate.exe.
+    build = runs.index("cargo test ${{ matrix.packages }} --no-run --locked --timings")
+    assert steps.index(audit) > build
+    paths = _load(RUST_WORKFLOW)["on"]["push"]["paths"]
+    for needed in (
+        "tools/check_windows_imports.py",
+        "tools/windows_runtime.py",
+        "tools/build_release.py",
+    ):
+        assert needed in paths, needed
+
+
 def test_macos_tests_run_on_a_manual_run_or_a_release_tag_only() -> None:
     """The Mac link (Prism's frameworks, the clang runtime) and the
     CoreAudio build are proved before a release, as Hearken's CI does, but

@@ -26,6 +26,7 @@ Start at the [main menu](#main-menu), then follow [your first delivery](#quick-s
 - [Enforcement, your record, and your CDL](#enforcement-your-record-and-your-cdl)
 - [When you owe money](#when-you-owe-money)
 - [Hours of service and fatigue](#hours-of-service-and-fatigue)
+- [Team driving](#team-driving)
 - [Status screens](#status-screens)
 - [Driver apps](#driver-apps)
 - [Pause, save, and resume](#pause-save-and-resume)
@@ -521,7 +522,7 @@ The damage readout names a band as well as a percentage, so you can hear how ser
 
 Owners pay for roadside repairs and lose several hours; they still need further garage repair afterward. Company drivers get carrier-paid service and a yard spare. Preventable equipment trouble can also affect their record and dispatch trust.
 
-Preventable damage can cost a safety bonus and add a deductible. Repairing it on the road doesn't erase that consequence: settlement uses the deepest damage band reached during the trip. Correct reactions to hazards don't count as preventable damage. Unsafe equipment that's visible on the road can attract an inspection.
+Preventable damage can cost a safety bonus and add a deductible. Repairing it on the road doesn't erase that consequence: settlement uses the deepest damage band reached during the trip. Correct reactions to hazards don't count as preventable damage. Unsafe equipment that's visible on the road can attract an inspection. A company driver's tractor at 40 percent damage or more goes through the carrier shop when the next load is accepted, at no charge and an hour on duty.
 
 ## Mountain driving
 
@@ -640,6 +641,8 @@ CB reports tell you what another driver saw and how certain they were. Treat the
 
 ### What a citation costs
 
+Until level 10, officers give you a warning instead of most citations: no fine, no reputation lost, and nothing on your record. Speeding 15 or more over the limit, driving through the barrels, failing to pull over, running an open scale, and anything that puts you out of service are still cited.
+
 | Citation | Base fine |
 | --- | --- |
 | Unsafe equipment | 2,300 dollars |
@@ -649,7 +652,6 @@ CB reports tell you what another driver saw and how certain they were. Treat the
 | Following too closely | 600 dollars |
 | Chain law | 580 dollars |
 | Improper lane use | 500 dollars |
-| Running dark after sunset | 350 dollars |
 
 Speeding fines start at 250 dollars below ten over the limit, 400 from ten over, 1,000 from fifteen, 1,600 from twenty, and 2,500 from thirty. Fleeing has a 5,000 dollar base fine. Construction doubles applicable fines, with the barrel citation excluded.
 
@@ -696,6 +698,39 @@ Coffee only buys temporary relief. A break helps more, and full sleep clears fat
 If a lot is full, it may offer a motel at your own expense. Sleep 10 hours in the lot gives poor rest; proper sleeper parking gives full rest.
 
 Away from route points, stop fully and use T or the pause menu for emergency shoulder sleep. On a controller, that's the right bumper with D-pad down, or Start for the pause menu. A nearby stop takes priority. Shoulder sleep secures the truck and resets legal hours after ten hours, but fatigue remains. You also risk a ticket or damage, and the delivery deadline keeps advancing.
+
+## Team driving
+
+On a load too long for one shift, a co-driver can take the wheel while you rest in the sleeper. Dispatch pairs a company driver with a classmate from Great Lakes Training Transport for one load. An owner-operator keeps the co-driver they have teamed with most.
+
+When the rest of the delivery would need a ten-hour break, the pause menu offers two rows, each naming your co-driver:
+
+- **Hand the wheel to Dan and ride along.** The drive goes on at the normal pace. You hear the truck and the radio, and the road's announcements stay quiet.
+- **Hand the wheel to Dan and sleep.** The co-driver's shift runs ahead without waiting, with the sound off. You wake when they need you, with a summary of how far they drove and where they fueled.
+
+The pickup menu offers the same choice once the load is on: **Depart with Dan driving, and ride along**, or **and sleep**. Each row's help names the co-driver and the pay terms.
+
+**Team loads.** Some long loads on the dispatch board are booked for a team. Their details say "Team load". They pay about a third more, and the deadline leaves no time for a ten-hour break, only for changing drivers. You can still drive a team load alone, but you will be late unless the co-driver takes their turns.
+
+While the co-driver drives, the keys that move the truck do nothing. The information keys still answer, and Tab, the apps and the pause menu still open. If the radio was on, the co-driver may change the station or switch it off for a while; once you change it yourself, they leave it alone. A radio you left off stays off.
+
+The first time a load can be shared, the game says so once, at the shipper's dock or in the pause menu. After that, a long load's details on the dispatch board say "Co-driver: offered at the shipper's dock or from the pause menu, on your current hours."
+
+The co-driver uses every assist, fuels when the tank runs low, crosses the open scales and pulls over for a trooper. They hand the wheel back:
+
+- parked at the next stop with parking once you have had your ten-hour rest, which comes before a fresh co-driver's hours run out;
+- parked at a stop, when their own hours run out first, and they tell you how much of your rest you had;
+- at a rest area for their 30-minute break, or on the road if they could not reach one in time;
+- at the receiver's gate, so you can dock and deliver;
+- when the truck takes damage, or something else needs your decision.
+
+To drive again sooner, pause and choose Take the wheel back.
+
+**Who they are.** Once you have run a team load, Career stats has a Co-drivers list: everyone you have teamed with, how many loads you ran together, and a line or two about them. The Driver status screen reads the same story for the co-driver on your current load. Nothing reads it to you unless you open it.
+
+**What it costs.** On a company job, miles the co-driver drives pay you half. An owner-operator pays their co-driver 30 percent of the settlement for those miles, and still pays fuel, tolls and upkeep. Those miles earn half the career experience. The settlement names the co-driver's miles and share. Badges for how a haul was driven, such as a long run with no tolls, are not earned on a team load, and the road journal notes who drove.
+
+**Your hours.** Time while the co-driver drives counts as sleeper-berth time, whether you ride along or sleep. Ten hours of it resets your legal hours and clears your fatigue. The co-driver keeps a logbook of their own. The Driver status screen says who is driving. It, C and the Take the wheel back row all say how much of your ten hours you have rested and when the co-driver hands back, for example "Rest: 3.5 hours of 10 hours. Dan hands back in about 6.5 hours." The ELD app reads both logbooks. If you were already rested when you handed over, the co-driver drives until their own hours run out.
 
 ## Status screens
 
@@ -890,6 +925,7 @@ This is where you change units, transmission, and eligible shortcuts. Open Keybo
 | Automatic direction changes | In an automatic, both styles now change direction the same way: a fresh press held at a standstill. A brake held through a stop just holds the truck. The setting remains for familiarity. |
 | Controller | Accept controller input alongside the keyboard. The keyboard always stays active. While it is on, it names the controller the game is using. |
 | Haptics | Use controller vibration for hazards, hard braking, rumble strips, and road seams. |
+| Visual display | On by default: the game window draws the road, the dashboard, menus, and captions of what the game says. Off keeps the window dark and saves battery. Speech and sound are the same either way. |
 | Keyboard shortcuts | Choose the control you want to change and press Enter, then press your preferred key, with Shift, Control, or Alt held if you want a chord. A key another control already has is refused by name; Escape keeps the current key. The pause key, Enter, F1, F2, the Control keys that stop the voice, plus and minus, the radio dial keys, and the message review keys stay fixed. Choose the reset option to restore every default shortcut. |
 | Controller buttons | Choose the controller action you want to change and press Enter, then press your preferred button, with the right bumper held for the second layer. Press its current button to keep the assignment. Start, Back, the bumpers, the triggers, and the sticks stay fixed. |
 
@@ -972,6 +1008,18 @@ The window shows the core information the game speaks. Speech can come through a
 You can give driving events a separate voice. Either Control key stops that voice, as does Back on a controller while it's speaking, and message review lets you return to anything you missed.
 
 If a sound is unfamiliar, open Learn game sounds, select the cue, and press Enter, or A, to hear it. F1, or Back, explains its meaning. Haptics also reinforce seams, lane edges, hazards, and braking.
+
+### The game window
+
+Everything in Freight Fate can be played by ear, and everything the game says can also be seen, for sighted and low-vision players and for anyone driving with a friend watching.
+
+- **Menus and screens** appear as a large-print panel with the selected choice highlighted and a count such as 3 of 9.
+- **While you drive**, the window shows the road from behind your truck: your lane and the lanes beside you, the traffic around you with brake lights and signals, bends and hills as they come, and the signs on your route, including speed limits, curve warnings with their advisory speed, work zones, exits, rest areas, weigh stations, state lines, and billboards. The sky follows the time of day where you are, and rain, snow, fog, and storms show as they happen.
+- **The dashboard** shows your speed with the posted limit and cruise speed marked on the dial, engine speed and gear, fuel, air pressure, truck and cargo damage, warning lights such as the parking brake and low air, turn signals, the next bend and your next turn, the time and weather, how far you have left, and a traffic display of every vehicle within half a mile.
+- **Blind-spot lights** glow amber on the truck's mirrors, with the lane shaded on the traffic display, while traffic holds the lane beside you. They answer the same way the "lane open" announcement and the L key do: change lanes only once the light on that side is out.
+- **Captions** show each announcement for a few seconds, so nothing the game says is missed.
+
+The window can be resized or made full screen, and everything scales with it. To turn the drawing off, set Visual display to off under Settings, Gameplay, Controls; the window stays dark and uses less power. The game also stops drawing while its window is minimized or, on a Mac, covered by other windows.
 
 | Category | Examples |
 | --- | --- |

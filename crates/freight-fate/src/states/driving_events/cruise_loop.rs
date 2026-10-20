@@ -598,7 +598,7 @@ impl DrivingState {
         // perfect weather (caught by the full sweep: a resume test stalled
         // at exactly 70.0).
         let effects = self.trip.weather.effects();
-        let adverse = effects.grip < 1.0 || effects.visibility_mi < 8.0;
+        let adverse = effects.is_adverse();
         let safe_mph = effects.safe_speed_mph;
         if adverse && safe_mph < target_mph {
             target_mph = safe_mph;

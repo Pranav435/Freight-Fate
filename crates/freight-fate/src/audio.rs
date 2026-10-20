@@ -255,6 +255,17 @@ pub const RADIO_TUNE_FADE_MS: u32 = 250;
 /// `HearkenBackend::set_key_filter`).
 pub type KeyProbe = Box<dyn Fn(&str) -> bool>;
 
+/// How the radio sounds while driving: through the cab's door speakers or
+/// clean, and where the driver's glass is. The cab voicing moves with the
+/// glass, so it glides over the window's own travel.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct RadioVoicing {
+    /// The cab's speakers (the default) instead of the clean signal.
+    pub cab_speakers: bool,
+    /// The driver window, 0 up to 1 down.
+    pub window: f64,
+}
+
 /// What the Python facade raised as `RuntimeError`: the radio layer reads the
 /// message to skip a playlist entry or hand a dead station over.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -514,6 +525,12 @@ pub fn advance_engine_wobble(wobble: &mut [[f64; 2]], dt: f64, rng: &mut PyRando
 /// | `stop_music(fade_ms=1000)` | `stop_music()` / `stop_music_with(fade_ms)` |
 /// | `set_volumes(master=None, ..., siren=None)` | `set_volumes(&VolumeUpdate)` |
 /// | properties | `enabled()`, `backend_name()`, `*_volume()`, `engine_running()`, `engine_starting()` |
+/// Whether `key` is one of the game's own cues rather than the road's or the
+/// truck's: what [`Audio::set_cues_muted`] holds back.
+pub fn is_game_cue(key: &str) -> bool {
+    key.starts_with("ui/") || key.starts_with("events/")
+}
+
 pub trait Audio {
     // -- properties -----------------------------------------------------------
     fn enabled(&self) -> bool;
@@ -536,6 +553,14 @@ pub trait Audio {
     fn engine_running(&self) -> bool;
     /// True while a deliberate ignition is still crossfading into the loop.
     fn engine_starting(&self) -> bool;
+
+    /// Hold back the game's own cues -- the `ui/` and `events/` one-shots
+    /// that announce a menu, a choice or a spoken line -- while `muted`.
+    /// The road, the truck and the radio still sound. Set while the
+    /// co-driver drives and the player has not pressed anything
+    /// (`GameContext::sync_cue_mute`), so none of what the co-driver does
+    /// at a stop or on the road beeps at a player who heard no words.
+    fn set_cues_muted(&mut self, _muted: bool) {}
 
     // -- one-shots and loops --------------------------------------------------
     /// The key this one will really sound as, after the jake A/B.
@@ -639,6 +664,10 @@ pub trait Audio {
     /// How much louder the outside sounds (the tires, rain, the weather
     /// wind) are than with the cab sealed: 1.0 with the driver window up.
     fn set_outside_lift(&mut self, _lift: f64) {}
+    /// The radio's voicing while driving; `None` once the drive is over, so
+    /// music started after it (menu music) plays clean. Only the radio is
+    /// voiced: the station, its music tracks, and its own hiss and static.
+    fn set_radio_voicing(&mut self, _voicing: Option<RadioVoicing>) {}
     fn set_ambient_with(&mut self, key: Option<&str>, volume: f64);
     fn set_ambient(&mut self, key: Option<&str>) {
         self.set_ambient_with(key, 1.0);

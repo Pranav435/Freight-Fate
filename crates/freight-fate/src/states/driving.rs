@@ -471,6 +471,8 @@ pub struct DrivingState {
     pub damage_band: i32,
     // The deepest band this run reached, for settlement to grade against.
     pub worst_damage_band: i32,
+    // This run already put one preventable-equipment event on the record.
+    pub equipment_event_logged: bool,
     pub limp_cap_mph: Option<f64>,
     pub limp_cruise_said: bool,
     pub out_of_service_creep_s: f64,
@@ -886,6 +888,10 @@ pub struct DrivingState {
     /// Lane keeping on full is passing a slow vehicle: (the lane to come
     /// back to, the lane it passed into). See `pass_for_hazard`.
     pub passing: Option<(i64, i64)>,
+    // A pass around something sitting in the lane (debris, a car on the
+    // shoulder, a closure) holds the move back until the truck is past this
+    // point, so it does not drop straight back onto what it went around.
+    pub pass_clear_mi: Option<f64>,
     /// Lane keeping is moving back after a pass: the landing line is the
     /// tail of going around traffic, not a lane change the driver made.
     pub pass_returning: bool,
@@ -938,6 +944,16 @@ pub struct DrivingState {
     // is anywhere to go. What braking ALONE must reach turns on this, not on
     // hazard_dodgeable: see hazard_target_mph.
     pub hazard_in_lane: bool,
+    // Every hazard in the live group is an animal on the road: the
+    // automatic braking leaves it alone, and the deadline settles whether
+    // the truck hits it. See `animal_outcome`.
+    pub hazard_animal: bool,
+    // Where the truck was when the live hazard group was first called: the
+    // animal outcome is seeded on it, so a reload hears the same outcome
+    // however the driver answered.
+    pub hazard_arm_mi: f64,
+    // See HazardShape::brake_to_mph.
+    pub hazard_brake_to_mph: Option<f64>,
     // The speed of the VEHICLE this hazard is about, when it is a vehicle.
     // None for debris, animals and anything else that is not going
     // anywhere. See hazard_target_mph.
@@ -1043,6 +1059,11 @@ pub struct DrivingState {
 
     // ---- driving.py: lifecycle -----------------------------------------------------------
     pub entered_once: bool,
+    /// The co-driver for this load, once one has been paired.
+    pub team: Option<crate::states::driving_team::TeamDrive>,
+    /// A team departure chosen at the shipper: the co-driver takes the
+    /// wheel on the drive's first frame.
+    pub pending_team: Option<crate::states::driving_team::TeamMode>,
 }
 
 // The accessors onto the trip, the trip swap and the `State` facade live in

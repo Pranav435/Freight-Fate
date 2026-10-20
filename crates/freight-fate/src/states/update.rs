@@ -605,9 +605,34 @@ impl UpdateDownloadState {
             let mut on_progress =
                 |done: u64, total: u64| Self::record_progress(&bytes, &progress, done, total);
             let env = UpdaterEnv::current();
-            // The smaller archive when this install's sound packs still match.
-            let (info, keep_packs) = updater::slim::choose_download(&info, &env);
-            let archive = fetch(&info, &staging, &mut on_progress, &cancelled)?;
+            // Only the non-pack parts of the archive when this install's sound
+            // packs still match; any failure there falls back to the full one.
+            let mut keep_packs = None;
+            let mut archive = None;
+            if let Some(slim) = updater::slim::still_matches(&info, &env) {
+                match updater::slim::download(
+                    &info,
+                    slim,
+                    &staging,
+                    Some(&mut on_progress),
+                    Some(&cancelled),
+                ) {
+                    Ok(path) => {
+                        keep_packs = Some(slim.packs.clone());
+                        archive = Some(path);
+                    }
+                    Err(e @ (DownloadError::Cancelled | DownloadError::Stalled(_))) => {
+                        return Err(e)
+                    }
+                    Err(e) => {
+                        log::warn!("Smaller update download failed ({e:?}); fetching it whole")
+                    }
+                }
+            }
+            let archive = match archive {
+                Some(path) => path,
+                None => fetch(&info, &staging, &mut on_progress, &cancelled)?,
+            };
             if is_cancelled() {
                 return Err(DownloadError::Cancelled);
             }

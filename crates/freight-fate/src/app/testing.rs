@@ -293,6 +293,18 @@ impl TestApp {
         self.capture.borrow_mut()
     }
 
+    /// Raise the loaded career past the new-driver warnings, so a test of
+    /// what a citation costs sees one.
+    pub fn seasoned_driver(&mut self) {
+        if let Some(profile) = self.ctx.profile.as_mut() {
+            let level = ff_core::models::enforcement::NEW_DRIVER_WARNING_LEVEL as usize;
+            profile.career.xp = profile
+                .career
+                .xp
+                .max(ff_core::models::career::LEVEL_XP[level - 1]);
+        }
+    }
+
     /// Drop everything said so far.
     pub fn clear_speech(&self) {
         self.capture.borrow_mut().clear();
@@ -424,6 +436,8 @@ pub struct AudioCalls {
     pub loops: std::collections::HashMap<u32, RecordedLoop>,
     /// The last `set_outside_lift`: what the open driver window adds.
     pub outside_lift: Option<f64>,
+    /// Every `set_radio_voicing`, in order.
+    pub radio_voicing: Vec<Option<crate::audio::RadioVoicing>>,
 }
 
 /// One running loop as [`RecordingAudio`] last left it.
@@ -442,6 +456,7 @@ pub type AudioLog = Rc<RefCell<AudioCalls>>;
 #[derive(Default)]
 pub struct RecordingAudio {
     log: AudioLog,
+    cues_muted: bool,
 }
 
 impl RecordingAudio {
@@ -488,7 +503,13 @@ impl Audio for RecordingAudio {
     fn voice_key(&self, key: &str) -> String {
         key.to_string()
     }
+    fn set_cues_muted(&mut self, muted: bool) {
+        self.cues_muted = muted;
+    }
     fn play_with(&mut self, key: &str, volume: f64, pan: f64) {
+        if self.cues_muted && crate::audio::is_game_cue(key) {
+            return;
+        }
         self.log
             .borrow_mut()
             .played
@@ -544,6 +565,9 @@ impl Audio for RecordingAudio {
     }
     fn set_outside_lift(&mut self, lift: f64) {
         self.log.borrow_mut().outside_lift = Some(lift);
+    }
+    fn set_radio_voicing(&mut self, voicing: Option<crate::audio::RadioVoicing>) {
+        self.log.borrow_mut().radio_voicing.push(voicing);
     }
     fn start_sustain_loop_with(
         &mut self,
