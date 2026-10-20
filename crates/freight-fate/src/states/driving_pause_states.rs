@@ -154,7 +154,11 @@ impl PauseMenuState {
         for (offset, row) in team_rows.into_iter().enumerate() {
             items.insert(1 + offset, row);
         }
-        if d.trip.truck.speed_mph() <= 3.0 {
+        // While the co-driver drives, the truck and the logbook are theirs:
+        // the rows that work on either wait until the player takes the
+        // wheel back.
+        let own_wheel = !d.co_driver_driving();
+        if own_wheel && d.trip.truck.speed_mph() <= 3.0 {
             items.insert(
                 2 + team_count,
                 MenuItem::new("Call dispatch", |s: &mut Self, ctx| {
@@ -163,7 +167,7 @@ impl PauseMenuState {
                 .help("Report a delay, hours, road conditions, truck trouble, or load trouble."),
             );
         }
-        let stopped = d.trip.truck.speed_mph() <= 3.0;
+        let stopped = own_wheel && d.trip.truck.speed_mph() <= 3.0;
         if stopped
             && d.trip.truck.chains_on
             && d.trip.truck.chain_wear_pct >= CHAIN_SLAP_WARN_PCT
@@ -199,7 +203,7 @@ impl PauseMenuState {
                 )),
             );
         }
-        if d.trip.truck.chains_on {
+        if own_wheel && d.trip.truck.chains_on {
             items.push(
                 MenuItem::new(
                     format!(
@@ -210,7 +214,8 @@ impl PauseMenuState {
                 )
                 .help("Chains grind apart fast on bare pavement."),
             );
-        } else if profile_of(ctx).chains_owned()
+        } else if own_wheel
+            && profile_of(ctx).chains_owned()
             // The truck's own meter, not the profile's: the profile only
             // catches up at a stop, so a set that snapped this drive still
             // read as whole there and was offered again, to snap the moment
@@ -237,7 +242,7 @@ impl PauseMenuState {
                 })),
             );
         }
-        if d.chain_checkpoint_hold && !d.usable_chains_aboard(ctx) {
+        if own_wheel && d.chain_checkpoint_hold && !d.usable_chains_aboard(ctx) {
             let (index, _) = d.last_route_city_behind();
             let key = d.trip.route.cities.get(index).cloned().unwrap_or_default();
             let city = ctx.world.city(&key).map(|c| c.name.clone()).unwrap_or(key);
@@ -283,7 +288,9 @@ impl PauseMenuState {
                  drops the load.",
             ),
         );
-        if d.chain_checkpoint_hold {
+        if !own_wheel {
+            // Nothing to sleep through: the player is already off the wheel.
+        } else if d.chain_checkpoint_hold {
             // Held, the truck can always sleep where it stands: waiting and
             // turning back can both be out of hours, and a stop within the
             // usual 1.5 miles does not matter to an officer holding it here.

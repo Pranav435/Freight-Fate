@@ -15,6 +15,7 @@ use crate::app::{GameContext, SayEvent};
 use crate::states::driving::DrivingState;
 use crate::states::driving_core::*;
 use crate::states::driving_enforcement::SCALE_REMINDER_REAL_LEAD_S;
+use crate::states::driving_team::notes::NoteWeight;
 use crate::states::driving_updates::{limit_drop_speech_latency_s, live};
 
 impl DrivingState {
@@ -567,6 +568,12 @@ impl DrivingState {
         verdict: &str,
     ) {
         let scale_mi = stop.at_mi;
+        if verdict == "green" {
+            if let Some(name) = self.co_driver_at_wheel_name() {
+                let line = format!("The transponder cleared {name} past {}.", stop.name);
+                self.co_driver_note(ctx, line, NoteWeight::Passing);
+            }
+        }
         if verdict == "green" {
             ctx.audio.play_with("events/scale_green", 0.8, 0.0);
             // valid: never rescued. One verdict, one line (the adversarial

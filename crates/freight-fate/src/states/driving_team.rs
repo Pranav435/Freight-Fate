@@ -25,6 +25,7 @@
 //! is saved, quit or resumed always resumes with the player driving.
 
 pub mod handover;
+pub mod notes;
 pub mod overlay;
 pub mod pilot;
 pub mod radio;
@@ -85,6 +86,10 @@ pub struct Wheel {
     /// The player still needed rest when they handed over, so the shift
     /// ends once that rest is in.
     pub player_rest_owed: bool,
+    /// The truck's damage the co-driver knows about: what it had at the
+    /// handover, and any animal strike they drove on from. More than this
+    /// is damage they hand back for.
+    pub damage_seen: f64,
 }
 
 /// The co-driver for this load.
@@ -299,12 +304,14 @@ impl DrivingState {
             log: ShiftLog::default(),
             summon: None,
             player_rest_owed,
+            damage_seen: self.trip.truck.damage_pct,
         });
         ctx.settings.hand_assists_to_co_driver();
         // The co-driver drives the automatic box. Set here, not by the
         // frame, which would announce it as the player's own change.
         self.trip.truck.transmission.automatic = ctx.settings.automatic_transmission;
         ctx.co_driver_away = true;
+        ctx.sync_cue_mute();
         if mode == TeamMode::SleepThrough {
             // The road's lines in flight are for a driver who is now asleep:
             // none is handed back at the wake-up summary.
@@ -331,6 +338,7 @@ impl DrivingState {
         ctx.settings.take_assists_back();
         self.trip.truck.transmission.automatic = ctx.settings.automatic_transmission;
         ctx.co_driver_away = false;
+        ctx.sync_cue_mute();
         if std::mem::take(&mut ctx.co_driver_fast_forward) {
             ctx.apply_volumes();
         }
@@ -392,7 +400,14 @@ fn summon_line(name: &str, reason: &str) -> String {
         "fuel" => format!("{name} needs you. The tank is empty."),
         "off the road" => format!("{name} needs you. The truck has left the road."),
         "stalled" => format!("{name} needs you. The truck is stopped and will not go on."),
+        "money" => format!("{name} needs you. There is not enough money for fuel."),
         "break" => format!("{name} needs you back at the wheel. Their break is due."),
+        "roadside" => format!("{name} needs you. A trooper has the truck stopped."),
+        "parking" => format!("{name} needs you. The lot is full."),
+        "chains" => format!(
+            "{name} needs you. The chain checkpoint is holding the truck, and there are no chains aboard."
+        ),
+        "screen" | "stop" => format!("{name} has the truck stopped and needs you to choose what to do."),
         _ => format!("{name} needs you to decide this one."),
     }
 }
@@ -443,7 +458,12 @@ fn wake_summary(name: &str, log: &ShiftLog, ctx: &GameContext) -> String {
         drove.push_str(&format!(" and fueled at {stop}"));
     }
     drove.push('.');
-    format!("{slept} {drove}")
+    let mut summary = format!("{slept} {drove}");
+    for note in &log.notes {
+        summary.push(' ');
+        summary.push_str(note);
+    }
+    summary
 }
 
 impl DrivingState {

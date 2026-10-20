@@ -3,6 +3,7 @@
 //! a stop or a pause, who owns the exit key, and the screening draw at the
 //! scale house.
 
+use ff_core::models::business::has_weigh_station_transponder;
 use ff_core::models::safety_record::{
     inspection_selection_chance, refresh_selection_score, safety_record_text,
 };
@@ -72,6 +73,44 @@ impl DrivingState {
             }
         }
         best
+    }
+
+    /// Whether this open scale wants the truck in. A transponder's green
+    /// light clears it past (rolled here if the notice has not rolled it
+    /// yet: the verdict is seeded and stored, so it is the same one the
+    /// notice speaks); a red light, or no transponder, means pull in.
+    pub fn scale_wants_truck(&mut self, ctx: &GameContext, stop: &RoadStop) -> bool {
+        let transponder = ctx
+            .profile
+            .as_ref()
+            .is_some_and(has_weigh_station_transponder);
+        if !transponder {
+            return true;
+        }
+        let key = self.weigh_station_key(stop);
+        self.roll_transponder_verdict(stop, &key) != "green"
+    }
+
+    /// The nearest open scale strictly ahead that wants the truck in: the
+    /// one the exit key and the co-driver answer to. A scale the
+    /// transponder cleared is passed on the highway, as the rules allow.
+    pub fn check_in_scale_ahead(
+        &mut self,
+        ctx: &GameContext,
+        within_mi: f64,
+    ) -> Option<(RoadStop, f64)> {
+        let mut scales: Vec<(RoadStop, f64)> = self
+            .trip
+            .stops
+            .iter()
+            .filter(|stop| stop.stop_type == "weigh_station" && self.scale_is_open(stop))
+            .map(|stop| (stop.clone(), stop.at_mi - self.trip.position_mi))
+            .filter(|(_, ahead)| 0.0 < *ahead && *ahead <= within_mi)
+            .collect();
+        scales.sort_by(|a, b| a.1.total_cmp(&b.1));
+        scales
+            .into_iter()
+            .find(|(stop, _)| self.scale_wants_truck(ctx, stop))
     }
 
     /// How far out the last reminder speaks, sized in real seconds.
@@ -364,7 +403,7 @@ impl DrivingState {
         let window = self
             .scale_notice_lookahead_mi(ctx)
             .max(self.exit_window_mi());
-        let Some((stop, ahead)) = self.open_scale_ahead(window) else {
+        let Some((stop, ahead)) = self.check_in_scale_ahead(ctx, window) else {
             return false;
         };
         let distance = ctx.settings.distance_text(ahead, true);
@@ -394,7 +433,8 @@ impl DrivingState {
         if self.enforcement_bypassed(ctx) {
             return None;
         }
-        let (scale, _) = self.open_scale_ahead(self.exit_window_mi())?;
+        let window = self.exit_window_mi();
+        let (scale, _) = self.check_in_scale_ahead(ctx, window)?;
         match stop {
             // nothing outranked; the normal arming handles it
             None => None,

@@ -5866,6 +5866,9 @@ msgstr "一般"
 msgid "Event"
 msgstr "イベント"
 
+msgid "Co-driver"
+msgstr ""
+
 #. placeholders: {label}, {grouped}
 msgid "{label} {grouped} dollars"
 msgstr "{label} {grouped}ドル"
@@ -26796,6 +26799,45 @@ msgstr ""
 "居眠りで道路から外れたのは、{times_now_text}です。疲労による運転は連邦の違反なので、今回は評判が{f}ポイント下がるうえに、免許にも違反"
 "として数えられます。{serious_violation_text}"
 
+msgid "roadside"
+msgstr "路肩"
+
+#. placeholders: {name}
+#. one sentence of a longer line
+msgid "A trooper pulled {name} over."
+msgstr ""
+
+#. placeholders: {name}, {outcome}
+msgid "A trooper pulled {name} over. {outcome}"
+msgstr ""
+
+msgid "lets you off"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} off"
+msgstr ""
+
+msgid "lets you go"
+msgstr ""
+
+#. placeholders: {name}
+msgid "lets {name} go"
+msgstr ""
+
+msgid "You pulled over promptly"
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} pulled over promptly"
+msgstr ""
+
+msgid "waves the truck through"
+msgstr ""
+
+msgid "waves you through"
+msgstr ""
+
 msgid "over"
 msgstr "超過"
 
@@ -28679,12 +28721,51 @@ msgid "{name} needs you. The truck is stopped and will not go on."
 msgstr "{name}が呼んでいます。トラックが止まって、先へ進めません。"
 
 #. one sentence of a longer line
+msgid "There is not enough money for fuel."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you. There is not enough money for fuel."
+msgstr ""
+
+#. one sentence of a longer line
 msgid "Their break is due."
 msgstr "休憩の時間です。"
 
 #. placeholders: {name}
 msgid "{name} needs you back at the wheel. Their break is due."
 msgstr "{name}が運転を代わってほしいそうです。休憩の時間です。"
+
+#. one sentence of a longer line
+msgid "A trooper has the truck stopped."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you. A trooper has the truck stopped."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The lot is full."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} needs you. The lot is full."
+msgstr ""
+
+#. one sentence of a longer line
+msgid ""
+"The chain checkpoint is holding the truck, and there are no chains aboard."
+msgstr ""
+
+#. placeholders: {name}
+msgid ""
+"{name} needs you. The chain checkpoint is holding the truck, and there are "
+"no chains aboard."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} has the truck stopped and needs you to choose what to do."
+msgstr ""
 
 #. placeholders: {name}
 msgid "{name} needs you to decide this one."
@@ -28791,8 +28872,39 @@ msgstr "{name}にハンドルを任せ、眠る"
 msgid "You have the wheel."
 msgstr "ハンドルを握りました。"
 
-msgid "roadside"
-msgstr "路肩"
+msgid "for fuel"
+msgstr ""
+
+msgid "for their 30-minute break"
+msgstr ""
+
+msgid "to park and hand you the wheel"
+msgstr ""
+
+msgid "to park for the end of their shift"
+msgstr ""
+
+#. placeholders: {name}, {place}, {distance}, {why}
+msgid "{name} plans to stop at {place} in {distance}, {why}."
+msgstr ""
+
+#. placeholders: {capitalize}
+msgid "{capitalize} got across ahead of the truck."
+msgstr ""
+
+#. placeholders: {name}
+msgid "{name} put the chains on at the checkpoint."
+msgstr ""
+
+#. placeholders: {name}, {animal}
+#. one sentence of a longer line
+msgid "{name} drove on after a collision with {animal}."
+msgstr ""
+
+#. placeholders: {name}, {animal}, {damage}
+msgid ""
+"{name} drove on after a collision with {animal}. Damage {damage} percent."
+msgstr ""
 
 msgid "shift"
 msgstr "交代"
@@ -28908,6 +29020,34 @@ msgstr ""
 
 #. placeholders: {name}, {place}
 msgid "{name} stopped at {place}."
+msgstr ""
+
+#. one sentence of a longer line
+msgid "The inspection decal got the truck waved through."
+msgstr ""
+
+#. placeholders: {name}, {place}
+#. one sentence of a longer line
+msgid "{name} checked in at {place}."
+msgstr ""
+
+#. placeholders: {name}, {place}
+msgid ""
+"{name} checked in at {place}. The inspection decal got the truck waved "
+"through."
+msgstr ""
+
+#. placeholders: {name}, {place}
+msgid "{name} checked in at {place} and was waved through."
+msgstr ""
+
+#. placeholders: {name}, {place}
+#. one sentence of a longer line
+msgid "{name} was pulled in for an inspection at {place}."
+msgstr ""
+
+#. placeholders: {name}, {place}, {outcome}
+msgid "{name} was pulled in for an inspection at {place}. {outcome}"
 msgstr ""
 
 msgid "the next street"
@@ -29423,6 +29563,10 @@ msgstr "リマインダーは{weigh_station_reminder_age_s}実時間秒前のみ
 msgid "never announced"
 msgstr "案内なし"
 
+#. placeholders: {name}, {name2}
+msgid "The transponder cleared {name} past {name2}."
+msgstr ""
+
 msgid "Green light. Cleared past the scale."
 msgstr "青信号。計量所を通過できます。"
 
@@ -29632,6 +29776,15 @@ msgstr "前方に{length}{pct}パーセントの{direction}。{advice}"
 #. placeholders: {hazard_names_text}
 msgid "The horn does it, {hazard_names_text} clears the road."
 msgstr "クラクションが効きました。{hazard_names_text}が道を空けます。"
+
+#. placeholders: {struck}
+#. one sentence of a longer line
+msgid "Collision with {struck}."
+msgstr ""
+
+#. placeholders: {struck}, {damage}
+msgid "Collision with {struck}. Damage {damage} percent."
+msgstr ""
 
 #. placeholders: {names}, {names2}
 msgid "{names} and {names2}"

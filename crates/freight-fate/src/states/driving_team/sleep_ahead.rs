@@ -50,6 +50,9 @@ pub struct Jump {
     pub minutes: f64,
 }
 
+/// A slept-through stretch ends before the tank goes under this share.
+const SLEEP_FUEL_RESERVE_FRACTION: f64 = 0.05;
+
 impl DrivingState {
     /// The player is asleep and the co-driver has the wheel, with nothing
     /// handed back yet.
@@ -97,6 +100,14 @@ impl DrivingState {
         // and looping back: driven live.
         let exit = self.destination_exit_stop(ctx)?;
         limit = limit.min(exit.at_mi - window - STOP_LEAD_MI);
+        // An open scale that wants the truck in is driven live, so the
+        // co-driver checks in there as they would awake; one the
+        // transponder clears is passed in the jump.
+        if !self.enforcement_bypassed(ctx) {
+            if let Some((scale, _)) = self.check_in_scale_ahead(ctx, limit - here + window) {
+                limit = limit.min(scale.at_mi - window - STOP_LEAD_MI);
+            }
+        }
         // A chain-law area is the checkpoint's to judge, live.
         let mut mile = here;
         while mile < limit {
@@ -146,6 +157,13 @@ impl DrivingState {
         let mut mile = start;
         let mut minutes = 0.0;
         while mile < limit {
+            // Whatever the walk was for, it never carries the truck onto
+            // its last few gallons: the rest is driven live, where a fuel
+            // stop is planned or the player is woken for it. Judged before
+            // the step, so a tank already in the reserve jumps nowhere.
+            if fuel / tank < SLEEP_FUEL_RESERVE_FRACTION {
+                break;
+            }
             let step = STEP_MI.min(limit - mile);
             let (posted, _) = self.trip.speed_limit_at(mile);
             let mph = (posted * CRUISE_SHARE).max(FLOOR_MPH);
@@ -263,7 +281,7 @@ impl DrivingState {
     }
 
     /// Whether the lot at `stop` is full when the truck gets there.
-    fn sleep_lot_full(&self, stop: &RoadStop) -> bool {
+    pub(crate) fn lot_full_now(&self, stop: &RoadStop) -> bool {
         stop.actions.iter().any(|action| action == "sleep")
             && hos::parking_is_full(
                 self.trip_seed,
@@ -302,7 +320,7 @@ impl DrivingState {
         }
         stops
             .iter()
-            .find(|stop| !self.sleep_lot_full(stop))
+            .find(|stop| !self.lot_full_now(stop))
             .or(stops.last())
             .map(|stop| (*stop).clone())
     }
@@ -345,6 +363,11 @@ impl DrivingState {
             };
             // Another need coming due on the way is taken first.
             let jump = self.sleep_jump_walk(ctx, stop.at_mi, true);
+            // Short of the stop with nowhere left to jump (the fuel reserve):
+            // the live drive takes it from here.
+            if jump.miles < MIN_JUMP_MI && self.trip.position_mi + jump.miles < stop.at_mi - 0.01 {
+                break;
+            }
             self.sleep_apply_jump(ctx, jump);
             total.miles += jump.miles;
             total.minutes += jump.minutes;

@@ -97,6 +97,11 @@
 - **The carrier shop now repairs a company tractor at 40 percent damage before the next load.** It takes an hour on duty.
 - **Sleeping through a co-driver's shift no longer makes you wait.** The shift passes in moments, and you wake parked at a stop with the summary.
 - **A co-driver fuels and takes breaks without walking the stop's menu.** You hear the pump, and the stop is listed in your messages.
+- **A co-driver works weigh stations, troopers and full lots without any menu.** With a green transponder light they roll on past the scale.
+- **Riding along, you hear what the co-driver does and why.** Their plans, stops, fines and the hazards they meet are under Co-driver in your messages.
+- **Lane keeping on full now changes lanes around debris and cars on the shoulder instead of braking.** It moves back once the truck is past.
+- **Automatic braking slows firmly for an animal instead of stopping, and never swerves.** The call just names the animal; a slower truck strikes fewer.
+- **Automatic braking slows less for wind, hail, fog and things it cannot go around.** It brakes to a safe speed for the conditions, not 25 miles per hour.
 - **The Language setting names each language in English, then in that language.** For example, Spanish (Español).
 - **Windows and Mac updates download much less when the music and radio packs are unchanged.** After this one, most are about 35 megabytes instead of 531.
 - **The game uses several hundred megabytes less memory.** Music loads one track at a time instead of all at launch. Thanks to Pranav435 ([PR 441](https://github.com/orinks-games/Freight-Fate/pull/441)).
@@ -195,6 +200,10 @@
 ### Fixed
 
 - **A co-driver no longer pulls into a second stop after fuelling at the first.** They keep a stop you planned when it suits them.
+- **You no longer hear the co-driver's menu sounds.**
+- **A co-driver no longer hands you the wheel for damage from before their shift.**
+- **A co-driver no longer speeds up toward a hazard or past the weather's safe speed.**
+- **A co-driver puts the chains on at a chain checkpoint.** With no set aboard, they wake you.
 - **A co-driver plans their break earlier.** A full lot no longer leaves them out of time and handing you the wheel.
 - **The delivery summary lists the co-driver's share of the pay.** It is read just before your net pay.
 - **Dispatch says a roadwork closure once when it covers several stretches.** It names how many places instead of repeating the same closure.

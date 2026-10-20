@@ -66,7 +66,14 @@ pub struct Pilot {
     pub rested: bool,
     /// Seconds spent on the accelerator with speed control off.
     pub accel_s: f64,
+    /// Seconds a hand-back has waited for the truck to come home from the
+    /// passing lane.
+    pub handback_wait_s: f64,
 }
+
+/// The longest a hand-back waits for the passing lane to clear. Traffic
+/// that keeps the right lane shut is no reason to drive on past a break.
+const HANDBACK_WAIT_MAX_S: f64 = 30.0;
 
 /// Whether `stop` serves what the co-driver is stopping for.
 pub(crate) fn stop_serves(stop: &RoadStop, purpose: StopPurpose) -> bool {
@@ -132,7 +139,19 @@ impl DrivingState {
         let mut pedals = Pedals::default();
         let speed = self.trip.truck.speed_mph();
         if let Some(reason) = self.pilot_boundary(ctx, pilot) {
-            return Err(reason);
+            // Out in the passing lane, or moving between lanes, the hand-back
+            // waits until lane keeping has the truck home, so the player
+            // does not take the wheel beside what was just gone around.
+            // Damage, fuel and leaving the road do not wait, and nothing
+            // waits longer than `HANDBACK_WAIT_MAX_S`.
+            let urgent = matches!(reason.as_str(), "damage" | "fuel" | "off the road");
+            let mid_pass = self.passing.is_some() || self.lane_change_target.is_some();
+            pilot.handback_wait_s += dt;
+            if urgent || !mid_pass || pilot.handback_wait_s >= HANDBACK_WAIT_MAX_S {
+                return Err(reason);
+            }
+        } else {
+            pilot.handback_wait_s = 0.0;
         }
         if speed < 1.0 {
             pilot.stalled_s += dt;
@@ -163,6 +182,21 @@ impl DrivingState {
         if speed <= DOCKING_MAX_MPH && self.pilot_at_stop_entrance() {
             if pilot.beat_s == 0.0 {
                 self.pilot_press(ctx, pilot, Action::Rest);
+            }
+            pedals.brake = speed > 0.5;
+            return Ok(pedals);
+        }
+
+        // Held at a chain checkpoint: chains on if there is a set aboard,
+        // the way the pause menu puts them on. With none, the player decides
+        // between waiting, a set from dispatch, or turning back.
+        if self.chain_checkpoint_hold {
+            if !self.usable_chains_aboard(ctx) {
+                return Err("chains".to_string());
+            }
+            if speed <= 3.0 && pilot.beat_s == 0.0 {
+                self.co_driver_chain_up(ctx);
+                pilot.beat_s = KEY_BEAT_S;
             }
             pedals.brake = speed > 0.5;
             return Ok(pedals);
@@ -199,7 +233,18 @@ impl DrivingState {
         // window: signal for it.
         if !self.exit_signal_on && self.ramp_mi.is_none() && pilot.beat_s == 0.0 {
             let window = self.exit_window_mi();
-            let scale = !self.enforcement_bypassed(ctx) && self.open_scale_ahead(window).is_some();
+            // A scale the transponder cleared is passed on the highway.
+            let scale = (!self.enforcement_bypassed(ctx))
+                .then(|| self.check_in_scale_ahead(ctx, window))
+                .flatten();
+            if let Some((stop, _)) = &scale {
+                // Armed for that scale by name: the nearest stop of any
+                // kind (a rest area, a closed scale) is not it.
+                if self.selected_rest_stop().is_none() {
+                    self.exit_stop = Some(stop.clone());
+                }
+            }
+            let scale = scale.is_some();
             let planned = self.selected_rest_stop().is_some_and(|stop| {
                 let ahead = stop.at_mi - self.trip.position_mi;
                 ahead > 0.0 && ahead <= window
@@ -213,7 +258,10 @@ impl DrivingState {
         if let Some(closed) = self.closed_lane_here() {
             if closed == self.lane.lane && self.lane_change_target.is_none() && pilot.beat_s == 0.0
             {
-                if let Some(open) = self.open_lane_beside(closed) {
+                if let Some(open) = self
+                    .open_lane_beside(closed)
+                    .filter(|&open| self.lane_gap_open(open))
+                {
                     let toward = if open > closed {
                         Action::SteerLeft
                     } else {
@@ -227,14 +275,31 @@ impl DrivingState {
         // Speed control does the driving. The co-driver brings the truck up
         // near the posted limit, sets the cruise there, and taps the set
         // speed up when the limit rises.
-        let (limit, zone) = self.trip.speed_limit_at(self.trip.position_mi);
+        let (posted, zone) = self.trip.speed_limit_at(self.trip.position_mi);
+        // In weather that takes grip or sight, the co-driver brings the
+        // truck up to what the weather allows, not the posted limit, the
+        // same cap the cruise holds: pressing on to the limit only had the
+        // cruise brake it back down.
+        let effects = self.trip.weather.effects();
+        let limit = if effects.is_adverse() {
+            posted.min(effects.safe_speed_mph)
+        } else {
+            posted
+        };
         let near_limit = speed >= (limit - CRUISE_SET_MARGIN_MPH).max(3.0);
         let armed = self.keeper_mph.is_some() || self.cruise_mph.is_some();
         // A light, sign or yield the assist has taken, or a deceleration
         // lane it is braking down, is left to it: a foot on the
         // accelerator overrides its brakes, and the truck ran the red at
         // the ramp's end.
-        let assist_has_pedals = self.terminal_assist_owns(ctx) || self.decel_lane_brake > 0.0;
+        // A chain stop the assist is braking for, or a hazard it may brake
+        // for, is no time for a foot on the accelerator either: it held the
+        // truck off the chain-up stop, and drove it toward the hazard until
+        // the automatic brake took over.
+        let assist_has_pedals = self.terminal_assist_owns(ctx)
+            || self.decel_lane_brake > 0.0
+            || self.chain_stop.is_some()
+            || self.hazard_deadline.is_some();
         if assist_has_pedals {
             // Waiting at the bar is not a stall.
             pilot.accel_s = 0.0;
@@ -377,6 +442,7 @@ impl DrivingState {
             "[co-driver] makes for {} ({purpose:?})",
             stop.spoken_name()
         );
+        self.co_driver_note_plan(ctx, &stop.spoken_name(), stop.at_mi - here, purpose);
         self.trip.planned_stop_key = Some(stop.key());
         self.selected_stop_key = Some(stop.key());
         self.selected_stop_break = false;
@@ -457,7 +523,12 @@ impl DrivingState {
     /// Something only the driver can decide, or nothing the co-driver can
     /// do: the reason they hand back.
     fn pilot_boundary(&self, ctx: &GameContext, pilot: &Pilot) -> Option<String> {
-        if self.trip.truck.damage_pct > self.start_damage + 0.5 {
+        let seen = self
+            .team
+            .as_ref()
+            .and_then(|team| team.wheel.as_ref())
+            .map_or(self.start_damage, |wheel| wheel.damage_seen);
+        if self.trip.truck.damage_pct > seen + 0.5 {
             return Some("damage".to_string());
         }
         if self.trip.truck.fuel_gal <= 0.0 {

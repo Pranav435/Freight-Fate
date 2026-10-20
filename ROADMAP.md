@@ -91,6 +91,29 @@ bookmarks usable.
       summary is his to do. Career stats gains a Co-drivers list once a
       career has teamed (2026-10-19): each classmate's loads together, the
       owner-operator's hire, and their bio, read only when opened.
+- [x] Co-driver and assist realism (owner, 2026-10-19): lane keeping on
+      full goes around anything sitting in the lane (debris, a car on the
+      shoulder, a closure) when a lane is open, and holds
+      the passing lane until the truck is by it. Automatic braking slows
+      firmly in the lane for an animal, to 35, never swerving and never
+      with the emergency brake: the call names it and asks for nothing. A
+      truck still above 35 at the deadline takes a seeded roll, better the
+      slower it is going, for whether the animal got across or was struck
+      (damage by the animal's size and the truck's speed). In
+      weather that takes grip or sight, things that cover the road brake to
+      the weather's safe speed less five (floor 25, ceiling 45), and a
+      mattress, a tarp or standing water brake to
+      their own speed, not to 25. The co-driver skips every stop menu: a
+      green transponder verdict passes the scale, a red one or none is a
+      check-in worked without a screen, a trooper's stop is settled and
+      noted, a full lot is driven on from, and chains go on at a
+      checkpoint. Their menu sounds are muted. What they do goes to a
+      Co-driver category in the message review; riding along, the player
+      hears it and the hazard calls, and asleep, the fines, inspections
+      and strikes ride the wake-up summary. Their pedals stay off while a
+      hazard or a chain stop is live, they bring the truck up to the
+      weather's safe speed rather than the posted limit, and damage is
+      measured from the handover, not the trip's start.
 - [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
       `music.pak` opens like `channel3000.pak`, reading only its directory
       at launch and each track from its offset when it starts; `sounds.pak`
@@ -649,6 +672,22 @@ Everything found before 2026-09-25 moved to
       out makes no sound, and quiet says cruise, keeper and work zone
       updates short. Urgent only now says when a work zone turns cruise off.
 - [ ] A listening pass by the owner at quiet and urgent only, at the wheel.
+- [ ] A listening pass by the owner on a ride-along shift: the co-driver's
+      notes, the hazard calls, and how often they speak.
+- [ ] The co-driver ignores descent control's "can't hold this grade.
+      Brake." and keeps gaining speed; their brake would cancel the
+      cruise that holds the grade, so it needs its own snub (2026-10-19).
+- [ ] The co-driver hands back for the end of their hours, an overdue
+      break or damage at highway speed. A real swap happens parked; the
+      game has no shoulder pull-over to make it there yet (2026-10-19).
+- [ ] A slept-through stretch judges whether a scale ahead is open at the
+      time the jump starts, not when the truck would reach it (2026-10-19).
+- [ ] How far past a lane closure the truck stays out is chosen by the
+      closure's name; it belongs on the hazard row as a length, so a new
+      long hazard (a spill, a work zone) gets it too (2026-10-19).
+- [ ] The agent server's `start_at` resets the clock a `scenario` set
+      (asked for 10 PM, staged at 8 AM), and nothing stages a road hazard,
+      so a deer or debris call can only be waited for (2026-10-19).
 - [x] Achievement sweep (owner, 2026-10-09): four badges whose triggers
       had fallen behind the map or the job board now match them.
 - [x] Driver window and cab climate (player report, 2026-10-17); see

@@ -149,6 +149,7 @@ fn test_the_hazard_budget_leaves_the_driver_their_own_window() {
             dodgeable: false,
             in_lane: true,
             lead_mph: None,
+            brake_to_mph: None,
         }),
     );
     assert!(
@@ -161,6 +162,7 @@ fn test_the_hazard_budget_leaves_the_driver_their_own_window() {
             dodgeable: true,
             in_lane: true,
             lead_mph: None,
+            brake_to_mph: None,
         }),
     );
     assert!((dodgeable - (in_lane_only + LANE_TAP_CHANGE_S)).abs() < 1e-9);
