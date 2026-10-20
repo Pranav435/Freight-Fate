@@ -58,6 +58,13 @@ const DROP_IN_HEADWAY_S: f64 = 3.0;
 
 /// The rig, cab to trailer tail. The truck's position is its front bumper.
 const RIG_LENGTH_MI: f64 = 72.0 / 5280.0;
+/// Room past a thing gone around before the move back starts: the length of
+/// the move itself is already in the speed, so this is the thing's own
+/// length and a little air (a car on the shoulder, a closure's taper).
+const PASS_CLEAR_MARGIN_MI: f64 = 200.0 / 5280.0;
+/// A sudden lane closure runs on past where it was seen: its cones, then a
+/// work area. A short closure's length, kept clear of before moving back.
+const CLOSURE_CLEAR_MI: f64 = 0.5;
 
 /// A traffic vehicle's real length, by kind. `TrafficVehicle::length_mi` is
 /// a quarter mile for every vehicle, a deliberately wide footprint the
@@ -262,19 +269,26 @@ impl DrivingState {
         );
     }
 
-    // -- full lane keeping passes a slow vehicle -------------------------------
+    // -- full lane keeping goes around what is in the lane --------------------
 
-    /// Lane keeping on full passes a slow vehicle the hazard call names, into
-    /// the lane the call found open, instead of braking to its speed behind
+    /// Lane keeping on full answers a hazard confined to the truck's lane by
+    /// changing into the lane the call found open, instead of braking for
     /// it: the truck is the one steering, so it takes the gap a driver would
-    /// (owner ruling, 2026-10-01). Only a vehicle ahead -- debris and the
-    /// like stay the driver's call -- and not in the two miles where the
-    /// truck is lining up for its own exit. Returns whether the pass began,
-    /// so the call can say so.
+    /// (owner ruling, 2026-10-01, for a slow vehicle). A ladder, a tire
+    /// carcass or a car on the shoulder is gone around the same way (owner,
+    /// 2026-10-19: "go around things by lane changing as much as
+    /// possible"); braking is what is left when no lane is open.
+    ///
+    /// A slow vehicle is still followed in the two miles where the truck is
+    /// lining up for its own exit, since matching its speed costs little. A
+    /// thing sitting in the lane is not: braking for it there is a near stop,
+    /// so it is gone around unless the exit is too close to get back for.
+    /// Returns whether the change began, so the call can say so.
     pub fn pass_for_hazard(&mut self, ctx: &GameContext, event: &TripEvent) -> bool {
+        let vehicle = event.data.traffic.is_some();
         if !ctx.settings.lane_is_automated()
-            || event.data.traffic.is_none()
-            || self.lining_up_for_exit()
+            || (vehicle && self.lining_up_for_exit())
+            || (!vehicle && self.too_close_to_exit_to_pass())
             || !self.lane_keeping_may_change_lanes()
         {
             return false;
@@ -285,7 +299,34 @@ impl DrivingState {
         let home = self.lane.lane;
         self.begin_lane_change(home + step);
         self.passing = Some((home, home + step));
+        // A thing in the lane stays where it is: the truck holds the passing
+        // lane until its whole length is by it.
+        self.pass_clear_mi = (!vehicle).then(|| {
+            let ahead_s = self.hazard_deadline.unwrap_or(0.0).max(LANE_TAP_CHANGE_S);
+            self.trip.position_mi
+                + self.trip.truck.speed_mph() * ahead_s / 3600.0
+                + RIG_LENGTH_MI
+                + if event.data.name.as_deref() == Some("the lane closure") {
+                    CLOSURE_CLEAR_MI
+                } else {
+                    PASS_CLEAR_MARGIN_MI
+                }
+        });
         true
+    }
+
+    /// Whether an armed exit is so close that a lane change out and back,
+    /// and the taper, no longer fit before it.
+    fn too_close_to_exit_to_pass(&self) -> bool {
+        if !self.lining_up_for_exit() {
+            return false;
+        }
+        let Some(stop) = self.exit_stop.as_ref() else {
+            return false;
+        };
+        let ahead = stop.at_mi - self.trip.position_mi;
+        let out_and_back_mi = 2.0 * LANE_TAP_CHANGE_S * self.trip.truck.speed_mph() / 3600.0;
+        ahead < out_and_back_mi + EXIT_TAPER_MI + PASS_CLEAR_MARGIN_MI
     }
 
     /// Back into the lane a pass left once the vehicle passed is behind and
@@ -313,14 +354,24 @@ impl DrivingState {
             || home >= self.lane.lane_count
         {
             self.passing = None;
+            self.pass_clear_mi = None;
             return;
         }
+        let beside_it = self
+            .pass_clear_mi
+            .is_some_and(|clear| self.trip.position_mi < clear);
+        if beside_it {
+            // Still beside what it went around: the left lane is excused.
+            self.keep_right_excused_s = KEEP_RIGHT_EXCUSE_S;
+        }
         if self.hazard_deadline.is_some()
+            || beside_it
             || !self.lane_keeping_may_change_lanes()
             || Some(home) == self.closed_lane_here()
         {
             return;
         }
+        self.pass_clear_mi = None;
         if !self.pass_return_open(home) {
             // Held by traffic, which is lane keeping's call and not the
             // driver's: the left lane is excused while it lasts.

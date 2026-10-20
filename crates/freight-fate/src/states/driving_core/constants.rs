@@ -10,10 +10,23 @@ use ff_core::sim::trip_models::{
 };
 
 pub const HAZARD_SAFE_MPH: f64 = 25.0;
+// Weather that spans the road (a gust, fog, a squall) is braked for down to
+// the speed the weather is safe at, this far under it, and never higher than
+// the second figure: assumed values, a margin a driver keeps rather than a
+// measurement.
+pub const HAZARD_WEATHER_MARGIN_MPH: f64 = 5.0;
+pub const HAZARD_SPANNING_MAX_MPH: f64 = 45.0;
 // A fixed object in your lane -- debris, a stopped vehicle -- cannot be
 // rolled over at 25: clearing it by brake alone means coming nearly to a
 // stop and easing around. A lane change remains the no-time-lost answer.
 pub const HAZARD_CREEP_MPH: f64 = 8.0;
+// An animal struck at 65 mph, in truck damage points. Assumed, not
+// measured: a deer or a dog dents the bumper and grille of a tractor built
+// to shrug it off; an elk or a cow can take out the radiator. Scaled by the
+// truck's speed in `animal_outcome`.
+pub const ANIMAL_STRIKE_LARGE_PCT: f64 = 6.0;
+pub const ANIMAL_STRIKE_DEER_PCT: f64 = 3.0;
+pub const ANIMAL_STRIKE_SMALL_PCT: f64 = 1.0;
 pub const MPH_PER_MPS: f64 = 2.23694;
 
 // Roadside mechanic: a field patch, not a garage restoration.

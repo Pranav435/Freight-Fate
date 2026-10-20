@@ -6,23 +6,29 @@
 //! or (on a Mac) entirely covered. The window used to be cleared and
 //! presented sixty times a second whether anything changed or not.
 
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "visuals"))]
 use std::time::Instant;
 
+#[cfg(feature = "visuals")]
 use std::sync::Arc;
 
+#[cfg(feature = "visuals")]
 use ff_core::l10n::Translator;
+#[cfg(feature = "visuals")]
 use ff_core::message_log::MessageLog;
 use sdl2::event::WindowEvent;
 use sdl2::pixels::Color;
 
+#[cfg(feature = "visuals")]
 use crate::visuals::{Scene, Visuals};
 
-use super::super::{BG_COLOR, WINDOW_SIZE};
+use super::super::BG_COLOR;
+#[cfg(feature = "visuals")]
+use super::super::WINDOW_SIZE;
 use super::SdlShell;
 
 /// How often a Mac asks AppKit whether the window is covered.
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "visuals"))]
 const OCCLUSION_POLL: std::time::Duration = std::time::Duration::from_millis(500);
 
 impl SdlShell {
@@ -44,8 +50,11 @@ impl SdlShell {
         }
     }
 
-    /// Whether drawing this frame could be seen at all. On a Mac this also
-    /// asks AppKit, twice a second, whether the window is covered.
+    /// Whether drawing the visual display this frame could be seen at all.
+    /// On a Mac this also asks AppKit, at most twice a second, whether the
+    /// window is covered. Only the visual display asks: it is the one thing
+    /// drawn frame after frame, and the plain fill is not.
+    #[cfg(feature = "visuals")]
     pub fn can_be_seen(&mut self) -> bool {
         if self.hidden {
             return false;
@@ -57,18 +66,18 @@ impl SdlShell {
         !self.covered()
     }
 
-    #[cfg(target_os = "macos")]
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
     fn covered(&self) -> bool {
         self.occluded
     }
 
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(all(not(target_os = "macos"), feature = "visuals"))]
     fn covered(&self) -> bool {
         false
     }
 
     /// Ask AppKit, at most twice a second, whether the window is covered.
-    #[cfg(target_os = "macos")]
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
     fn check_occlusion(&mut self) {
         let now = Instant::now();
         if self
@@ -94,9 +103,11 @@ impl SdlShell {
         self.occluded = covered;
     }
 
-    /// The visual display off: the plain dark fill, presented only when the
-    /// window needs repainting rather than every frame.
+    /// The visual display off (or left out of the build): the plain dark
+    /// fill, presented only when the window needs repainting rather than
+    /// every frame.
     pub fn render_plain(&mut self) {
+        #[cfg(feature = "visuals")]
         if self.showing_visuals {
             self.showing_visuals = false;
             self.redraw = true;
@@ -104,7 +115,9 @@ impl SdlShell {
             // back on builds them again.
             self.visuals = None;
         }
-        if !self.redraw || !self.can_be_seen() {
+        // Presented only when the window needs repainting, so whether it is
+        // covered is not worth asking AppKit.
+        if !self.redraw || self.hidden {
             return;
         }
         self.redraw = false;
@@ -115,6 +128,7 @@ impl SdlShell {
     }
 
     /// Draw the visual display for `scene`, if it changed or must be redrawn.
+    #[cfg(feature = "visuals")]
     pub fn render_scene(&mut self, scene: Scene, log: &MessageLog, translator: &Arc<Translator>) {
         if !self.showing_visuals {
             self.showing_visuals = true;
@@ -153,31 +167,23 @@ impl SdlShell {
 /// Asking AppKit whether the game window is covered. SDL 2.26 never
 /// reports a window hidden behind others, and drawing one costs the same
 /// as drawing a visible one.
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "visuals"))]
 mod mac_window {
-    use std::ffi::{c_char, c_void};
-
+    use objc2_app_kit::{NSWindow, NSWindowOcclusionState};
     use sdl2::sys::{SDL_GetVersion, SDL_GetWindowWMInfo, SDL_SysWMinfo, SDL_bool, SDL_SYSWM_TYPE};
-
-    #[link(name = "objc", kind = "dylib")]
-    extern "C" {
-        fn sel_registerName(name: *const c_char) -> *mut c_void;
-        fn objc_msgSend();
-    }
-
-    type SendUInt = unsafe extern "C" fn(*mut c_void, *mut c_void) -> usize;
-    /// `NSWindowOcclusionStateVisible`.
-    const VISIBLE: usize = 1 << 1;
 
     /// The window's `NSWindow`, from SDL's own window-manager info. Not the
     /// sdl2 crate's raw window handle: on a Mac that panics unless the
     /// window was built with a Metal view.
-    fn ns_window(window: &sdl2::video::Window) -> Option<*mut c_void> {
+    fn ns_window(window: &sdl2::video::Window) -> Option<&NSWindow> {
         // SAFETY: `SDL_SysWMinfo` is plain C data for which all-zero is the
         // empty value; SDL fills it for this live window, and the version
         // is the linked library's, as SDL requires. On Cocoa the info union
         // holds `struct { NSWindow *window; }`, so its first bytes are the
-        // window pointer; the bindings only name the union's raw bytes.
+        // window pointer; the bindings only name the union's raw bytes. SDL
+        // holds that NSWindow until the SDL window is destroyed, which
+        // cannot happen while `window` is borrowed, and the game loop runs
+        // on the main thread that created it, as AppKit requires.
         unsafe {
             let mut info: SDL_SysWMinfo = std::mem::zeroed();
             SDL_GetVersion(&mut info.version);
@@ -186,24 +192,14 @@ mod mac_window {
             {
                 return None;
             }
-            let ptr = std::ptr::read_unaligned(info.info.dummy.as_ptr().cast::<*mut c_void>());
-            (!ptr.is_null()).then_some(ptr)
+            let ptr = std::ptr::read_unaligned(info.info.dummy.as_ptr().cast::<*const NSWindow>());
+            ptr.as_ref()
         }
     }
 
     /// True when no part of the window can be seen.
     pub fn covered(window: &sdl2::video::Window) -> bool {
-        let Some(ns_window) = ns_window(window) else {
-            return false;
-        };
-        // SAFETY: `ns_window` is SDL's live NSWindow, used on the main thread
-        // where SDL created it. `objc_msgSend` is called through the exact
-        // signature of `-[NSWindow occlusionState]` (returns an
-        // NSUInteger), which is how it must be called on arm64.
-        unsafe {
-            let send_uint = std::mem::transmute::<unsafe extern "C" fn(), SendUInt>(objc_msgSend);
-            let state = send_uint(ns_window, sel_registerName(c"occlusionState".as_ptr()));
-            state & VISIBLE == 0
-        }
+        ns_window(window)
+            .is_some_and(|w| !w.occlusionState().contains(NSWindowOcclusionState::Visible))
     }
 }

@@ -139,6 +139,7 @@ mod states_driving_facility_approaches;
 mod states_driving_fuel_warning;
 mod states_driving_grades;
 mod states_driving_hazard_dodge;
+mod states_driving_hazard_realism;
 mod states_driving_hazards;
 mod states_driving_help_text;
 mod states_driving_hos;
@@ -169,6 +170,8 @@ mod states_driving_stop_menus;
 mod states_driving_street_controls;
 mod states_driving_team;
 mod states_driving_team_dock;
+mod states_driving_team_notes;
+mod states_driving_team_rest;
 mod states_driving_traffic_rate;
 mod states_driving_traffic_sounds;
 mod states_driving_trip_resume;
@@ -219,10 +222,14 @@ mod windows_subsystem;
 mod states_ramp_assist_control;
 mod states_ramp_signal_timing;
 
+#[cfg(feature = "visuals")]
 mod sighted_driver;
 mod states_driving_hos_planning;
 mod states_driving_hos_rest_stretch;
 mod states_driving_speech_modes;
+#[cfg(feature = "visuals")]
 mod visuals_frames;
+#[cfg(feature = "visuals")]
 mod visuals_l10n;
+#[cfg(feature = "visuals")]
 mod visuals_play;

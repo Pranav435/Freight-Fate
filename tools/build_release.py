@@ -14,9 +14,10 @@ Packages the Rust game and archives it for release:
 
 Run from the repository root: ``uv run python tools/build_release.py``
 
-The pipeline is ``cargo build --release -p freight-fate --no-default-features``
-(no agent server in a player build; ``--cargo-target-dir`` picks the Cargo
-target directory), then ``ff-bake``
+The pipeline is ``cargo build --release -p freight-fate --no-default-features
+--features visuals`` (no agent server in a player build, and the visual
+display named, since it is one of the defaults; ``--cargo-target-dir`` picks
+the Cargo target directory), then ``ff-bake``
 to turn the JSON data tree into ``world.ffdata``, then a ``FreightFate/``
 folder with the executable renamed to ``FreightFate``. On macOS it creates
 ``FreightFate.app`` with the executable under ``Contents/MacOS``, native
@@ -164,18 +165,6 @@ def stage_release_docs(build_dir: Path, root: Path | None = None) -> None:
         manual.read_text(encoding="utf-8"), title="Freight Fate Player Manual"
     )
     (root / "USER_MANUAL.html").write_text(manual_html, encoding="utf-8")
-
-    # The alpha test book travels with the build it describes. A tester who
-    # has to go find the current copy in the repo ends up working an old one,
-    # and its checklists are written against specific builds.
-    test_book = ROOT / "docs" / "alpha-test-book.md"
-    if not test_book.exists():
-        raise RuntimeError(f"Alpha test book was not found: {test_book}")
-    shutil.copy2(test_book, root / "ALPHA_TEST_BOOK.md")
-    test_book_html = _load_tool("manual_html").markdown_to_html(
-        test_book.read_text(encoding="utf-8"), title="Freight Fate Alpha Test Book"
-    )
-    (root / "ALPHA_TEST_BOOK.html").write_text(test_book_html, encoding="utf-8")
 
     # The translator's kit is its own release asset
     # (tools/translation_kit.py), not part of the game: a player never reads
@@ -700,8 +689,18 @@ def cargo_exe_name(platform_name: str = sys.platform) -> str:
 
 def cargo_build_command(target_dir: Path | None = None) -> list[str]:
     # No default features: the agent server (``--agent-server``) is dev
-    # tooling, and a player has no use for an agent at the wheel.
-    cmd = ["cargo", "build", "--release", "-p", RUST_PACKAGE, "--no-default-features"]
+    # tooling, and a player has no use for an agent at the wheel. The visual
+    # display is a default too, so it is named back in.
+    cmd = [
+        "cargo",
+        "build",
+        "--release",
+        "-p",
+        RUST_PACKAGE,
+        "--no-default-features",
+        "--features",
+        "visuals",
+    ]
     if target_dir is not None:
         cmd.extend(["--target-dir", str(target_dir)])
     return cmd
@@ -1326,8 +1325,6 @@ def verify_rust_payload(build_dir: Path, platform_name: str = sys.platform) -> N
         root / "CHANGELOG.md",
         root / "USER_MANUAL.md",
         root / "USER_MANUAL.html",
-        root / "ALPHA_TEST_BOOK.md",
-        root / "ALPHA_TEST_BOOK.html",
         root / "SOUND_CREDITS.md",
         root / "freight_fate" / "sounds.pak",
         root / "freight_fate" / "music.pak",

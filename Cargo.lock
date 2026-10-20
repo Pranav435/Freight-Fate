@@ -832,6 +832,7 @@ dependencies = [
  "keyring",
  "log",
  "memmap2",
+ "objc2-app-kit",
  "once_cell",
  "raw-window-handle",
  "regex",

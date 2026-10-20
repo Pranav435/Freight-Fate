@@ -27,7 +27,10 @@ use ureq::Agent;
 
 use ff_core::sim::real_traffic::{HttpTransport, TransportError};
 
+mod feeds;
 pub mod testing;
+
+pub use feeds::feed_error_text;
 
 // -- timeout tiers --------------------------------------------------------------
 
@@ -42,7 +45,12 @@ pub enum Tier {
     Orinks,
     /// GitHub releases API and asset downloads (`updater.TIMEOUT = 15`).
     GitHub,
-    /// Live weather and traffic feeds (`real_traffic.FETCH_TIMEOUT_S = 8`).
+    /// Live weather, traffic and parking feeds. Python's 8 seconds was a
+    /// per-socket-operation timeout; as a total deadline it also had to
+    /// cover DNS, connect and the Windows certificate chain check, and live
+    /// weather stayed unavailable on a machine where that ran long
+    /// (2026-10-19). The requests run off the game loop, so a longer bound
+    /// costs nothing while waiting.
     Feeds,
     /// A radio station suggestion: orinks.net plays the first seconds of the
     /// suggested stream and reads the shipped station list before it
@@ -58,7 +66,7 @@ impl Tier {
         match self {
             Tier::Orinks => 10.0,
             Tier::GitHub => 15.0,
-            Tier::Feeds => 8.0,
+            Tier::Feeds => 20.0,
             Tier::StationSuggestion => 45.0,
         }
     }
@@ -661,7 +669,11 @@ impl UreqTransport {
             .collect();
         match request(Tier::Feeds, method, url, body, &owned) {
             Ok(reply) => Ok(reply.body),
-            Err(e) => Err(TransportError::new(describe_error(&e))),
+            Err(e) => Err(TransportError::new(feed_error_text(
+                method.unwrap_or(if body.is_some() { "POST" } else { "GET" }),
+                url,
+                &e,
+            ))),
         }
     }
 }

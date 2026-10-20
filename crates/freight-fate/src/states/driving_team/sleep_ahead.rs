@@ -50,6 +50,9 @@ pub struct Jump {
     pub minutes: f64,
 }
 
+/// A slept-through stretch ends before the tank goes under this share.
+const SLEEP_FUEL_RESERVE_FRACTION: f64 = 0.05;
+
 impl DrivingState {
     /// The player is asleep and the co-driver has the wheel, with nothing
     /// handed back yet.
@@ -97,6 +100,14 @@ impl DrivingState {
         // and looping back: driven live.
         let exit = self.destination_exit_stop(ctx)?;
         limit = limit.min(exit.at_mi - window - STOP_LEAD_MI);
+        // An open scale that wants the truck in is driven live, so the
+        // co-driver checks in there as they would awake; one the
+        // transponder clears is passed in the jump.
+        if !self.enforcement_bypassed(ctx) {
+            if let Some((scale, _)) = self.check_in_scale_ahead(ctx, limit - here + window) {
+                limit = limit.min(scale.at_mi - window - STOP_LEAD_MI);
+            }
+        }
         // A chain-law area is the checkpoint's to judge, live.
         let mut mile = here;
         while mile < limit {
@@ -112,7 +123,7 @@ impl DrivingState {
     /// What the co-driver needs to stop for now, the way they plan it.
     fn sleep_need(&self, ctx: &GameContext) -> Option<StopPurpose> {
         let mode = &ctx.settings.hos_mode;
-        if co_driver::shift_over(hos_of(ctx), mode) {
+        if co_driver::shift_over(hos_of(ctx), mode) || self.player_rest_complete(ctx) {
             Some(StopPurpose::ShiftEnd)
         } else if co_driver::break_wanted(hos_of(ctx), mode) {
             Some(StopPurpose::Break)
@@ -136,11 +147,23 @@ impl DrivingState {
         let mut fuel = truck.fuel_gal;
         let fuel_due_at_start = fuel / tank < FUEL_STOP_FRACTION;
         let break_due_at_start = co_driver::break_wanted(&hos, &mode);
-        let shift_due_at_start = co_driver::shift_over(&hos, &mode);
+        let shift_due_at_start =
+            co_driver::shift_over(&hos, &mode) || self.player_rest_complete(ctx);
+        // The player's rest comes in this many minutes into the walk.
+        let rest_in_min = self
+            .player_rest_left_min(ctx)
+            .filter(|_| !shift_due_at_start);
         let start = self.trip.position_mi;
         let mut mile = start;
         let mut minutes = 0.0;
         while mile < limit {
+            // Whatever the walk was for, it never carries the truck onto
+            // its last few gallons: the rest is driven live, where a fuel
+            // stop is planned or the player is woken for it. Judged before
+            // the step, so a tank already in the reserve jumps nowhere.
+            if fuel / tank < SLEEP_FUEL_RESERVE_FRACTION {
+                break;
+            }
             let step = STEP_MI.min(limit - mile);
             let (posted, _) = self.trip.speed_limit_at(mile);
             let mph = (posted * CRUISE_SHARE).max(FLOOR_MPH);
@@ -151,7 +174,8 @@ impl DrivingState {
             minutes += step_min;
             let due = (!fuel_due_at_start && fuel / tank < FUEL_STOP_FRACTION)
                 || (!break_due_at_start && co_driver::break_wanted(&hos, &mode))
-                || (!shift_due_at_start && co_driver::shift_over(&hos, &mode));
+                || (!shift_due_at_start && co_driver::shift_over(&hos, &mode))
+                || rest_in_min.is_some_and(|rest| minutes >= rest);
             if stop_at_need && due {
                 break;
             }
@@ -235,8 +259,10 @@ impl DrivingState {
     /// The shift ends at `stop`: the truck is parked there with the stop's
     /// menu open, and the co-driver hands back from it.
     fn sleep_park_for_shift_end(&mut self, ctx: &mut GameContext, stop: &RoadStop) {
+        let hours_up = co_driver::shift_over(hos_of(ctx), &ctx.settings.hos_mode);
         if let Some(wheel) = self.team.as_mut().and_then(|team| team.wheel.as_mut()) {
             wheel.pilot.shift_over = true;
+            wheel.pilot.rested = !hours_up;
         }
         self.trip.position_mi = stop.at_mi;
         self.enforcement_prev_mi = stop.at_mi;
@@ -255,7 +281,7 @@ impl DrivingState {
     }
 
     /// Whether the lot at `stop` is full when the truck gets there.
-    fn sleep_lot_full(&self, stop: &RoadStop) -> bool {
+    pub(crate) fn lot_full_now(&self, stop: &RoadStop) -> bool {
         stop.actions.iter().any(|action| action == "sleep")
             && hos::parking_is_full(
                 self.trip_seed,
@@ -294,7 +320,7 @@ impl DrivingState {
         }
         stops
             .iter()
-            .find(|stop| !self.sleep_lot_full(stop))
+            .find(|stop| !self.lot_full_now(stop))
             .or(stops.last())
             .map(|stop| (*stop).clone())
     }
@@ -337,6 +363,11 @@ impl DrivingState {
             };
             // Another need coming due on the way is taken first.
             let jump = self.sleep_jump_walk(ctx, stop.at_mi, true);
+            // Short of the stop with nowhere left to jump (the fuel reserve):
+            // the live drive takes it from here.
+            if jump.miles < MIN_JUMP_MI && self.trip.position_mi + jump.miles < stop.at_mi - 0.01 {
+                break;
+            }
             self.sleep_apply_jump(ctx, jump);
             total.miles += jump.miles;
             total.minutes += jump.minutes;

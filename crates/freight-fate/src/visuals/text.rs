@@ -384,6 +384,27 @@ impl Text {
     }
 
     /// Width in pixels of `text` at `size` in `weight`.
+    /// The most `text` can measure on any platform: a character Overpass
+    /// lacks is drawn by whatever system font is installed (Hiragino on a
+    /// Mac, Yu Gothic or Microsoft YaHei on Windows, Noto CJK on Linux), so
+    /// it counts as at least a full em, the width of a CJK ideograph or
+    /// kana in every one of them. The fit tests use this so a label that
+    /// fits on one platform's fallback font fits on the others too.
+    #[cfg(test)]
+    pub(super) fn measure_on_any_platform(&mut self, text: &str, size: f32, weight: Weight) -> f32 {
+        let primary: FaceId = if weight == Weight::Bold { 1 } else { 0 };
+        let mut width = self.measure(text, size, weight);
+        for ch in text.chars() {
+            let covered = self.face(primary).glyph_id(ch).0 != 0;
+            if !covered && !ch.is_whitespace() && !ch.is_control() {
+                let mut buf = [0u8; 4];
+                let here = self.measure(ch.encode_utf8(&mut buf), size, weight);
+                width += (size - here).max(0.0);
+            }
+        }
+        width
+    }
+
     pub fn measure(&mut self, text: &str, size: f32, weight: Weight) -> f32 {
         let mut width = 0.0;
         let mut prev: Option<(FaceId, GlyphId)> = None;

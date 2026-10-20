@@ -1021,8 +1021,12 @@ impl Menu for PickupFacilityState {
             String::new()
         };
         self.announce_speed_control_status = false;
+        let intro = self
+            .team_intro(ctx)
+            .map(|intro| format!(" {intro}"))
+            .unwrap_or_default();
         let current = self.current_text(ctx);
-        ctx.say(&format!("{lead}{speed_control} {current}"));
+        ctx.say(&format!("{lead}{speed_control}{intro} {current}"));
     }
 
     fn exit(&mut self, ctx: &mut GameContext) {

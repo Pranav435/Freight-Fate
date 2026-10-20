@@ -456,6 +456,7 @@ pub type AudioLog = Rc<RefCell<AudioCalls>>;
 #[derive(Default)]
 pub struct RecordingAudio {
     log: AudioLog,
+    cues_muted: bool,
 }
 
 impl RecordingAudio {
@@ -502,7 +503,13 @@ impl Audio for RecordingAudio {
     fn voice_key(&self, key: &str) -> String {
         key.to_string()
     }
+    fn set_cues_muted(&mut self, muted: bool) {
+        self.cues_muted = muted;
+    }
     fn play_with(&mut self, key: &str, volume: f64, pan: f64) {
+        if self.cues_muted && crate::audio::is_game_cue(key) {
+            return;
+        }
         self.log
             .borrow_mut()
             .played

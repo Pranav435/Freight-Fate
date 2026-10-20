@@ -72,8 +72,13 @@ bookmarks usable.
       pairing and the terms in the rows' help. About three in ten loads that
       need a ten-hour break alone are drawn as team loads: 35 percent more
       pay, and a deadline that allows a half-hour driver change where a solo
-      driver sleeps. The co-driver drives to the end of their own hours and
-      plans their 30-minute break at a rest area. Co-driver miles earn no
+      driver sleeps. The co-driver hands back at the next stop with parking
+      once the player's ten-hour rest is in, or at the end of their own
+      hours if those run out first (2026-10-19), and plans their 30-minute
+      break at a rest area. C, the Driver screen and the Take the wheel back
+      row say how much of the rest is in and when they hand back. The first
+      offer of a co-driver in a career explains it once, and job details
+      say when a load can be shared. Co-driver miles earn no
       driving-skill badges, the road journal names who drove, and the
       Meridian classmate and Ray each carry a hidden badge. Sleeping
       through the shift passes it as time (owner, 2026-10-18): the road,
@@ -83,7 +88,32 @@ bookmarks usable.
       still run live, sped up. At any stop the co-driver fuels and takes the
       break without the stop's menu: the pump sound and a line in the
       message log. The owner's listening pass on ride along and the wake-up
-      summary is his to do.
+      summary is his to do. Career stats gains a Co-drivers list once a
+      career has teamed (2026-10-19): each classmate's loads together, the
+      owner-operator's hire, and their bio, read only when opened.
+- [x] Co-driver and assist realism (owner, 2026-10-19): lane keeping on
+      full goes around anything sitting in the lane (debris, a car on the
+      shoulder, a closure) when a lane is open, and holds
+      the passing lane until the truck is by it. Automatic braking slows
+      firmly in the lane for an animal, to 35, never swerving and never
+      with the emergency brake: the call names it and asks for nothing. A
+      truck still above 35 at the deadline takes a seeded roll, better the
+      slower it is going, for whether the animal got across or was struck
+      (damage by the animal's size and the truck's speed). In
+      weather that takes grip or sight, things that cover the road brake to
+      the weather's safe speed less five (floor 25, ceiling 45), and a
+      mattress, a tarp or standing water brake to
+      their own speed, not to 25. The co-driver skips every stop menu: a
+      green transponder verdict passes the scale, a red one or none is a
+      check-in worked without a screen, a trooper's stop is settled and
+      noted, a full lot is driven on from, and chains go on at a
+      checkpoint. Their menu sounds are muted. What they do goes to a
+      Co-driver category in the message review; riding along, the player
+      hears it and the hazard calls, and asleep, the fines, inspections
+      and strikes ride the wake-up summary. Their pedals stay off while a
+      hazard or a chain stop is live, they bring the truck up to the
+      weather's safe speed rather than the posted limit, and damage is
+      measured from the handover, not the trip's start.
 - [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
       `music.pak` opens like `channel3000.pak`, reading only its directory
       at launch and each track from its offset when it starts; `sounds.pak`
@@ -124,6 +154,23 @@ bookmarks usable.
       explanations, restated facts and coaching prose; explanations a
       player may still need moved to the screen's F1 help. Cruise eases and
       builds for hills in silence. Spanish carries the new lines.
+- [x] Live weather unavailable while another NWS app worked (owner,
+      2026-10-19): the feeds tier's total deadline rose from 8 to 20
+      seconds, NWS fetches run at most three at a time across the game
+      (route planning used to ask for every city at once), `/points` asks
+      for the address NWS serves without a redirect, and a failure logs the
+      step, the request and the server's reason once per stretch instead of
+      a bare sentence every minute.
+      A tester's log the same day showed an NWS observation outage: every
+      station on the route stuck on one reading for 40 minutes, ages
+      climbing 123 to 162 minutes, then all fresh at once. The game had
+      swapped clear skies for simulated storms; observations past the
+      two-hour cutoff but under six hours now serve as last-known live
+      weather (`OUTAGE_HOLD_MAX_AGE_S`).
+- [ ] (Found along the way) Each drive and each live-weather setting
+      change builds a new weather provider with an empty station cache,
+      so every drive repeats the NWS discovery calls; the drive could share
+      the session provider. Same report.
 - [ ] (Found along the way) The advise-only follow-up to a turn the route
       already named ("Advise 11 miles per hour.") is queued on the droppable
       default, so busy street speech can drop it; a player heard the advise
@@ -642,6 +689,27 @@ Everything found before 2026-09-25 moved to
       out makes no sound, and quiet says cruise, keeper and work zone
       updates short. Urgent only now says when a work zone turns cruise off.
 - [ ] A listening pass by the owner at quiet and urgent only, at the wheel.
+- [ ] A listening pass by the owner on a ride-along shift: the co-driver's
+      notes, the hazard calls, and how often they speak.
+- [ ] The co-driver ignores descent control's "can't hold this grade.
+      Brake." and keeps gaining speed; their brake would cancel the
+      cruise that holds the grade, so it needs its own snub (2026-10-19).
+- [ ] The co-driver hands back for the end of their hours, an overdue
+      break or damage at highway speed. A real swap happens parked; the
+      game has no shoulder pull-over to make it there yet (2026-10-19).
+- [ ] A slept-through stretch judges whether a scale ahead is open at the
+      time the jump starts, not when the truck would reach it (2026-10-19).
+- [ ] How far past a lane closure the truck stays out is chosen by the
+      closure's name; it belongs on the hazard row as a length, so a new
+      long hazard (a spill, a work zone) gets it too (2026-10-19).
+- [ ] Doubles drive like one trailer: the set weighs no more empty than a
+      53-foot van, hooking skips the converter dolly and the second pup,
+      and nothing about the rear trailer's sway or the no-backing rule is
+      modelled. Turnpike doubles also share the parcel pups' trailer
+      program (2026-10-20).
+- [ ] The agent server's `start_at` resets the clock a `scenario` set
+      (asked for 10 PM, staged at 8 AM), and nothing stages a road hazard,
+      so a deer or debris call can only be waited for (2026-10-19).
 - [x] Achievement sweep (owner, 2026-10-09): four badges whose triggers
       had fallen behind the map or the job board now match them.
 - [x] Driver window and cab climate (player report, 2026-10-17); see
@@ -1113,6 +1181,13 @@ Everything found before 2026-09-25 moved to
       on-screen-keyboard typing on hardware. For the App Store: a real app
       icon (TestFlight has a placeholder), a privacy manifest, and a title
       screen or review note for the blank game screen.
+- [x] Gear skipping follows the load (player report, 2026-10-13): the
+      automatic skips a gear when the one two up still pulls the load, so
+      an empty or part-loaded truck skips more and a full one takes every
+      gear. A gentle launch in third no longer drops to second.
+- [ ] (Found along the way) A clutchless manual option, the way real
+      drivers shift on the road: the clutch only to pull away, the lever
+      between gears when the revs match. Proposed to the owner 2026-10-14.
 
 ### Release gate record
 

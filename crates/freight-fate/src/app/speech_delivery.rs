@@ -644,7 +644,7 @@ impl GameContext {
             valid,
         } = opts;
         let key = key.as_deref();
-        if self.co_driver_away && !force {
+        if self.co_driver_away && !force && !self.speech_requested {
             // Nobody is listening for the road while the co-driver drives.
             // A line waiting on its delivery receipt is released, so a stop
             // plan never stalls behind speech that will not come.
@@ -884,11 +884,21 @@ impl GameContext {
     pub fn player_asked_begin(&mut self) -> bool {
         let previous = self.speech_requested;
         self.speech_requested = true;
+        self.sync_cue_mute();
         previous
     }
 
     pub fn player_asked_end(&mut self, previous: bool) {
         self.speech_requested = previous;
+        self.sync_cue_mute();
+    }
+
+    /// The co-driver has the wheel and the player is not pressing anything:
+    /// the game's own cues stay quiet with the words they announce (see
+    /// `Audio::set_cues_muted`). Call after `co_driver_away` changes.
+    pub fn sync_cue_mute(&mut self) {
+        let muted = self.co_driver_away && !self.speech_requested;
+        self.audio.set_cues_muted(muted);
     }
 
     /// Whether a control press is being handled right now.

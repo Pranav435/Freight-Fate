@@ -66,6 +66,8 @@ pub struct ArrivalState {
     pub(crate) team_miles: f64,
     /// The road journal's line for a team load.
     pub team_note: Option<String>,
+    /// The settlement row for the co-driver's share of the pay.
+    pub(crate) team_line: Option<String>,
 }
 
 impl ArrivalState {
@@ -93,6 +95,7 @@ impl ArrivalState {
             terminal,
             team_miles: 0.0,
             team_note: None,
+            team_line: None,
         };
         state.settle(ctx, driving, arrival_hours);
         state
@@ -950,6 +953,7 @@ impl ArrivalState {
         lines.extend(business_cost_lines);
         lines.extend(charge_lines);
         lines.extend(advance_lines);
+        lines.extend(self.team_line.clone());
         lines.push(format!(
             "Net driver pay: {} dollars.",
             fmt_grouped(net_pay, 0)
