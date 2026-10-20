@@ -22,7 +22,7 @@
 //! Python tests did, plus the monotonic and wall clocks.
 
 use std::collections::{HashMap, HashSet};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Condvar, Mutex};
 use std::thread::JoinHandle;
 use std::time::Instant;
 
@@ -279,6 +279,46 @@ pub fn parse_observation(data: &Value) -> Result<Observation, String> {
 /// instead of trusting index zero forever.
 pub const STATION_WALK_LIMIT: usize = 3;
 
+/// At most this many NWS fetches run at once, across every provider in
+/// the process. Route planning asks for every city on every offered route
+/// at once, one worker thread each, and each fetch is up to five requests:
+/// dozens of simultaneous calls from one client, the burst api.weather.gov
+/// throttles. The rest wait their turn; the game loop never waits.
+pub const MAX_CONCURRENT_FETCHES: usize = 3;
+
+static FETCH_SLOTS: (Mutex<usize>, Condvar) = (Mutex::new(0), Condvar::new());
+
+/// One of the [`MAX_CONCURRENT_FETCHES`] slots, held for a whole fetch and
+/// handed back on drop.
+struct FetchSlot;
+
+impl FetchSlot {
+    fn acquire() -> Self {
+        let (count, freed) = &FETCH_SLOTS;
+        let mut busy = lock_unpoisoned(count);
+        while *busy >= MAX_CONCURRENT_FETCHES {
+            busy = freed.wait(busy).unwrap_or_else(|p| p.into_inner());
+        }
+        *busy += 1;
+        FetchSlot
+    }
+
+    /// Fetches in flight right now (a test aid).
+    #[cfg(test)]
+    fn in_use() -> usize {
+        *lock_unpoisoned(&FETCH_SLOTS.0)
+    }
+}
+
+impl Drop for FetchSlot {
+    fn drop(&mut self) {
+        let (count, freed) = &FETCH_SLOTS;
+        let mut busy = lock_unpoisoned(count);
+        *busy = busy.saturating_sub(1);
+        freed.notify_one();
+    }
+}
+
 /// The `_default_fetch` machinery: NWS discovery chain, station cache and
 /// the fresh-station pick, over an injected transport. (The Python kept the
 /// two caches module-global; here they live on the fetcher, which the game
@@ -332,6 +372,18 @@ impl NwsFetcher {
         )
     }
 
+    /// The `/points/{lat},{lon}` path NWS serves without a redirect: four
+    /// decimals at most and no trailing zeros. `41.8800,-87.6300` answers
+    /// 301 to `41.88,-87.63`, an extra round trip inside the same request
+    /// deadline on every first lookup.
+    pub fn point_path(lat: f64, lon: f64) -> String {
+        format!(
+            "{},{}",
+            py_str_float(round_py_n(lat, 4)),
+            py_str_float(round_py_n(lon, 4))
+        )
+    }
+
     /// Return 'latest observation' URLs for the stations nearest a point,
     /// nearest first, capped at [`STATION_WALK_LIMIT`].
     ///
@@ -343,14 +395,16 @@ impl NwsFetcher {
             return Ok(cached.clone());
         }
         let point = self
-            .get_json(&format!("{API_ROOT}/points/{lat:.4},{lon:.4}"))
-            .map_err(|e| e.message)?;
+            .get_json(&format!("{API_ROOT}/points/{}", Self::point_path(lat, lon)))
+            .map_err(|e| format!("points lookup: {}", e.message))?;
         let stations_url = point
             .pointer("/properties/observationStations")
             .filter(|v| !v.is_null())
             .map(py_str)
             .ok_or("point has no observationStations")?;
-        let stations = self.get_json(&stations_url).map_err(|e| e.message)?;
+        let stations = self
+            .get_json(&stations_url)
+            .map_err(|e| format!("station list: {}", e.message))?;
         let station_urls: Vec<String> = stations
             .get("observationStations")
             .and_then(Value::as_array)
@@ -383,6 +437,7 @@ impl NwsFetcher {
     /// door reported), and one such station used to end the whole walk.
     /// Errors only when no station in the walk answered.
     pub fn default_fetch(&self, lat: f64, lon: f64) -> Result<Observation, String> {
+        let _slot = FetchSlot::acquire();
         let key = Self::coarse_key(lat, lon);
         let urls = self.resolve_station_urls(lat, lon)?;
         let preferred = lock_unpoisoned(&self.station_pick)
@@ -394,7 +449,7 @@ impl NwsFetcher {
             .collect();
         let now = (self.wall_clock)();
         let mut freshest: Option<(f64, Observation)> = None;
-        let mut last_error = None;
+        let mut errors: Vec<String> = Vec::new();
         for i in order {
             let Some(url) = urls.get(i) else {
                 continue;
@@ -403,7 +458,7 @@ impl NwsFetcher {
             let parsed = match fetched.and_then(|doc| parse_observation(&doc)) {
                 Ok(parsed) => parsed,
                 Err(error) => {
-                    last_error = Some(error);
+                    errors.push(format!("{}: {error}", station_name(url)));
                     continue;
                 }
             };
@@ -418,10 +473,23 @@ impl NwsFetcher {
                 freshest = Some((age, parsed));
             }
         }
-        freshest
-            .map(|(_, parsed)| parsed)
-            .ok_or_else(|| last_error.unwrap_or_else(|| "no station answered".to_string()))
+        freshest.map(|(_, parsed)| parsed).ok_or_else(|| {
+            if errors.is_empty() {
+                "no station answered".to_string()
+            } else {
+                format!("every station failed: {}", errors.join("; "))
+            }
+        })
     }
+}
+
+/// The station id out of an `/observations/latest` URL, for the log
+/// (`.../stations/KDEN/observations/latest` is `KDEN`).
+fn station_name(url: &str) -> &str {
+    url.trim_end_matches("/observations/latest")
+        .rsplit('/')
+        .next()
+        .unwrap_or(url)
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -447,6 +515,10 @@ struct Inner {
     // miss is logged once when the stretch starts rather than on every
     // RETRY_AFTER_S retry until the station catches up.
     stale_logged: HashSet<String>,
+    // The last failure logged per request key, so a stretch of identical
+    // failures writes one warning and a changed reason writes another,
+    // instead of one every RETRY_AFTER_S.
+    error_logged: HashMap<String, String>,
 }
 
 /// How one worker run ended. The Python `_worker` returns nothing; this
@@ -461,8 +533,10 @@ pub enum WorkerOutcome {
     StaleLogged,
     /// Same, but the stretch was already noted.
     StaleSilent,
-    /// The fetch failed (network, bad document).
+    /// The fetch failed (network, bad document); this run logged why.
     Failed,
+    /// Failed again for the reason already logged this stretch.
+    FailedSilent,
 }
 
 /// Everything a worker needs, cloneable onto a thread.
@@ -740,6 +814,7 @@ fn run_worker(ctx: &WorkerContext, city: &str, lat: f64, lon: f64) -> WorkerOutc
                 let already_logged = {
                     let mut inner = lock_unpoisoned(&ctx.inner);
                     inner.failed_at.insert(city.to_string(), (ctx.clock)());
+                    inner.error_logged.remove(city);
                     let already = inner.stale_logged.contains(city);
                     inner.stale_logged.insert(city.to_string());
                     already
@@ -772,6 +847,7 @@ fn run_worker(ctx: &WorkerContext, city: &str, lat: f64, lon: f64) -> WorkerOutc
                     inner.station_for_key.insert(city.to_string(), station);
                     inner.failed_at.remove(city);
                     inner.stale_logged.remove(city);
+                    inner.error_logged.remove(city);
                 }
                 log::info!(
                     "Real weather for {city}: {} (NWS {:?}, wind {:.0} km/h, temp {}, vis {})",
@@ -791,11 +867,19 @@ fn run_worker(ctx: &WorkerContext, city: &str, lat: f64, lon: f64) -> WorkerOutc
             }
         }
         Err(err) => {
-            lock_unpoisoned(&ctx.inner)
-                .failed_at
-                .insert(city.to_string(), (ctx.clock)());
-            log::warn!("Real weather fetch failed for {city}: {err}");
-            WorkerOutcome::Failed
+            let repeat = {
+                let mut inner = lock_unpoisoned(&ctx.inner);
+                inner.failed_at.insert(city.to_string(), (ctx.clock)());
+                let repeat = inner.error_logged.get(city) == Some(&err);
+                inner.error_logged.insert(city.to_string(), err.clone());
+                repeat
+            };
+            if repeat {
+                WorkerOutcome::FailedSilent
+            } else {
+                log::warn!("Real weather fetch failed for {city}: {err}");
+                WorkerOutcome::Failed
+            }
         }
     };
     lock_unpoisoned(&ctx.inner).inflight.remove(city);
@@ -804,3 +888,5 @@ fn run_worker(ctx: &WorkerContext, city: &str, lat: f64, lon: f64) -> WorkerOutc
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod tests_diagnostics;

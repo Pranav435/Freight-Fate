@@ -1040,7 +1040,7 @@ fn the_discovery_chain_is_cached_per_coarse_location() {
     // points + stations once, then one observation per fetch.
     assert_eq!(calls.iter().filter(|u| u.contains("/points/")).count(), 1);
     assert_eq!(calls.len(), 4);
-    assert!(calls[0].ends_with("/points/41.8800,-87.6300"));
+    assert!(calls[0].ends_with("/points/41.88,-87.63"));
 }
 
 #[test]
