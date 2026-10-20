@@ -34,6 +34,7 @@ SEPARATE_BINARIES = {
         "classic_startup.rs": "needs a process where the 1.5 classics are not yet registered",
         "frame_time": "times frames against the wall clock, which sibling tests would contend for",
         "agent_server.rs": "agent tooling, `test = false`; CI runs it by name",
+        "real_window.rs": "opens the real game window, `harness = false` and `test = false`; run by name on a desktop",
     },
 }
 

@@ -52,8 +52,73 @@ bookmarks usable.
       `.po` file alone, built in or dropped into `saves/lang/`, is offered
       by its `X-Language-Autonym` header with no code change; it gets two
       plural forms and English number separators until a maintainer adds
-      its rules to `l10n::plural`. Every download carries `lang/` as a
-      `translations` folder (template, language files, glossaries, guide).
+      its rules to `l10n::plural`. The translator's kit (`lang/`: template,
+      language files, glossaries, guide) is its own release asset,
+      `FreightFate-<tag>-translation-kit.zip` (2026-10-17; it had been a
+      `translations` folder in every archive). Only a catalog that translates
+      something is compiled into the game, so the empty language files cost
+      the executable nothing until a translator fills one.
+- [x] Team driving (owner design, 2026-10-17): on a delivery whose rest
+      would need a ten-hour break, the pause menu hands the wheel to a
+      co-driver from the Great Lakes training class, to ride along or sleep
+      through their shift. The co-driver drives through the player's own
+      controls with every assist on, fuels, crosses open scales, pulls over
+      for troopers, and hands back at the end of their hours, at the
+      receiver's gate, or on anything only the driver should decide. Their
+      miles pay half (an owner-operator pays 30 percent) and earn half the
+      experience, and count as sleeper-berth time for the player. The
+      logbooks swap, so every hours rule reads the clock of whoever drives.
+      The pickup menu offers the same handover from the dock, with the
+      pairing and the terms in the rows' help. About three in ten loads that
+      need a ten-hour break alone are drawn as team loads: 35 percent more
+      pay, and a deadline that allows a half-hour driver change where a solo
+      driver sleeps. The co-driver hands back at the next stop with parking
+      once the player's ten-hour rest is in, or at the end of their own
+      hours if those run out first (2026-10-19), and plans their 30-minute
+      break at a rest area. C, the Driver screen and the Take the wheel back
+      row say how much of the rest is in and when they hand back. The first
+      offer of a co-driver in a career explains it once, and job details
+      say when a load can be shared. Co-driver miles earn no
+      driving-skill badges, the road journal names who drove, and the
+      Meridian classmate and Ray each carry a hidden badge. Sleeping
+      through the shift passes it as time (owner, 2026-10-18): the road,
+      fuel and the break are worked out at once, the radio is left alone,
+      and the player wakes parked at a stop, in under a second of real time
+      on an agent drive. Only the merge and the receiver's exit and gate
+      still run live, sped up. At any stop the co-driver fuels and takes the
+      break without the stop's menu: the pump sound and a line in the
+      message log. The owner's listening pass on ride along and the wake-up
+      summary is his to do. Career stats gains a Co-drivers list once a
+      career has teamed (2026-10-19): each classmate's loads together, the
+      owner-operator's hire, and their bio, read only when opened.
+- [x] Co-driver and assist realism (owner, 2026-10-19): lane keeping on
+      full goes around anything sitting in the lane (debris, a car on the
+      shoulder, a closure) when a lane is open, and holds
+      the passing lane until the truck is by it. Automatic braking slows
+      firmly in the lane for an animal, to 35, never swerving and never
+      with the emergency brake: the call names it and asks for nothing. A
+      truck still above 35 at the deadline takes a seeded roll, better the
+      slower it is going, for whether the animal got across or was struck
+      (damage by the animal's size and the truck's speed). In
+      weather that takes grip or sight, things that cover the road brake to
+      the weather's safe speed less five (floor 25, ceiling 45), and a
+      mattress, a tarp or standing water brake to
+      their own speed, not to 25. The co-driver skips every stop menu: a
+      green transponder verdict passes the scale, a red one or none is a
+      check-in worked without a screen, a trooper's stop is settled and
+      noted, a full lot is driven on from, and chains go on at a
+      checkpoint. Their menu sounds are muted. What they do goes to a
+      Co-driver category in the message review; riding along, the player
+      hears it and the hazard calls, and asleep, the fines, inspections
+      and strikes ride the wake-up summary. Their pedals stay off while a
+      hazard or a chain stop is live, they bring the truck up to the
+      weather's safe speed rather than the posted limit, and damage is
+      measured from the handover, not the trip's start.
+- [x] Music streamed from disk (Pranav435, PR 441, 2026-10-18):
+      `music.pak` opens like `channel3000.pak`, reading only its directory
+      at launch and each track from its offset when it starts; `sounds.pak`
+      stays in memory. About 480 MB less memory at the title screen on an
+      M4 Mac. Cherry-picked ahead of the rest of PR 441's visual display.
 - [x] Places visited (player request, 2026-10-14): Career stats counts the
       states and cities delivered to and lists each state's cities; the
       public profile on orinks.net and the in-game driver profile list them
@@ -89,6 +154,23 @@ bookmarks usable.
       explanations, restated facts and coaching prose; explanations a
       player may still need moved to the screen's F1 help. Cruise eases and
       builds for hills in silence. Spanish carries the new lines.
+- [x] Live weather unavailable while another NWS app worked (owner,
+      2026-10-19): the feeds tier's total deadline rose from 8 to 20
+      seconds, NWS fetches run at most three at a time across the game
+      (route planning used to ask for every city at once), `/points` asks
+      for the address NWS serves without a redirect, and a failure logs the
+      step, the request and the server's reason once per stretch instead of
+      a bare sentence every minute.
+      A tester's log the same day showed an NWS observation outage: every
+      station on the route stuck on one reading for 40 minutes, ages
+      climbing 123 to 162 minutes, then all fresh at once. The game had
+      swapped clear skies for simulated storms; observations past the
+      two-hour cutoff but under six hours now serve as last-known live
+      weather (`OUTAGE_HOLD_MAX_AGE_S`).
+- [ ] (Found along the way) Each drive and each live-weather setting
+      change builds a new weather provider with an empty station cache,
+      so every drive repeats the NWS discovery calls; the drive could share
+      the session provider. Same report.
 - [ ] (Found along the way) The advise-only follow-up to a turn the route
       already named ("Advise 11 miles per hour.") is queued on the droppable
       default, so busy street speech can drop it; a player heard the advise
@@ -607,6 +689,22 @@ Everything found before 2026-09-25 moved to
       out makes no sound, and quiet says cruise, keeper and work zone
       updates short. Urgent only now says when a work zone turns cruise off.
 - [ ] A listening pass by the owner at quiet and urgent only, at the wheel.
+- [ ] A listening pass by the owner on a ride-along shift: the co-driver's
+      notes, the hazard calls, and how often they speak.
+- [ ] The co-driver ignores descent control's "can't hold this grade.
+      Brake." and keeps gaining speed; their brake would cancel the
+      cruise that holds the grade, so it needs its own snub (2026-10-19).
+- [ ] The co-driver hands back for the end of their hours, an overdue
+      break or damage at highway speed. A real swap happens parked; the
+      game has no shoulder pull-over to make it there yet (2026-10-19).
+- [ ] A slept-through stretch judges whether a scale ahead is open at the
+      time the jump starts, not when the truck would reach it (2026-10-19).
+- [ ] How far past a lane closure the truck stays out is chosen by the
+      closure's name; it belongs on the hazard row as a length, so a new
+      long hazard (a spill, a work zone) gets it too (2026-10-19).
+- [ ] The agent server's `start_at` resets the clock a `scenario` set
+      (asked for 10 PM, staged at 8 AM), and nothing stages a road hazard,
+      so a deer or debris call can only be waited for (2026-10-19).
 - [x] Achievement sweep (owner, 2026-10-09): four badges whose triggers
       had fallen behind the map or the job board now match them.
 - [x] Driver window and cab climate (player report, 2026-10-17); see
@@ -668,6 +766,25 @@ Everything found before 2026-09-25 moved to
       dollars plus the 500 callout, an hour and a half), and a truck stop
       in a chain-control state sells a set for 1,000 dollars (assumed: the
       garage's 750 plus a road markup).
+- [x] Preventable equipment incidents piled up on a new company career
+      (player report, 2026-10-18: 8 incidents and 10 citations). A tractor
+      left the yard still carrying the last run's damage, and the dock
+      ruled the whole band preventable again for a single shoulder scrape,
+      load after load, until the driver used the carrier's free repair. A
+      grounding and the same run's delivery were also counted as two
+      incidents. A run is now ruled only for a band it took the truck into,
+      and once.
+- [x] New drivers lost all their reputation to minor tickets before they
+      had learned the road (same report; owner ruling 2026-10-18). Below
+      level 10 an officer gives a warning instead of a citation, with no
+      fine, no reputation and nothing on the record. Serious speeding, the
+      work-zone barrels, failing to pull over, running a scale and anything
+      out of service are still cited.
+- [x] Dispatch handed a company driver a damaged tractor without the
+      carrier's shop touching it, though the career start says the carrier
+      maintains the tractor (same report; owner ruling 2026-10-18). At 40
+      percent damage, where an inspector writes it up, the shop repairs it
+      when the load is accepted: free, an hour on duty, and said.
 - [ ] With several controllers connected (a second pad, or Steam's virtual
       one), the game listens only to the first it found, and the other's
       buttons do nothing. It could switch to whichever controller the
@@ -704,9 +821,11 @@ Everything found before 2026-09-25 moved to
 - [ ] Known Hearken gaps. The owner rule (2026-10-17) is that the
       changelog does not announce the engine change or its side effects;
       only a change a player must act on (Linux's ALSA) gets a line.
-      HE-AAC (AAC+ stations and their kind of `.m4a`) plays muffled, as
-      its base layer only: Fraunhofer's licence permits `fdk-aac` only
-      under AAC patent licences the game does not hold, so it stays off.
+      On Linux, HE-AAC (AAC+ stations, most HLS radio and their kind of
+      `.m4a`) plays muffled, as its base layer only: Fraunhofer's licence
+      permits `fdk-aac` only under AAC patent licences the game does not
+      hold, so it stays off. Windows and macOS decode it in full through
+      the system decoder (below).
       Tracker modules (`.mod`, `.xm`, `.it`, `.s3m`, `.mo3`) are refused,
       since no small pure-Rust player exists. Hearken checks a station's
       TLS certificate with the operating system's verifier, as a browser
@@ -755,11 +874,14 @@ Everything found before 2026-09-25 moved to
       manual `rust.yml` run on Windows, Linux and macOS, the listening pass
       above, then the tag. Hearken is public (2026-10-17), so CI fetches it
       with no secret.
-- [ ] HE-AAC through the system decoder (owner, 2026-10-17: AAC+ stays on
-      its base layer for 1.9, since `fdk-aac`'s licence needs AAC patent
-      licences). BASS decoded AAC through Media Foundation on Windows and
-      Core Audio on macOS, whose platforms carry the licences; a Hearken
-      radio decoder on each would match it. Linux stays on the base layer.
+- [x] HE-AAC through the system decoder (2026-10-18, Hearken PR 5). The
+      radio decodes AAC with Media Foundation on Windows and AudioToolbox
+      on macOS, as BASS did, so AAC+ and HE-AAC v2 stations, HLS included,
+      play at full bandwidth in stereo; Microsoft and Apple carry the
+      patent licences, and the game ships no AAC decoder. Where the system
+      decoder cannot open (Windows N without the Media Feature Pack),
+      Symphonia plays the base layer as before. Linux stays on the base
+      layer.
 - [x] CI back on GitHub's hosted runners (owner, 2026-10-17: Blacksmith's
       paid minutes stay with the private repositories), with the nightly's
       tests beside its packaging rather than before it, and the Spanish keys
@@ -775,6 +897,24 @@ Everything found before 2026-09-25 moved to
 - [ ] FF on a real Mac with Hearken: the macOS link (Prism frameworks and
       the clang runtime) is proved by the manual CI run, but VoiceOver and
       CoreAudio output need a person at a Mac.
+- [x] Smaller updates (player reports, owner go-ahead 2026-10-18): every
+      update downloaded the whole 531 MB archive, and 497 MB of it is
+      `music.pak` (383 MB) and `channel3000.pak` (114 MB), byte for byte the
+      same from 1.9-tester-20261014 to 20261017. The release carries no
+      extra files for this: the updater (`updater::slim`, `zip_index`) reads
+      the zip's index from its last bytes with HTTP range requests, compares
+      the two packs' size and CRC-32 with the install's (`build_info.json`
+      records them, so the check reads no pack when sizes agree), and then
+      fetches only the byte ranges around them, about 35 MB, writing a new
+      index so the result unpacks normally with every kept file's CRC-32
+      checked. Any failure falls back to the full archive, and a Mac bundle
+      gets the player's packs copied in before the swap. Linux tarballs and
+      AppImages still download in full. The first update to carry this is
+      itself full size.
+- [x] Release page trimmed (owner, 2026-10-18): each snapshot run deletes
+      tester snapshot releases beyond the newest seven
+      (`tools/prune_snapshots.py`); their tags stay, and stable and
+      `nightly-*` bridge releases are never touched.
 
 - [x] Low fuel warning could also fire when remaining range is shorter than
       the distance to the next fuel-capable stop (issue #272 shipped the
@@ -833,6 +973,11 @@ Everything found before 2026-09-25 moved to
       it. The updater now skips a snapshot unless a stable release or a
       snapshot with real notes came out after the running copy, and the
       orinks.net downloads page hides such a snapshot (2026-10-07).
+- [x] AG Now (owner request 2026-10-18): AG Now launches every session with
+      `AGNOW=1` and updates the game with its own script, and it drops any
+      program a game downloads into its own folder. With the variable set,
+      the game makes no update check, startup or manual, and Settings hides
+      the Updates category.
 - [x] When the updater offers a tester on an older snapshot a quiet one
       because a stable release came out in between, What's new read "No
       user-facing changes", which is untrue for that player: they get the

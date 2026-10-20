@@ -481,8 +481,11 @@ def test_cargo_command_honours_the_target_dir(tmp_path):
         "--release",
         "-p",
         "freight-fate",
-        # A player build carries no agent server.
+        # A player build carries no agent server, and does carry the
+        # visual display.
         "--no-default-features",
+        "--features",
+        "visuals",
     ]
     target = tmp_path / "t53"
     assert build_release.cargo_build_command(target)[-2:] == ["--target-dir", str(target)]
@@ -679,15 +682,12 @@ def test_macos_stage_is_a_player_ready_app_bundle(tmp_path, monkeypatch):
         "LICENSE.txt",
         "USER_MANUAL.md",
         "USER_MANUAL.html",
-        "ALPHA_TEST_BOOK.md",
-        "ALPHA_TEST_BOOK.html",
-        "translations/freight-fate.pot",
-        "translations/extra.pot",
-        "translations/README.md",
-        "translations/es.po",
-        "translations/glossary/en.md",
     ):
         assert (resources / name).is_file()
+    assert not (resources / "ALPHA_TEST_BOOK.md").exists()
+    assert not (resources / "ALPHA_TEST_BOOK.html").exists()
+    # The translator's kit is its own download, not part of the game.
+    assert not (resources / "translations").exists()
     # The audio engine is compiled in: the bundle carries no audio library.
     assert not list(app.rglob("libbass*"))
     with (app / "Contents" / "Info.plist").open("rb") as stream:
@@ -1163,10 +1163,6 @@ def test_full_macos_bundle_verification_reads_packs_from_resources(tmp_path, mon
         "CHANGELOG.md",
         "USER_MANUAL.md",
         "USER_MANUAL.html",
-        "ALPHA_TEST_BOOK.md",
-        "ALPHA_TEST_BOOK.html",
-        "translations/freight-fate.pot",
-        "translations/README.md",
         "SOUND_CREDITS.md",
         "freight_fate/sounds.pak",
         "freight_fate/music.pak",

@@ -879,12 +879,19 @@ fn test_hearken_radio_failed_connect_reports_on_the_next_call() {
     // same URL -- when the driving state's reconnect loop retries -- and
     // a later tune back starts a fresh attempt.
     let mut r = hearken_rig();
+    // A server that takes each connection and hangs up before a byte of
+    // audio. A freed port was flaky: another process can take it, and on
+    // Windows a connect to a closed port can take seconds to be refused.
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
     let url = format!(
         "http://127.0.0.1:{}/dead",
         listener.local_addr().unwrap().port()
     );
-    drop(listener); // nothing answers on that port now
+    std::thread::spawn(move || {
+        for stream in listener.incoming() {
+            drop(stream);
+        }
+    });
     r.engine.play_radio_stream_with(&url, 100).unwrap(); // silence: the caller's retry cue
     let h = r.hearken_mut();
     h.settle_radio(Duration::from_secs(10));

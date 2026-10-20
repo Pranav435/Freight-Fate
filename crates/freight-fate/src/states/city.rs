@@ -30,7 +30,7 @@ use ff_core::models::business::{is_owner_operator, COMPANY_DRIVER, INDEPENDENT_A
 use ff_core::models::enforcement;
 use ff_core::models::jobs::relay::{relay_load, RelayRequest};
 use ff_core::models::jobs::{
-    board_offer_count, dispatch_deadline_hours, job_from_payload, job_payload,
+    board_offer_count, departure_deadline_hours, job_from_payload, job_payload,
     normalize_job_cities, plan_hos, Job, JobBoard, OfferOptions, ACTIVE_TRIP_FAIRNESS_SLACK,
 };
 use ff_core::models::profile::Profile;
@@ -594,6 +594,8 @@ pub struct LoadedDepartureResume {
     pub speed_control_armed: bool,
     pub speed_control_target_mph: Option<f64>,
     pub trailer_refused: bool,
+    /// A team departure chosen at the shipper.
+    pub team: Option<crate::states::driving_team::TeamMode>,
 }
 
 /// The line spoken (interrupting) once the trip snapshot is saved, just
@@ -669,7 +671,7 @@ pub fn loaded_departure_line(
     format!(
         "{lead}{} {} {next_context} {tail}",
         crate::states::city_pickup::route_departure_summary(route, &ctx.settings),
-        board::briefing::departure_briefing(ctx, route)
+        board::briefing::departure_briefing(ctx, route, false)
     )
 }
 
@@ -699,7 +701,8 @@ pub fn launch_driving(ctx: &mut GameContext, launch: DrivingLaunch) {
         let clock = limits(&ctx.settings.hos_mode)
             .is_some()
             .then(|| &profile(ctx).hos);
-        let fair = dispatch_deadline_hours(
+        let fair = departure_deadline_hours(
+            &job,
             route.miles(),
             ACTIVE_TRIP_FAIRNESS_SLACK,
             Some(&route),
@@ -708,10 +711,11 @@ pub fn launch_driving(ctx: &mut GameContext, launch: DrivingLaunch) {
         );
         let fair = round_py_n(fair, 1);
         if fair > job.deadline_game_h {
-            let extra_rest = clock.is_some_and(|clock| {
-                plan_hos(route.miles(), Some(&route), Some(ctx.world), Some(clock)).sleeps
-                    > plan_hos(route.miles(), Some(&route), Some(ctx.world), None).sleeps
-            });
+            let extra_rest = !job.team
+                && clock.is_some_and(|clock| {
+                    plan_hos(route.miles(), Some(&route), Some(ctx.world), Some(clock)).sleeps
+                        > plan_hos(route.miles(), Some(&route), Some(ctx.world), None).sleeps
+                });
             job.deadline_game_h = fair;
             job.deadline_covers_rest |= extra_rest;
             // The departure briefing already names the sleep.
@@ -746,6 +750,7 @@ pub fn launch_driving(ctx: &mut GameContext, launch: DrivingLaunch) {
             resume.speed_control_armed,
             resume.speed_control_target_mph,
         );
+        driving.pending_team = resume.team;
     }
     let snapshot = driving.snapshot(ctx);
     profile_mut(ctx).active_trip = Some(snapshot);
@@ -757,7 +762,29 @@ pub fn launch_driving(ctx: &mut GameContext, launch: DrivingLaunch) {
             let next_context = driving
                 .trip
                 .next_navigation_context(ctx.settings.imperial_units);
-            loaded_departure_line(ctx, &lead, &route_for_line, engine_on, &next_context)
+            match resume.as_ref().and_then(|r| r.team) {
+                // The co-driver starts the truck; the player hears who it is.
+                Some(_) => {
+                    let pairing =
+                        crate::states::driving_team::handover::job_pairing(ctx, &driving.job);
+                    let carrier = ff_core::models::career::carrier_name_of(profile(ctx));
+                    // Your own hours and the tank, as on a solo departure,
+                    // without the solo driver's sleep plan.
+                    format!(
+                        "{} {lead}{} {} {next_context} {} takes the wheel.",
+                        ff_core::models::co_driver::pairing_line(&pairing, &carrier),
+                        crate::states::city_pickup::route_departure_summary(
+                            &route_for_line,
+                            &ctx.settings
+                        ),
+                        board::briefing::departure_briefing(ctx, &route_for_line, true),
+                        pairing.co_driver.name
+                    )
+                }
+                None => {
+                    loaded_departure_line(ctx, &lead, &route_for_line, engine_on, &next_context)
+                }
+            }
         }
     };
     ctx.say(&format!("{line}{deadline_note}"));

@@ -492,7 +492,9 @@ to use, modify, and share for any noncommercial purpose, but only the copyright
 holder may sell it or put it to commercial use. This is a source-available
 license, not an OSI-approved open-source license. Bundled audio credits and
 provenance are tracked in
-[the Freight Fate audio credits](assets/sounds/CREDITS.md).
+[the Freight Fate audio credits](assets/sounds/CREDITS.md). The window's text
+is set in [Overpass](https://github.com/RedHatOfficial/Overpass), built into
+the game under the [SIL Open Font License 1.1](assets/fonts/OFL.txt).
 
 **Audio:** playback, decoding and the radio use Hearken, Freight Fate's own
 Rust audio engine (MIT or Apache-2.0), built on Kira and Symphonia. Earlier

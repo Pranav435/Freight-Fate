@@ -10,10 +10,11 @@ use ff_core::pyrandom::PyRandom;
 
 use super::{
     asset_bytes, Audio, AudioBackend, AudioError, Buses, HearkenBackend, KeyProbe, NullBackend,
-    SustainLoopSpec, VolumeUpdate, ALERT_HOLD_TIMEOUT_S, CH_AIR, CH_ALERT, CH_AMBIENT, CH_CAB_FAN,
-    CH_CAB_WIND, CH_EDGE, CH_HORN, CH_JAKE, CH_LANE_GUIDE, CH_RADIO_FX, CH_ROAD, CH_SCALE,
-    CH_SURGE, CH_TRAFFIC_BED, CH_TRAFFIC_SOUNDS, CH_WEATHER, CH_WEATHER_B, CUE_HOLD_TIMEOUT_S,
-    HORN_LOOP, JAKE_BAND_PREFIX, JAKE_CLASSIC_KEY, JAKE_RECORDED_KEY, SFX_EXTENSIONS,
+    RadioVoicing, SustainLoopSpec, VolumeUpdate, ALERT_HOLD_TIMEOUT_S, CH_AIR, CH_ALERT,
+    CH_AMBIENT, CH_CAB_FAN, CH_CAB_WIND, CH_EDGE, CH_HORN, CH_JAKE, CH_LANE_GUIDE, CH_RADIO_FX,
+    CH_ROAD, CH_SCALE, CH_SURGE, CH_TRAFFIC_BED, CH_TRAFFIC_SOUNDS, CH_WEATHER, CH_WEATHER_B,
+    CUE_HOLD_TIMEOUT_S, HORN_LOOP, JAKE_BAND_PREFIX, JAKE_CLASSIC_KEY, JAKE_RECORDED_KEY,
+    SFX_EXTENSIONS,
 };
 
 /// Facade over the active backend; the rest of the game talks only to this.
@@ -38,6 +39,8 @@ pub struct AudioEngine {
     silence_notice: bool,
     // The driver window's lift on the outside sounds; 1.0 with it up.
     outside_lift: f64,
+    // See `Audio::set_cues_muted`.
+    cues_muted: bool,
 }
 
 impl Default for AudioEngine {
@@ -81,6 +84,7 @@ impl AudioEngine {
             asset_probe: None,
             silence_notice: false,
             outside_lift: 1.0,
+            cues_muted: false,
         }
     }
 
@@ -322,7 +326,14 @@ impl Audio for AudioEngine {
         self.backend.update_cue(&key, volume, pan);
     }
 
+    fn set_cues_muted(&mut self, muted: bool) {
+        self.cues_muted = muted;
+    }
+
     fn play_with(&mut self, key: &str, volume: f64, pan: f64) {
+        if self.cues_muted && crate::audio::is_game_cue(key) {
+            return;
+        }
         let key = self.route_voice_key(key);
         self.backend.play(&key, volume, pan);
     }
@@ -332,6 +343,9 @@ impl Audio for AudioEngine {
     /// -- every cut once before any repeats, never the same cut twice in a
     /// row. A clean clone without the bank keeps the single classic cue.
     fn play_bank_with(&mut self, base: &str, fallback: &str, volume: f64, pan: f64) {
+        if self.cues_muted && crate::audio::is_game_cue(base) {
+            return;
+        }
         let keys = self.bank_keys(base);
         if keys.is_empty() {
             self.play_with(fallback, volume, pan);
@@ -615,6 +629,10 @@ impl Audio for AudioEngine {
     fn set_outside_lift(&mut self, lift: f64) {
         self.outside_lift = lift.max(0.0);
         self.backend.set_outside_lift(self.outside_lift);
+    }
+
+    fn set_radio_voicing(&mut self, voicing: Option<RadioVoicing>) {
+        self.backend.set_radio_voicing(voicing);
     }
 
     fn set_ambient_with(&mut self, key: Option<&str>, volume: f64) {

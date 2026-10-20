@@ -468,6 +468,7 @@ impl DrivingState {
             rescue_offered: false,
             damage_band,
             worst_damage_band: damage_band,
+            equipment_event_logged: false,
             limp_cap_mph: None,
             limp_cruise_said: false,
             out_of_service_creep_s: 0.0,
@@ -671,6 +672,7 @@ impl DrivingState {
             lane_change_timer: 0.0,
             lane_signal_timer: 0.0,
             passing: None,
+            pass_clear_mi: None,
             pass_returning: false,
             keeping_lane_change: false,
             pass_return_ease_mph: None,
@@ -686,6 +688,9 @@ impl DrivingState {
             merge_taper_warned: None,
             hazard_dodgeable: false,
             hazard_in_lane: false,
+            hazard_animal: false,
+            hazard_arm_mi: 0.0,
+            hazard_brake_to_mph: None,
             hazard_lead_mph: None,
             hazard_lane: 0,
             left_lane_s: 0.0,
@@ -744,6 +749,8 @@ impl DrivingState {
             liquid_settled_said: false,
             liquid_settle_timer_s: 0.0,
             entered_once: false,
+            team: None,
+            pending_team: None,
         }
     }
 }

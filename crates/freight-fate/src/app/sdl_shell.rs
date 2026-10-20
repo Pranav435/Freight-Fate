@@ -1,7 +1,12 @@
 //! The SDL side of the app: the window, the event pump translated into
-//! [`InputEvent`]s, the clipboard, and the render fill. Everything `App`
-//! does that needs a display lives here so a headless `App` never touches
-//! SDL at all.
+//! [`InputEvent`]s, the clipboard, and drawing the visual display. Everything
+//! `App` does that needs a display lives here so a headless `App` never
+//! touches SDL at all.
+//!
+//! Drawing is paid for only when it shows: a frame identical to the last
+//! one is not presented, and nothing is drawn while the window is minimized
+//! or (on a Mac) entirely covered. The window used to be cleared and
+//! presented sixty times a second whether anything changed or not.
 //!
 //! pygame fused `KEYDOWN` and its `unicode`; SDL2 delivers `KeyDown` and
 //! then a separate `TextInput`. The pump pairs a `KeyDown` with the
@@ -9,20 +14,32 @@
 //! does internally), so menus' first-letter jump, text entry, and the
 //! `+`/`-` fallbacks keep working.
 
+#[cfg(all(target_os = "macos", feature = "visuals"))]
+use std::time::Instant;
+
 use sdl2::clipboard::ClipboardUtil;
 use sdl2::event::{Event, WindowEvent};
-use sdl2::pixels::Color;
+#[cfg(feature = "visuals")]
+use sdl2::render::Texture;
 use sdl2::render::WindowCanvas;
 use sdl2::{EventPump, Sdl, VideoSubsystem};
 
 use crate::controller::sdl::{axis_from_sdl, button_from_sdl};
 use crate::states::base::{InputEvent, Key, Mods};
+#[cfg(feature = "visuals")]
+use crate::visuals::Visuals;
 
 use super::context::Clipboard;
-
-use super::{BG_COLOR, WINDOW_SIZE};
+use super::WINDOW_SIZE;
 /// SDL keycode to the game's key set, and `event.mod & KMOD_*`: Hearken's.
 pub use hearken::sdl_shell::{key_from_keycode, mods_from};
+
+mod display;
+
+/// Keep drawing while the window is covered (macOS stops otherwise), for
+/// capture software that records the window from behind other windows.
+#[cfg(feature = "visuals")]
+pub const ALWAYS_DRAW_ENV: &str = "FREIGHT_FATE_ALWAYS_DRAW";
 
 /// The SDL clipboard (UTF-8 through `SDL_SetClipboardText`, so the whole
 /// CF_TEXT-drops-non-ASCII workaround of `online_states.py` is gone).
@@ -52,6 +69,34 @@ pub struct SdlShell {
     pub video: VideoSubsystem,
     canvas: WindowCanvas,
     pump: EventPump,
+    /// The visual display, built the first time it draws.
+    #[cfg(feature = "visuals")]
+    visuals: Option<Visuals>,
+    /// Its glyph atlas on the GPU.
+    #[cfg(feature = "visuals")]
+    atlas: Option<Texture>,
+    /// The next frame must be drawn: the window was shown, uncovered,
+    /// resized, or the display was switched on or off.
+    redraw: bool,
+    /// Minimized or hidden: nothing can be seen, so nothing is drawn.
+    hidden: bool,
+    /// Entirely covered by other windows, as AppKit last said, and when it
+    /// was asked. Only a Mac is asked: SDL reports nothing of the kind.
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
+    occluded: bool,
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
+    occlusion_checked: Option<Instant>,
+    /// A real Cocoa window, whose AppKit view can be asked about occlusion.
+    /// The dummy driver has none, and the sdl2 crate panics when asked.
+    /// False also when `FREIGHT_FATE_ALWAYS_DRAW` is set: capture software
+    /// recording the window while it is covered needs it kept drawing.
+    #[cfg(all(target_os = "macos", feature = "visuals"))]
+    cocoa: bool,
+    /// Whether the last frame drawn was the visual display (or the plain fill).
+    #[cfg(feature = "visuals")]
+    showing_visuals: bool,
+    #[cfg(feature = "visuals")]
+    geometry_failed: bool,
     #[cfg(target_os = "windows")]
     window_handle: Option<isize>,
     #[cfg(target_os = "ios")]
@@ -136,9 +181,13 @@ impl SdlShell {
         );
         let sdl = sdl2::init()?;
         let video = sdl.video()?;
+        // Resizable, and drawn at the display's own resolution (Retina on
+        // a Mac), so the road view and text stay sharp at any size.
         let window = video
             .window(title, WINDOW_SIZE.0, WINDOW_SIZE.1)
             .position_centered()
+            .resizable()
+            .allow_highdpi()
             .build()
             .map_err(|e| e.to_string())?;
         // The dummy driver (every headless run: CI, the agent server under
@@ -173,6 +222,9 @@ impl SdlShell {
             );
         }
         let pump = sdl.event_pump()?;
+        #[cfg(all(target_os = "macos", feature = "visuals"))]
+        let cocoa = video.current_video_driver() == "cocoa"
+            && std::env::var_os(ALWAYS_DRAW_ENV).is_none_or(|v| v.is_empty() || v == "0");
         // pygame delivered event.unicode for every key; SDL needs text
         // input running for TextInput events. On iOS starting text input
         // raises the on-screen keyboard, so there it waits for the player's
@@ -186,6 +238,22 @@ impl SdlShell {
             video,
             canvas,
             pump,
+            #[cfg(feature = "visuals")]
+            visuals: None,
+            #[cfg(feature = "visuals")]
+            atlas: None,
+            redraw: true,
+            hidden: false,
+            #[cfg(all(target_os = "macos", feature = "visuals"))]
+            occluded: false,
+            #[cfg(all(target_os = "macos", feature = "visuals"))]
+            occlusion_checked: None,
+            #[cfg(all(target_os = "macos", feature = "visuals"))]
+            cocoa,
+            #[cfg(feature = "visuals")]
+            showing_visuals: false,
+            #[cfg(feature = "visuals")]
+            geometry_failed: false,
             #[cfg(target_os = "windows")]
             window_handle,
             #[cfg(target_os = "ios")]
@@ -279,6 +347,11 @@ impl SdlShell {
             pump.poll_iter().collect::<Vec<Event>>()
         }))
         .ok()?;
+        for event in &raw {
+            if let Event::Window { win_event, .. } = event {
+                self.note_window_event(win_event);
+            }
+        }
         #[cfg(not(target_os = "ios"))]
         let events = translate_events(raw);
         #[cfg(target_os = "ios")]
@@ -330,16 +403,6 @@ impl SdlShell {
     /// purpose -- the game is leaving.
     pub fn pump_during_quit(&mut self) {
         let _ = self.poll();
-    }
-
-    /// `screen.fill(BG_COLOR)` ... `display.flip()`. The text lines are not
-    /// drawn: the window is a debug mirror of the speech, and `sdl2::ttf` is
-    /// not enabled in this build; `State::lines()` stays for the harness.
-    pub fn render(&mut self, _lines: &[String]) {
-        self.canvas
-            .set_draw_color(Color::RGB(BG_COLOR.0, BG_COLOR.1, BG_COLOR.2));
-        self.canvas.clear();
-        self.canvas.present();
     }
 }
 

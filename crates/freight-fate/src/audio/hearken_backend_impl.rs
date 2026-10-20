@@ -114,6 +114,10 @@ impl AudioBackend for HearkenBackend {
         self.road_lift = lift;
     }
 
+    fn set_radio_voicing(&mut self, voicing: Option<crate::audio::RadioVoicing>) {
+        HearkenBackend::set_radio_voicing(self, voicing);
+    }
+
     fn update(&mut self, dt: f64) {
         HearkenBackend::update(self, dt);
     }

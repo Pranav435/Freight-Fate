@@ -455,6 +455,9 @@ pub struct HazardShape {
     pub dodgeable: bool,
     pub in_lane: bool,
     pub lead_mph: Option<f64>,
+    /// What braking alone has to reach, for a thing in the lane a truck
+    /// passes slowly rather than stops for. See `HazardDef::brake_to_mph`.
+    pub brake_to_mph: Option<f64>,
 }
 
 /// One ambient line waiting its turn, and how long it has waited

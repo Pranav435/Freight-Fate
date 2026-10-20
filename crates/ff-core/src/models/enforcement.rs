@@ -480,6 +480,18 @@ pub fn career_citations<P: StandingProfile + ?Sized>(profile: &P) -> i64 {
         .unwrap_or(0)
 }
 
+/// Below this career level an officer writes a warning, not a citation,
+/// for anything short of a serious violation or an out-of-service order
+/// (owner ruling, 2026-10-18). A new career starts at 50 reputation, and a
+/// run of minor tickets on the first loads took it to zero before the
+/// driver had learned the road.
+pub const NEW_DRIVER_WARNING_LEVEL: i64 = 10;
+
+/// Whether a driver at `level` is still let off minor violations.
+pub fn new_driver_warned(level: i64) -> bool {
+    level < NEW_DRIVER_WARNING_LEVEL
+}
+
 /// Why the figure is twice what it would be anywhere else.
 ///
 /// Spoken after the amount, never instead of it. A driver who hears a doubled

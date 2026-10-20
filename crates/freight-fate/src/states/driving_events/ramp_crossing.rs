@@ -36,6 +36,19 @@ impl DrivingState {
         self.update_ramp_terminal_assist_with_input(ctx, false);
     }
 
+    /// Whether route-transition assistance has the pedals for the light,
+    /// sign or yield ahead: announced, and not yet crossed.
+    pub(crate) fn terminal_assist_owns(&self, ctx: &GameContext) -> bool {
+        ctx.settings.route_transition_assist
+            && self.terminal_live()
+            && !self.ramp_terminal_done
+            && matches!(
+                self.ramp_control.as_str(),
+                "signal" | "stop" | "yield" | "roundabout"
+            )
+            && self.ramp_light_announced
+    }
+
     /// A live accelerator press overrides this assist, including its red-light hold.
     pub fn update_ramp_terminal_assist_with_input(
         &mut self,
@@ -46,15 +59,7 @@ impl DrivingState {
         // pedal at this servo's last press (`assist_floor`), so a press left
         // behind when the terminal ended -- crossed, run, or the ramp left --
         // held the truck on its brakes for good (merge bench, 2026-09-23).
-        let owns_terminal = ctx.settings.route_transition_assist
-            && self.terminal_live()
-            && !self.ramp_terminal_done
-            && matches!(
-                self.ramp_control.as_str(),
-                "signal" | "stop" | "yield" | "roundabout"
-            )
-            && self.ramp_light_announced;
-        if !owns_terminal {
+        if !self.terminal_assist_owns(ctx) {
             self.ramp_assist_brake = 0.0;
             return;
         }
@@ -683,6 +688,18 @@ impl DrivingState {
         let at_mi = self.terminal_seed_mi();
         let mut rng = PyRandom::new_from_str(&format!("{}:signal-run:{at_mi:.1}", self.trip_seed));
         if rng.random() >= SIGNAL_RUN_CATCH_CHANCE {
+            return;
+        }
+        if self.new_driver_warning(ctx) {
+            ctx.audio.play("ui/warning");
+            ctx.say_event_with(
+                format!(
+                    "A patrol car at the crossroad saw you run {offense} and gives you a warning."
+                ),
+                SayEvent::queued()
+                    .priority(EventPriority::Important)
+                    .category(SpeechCategory::Navigation),
+            );
             return;
         }
         let zone = self.trip.in_construction_zone();

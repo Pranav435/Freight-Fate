@@ -79,10 +79,41 @@ Read this before opening files; the rest is discoverable from `lib.rs` docs.
 - When creating a PR with `gh pr create`, build the body from the sections in
   `.github/PULL_REQUEST_TEMPLATE.md` (the template is not applied
   automatically outside the web UI): what changed and why, what players will
-  notice, tests run, accessibility impact, and the changelog checklist.
+  notice, the test plan, accessibility impact, and the changelog checklist.
 - When reviewing and merging a contributor's PR, always credit the PR author
   in the release notes for the first build that includes it. Use the
   contributor's name and GitHub handle, and link to the PR.
+
+### Test plan
+
+Every PR body carries a test plan a reviewer can check off, written from
+the diff and then carried out before the PR is marked ready.
+
+- **Write it from the change, not from a stock list.** Read the diff and
+  write one checkbox per behavior it changes: the setup, the action, and
+  what the player should hear (spoken line, earcon, sound bed) or what the
+  career should show. Add the edge cases the change reaches: quiet
+  verbosity, each place a menu can be opened from, a key pressed twice,
+  a drive interrupted by rest, fuel, a scale or an inspection. Under
+  "Automated checks" keep the commands that apply to the files touched.
+- **Then drive it through the agent server** (`--agent-server`, described
+  under Commands below). Build the release binary first, since `.mcp.json`
+  runs `target\release\freightfate.exe`. Stage each item with `scenario`
+  (career, city, clock, fuel, settings) or `start_at` (a road feature),
+  turn `lockstep` on where timing matters, act with `press`, `select`,
+  `pedal`, `cruise` and `hold`/`release`, and read the result with
+  `listen`, `wait_for` and `status`. End with `quit_game` once every item
+  is driven.
+- **Check a box only on what was heard**, and paste the line or cue under
+  it. A box that needed `observe` to confirm is an accessibility finding:
+  say what was missing from the spoken surface. A step that failed, or
+  that this session could not run (no Windows desktop, no build tools),
+  stays unchecked with one line saying why; never tick it on the strength
+  of a unit test.
+- **Timing, loudness and feel go under "Manual testing"**, unchecked, for
+  a person to try by ear.
+- After driving, update the PR body with the checked plan. A new push that
+  changes behavior means re-driving the items it touches.
 
 ## Changelog gate (CI-enforced)
 
@@ -203,6 +234,10 @@ cleanup](https://doc.rust-lang.org/book/ch21-03-graceful-shutdown-and-cleanup.ht
   `test = false` in the crate's Cargo.toml keeps it out of a plain
   `cargo test`, so run it by name (`cargo test -p freight-fate --test
   agent_server`) after touching the agent server. CI runs it as its own step.
+  `crates/freight-fate/tests/real_window.rs` is the same kind of opt-in: it
+  opens the real game window and plays a drive by sight through the visual
+  display, so it needs a desktop and a scratch `FREIGHT_FATE_DATA_DIR`
+  (`FREIGHT_FATE_WINDOW_SHOTS` saves captures of the window); see the file.
 - One test: `cargo test -p freight-fate --test it <name_filter> -- --nocapture`
   (`--test it` skips the unit-test and doc-test binaries; the filter is a
   substring of the test path).

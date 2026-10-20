@@ -347,15 +347,39 @@ fn side_by_side_holes_split_before_a_comma_tail() {
 }
 
 #[test]
+fn the_settings_name_gives_the_english_name_then_the_language_own() {
+    let label = |code| super::language(code).map(Language::label);
+    assert_eq!(label("es").as_deref(), Some("Spanish (Español)"));
+    assert_eq!(label("fr").as_deref(), Some("French (Français)"));
+    assert_eq!(
+        label("zh_CN").as_deref(),
+        Some("Simplified Chinese (简体中文)")
+    );
+    assert_eq!(label("en").as_deref(), Some("English"));
+}
+
+#[test]
 fn a_language_added_from_a_file_is_known_and_matches_its_locale() {
     // The only test that adds a language: the list is set once a process.
     super::add_languages([
-        ("tlh".to_string(), "tlhIngan Hol".to_string()),
-        ("es".to_string(), "not added again".to_string()),
+        (
+            "tlh".to_string(),
+            "Klingon".to_string(),
+            "tlhIngan Hol".to_string(),
+        ),
+        (
+            "es".to_string(),
+            "not added".to_string(),
+            "not added again".to_string(),
+        ),
     ]);
     assert_eq!(
         super::language("tlh").map(|lang| lang.autonym),
         Some("tlhIngan Hol")
+    );
+    assert_eq!(
+        super::language("tlh").map(Language::label).as_deref(),
+        Some("Klingon (tlhIngan Hol)")
     );
     assert_eq!(match_locale("tlh-US"), Some("tlh"));
     assert_eq!(
@@ -737,6 +761,75 @@ msgstr "vence mañana"
 fn shipped_spanish() -> Translator {
     let po = include_str!("../../../../lang/es.po");
     Translator::new(Catalog::from_po("es", po).expect("lang/es.po parses"))
+}
+
+/// The shipped Simplified Chinese catalog, as a player gets it.
+fn shipped_chinese() -> Translator {
+    let po = include_str!("../../../../lang/zh_CN.po");
+    Translator::new(Catalog::from_po("zh_CN", po).expect("lang/zh_CN.po parses"))
+}
+
+#[test]
+fn shipped_chinese_translates_dynamic_online_driver_rows() {
+    let tr = shipped_chinese();
+    assert_eq!(
+        tr.translate(
+            "Alayna Mayfield. Driving: Memphis, Tennessee to Rochester, Minnesota. grain, 5% there, short-haul stubnose. updated 2 minutes ago."
+        ),
+        "Alayna Mayfield. 正在驾驶：从Memphis, Tennessee前往Rochester, Minnesota。谷物，已行驶5%，短途平头车。2分钟前更新。"
+    );
+    assert_eq!(
+        tr.translate(
+            "Alex Bustos. Driving: Phoenix, Arizona to Buckeye, Arizona. general freight, 20% there, standard rig, listening to KGOL, Cruisin' Gold 105.9. updated just now."
+        ),
+        "Alex Bustos. 正在驾驶：从Phoenix, Arizona前往Buckeye, Arizona。普通货物，已行驶20%，标准卡车，正在收听KGOL, Cruisin' Gold 105.9。刚刚更新。"
+    );
+}
+
+#[test]
+fn shipped_chinese_translates_dynamic_region_and_training_rows() {
+    let tr = shipped_chinese();
+    assert_eq!(
+        tr.translate("California (44 cities). 3 of 16."),
+        "California（44个城市）。第 3 项，共 16 项。"
+    );
+    assert_eq!(
+        tr.translate(
+            "Refrigerated certificate course: 900 dollars, carrier-sponsored free at level 2. 2 of 11."
+        ),
+        "冷藏培训证书课程：900美元，2级时承运商免费资助。第 2 项，共 11 项。"
+    );
+    assert_eq!(
+        tr.translate(
+            "Hazmat endorsement course: 185 dollars, background check clears in about 30 days. 8 of 11."
+        ),
+        "危险品驾照签注课程：185美元，背景调查大约30天后通过。第 8 项，共 11 项。"
+    );
+}
+
+#[test]
+fn shipped_chinese_translates_dispatch_pickup_and_driving_lines() {
+    let tr = shipped_chinese();
+    assert_eq!(
+        tr.translate(
+            "Needs an extra rest on this shift's hours. ELD status off duty. Hours of service: 11 hours of driving left, 5.2 hours left in the 14-hour window. Sleeper split open: 7 more hours in the sleeper to pair it. Enter again to accept."
+        ),
+        "按本次轮班的工时计算，需要额外休息。ELD 状态：下班。驾驶工时：剩余驾驶时间11小时，14小时当班时段剩余5.2小时。卧铺分段休息尚未配对：还需在卧铺休息7小时。再次按Enter接受。"
+    );
+    assert_eq!(
+        tr.translate("Loaded and sealed for Valencia, California."),
+        "已装货并封好，运往Valencia, California。"
+    );
+    assert_eq!(
+        tr.translate("Dry van 9195 checks out."),
+        "厢式挂车9195检查无异常。"
+    );
+    assert_eq!(
+        tr.translate(
+            "On I-10 toward Indio, California. Next stop in 1 mile: travel center ahead at exit 239. Automatic transmission."
+        ),
+        "在 I-10 上朝向 Indio, California。前方1英里是下一个停靠点：前方239号出口处的卡车服务区。自动变速箱。"
+    );
 }
 
 #[test]

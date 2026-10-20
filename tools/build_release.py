@@ -14,9 +14,10 @@ Packages the Rust game and archives it for release:
 
 Run from the repository root: ``uv run python tools/build_release.py``
 
-The pipeline is ``cargo build --release -p freight-fate --no-default-features``
-(no agent server in a player build; ``--cargo-target-dir`` picks the Cargo
-target directory), then ``ff-bake``
+The pipeline is ``cargo build --release -p freight-fate --no-default-features
+--features visuals`` (no agent server in a player build, and the visual
+display named, since it is one of the defaults; ``--cargo-target-dir`` picks
+the Cargo target directory), then ``ff-bake``
 to turn the JSON data tree into ``world.ffdata``, then a ``FreightFate/``
 folder with the executable renamed to ``FreightFate``. On macOS it creates
 ``FreightFate.app`` with the executable under ``Contents/MacOS``, native
@@ -46,6 +47,7 @@ import tempfile
 import urllib.error
 import urllib.request
 import zipfile
+import zlib
 from collections.abc import Mapping
 from datetime import datetime, timezone
 from pathlib import Path
@@ -140,10 +142,6 @@ def stage_sound_pack(build_dir: Path, root: Path | None = None) -> None:
     shutil.copy2(credits, root / "SOUND_CREDITS.md")
 
 
-# Where the translator's kit lands in a release, beside the manual.
-TRANSLATIONS_DIR = "translations"
-
-
 def stage_release_docs(build_dir: Path, root: Path | None = None) -> None:
     """Copy player-facing release documents into the packaged runtime."""
     changelog = ROOT / "CHANGELOG.md"
@@ -168,26 +166,9 @@ def stage_release_docs(build_dir: Path, root: Path | None = None) -> None:
     )
     (root / "USER_MANUAL.html").write_text(manual_html, encoding="utf-8")
 
-    # The alpha test book travels with the build it describes. A tester who
-    # has to go find the current copy in the repo ends up working an old one,
-    # and its checklists are written against specific builds.
-    test_book = ROOT / "docs" / "alpha-test-book.md"
-    if not test_book.exists():
-        raise RuntimeError(f"Alpha test book was not found: {test_book}")
-    shutil.copy2(test_book, root / "ALPHA_TEST_BOOK.md")
-    test_book_html = _load_tool("manual_html").markdown_to_html(
-        test_book.read_text(encoding="utf-8"), title="Freight Fate Alpha Test Book"
-    )
-    (root / "ALPHA_TEST_BOOK.html").write_text(test_book_html, encoding="utf-8")
-
-    # The translator's kit: the template a new language starts from, every
-    # language file to correct, the glossaries and the guide (README.md),
-    # whose links are relative to this folder. The game itself reads the
-    # copies compiled into it, never these.
-    lang = ROOT / "lang"
-    if not (lang / "freight-fate.pot").exists():
-        raise RuntimeError(f"Translation template was not found: {lang / 'freight-fate.pot'}")
-    shutil.copytree(lang, root / TRANSLATIONS_DIR, dirs_exist_ok=True)
+    # The translator's kit is its own release asset
+    # (tools/translation_kit.py), not part of the game: a player never reads
+    # it, and every update would carry it.
 
 
 def verify_sound_packs(root: Path) -> None:
@@ -271,9 +252,39 @@ def stamp_build_info(build_dir: Path, label: str, root: Path | None = None) -> N
         "package_version": label_package_version(label),
         "commit": build_commit(),
     }
-    info_path = (root or runtime_root(build_dir)) / "build_info.json"
+    root = root or runtime_root(build_dir)
+    packs = pack_records(root)
+    if packs:
+        info["packs"] = packs
+    info_path = root / "build_info.json"
     with open(info_path, "w", encoding="utf-8") as f:
         json.dump(info, f, indent=2)
+
+
+# The packs an update skips: most of the download, and they rarely change
+# between builds. Relative to the payload root (beside the executable, or a
+# Mac bundle's Resources). The in-game updater fetches the rest of a zip
+# release by byte range and keeps the player's own packs when their size and
+# CRC-32 match the zip's index; build_info.json records both so the update
+# check reads no pack.
+UPDATE_SKIPPED_PACKS = ("freight_fate/music.pak", "freight_fate/channel3000.pak")
+
+
+def file_crc32(path: Path) -> int:
+    crc = 0
+    with open(path, "rb") as f:
+        while chunk := f.read(1 << 20):
+            crc = zlib.crc32(chunk, crc)
+    return crc
+
+
+def pack_records(root: Path) -> list[dict[str, object]]:
+    """``{path, size, crc32}`` for each skipped pack staged under ``root``."""
+    return [
+        {"path": relative, "size": path.stat().st_size, "crc32": file_crc32(path)}
+        for relative in UPDATE_SKIPPED_PACKS
+        if (path := root / relative).is_file()
+    ]
 
 
 MACOS_SIGN_IDENTITY_ENV = "MACOS_SIGN_IDENTITY"
@@ -505,16 +516,17 @@ def verify_archive(out: Path) -> None:
     no runnable game inside (for example a Linux snapshot missing its
     executable) and nothing else would notice.
     """
-    macos_archive = out.name.endswith(("-macos-arm64.zip", "-macos.zip"))
+    name = out.name
+    macos_archive = name.endswith(("-macos-arm64.zip", "-macos.zip"))
     if macos_archive:
         root = f"{APP_NAME}.app/Contents/MacOS"
         exe_entry = f"{root}/{APP_NAME}"
         needs_exec = True
-    elif out.name.endswith(LINUX_TARBALL_SUFFIXES):
+    elif name.endswith(LINUX_TARBALL_SUFFIXES):
         root = APP_NAME
         exe_entry = f"{root}/{APP_NAME}"
         needs_exec = True
-    elif out.name.endswith("-windows-portable.zip"):
+    elif name.endswith("-windows-portable.zip"):
         root = APP_NAME
         exe_entry = f"{root}/{APP_NAME}.exe"
         needs_exec = False
@@ -539,17 +551,16 @@ def verify_archive(out: Path) -> None:
         "LICENSE.txt",
         "USER_MANUAL.md",
         "freight_fate/sounds.pak",
-        "freight_fate/music.pak",
-        "freight_fate/channel3000.pak",
+        *UPDATE_SKIPPED_PACKS,
         RUST_BAKED_FILE_ENTRY,
     )
-    missing = [name for name in required if f"{payload_root}/{name}" not in entries]
+    missing = [entry for entry in required if f"{payload_root}/{entry}" not in entries]
     if macos_archive:
         if f"{APP_NAME}.app/Contents/Info.plist" not in entries:
             missing.append(f"{APP_NAME}.app/Contents/Info.plist")
         # No native library requirement: SDL2, Prism and the audio engine
         # are compiled into the executable.
-    elif out.name.endswith(LINUX_TARBALL_SUFFIXES):
+    elif name.endswith(LINUX_TARBALL_SUFFIXES):
         pass  # Likewise: the Linux executable carries everything it links.
     else:
         # The delivered ZIP, not only the build runner, must carry the CRT.
@@ -678,8 +689,18 @@ def cargo_exe_name(platform_name: str = sys.platform) -> str:
 
 def cargo_build_command(target_dir: Path | None = None) -> list[str]:
     # No default features: the agent server (``--agent-server``) is dev
-    # tooling, and a player has no use for an agent at the wheel.
-    cmd = ["cargo", "build", "--release", "-p", RUST_PACKAGE, "--no-default-features"]
+    # tooling, and a player has no use for an agent at the wheel. The visual
+    # display is a default too, so it is named back in.
+    cmd = [
+        "cargo",
+        "build",
+        "--release",
+        "-p",
+        RUST_PACKAGE,
+        "--no-default-features",
+        "--features",
+        "visuals",
+    ]
     if target_dir is not None:
         cmd.extend(["--target-dir", str(target_dir)])
     return cmd
@@ -1304,10 +1325,6 @@ def verify_rust_payload(build_dir: Path, platform_name: str = sys.platform) -> N
         root / "CHANGELOG.md",
         root / "USER_MANUAL.md",
         root / "USER_MANUAL.html",
-        root / "ALPHA_TEST_BOOK.md",
-        root / "ALPHA_TEST_BOOK.html",
-        root / TRANSLATIONS_DIR / "freight-fate.pot",
-        root / TRANSLATIONS_DIR / "README.md",
         root / "SOUND_CREDITS.md",
         root / "freight_fate" / "sounds.pak",
         root / "freight_fate" / "music.pak",

@@ -1,5 +1,7 @@
+import sys
 from pathlib import Path
 
+import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -289,6 +291,27 @@ def test_rust_ci_runs_its_jobs_side_by_side() -> None:
     assert not any("lfs" in (s.get("with") or {}) for s in test["steps"])
 
 
+def test_the_windows_test_leg_audits_the_game_s_imports() -> None:
+    """The snapshot's payload DLL check also runs in PR CI, on the executable
+    the Windows test build already compiled, so an import a clean Windows
+    lacks fails the PR that adds it."""
+    test = _load(RUST_WORKFLOW)["jobs"]["test"]
+    steps = test["steps"]
+    runs = [s.get("run", "") for s in steps]
+    audit = next(s for s in steps if "tools/check_windows_imports.py" in s.get("run", ""))
+    assert audit["if"] == "matrix.name == 'Windows'"
+    # After the build that leaves target/debug/freightfate.exe.
+    build = runs.index("cargo test ${{ matrix.packages }} --no-run --locked --timings")
+    assert steps.index(audit) > build
+    paths = _load(RUST_WORKFLOW)["on"]["push"]["paths"]
+    for needed in (
+        "tools/check_windows_imports.py",
+        "tools/windows_runtime.py",
+        "tools/build_release.py",
+    ):
+        assert needed in paths, needed
+
+
 def test_macos_tests_run_on_a_manual_run_or_a_release_tag_only() -> None:
     """The Mac link (Prism's frameworks, the clang runtime) and the
     CoreAudio build are proved before a release, as Hearken's CI does, but
@@ -324,3 +347,46 @@ def test_the_test_target_guard_passes() -> None:
         text=True,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+def _run_stale_copy_guard(tmp_path: Path, event: str, dry_run: str, differs: bool) -> int:
+    """Run Prepare's stale-copy step with a stand-in git."""
+    import os
+    import subprocess
+
+    prepare = _load(BUILD_WORKFLOW)["jobs"]["prepare"]
+    step = next(
+        s
+        for s in prepare["steps"]
+        if s.get("name") == "Refuse to run a stale copy of this workflow"
+    )
+    fake = tmp_path / "git"
+    fake.write_text(
+        '#!/bin/sh\nif [ "$1" = diff ]; then exit ' + ("1" if differs else "0") + "; fi\nexit 0\n"
+    )
+    fake.chmod(0o755)
+    env = {
+        **os.environ,
+        "PATH": f"{tmp_path}{os.pathsep}{os.environ['PATH']}",
+        "GITHUB_WORKFLOW_SHA": "0" * 40,
+        "GITHUB_EVENT_NAME": event,
+        "GITHUB_REF_NAME": "main",
+        "CAREER_BRANCH": "dev",
+        "DRY_RUN": dry_run,
+    }
+    assert step["env"]["DRY_RUN"] == "${{ inputs.dry_run }}"
+    return subprocess.run(["bash", "-e", "-c", step["run"]], env=env).returncode
+
+
+@pytest.mark.skipif(
+    sys.platform == "win32", reason="Prepare runs on Linux; Git Bash's git shadows the stand-in"
+)
+def test_a_stale_snapshot_workflow_stops_any_run_that_would_publish(tmp_path: Path) -> None:
+    """2026-10-19: a dispatch from main built for 25 minutes, then Release
+    refused the assets main's stale copy expected. A publishing dispatch now
+    stops in Prepare like a scheduled run; a dry run still only warns."""
+    assert _run_stale_copy_guard(tmp_path, "schedule", "", differs=True) != 0
+    assert _run_stale_copy_guard(tmp_path, "workflow_dispatch", "false", differs=True) != 0
+    assert _run_stale_copy_guard(tmp_path, "workflow_dispatch", "true", differs=True) == 0
+    assert _run_stale_copy_guard(tmp_path, "push", "", differs=True) == 0
+    assert _run_stale_copy_guard(tmp_path, "workflow_dispatch", "false", differs=False) == 0

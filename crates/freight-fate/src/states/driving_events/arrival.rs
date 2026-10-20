@@ -503,6 +503,11 @@ impl DrivingState {
             return;
         }
         self.arrival_menu_open = true;
+        // A co-driver at the wheel wakes the player for the receiver: the
+        // dock is theirs, on their own logbook.
+        if self.co_driver_driving() {
+            self.co_driver_summon(ctx, "gate");
+        }
         // The frame loop stops here, so the gate on "press Enter to continue"
         // would keep reading the last tick's answer without this.
         live::set_arrival_menu_open(true);
@@ -790,7 +795,7 @@ impl DrivingState {
 
     /// `speed_limit_at(position)` for the window, without the congestion
     /// recompute `Trip::speed_limit_at` performs (`lines()` is `&self`).
-    fn display_speed_limit(&self) -> (f64, Option<String>) {
+    pub(crate) fn display_speed_limit(&self) -> (f64, Option<String>) {
         let mile = self.trip.position_mi;
         let mut best: Option<&Zone> = None;
         for zone in &self.trip.zones {

@@ -98,6 +98,11 @@ SKIP_CALLS = {
 
 FORMAT_MACROS = {"format", "write", "writeln", "format_args"}
 
+# Calls that translate what they are handed: the visual display's own
+# labels ("SPEED", "CRUISE {value}"). A literal inside one is player text
+# whatever its shape, so all-capital sign words are not dropped as keys.
+TRANSLATE_CALLS = {"tr_drawn"}
+
 # Path fragments whose files hold no player-facing text.
 SKIP_PATH_PARTS = (
     "/tests/",
@@ -148,6 +153,9 @@ class Literal:
     is_key: bool = False
     # A struct field set straight from it (`kind: "browse".to_string()`).
     is_field_value: bool = False
+    # Handed to a translating call (`TRANSLATE_CALLS`), directly or as the
+    # format string of a `format!` that is.
+    is_marked: bool = False
 
 
 @dataclass
@@ -457,6 +465,10 @@ def literals_in(src: str) -> list[Literal]:
                 i += 1
                 continue
             lit = Literal(text=text, line=line, callee_stack=list(stack))
+            lit.is_marked = bool(stack) and (
+                stack[-1] in TRANSLATE_CALLS
+                or (len(stack) >= 2 and stack[-1] == "format!" and stack[-2] in TRANSLATE_CALLS)
+            )
             before = "".join(t[1] for t in tokens[max(0, i - 2) : i])
             after = "".join(t[1] for t in tokens[i + 1 : i + 3])
             lit.is_key = (
@@ -623,7 +635,12 @@ def extract(root: Path, crates: list[str]) -> dict[str, Template]:
             for lit in lits:
                 if lit.is_field_value and lit.text in keys:
                     continue
-                if _skipped(lit) or not is_player_text(lit.text, lit.is_format, lit.is_key):
+                if _skipped(lit):
+                    continue
+                if lit.is_marked:
+                    if not re.search(r"[A-Za-z]", PLACEHOLDER_RE.sub("", lit.text)):
+                        continue
+                elif not is_player_text(lit.text, lit.is_format, lit.is_key):
                     continue
                 msgid, names = to_template(lit)
                 msgid = msgid.strip("\n")

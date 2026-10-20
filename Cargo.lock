@@ -3,6 +3,22 @@
 version = 4
 
 [[package]]
+name = "ab_glyph"
+version = "0.2.32"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "01c0457472c38ea5bd1c3b5ada5e368271cb550be7a4ca4a0b4634e9913f6cc2"
+dependencies = [
+ "ab_glyph_rasterizer",
+ "owned_ttf_parser",
+]
+
+[[package]]
+name = "ab_glyph_rasterizer"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "366ffbaa4442f4684d91e2cd7c5ea7c4ed8add41959a31447066e279e432b618"
+
+[[package]]
 name = "adler2"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -589,7 +605,7 @@ dependencies = [
  "libc",
  "option-ext",
  "redox_users",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -802,9 +818,11 @@ dependencies = [
 name = "freight-fate"
 version = "1.9.0"
 dependencies = [
+ "ab_glyph",
  "base64 0.22.1",
  "cc",
  "chrono",
+ "crc32fast",
  "discord-rich-presence",
  "env_logger",
  "ff-core",
@@ -813,6 +831,8 @@ dependencies = [
  "hex",
  "keyring",
  "log",
+ "memmap2",
+ "objc2-app-kit",
  "once_cell",
  "raw-window-handle",
  "regex",
@@ -997,7 +1017,7 @@ checksum = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
 [[package]]
 name = "hearken"
 version = "0.1.0"
-source = "git+https://github.com/orinks-games/hearken?branch=main#1f5fd07b2b6abc11aa3401dc78e4eea09efae5b0"
+source = "git+https://github.com/orinks-games/hearken?rev=d56387b1ec5c2ced465bc6122d685ca8dcf7abfb#d56387b1ec5c2ced465bc6122d685ca8dcf7abfb"
 dependencies = [
  "hearken-app",
  "hearken-radio",
@@ -1007,7 +1027,7 @@ dependencies = [
 [[package]]
 name = "hearken-app"
 version = "0.1.0"
-source = "git+https://github.com/orinks-games/hearken?branch=main#1f5fd07b2b6abc11aa3401dc78e4eea09efae5b0"
+source = "git+https://github.com/orinks-games/hearken?rev=d56387b1ec5c2ced465bc6122d685ca8dcf7abfb#d56387b1ec5c2ced465bc6122d685ca8dcf7abfb"
 dependencies = [
  "dirs",
  "env_logger",
@@ -1024,7 +1044,7 @@ dependencies = [
 [[package]]
 name = "hearken-audio"
 version = "0.1.0"
-source = "git+https://github.com/orinks-games/hearken?branch=main#1f5fd07b2b6abc11aa3401dc78e4eea09efae5b0"
+source = "git+https://github.com/orinks-games/hearken?rev=d56387b1ec5c2ced465bc6122d685ca8dcf7abfb#d56387b1ec5c2ced465bc6122d685ca8dcf7abfb"
 dependencies = [
  "hearken-synth",
  "kira",
@@ -1036,25 +1056,29 @@ dependencies = [
 [[package]]
 name = "hearken-radio"
 version = "0.1.0"
-source = "git+https://github.com/orinks-games/hearken?branch=main#1f5fd07b2b6abc11aa3401dc78e4eea09efae5b0"
+source = "git+https://github.com/orinks-games/hearken?rev=d56387b1ec5c2ced465bc6122d685ca8dcf7abfb#d56387b1ec5c2ced465bc6122d685ca8dcf7abfb"
 dependencies = [
  "hearken-audio",
  "icy-metadata",
  "log",
  "m3u8-rs",
  "mpeg2ts",
+ "objc2-audio-toolbox",
+ "objc2-core-audio-types",
  "rustls",
  "rustls-platform-verifier 0.6.2",
  "symphonia",
  "symphonia-adapter-libopus",
+ "symphonia-core",
  "ureq 2.12.1",
  "url",
+ "windows",
 ]
 
 [[package]]
 name = "hearken-speech"
 version = "0.1.0"
-source = "git+https://github.com/orinks-games/hearken?branch=main#1f5fd07b2b6abc11aa3401dc78e4eea09efae5b0"
+source = "git+https://github.com/orinks-games/hearken?rev=d56387b1ec5c2ced465bc6122d685ca8dcf7abfb#d56387b1ec5c2ced465bc6122d685ca8dcf7abfb"
 dependencies = [
  "log",
  "prismer",
@@ -1065,7 +1089,7 @@ dependencies = [
 [[package]]
 name = "hearken-synth"
 version = "0.1.0"
-source = "git+https://github.com/orinks-games/hearken?branch=main#1f5fd07b2b6abc11aa3401dc78e4eea09efae5b0"
+source = "git+https://github.com/orinks-games/hearken?rev=d56387b1ec5c2ced465bc6122d685ca8dcf7abfb#d56387b1ec5c2ced465bc6122d685ca8dcf7abfb"
 dependencies = [
  "fundsp",
  "log",
@@ -1824,6 +1848,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "owned_ttf_parser"
+version = "0.25.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "36820e9051aca1014ddc75770aab4d68bc1e9e632f0f5627c4086bc216fb583b"
+dependencies = [
+ "ttf-parser",
+]
+
+[[package]]
 name = "parking_lot"
 version = "0.12.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2278,7 +2311,7 @@ dependencies = [
  "security-framework 3.7.0",
  "security-framework-sys",
  "webpki-root-certs",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -2988,6 +3021,12 @@ checksum = "e875ab7068a75b74f419da453927e05527c36f0001b3c7aad3ce443640683487"
 dependencies = [
  "crossbeam-utils",
 ]
+
+[[package]]
+name = "ttf-parser"
+version = "0.25.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2df906b07856748fa3f6e0ad0cbaa047052d4a7dd609e231c4f72cee8c36f31"
 
 [[package]]
 name = "typenum"

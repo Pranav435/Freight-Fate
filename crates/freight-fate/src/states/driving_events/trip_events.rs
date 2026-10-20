@@ -294,10 +294,13 @@ impl DrivingState {
         // which is what the older callers meant by it.
         let in_lane = event.data.in_lane.unwrap_or(dodgeable);
         let lead_mph = hazard_lead_speed(event);
+        let animal = event.data.animal.unwrap_or(false);
+        let brake_to_mph = event.data.brake_to_mph;
         let shape = HazardShape {
             dodgeable,
             in_lane,
             lead_mph,
+            brake_to_mph,
         };
         let slack = event.data.deadline_s.unwrap_or(4.0);
         let reaction = tuning_for_time_scale(self.trip.time_scale).reaction_window;
@@ -318,9 +321,12 @@ impl DrivingState {
             self.horn_scare_tried = false;
             self.hazard_dodgeable = dodgeable;
             self.hazard_in_lane = in_lane;
+            self.hazard_animal = animal;
+            self.hazard_brake_to_mph = brake_to_mph;
             self.hazard_lead_mph = lead_mph;
             self.hazard_deadline = Some(new_deadline);
             self.hazard_lane = self.lane.lane;
+            self.hazard_arm_mi = self.trip.position_mi;
             self.release_hazard_brake();
         } else if self.trip.truck.speed_mph() <= self.hazard_target_mph(None) {
             // A hazard is already pending, but the driver has already
@@ -332,9 +338,12 @@ impl DrivingState {
             self.horn_scare_tried = false;
             self.hazard_dodgeable = dodgeable;
             self.hazard_in_lane = in_lane;
+            self.hazard_animal = animal;
+            self.hazard_brake_to_mph = brake_to_mph;
             self.hazard_lead_mph = lead_mph;
             self.hazard_deadline = Some(new_deadline);
             self.hazard_lane = self.lane.lane;
+            self.hazard_arm_mi = self.trip.position_mi;
             self.release_hazard_brake();
         } else {
             // Still live: fold the new one in rather than clobber it.
@@ -343,17 +352,46 @@ impl DrivingState {
             // wording; the shorter deadline is the one still governing
             // how much time is actually left.
             self.hazard_names.push(name);
-            // Folding a second hazard in: the slower demand wins, and a
-            // thing that is not moving has no lead speed at all, so it
-            // takes the group back to the near-stop rule.
-            self.hazard_lead_mph = match (self.hazard_lead_mph, lead_mph) {
-                (Some(live), Some(folded)) => Some(live.min(folded)),
-                _ => None,
-            };
-            // Either one sitting in the lane takes the group to the near
-            // stop: the object is still there whatever else arrived with it.
-            self.hazard_in_lane = self.hazard_in_lane || in_lane;
-            self.hazard_dodgeable = self.hazard_dodgeable && dodgeable;
+            // An animal never changes how the group is answered: the
+            // ladder it arrived with is still gone around or braked for as
+            // the ladder asks, and a deer folding into a lane change does
+            // not call the change off. Only an all-animal group is left to
+            // the outcome at the deadline.
+            if animal {
+                // The group's answer stands.
+            } else if self.hazard_animal {
+                self.hazard_in_lane = in_lane;
+                self.hazard_dodgeable = dodgeable;
+                self.hazard_brake_to_mph = brake_to_mph;
+                self.hazard_lead_mph = lead_mph;
+            } else {
+                // The slower demand wins, and a thing that is not moving has
+                // no lead speed at all, so it takes the group back to the
+                // near-stop rule.
+                self.hazard_lead_mph = match (self.hazard_lead_mph, lead_mph) {
+                    (Some(live), Some(folded)) => Some(live.min(folded)),
+                    _ => None,
+                };
+                // Either one that needs the near stop takes the group there:
+                // the object is still there whatever else arrived. A thing
+                // in the lane with its own brake-to speed (a mattress) does
+                // not, so with something across the road it takes that
+                // one's speed instead of a crawl.
+                let near_stop = (self.hazard_in_lane && self.hazard_brake_to_mph.is_none())
+                    || (in_lane && brake_to_mph.is_none());
+                // The group brakes to the slowest of what its members ask.
+                self.hazard_brake_to_mph = match (self.hazard_brake_to_mph, brake_to_mph) {
+                    (Some(live), Some(folded)) => Some(live.min(folded)),
+                    _ => None,
+                };
+                self.hazard_in_lane = if self.hazard_brake_to_mph.is_some() {
+                    self.hazard_in_lane || in_lane
+                } else {
+                    near_stop
+                };
+                self.hazard_dodgeable = self.hazard_dodgeable && dodgeable;
+            }
+            self.hazard_animal = self.hazard_animal && animal;
             self.hazard_deadline = self.hazard_deadline.map(|live| live.min(new_deadline));
         }
         // _hazard_lane is stamped by the two FRESH branches above and by
@@ -389,7 +427,11 @@ impl DrivingState {
         // back to the pedals right away (Shane, 2026-08-14: a lane change
         // was killing cruise outright, not just easing off the lane being
         // passed -- that narrower bug is 3cbdcffb).
+        // An animal leaves it alone at the call: the call names the animal
+        // and asks nothing more (owner, 2026-10-19). If the automatic brake
+        // takes the truck for it, that pauses the cruise as it always does.
         let speed_control_was_active = !self.hazard_dodgeable
+            && !self.hazard_animal
             && (self.speed_control_armed || self.cruise_mph.is_some() || self.keeper_mph.is_some());
         if speed_control_was_active {
             // Hands back on the wheel to brake -- but the session stays
@@ -409,6 +451,10 @@ impl DrivingState {
             message
         };
         self.last_event_message = message.normal.clone();
+        if self.co_driver_driving() {
+            let line = message.normal.clone();
+            self.co_driver_hazard_call(ctx, sound.unwrap_or("ui/warning"), &line);
+        }
         // A hazard call may only come back while the hazard is still
         // live. An interrupting line hands back what it cut so the cut
         // line finishes rather than vanishing, which is what rescued

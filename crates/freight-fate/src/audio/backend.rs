@@ -289,6 +289,8 @@ pub trait AudioBackend {
     fn set_road_noise(&mut self, _speed_mps: f64) {}
     /// The driver window's lift on the tire loop; see `Audio::set_outside_lift`.
     fn set_outside_lift(&mut self, _lift: f64) {}
+    /// The radio's voicing; see `Audio::set_radio_voicing`.
+    fn set_radio_voicing(&mut self, _voicing: Option<super::RadioVoicing>) {}
     fn update(&mut self, _dt: f64) {}
     fn reverse_start(&mut self) {}
     fn reverse_stop(&mut self) {}

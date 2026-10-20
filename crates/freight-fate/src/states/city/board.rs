@@ -925,7 +925,7 @@ impl JobBoardState {
         // Junior drivers slip-seat: the yard picks the tractor for the load
         // before the keys change hands, so the truck is decided before the
         // trip snapshot is taken.
-        let equipment_note = slip_seat_note(ctx, &job);
+        let equipment_note = dispatch_equipment_note(ctx, &job);
         profile_mut(ctx).dispatch_board_cache = None;
         let line = format!(
             "Accepted.{equipment_note} Deadhead {} on {} to pickup at {}.",
@@ -975,7 +975,7 @@ impl JobBoardState {
             Ok(approach) => corridor.then(&approach),
             Err(_) => corridor.clone(),
         };
-        let equipment_note = slip_seat_note(ctx, &job);
+        let equipment_note = dispatch_equipment_note(ctx, &job);
         profile_mut(ctx).dispatch_board_cache = None;
         // The facility text already names its city; whole miles for a run
         // this long (heard live: "in Las Vegas, Nevada in Las Vegas, Nevada"
@@ -1005,7 +1005,7 @@ impl JobBoardState {
     /// pickup), then the pickup facility itself instead of a drive to it.
     fn accept_at_home_yard(&mut self, ctx: &mut GameContext, job: Job) {
         warm_route_feeds(ctx, &job.origin, &job.destination);
-        let equipment_note = slip_seat_note(ctx, &job);
+        let equipment_note = dispatch_equipment_note(ctx, &job);
         profile_mut(ctx).dispatch_board_cache = None;
         let snapshot = pickup_snapshot(&job, &PickupSnapshotOptions::default());
         profile_mut(ctx).active_trip = Some(Value::Object(snapshot));
@@ -1065,6 +1065,13 @@ fn sort_scored(candidates: &mut [(f64, usize)]) {
             .unwrap_or(std::cmp::Ordering::Equal)
             .then(a.1.cmp(&b.1))
     });
+}
+
+/// The tractor for this load, then the carrier's shop on it if it needs one.
+fn dispatch_equipment_note(ctx: &mut GameContext, job: &Job) -> String {
+    let seat = slip_seat_note(ctx, job);
+    let shop = crate::states::city_garage::carrier_shop_before_dispatch(ctx);
+    format!("{seat}{shop}")
 }
 
 /// Draw the assigned tractor and say why, or nothing if it is not new.

@@ -20,7 +20,10 @@ use crate::speech_text::{typed_name, SpokenMessage};
 
 mod hazards;
 mod ramps;
-pub use hazards::{eligible_hazards, hazard_is_in_lane, hazard_name, HazardDef, OpenSide, HAZARDS};
+pub use hazards::{
+    eligible_hazards, hazard_brake_to_mph, hazard_is_animal, hazard_is_in_lane, hazard_name,
+    HazardDef, OpenSide, ANIMAL_BRAKE_TO_MPH, HAZARDS,
+};
 pub use ramps::{
     acceleration_lane_capability_mph, acceleration_lane_mi, deceleration_lane_mi, exit_ramp_layout,
     merge_traffic_target_mph, ramp_curve_mi, ramp_speed_mph, truck_merge_speed_mph, ExitRampLayout,
@@ -774,11 +777,18 @@ pub struct TripEventData {
     /// that spans the road.
     pub in_lane: Option<bool>,
     /// Which neighbouring lane the call found open, the reading
-    /// `dodgeable` folds in. Set on a vehicle-ahead hazard.
+    /// `dodgeable` folds in. Set on every hazard confined to one lane.
     pub open_side: Option<OpenSide>,
-    /// The vehicle-ahead call as lane keeping on full answers it, by
-    /// passing into `open_side` (see `passing_hazard_call`).
+    /// The call as lane keeping on full answers it, by changing lanes into
+    /// `open_side` (see `passing_hazard_call`): a vehicle ahead, or a thing
+    /// sitting in the lane (owner, 2026-10-19: go around, do not brake).
     pub pass_message: Option<SpokenMessage>,
+    /// An animal on the road. Braking at highway speed does not save it,
+    /// so the automatic braking leaves it alone (owner, 2026-10-19).
+    pub animal: Option<bool>,
+    /// What braking alone has to reach for this hazard, when less than a
+    /// near stop: see `HazardDef::brake_to_mph`.
+    pub brake_to_mph: Option<f64>,
     pub name: Option<String>,
     pub weather: Option<WeatherKind>,
     pub curve: Option<RouteCurve>,
